@@ -3,6 +3,7 @@ $ErrorActionPreference = 'Stop'
 $runtime = Join-Path $PSScriptRoot '.m1-app'
 if (Test-Path -LiteralPath $runtime) { throw "Temporary app already exists: $runtime" }
 if (-not $env:RW_DB_PASSWORD) { throw 'Set RW_DB_PASSWORD before running.' }
+$originalEnvHash = (Get-FileHash -LiteralPath (Join-Path $App '.env')).Hash
 try {
     New-Item -ItemType Directory -Path $runtime | Out-Null
     Copy-Item -LiteralPath (Join-Path $App 'app') -Destination $runtime -Recurse
@@ -23,5 +24,7 @@ try {
     $vendor = Join-Path $runtime 'vendor'
     if (Test-Path -LiteralPath $vendor) { (Get-Item -LiteralPath $vendor).Delete() }
     if (Test-Path -LiteralPath $runtime) { Remove-Item -LiteralPath $runtime -Recurse -Force }
+    if ((Get-FileHash -LiteralPath (Join-Path $App '.env')).Hash -ne $originalEnvHash) { throw 'Sibling .env changed' }
+    Write-Output 'PASS safety sibling .env unchanged; temporary app removed'
 }
 exit $result

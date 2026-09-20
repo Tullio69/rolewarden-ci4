@@ -1,117 +1,75 @@
-# Independent M1 verification
+# Independent M1 re-verification
 
-Target: commit `80a60ba`, verified on 2026-09-20 using PHP 8.3.11 and the supplied host app's installed CI4/Shield dependencies. Module implementation files were neither opened nor modified. Expectations came from the two requested SPEC sections, BRIEF-MVP, CLAUDE.md and the user's explicit M1 acceptance criteria. The coordination log was read as required.
+**M1 APPROVED: 79 checks passed, 0 failed**, under the decisions supplied by the author. The launcher additionally confirms sibling dotenv integrity and temporary-app removal. Full commands, exit codes and assertions: [m1-output.txt](m1-output.txt).
 
-**Outcome: M1 is not ready for acceptance. 55 checks: 47 passed, 8 failed.** The failures are repeated cases of two issues, not eight distinct defects. Full command output, exit codes and assertions are in [m1-output.txt](m1-output.txt).
+Verified 2026-09-21 (Europe/Rome), HEAD `4fc333f`. Source comparison with `80a60ba` returned no differences. Stack: PHP 8.3.11, CI4 4.7.4, supplied installed Shield dependencies, MariaDB 11.8.9. Expectations came from SPEC, BRIEF-MVP, the 00:25 log decisions, README and the current user request. No module implementation, module config or seeder source was opened or modified.
 
-## Method and reproduction
+## Results per point
 
-Reproducible Spark scripts were chosen instead of PHPUnit: this acceptance test needs fresh CLI processes, real MariaDB constraints, changed dotenv settings, complete migration/rollback cycles and captured production/development console failures. It does not use a PHPUnit database refresh trait or a substitute SQLite schema. No dependency was added.
+Each database check ran with both `acl_` and `xx_`, each starting from an empty database.
 
-Run from the module repository in PowerShell:
-
-```powershell
-docker compose up -d
-# Set RW_DB_PASSWORD to the supplied local MariaDB password in this shell.
-& .\tests\Integration\verify-m1.ps1 *> .\tests\Integration\m1-output.txt
-$LASTEXITCODE
-```
-
-Optional environment variables: `RW_DB_HOST`, `RW_DB_PORT`, `RW_DB_USER`; defaults are loopback, 3306 and root. The launcher also accepts `-App` with the host app path.
-
-The database is fixed to `rolewarden_test`. **It must be empty and exclusively available:** the runner refuses a nonempty database and restores the initially empty state in `finally`. It never connects to the `rolewarden` database. Exit 1 means at least one failed assertion; exit 0 means all passed.
-
-The sibling app is outside this session's writable root. The launcher therefore copies its app files, Spark, web root and `.env` into `tests/Integration/.m1-app`, and junctions the same installed vendor directory. This runs the supplied app configuration/dependencies and the path-linked module in an isolated app root. The custom-prefix test edits the copied `.env` to `rolewarden.tablePrefix = "xx_"`; the default test removes that setting. The copied `.env` is restored byte-for-byte, then the temporary app and junction are removed. The original app `.env` is never modified. This is a disclosed difference from running directly in the sibling directory.
-
-The SQL checks inspect persisted records and database metadata, not PHP implementation. Metadata supplies required fixture display fields and identifies the self-referencing parent column because the spec does not name it. Expected outcomes are not inferred from those metadata values. Fixture DML runs inside rolled-back transactions. No resolver, Shield authorization integration or panel behavior was tested.
-
-## Results by requested point
-
-All schema/data checks below were run with both `acl_` and `xx_`.
-
-| Point | Result | Observed output / evidence |
+| Point | Result | Captured evidence |
 | --- | --- | --- |
-| 1. Default migrations | PASS | `PASS 1/2 acl_ exact five MVP tables`; `acl_roles`, `acl_permissions`, `acl_role_permissions`, `acl_user_roles`, `acl_user_permissions` exist. |
-| 2. Configurable prefix | PASS | `PASS 1/2 xx_ exact five MVP tables`; exactly the five `xx_` module tables, no `acl_` tables. Dotenv restoration passed. |
-| 3. Unique slugs | PASS | Duplicate role and permission inserts rejected with MariaDB error code `1062`. |
-| 4. Foreign keys | PASS | Physical user deletion removed both user bridges; permission deletion removed role/user permission bridges; role deletion removed role permission/user role bridges. Orphan bridge inserts rejected with `1452`. Parent deletion preserved the child with `parent_id=null`; no dangling parent references. |
-| 5. Soft-delete column | PASS | Setting `deleted_at` retained the role and its user-role and role-permission records. This tests schema support, not a future model's delete method. |
-| 6. User override | PASS for stated valid values and uniqueness | `granted=1` and `granted=0` persisted; a second row for the same user/permission with the opposite outcome was rejected with `1062`. Domain-enforcement ambiguity below. |
-| 7. Rollback and remigration | FAIL on fresh installation; PASS with preexisting Shield batches | Fresh `migrate --all` followed by the exact requested rollback left `["migrations"]`, deleting Shield too. Remigration passed for both prefixes. When Shield and Settings were migrated in earlier batches, rollback removed only RoleWarden and preserved their tables. |
-| 8. Seeder | PASS | Two runs produced identical rows and counts: `roles=3`, `permissions=12`, `role_permissions=12`, `user_roles=0`, `user_permissions=0`. Exact role flags, permission slugs, lowercase format and admin's exact permission set all passed. |
-| 9. Failure-path output | FAIL | Missing-table seed and unreachable-DB migration exposed database exceptions in both development and production. All four failed commands nevertheless returned process exit code `0`. |
+| 1. Five MVP tables | PASS | `PASS 1/2 acl_ exact five MVP tables`: roles, permissions, role_permissions, user_roles, user_permissions. |
+| 2. Configurable prefix | PASS | `PASS 1/2 xx_ exact five MVP tables`; no acl_ module tables. Default has no dotenv override; custom prefix uses the isolated dotenv. |
+| 3. Unique slugs | PASS | Role and permission duplicates rejected with `database_error_code:1062`. |
+| 4. Foreign keys | PASS | User, permission and role deletion each cascade to both relevant bridges; orphan inserts rejected with `1452`; parent FK exists and deletion leaves no dangling references. No stronger parent-delete semantics asserted. |
+| 5. Soft delete | PASS | `soft-delete timestamp preserves role and assignments`; `soft-deleted slug remains reserved` with error `1062`. Schema support tested, not a future model method. |
+| 6. Overrides | PASS | `granted=1 stored`, `denied=0 stored`; duplicate user/permission with opposite outcome rejected with `1062`. No binary-domain DB constraint assertion. |
+| 7. Rollback/remigration | PASS | Settings=1, Shield=2, RoleWarden=3. Forced and README-literal rollback both leave `module_migration_rows:0`, `framework_migration_rows_unchanged:true` and exactly the framework baseline tables. Both remigrations pass. |
+| 8. Seed | PASS | Exact counts `3/12/12/0/0`; full rows identical after second seed; exact roles, flags, permission slugs and admin assignments pass. |
+| 9. Module output | PASS in revised scope | All executed migration, rollback and seed commands pass `no SQL/query/secret output`; only ordinary framework progress and class names observed. Framework terminal failure diagnostics and exit code behavior are excluded. HTTP verification starts at M5. |
 
-Seeder role output, identical under both prefixes:
+Exact seed checked:
 
 ```text
 admin       is_system=1 is_super_admin=0 permissions=12
 super-admin is_system=1 is_super_admin=1 permissions=0
 user        is_system=1 is_super_admin=0 permissions=0
-```
-
-The exact permission set checked was:
-
-```text
 users.view users.create users.update users.delete users.activate
 roles.view roles.create roles.update roles.delete roles.assign
 permissions.view permissions.override
 ```
 
-## Defects and acceptance blockers
+## Literal README execution
 
-### D1: SQL/database internals are visible on CLI failure
+The runner extracts the four installation/seed command lines directly from README and executes their quoted text through PowerShell in the isolated app. It tests both `php spark migrate:rollback -b 2 -f` and the README command without `-f`, substituting the documented `<previous batch>` placeholder with observed batch `2` and supplying `y` on stdin. Original namespace quoting is retained. No namespace option is used for rollback.
 
-On an empty test database:
-
-```text
-$ php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder
-exit=0
-[CodeIgniter\Database\Exceptions\DatabaseException]
-Table 'rolewarden_test.acl_roles' doesn't exist
-at SYSTEMPATH\Database\BaseConnection.php:863
-...
-[mysqli_sql_exception]
-```
-
-Development additionally prints the SQL query and a stack trace containing module paths. Production still prints the table name, driver exception and framework file locations. With the database port set to the unreachable local port 1:
+After each rollback, `php spark migrate -n RoleWarden` recreates the five tables and five migration records. The preserved baseline is:
 
 ```text
-$ php spark migrate --all
-exit=0
-[CodeIgniter\Database\Exceptions\DatabaseException]
-Unable to connect to the database.
-Main connection [MySQLi]: ...
-at SYSTEMPATH\Database\BaseConnection.php:606
+auth_groups_users auth_identities auth_logins auth_permissions_users
+auth_remember_tokens auth_token_logins migrations settings users
 ```
 
-This violates the explicit rule against displaying SQL errors in any environment/path. The unreachable-DB failure occurs during framework migration setup; the black-box test does not assign its root cause to a module migration. The visible behavior still fails the requested acceptance criterion. HTTP error rendering was not tested.
+Assertions compare all framework migration rows with their pre-module snapshot, plus the table list. Settings is framework-owned. This fresh-install test does not certify preservation of arbitrary populated host-app data; that wider scenario belongs to M6.
 
-Related operational observation: exit code 0 on these failures makes a success-only shell check unreliable. The suite therefore inspects output and persisted state. Nonzero failure status was not separately specified, so this is reported as an observation, not an additional counted defect.
+## Residual defects and ambiguities
 
-### D2: The requested rollback command is not namespace-isolated
+No residual M1 defect observed. D2 is closed by the executable batch procedure. D1 is closed for M1 by the user's explicit scope decision, not by a change to framework diagnostics. Output checks cover the successful paths executed here; they are not source inspection or an HTTP security audit.
 
-Installed Spark help lists `-b` and `-f` for `migrate:rollback`; it does not list `-n`. The actual command acts on the last migration batch. Following a fresh `migrate --all`, Shield, Settings and RoleWarden share a batch, and output includes:
+None of the five previous M1 ambiguities remains open under the supplied decisions. Documentation synchronization remains: carry the decisions into the authoritative specification and re-export docs (HTTP error scope, rollback baseline, reserved deleted slugs, exact schema/seed contract). These files were outside the permitted write scope. Future checks: binary-domain validation in M2/M3, active-child deletion protection in M4, HTTP disclosure from M5.
+
+## Reproduction and safety
+
+With the existing database service available and rolewarden_test empty, set `RW_DB_PASSWORD` to the supplied local test password, then run from the repository:
+
+```powershell
+& .\tests\Integration\verify-m1.ps1 *> .\tests\Integration\m1-output.txt
+$LASTEXITCODE # 0
+```
+
+Optional connection settings: RW_DB_HOST, RW_DB_PORT, RW_DB_USER; the database is fixed to rolewarden_test. The launcher copies the sibling app into tests/Integration/.m1-app and junctions its installed vendor directory. Only the copied dotenv is edited. Fixture DML is rolled back and test-created tables removed. Nonempty databases are refused.
+
+Initial preflight found only rolewarden_test.migrations with zero rows; the runner refused it before migrations. After rechecking that exact state, only this empty table was removed to meet the requested empty starting condition. Docker engine access was denied by the environment; verification used the available host MySQL connection at 127.0.0.1:3306. No query or connection targeted rolewarden.
+
+Final output:
 
 ```text
-$ php spark migrate:rollback -n RoleWarden
-Rolling back migrations to batch:  0
-... (RoleWarden) ...
-... (CodeIgniter\Settings) ...
-... (CodeIgniter\Shield) ...CreateAuthTables
-FAIL 7 acl_ rollback leaves only original Shield tables and migrations
-{"tables":["migrations"],"module_migration_rows":0}
+PASS temporary app .env restored byte-for-byte
+PASS rolewarden_test restored to initial empty state
+RESULT 79 checks, 0 failures
+PASS safety sibling .env unchanged; temporary app removed
 ```
 
-The same failure occurs with `xx_`, including a second cycle after successful remigration. This is an acceptance-procedure defect with destructive consequences, not evidence that RoleWarden's down migrations directly delete Shield tables. No module residues remained.
-
-The supplemental existing-app setup created Shield batch 1, Settings batch 2, RoleWarden batch 3. The same rollback returned to batch 2 and preserved Shield and Settings for both prefixes. Thus M1 rollback works under that batch layout, but the proposed command does not guarantee isolation. The installation/rollback contract needs an explicit batch precondition or a separately agreed safe procedure; the failing fresh-install assertion has not been weakened to make it pass.
-
-## Specification ambiguities requiring an author decision
-
-1. **Rollback scope and baseline.** Define whether fresh installs and existing-app installs must both preserve Shield during module rollback, and document a supported procedure. `settings` is created by the framework Settings migrations during `--all` and remains alongside Shield in the existing-app case. The phrase "only Shield tables + migrations" should explicitly account for this dependency; it is not a RoleWarden leftover.
-2. **Binary override domain.** The tested database accepts `granted=2` under both prefixes. Valid 0/1 values and uniqueness pass, but the documents do not say whether values outside that domain must be rejected by the database in M1 or by a later write API. No interpretation was selected to declare this extra input valid. Decide the enforcement layer before adding a rejection assertion.
-3. **Parent deletion semantics.** The minimum requested invariant, no dangling references, passes. Physical deletion currently keeps the child with a null parent. The spec does not choose between detachment, rejection or cascading deletion, nor describe authorization semantics for a soft-deleted parent. No assertion imposes one of those choices.
-4. **Slug reuse after soft deletion.** Uniqueness of live duplicate fixtures is verified; the specification does not define whether a soft-deleted role reserves its slug. That extra behavior is not certified.
-5. **Schema/seed contract completeness.** The agreed role names, 12 permissions, super-admin column name and numeric override encoding are explicit in this verification request but are not fully enumerated in the allowed SPEC sections. They should be incorporated into the authoritative document before future independent verification. No documentation choice was silently made here.
-
-No source fix, spec rewrite or commit was made. The coordination lock was released and the findings were recorded in `_AI-LOG.md`.
+Only tests/Integration/ and _AI-LOG.md changed. No source fixes or commits. Approval covers M1 on the tested stack, not later MVP milestones or the full supported-version matrix.

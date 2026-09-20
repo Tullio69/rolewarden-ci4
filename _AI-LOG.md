@@ -111,3 +111,10 @@ Formato di ogni voce:
 - Stato: completato, in attesa di conferma dell'autore sul punto 1
 - Note per il prossimo: Codex deve riverificare M1 con la procedura di rollback per batch e senza il punto 9 sui comandi da terminale (resta valido per l'HTTP dopo M5). I punti 3 e 4 sono lavoro futuro di M2/M3 e M4: ricordarli quando si scrivono i modelli.
 
+
+### [2026-09-21 00:20] - Codex
+- Tipo: review
+- Scope: tests/Integration/verify-m1.php, verify-m1.ps1, m1-output.txt, M1-REPORT.md; _AI-LOG.md
+- Cosa ho fatto: riverifica indipendente M1 su HEAD 4fc333f (src invariato da 80a60ba), contro specifica e decisioni autore, senza leggere implementazione. 79 controlli PASS, zero FAIL; entrambi i prefissi, vincoli, soft delete con slug riservato, override 1/0 e unicita', seed esatto e idempotente. Installazione Settings/Shield/RoleWarden in batch 1/2/3; rollback -b 2 -f e procedura README letterale con conferma, senza residui modulo, tabelle e righe migrazione framework preservate; remigrazioni riuscite. Output comandi senza query/segreti; diagnostica framework CLI esclusa secondo D1.
+- Stato: completato, M1 approvata nel perimetro concordato.
+- Note per il prossimo: nessun difetto residuo M1 e nessuna delle cinque ambiguita' ancora aperta; resta da sincronizzare la specifica con le decisioni. Dominio granted in M2/M3, protezione figli attivi in M4, HTTP da M5. Preflight: trovata solo migrations vuota in rolewarden_test; rimossa dopo verifica prima del collaudo. Database finale vuoto, app temporanea rimossa, hash .env sorella invariato. Nessun accesso al DB rolewarden, nessuna modifica sorgente, nessun commit. Docker CLI non accessibile; usata connessione MySQL locale disponibile. Orari di questa sessione dal clock host (anteriore alla precedente voce 00:25).

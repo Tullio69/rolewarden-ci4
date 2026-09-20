@@ -63,14 +63,20 @@ $configure = static function (string $prefix, int $dbPort, string $environment =
     }
     file_put_contents($app . '/.env', $env . "\n");
 };
-$spark = static function (array $args) use ($app): array {
-    $process = proc_open([PHP_BINARY, 'spark', ...$args, '--no-header', '--no-ansi'], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $app);
+$spark = static function (array|string $args) use ($app, $check, $password): array {
+    $literal = is_string($args);
+    $command = $literal ? ['powershell', '-NoProfile', '-Command', $args] : [PHP_BINARY, 'spark', ...$args, '--no-header', '--no-ansi'];
+    $process = proc_open($command, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $app);
+    fwrite($pipes[0], "y\n");
+    fclose($pipes[0]);
     $out = stream_get_contents($pipes[1]);
     $err = stream_get_contents($pipes[2]);
     fclose($pipes[1]);
     fclose($pipes[2]);
     $code = proc_close($process);
-    echo "\n$ php spark " . implode(' ', $args) . "\nexit={$code}\n{$out}{$err}\n";
+    $label = $literal ? $args : 'php spark ' . implode(' ', $args);
+    echo "\n$ {$label}\nexit={$code}\n{$out}{$err}\n";
+    $check('9 successful command has no SQL/query/secret output', !preg_match('/SQLSTATE|mysqli_sql_exception|SELECT\s+.+\s+FROM|INSERT\s+INTO|CREATE\s+TABLE|DROP\s+TABLE|ALTER\s+TABLE|password\s*[=:]/is', $out . $err) && !str_contains($out . $err, $password));
     return [$code, $out . $err];
 };
 $scalar = static fn (string $sql): mixed => $db->query($sql)->fetch_row()[0];
@@ -98,28 +104,45 @@ $reject = static function (string $label, callable $operation, int $expectedCode
         $check($label, $e->getCode() === $expectedCode, ['database_error_code' => $e->getCode()]);
     }
 };
-$seed = ['db:seed', 'RoleWarden\\Database\\Seeds\\RoleWardenSeeder'];
-$sqlLeak = '/SQLSTATE|mysqli_sql_exception|BaseConnection\.php|Unknown database|Table [\'"].*doesn.t exist|SELECT\s+.+\s+FROM|INSERT INTO|Unable to connect to the database|MySQLi.*:/is';
-try {
-    $configure('', $port);
-    $spark(['help', 'migrate:rollback']);
-    foreach (['development', 'production'] as $environment) {
-        $configure('', $port, $environment);
-        [$code, $out] = $spark($seed);
-        $check("9 seed without migrations ({$environment}): no SQL disclosure", !preg_match($sqlLeak, $out));
-        $configure('', 1, $environment);
-        [$code, $out] = $spark(['migrate', '--all']);
-        $check("9 unreachable DB ({$environment}): no SQL disclosure", !preg_match($sqlLeak, $out));
+$clearTestDatabase = static function () use ($db, $tables): void {
+    if ($db->query('SELECT DATABASE()')->fetch_row()[0] !== 'rolewarden_test') {
+        throw new \RuntimeException('Unsafe cleanup database');
     }
+    $db->query('SET FOREIGN_KEY_CHECKS=0');
+    foreach ($tables() as $table) {
+        $db->query('DROP TABLE `' . str_replace('`', '``', $table) . '`');
+    }
+    $db->query('SET FOREIGN_KEY_CHECKS=1');
+};
+$readme = file_get_contents(dirname(__DIR__, 2) . '/README.md');
+preg_match_all('/^php spark .+$/m', substr($readme, strpos($readme, '## Installing and rolling back')), $matches);
+$commands = array_map('trim', $matches[0]);
+if (count($commands) !== 5 || !str_contains($commands[4], '<previous batch>')) {
+    throw new \RuntimeException('Review changed README procedure before running.');
+}
+try {
+    $check('safety connected only to rolewarden_test, initially empty', $scalar('SELECT DATABASE()') === 'rolewarden_test' && $tables() === []);
+    echo 'VERSIONS PHP ' . PHP_VERSION . ' MariaDB ' . $scalar('SELECT VERSION()') . PHP_EOL;
     foreach (['acl_', 'xx_'] as $prefix) {
+        $check("7 {$prefix} fresh database", $tables() === []);
         $configure($prefix === 'acl_' ? '' : $prefix, $port);
-        [$code] = $spark(['migrate', '--all']);
+        $spark($commands[0]);
+        $spark($commands[1]);
+        $baseline = $tables();
+        $frameworkRows = $db->query('SELECT * FROM migrations ORDER BY id')->fetch_all(MYSQLI_ASSOC);
+        [$code] = $spark($commands[2]);
+        $batches = $db->query('SELECT namespace,batch FROM migrations GROUP BY namespace,batch ORDER BY batch')->fetch_all(MYSQLI_ASSOC);
+        $check("7 {$prefix} Settings=1 Shield=2 RoleWarden=3", $batches == [
+            ['namespace'=>'CodeIgniter\\Settings','batch'=>1],
+            ['namespace'=>'CodeIgniter\\Shield','batch'=>2],
+            ['namespace'=>'RoleWarden','batch'=>3],
+        ], $batches);
         $expected = array_map(static fn ($name) => $prefix . $name, ['roles', 'permissions', 'role_permissions', 'user_roles', 'user_permissions']);
         $actual = $tables();
         $module = array_values(array_filter($actual, static fn ($name) => str_starts_with($name, 'acl_') || str_starts_with($name, 'xx_')));
         sort($expected);
         $check("1/2 {$prefix} exact five MVP tables", $code === 0 && $module === $expected, $actual);
-        $baseline = array_values(array_diff($actual, $expected));
+        $check("7 {$prefix} framework baseline includes Settings and Shield", in_array('settings', $baseline, true) && in_array('users', $baseline, true));
         echo 'OBSERVATION non-module tables (including framework Settings dependency): ' . json_encode($baseline) . PHP_EOL;
 
         $snapshot = static function () use ($db, $prefix): array {
@@ -131,13 +154,13 @@ try {
             }
             return $result;
         };
-        [$firstCode] = $spark($seed);
+        [$firstCode] = $spark($commands[3]);
         $first = $snapshot();
         sleep(1); // Detect accidental timestamp updates on a second seed.
-        [$secondCode] = $spark($seed);
+        [$secondCode] = $spark($commands[3]);
         $second = $snapshot();
-        $check("8 {$prefix} seed idempotent counts", $firstCode === 0 && $secondCode === 0 && array_map('count', $first) === array_map('count', $second), array_map('count', $second));
-        echo 'OBSERVATION seed identical rows: ' . ($first === $second ? 'yes' : 'no') . PHP_EOL;
+        $check("8 {$prefix} seed idempotent counts", $firstCode === 0 && $secondCode === 0 && array_map('count', $first) === ['roles'=>3,'permissions'=>12,'role_permissions'=>12,'user_roles'=>0,'user_permissions'=>0] && array_map('count', $first) === array_map('count', $second), array_map('count', $second));
+        $check("8 {$prefix} seed identical rows", $first === $second);
         $roles = $db->query("SELECT slug,is_system,is_super_admin FROM {$prefix}roles ORDER BY slug")->fetch_all(MYSQLI_ASSOC);
         $check("8 {$prefix} exact system roles and flags", $roles == [
             ['slug' => 'admin', 'is_system' => 1, 'is_super_admin' => 0],
@@ -167,15 +190,9 @@ try {
             $reject("6 {$prefix} unique user+permission with opposite outcome", static fn () => $insert($prefix.'user_permissions', ['user_id'=>$u,'permission_id'=>$p,'granted'=>0]), 1062);
             $db->query("UPDATE {$prefix}user_permissions SET granted=0 WHERE user_id={$u} AND permission_id={$p}");
             $check("6 {$prefix} denied=0 stored", (int)$scalar("SELECT granted FROM {$prefix}user_permissions WHERE user_id={$u} AND permission_id={$p}") === 0);
-            try {
-                $db->query("UPDATE {$prefix}user_permissions SET granted=2 WHERE user_id={$u} AND permission_id={$p}");
-                echo "OBSERVATION {$prefix} granted=2 accepted; spec must locate binary-domain enforcement.\n";
-            } catch (\mysqli_sql_exception $e) {
-                echo "OBSERVATION {$prefix} granted=2 rejected with code {$e->getCode()}.\n";
-            }
-            $db->query("UPDATE {$prefix}user_permissions SET granted=0 WHERE user_id={$u} AND permission_id={$p}");
             $db->query("UPDATE {$prefix}roles SET deleted_at=NOW() WHERE id={$r}");
             $check("5 {$prefix} soft-delete timestamp preserves role and assignments", (int)$scalar("SELECT COUNT(*) FROM {$prefix}roles WHERE id={$r} AND deleted_at IS NOT NULL") === 1 && (int)$scalar("SELECT COUNT(*) FROM {$prefix}user_roles WHERE role_id={$r}") === 1 && (int)$scalar("SELECT COUNT(*) FROM {$prefix}role_permissions WHERE role_id={$r}") === 1);
+            $reject("5 {$prefix} soft-deleted slug remains reserved", static fn () => $insert($prefix.'roles', ['slug'=>'m1-role']), 1062);
             $db->query("DELETE FROM users WHERE id={$u}");
             $check("4 {$prefix} hard user deletion cascades both bridges", (int)$scalar("SELECT COUNT(*) FROM {$prefix}user_roles WHERE user_id={$u}") === 0 && (int)$scalar("SELECT COUNT(*) FROM {$prefix}user_permissions WHERE user_id={$u}") === 0);
             $u = $insert('users', ['username'=>'m1-verification-2']);
@@ -203,39 +220,22 @@ try {
         } finally {
             $db->rollback();
         }
-        [$code] = $spark(['migrate:rollback', '-n', 'RoleWarden']);
-        $remainingMigrations = (int)$scalar("SELECT COUNT(*) FROM migrations WHERE namespace='RoleWarden'");
-        $check("7 {$prefix} rollback leaves only original Shield tables and migrations", $code === 0 && $tables() === $baseline && $remainingMigrations === 0, ['tables'=>$tables(),'module_migration_rows'=>$remainingMigrations]);
-        [$code] = $spark(['migrate', '--all']);
-        $check("7 {$prefix} remigration works", $code === 0 && array_diff($expected,$tables()) === []);
-        [$code] = $spark(['migrate:rollback', '-n', 'RoleWarden']);
-        $check("7 {$prefix} second rollback clean", $code === 0 && $tables() === $baseline);
-    }
-    // Additional installation topology: Shield exists in an earlier migration batch.
-    // Keep the fresh-install failures above; this does not replace their contract.
-    $configure('', $port);
-    $spark(['migrate', '-n', 'CodeIgniter\\Shield']);
-    $spark(['migrate', '-n', 'CodeIgniter\\Settings']);
-    $existingBaseline = $tables();
-    $check('supplemental existing Shield fixture ready', in_array('users', $existingBaseline, true));
-    foreach (['acl_', 'xx_'] as $prefix) {
-        $configure($prefix === 'acl_' ? '' : $prefix, $port);
-        $spark(['migrate', '--all']);
-        echo 'OBSERVATION migration batches: ' . json_encode($db->query('SELECT namespace,batch,COUNT(*) AS n FROM migrations GROUP BY namespace,batch ORDER BY batch,namespace')->fetch_all(MYSQLI_ASSOC)) . PHP_EOL;
-        [$code] = $spark(['migrate:rollback', '-n', 'RoleWarden']);
-        $check("7 supplemental {$prefix} rollback with preexisting Shield", $code === 0 && $tables() === $existingBaseline, $tables());
+        foreach (['forced', 'README literal'] as $rollbackMode) {
+            [$code] = $spark($rollbackMode === 'forced' ? ['migrate:rollback', '-b', '2', '-f'] : str_replace('<previous batch>', '2', $commands[4]));
+            $remainingMigrations = (int)$scalar("SELECT COUNT(*) FROM migrations WHERE namespace='RoleWarden'");
+            $rows = $db->query('SELECT * FROM migrations ORDER BY id')->fetch_all(MYSQLI_ASSOC);
+            $check("7 {$prefix} {$rollbackMode} rollback: no module residues; Shield and Settings intact", $code === 0 && $tables() === $baseline && $remainingMigrations === 0 && $rows === $frameworkRows, ['tables'=>$tables(),'module_migration_rows'=>$remainingMigrations,'framework_migration_rows_unchanged'=>$rows === $frameworkRows]);
+            [$code] = $spark($commands[2]);
+            $check("7 {$prefix} {$rollbackMode} remigration works", $code === 0 && array_diff($expected,$tables()) === [] && (int)$scalar("SELECT COUNT(*) FROM migrations WHERE namespace='RoleWarden'") === 5);
+        }
+        $clearTestDatabase();
     }
 } catch (\Throwable $e) {
     $check('verification execution completed', false, get_class($e) . ': ' . $e->getMessage());
 } finally {
     file_put_contents($app . '/.env', $originalEnv);
     $check('temporary app .env restored byte-for-byte', file_get_contents($app . '/.env') === $originalEnv);
-    // The database was empty on entry. Remove only the tables created during this run.
-    $db->query('SET FOREIGN_KEY_CHECKS=0');
-    foreach ($tables() as $table) {
-        $db->query('DROP TABLE `' . str_replace('`', '``', $table) . '`');
-    }
-    $db->query('SET FOREIGN_KEY_CHECKS=1');
+    $clearTestDatabase();
     $check('rolewarden_test restored to initial empty state', $tables() === []);
 }
 echo "\nRESULT {$checks} checks, {$failures} failures\n";

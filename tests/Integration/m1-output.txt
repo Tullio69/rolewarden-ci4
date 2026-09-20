@@ -1,0 +1,447 @@
+
+$ php spark help migrate:rollback
+exit=0
+
+Usage:
+  migrate:rollback [options]
+
+Description:
+  Runs the "down" method for all migrations in the last batch.
+
+Options:
+  -b  Specify a batch to roll back to; e.g. "3" to return to batch #3
+  -f  Force command - this option allows you to bypass the confirmation question when running this command in a production environment
+
+
+$ php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder
+exit=0
+
+[CodeIgniter\Database\Exceptions\DatabaseException]
+Table 'rolewarden_test.acl_roles' doesn't exist
+at SYSTEMPATH\Database\BaseConnection.php:863
+
+  Caused by:
+  [CodeIgniter\Database\Exceptions\DatabaseException]
+  Table 'rolewarden_test.acl_roles' doesn't exist
+  at SYSTEMPATH\Database\MySQLi\Connection.php:310
+
+  Caused by:
+  [mysqli_sql_exception]
+  Table 'rolewarden_test.acl_roles' doesn't exist
+  at SYSTEMPATH\Database\MySQLi\Connection.php:300
+
+Backtrace:
+  1    SYSTEMPATH\Database\MySQLi\Connection.php:300
+       mysqli()->query('SELECT COUNT(*) AS `numrows`
+FROM `acl_roles`
+WHERE `slug` = \'super-admin\'', 0)
+
+  2    SYSTEMPATH\Database\BaseConnection.php:908
+       CodeIgniter\Database\MySQLi\Connection()->execute('SELECT COUNT(*) AS `numrows`
+FROM `acl_roles`
+WHERE `slug` = \'super-admin\'')
+
+  3    SYSTEMPATH\Database\BaseConnection.php:825
+       CodeIgniter\Database\BaseConnection()->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `acl_roles`
+WHERE `slug` = \'super-admin\'')
+
+  4    SYSTEMPATH\Database\BaseBuilder.php:1743
+       CodeIgniter\Database\BaseConnection()->query('SELECT COUNT(*) AS `numrows`
+FROM `acl_roles`
+WHERE `slug` = :slug:', [...], false)
+
+  5    E:\progetti_lavoro\ASP\rolewarden-ci4\src\Database\Seeds\RoleWardenSeeder.php:95
+       CodeIgniter\Database\BaseBuilder()->countAllResults()
+
+  6    E:\progetti_lavoro\ASP\rolewarden-ci4\src\Database\Seeds\RoleWardenSeeder.php:53
+       RoleWarden\Database\Seeds\RoleWardenSeeder()->insertMissing('acl_roles', 'super-admin', [...])
+
+  7    SYSTEMPATH\Database\Seeder.php:155
+       RoleWarden\Database\Seeds\RoleWardenSeeder()->run()
+
+  8    SYSTEMPATH\Commands\Database\Seed.php:79
+       CodeIgniter\Database\Seeder()->call('RoleWarden\\Database\\Seeds\\RoleWardenSeeder')
+
+  9    SYSTEMPATH\CLI\Commands.php:72
+       CodeIgniter\Commands\Database\Seed()->run([...])
+
+ 10    SYSTEMPATH\CLI\Console.php:47
+       CodeIgniter\CLI\Commands()->run('db:seed', [...])
+
+ 11    SYSTEMPATH\Boot.php:444
+       CodeIgniter\CLI\Console()->run()
+
+ 12    SYSTEMPATH\Boot.php:166
+       CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+
+ 13    ROOTPATH\spark:87
+       CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+
+
+FAIL 9 seed without migrations (development): no SQL disclosure
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+[CodeIgniter\Database\Exceptions\DatabaseException]
+Unable to connect to the database.
+Main connection [MySQLi]: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione
+at SYSTEMPATH\Database\BaseConnection.php:606
+
+Backtrace:
+  1    SYSTEMPATH\Database\BaseConnection.php:795
+       CodeIgniter\Database\BaseConnection()->initialize()
+
+  2    SYSTEMPATH\Database\BaseConnection.php:1706
+       CodeIgniter\Database\BaseConnection()->query('SHOW TABLES FROM `rolewarden_test`')
+
+  3    SYSTEMPATH\Database\BaseConnection.php:1726
+       CodeIgniter\Database\BaseConnection()->listTables()
+
+  4    SYSTEMPATH\Database\MigrationRunner.php:821
+       CodeIgniter\Database\BaseConnection()->tableExists('migrations')
+
+  5    SYSTEMPATH\Database\MigrationRunner.php:173
+       CodeIgniter\Database\MigrationRunner()->ensureTable()
+
+  6    SYSTEMPATH\Commands\Database\Migrate.php:89
+       CodeIgniter\Database\MigrationRunner()->latest(null)
+
+  7    SYSTEMPATH\CLI\SignalTrait.php:245
+       CodeIgniter\Commands\Database\Migrate::CodeIgniter\Commands\Database\{closure}()
+
+  8    SYSTEMPATH\Commands\Database\Migrate.php:88
+       CodeIgniter\Commands\Database\Migrate()->withSignalsBlocked(Object(Closure))
+
+  9    SYSTEMPATH\CLI\Commands.php:72
+       CodeIgniter\Commands\Database\Migrate()->run([...])
+
+ 10    SYSTEMPATH\CLI\Console.php:47
+       CodeIgniter\CLI\Commands()->run('migrate', [...])
+
+ 11    SYSTEMPATH\Boot.php:444
+       CodeIgniter\CLI\Console()->run()
+
+ 12    SYSTEMPATH\Boot.php:166
+       CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+
+ 13    ROOTPATH\spark:87
+       CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+
+
+FAIL 9 unreachable DB (development): no SQL disclosure
+
+$ php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder
+exit=0
+
+[CodeIgniter\Database\Exceptions\DatabaseException]
+Table 'rolewarden_test.acl_roles' doesn't exist
+at SYSTEMPATH\Database\BaseConnection.php:863
+
+  Caused by:
+  [CodeIgniter\Database\Exceptions\DatabaseException]
+  Table 'rolewarden_test.acl_roles' doesn't exist
+  at SYSTEMPATH\Database\MySQLi\Connection.php:310
+
+  Caused by:
+  [mysqli_sql_exception]
+  Table 'rolewarden_test.acl_roles' doesn't exist
+  at SYSTEMPATH\Database\MySQLi\Connection.php:300
+
+
+FAIL 9 seed without migrations (production): no SQL disclosure
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+[CodeIgniter\Database\Exceptions\DatabaseException]
+Unable to connect to the database.
+Main connection [MySQLi]: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione
+at SYSTEMPATH\Database\BaseConnection.php:606
+
+
+FAIL 9 unreachable DB (production): no SQL disclosure
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+	Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+	Running: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+Migrations complete.
+
+PASS 1/2 acl_ exact five MVP tables | ["acl_permissions","acl_role_permissions","acl_roles","acl_user_permissions","acl_user_roles","auth_groups_users","auth_identities","auth_logins","auth_permissions_users","auth_remember_tokens","auth_token_logins","migrations","settings","users"]
+OBSERVATION non-module tables (including framework Settings dependency): ["auth_groups_users","auth_identities","auth_logins","auth_permissions_users","auth_remember_tokens","auth_token_logins","migrations","settings","users"]
+
+$ php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder
+exit=0
+
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+
+
+$ php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder
+exit=0
+
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+
+PASS 8 acl_ seed idempotent counts | {"roles":3,"permissions":12,"role_permissions":12,"user_roles":0,"user_permissions":0}
+OBSERVATION seed identical rows: yes
+PASS 8 acl_ exact system roles and flags | [{"slug":"admin","is_system":"1","is_super_admin":"0"},{"slug":"super-admin","is_system":"1","is_super_admin":"1"},{"slug":"user","is_system":"1","is_super_admin":"0"}]
+PASS 8 acl_ exact 12 system permissions and lowercase format | [{"slug":"permissions.override","is_system":"1"},{"slug":"permissions.view","is_system":"1"},{"slug":"roles.assign","is_system":"1"},{"slug":"roles.create","is_system":"1"},{"slug":"roles.delete","is_system":"1"},{"slug":"roles.update","is_system":"1"},{"slug":"roles.view","is_system":"1"},{"slug":"users.activate","is_system":"1"},{"slug":"users.create","is_system":"1"},{"slug":"users.delete","is_system":"1"},{"slug":"users.update","is_system":"1"},{"slug":"users.view","is_system":"1"}]
+PASS 8 acl_ admin=12, super-admin=user=0 | [{"slug":"admin","n":"12"},{"slug":"super-admin","n":"0"},{"slug":"user","n":"0"}]
+PASS 8 acl_ admin receives exactly the agreed permission set
+PASS 3 acl_ unique role slug | {"database_error_code":1062}
+PASS 3 acl_ unique permission slug | {"database_error_code":1062}
+PASS 6 acl_ granted=1 stored
+PASS 6 acl_ unique user+permission with opposite outcome | {"database_error_code":1062}
+PASS 6 acl_ denied=0 stored
+OBSERVATION acl_ granted=2 accepted; spec must locate binary-domain enforcement.
+PASS 5 acl_ soft-delete timestamp preserves role and assignments
+PASS 4 acl_ hard user deletion cascades both bridges
+PASS 4 acl_ permission deletion cascades both bridges
+PASS 4 acl_ parent role FK exists | [{"COLUMN_NAME":"parent_id"}]
+PASS 4 acl_ role deletion cascades both bridges
+PASS 4 acl_ deleted parent leaves no dangling reference
+OBSERVATION child after hard parent deletion: [{"id":"6","parent_id":null}]
+PASS 4 acl_user_roles rejects orphan row | {"database_error_code":1452}
+PASS 4 acl_user_permissions rejects orphan row | {"database_error_code":1452}
+PASS 4 acl_role_permissions rejects orphan row | {"database_error_code":1452}
+
+$ php spark migrate:rollback -n RoleWarden
+exit=0
+
+Rolling back migrations to batch:  0
+	Rolling back: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Rolling back: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Rolling back: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Rolling back: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Rolling back: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Rolling back: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Rolling back: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+Done rolling back migrations.
+
+FAIL 7 acl_ rollback leaves only original Shield tables and migrations | {"tables":["migrations"],"module_migration_rows":0}
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+	Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+	Running: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+Migrations complete.
+
+PASS 7 acl_ remigration works
+
+$ php spark migrate:rollback -n RoleWarden
+exit=0
+
+Rolling back migrations to batch:  0
+	Rolling back: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Rolling back: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Rolling back: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Rolling back: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Rolling back: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Rolling back: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Rolling back: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+Done rolling back migrations.
+
+FAIL 7 acl_ second rollback clean
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+	Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+	Running: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+Migrations complete.
+
+PASS 1/2 xx_ exact five MVP tables | ["auth_groups_users","auth_identities","auth_logins","auth_permissions_users","auth_remember_tokens","auth_token_logins","migrations","settings","users","xx_permissions","xx_role_permissions","xx_roles","xx_user_permissions","xx_user_roles"]
+OBSERVATION non-module tables (including framework Settings dependency): ["auth_groups_users","auth_identities","auth_logins","auth_permissions_users","auth_remember_tokens","auth_token_logins","migrations","settings","users"]
+
+$ php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder
+exit=0
+
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+
+
+$ php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder
+exit=0
+
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+
+PASS 8 xx_ seed idempotent counts | {"roles":3,"permissions":12,"role_permissions":12,"user_roles":0,"user_permissions":0}
+OBSERVATION seed identical rows: yes
+PASS 8 xx_ exact system roles and flags | [{"slug":"admin","is_system":"1","is_super_admin":"0"},{"slug":"super-admin","is_system":"1","is_super_admin":"1"},{"slug":"user","is_system":"1","is_super_admin":"0"}]
+PASS 8 xx_ exact 12 system permissions and lowercase format | [{"slug":"permissions.override","is_system":"1"},{"slug":"permissions.view","is_system":"1"},{"slug":"roles.assign","is_system":"1"},{"slug":"roles.create","is_system":"1"},{"slug":"roles.delete","is_system":"1"},{"slug":"roles.update","is_system":"1"},{"slug":"roles.view","is_system":"1"},{"slug":"users.activate","is_system":"1"},{"slug":"users.create","is_system":"1"},{"slug":"users.delete","is_system":"1"},{"slug":"users.update","is_system":"1"},{"slug":"users.view","is_system":"1"}]
+PASS 8 xx_ admin=12, super-admin=user=0 | [{"slug":"admin","n":"12"},{"slug":"super-admin","n":"0"},{"slug":"user","n":"0"}]
+PASS 8 xx_ admin receives exactly the agreed permission set
+PASS 3 xx_ unique role slug | {"database_error_code":1062}
+PASS 3 xx_ unique permission slug | {"database_error_code":1062}
+PASS 6 xx_ granted=1 stored
+PASS 6 xx_ unique user+permission with opposite outcome | {"database_error_code":1062}
+PASS 6 xx_ denied=0 stored
+OBSERVATION xx_ granted=2 accepted; spec must locate binary-domain enforcement.
+PASS 5 xx_ soft-delete timestamp preserves role and assignments
+PASS 4 xx_ hard user deletion cascades both bridges
+PASS 4 xx_ permission deletion cascades both bridges
+PASS 4 xx_ parent role FK exists | [{"COLUMN_NAME":"parent_id"}]
+PASS 4 xx_ role deletion cascades both bridges
+PASS 4 xx_ deleted parent leaves no dangling reference
+OBSERVATION child after hard parent deletion: [{"id":"6","parent_id":null}]
+PASS 4 xx_user_roles rejects orphan row | {"database_error_code":1452}
+PASS 4 xx_user_permissions rejects orphan row | {"database_error_code":1452}
+PASS 4 xx_role_permissions rejects orphan row | {"database_error_code":1452}
+
+$ php spark migrate:rollback -n RoleWarden
+exit=0
+
+Rolling back migrations to batch:  0
+	Rolling back: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Rolling back: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Rolling back: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Rolling back: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Rolling back: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Rolling back: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Rolling back: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+Done rolling back migrations.
+
+FAIL 7 xx_ rollback leaves only original Shield tables and migrations | {"tables":["migrations"],"module_migration_rows":0}
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+	Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+	Running: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+Migrations complete.
+
+PASS 7 xx_ remigration works
+
+$ php spark migrate:rollback -n RoleWarden
+exit=0
+
+Rolling back migrations to batch:  0
+	Rolling back: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Rolling back: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Rolling back: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Rolling back: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Rolling back: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Rolling back: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Rolling back: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+Done rolling back migrations.
+
+FAIL 7 xx_ second rollback clean
+
+$ php spark migrate -n CodeIgniter\Shield
+exit=0
+
+Running all new migrations...
+	Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+Migrations complete.
+
+
+$ php spark migrate -n CodeIgniter\Settings
+exit=0
+
+Running all new migrations...
+	Running: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+Migrations complete.
+
+PASS supplemental existing Shield fixture ready
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+Migrations complete.
+
+OBSERVATION migration batches: [{"namespace":"CodeIgniter\\Shield","batch":"1","n":"1"},{"namespace":"CodeIgniter\\Settings","batch":"2","n":"3"},{"namespace":"RoleWarden","batch":"3","n":"5"}]
+
+$ php spark migrate:rollback -n RoleWarden
+exit=0
+
+Rolling back migrations to batch:  2
+	Rolling back: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Rolling back: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Rolling back: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+Done rolling back migrations.
+
+PASS 7 supplemental acl_ rollback with preexisting Shield | ["auth_groups_users","auth_identities","auth_logins","auth_permissions_users","auth_remember_tokens","auth_token_logins","migrations","settings","users"]
+
+$ php spark migrate --all
+exit=0
+
+Running all new migrations...
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+Migrations complete.
+
+OBSERVATION migration batches: [{"namespace":"CodeIgniter\\Shield","batch":"1","n":"1"},{"namespace":"CodeIgniter\\Settings","batch":"2","n":"3"},{"namespace":"RoleWarden","batch":"3","n":"5"}]
+
+$ php spark migrate:rollback -n RoleWarden
+exit=0
+
+Rolling back migrations to batch:  2
+	Rolling back: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Rolling back: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Rolling back: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+Done rolling back migrations.
+
+PASS 7 supplemental xx_ rollback with preexisting Shield | ["auth_groups_users","auth_identities","auth_logins","auth_permissions_users","auth_remember_tokens","auth_token_logins","migrations","settings","users"]
+PASS temporary app .env restored byte-for-byte
+PASS rolewarden_test restored to initial empty state
+
+RESULT 55 checks, 8 failures

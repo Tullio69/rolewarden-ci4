@@ -66,6 +66,31 @@ faster to rebuild than to repair.
 
 Credentials here are deliberately trivial: this stack is local only and never exposed.
 
+## Installing and rolling back the migrations
+
+Migrations are grouped in batches, and `migrate:rollback` undoes whole batches: it does
+not filter by namespace (`-n` is ignored for that purpose). `php spark migrate --all` on a
+fresh database puts Shield, the framework's Settings and RoleWarden in the same batch, so
+a rollback would remove Shield too. To keep the module removable on its own, install in
+separate steps:
+
+```
+php spark migrate -n 'CodeIgniter\Settings'
+php spark migrate -n 'CodeIgniter\Shield'
+php spark migrate -n RoleWarden
+php spark db:seed 'RoleWarden\Database\Seeds\RoleWardenSeeder'
+```
+
+On an application that already has Shield migrated, `php spark migrate -n RoleWarden`
+creates a batch of its own. Check the batch numbers in the `migrations` table, then roll
+back to the batch just before RoleWarden's:
+
+```
+php spark migrate:rollback -b <previous batch>
+```
+
+`-b 0` rolls back everything, Shield included.
+
 ## Conventions
 
 - Table prefix `acl_`, configurable, deliberately distinct from Shield's `auth_`

@@ -1,0 +1,14 @@
+parameters:
+    phpVersion: 80300
+    level: 5
+    paths:
+        - src
+        - tests
+    scanDirectories:
+        - vendor/codeigniter4/framework/system
+        - vendor/codeigniter4/shield/src
+    excludePaths:
+        analyseAndScan:
+            - src/Views/*
+            - src/Language/*
+    treatPhpDocTypesAsCertain: false

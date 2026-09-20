@@ -1,0 +1,18 @@
+/vendor/
+composer.lock
+
+# Tooling caches
+phpstan.neon
+.php-cs-fixer.php
+.phpunit.cache/
+.phpunit.result.cache
+/build/
+.php-cs-fixer.cache
+/node_modules/
+
+# Environment and local files
+.env
+*.log
+
+# IDE
+/.idea/

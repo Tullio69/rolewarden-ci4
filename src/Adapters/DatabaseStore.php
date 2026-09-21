@@ -24,7 +24,7 @@ class DatabaseStore implements AuthorizationStore
 
     public function isActive(int $userId): bool
     {
-        $row = $this->db->table('users')->select('active')->where('id', $userId)->get()->getRowArray();
+        $row = $this->db->table(config('Auth')->tables['users'])->select('active')->where('id', $userId)->get()->getRowArray();
 
         return $row !== null && (int) $row['active'] === 1;
     }

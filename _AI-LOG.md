@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** M3 Aggancio Shield
+**Agente:** Claude
+**Dalle:** 2026-09-21 22:05
+**Scope:** `src/Adapters/`, `src/Entities/`, `src/Models/`, `src/Filters/`, `src/Helpers/`, `src/Language/`, `src/Config/` (Services, Registrar), `tests/Integration/`
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 

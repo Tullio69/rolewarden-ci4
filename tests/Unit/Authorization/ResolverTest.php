@@ -133,7 +133,25 @@ final class ResolverTest extends TestCase
      */
     public static function badSlugs(): array
     {
-        return [[''], ['users'], ['Users.View'], ['users.*'], ['*'], ['users.view.all'], ['users. view']];
+        return [[''], ['users'], ['Users.View'], ['users.*'], ['*'], ['users.view.all'], ['users. view'], ['users.view
+']];
+    }
+
+    public function testTrailingNewlineCannotBypassNegativeOverride(): void
+    {
+        $this->role(1, [], null, true);
+        $this->user(1, [1], ['users.view' => false]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->resolver->can(1, 'users.view
+');
+    }
+
+    public function testListsValidateEverySlugBeforeAnswering(): void
+    {
+        $this->role(1, ['a.one']);
+        $this->user(1, [1]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->resolver->canAny(1, ['a.one', 'a.*']);
     }
 
     public function testCacheAvoidsSecondReadAndForgetUserAppliesRevocation(): void

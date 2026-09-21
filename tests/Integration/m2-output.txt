@@ -1,0 +1,101 @@
+PASS precedence [false,null,false,false]
+PASS precedence [false,null,false,true]
+PASS precedence [false,null,true,false]
+PASS precedence [false,null,true,true]
+PASS precedence [false,false,false,false]
+PASS precedence [false,false,false,true]
+PASS precedence [false,false,true,false]
+PASS precedence [false,false,true,true]
+PASS precedence [false,true,false,false]
+PASS precedence [false,true,false,true]
+PASS precedence [false,true,true,false]
+PASS precedence [false,true,true,true]
+PASS precedence [true,null,false,false]
+PASS precedence [true,null,false,true]
+PASS precedence [true,null,true,false]
+PASS precedence [true,null,true,true]
+PASS precedence [true,false,false,false]
+PASS precedence [true,false,false,true]
+PASS precedence [true,false,true,false]
+PASS precedence [true,false,true,true]
+PASS precedence [true,true,false,false]
+PASS precedence [true,true,false,true]
+PASS precedence [true,true,true,false]
+PASS precedence [true,true,true,true]
+PASS hierarchy union and duplicates [30]
+PASS hierarchy union and duplicates [30,30]
+PASS hierarchy union and duplicates [30,20]
+PASS hierarchy union and duplicates [20,30]
+PASS hierarchy union and duplicates [10,20,30]
+PASS hierarchy union and duplicates [30,20,10]
+PASS direct super admin also ancestor [20,10]
+PASS direct super admin also ancestor [10,20]
+PASS direct super admin also ancestor [20,20,10]
+PASS direct super admin also ancestor [10,10,20]
+PASS child cannot revoke parent by omitting permission
+PASS resolved permissions include grants and remove user denials
+PASS unknown or nonpositive user fails closed 999
+PASS unknown or nonpositive user fails closed 0
+PASS unknown or nonpositive user fails closed -1
+PASS unknown or nonpositive user fails closed -9223372036854775808
+PASS unknown or nonpositive user fails closed 9223372036854775807
+PASS malformed verification rejected ""
+PASS malformed verification rejected "*"
+PASS malformed verification rejected "users.*"
+PASS malformed verification rejected "*.view"
+PASS malformed verification rejected "users"
+PASS malformed verification rejected ".view"
+PASS malformed verification rejected "users."
+PASS malformed verification rejected "Users.view"
+PASS malformed verification rejected "users.View"
+PASS malformed verification rejected "users.view.extra"
+PASS malformed verification rejected " users.view"
+PASS malformed verification rejected "users.view "
+FAIL malformed verification rejected "users.view\n" — RuntimeException: expected false, got true
+PASS malformed verification rejected "users.view\u0000"
+PASS malformed verification rejected "users\/view"
+PASS malformed verification rejected "users..view"
+PASS malformed verification rejected "42"
+PASS canAny ["users.view"]
+PASS canAny ["users.delete"]
+PASS canAny ["users.view","users.delete"]
+PASS canAny ["users.delete","users.view"]
+PASS canAny ["users.view","users.view"]
+PASS canAny wildcard alone cannot authorize
+PASS canAll ["users.view"]
+PASS canAll ["users.delete"]
+PASS canAll ["users.view","users.delete"]
+PASS canAll ["users.delete","users.view"]
+PASS canAll ["users.view","users.view"]
+PASS canAll wildcard alone cannot authorize
+PASS soft deleted ordinary grants nothing
+PASS soft deleted super grants nothing
+PASS soft deleted parent grants nothing
+PASS missing assigned role grants nothing
+PASS cache reused across methods and resolver instances
+PASS revocation next request forgetUser/override
+PASS revocation next request forgetUser/permission
+PASS revocation next request forgetUser/assignment
+PASS revocation next request forgetUser/deactivation
+PASS revocation next request forgetUser/super
+PASS revocation next request forgetUser/soft-delete
+PASS revocation next request forgetUsers/override
+PASS revocation next request forgetUsers/permission
+PASS revocation next request forgetUsers/assignment
+PASS revocation next request forgetUsers/deactivation
+PASS revocation next request forgetUsers/super
+PASS revocation next request forgetUsers/soft-delete
+PASS revocation next request forgetRole/override
+PASS revocation next request forgetRole/permission
+PASS revocation next request forgetRole/deactivation
+PASS revocation next request forgetRole/super
+PASS revocation next request forgetRole/soft-delete
+PASS forgetRole invalidates parent child grandchild and preserves outsiders
+PASS forgetUsers revokes all listed users only
+PASS new grant after cached default denial
+FAIL trailing LF cannot bypass user denial via can — RuntimeException: expected false, got true
+FAIL trailing LF cannot bypass user denial via canAny — RuntimeException: expected false, got true
+FAIL trailing LF cannot bypass user denial via canAll — RuntimeException: expected false, got true
+FAIL trailing LF cannot bypass user denial via authorize — RuntimeException: authorize did not throw
+PASS framework boundary grep (only known contract comment permitted)
+100 controls; 95 PASS; 5 FAIL

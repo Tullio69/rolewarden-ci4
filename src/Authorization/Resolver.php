@@ -17,7 +17,8 @@ use RoleWarden\Authorization\Contracts\Cache;
  */
 class Resolver
 {
-    private const SLUG = '/^[a-z][a-z0-9_-]*\.[a-z][a-z0-9_-]*$/';
+    // \z, not $: $ also matches before a trailing newline, which would slip past a stored slug.
+    private const SLUG = '/^[a-z][a-z0-9_-]*\.[a-z][a-z0-9_-]*\z/';
 
     public function __construct(
         private readonly AuthorizationStore $store,
@@ -27,13 +28,7 @@ class Resolver
 
     public function can(int $userId, string $permission): bool
     {
-        if (preg_match(self::SLUG, $permission) !== 1) {
-            throw new InvalidArgumentException(sprintf(
-                'Invalid permission "%s": use the "area.action" format in lowercase, and no wildcards when checking.',
-                $permission,
-            ));
-        }
-
+        $this->assertSlug($permission);
         $s = $this->snapshot($userId);
 
         if (! $s['active'] || in_array($permission, $s['denied'], true)) {
@@ -52,6 +47,8 @@ class Resolver
      */
     public function canAny(int $userId, array $permissions): bool
     {
+        array_map($this->assertSlug(...), $permissions);
+
         foreach ($permissions as $permission) {
             if ($this->can($userId, $permission)) {
                 return true;
@@ -68,6 +65,8 @@ class Resolver
      */
     public function canAll(int $userId, array $permissions): bool
     {
+        array_map($this->assertSlug(...), $permissions);
+
         foreach ($permissions as $permission) {
             if (! $this->can($userId, $permission)) {
                 return false;
@@ -137,6 +136,16 @@ class Resolver
             $seen[$id] = true;
             $this->forgetUsers($this->store->userIdsWithRole($id));
             array_push($queue, ...$this->store->childRoleIds($id));
+        }
+    }
+
+    private function assertSlug(string $permission): void
+    {
+        if (preg_match(self::SLUG, $permission) !== 1) {
+            throw new InvalidArgumentException(sprintf(
+                'Invalid permission "%s": use the "area.action" format in lowercase, and no wildcards when checking.',
+                $permission,
+            ));
         }
     }
 

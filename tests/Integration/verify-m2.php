@@ -233,13 +233,83 @@ foreach (['can', 'canAny', 'canAll', 'authorize'] as $method) {
         else { denied(fn () => $r->$method(1, $method === 'can' ? "users.view\n" : ["users.view\n"])); }
     });
 }
-check('framework boundary grep (only known contract comment permitted)', function (): void {
-    $output = []; $exit = 0;
-    exec('rg -n -i --glob "*.php" "CodeIgniter|Shield" ' . escapeshellarg(dirname(__DIR__, 2) . '/src/Authorization') . ' 2>&1', $output, $exit);
-    if (!in_array($exit, [0, 1], true)) { throw new RuntimeException('rg failed: ' . implode(' ', $output)); }
-    $unexpected = array_values(array_filter($output, static fn ($line) => !str_ends_with(str_replace('\\', '/', $line), '/Contracts/AuthorizationStore.php:9: * arrives with the Shield integration; the resolver only knows this contract.')));
+check('framework boundary scan in pure PHP (only known contract comment permitted)', function (): void {
+    // Mechanical name scan only: never display implementation text or inspect its logic.
+    $root = dirname(__DIR__, 2) . '/src/Authorization';
+    $unexpected = []; $files = 0;
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS)) as $file) {
+        if ($file->getExtension() !== 'php') { continue; }
+        $files++;
+        foreach (file($file->getPathname()) as $number => $line) {
+            if (!preg_match('/CodeIgniter|Shield/i', $line)) { continue; }
+            $relative = str_replace('\\', '/', substr($file->getPathname(), strlen($root) + 1));
+            if ($relative === 'Contracts/AuthorizationStore.php' && trim($line) === '* arrives with the Shield integration; the resolver only knows this contract.') { continue; }
+            $unexpected[] = $relative . ':' . ($number + 1);
+        }
+    }
+    same($files > 0, true);
     same($unexpected, []);
 });
+
+$baselineResults = count($results);
+
+// D1 variants: forbidden bytes at the beginning, middle and end of a slug.
+$malformed = [];
+foreach (array_merge(range(0, 31), range(127, 159)) as $byte) {
+    $malformed[sprintf('raw byte %02X', $byte)] = chr($byte);
+}
+foreach ([0x85, 0xA0, 0x1680, 0x180E, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006, 0x2007, 0x2008, 0x2009, 0x200A, 0x200B, 0x2028, 0x2029, 0x202F, 0x205F, 0x2060, 0x3000, 0xFEFF] as $codepoint) {
+    $malformed[sprintf('Unicode U+%04X', $codepoint)] = json_decode(sprintf('"\\u%04x"', $codepoint), true, 512, JSON_THROW_ON_ERROR);
+}
+$malformed += [
+    'CRLF' => "\r\n", 'double LF' => "\n\n", 'ASCII space' => ' ',
+    'invalid UTF-8 FF' => "\xFF", 'invalid UTF-8 truncated' => "\xE2\x80",
+    'invalid UTF-8 overlong LF' => "\xC0\x8A", 'invalid UTF-8 surrogate' => "\xED\xA0\x80",
+    'invalid UTF-8 above Unicode range' => "\xF4\x90\x80\x80",
+];
+$slugVariants = [];
+foreach ($malformed as $label => $bytes) {
+    $slugVariants[$label] = [$bytes . 'users.view', 'users.' . $bytes . 'view', 'users.view' . $bytes];
+}
+$slugVariants['wildcard'] = ['users.*'];
+foreach ([4096, 65536, 1048576] as $length) {
+    $base = 'users.' . str_repeat('a', $length);
+    $slugVariants['long action ' . $length . ' with forbidden suffix'] = [$base . "\n", $base . "\r", $base . "\xFF", $base . "\u{2028}"];
+}
+foreach ($slugVariants as $label => $variants) {
+    foreach (['can', 'canAny', 'canAll', 'authorize'] as $method) {
+        check('D1 variant ' . $label . ' via ' . $method, function () use ($variants, $method): void {
+            [$s, , $r] = fixture(); $s->roles[10] = role([], null, true); $s->assignments[1] = [10];
+            $s->overrides[1] = ['users.view' => false];
+            same($r->can(1, 'users.view'), false);
+            foreach ($variants as $slug) {
+                if ($method === 'authorize') { authorizationDenied($r, 1, $slug); }
+                else { denied(fn () => $r->$method(1, $method === 'can' ? $slug : [$slug])); }
+            }
+        });
+    }
+    foreach (['canAny', 'canAll'] as $method) {
+        check('full mixed-list validation ' . $label . ' via ' . $method, function () use ($variants, $method): void {
+            foreach (['ordinary', 'super', 'inactive'] as $state) {
+                [$s, , $r] = fixture(); $s->active[1] = $state !== 'inactive';
+                $s->roles[10] = role([], null, $state === 'super'); $s->assignments[1] = [10];
+                $s->overrides[1] = ['users.view' => false, 'users.create' => true];
+                foreach ($variants as $slug) {
+                    foreach (['users.create', 'users.view'] as $valid) {
+                        foreach ([[$slug, $valid, $valid], [$valid, $slug, $valid], [$valid, $valid, $slug]] as $list) {
+                            // A false short-circuit alone cannot prove that the malformed member was validated.
+                            try { $r->$method(1, $list); }
+                            catch (InvalidArgumentException) { continue; }
+                            throw new RuntimeException('malformed list member not reported: ' . $state);
+                        }
+                    }
+                }
+                same($r->can(1, 'users.view'), false);
+                same($r->can(1, 'users.create'), $state !== 'inactive');
+            }
+        });
+    }
+}
 
 // Observations without invented acceptance criteria.
 $observations = [];
@@ -260,24 +330,47 @@ observe('Super flag inherited without direct assignment', function (): bool {
 observe('Wildcard received from store: role grant', function (): array {
     [$s, , $r] = fixture(); $s->roles[10] = role(['users.*']); $s->assignments[1] = [10]; return [$r->can(1, 'users.view'), $r->permissions(1)];
 });
-foreach ([['users.view', 'users.*'], ['users.*', 'users.view']] as $slugs) {
-    observe('Mixed valid/wildcard canAny ' . json_encode($slugs), function () use ($slugs): bool {
-        [$s, , $r] = fixture(); $s->overrides[1] = ['users.view' => true]; return $r->canAny(1, $slugs);
-    });
-}
 observe('Store declares zero and negative identifiers active', function (): array {
     [$s, , $r] = fixture(); $s->active[0] = $s->active[-1] = true; $s->overrides[0] = $s->overrides[-1] = ['users.view' => true]; return [$r->can(0, 'users.view'), $r->can(-1, 'users.view')];
 });
 observe('Role unassigned before forgetRole', function (): bool {
     [$s, $c, $r] = fixture(); $s->roles[10] = role(['users.view']); $s->assignments[1] = [10]; $r->can(1, 'users.view'); $s->assignments[1] = []; $r->forgetRole(10); return (new Resolver($s, $c))->can(1, 'users.view');
 });
+observe('Super-admin permissions enumeration', function (): array {
+    [$s, , $r] = fixture(); $s->roles[10] = role(['users.view'], null, true); $s->assignments[1] = [10];
+    return [$r->permissions(1), $r->can(1, 'unknown.action')];
+});
+foreach ([4096, 65536, 1048576] as $length) {
+    foreach (['can', 'canAny', 'canAll', 'authorize'] as $method) {
+        observe('Long alphabetic slug, action bytes ' . $length . ' via ' . $method, function () use ($length, $method): mixed {
+            [$s, , $r] = fixture(); $s->roles[10] = role([], null, true); $s->assignments[1] = [10];
+            $slug = 'users.' . str_repeat('a', $length);
+            return $r->$method(1, in_array($method, ['canAny', 'canAll'], true) ? [$slug] : $slug);
+        });
+    }
+}
+foreach (['users.read_all', 'users.read-all', 'users.read2', "utenti.\u{00E8}dit", "\u{7528}\u{6237}.view"] as $slug) {
+    observe('Unspecified slug alphabet ' . json_encode($slug), function () use ($slug): bool {
+        [$s, , $r] = fixture(); $s->roles[10] = role([], null, true); $s->assignments[1] = [10];
+        return $r->can(1, $slug);
+    });
+}
 $failures = count(array_filter($results, fn ($row) => $row[1] === 'FAIL'));
+$baselineFailures = count(array_filter(array_slice($results, 0, $baselineResults), fn ($row) => $row[1] === 'FAIL'));
+$lfResults = array_filter($results, fn ($row) => str_starts_with($row[0], 'trailing LF cannot') || $row[0] === 'malformed verification rejected "users.view\n"');
+$lfFailures = count(array_filter($lfResults, fn ($row) => $row[1] === 'FAIL'));
 $summary = count($results) . ' controls; ' . (count($results) - $failures) . ' PASS; ' . $failures . ' FAIL';
-echo $summary . PHP_EOL;
-$report = "# M2 — Independent acceptance report\n\nTarget: `2f5cde1fb6d87b9a140eff37a622e8b56744d339`. Runtime: PHP " . PHP_VERSION . ".\n\n$summary\n\nRun: `php tests/Integration/verify-m2.php` (no framework bootstrap, no database).\n\nTests derived from SPEC permission model/architecture, BRIEF M2/constraints/definition of done and public contracts. Resolver and existing tests were not read; runtime loads production classes through a minimal autoloader. E_ALL warnings become failures. Grep returns only framework-name matches; the sole match is a comment in the already-read AuthorizationStore contract. No framework usage found.\n\n## D1 — malformed slug accepted, negative override bypass\n\nA directly assigned super admin with user override `users.view => false` is correctly denied `users.view`, but is granted the malformed slug `users.view\\n` (a final LF byte). This also passes canAny/canAll and authorize does not throw. The specification requires area.action and negative overrides above super admin. Five failed controls reproduce this one defect. No root cause was inferred from source inspection. Exploitability in HTTP depends on how callers construct permission strings; the Resolver contract itself fails. M2 is not approved.\n\n| Control | Result | Detail |\n|---|---|---|\n";
+$target = trim((string) shell_exec('git rev-parse HEAD'));
+$baseline = $baselineResults . ' original controls; ' . ($baselineResults - $baselineFailures) . ' PASS; ' . $baselineFailures . ' FAIL';
+$lfSummary = count($lfResults) . ' original final-LF controls; ' . (count($lfResults) - $lfFailures) . ' PASS; ' . $lfFailures . ' FAIL';
+echo $summary . PHP_EOL . $baseline . PHP_EOL . $lfSummary . PHP_EOL;
+foreach ($observations as [$name, $value]) { echo "OBSERVATION (unscored) $name: $value" . PHP_EOL; }
+$verdict = $failures === 0 ? 'M2 approved within the tested scope. No reproducible defects found.' : 'M2 not approved: see failed controls below.';
+$d1 = count($lfResults) === 5 && $lfFailures === 0 ? 'D1 closed: all five original final-LF controls pass.' : 'D1 remains unresolved: see original final-LF controls.';
+$report = "# M2 — Independent re-verification report\n\nTarget: `$target`. Runtime: PHP " . PHP_VERSION . ".\n\n$summary\n\n$baseline\n\n$lfSummary\n\n$verdict\n\n## Method and D1 re-verification\n\nRun: `php tests/Integration/verify-m2.php` (no framework bootstrap, no database). Output captured in `m2-output.txt`. Counts refer to named controls; parameter combinations inside a control are not counted separately. Observations are excluded from all totals.\n\nTests derive from SPEC permission model/architecture, BRIEF M2/constraints/definition of done, the two public contracts and the user's explicit full-list validation requirement. The 08:10 correction log was read. Resolver implementation and unit tests were not opened or inspected. Production classes are loaded only for black-box execution. The separately requested mechanical framework-name scan reads PHP files without exposing source text; it reports only unexpected paths/line numbers, allowing the exact known contract comment. It requires neither rg nor grep; this lexical check is not a complete dependency audit. E_ALL warnings become failures.\n\n$d1\n\nAdditional probes cover every C0 byte, DEL and raw C1 byte; UTF-8 U+0085, U+2028/U+2029, Unicode spaces and invisible separators; CRLF, repeated LF, malformed UTF-8; leading, embedded and trailing positions. Each family runs through can, canAny, canAll and authorize with a directly assigned super admin and an explicit user denial. Slugs with action lengths 4096, 65536 and 1048576 bytes plus malformed suffixes are also checked.\n\nMixed lists contain valid granted or denied slugs and one malformed slug in first, middle or last position, for ordinary, super-admin and inactive users. Both canAny and canAll must report InvalidArgumentException even after a member that would otherwise short-circuit. This checks the requested full-list validation regression, including cached calls. Single malformed checks may deny or throw InvalidArgumentException; authorize must throw without warnings. The precise exception type for list validation is a regression expectation for this correction, not a claim that SPEC already defines it.\n\n## Controls\n\n| Control | Result | Detail |\n|---|---|---|\n";
 foreach ($results as [$name, $status, $detail]) { $report .= '| ' . str_replace('|', '\\|', $name) . " | $status | " . str_replace(["\n", '|'], [' ', '\\|'], $detail) . " |\n"; }
-$report .= "\n## Observations requiring specification decisions (not PASS/FAIL)\n\n| Probe | Observed |\n|---|---|\n";
+$report .= "\n## Observations requiring specification decisions (not defects; not PASS/FAIL)\n\n| Probe | Observed |\n|---|---|\n";
 foreach ($observations as [$name, $value]) { $report .= "| $name | " . str_replace('|', '\\|', $value) . " |\n"; }
-$report .= "\n## Scope and ambiguities\n\n- The store returns a map slug => bool: simultaneous positive and negative overrides for one slug cannot be represented. PHP overwrites duplicate keys before the Resolver receives them. Do not manufacture a passing test; define conflict handling in the writing/adapter layer (M3).\n- Empty collections, inherited super flag, extended slug alphabet and super-admin permissions() enumeration are author proposals awaiting confirmation. Empty canAll for an inactive user also needs reconciliation with 'inactive denies everything'.\n- Wildcards are allowed at assignment, but the contract does not say whether the writer must expand them or the Resolver must interpret them. The observation is not scored.\n- For mixed valid/invalid lists, specify full input validation versus per-item short-circuit validation. Single malformed checks may return false or throw InvalidArgumentException; both reject access. authorize must throw.\n- No positive-ID precondition is declared. Unknown/zero/negative users reported inactive must deny; a store reporting them active is an observation, not an invented constraint.\n- Soft deletion filtering belongs to AuthorizationStore by contract. These tests verify resolver behavior with compliant filtering; database adapter filtering remains M3.\n- Removing assignments before forgetRole loses the former-user relationship. Writers must invalidate the former users with forgetUser/forgetUsers; define this obligation explicitly. This is recorded as an observation, not a passing forgetRole test.\n- Cycles are rejected at save time in M4, not asserted as a Resolver responsibility. Last-super-admin protection, actual write hooks, HTTP errors and framework integration are outside M2. Only installed PHP was run, not the full supported runtime matrix.\n- No source changes or commit. SPEC was not edited because the authorized write scope is tests/Integration and the coordination log.\n";
+$report .= "\n## Scope and decisions still open\n\n- Empty canAny/canAll semantics remain undecided, particularly canAll([]) for inactive users. No FAIL is assigned.\n- Inheritance of the super-admin flag and permissions() enumeration for a super admin remain specification decisions; the observed behavior is not a defect.\n- Extended slug alphabet (digits, underscores, hyphens, Unicode letters) and maximum slug length are unspecified. Long alphabetic slugs are observations across all four methods, without inventing a size limit. Malformed suffixes still must not authorize.\n- Wildcards are allowed at assignment, but the documents do not say whether the writer expands them or the Resolver interprets them. The store wildcard probe is unscored.\n- Simultaneous opposite overrides cannot be represented by the contract's slug-to-bool map: PHP replaces duplicate keys. Define conflict handling in the M3 writer/adapter, not through a fabricated Resolver test.\n- No positive-ID precondition is declared. A store reporting zero or negative IDs active remains an unscored observation.\n- Full mixed-list validation is explicitly requested for this re-verification and is tested above; synchronize this requirement and its error response into the specification. It is no longer presented as an unresolved short-circuit choice in this report.\n- After assignment removal, forgetRole cannot discover former holders through the store. Define the M3 writer obligation to invalidate former IDs with forgetUser/forgetUsers. This is an integration obligation to specify, not a Resolver FAIL.\n- Soft-delete filtering is an AuthorizationStore responsibility. Tests supply compliant filtering; actual database adapter filtering and write hooks remain M3. Cycles and last-super-admin protection remain M4; HTTP paths remain later milestones. Only PHP " . PHP_VERSION . " was run, not the supported runtime matrix.\n- No source edits, database access or commit. SPEC is unchanged because writes are restricted to tests/Integration and _AI-LOG.md. The pre-existing modification to CLAUDE.md was left intact.\n";
 file_put_contents(__DIR__ . '/M2-REPORT.md', $report);
 exit($failures === 0 ? 0 : 1);

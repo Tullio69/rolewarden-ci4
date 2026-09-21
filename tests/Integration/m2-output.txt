@@ -51,7 +51,7 @@ PASS malformed verification rejected "users.View"
 PASS malformed verification rejected "users.view.extra"
 PASS malformed verification rejected " users.view"
 PASS malformed verification rejected "users.view "
-FAIL malformed verification rejected "users.view\n" — RuntimeException: expected false, got true
+PASS malformed verification rejected "users.view\n"
 PASS malformed verification rejected "users.view\u0000"
 PASS malformed verification rejected "users\/view"
 PASS malformed verification rejected "users..view"
@@ -93,9 +93,634 @@ PASS revocation next request forgetRole/soft-delete
 PASS forgetRole invalidates parent child grandchild and preserves outsiders
 PASS forgetUsers revokes all listed users only
 PASS new grant after cached default denial
-FAIL trailing LF cannot bypass user denial via can — RuntimeException: expected false, got true
-FAIL trailing LF cannot bypass user denial via canAny — RuntimeException: expected false, got true
-FAIL trailing LF cannot bypass user denial via canAll — RuntimeException: expected false, got true
-FAIL trailing LF cannot bypass user denial via authorize — RuntimeException: authorize did not throw
-PASS framework boundary grep (only known contract comment permitted)
-100 controls; 95 PASS; 5 FAIL
+PASS trailing LF cannot bypass user denial via can
+PASS trailing LF cannot bypass user denial via canAny
+PASS trailing LF cannot bypass user denial via canAll
+PASS trailing LF cannot bypass user denial via authorize
+PASS framework boundary scan in pure PHP (only known contract comment permitted)
+PASS D1 variant raw byte 00 via can
+PASS D1 variant raw byte 00 via canAny
+PASS D1 variant raw byte 00 via canAll
+PASS D1 variant raw byte 00 via authorize
+PASS full mixed-list validation raw byte 00 via canAny
+PASS full mixed-list validation raw byte 00 via canAll
+PASS D1 variant raw byte 01 via can
+PASS D1 variant raw byte 01 via canAny
+PASS D1 variant raw byte 01 via canAll
+PASS D1 variant raw byte 01 via authorize
+PASS full mixed-list validation raw byte 01 via canAny
+PASS full mixed-list validation raw byte 01 via canAll
+PASS D1 variant raw byte 02 via can
+PASS D1 variant raw byte 02 via canAny
+PASS D1 variant raw byte 02 via canAll
+PASS D1 variant raw byte 02 via authorize
+PASS full mixed-list validation raw byte 02 via canAny
+PASS full mixed-list validation raw byte 02 via canAll
+PASS D1 variant raw byte 03 via can
+PASS D1 variant raw byte 03 via canAny
+PASS D1 variant raw byte 03 via canAll
+PASS D1 variant raw byte 03 via authorize
+PASS full mixed-list validation raw byte 03 via canAny
+PASS full mixed-list validation raw byte 03 via canAll
+PASS D1 variant raw byte 04 via can
+PASS D1 variant raw byte 04 via canAny
+PASS D1 variant raw byte 04 via canAll
+PASS D1 variant raw byte 04 via authorize
+PASS full mixed-list validation raw byte 04 via canAny
+PASS full mixed-list validation raw byte 04 via canAll
+PASS D1 variant raw byte 05 via can
+PASS D1 variant raw byte 05 via canAny
+PASS D1 variant raw byte 05 via canAll
+PASS D1 variant raw byte 05 via authorize
+PASS full mixed-list validation raw byte 05 via canAny
+PASS full mixed-list validation raw byte 05 via canAll
+PASS D1 variant raw byte 06 via can
+PASS D1 variant raw byte 06 via canAny
+PASS D1 variant raw byte 06 via canAll
+PASS D1 variant raw byte 06 via authorize
+PASS full mixed-list validation raw byte 06 via canAny
+PASS full mixed-list validation raw byte 06 via canAll
+PASS D1 variant raw byte 07 via can
+PASS D1 variant raw byte 07 via canAny
+PASS D1 variant raw byte 07 via canAll
+PASS D1 variant raw byte 07 via authorize
+PASS full mixed-list validation raw byte 07 via canAny
+PASS full mixed-list validation raw byte 07 via canAll
+PASS D1 variant raw byte 08 via can
+PASS D1 variant raw byte 08 via canAny
+PASS D1 variant raw byte 08 via canAll
+PASS D1 variant raw byte 08 via authorize
+PASS full mixed-list validation raw byte 08 via canAny
+PASS full mixed-list validation raw byte 08 via canAll
+PASS D1 variant raw byte 09 via can
+PASS D1 variant raw byte 09 via canAny
+PASS D1 variant raw byte 09 via canAll
+PASS D1 variant raw byte 09 via authorize
+PASS full mixed-list validation raw byte 09 via canAny
+PASS full mixed-list validation raw byte 09 via canAll
+PASS D1 variant raw byte 0A via can
+PASS D1 variant raw byte 0A via canAny
+PASS D1 variant raw byte 0A via canAll
+PASS D1 variant raw byte 0A via authorize
+PASS full mixed-list validation raw byte 0A via canAny
+PASS full mixed-list validation raw byte 0A via canAll
+PASS D1 variant raw byte 0B via can
+PASS D1 variant raw byte 0B via canAny
+PASS D1 variant raw byte 0B via canAll
+PASS D1 variant raw byte 0B via authorize
+PASS full mixed-list validation raw byte 0B via canAny
+PASS full mixed-list validation raw byte 0B via canAll
+PASS D1 variant raw byte 0C via can
+PASS D1 variant raw byte 0C via canAny
+PASS D1 variant raw byte 0C via canAll
+PASS D1 variant raw byte 0C via authorize
+PASS full mixed-list validation raw byte 0C via canAny
+PASS full mixed-list validation raw byte 0C via canAll
+PASS D1 variant raw byte 0D via can
+PASS D1 variant raw byte 0D via canAny
+PASS D1 variant raw byte 0D via canAll
+PASS D1 variant raw byte 0D via authorize
+PASS full mixed-list validation raw byte 0D via canAny
+PASS full mixed-list validation raw byte 0D via canAll
+PASS D1 variant raw byte 0E via can
+PASS D1 variant raw byte 0E via canAny
+PASS D1 variant raw byte 0E via canAll
+PASS D1 variant raw byte 0E via authorize
+PASS full mixed-list validation raw byte 0E via canAny
+PASS full mixed-list validation raw byte 0E via canAll
+PASS D1 variant raw byte 0F via can
+PASS D1 variant raw byte 0F via canAny
+PASS D1 variant raw byte 0F via canAll
+PASS D1 variant raw byte 0F via authorize
+PASS full mixed-list validation raw byte 0F via canAny
+PASS full mixed-list validation raw byte 0F via canAll
+PASS D1 variant raw byte 10 via can
+PASS D1 variant raw byte 10 via canAny
+PASS D1 variant raw byte 10 via canAll
+PASS D1 variant raw byte 10 via authorize
+PASS full mixed-list validation raw byte 10 via canAny
+PASS full mixed-list validation raw byte 10 via canAll
+PASS D1 variant raw byte 11 via can
+PASS D1 variant raw byte 11 via canAny
+PASS D1 variant raw byte 11 via canAll
+PASS D1 variant raw byte 11 via authorize
+PASS full mixed-list validation raw byte 11 via canAny
+PASS full mixed-list validation raw byte 11 via canAll
+PASS D1 variant raw byte 12 via can
+PASS D1 variant raw byte 12 via canAny
+PASS D1 variant raw byte 12 via canAll
+PASS D1 variant raw byte 12 via authorize
+PASS full mixed-list validation raw byte 12 via canAny
+PASS full mixed-list validation raw byte 12 via canAll
+PASS D1 variant raw byte 13 via can
+PASS D1 variant raw byte 13 via canAny
+PASS D1 variant raw byte 13 via canAll
+PASS D1 variant raw byte 13 via authorize
+PASS full mixed-list validation raw byte 13 via canAny
+PASS full mixed-list validation raw byte 13 via canAll
+PASS D1 variant raw byte 14 via can
+PASS D1 variant raw byte 14 via canAny
+PASS D1 variant raw byte 14 via canAll
+PASS D1 variant raw byte 14 via authorize
+PASS full mixed-list validation raw byte 14 via canAny
+PASS full mixed-list validation raw byte 14 via canAll
+PASS D1 variant raw byte 15 via can
+PASS D1 variant raw byte 15 via canAny
+PASS D1 variant raw byte 15 via canAll
+PASS D1 variant raw byte 15 via authorize
+PASS full mixed-list validation raw byte 15 via canAny
+PASS full mixed-list validation raw byte 15 via canAll
+PASS D1 variant raw byte 16 via can
+PASS D1 variant raw byte 16 via canAny
+PASS D1 variant raw byte 16 via canAll
+PASS D1 variant raw byte 16 via authorize
+PASS full mixed-list validation raw byte 16 via canAny
+PASS full mixed-list validation raw byte 16 via canAll
+PASS D1 variant raw byte 17 via can
+PASS D1 variant raw byte 17 via canAny
+PASS D1 variant raw byte 17 via canAll
+PASS D1 variant raw byte 17 via authorize
+PASS full mixed-list validation raw byte 17 via canAny
+PASS full mixed-list validation raw byte 17 via canAll
+PASS D1 variant raw byte 18 via can
+PASS D1 variant raw byte 18 via canAny
+PASS D1 variant raw byte 18 via canAll
+PASS D1 variant raw byte 18 via authorize
+PASS full mixed-list validation raw byte 18 via canAny
+PASS full mixed-list validation raw byte 18 via canAll
+PASS D1 variant raw byte 19 via can
+PASS D1 variant raw byte 19 via canAny
+PASS D1 variant raw byte 19 via canAll
+PASS D1 variant raw byte 19 via authorize
+PASS full mixed-list validation raw byte 19 via canAny
+PASS full mixed-list validation raw byte 19 via canAll
+PASS D1 variant raw byte 1A via can
+PASS D1 variant raw byte 1A via canAny
+PASS D1 variant raw byte 1A via canAll
+PASS D1 variant raw byte 1A via authorize
+PASS full mixed-list validation raw byte 1A via canAny
+PASS full mixed-list validation raw byte 1A via canAll
+PASS D1 variant raw byte 1B via can
+PASS D1 variant raw byte 1B via canAny
+PASS D1 variant raw byte 1B via canAll
+PASS D1 variant raw byte 1B via authorize
+PASS full mixed-list validation raw byte 1B via canAny
+PASS full mixed-list validation raw byte 1B via canAll
+PASS D1 variant raw byte 1C via can
+PASS D1 variant raw byte 1C via canAny
+PASS D1 variant raw byte 1C via canAll
+PASS D1 variant raw byte 1C via authorize
+PASS full mixed-list validation raw byte 1C via canAny
+PASS full mixed-list validation raw byte 1C via canAll
+PASS D1 variant raw byte 1D via can
+PASS D1 variant raw byte 1D via canAny
+PASS D1 variant raw byte 1D via canAll
+PASS D1 variant raw byte 1D via authorize
+PASS full mixed-list validation raw byte 1D via canAny
+PASS full mixed-list validation raw byte 1D via canAll
+PASS D1 variant raw byte 1E via can
+PASS D1 variant raw byte 1E via canAny
+PASS D1 variant raw byte 1E via canAll
+PASS D1 variant raw byte 1E via authorize
+PASS full mixed-list validation raw byte 1E via canAny
+PASS full mixed-list validation raw byte 1E via canAll
+PASS D1 variant raw byte 1F via can
+PASS D1 variant raw byte 1F via canAny
+PASS D1 variant raw byte 1F via canAll
+PASS D1 variant raw byte 1F via authorize
+PASS full mixed-list validation raw byte 1F via canAny
+PASS full mixed-list validation raw byte 1F via canAll
+PASS D1 variant raw byte 7F via can
+PASS D1 variant raw byte 7F via canAny
+PASS D1 variant raw byte 7F via canAll
+PASS D1 variant raw byte 7F via authorize
+PASS full mixed-list validation raw byte 7F via canAny
+PASS full mixed-list validation raw byte 7F via canAll
+PASS D1 variant raw byte 80 via can
+PASS D1 variant raw byte 80 via canAny
+PASS D1 variant raw byte 80 via canAll
+PASS D1 variant raw byte 80 via authorize
+PASS full mixed-list validation raw byte 80 via canAny
+PASS full mixed-list validation raw byte 80 via canAll
+PASS D1 variant raw byte 81 via can
+PASS D1 variant raw byte 81 via canAny
+PASS D1 variant raw byte 81 via canAll
+PASS D1 variant raw byte 81 via authorize
+PASS full mixed-list validation raw byte 81 via canAny
+PASS full mixed-list validation raw byte 81 via canAll
+PASS D1 variant raw byte 82 via can
+PASS D1 variant raw byte 82 via canAny
+PASS D1 variant raw byte 82 via canAll
+PASS D1 variant raw byte 82 via authorize
+PASS full mixed-list validation raw byte 82 via canAny
+PASS full mixed-list validation raw byte 82 via canAll
+PASS D1 variant raw byte 83 via can
+PASS D1 variant raw byte 83 via canAny
+PASS D1 variant raw byte 83 via canAll
+PASS D1 variant raw byte 83 via authorize
+PASS full mixed-list validation raw byte 83 via canAny
+PASS full mixed-list validation raw byte 83 via canAll
+PASS D1 variant raw byte 84 via can
+PASS D1 variant raw byte 84 via canAny
+PASS D1 variant raw byte 84 via canAll
+PASS D1 variant raw byte 84 via authorize
+PASS full mixed-list validation raw byte 84 via canAny
+PASS full mixed-list validation raw byte 84 via canAll
+PASS D1 variant raw byte 85 via can
+PASS D1 variant raw byte 85 via canAny
+PASS D1 variant raw byte 85 via canAll
+PASS D1 variant raw byte 85 via authorize
+PASS full mixed-list validation raw byte 85 via canAny
+PASS full mixed-list validation raw byte 85 via canAll
+PASS D1 variant raw byte 86 via can
+PASS D1 variant raw byte 86 via canAny
+PASS D1 variant raw byte 86 via canAll
+PASS D1 variant raw byte 86 via authorize
+PASS full mixed-list validation raw byte 86 via canAny
+PASS full mixed-list validation raw byte 86 via canAll
+PASS D1 variant raw byte 87 via can
+PASS D1 variant raw byte 87 via canAny
+PASS D1 variant raw byte 87 via canAll
+PASS D1 variant raw byte 87 via authorize
+PASS full mixed-list validation raw byte 87 via canAny
+PASS full mixed-list validation raw byte 87 via canAll
+PASS D1 variant raw byte 88 via can
+PASS D1 variant raw byte 88 via canAny
+PASS D1 variant raw byte 88 via canAll
+PASS D1 variant raw byte 88 via authorize
+PASS full mixed-list validation raw byte 88 via canAny
+PASS full mixed-list validation raw byte 88 via canAll
+PASS D1 variant raw byte 89 via can
+PASS D1 variant raw byte 89 via canAny
+PASS D1 variant raw byte 89 via canAll
+PASS D1 variant raw byte 89 via authorize
+PASS full mixed-list validation raw byte 89 via canAny
+PASS full mixed-list validation raw byte 89 via canAll
+PASS D1 variant raw byte 8A via can
+PASS D1 variant raw byte 8A via canAny
+PASS D1 variant raw byte 8A via canAll
+PASS D1 variant raw byte 8A via authorize
+PASS full mixed-list validation raw byte 8A via canAny
+PASS full mixed-list validation raw byte 8A via canAll
+PASS D1 variant raw byte 8B via can
+PASS D1 variant raw byte 8B via canAny
+PASS D1 variant raw byte 8B via canAll
+PASS D1 variant raw byte 8B via authorize
+PASS full mixed-list validation raw byte 8B via canAny
+PASS full mixed-list validation raw byte 8B via canAll
+PASS D1 variant raw byte 8C via can
+PASS D1 variant raw byte 8C via canAny
+PASS D1 variant raw byte 8C via canAll
+PASS D1 variant raw byte 8C via authorize
+PASS full mixed-list validation raw byte 8C via canAny
+PASS full mixed-list validation raw byte 8C via canAll
+PASS D1 variant raw byte 8D via can
+PASS D1 variant raw byte 8D via canAny
+PASS D1 variant raw byte 8D via canAll
+PASS D1 variant raw byte 8D via authorize
+PASS full mixed-list validation raw byte 8D via canAny
+PASS full mixed-list validation raw byte 8D via canAll
+PASS D1 variant raw byte 8E via can
+PASS D1 variant raw byte 8E via canAny
+PASS D1 variant raw byte 8E via canAll
+PASS D1 variant raw byte 8E via authorize
+PASS full mixed-list validation raw byte 8E via canAny
+PASS full mixed-list validation raw byte 8E via canAll
+PASS D1 variant raw byte 8F via can
+PASS D1 variant raw byte 8F via canAny
+PASS D1 variant raw byte 8F via canAll
+PASS D1 variant raw byte 8F via authorize
+PASS full mixed-list validation raw byte 8F via canAny
+PASS full mixed-list validation raw byte 8F via canAll
+PASS D1 variant raw byte 90 via can
+PASS D1 variant raw byte 90 via canAny
+PASS D1 variant raw byte 90 via canAll
+PASS D1 variant raw byte 90 via authorize
+PASS full mixed-list validation raw byte 90 via canAny
+PASS full mixed-list validation raw byte 90 via canAll
+PASS D1 variant raw byte 91 via can
+PASS D1 variant raw byte 91 via canAny
+PASS D1 variant raw byte 91 via canAll
+PASS D1 variant raw byte 91 via authorize
+PASS full mixed-list validation raw byte 91 via canAny
+PASS full mixed-list validation raw byte 91 via canAll
+PASS D1 variant raw byte 92 via can
+PASS D1 variant raw byte 92 via canAny
+PASS D1 variant raw byte 92 via canAll
+PASS D1 variant raw byte 92 via authorize
+PASS full mixed-list validation raw byte 92 via canAny
+PASS full mixed-list validation raw byte 92 via canAll
+PASS D1 variant raw byte 93 via can
+PASS D1 variant raw byte 93 via canAny
+PASS D1 variant raw byte 93 via canAll
+PASS D1 variant raw byte 93 via authorize
+PASS full mixed-list validation raw byte 93 via canAny
+PASS full mixed-list validation raw byte 93 via canAll
+PASS D1 variant raw byte 94 via can
+PASS D1 variant raw byte 94 via canAny
+PASS D1 variant raw byte 94 via canAll
+PASS D1 variant raw byte 94 via authorize
+PASS full mixed-list validation raw byte 94 via canAny
+PASS full mixed-list validation raw byte 94 via canAll
+PASS D1 variant raw byte 95 via can
+PASS D1 variant raw byte 95 via canAny
+PASS D1 variant raw byte 95 via canAll
+PASS D1 variant raw byte 95 via authorize
+PASS full mixed-list validation raw byte 95 via canAny
+PASS full mixed-list validation raw byte 95 via canAll
+PASS D1 variant raw byte 96 via can
+PASS D1 variant raw byte 96 via canAny
+PASS D1 variant raw byte 96 via canAll
+PASS D1 variant raw byte 96 via authorize
+PASS full mixed-list validation raw byte 96 via canAny
+PASS full mixed-list validation raw byte 96 via canAll
+PASS D1 variant raw byte 97 via can
+PASS D1 variant raw byte 97 via canAny
+PASS D1 variant raw byte 97 via canAll
+PASS D1 variant raw byte 97 via authorize
+PASS full mixed-list validation raw byte 97 via canAny
+PASS full mixed-list validation raw byte 97 via canAll
+PASS D1 variant raw byte 98 via can
+PASS D1 variant raw byte 98 via canAny
+PASS D1 variant raw byte 98 via canAll
+PASS D1 variant raw byte 98 via authorize
+PASS full mixed-list validation raw byte 98 via canAny
+PASS full mixed-list validation raw byte 98 via canAll
+PASS D1 variant raw byte 99 via can
+PASS D1 variant raw byte 99 via canAny
+PASS D1 variant raw byte 99 via canAll
+PASS D1 variant raw byte 99 via authorize
+PASS full mixed-list validation raw byte 99 via canAny
+PASS full mixed-list validation raw byte 99 via canAll
+PASS D1 variant raw byte 9A via can
+PASS D1 variant raw byte 9A via canAny
+PASS D1 variant raw byte 9A via canAll
+PASS D1 variant raw byte 9A via authorize
+PASS full mixed-list validation raw byte 9A via canAny
+PASS full mixed-list validation raw byte 9A via canAll
+PASS D1 variant raw byte 9B via can
+PASS D1 variant raw byte 9B via canAny
+PASS D1 variant raw byte 9B via canAll
+PASS D1 variant raw byte 9B via authorize
+PASS full mixed-list validation raw byte 9B via canAny
+PASS full mixed-list validation raw byte 9B via canAll
+PASS D1 variant raw byte 9C via can
+PASS D1 variant raw byte 9C via canAny
+PASS D1 variant raw byte 9C via canAll
+PASS D1 variant raw byte 9C via authorize
+PASS full mixed-list validation raw byte 9C via canAny
+PASS full mixed-list validation raw byte 9C via canAll
+PASS D1 variant raw byte 9D via can
+PASS D1 variant raw byte 9D via canAny
+PASS D1 variant raw byte 9D via canAll
+PASS D1 variant raw byte 9D via authorize
+PASS full mixed-list validation raw byte 9D via canAny
+PASS full mixed-list validation raw byte 9D via canAll
+PASS D1 variant raw byte 9E via can
+PASS D1 variant raw byte 9E via canAny
+PASS D1 variant raw byte 9E via canAll
+PASS D1 variant raw byte 9E via authorize
+PASS full mixed-list validation raw byte 9E via canAny
+PASS full mixed-list validation raw byte 9E via canAll
+PASS D1 variant raw byte 9F via can
+PASS D1 variant raw byte 9F via canAny
+PASS D1 variant raw byte 9F via canAll
+PASS D1 variant raw byte 9F via authorize
+PASS full mixed-list validation raw byte 9F via canAny
+PASS full mixed-list validation raw byte 9F via canAll
+PASS D1 variant Unicode U+0085 via can
+PASS D1 variant Unicode U+0085 via canAny
+PASS D1 variant Unicode U+0085 via canAll
+PASS D1 variant Unicode U+0085 via authorize
+PASS full mixed-list validation Unicode U+0085 via canAny
+PASS full mixed-list validation Unicode U+0085 via canAll
+PASS D1 variant Unicode U+00A0 via can
+PASS D1 variant Unicode U+00A0 via canAny
+PASS D1 variant Unicode U+00A0 via canAll
+PASS D1 variant Unicode U+00A0 via authorize
+PASS full mixed-list validation Unicode U+00A0 via canAny
+PASS full mixed-list validation Unicode U+00A0 via canAll
+PASS D1 variant Unicode U+1680 via can
+PASS D1 variant Unicode U+1680 via canAny
+PASS D1 variant Unicode U+1680 via canAll
+PASS D1 variant Unicode U+1680 via authorize
+PASS full mixed-list validation Unicode U+1680 via canAny
+PASS full mixed-list validation Unicode U+1680 via canAll
+PASS D1 variant Unicode U+180E via can
+PASS D1 variant Unicode U+180E via canAny
+PASS D1 variant Unicode U+180E via canAll
+PASS D1 variant Unicode U+180E via authorize
+PASS full mixed-list validation Unicode U+180E via canAny
+PASS full mixed-list validation Unicode U+180E via canAll
+PASS D1 variant Unicode U+2000 via can
+PASS D1 variant Unicode U+2000 via canAny
+PASS D1 variant Unicode U+2000 via canAll
+PASS D1 variant Unicode U+2000 via authorize
+PASS full mixed-list validation Unicode U+2000 via canAny
+PASS full mixed-list validation Unicode U+2000 via canAll
+PASS D1 variant Unicode U+2001 via can
+PASS D1 variant Unicode U+2001 via canAny
+PASS D1 variant Unicode U+2001 via canAll
+PASS D1 variant Unicode U+2001 via authorize
+PASS full mixed-list validation Unicode U+2001 via canAny
+PASS full mixed-list validation Unicode U+2001 via canAll
+PASS D1 variant Unicode U+2002 via can
+PASS D1 variant Unicode U+2002 via canAny
+PASS D1 variant Unicode U+2002 via canAll
+PASS D1 variant Unicode U+2002 via authorize
+PASS full mixed-list validation Unicode U+2002 via canAny
+PASS full mixed-list validation Unicode U+2002 via canAll
+PASS D1 variant Unicode U+2003 via can
+PASS D1 variant Unicode U+2003 via canAny
+PASS D1 variant Unicode U+2003 via canAll
+PASS D1 variant Unicode U+2003 via authorize
+PASS full mixed-list validation Unicode U+2003 via canAny
+PASS full mixed-list validation Unicode U+2003 via canAll
+PASS D1 variant Unicode U+2004 via can
+PASS D1 variant Unicode U+2004 via canAny
+PASS D1 variant Unicode U+2004 via canAll
+PASS D1 variant Unicode U+2004 via authorize
+PASS full mixed-list validation Unicode U+2004 via canAny
+PASS full mixed-list validation Unicode U+2004 via canAll
+PASS D1 variant Unicode U+2005 via can
+PASS D1 variant Unicode U+2005 via canAny
+PASS D1 variant Unicode U+2005 via canAll
+PASS D1 variant Unicode U+2005 via authorize
+PASS full mixed-list validation Unicode U+2005 via canAny
+PASS full mixed-list validation Unicode U+2005 via canAll
+PASS D1 variant Unicode U+2006 via can
+PASS D1 variant Unicode U+2006 via canAny
+PASS D1 variant Unicode U+2006 via canAll
+PASS D1 variant Unicode U+2006 via authorize
+PASS full mixed-list validation Unicode U+2006 via canAny
+PASS full mixed-list validation Unicode U+2006 via canAll
+PASS D1 variant Unicode U+2007 via can
+PASS D1 variant Unicode U+2007 via canAny
+PASS D1 variant Unicode U+2007 via canAll
+PASS D1 variant Unicode U+2007 via authorize
+PASS full mixed-list validation Unicode U+2007 via canAny
+PASS full mixed-list validation Unicode U+2007 via canAll
+PASS D1 variant Unicode U+2008 via can
+PASS D1 variant Unicode U+2008 via canAny
+PASS D1 variant Unicode U+2008 via canAll
+PASS D1 variant Unicode U+2008 via authorize
+PASS full mixed-list validation Unicode U+2008 via canAny
+PASS full mixed-list validation Unicode U+2008 via canAll
+PASS D1 variant Unicode U+2009 via can
+PASS D1 variant Unicode U+2009 via canAny
+PASS D1 variant Unicode U+2009 via canAll
+PASS D1 variant Unicode U+2009 via authorize
+PASS full mixed-list validation Unicode U+2009 via canAny
+PASS full mixed-list validation Unicode U+2009 via canAll
+PASS D1 variant Unicode U+200A via can
+PASS D1 variant Unicode U+200A via canAny
+PASS D1 variant Unicode U+200A via canAll
+PASS D1 variant Unicode U+200A via authorize
+PASS full mixed-list validation Unicode U+200A via canAny
+PASS full mixed-list validation Unicode U+200A via canAll
+PASS D1 variant Unicode U+200B via can
+PASS D1 variant Unicode U+200B via canAny
+PASS D1 variant Unicode U+200B via canAll
+PASS D1 variant Unicode U+200B via authorize
+PASS full mixed-list validation Unicode U+200B via canAny
+PASS full mixed-list validation Unicode U+200B via canAll
+PASS D1 variant Unicode U+2028 via can
+PASS D1 variant Unicode U+2028 via canAny
+PASS D1 variant Unicode U+2028 via canAll
+PASS D1 variant Unicode U+2028 via authorize
+PASS full mixed-list validation Unicode U+2028 via canAny
+PASS full mixed-list validation Unicode U+2028 via canAll
+PASS D1 variant Unicode U+2029 via can
+PASS D1 variant Unicode U+2029 via canAny
+PASS D1 variant Unicode U+2029 via canAll
+PASS D1 variant Unicode U+2029 via authorize
+PASS full mixed-list validation Unicode U+2029 via canAny
+PASS full mixed-list validation Unicode U+2029 via canAll
+PASS D1 variant Unicode U+202F via can
+PASS D1 variant Unicode U+202F via canAny
+PASS D1 variant Unicode U+202F via canAll
+PASS D1 variant Unicode U+202F via authorize
+PASS full mixed-list validation Unicode U+202F via canAny
+PASS full mixed-list validation Unicode U+202F via canAll
+PASS D1 variant Unicode U+205F via can
+PASS D1 variant Unicode U+205F via canAny
+PASS D1 variant Unicode U+205F via canAll
+PASS D1 variant Unicode U+205F via authorize
+PASS full mixed-list validation Unicode U+205F via canAny
+PASS full mixed-list validation Unicode U+205F via canAll
+PASS D1 variant Unicode U+2060 via can
+PASS D1 variant Unicode U+2060 via canAny
+PASS D1 variant Unicode U+2060 via canAll
+PASS D1 variant Unicode U+2060 via authorize
+PASS full mixed-list validation Unicode U+2060 via canAny
+PASS full mixed-list validation Unicode U+2060 via canAll
+PASS D1 variant Unicode U+3000 via can
+PASS D1 variant Unicode U+3000 via canAny
+PASS D1 variant Unicode U+3000 via canAll
+PASS D1 variant Unicode U+3000 via authorize
+PASS full mixed-list validation Unicode U+3000 via canAny
+PASS full mixed-list validation Unicode U+3000 via canAll
+PASS D1 variant Unicode U+FEFF via can
+PASS D1 variant Unicode U+FEFF via canAny
+PASS D1 variant Unicode U+FEFF via canAll
+PASS D1 variant Unicode U+FEFF via authorize
+PASS full mixed-list validation Unicode U+FEFF via canAny
+PASS full mixed-list validation Unicode U+FEFF via canAll
+PASS D1 variant CRLF via can
+PASS D1 variant CRLF via canAny
+PASS D1 variant CRLF via canAll
+PASS D1 variant CRLF via authorize
+PASS full mixed-list validation CRLF via canAny
+PASS full mixed-list validation CRLF via canAll
+PASS D1 variant double LF via can
+PASS D1 variant double LF via canAny
+PASS D1 variant double LF via canAll
+PASS D1 variant double LF via authorize
+PASS full mixed-list validation double LF via canAny
+PASS full mixed-list validation double LF via canAll
+PASS D1 variant ASCII space via can
+PASS D1 variant ASCII space via canAny
+PASS D1 variant ASCII space via canAll
+PASS D1 variant ASCII space via authorize
+PASS full mixed-list validation ASCII space via canAny
+PASS full mixed-list validation ASCII space via canAll
+PASS D1 variant invalid UTF-8 FF via can
+PASS D1 variant invalid UTF-8 FF via canAny
+PASS D1 variant invalid UTF-8 FF via canAll
+PASS D1 variant invalid UTF-8 FF via authorize
+PASS full mixed-list validation invalid UTF-8 FF via canAny
+PASS full mixed-list validation invalid UTF-8 FF via canAll
+PASS D1 variant invalid UTF-8 truncated via can
+PASS D1 variant invalid UTF-8 truncated via canAny
+PASS D1 variant invalid UTF-8 truncated via canAll
+PASS D1 variant invalid UTF-8 truncated via authorize
+PASS full mixed-list validation invalid UTF-8 truncated via canAny
+PASS full mixed-list validation invalid UTF-8 truncated via canAll
+PASS D1 variant invalid UTF-8 overlong LF via can
+PASS D1 variant invalid UTF-8 overlong LF via canAny
+PASS D1 variant invalid UTF-8 overlong LF via canAll
+PASS D1 variant invalid UTF-8 overlong LF via authorize
+PASS full mixed-list validation invalid UTF-8 overlong LF via canAny
+PASS full mixed-list validation invalid UTF-8 overlong LF via canAll
+PASS D1 variant invalid UTF-8 surrogate via can
+PASS D1 variant invalid UTF-8 surrogate via canAny
+PASS D1 variant invalid UTF-8 surrogate via canAll
+PASS D1 variant invalid UTF-8 surrogate via authorize
+PASS full mixed-list validation invalid UTF-8 surrogate via canAny
+PASS full mixed-list validation invalid UTF-8 surrogate via canAll
+PASS D1 variant invalid UTF-8 above Unicode range via can
+PASS D1 variant invalid UTF-8 above Unicode range via canAny
+PASS D1 variant invalid UTF-8 above Unicode range via canAll
+PASS D1 variant invalid UTF-8 above Unicode range via authorize
+PASS full mixed-list validation invalid UTF-8 above Unicode range via canAny
+PASS full mixed-list validation invalid UTF-8 above Unicode range via canAll
+PASS D1 variant wildcard via can
+PASS D1 variant wildcard via canAny
+PASS D1 variant wildcard via canAll
+PASS D1 variant wildcard via authorize
+PASS full mixed-list validation wildcard via canAny
+PASS full mixed-list validation wildcard via canAll
+PASS D1 variant long action 4096 with forbidden suffix via can
+PASS D1 variant long action 4096 with forbidden suffix via canAny
+PASS D1 variant long action 4096 with forbidden suffix via canAll
+PASS D1 variant long action 4096 with forbidden suffix via authorize
+PASS full mixed-list validation long action 4096 with forbidden suffix via canAny
+PASS full mixed-list validation long action 4096 with forbidden suffix via canAll
+PASS D1 variant long action 65536 with forbidden suffix via can
+PASS D1 variant long action 65536 with forbidden suffix via canAny
+PASS D1 variant long action 65536 with forbidden suffix via canAll
+PASS D1 variant long action 65536 with forbidden suffix via authorize
+PASS full mixed-list validation long action 65536 with forbidden suffix via canAny
+PASS full mixed-list validation long action 65536 with forbidden suffix via canAll
+PASS D1 variant long action 1048576 with forbidden suffix via can
+PASS D1 variant long action 1048576 with forbidden suffix via canAny
+PASS D1 variant long action 1048576 with forbidden suffix via canAll
+PASS D1 variant long action 1048576 with forbidden suffix via authorize
+PASS full mixed-list validation long action 1048576 with forbidden suffix via canAny
+PASS full mixed-list validation long action 1048576 with forbidden suffix via canAll
+700 controls; 700 PASS; 0 FAIL
+100 original controls; 100 PASS; 0 FAIL
+5 original final-LF controls; 5 PASS; 0 FAIL
+OBSERVATION (unscored) Empty canAny/canAll, active then inactive: [[false,true],[false,true]]
+OBSERVATION (unscored) Super flag inherited without direct assignment: false
+OBSERVATION (unscored) Wildcard received from store: role grant: [false,["users.*"]]
+OBSERVATION (unscored) Store declares zero and negative identifiers active: [true,true]
+OBSERVATION (unscored) Role unassigned before forgetRole: true
+OBSERVATION (unscored) Super-admin permissions enumeration: [["users.view"],true]
+OBSERVATION (unscored) Long alphabetic slug, action bytes 4096 via can: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 4096 via canAny: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 4096 via canAll: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 4096 via authorize: null
+OBSERVATION (unscored) Long alphabetic slug, action bytes 65536 via can: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 65536 via canAny: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 65536 via canAll: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 65536 via authorize: null
+OBSERVATION (unscored) Long alphabetic slug, action bytes 1048576 via can: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 1048576 via canAny: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 1048576 via canAll: true
+OBSERVATION (unscored) Long alphabetic slug, action bytes 1048576 via authorize: null
+OBSERVATION (unscored) Unspecified slug alphabet "users.read_all": true
+OBSERVATION (unscored) Unspecified slug alphabet "users.read-all": true
+OBSERVATION (unscored) Unspecified slug alphabet "users.read2": true
+OBSERVATION (unscored) Unspecified slug alphabet "utenti.\u00e8dit": InvalidArgumentException: Invalid permission "utenti.èdit": use the "area.action" format in lowercase, and no wildcards when checking.
+OBSERVATION (unscored) Unspecified slug alphabet "\u7528\u6237.view": InvalidArgumentException: Invalid permission "用户.view": use the "area.action" format in lowercase, and no wildcards when checking.

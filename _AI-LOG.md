@@ -9,6 +9,7 @@
 
 **In lavorazione:** nessuno
 **Agente:** -
+**Dalle:** -
 **Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.

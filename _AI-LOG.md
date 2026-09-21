@@ -216,3 +216,10 @@ Formato di ogni voce:
 - Cosa ho fatto: correzione di D3 del collaudo M4 (340 PASS, 4 FAIL). Rinominare o eliminare un permesso invalidava solo i ruoli che lo detengono; ora invalida anche gli utenti che lo hanno come override diretto in `acl_user_permissions` (raccolti prima della scrittura, dimenticati dopo). Vale sia per l'update sia per la cancellazione, che ha la stessa causa.
 - Stato: parziale (in attesa della riverifica Codex)
 - Note per il prossimo: la modifica non tocca il resto di M4; D1, D2 e la regola dei figli risultano gia' chiusi dal collaudo precedente.
+
+### [2026-09-22 00:55] - Claude
+- Tipo: docs
+- Scope: `_AI-LOG.md`
+- Cosa ho fatto: la riverifica Codex di M4 (fix D3, commit 4ce25ad) e' partita ma Codex ha esaurito la quota di utilizzo prima di eseguire qualsiasi cosa ("try again at Sep 22nd, 2026 3:05 AM") e aveva gia' preso il lock senza modificare altro; ho ripristinato il lock a "nessuno".
+- Stato: bloccato (M4 non ancora chiusa)
+- Note per il prossimo: M4 e' approvata da Codex solo fino alla riverifica con 340 PASS / 4 FAIL (D3); la correzione di D3 e' committata ma NON riverificata. Non aprire M5 prima della riverifica. Rilanciare Codex dopo le 03:05 del 2026-09-22 con lo stesso prompt (verifica D3 + controllo di eliminazione per override positivi e negativi + regressione dei 340 controlli).

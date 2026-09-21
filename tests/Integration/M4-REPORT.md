@@ -1,99 +1,83 @@
-# M4 verification report
+# M4 re-verification report
 
-M4 is **not approved**: **224 PASS, 5 FAIL**, representing two defects.
-Verified HEAD: `9ca97d574620e737a8ec627fc21773e8033b090e` (`7e688c0` plus the one-line log fix).
+M4 is **not approved**: **340 PASS, 4 FAIL**, representing one newly exposed defect (D3). Previous defects **D1 and D2 are closed**: all five previously failing assertions now pass. The active-children deletion rule passes; former ambiguity 3 is resolved by author decision 4.
+
+Verified HEAD: `91039c7f4e873ac6e0978f0b634f42c4866706f5`.
 Runtime: PHP 8.3.11, CodeIgniter 4.7.4, Shield 1.4.1, MariaDB through MySQLi, E_ALL.
 
-## Method and artifacts
+## Method and isolation
 
-Tests derive from SPEC, the M4 row and definition of done in BRIEF-MVP, CLAUDE.md, the collaboration log (including the 23:35 M4 claims), public contracts and the requested model APIs. Production implementation bodies, adapters and unit tests were not inspected. A mechanical PHP token scan checks the framework boundary without displaying source; Git compares the original resolver/contracts without displaying source.
+Tests derive from SPEC, BRIEF-MVP, CLAUDE.md, the 23:35 M4 entry, the 00:10 correction, author decision 4 and this re-verification request. No production implementation bodies, adapters or unit tests were inspected. Reflection was used only to list public ProtectionException methods and properties. The existing mechanical token scan checks the Authorization framework boundary without displaying source; Git checks the original resolver/contracts against `246d031` without displaying source.
 
-The existing Codex lock and draft verifier were resumed. The recovered output already had a completion/restore footer; it was rerun, then extended with isolated defect reproductions and HTTP automatic-invalidation checks. Intermediate HTTP fixture failures caused by trying to log in a second user in an existing session were corrected only in the harness: each independent case starts a fresh session, then retains it throughout warm/write/read. Final counts exclude these intermediate fixture failures.
+The lock was acquired before editing and released after verification. Writes were confined to `tests/Integration/` and `_AI-LOG.md`. Only `rolewarden_test` was selected: its original schema/data were snapshotted, the test database was rebuilt, then restored with an exact comparison. The HTTP server was stopped, the temporary host removed and the sibling app's `.env` hash preserved. No access to `rolewarden`, no credentials written into configuration, no production changes and no commits. HEAD and `src/` remain unchanged.
 
-- `verify-m4.ps1`: isolated host copy, inherited environment password, cleanup and sibling `.env` hash check.
-- `verify-m4.php`: orchestration, database snapshot/restore, mechanical boundary checks, retained M3 HTTP controls and new M4 HTTP controls.
-- `M4Cases.php`: black-box model/protection cases, installed only into the temporary host.
-- `m4-output.txt`: complete final run, including row differences for failed no-write assertions.
-
-Run from the repository with `RW_DB_PASSWORD` already in the environment:
+Artifacts: `verify-m4.ps1` (isolated host and cleanup), `verify-m4.php` (orchestration and HTTP regression), `M4Cases.php` (black-box model cases), and `m4-output.txt` (complete final output).
 
 ```powershell
+# RW_DB_PASSWORD must already be in the environment.
 & .\tests\Integration\verify-m4.ps1 *> .\tests\Integration\m4-output.txt
-$LASTEXITCODE # 1 while the reported defects remain
+$LASTEXITCODE # 1: D3 remains reproducible
 ```
 
-The host is a temporary copy of the sibling app under `tests/Integration/.m4-app`, with its Composer loader isolated and `Auth::$userProvider = \RoleWarden\Models\UserModel::class`. Only `rolewarden_test` is selected, emptied after a snapshot, and restored with an exact schema/data comparison. No access to the `rolewarden` database. Passwords are read from the environment, not written into configuration. The HTTP server is stopped, temporary app removed and sibling `.env` hash unchanged at completion. Production files and HEAD remain unchanged; no commits.
+Two previous cache fixtures deleted a parent with live children. These fixtures now delete a permitted leaf, retaining warm/write/read checks; the immediate case uses two holders. Descendant invalidation remains covered by re-parenting, permission deletion and permission rename. Separate new tests assert parent-deletion refusal and database preservation. No previous M3 control was removed.
 
-## Results
+An intermediate harness assertion assumed `ProtectionException::getMessage()` returned the full language key. No public contract requires that representation: the corrected check verifies the exact reason and its `RoleWarden.protection.roleHasChildren` translation lookup. Intermediate results are not included in final counts.
+
+## Final results
 
 | Group | PASS | FAIL |
 | --- | ---: | ---: |
-| M4 model/protection cases | 133 | 5 |
+| M4 model/protection cases | 240 | 2 |
 | M4 command completion | 1 | 0 |
-| Additional HTTP automatic invalidation | 15 | 0 |
+| HTTP automatic invalidation, including role-held permission rename | 20 | 0 |
+| HTTP override-only permission rename reproduction | 4 | 2 |
 | Retained M3 controls, metadata and cleanup | 75 | 0 |
-| **Total** | **224** | **5** |
+| **Total** | **340** | **4** |
 
-The PHP footer reports 223 PASS / 5 FAIL; the PowerShell cleanup contributes the remaining PASS. All original M3 functional controls are retained, including uppercase rejection, hierarchy/overrides, Shield groups, filters/helpers, manual invalidation in the same session, soft deletion and configured user table name. The M3 whole-Authorization unchanged check is appropriately narrowed for M4: Resolver, AuthorizationStore and Cache are unchanged since `246d031`; new protection classes are allowed. No CodeIgniter/Shield references outside comments were detected in Authorization.
+The PHP footer reports 339 PASS / 4 FAIL; PowerShell cleanup contributes one additional PASS. Syntax checks and `git diff --check` pass. HTTP E_ALL produced no PHP warnings, notices, deprecations or fatal diagnostics.
 
-Passing M4 coverage:
+Passing coverage:
 
-- Saving self-parent, direct and longer hierarchy cycles raises `ProtectionException::HIERARCHY_CYCLE`; missing-parent insert/update raises `PARENT_MISSING`. Full database snapshots remain identical on refusals. Valid re-parent and clearing the parent work.
-- All three seeded system roles resist both logical and physical deletion; all twelve seeded system permissions resist deletion, with rows and existing role/user links intact (`SYSTEM_RECORD`). Non-system leaf role and permission deletion succeed and their resulting row state is checked.
-- Five last-super-admin operations: user delete, user deactivation, assignment revoke, non-system super role delete and clearing its flag. Each refuses with `LAST_SUPER_ADMIN` and an unchanged full database when alone, when the other user is inactive, or when the other active user holds only a soft-deleted super role. Each succeeds with another active super admin.
-- A sole user with two live super roles still cannot be deleted/deactivated; revoking/deleting/clearing one role succeeds because the second remains.
-- Automatic cache invalidation after permitted role deletion, re-parent, permission deletion, role revoke and user deactivation: warm resolver answers change immediately without `forget`. Descendant effects and unaffected users are checked. All five also pass warm/write/read across HTTP requests in the same authenticated session, without logout or manual invalidation, including after the host user-table rename.
-- Unbounded RoleModel update/delete and unbounded UserModel/PermissionModel delete refuse and preserve the database. Update defects are below.
-- All four requested `RoleWarden.protection.*` language keys resolve to nonempty translated strings. HTTP E_ALL produces no PHP warnings/notices/deprecations/fatal diagnostics.
+- All previously passing controls remain passing under the decided deletion contract; all five previous failures now pass. Unbounded PermissionModel updates raise InvalidArgumentException without changing rows, including the isolated slug reproduction. UserModel rejects unbounded activation before changing any row, including the isolated inactive-user reproduction.
+- RoleModel, PermissionModel and UserModel reject updates/deletes without an explicit primary-key argument, with broad predicates, an exact `where('id', ...)`, and no predicate. Logical and purge deletion paths are checked. Full database snapshots are identical after every refusal.
+- Self, direct and longer hierarchy cycles, missing parents, valid re-parenting and clearing parents retain their controls. All seeded system roles and permissions remain protected, including logical/physical role deletion and existing links.
+- The full last-active-super-admin matrix remains passing: user deletion, deactivation, role revoke, role deletion and flag clearing, with no alternative, another active/inactive user, a deleted alternative role, or a second live role on the same user.
+- A non-system parent with live children refuses both logical and physical deletion with ProtectionException reason `roleHasChildren`; the matching language key resolves. Mixed live and deleted children also refuse. Every refusal leaves the entire database unchanged.
+- Moving the child, soft-deleting it, or physically deleting it makes the non-system parent deletable. Parent logical and physical deletion are both checked, including a parent whose only child is soft-deleted. Deleted child rows remain present; physical parent deletion sets their parent reference to NULL through the foreign key. Leaf deletion succeeds in both modes.
+- System parents refuse both modes with `systemRecord`, while their child is active and after it is soft-deleted. The children rule does not make system records deletable.
+- Automatic cache invalidation remains passing for permitted role deletion, re-parenting, permission deletion, assignment revocation and user deactivation, immediately and across HTTP requests without logout or manual invalidation.
+- Permission rename by primary key invalidates direct role holders, descendant-role holders, holders through a second independent role, and a role holder with a negative override. Both old and new slugs are warmed before the write. A role-held permission rename also passes across HTTP requests in the same authenticated session.
+- All M3 functional regression controls pass: precedence, Shield subclass/provider and groups, filters/helpers, uppercase and malformed-slug rejection, manual invalidation, soft deletion and the configured user-table name. The original Resolver, AuthorizationStore and Cache remain unchanged from `246d031`; no framework references outside comments were detected in Authorization.
 
-## Defects and minimal reproductions
+## D3 — Permission rename leaves an override-only holder's cached answers stale
 
-### D1 — PermissionModel accepts updates without an explicit primary-key argument
+Four FAIL assertions: old/new slug checks immediately and across HTTP requests. This is a PermissionModel rename defect, not a request to implement the deferred M5 override-write API. The override is an existing fixture; the tested write is `PermissionModel::update($permissionId, ['slug' => $newSlug])`.
 
-Three FAIL assertions. The broad `where('is_system', 0)->update(null, ['is_system'=>1])` does not raise the claimed `InvalidArgumentException`. An isolated, existing non-system permission demonstrates an actual write, not merely a no-op:
-
-```php
-// Fixture: an existing non-system permission with slug m4.action191.
-(new \RoleWarden\Models\PermissionModel())
-    ->where('slug', 'm4.action191')
-    ->update(null, ['slug' => 'm4.action191changed']);
-```
-
-Expected: `InvalidArgumentException`, unchanged database. Observed: no exception; the stored slug changes and `updated_at` is set. The final output includes the before/after row. This violates M4 log claim (3) and the explicit acceptance requirement. The initial broad case had no matching non-system permission, which is why its no-write assertion passes; the isolated case removes that uncertainty.
-
-### D2 — UserModel rejects an unbounded update only after changing stored data
-
-Two FAIL assertions. Broad reproduction:
+Minimal reproduction on an active ordinary user with no role grants:
 
 ```php
-// Fixture: at least one inactive user.
-try {
-    (new \RoleWarden\Models\UserModel())
-        ->where('active', 0)->update(null, ['active' => 1]);
-} catch (\InvalidArgumentException $e) {
-    // The exception occurs, but matching users have already become active.
-}
+// Existing fixture: permission $id has slug 'users.view';
+// acl_user_permissions grants that permission ID directly to $userId.
+$resolver = service('rolewarden');
+$resolver->can($userId, 'users.view');    // true, warms cache
+$resolver->can($userId, 'users.renamed'); // false, warms cache
+(new \RoleWarden\Models\PermissionModel())->update($id, ['slug' => 'users.renamed']);
+$resolver->can($userId, 'users.view');    // observed true; expected false
+$resolver->can($userId, 'users.renamed'); // observed false; expected true
 ```
 
-Expected: exception before any database change. Observed: the exception type is correct, but six matching users become active and `updated_at` changes. A fresh inactive user isolates the same issue:
+The permission row is renamed successfully and the positive override remains linked to the same ID. Explicit `forgetUser($userId)` makes both answers correct immediately. The HTTP reproduction confirms the same stale answers in a subsequent request while retaining the authenticated user (final fixture user 12, permission 5). Explicit invalidation then corrects both answers in that same session. No production cause is inferred from source and no production fix was attempted.
 
-```php
-// $id is the freshly inserted inactive user's primary key.
-(new \RoleWarden\Models\UserModel())
-    ->where('id', $id)->update(null, ['active' => 1]);
-```
+## Remaining specification ambiguities — undecided, not scored
 
-This also throws `InvalidArgumentException` while leaving that user's `active = 1`. A `where()` clause does not supply the explicit model primary-key argument required by the claimed contract. The snapshots show only the expected affected user rows, not harness-induced changes. No implementation cause is inferred or production fix attempted. Point updates using `update($id, ...)` pass the protection matrix.
+Original numbering is retained; item 3 is resolved and is no longer an ambiguity.
 
-## Specification ambiguities — undecided, not scored as defects
-
-1. **Direct versus inherited super status.** SPEC says a user possesses a flagged role without defining inheritance of that flag. The M4 log and ProtectionStore count only direct assignments to live super roles. Tests check the requested direct-assignment contract; product semantics remain to be ratified.
-2. **Protection boundary.** SPEC describes interface protection, while the requested checks target models/UserRoles. The log excludes query builder/direct SQL; foreign-key cascades and other non-model writes need an explicit product contract. Fixture SQL is not evidence that such writes are required to be guarded.
-3. **Deleting a parent with active children.** The earlier 00:25 log says M4 should refuse this, whereas 23:35 describes soft-deleted parents remaining linked and the resolver stopping at the missing parent. The cache tests observe permitted parent deletion and correct denial for descendants. Which deletion behavior is required remains unresolved; no arbitrary extra reason constant or refusal was imposed.
-4. **Soft-deleted rows and parent links.** The later log retains `parent_id`; SPEC preserves assignment history but does not define restoration, re-parenting or inheritance through removed ancestors. This is not treated as an independent failure.
-5. **Other permission writes.** SPEC broadly requires invalidation on every relevant write; the log defers dedicated `acl_role_permissions` and `acl_user_permissions` write APIs to M5. Automatic invalidation is verified only for the five requested M4 paths. M3's direct-SQL/manual-forget controls remain regression checks, not proof of automatic invalidation for those deferred APIs.
-6. **Existing resolver/API questions.** Empty lists (especially `canAll([])` for inactive users), super-admin permission enumeration, wildcard expansion in assignment, ID-domain rules and conflicting override representation remain outside this milestone's decisions. No new interpretation was chosen to obtain passing results.
+1. **Direct versus inherited super status.** SPEC does not define inheritance of the super flag. Tests retain the requested direct-assignment contract; product semantics remain to be ratified.
+2. **Protection boundary.** The requested checks target models/UserRoles; the log excludes query builder/direct SQL. Foreign-key cascades and other non-model writes still need an explicit product contract. Fixture SQL does not establish an obligation to guard direct writes.
+4. **Soft-deleted rows and parent links.** Restoration, re-parenting and inheritance through removed ancestors remain unspecified beyond the decided deletion rule. Tests do not impose new restoration semantics.
+5. **Other permission writes.** Dedicated acl_role_permissions and acl_user_permissions write APIs and their automatic invalidation remain deferred to M5. This does not exclude invalidating existing override holders when PermissionModel renames a permission, as demonstrated by D3.
+6. **Existing resolver/API questions.** Empty lists (especially canAll([]) for inactive users), super-admin permission enumeration, wildcard expansion during assignment, ID-domain rules and conflicting override representation remain undecided.
 
 ## Limits
 
-This is a sequential black-box acceptance run on the recorded runtime, not a concurrency/race test or PHP/CI4 version matrix. It does not certify arbitrary batch/upsert/callback-disabled APIs or external SQL writes. Panel security and user-visible SQL error handling remain later milestone work. SPEC was not edited because the authorized write scope is integration tests and the collaboration log.
+Sequential black-box acceptance on the recorded runtime, not concurrency/race testing or a PHP/CI4 version matrix. The write checks cover the agreed update/save/delete entry points; arbitrary batch/upsert/callback-disabled APIs and external SQL are not certified. Panel security and user-visible SQL error handling remain later work. SPEC was not edited because the authorized write scope is integration tests and the collaboration log.

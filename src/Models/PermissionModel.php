@@ -9,8 +9,8 @@ use InvalidArgumentException;
 
 /**
  * Permissions with the system-record protection and cache invalidation.
- * Deleting one revokes it from every role holding it, so those roles are
- * collected before the row (and its role links) disappear.
+ * Renaming or deleting one changes the answers of every role and every user
+ * (through a direct override) holding it, so they are collected before the write.
  */
 class PermissionModel extends Model
 {
@@ -24,6 +24,9 @@ class PermissionModel extends Model
 
     /** @var list<int> */
     private array $holders = [];
+
+    /** @var list<int> users holding the permission through a direct override */
+    private array $overrideHolders = [];
 
     public function __construct()
     {
@@ -72,6 +75,9 @@ class PermissionModel extends Model
         $links = $this->db->table(config('RoleWarden')->table('role_permissions'))->select('role_id')->whereIn('permission_id', $ids)->get()->getResultArray();
         $this->holders = array_map('intval', array_column($links, 'role_id'));
 
+        $overrides = $this->db->table(config('RoleWarden')->table('user_permissions'))->select('user_id')->whereIn('permission_id', $ids)->get()->getResultArray();
+        $this->overrideHolders = array_map('intval', array_column($overrides, 'user_id'));
+
         return $data;
     }
 
@@ -85,7 +91,9 @@ class PermissionModel extends Model
         foreach (array_unique($this->holders) as $roleId) {
             service('rolewarden')->forgetRole($roleId);
         }
+        service('rolewarden')->forgetUsers(array_values(array_unique($this->overrideHolders)));
         $this->holders = [];
+        $this->overrideHolders = [];
 
         return $data;
     }

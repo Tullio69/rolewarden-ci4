@@ -75,6 +75,10 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
         $ok = $argument ? $error instanceof \InvalidArgumentException
             : $error instanceof Protection && $error->reason === $reason;
         $this->check($name.' exception', $ok, $error ? [get_class($error),$error->getMessage()] : 'no exception');
+        if ($reason === 'roleHasChildren') {
+            $key='RoleWarden.protection.'.($error instanceof Protection ? $error->reason : '');
+            $this->check($name.' language key', $key === 'RoleWarden.protection.roleHasChildren' && lang($key) !== $key && lang($key) !== '');
+        }
         $after = $this->snapshot();
         $changed = [];
         foreach ($before as $table => $rows) {
@@ -105,7 +109,7 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
         }
         try {
             $this->check('Guard public class available', class_exists(\RoleWarden\Authorization\Guard::class));
-            foreach (['lastSuperAdmin','hierarchyCycle','parentMissing','systemRecord'] as $key) {
+            foreach (['lastSuperAdmin','hierarchyCycle','parentMissing','systemRecord','roleHasChildren'] as $key) {
                 $full = 'RoleWarden.protection.'.$key;
                 $this->check('language '.$full, is_string(lang($full)) && lang($full) !== $full && lang($full) !== '');
             }
@@ -133,6 +137,41 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
             $this->refused('missing parent insert',fn()=>(new RoleModel())->insert(['name'=>'missing','slug'=>'missing','parent_id'=>9999999]),Protection::PARENT_MISSING);
             $this->allowed('valid re-parent',fn()=>(new RoleModel())->save(['id'=>$b,'parent_id'=>$d]),fn()=>(int)$this->row('acl_roles',$b)['parent_id']===$d);
             $this->allowed('clear parent',fn()=>(new RoleModel())->save(['id'=>$b,'parent_id'=>null]),fn()=>$this->row('acl_roles',$b)['parent_id']===null);
+
+            // Author decision 4: an active child prevents either kind of parent deletion.
+            foreach ([false,true] as $purge) {
+                foreach (['move','soft-delete','physical-delete'] as $resolution) {
+                    $parent=$this->role(); $child=$this->role($parent); $destination=$this->role();
+                    $name='parent children purge='.(int)$purge.' resolution='.$resolution;
+                    $this->refused($name,fn()=>(new RoleModel())->delete($parent,$purge),'roleHasChildren');
+                    if ($resolution==='move') {
+                        $this->allowed($name.' move child',fn()=>(new RoleModel())->update($child,['parent_id'=>$destination]),
+                            fn()=>(int)$this->row('acl_roles',$child)['parent_id']===$destination);
+                    } else {
+                        $hard=$resolution==='physical-delete';
+                        $this->allowed($name.' delete child',fn()=>(new RoleModel())->delete($child,$hard),
+                            fn()=>$hard ? $this->row('acl_roles',$child)===null : $this->row('acl_roles',$child)['deleted_at']!==null);
+                    }
+                    $this->allowed($name.' parent now deletable',fn()=>(new RoleModel())->delete($parent,$purge),
+                        fn()=>$purge ? $this->row('acl_roles',$parent)===null : $this->row('acl_roles',$parent)['deleted_at']!==null);
+                    if ($resolution==='soft-delete') {
+                        $this->check($name.' deleted child preserved',$this->row('acl_roles',$child)['deleted_at']!==null);
+                        if ($purge) { $this->check($name.' FK sets child parent null',$this->row('acl_roles',$child)['parent_id']===null); }
+                    }
+                }
+                $parent=$this->role(); $soft=$this->role($parent); $live=$this->role($parent);
+                (new RoleModel())->delete($soft);
+                $this->refused('mixed live and deleted children purge='.(int)$purge,
+                    fn()=>(new RoleModel())->delete($parent,$purge),'roleHasChildren');
+                $system=$this->role(); db_connect()->table('acl_roles')->where('id',$system)->update(['is_system'=>1]);
+                $systemChild=$this->role($system);
+                $this->refused('system parent purge='.(int)$purge,fn()=>(new RoleModel())->delete($system,$purge),Protection::SYSTEM_RECORD);
+                (new RoleModel())->delete($systemChild);
+                $this->refused('system parent only deleted child purge='.(int)$purge,fn()=>(new RoleModel())->delete($system,$purge),Protection::SYSTEM_RECORD);
+                $leaf=$this->role();
+                $this->allowed('leaf deletion purge='.(int)$purge,fn()=>(new RoleModel())->delete($leaf,$purge),
+                    fn()=>$purge ? $this->row('acl_roles',$leaf)===null : $this->row('acl_roles',$leaf)['deleted_at']!==null);
+            }
 
             foreach (['delete-user','deactivate','revoke','delete-role','clear-flag'] as $operation) {
                 foreach (['none','active','inactive','deleted-role','second-role'] as $other) {
@@ -169,6 +208,17 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
                 $field=$table==='users'?'active':'is_system';
                 $this->refused($class.' unbounded update',fn()=>(new $class())->where($field,0)->update(null,[$field=>1]),'',true);
                 $this->refused($class.' unbounded delete',fn()=>(new $class())->where($field,0)->delete(),'',true);
+                $id=match($table) {'acl_roles'=>$this->role(),'acl_permissions'=>$this->permission()[0],'users'=>$this->user(0)};
+                foreach (['where-id','no-where'] as $mode) {
+                    $model=new $class();
+                    if ($mode==='where-id') { $model->where('id',$id); }
+                    $this->refused($class.' '.$mode.' update no key',fn()=>$model->update(null,[$field=>1]),'',true);
+                    foreach ([false,true] as $purge) {
+                        $model=new $class();
+                        if ($mode==='where-id') { $model->where('id',$id); }
+                        $this->refused($class.' '.$mode.' delete no key purge='.(int)$purge,fn()=>$model->delete(null,$purge),'',true);
+                    }
+                }
             }
             [$probePermission,$probeSlug]=$this->permission();
             $this->refused('permission unbounded slug update',
@@ -184,6 +234,11 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
                 fn()=>$this->row('acl_permissions',$ordinaryPermission)===null);
             foreach (['delete-role','reparent','delete-permission','revoke','deactivate'] as $operation) {
                 $user=$this->user(); $parent=$this->role(); $child=$this->role($parent); $grandchild=$this->role($child);
+                // Deletion must target a leaf; use two holders to retain cache fan-out coverage.
+                if ($operation==='delete-role') {
+                    (new RoleModel())->update($grandchild,['parent_id'=>null]);
+                    $grandchild=$child;
+                }
                 $descendant=$this->user(); $this->link($user,$child); $this->link($descendant,$grandchild);
                 [$p,$slug]=$this->permission();
                 $this->add('acl_role_permissions',['role_id'=>$parent,'permission_id'=>$p]);
@@ -191,7 +246,7 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
                 $this->check('cache '.$operation.' warm direct', $resolver->can($user,$slug));
                 $this->check('cache '.$operation.' warm descendant', $resolver->can($descendant,$slug));
                 $call=match($operation) {
-                    'delete-role'=>fn()=>(new RoleModel())->delete($parent),
+                    'delete-role'=>fn()=>(new RoleModel())->delete($child),
                     'reparent'=>fn()=>(new RoleModel())->update($child,['parent_id'=>null]),
                     'delete-permission'=>fn()=>(new PermissionModel())->delete($p),
                     'revoke'=>fn()=>(new UserRoles())->revoke($user,$child),
@@ -202,6 +257,29 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
                 $descendantExpected=in_array($operation,['revoke','deactivate'],true);
                 $this->check('cache '.$operation.' descendant truth', $resolver->can($descendant,$slug)===$descendantExpected);
             }
+            [$p,$old]=$this->permission(); $new=$old.'renamed';
+            $parent=$this->role(); $child=$this->role($parent); $otherRole=$this->role();
+            $holders=[$this->user(),$this->user(),$this->user(),$this->user(),$this->user()];
+            foreach ([[$parent,$holders[0]],[$child,$holders[1]],[$otherRole,$holders[2]]] as [$r,$u]) { $this->link($u,$r); }
+            foreach ([$parent,$otherRole] as $r) { $this->add('acl_role_permissions',['role_id'=>$r,'permission_id'=>$p]); }
+            $this->add('acl_user_permissions',['user_id'=>$holders[3],'permission_id'=>$p,'granted'=>1]);
+            $this->link($holders[4],$parent);
+            $this->add('acl_user_permissions',['user_id'=>$holders[4],'permission_id'=>$p,'granted'=>0]);
+            $resolver=service('rolewarden');
+            foreach ($holders as $i=>$u) {
+                $this->check('rename warm holder '.$i,$resolver->can($u,$old)===($i!==4)&&!$resolver->can($u,$new));
+            }
+            $this->allowed('permission rename by primary key',fn()=>(new PermissionModel())->update($p,['slug'=>$new]),
+                fn()=>$this->row('acl_permissions',$p)['slug']===$new);
+            foreach ($holders as $i=>$u) {
+                $this->check('rename old slug denied holder '.$i,!$resolver->can($u,$old));
+                $this->check('rename new slug holder '.$i,$resolver->can($u,$new)===($i!==4));
+            }
+            $this->check('rename override-only holder stored link intact',
+                db_connect()->table('acl_user_permissions')->where(['user_id'=>$holders[3],'permission_id'=>$p,'granted'=>1])->countAllResults()===1);
+            $resolver->forgetUser($holders[3]);
+            $this->check('rename override-only holder correct after explicit forget',
+                !$resolver->can($holders[3],$old)&&$resolver->can($holders[3],$new));
             // Clear the test cache only after all M4 assertions, before independent M3 fixtures reuse IDs.
             cache()->clean();
         } catch (\Throwable $e) {

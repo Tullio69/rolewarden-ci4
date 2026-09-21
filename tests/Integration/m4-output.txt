@@ -1,4 +1,4 @@
-PASS target HEAD 9ca97d5 (7e688c0 plus log fix)
+PASS target HEAD 91039c7
 PASS Resolver and original contracts unchanged since 246d031
 PASS Authorization no framework references outside comments
 PASS rolewarden_test emptied after snapshot
@@ -11,6 +11,7 @@ PASS language RoleWarden.protection.lastSuperAdmin
 PASS language RoleWarden.protection.hierarchyCycle
 PASS language RoleWarden.protection.parentMissing
 PASS language RoleWarden.protection.systemRecord
+PASS language RoleWarden.protection.roleHasChildren
 
 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 PASS seed role super-admin delete purge=0 exception
@@ -61,6 +62,55 @@ PASS missing parent insert exception
 PASS missing parent insert database unchanged
 PASS valid re-parent
 PASS clear parent
+PASS parent children purge=0 resolution=move exception
+PASS parent children purge=0 resolution=move language key
+PASS parent children purge=0 resolution=move database unchanged
+PASS parent children purge=0 resolution=move move child
+PASS parent children purge=0 resolution=move parent now deletable
+PASS parent children purge=0 resolution=soft-delete exception
+PASS parent children purge=0 resolution=soft-delete language key
+PASS parent children purge=0 resolution=soft-delete database unchanged
+PASS parent children purge=0 resolution=soft-delete delete child
+PASS parent children purge=0 resolution=soft-delete parent now deletable
+PASS parent children purge=0 resolution=soft-delete deleted child preserved
+PASS parent children purge=0 resolution=physical-delete exception
+PASS parent children purge=0 resolution=physical-delete language key
+PASS parent children purge=0 resolution=physical-delete database unchanged
+PASS parent children purge=0 resolution=physical-delete delete child
+PASS parent children purge=0 resolution=physical-delete parent now deletable
+PASS mixed live and deleted children purge=0 exception
+PASS mixed live and deleted children purge=0 language key
+PASS mixed live and deleted children purge=0 database unchanged
+PASS system parent purge=0 exception
+PASS system parent purge=0 database unchanged
+PASS system parent only deleted child purge=0 exception
+PASS system parent only deleted child purge=0 database unchanged
+PASS leaf deletion purge=0
+PASS parent children purge=1 resolution=move exception
+PASS parent children purge=1 resolution=move language key
+PASS parent children purge=1 resolution=move database unchanged
+PASS parent children purge=1 resolution=move move child
+PASS parent children purge=1 resolution=move parent now deletable
+PASS parent children purge=1 resolution=soft-delete exception
+PASS parent children purge=1 resolution=soft-delete language key
+PASS parent children purge=1 resolution=soft-delete database unchanged
+PASS parent children purge=1 resolution=soft-delete delete child
+PASS parent children purge=1 resolution=soft-delete parent now deletable
+PASS parent children purge=1 resolution=soft-delete deleted child preserved
+PASS parent children purge=1 resolution=soft-delete FK sets child parent null
+PASS parent children purge=1 resolution=physical-delete exception
+PASS parent children purge=1 resolution=physical-delete language key
+PASS parent children purge=1 resolution=physical-delete database unchanged
+PASS parent children purge=1 resolution=physical-delete delete child
+PASS parent children purge=1 resolution=physical-delete parent now deletable
+PASS mixed live and deleted children purge=1 exception
+PASS mixed live and deleted children purge=1 language key
+PASS mixed live and deleted children purge=1 database unchanged
+PASS system parent purge=1 exception
+PASS system parent purge=1 database unchanged
+PASS system parent only deleted child purge=1 exception
+PASS system parent only deleted child purge=1 database unchanged
+PASS leaf deletion purge=1
 PASS delete-user other=none exception
 PASS delete-user other=none database unchanged
 PASS delete-user other=active
@@ -107,18 +157,54 @@ PASS RoleWarden\Models\RoleModel unbounded update exception
 PASS RoleWarden\Models\RoleModel unbounded update database unchanged
 PASS RoleWarden\Models\RoleModel unbounded delete exception
 PASS RoleWarden\Models\RoleModel unbounded delete database unchanged
-FAIL RoleWarden\Models\PermissionModel unbounded update exception "no exception"
+PASS RoleWarden\Models\RoleModel where-id update no key exception
+PASS RoleWarden\Models\RoleModel where-id update no key database unchanged
+PASS RoleWarden\Models\RoleModel where-id delete no key purge=0 exception
+PASS RoleWarden\Models\RoleModel where-id delete no key purge=0 database unchanged
+PASS RoleWarden\Models\RoleModel where-id delete no key purge=1 exception
+PASS RoleWarden\Models\RoleModel where-id delete no key purge=1 database unchanged
+PASS RoleWarden\Models\RoleModel no-where update no key exception
+PASS RoleWarden\Models\RoleModel no-where update no key database unchanged
+PASS RoleWarden\Models\RoleModel no-where delete no key purge=0 exception
+PASS RoleWarden\Models\RoleModel no-where delete no key purge=0 database unchanged
+PASS RoleWarden\Models\RoleModel no-where delete no key purge=1 exception
+PASS RoleWarden\Models\RoleModel no-where delete no key purge=1 database unchanged
+PASS RoleWarden\Models\PermissionModel unbounded update exception
 PASS RoleWarden\Models\PermissionModel unbounded update database unchanged
 PASS RoleWarden\Models\PermissionModel unbounded delete exception
 PASS RoleWarden\Models\PermissionModel unbounded delete database unchanged
+PASS RoleWarden\Models\PermissionModel where-id update no key exception
+PASS RoleWarden\Models\PermissionModel where-id update no key database unchanged
+PASS RoleWarden\Models\PermissionModel where-id delete no key purge=0 exception
+PASS RoleWarden\Models\PermissionModel where-id delete no key purge=0 database unchanged
+PASS RoleWarden\Models\PermissionModel where-id delete no key purge=1 exception
+PASS RoleWarden\Models\PermissionModel where-id delete no key purge=1 database unchanged
+PASS RoleWarden\Models\PermissionModel no-where update no key exception
+PASS RoleWarden\Models\PermissionModel no-where update no key database unchanged
+PASS RoleWarden\Models\PermissionModel no-where delete no key purge=0 exception
+PASS RoleWarden\Models\PermissionModel no-where delete no key purge=0 database unchanged
+PASS RoleWarden\Models\PermissionModel no-where delete no key purge=1 exception
+PASS RoleWarden\Models\PermissionModel no-where delete no key purge=1 database unchanged
 PASS RoleWarden\Models\UserModel unbounded update exception
-FAIL RoleWarden\Models\UserModel unbounded update database unchanged {"users":{"removed":["{\"id\":\"11\",\"username\":\"m4-user-126\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:13\",\"deleted_at\":null}","{\"id\":\"14\",\"username\":\"m4-user-132\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"22\",\"username\":\"m4-user-149\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"30\",\"username\":\"m4-user-166\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"38\",\"username\":\"m4-user-183\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"6\",\"username\":\"m4-user-115\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}"],"added":["{\"id\":\"11\",\"username\":\"m4-user-126\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"14\",\"username\":\"m4-user-132\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"22\",\"username\":\"m4-user-149\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"30\",\"username\":\"m4-user-166\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"38\",\"username\":\"m4-user-183\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"6\",\"username\":\"m4-user-115\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}"]}}
+PASS RoleWarden\Models\UserModel unbounded update database unchanged
 PASS RoleWarden\Models\UserModel unbounded delete exception
 PASS RoleWarden\Models\UserModel unbounded delete database unchanged
-FAIL permission unbounded slug update exception "no exception"
-FAIL permission unbounded slug update database unchanged {"acl_permissions":{"removed":["{\"id\":\"13\",\"slug\":\"m4.action191\",\"area\":\"m4\",\"description\":null,\"is_system\":\"0\",\"created_at\":null,\"updated_at\":null}"],"added":["{\"id\":\"13\",\"slug\":\"m4.action191changed\",\"area\":\"m4\",\"description\":null,\"is_system\":\"0\",\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\"}"]}}
+PASS RoleWarden\Models\UserModel where-id update no key exception
+PASS RoleWarden\Models\UserModel where-id update no key database unchanged
+PASS RoleWarden\Models\UserModel where-id delete no key purge=0 exception
+PASS RoleWarden\Models\UserModel where-id delete no key purge=0 database unchanged
+PASS RoleWarden\Models\UserModel where-id delete no key purge=1 exception
+PASS RoleWarden\Models\UserModel where-id delete no key purge=1 database unchanged
+PASS RoleWarden\Models\UserModel no-where update no key exception
+PASS RoleWarden\Models\UserModel no-where update no key database unchanged
+PASS RoleWarden\Models\UserModel no-where delete no key purge=0 exception
+PASS RoleWarden\Models\UserModel no-where delete no key purge=0 database unchanged
+PASS RoleWarden\Models\UserModel no-where delete no key purge=1 exception
+PASS RoleWarden\Models\UserModel no-where delete no key purge=1 database unchanged
+PASS permission unbounded slug update exception
+PASS permission unbounded slug update database unchanged
 PASS inactive user unbounded activation isolated exception
-FAIL inactive user unbounded activation isolated database unchanged {"users":{"removed":["{\"id\":\"42\",\"username\":\"m4-user-192\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}"],"added":["{\"id\":\"42\",\"username\":\"m4-user-192\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}"]}}
+PASS inactive user unbounded activation isolated database unchanged
 PASS non-system leaf role deleted
 PASS non-system permission deleted
 PASS cache delete-role warm direct
@@ -146,7 +232,25 @@ PASS cache deactivate warm descendant
 PASS cache deactivate write
 PASS cache deactivate immediate new truth
 PASS cache deactivate descendant truth
-M4 CASES 133 PASS, 5 FAIL
+PASS rename warm holder 0
+PASS rename warm holder 1
+PASS rename warm holder 2
+PASS rename warm holder 3
+PASS rename warm holder 4
+PASS permission rename by primary key
+PASS rename old slug denied holder 0
+PASS rename new slug holder 0
+PASS rename old slug denied holder 1
+PASS rename new slug holder 1
+PASS rename old slug denied holder 2
+PASS rename new slug holder 2
+FAIL rename old slug denied holder 3
+FAIL rename new slug holder 3
+PASS rename old slug denied holder 4
+PASS rename new slug holder 4
+PASS rename override-only holder stored link intact
+PASS rename override-only holder correct after explicit forget
+M4 CASES 240 PASS, 2 FAIL
 PASS M4 command completed
 M3 REGRESSION (all original functional controls)
 PASS guest helpers false/empty
@@ -230,7 +334,19 @@ PASS HTTP automatic revoke same login new truth
 PASS HTTP automatic deactivate warm
 PASS HTTP automatic deactivate write
 PASS HTTP automatic deactivate same login new truth
+PASS HTTP automatic rename-permission warm
+PASS HTTP rename new slug initially denied
+PASS HTTP automatic rename-permission write
+PASS HTTP automatic rename-permission same login new truth
+PASS HTTP rename new slug granted same login
+PASS HTTP override-only rename warm
+PASS HTTP override-only rename write
+PASS HTTP override-only rename same login
+FAIL HTTP override-only rename old slug denied
+FAIL HTTP override-only rename new slug granted
+REPRO override-only rename {"user":12,"permission":5,"old":true,"new":false}
+PASS HTTP override-only rename correct after explicit forget
 PASS HTTP E_ALL no PHP diagnostics
 PASS database restored exactly
-TOTAL 223 PASS, 5 FAIL
+TOTAL 339 PASS, 4 FAIL
 PASS safety sibling .env unchanged; temporary app removed

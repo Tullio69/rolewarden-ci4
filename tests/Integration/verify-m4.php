@@ -30,7 +30,7 @@ function command(array $args): array
 }
 $repo = dirname(__DIR__, 2);
 [$exit, $head] = command(['git','-C',$repo,'rev-parse','HEAD']);
-check('target HEAD 9ca97d5 (7e688c0 plus log fix)', $exit === 0 && trim($head) === '9ca97d574620e737a8ec627fc21773e8033b090e');
+check('target HEAD 91039c7', $exit === 0 && trim($head) === '91039c7f4e873ac6e0978f0b634f42c4866706f5');
 [$exit] = command(['git','-C',$repo,'diff','--quiet','246d031','--','src/Authorization/Resolver.php','src/Authorization/Contracts/AuthorizationStore.php','src/Authorization/Contracts/Cache.php']);
 check('Resolver and original contracts unchanged since 246d031', $exit === 0);
 $frameworkTokens = 0;
@@ -130,6 +130,7 @@ class M3Probe extends \CodeIgniter\Controller {
      'm4-delete-role'=>(new \RoleWarden\Models\RoleModel())->delete((int)$id),
      'm4-reparent'=>(new \RoleWarden\Models\RoleModel())->update((int)$id,['parent_id'=>null]),
      'm4-delete-permission'=>(new \RoleWarden\Models\PermissionModel())->delete((int)$id),
+     'm4-rename-permission'=>(new \RoleWarden\Models\PermissionModel())->update((int)$id,['slug'=>'users.renamed']),
      'm4-revoke'=>(new \RoleWarden\Models\UserRoles())->revoke((int)auth()->id(),(int)$id),
      'm4-deactivate'=>(new \RoleWarden\Models\UserModel())->update((int)$id,['active'=>0]),
     };
@@ -164,7 +165,7 @@ class M3Probe extends \CodeIgniter\Controller {
     return $this->response->setJSON($results);
    }
    $u = $action === 'entity' ? $provider->findById((int)$id) : auth()->user();
-   $slugs = ['users.view','users.update','users.delete','roles.view','extra.unknown'];
+   $slugs = ['users.view','users.update','users.delete','roles.view','extra.unknown','users.renamed'];
    $answers = []; foreach ($slugs as $slug) { $answers[$slug] = $u ? $u->can($slug) : false; }
    return $this->response->setJSON([
     'db'=>db_connect()->query('SELECT DATABASE() AS n')->getRow()->n,
@@ -317,7 +318,7 @@ PHP);
     $db->query('UPDATE m3_people SET active=0 WHERE id=2'); http('m3/forgetUser/2');
     check('configured table inactive denies',(http('m3/entity/2')['json']['can']['users.view']??null)===false);
     // Independent HTTP writes: warm and read via the same authenticated session; no forget calls.
-    foreach (['delete-role','reparent','delete-permission','revoke','deactivate'] as $index=>$operation) {
+    foreach (['delete-role','reparent','delete-permission','revoke','deactivate','rename-permission'] as $index=>$operation) {
         $cookie=''; // A fresh session per independent case; unchanged throughout warm/write/read.
         $userId=insert('m3_people',['username'=>'m4http'.$index,'active'=>1]);
         $parentId=insert('acl_roles',['name'=>'HTTP parent','slug'=>'m4-http-parent-'.$index,'is_system'=>0,'is_super_admin'=>0]);
@@ -327,13 +328,34 @@ PHP);
         insert('acl_user_roles',['user_id'=>$userId,'role_id'=>$childId]);
         $warm=http('m3/login/'.$userId)['json'];
         check('HTTP automatic '.$operation.' warm',($warm['can']['users.view']??null)===true,$warm);
-        $target=match($operation) {'delete-role'=>$parentId,'reparent','revoke'=>$childId,'delete-permission'=>1,'deactivate'=>$userId};
+        $target=match($operation) {'delete-role','reparent','revoke'=>$childId,'delete-permission','rename-permission'=>1,'deactivate'=>$userId};
+        if ($operation==='rename-permission') { check('HTTP rename new slug initially denied',($warm['can']['users.renamed']??null)===false); }
         $written=http('m3/m4-'.$operation.'/'.$target);
         check('HTTP automatic '.$operation.' write',($written['json']['written']??false)===true,$written['json']);
         $fresh=http('m3/state')['json'];
         check('HTTP automatic '.$operation.' same login new truth',($fresh['id']??null)==$userId&&($fresh['can']['users.view']??null)===false,$fresh);
+        if ($operation==='rename-permission') { check('HTTP rename new slug granted same login',($fresh['can']['users.renamed']??null)===true); }
         if ($operation==='delete-permission') { insert('acl_permissions',['id'=>1,'slug'=>'users.view','area'=>'users','is_system'=>0]); }
     }
+    // A second permission holder has only an override, with no role-permission path.
+    $cookie='';
+    $overrideUser=insert('m3_people',['username'=>'m4httpoverride','active'=>1]);
+    $overridePermission=insert('acl_permissions',['slug'=>'users.view','area'=>'users','is_system'=>0]);
+    insert('acl_user_permissions',['user_id'=>$overrideUser,'permission_id'=>$overridePermission,'granted'=>1]);
+    $warm=http('m3/login/'.$overrideUser)['json'];
+    check('HTTP override-only rename warm',($warm['can']['users.view']??null)===true&&($warm['can']['users.renamed']??null)===false);
+    // Free the destination slug left by the preceding independent rename case.
+    $db->query("UPDATE acl_permissions SET slug='users.previous' WHERE id=1");
+    $written=http('m3/m4-rename-permission/'.$overridePermission);
+    check('HTTP override-only rename write',($written['json']['written']??false)===true,$written['json']);
+    $fresh=http('m3/state')['json'];
+    check('HTTP override-only rename same login',($fresh['id']??null)==$overrideUser);
+    check('HTTP override-only rename old slug denied',($fresh['can']['users.view']??null)===false);
+    check('HTTP override-only rename new slug granted',($fresh['can']['users.renamed']??null)===true);
+    echo 'REPRO override-only rename '.json_encode(['user'=>$overrideUser,'permission'=>$overridePermission,'old'=>$fresh['can']['users.view']??null,'new'=>$fresh['can']['users.renamed']??null])."\n";
+    http('m3/forgetUser/'.$overrideUser);
+    $fresh=http('m3/state')['json'];
+    check('HTTP override-only rename correct after explicit forget',($fresh['can']['users.view']??null)===false&&($fresh['can']['users.renamed']??null)===true);
     $warnings = preg_match('/PHP (Warning|Notice|Deprecated|Fatal error)/', file_get_contents($app.'/server.log'));
     check('HTTP E_ALL no PHP diagnostics',$warnings===0);
 } catch (Throwable $e) {

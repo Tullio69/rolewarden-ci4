@@ -7,6 +7,7 @@ namespace RoleWarden\Config;
 use CodeIgniter\Config\BaseService;
 use RoleWarden\Adapters\CiCache;
 use RoleWarden\Adapters\DatabaseStore;
+use RoleWarden\Authorization\Guard;
 use RoleWarden\Authorization\Resolver;
 
 class Services extends BaseService
@@ -18,5 +19,16 @@ class Services extends BaseService
         }
 
         return new Resolver(new DatabaseStore(), new CiCache(service('cache')));
+    }
+
+    public static function rolewardenGuard(bool $getShared = true): Guard
+    {
+        if ($getShared) {
+            return static::getSharedInstance('rolewardenGuard');
+        }
+
+        $store = new DatabaseStore();
+
+        return new Guard($store, $store);
     }
 }

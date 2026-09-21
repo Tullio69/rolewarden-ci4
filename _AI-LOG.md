@@ -9,8 +9,7 @@
 
 **In lavorazione:** nessuno
 **Agente:** -
-**Dalle:** -
-**Scope:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -181,3 +180,11 @@ Formato di ogni voce:
 - Cosa ho fatto: riverifica M3 a HEAD `1f77d6b8074e271b232596f580a5f7dfc697cc9b` mediante `verify-m3.ps1`, senza leggere implementazione o test unitari. Conservati tutti i 73 controlli precedenti, aggiornato il target commit; i 70 PASS restano verdi e i tre FAIL D1 ora passano. Aggiunti due controlli: filtro can con USERS.view lancia InvalidArgumentException e rotta HTTP maiuscola non esegue il controller (500 con InvalidArgumentException), per lo stesso utente autorizzato sulla rotta minuscola. Totale finale 75 PASS, 0 FAIL (74 PHP piu' cleanup PowerShell), exit code 0. Aggiornati report e output.
 - Stato: completato; D1 chiuso, M3 approvata nel perimetro concordato.
 - Note per il prossimo: sei ambiguita' di specifica separate e non decise. PHP 8.3.11 / CI4 4.7.4 / Shield 1.4.1, E_ALL senza diagnostica PHP. Solo rolewarden_test, snapshot e ripristino con confronto esatto riuscito; rolewarden mai selezionato o modificato. Server fermato, app temporanea rimossa, hash .env sorella invariato. Authorization invariato da 246d031, src e HEAD invariati; lint PHP e diff --check superati. Nessuna credenziale scritta in file, nessun commit. Lock acquisito prima delle modifiche e rilasciato a fine verifica.
+
+### [2026-09-21 23:35] - Claude
+- Tipo: feature
+- Scope: `src/Authorization/` (Guard, ProtectionException, Contracts/ProtectionStore), `src/Adapters/DatabaseStore.php`, `src/Models/` (RoleModel, PermissionModel, UserRoles, UserModel), `src/Config/Services.php`, `src/Language/en/RoleWarden.php`, `tests/Unit/Authorization/GuardTest.php`, `tests/_support/InMemoryProtection.php`
+- Cosa ho fatto: M4 Protezioni. `Guard` senza framework, con test scritti prima (15 test): rifiuta cicli nella gerarchia e padre inesistente, record di sistema (ruoli e permessi) non cancellabili, ultimo super admin attivo non eliminabile/disattivabile/togliibile (delete o disattivazione utente, revoca dell'assegnazione, eliminazione del ruolo, spegnimento del flag). Nuovo contratto `ProtectionStore` separato da `AuthorizationStore`, cosi' il contratto del resolver e i test di M2 non cambiano. Nel livello CI4 il Guard e' agganciato ai callback di `RoleModel`, `PermissionModel` e del nostro `UserModel`, e a `UserRoles::assign/revoke`; gli stessi punti invalidano la cache (`forgetRole`/`forgetUsers`). Messaggi in `RoleWarden.protection.*`. Unit test (39) e phpstan verdi.
+- Stato: parziale (in attesa del collaudo Codex)
+- Note per il prossimo: scelte mie da confermare o correggere. (1) "Super admin attivo" = utente con `users.active = 1` che ha direttamente un ruolo `is_super_admin` non eliminato; il flag non si eredita. (2) Le protezioni stanno nei callback dei model e in `UserRoles`, quindi scritture con query builder o SQL diretto le aggirano: e' un limite dichiarato. (3) Le scritture vanno per chiave primaria; un `where()` non vincolato lancia `InvalidArgumentException`. (4) Invalidazione cache coperta per ruoli, permessi, utenti e assegnazioni; restano fuori `acl_role_permissions` e `acl_user_permissions`, che avranno il loro punto di scrittura in M5 e dovranno chiamare `forgetRole`/`forgetUser`. (5) Un ruolo eliminato logicamente mantiene `parent_id`: i figli restano collegati ma il resolver si ferma al padre mancante.
+

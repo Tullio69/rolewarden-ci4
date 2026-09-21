@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** M3 Aggancio Shield
-**Agente:** Claude
-**Dalle:** 2026-09-21 22:05
-**Scope:** `src/Adapters/`, `src/Entities/`, `src/Models/`, `src/Filters/`, `src/Helpers/`, `src/Language/`, `src/Config/` (Services, Registrar), `tests/Integration/`
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -146,3 +146,10 @@ Formato di ogni voce:
 - Cosa ho fatto: riverifica indipendente M2 su HEAD `9e22678fcf9458ab8c89e33c8dd41cf3df8e97fd`, letta anche la correzione delle 08:10, senza aprire Resolver o test unitari. 700 controlli, 700 PASS, zero FAIL su PHP 8.3.11 con E_ALL; tutti i 100 originali e i 5 sul LF finale passano. Aggiunti 600 controlli su C0, DEL, ottetti C1, Unicode U+0085/U+2028 e spazi/separatori invisibili, UTF-8 invalido, slug lunghi con suffissi malformati, tramite can/canAny/canAll/authorize. Liste miste validate integralmente con elemento malformato in ogni posizione, permessi validi concessi/negati, utenti ordinari/super/inattivi. Sostituita dipendenza da rg con scansione meccanica PHP dei nomi framework, senza esposizione del sorgente: nessuna occorrenza inattesa. Aggiornati report e output, sintassi PHP e git diff --check superati.
 - Stato: completato, D1 chiuso; M2 approvata nel perimetro collaudato, nessun difetto trovato.
 - Note per il prossimo: osservazioni di specifica riesaminate e separate, mai scored come FAIL: liste vuote, ereditarieta' super flag, permissions() super admin, jolly dallo store, override opposti non rappresentabili, dominio ID e invalidazione ex assegnatari in M3. Lunghezza massima e alfabeto esteso non specificati: slug alfabetici fino a 1048576 byte di azione osservati sulle quattro API senza imporre un limite. Validazione completa liste richiesta esplicitamente dall'autore in questa riverifica, da sincronizzare nella specifica insieme alla risposta d'errore. Nessuna modifica src/, nessun database o commit; modifica preesistente CLAUDE.md preservata; HEAD invariato. Orario del clock host anteriore alla voce 08:10 gia' presente: voce aggiunta dopo la correzione per mantenere l'ordine effettivo degli interventi. Lock rilasciato.
+
+### [2026-09-21 22:20] - Claude
+- Tipo: feature
+- Scope: `src/Adapters/` (DatabaseStore, CiCache), `src/Entities/User.php`, `src/Models/UserModel.php`, `src/Filters/PermissionFilter.php`, `src/Config/` (Services, Registrar), `src/Helpers/rolewarden_helper.php`, `src/Language/en/RoleWarden.php`
+- Cosa ho fatto: M3 Aggancio Shield. Store su DB CI4 e cache sul driver CI4 dietro i contratti di M2; servizio `rolewarden`; entita' utente che estende quella di Shield con `can()`/`hasPermission()` instradati al resolver (semantica "almeno uno" come Shield); `inGroup()`/`getGroups()` mappati sugli slug dei ruoli assegnati, senza ereditarieta'; filtro di rotta con alias `can`; helper `can`, `can_any`, `can_all`, `permissions`. `src/Authorization/` non toccato. Unit test e phpstan verdi.
+- Stato: parziale (in attesa del collaudo Codex)
+- Note per il prossimo: decisioni dell'utente: l'host imposta `Config\Auth::$userProvider = \RoleWarden\Models\UserModel::class` con una riga (nessun Registrar che lo sovrascrive); `inGroup('x')` = ruolo assegnato con slug `x`. Limiti noti: `addGroup/removeGroup/addPermission` di Shield scrivono ancora nelle tabelle Shield e non influenzano il resolver; l'invalidazione della cache alle scritture arriva con M4/M5. Alias filtro `can` (non `permission`, gia' di Shield). Uno slug non valido in `can()` lancia `InvalidArgumentException`, anche dal filtro. Collaudare solo su `rolewarden_test`, mai su `rolewarden`.

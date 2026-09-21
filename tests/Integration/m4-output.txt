@@ -1,0 +1,236 @@
+PASS target HEAD 9ca97d5 (7e688c0 plus log fix)
+PASS Resolver and original contracts unchanged since 246d031
+PASS Authorization no framework references outside comments
+PASS rolewarden_test emptied after snapshot
+PASS temporary app configuration isolated
+PASS migration CodeIgniter\Settings
+PASS migration CodeIgniter\Shield
+PASS migration RoleWarden
+PASS Guard public class available
+PASS language RoleWarden.protection.lastSuperAdmin
+PASS language RoleWarden.protection.hierarchyCycle
+PASS language RoleWarden.protection.parentMissing
+PASS language RoleWarden.protection.systemRecord
+
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+PASS seed role super-admin delete purge=0 exception
+PASS seed role super-admin delete purge=0 database unchanged
+PASS seed role super-admin delete purge=1 exception
+PASS seed role super-admin delete purge=1 database unchanged
+PASS seed role admin delete purge=0 exception
+PASS seed role admin delete purge=0 database unchanged
+PASS seed role admin delete purge=1 exception
+PASS seed role admin delete purge=1 database unchanged
+PASS seed role user delete purge=0 exception
+PASS seed role user delete purge=0 database unchanged
+PASS seed role user delete purge=1 exception
+PASS seed role user delete purge=1 database unchanged
+PASS seed permission users.view delete exception
+PASS seed permission users.view delete database unchanged
+PASS seed permission users.create delete exception
+PASS seed permission users.create delete database unchanged
+PASS seed permission users.update delete exception
+PASS seed permission users.update delete database unchanged
+PASS seed permission users.delete delete exception
+PASS seed permission users.delete delete database unchanged
+PASS seed permission users.activate delete exception
+PASS seed permission users.activate delete database unchanged
+PASS seed permission roles.view delete exception
+PASS seed permission roles.view delete database unchanged
+PASS seed permission roles.create delete exception
+PASS seed permission roles.create delete database unchanged
+PASS seed permission roles.update delete exception
+PASS seed permission roles.update delete database unchanged
+PASS seed permission roles.delete delete exception
+PASS seed permission roles.delete delete database unchanged
+PASS seed permission roles.assign delete exception
+PASS seed permission roles.assign delete database unchanged
+PASS seed permission permissions.view delete exception
+PASS seed permission permissions.view delete database unchanged
+PASS seed permission permissions.override delete exception
+PASS seed permission permissions.override delete database unchanged
+PASS hierarchy self save exception
+PASS hierarchy self save database unchanged
+PASS hierarchy direct save exception
+PASS hierarchy direct save database unchanged
+PASS hierarchy long save exception
+PASS hierarchy long save database unchanged
+PASS missing parent update exception
+PASS missing parent update database unchanged
+PASS missing parent insert exception
+PASS missing parent insert database unchanged
+PASS valid re-parent
+PASS clear parent
+PASS delete-user other=none exception
+PASS delete-user other=none database unchanged
+PASS delete-user other=active
+PASS delete-user other=inactive exception
+PASS delete-user other=inactive database unchanged
+PASS delete-user other=deleted-role exception
+PASS delete-user other=deleted-role database unchanged
+PASS delete-user other=second-role exception
+PASS delete-user other=second-role database unchanged
+PASS deactivate other=none exception
+PASS deactivate other=none database unchanged
+PASS deactivate other=active
+PASS deactivate other=inactive exception
+PASS deactivate other=inactive database unchanged
+PASS deactivate other=deleted-role exception
+PASS deactivate other=deleted-role database unchanged
+PASS deactivate other=second-role exception
+PASS deactivate other=second-role database unchanged
+PASS revoke other=none exception
+PASS revoke other=none database unchanged
+PASS revoke other=active
+PASS revoke other=inactive exception
+PASS revoke other=inactive database unchanged
+PASS revoke other=deleted-role exception
+PASS revoke other=deleted-role database unchanged
+PASS revoke other=second-role
+PASS delete-role other=none exception
+PASS delete-role other=none database unchanged
+PASS delete-role other=active
+PASS delete-role other=inactive exception
+PASS delete-role other=inactive database unchanged
+PASS delete-role other=deleted-role exception
+PASS delete-role other=deleted-role database unchanged
+PASS delete-role other=second-role
+PASS clear-flag other=none exception
+PASS clear-flag other=none database unchanged
+PASS clear-flag other=active
+PASS clear-flag other=inactive exception
+PASS clear-flag other=inactive database unchanged
+PASS clear-flag other=deleted-role exception
+PASS clear-flag other=deleted-role database unchanged
+PASS clear-flag other=second-role
+PASS RoleWarden\Models\RoleModel unbounded update exception
+PASS RoleWarden\Models\RoleModel unbounded update database unchanged
+PASS RoleWarden\Models\RoleModel unbounded delete exception
+PASS RoleWarden\Models\RoleModel unbounded delete database unchanged
+FAIL RoleWarden\Models\PermissionModel unbounded update exception "no exception"
+PASS RoleWarden\Models\PermissionModel unbounded update database unchanged
+PASS RoleWarden\Models\PermissionModel unbounded delete exception
+PASS RoleWarden\Models\PermissionModel unbounded delete database unchanged
+PASS RoleWarden\Models\UserModel unbounded update exception
+FAIL RoleWarden\Models\UserModel unbounded update database unchanged {"users":{"removed":["{\"id\":\"11\",\"username\":\"m4-user-126\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:13\",\"deleted_at\":null}","{\"id\":\"14\",\"username\":\"m4-user-132\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"22\",\"username\":\"m4-user-149\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"30\",\"username\":\"m4-user-166\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"38\",\"username\":\"m4-user-183\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}","{\"id\":\"6\",\"username\":\"m4-user-115\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}"],"added":["{\"id\":\"11\",\"username\":\"m4-user-126\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"14\",\"username\":\"m4-user-132\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"22\",\"username\":\"m4-user-149\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"30\",\"username\":\"m4-user-166\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"38\",\"username\":\"m4-user-183\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}","{\"id\":\"6\",\"username\":\"m4-user-115\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}"]}}
+PASS RoleWarden\Models\UserModel unbounded delete exception
+PASS RoleWarden\Models\UserModel unbounded delete database unchanged
+FAIL permission unbounded slug update exception "no exception"
+FAIL permission unbounded slug update database unchanged {"acl_permissions":{"removed":["{\"id\":\"13\",\"slug\":\"m4.action191\",\"area\":\"m4\",\"description\":null,\"is_system\":\"0\",\"created_at\":null,\"updated_at\":null}"],"added":["{\"id\":\"13\",\"slug\":\"m4.action191changed\",\"area\":\"m4\",\"description\":null,\"is_system\":\"0\",\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\"}"]}}
+PASS inactive user unbounded activation isolated exception
+FAIL inactive user unbounded activation isolated database unchanged {"users":{"removed":["{\"id\":\"42\",\"username\":\"m4-user-192\",\"status\":null,\"status_message\":null,\"active\":\"0\",\"last_active\":null,\"created_at\":null,\"updated_at\":null,\"deleted_at\":null}"],"added":["{\"id\":\"42\",\"username\":\"m4-user-192\",\"status\":null,\"status_message\":null,\"active\":\"1\",\"last_active\":null,\"created_at\":null,\"updated_at\":\"2026-09-21 21:15:14\",\"deleted_at\":null}"]}}
+PASS non-system leaf role deleted
+PASS non-system permission deleted
+PASS cache delete-role warm direct
+PASS cache delete-role warm descendant
+PASS cache delete-role write
+PASS cache delete-role immediate new truth
+PASS cache delete-role descendant truth
+PASS cache reparent warm direct
+PASS cache reparent warm descendant
+PASS cache reparent write
+PASS cache reparent immediate new truth
+PASS cache reparent descendant truth
+PASS cache delete-permission warm direct
+PASS cache delete-permission warm descendant
+PASS cache delete-permission write
+PASS cache delete-permission immediate new truth
+PASS cache delete-permission descendant truth
+PASS cache revoke warm direct
+PASS cache revoke warm descendant
+PASS cache revoke write
+PASS cache revoke immediate new truth
+PASS cache revoke descendant truth
+PASS cache deactivate warm direct
+PASS cache deactivate warm descendant
+PASS cache deactivate write
+PASS cache deactivate immediate new truth
+PASS cache deactivate descendant truth
+M4 CASES 133 PASS, 5 FAIL
+PASS M4 command completed
+M3 REGRESSION (all original functional controls)
+PASS guest helpers false/empty
+PASS service shared resolver
+PASS HTTP database isolated
+RUNTIME ["8.3.11","v4.7.4","v1.4.1"]
+PASS host provider selected
+PASS Shield permission alias untouched
+PASS guest filter redirects login
+PASS user 1 Shield subclass
+PASS user 1 can users.view
+PASS user 1 can users.update
+PASS user 1 can users.delete
+PASS user 1 can roles.view
+PASS user 1 can extra.unknown
+PASS user 1 any-of
+PASS user 2 Shield subclass
+PASS user 2 can users.view
+PASS user 2 can users.update
+PASS user 2 can users.delete
+PASS user 2 can roles.view
+PASS user 2 can extra.unknown
+PASS user 2 any-of
+PASS user 3 Shield subclass
+PASS user 3 can users.view
+PASS user 3 can users.update
+PASS user 3 can users.delete
+PASS user 3 can roles.view
+PASS user 3 can extra.unknown
+PASS user 3 any-of
+PASS user 4 Shield subclass
+PASS user 4 can users.view
+PASS user 4 can users.update
+PASS user 4 can users.delete
+PASS user 4 can roles.view
+PASS user 4 can extra.unknown
+PASS user 4 any-of
+PASS user 5 Shield subclass
+PASS user 5 can users.view
+PASS user 5 can users.update
+PASS user 5 can users.delete
+PASS user 5 can roles.view
+PASS user 5 can extra.unknown
+PASS user 5 any-of
+PASS direct group only
+PASS group case insensitive
+PASS deleted group omitted
+PASS user 1 rejects all malformed slugs
+PASS user 2 rejects all malformed slugs
+PASS user 3 rejects all malformed slugs
+REPRO uppercase {"entity":"InvalidArgumentException","resolver":"InvalidArgumentException"}
+PASS Shield session login
+PASS helpers authenticated
+PASS any-of route passes
+PASS uppercase filter raises InvalidArgumentException
+PASS uppercase route does not silently grant
+PASS denied route does not execute
+PASS denied message translated
+PASS forgetUser next request same login
+PASS forgetRole child revoked next request
+PASS forgetRole grandchild revoked
+PASS any-of route second permission passes
+PASS filter revocation without logout
+PASS role grant next request
+PASS soft-deleted parent grants nothing
+PASS soft-deleted direct role disappears
+PASS configured Shield users table
+PASS configured table inactive denies
+PASS HTTP automatic delete-role warm
+PASS HTTP automatic delete-role write
+PASS HTTP automatic delete-role same login new truth
+PASS HTTP automatic reparent warm
+PASS HTTP automatic reparent write
+PASS HTTP automatic reparent same login new truth
+PASS HTTP automatic delete-permission warm
+PASS HTTP automatic delete-permission write
+PASS HTTP automatic delete-permission same login new truth
+PASS HTTP automatic revoke warm
+PASS HTTP automatic revoke write
+PASS HTTP automatic revoke same login new truth
+PASS HTTP automatic deactivate warm
+PASS HTTP automatic deactivate write
+PASS HTTP automatic deactivate same login new truth
+PASS HTTP E_ALL no PHP diagnostics
+PASS database restored exactly
+TOTAL 223 PASS, 5 FAIL
+PASS safety sibling .env unchanged; temporary app removed

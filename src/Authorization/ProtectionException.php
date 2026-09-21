@@ -16,6 +16,7 @@ class ProtectionException extends RuntimeException
     public const HIERARCHY_CYCLE = 'hierarchyCycle';
     public const PARENT_MISSING = 'parentMissing';
     public const SYSTEM_RECORD = 'systemRecord';
+    public const ROLE_HAS_CHILDREN = 'roleHasChildren';
 
     public function __construct(public readonly string $reason, string $message = '')
     {

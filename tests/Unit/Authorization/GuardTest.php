@@ -92,6 +92,21 @@ final class GuardTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
+    public function testRoleWithActiveChildrenCannotBeDeleted(): void
+    {
+        $this->role(1);
+        $this->role(2, 1);
+        try {
+            $this->guard->assertRoleDeletable(1);
+            $this->fail('parent with a child was deletable');
+        } catch (ProtectionException $e) {
+            $this->assertSame(ProtectionException::ROLE_HAS_CHILDREN, $e->reason);
+        }
+
+        $this->guard->assertRoleDeletable(2);
+        $this->addToAssertionCount(1);
+    }
+
     public function testSystemPermissionCannotBeDeleted(): void
     {
         $this->protection->systemPermissions = ['users.view'];

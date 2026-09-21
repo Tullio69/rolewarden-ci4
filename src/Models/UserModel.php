@@ -28,8 +28,11 @@ class UserModel extends ShieldUserModel
      */
     protected function guardDeactivate(array $data): array
     {
+        // Require the key before the write: afterUpdate would only fail once the rows changed.
+        $ids = $this->ids($data);
+
         if (array_key_exists('active', $data['data'] ?? []) && ! (bool) $data['data']['active']) {
-            foreach ($this->ids($data) as $id) {
+            foreach ($ids as $id) {
                 service('rolewardenGuard')->assertUserRemovable($id);
             }
         }

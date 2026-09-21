@@ -10,7 +10,7 @@
 **In lavorazione:** nessuno
 **Agente:** -
 **Dalle:** -
-**Scope:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -189,3 +189,16 @@ Formato di ogni voce:
 - Stato: parziale (in attesa del collaudo Codex)
 - Note per il prossimo: scelte mie da confermare o correggere. (1) "Super admin attivo" = utente con `users.active = 1` che ha direttamente un ruolo `is_super_admin` non eliminato; il flag non si eredita. (2) Le protezioni stanno nei callback dei model e in `UserRoles`, quindi scritture con query builder o SQL diretto le aggirano: e' un limite dichiarato. (3) Le scritture vanno per chiave primaria; un `where()` non vincolato lancia `InvalidArgumentException`. (4) Invalidazione cache coperta per ruoli, permessi, utenti e assegnazioni; restano fuori `acl_role_permissions` e `acl_user_permissions`, che avranno il loro punto di scrittura in M5 e dovranno chiamare `forgetRole`/`forgetUser`. (5) Un ruolo eliminato logicamente mantiene `parent_id`: i figli restano collegati ma il resolver si ferma al padre mancante.
 
+### [2026-09-21 23:17] - Codex
+- Tipo: review
+- Scope: `tests/Integration/verify-m4.php`, `verify-m4.ps1`, `M4Cases.php`, `m4-output.txt`, `M4-REPORT.md`; `_AI-LOG.md`
+- Cosa ho fatto: ripreso il lock Codex e il verificatore M4 gia' preparato; completato il collaudo indipendente su HEAD `9ca97d574620e737a8ec627fc21773e8033b090e` (`7e688c0` piu' correzione di una riga del log), senza leggere corpi implementativi, adapter o test unitari. Esito: 224 PASS, 5 FAIL, due difetti: PermissionModel permette update senza argomento chiave primaria; UserModel lancia InvalidArgumentException ma dopo aver aggiornato le righe. Riproduzioni isolate e differenze DB nel report/output. Passano cicli/padre mancante, record di sistema, matrice ultimo super admin e secondo ruolo, invalidazione immediata e HTTP nella stessa sessione senza forget/logout. Conservati tutti i controlli funzionali M3; Resolver/AuthorizationStore/Cache invariati da 246d031 e confine framework superato.
+- Stato: completato; M4 non approvata, due difetti da correggere.
+- Note per il prossimo: PHP 8.3.11 / CI4 4.7.4 / Shield 1.4.1. Solo rolewarden_test, snapshot e ripristino esatto verificati; rolewarden mai selezionato o modificato. Server fermato, app temporanea rimossa, hash .env sorella invariato, nessuna credenziale scritta nei file. 223 PASS nel footer PHP piu' un PASS cleanup PowerShell. Ambiguita' separate e non decise, compreso contrasto fra precedente rifiuto eliminazione padre con figli e comportamento dichiarato alle 23:35. Nessuna modifica produzione/spec, nessun commit. Lock rilasciato; timestamp host anteriore alla voce Claude 23:35, ordine effettivo mantenuto.
+
+### [2026-09-22 00:10] - Claude
+- Tipo: fix
+- Scope: `src/Authorization/Guard.php`, `src/Authorization/ProtectionException.php`, `src/Models/PermissionModel.php`, `src/Models/UserModel.php`, `src/Language/en/RoleWarden.php`, `tests/Unit/Authorization/GuardTest.php`
+- Cosa ho fatto: correzione dei due difetti del collaudo M4 (224 PASS, 5 FAIL) e di una mia omissione. D1: `PermissionModel` non richiedeva la chiave primaria sugli update; ora la richiede e, prima e dopo la scrittura, raccoglie e invalida i ruoli che detengono il permesso (rinominarlo cambia cosa possono fare). D2: `UserModel` controllava la chiave solo dopo la scrittura, quando l'eccezione di `afterUpdate` arrivava a righe gia' modificate; ora la esige in `beforeUpdate`, prima di scrivere. Omissione: la decisione 4 dell'autore (voce D1/M1, "in M4 lo strato di scrittura rifiuta di eliminare un ruolo che ha figli attivi, con messaggio che dice di spostarli o eliminarli prima") non era implementata, e nella voce di M4 avevo scritto il contrario per il ruolo eliminato logicamente. Ora `Guard::assertRoleDeletable` rifiuta con `ProtectionException::ROLE_HAS_CHILDREN` e messaggio `RoleWarden.protection.roleHasChildren`; test scritto prima. L'ambiguita' 3 del report M4 va quindi considerata risolta dalla decisione dell'autore e non una scelta libera: la voce di M4 sul padre eliminato logicamente e' superata.
+- Stato: parziale (in attesa della riverifica Codex)
+- Note per il prossimo: decisioni gia' prese dall'autore e NON ancora implementate, da fare in M5 sui punti di scrittura: (3) `granted` di `acl_user_permissions` solo 0/1, validato nel model con test; (5) uno slug di ruolo riservato da un ruolo eliminato logicamente deve produrre un errore che dice di ripristinare quel ruolo o scegliere un altro slug, non un errore SQL. Restano anche i punti gia' elencati: invalidazione per `acl_role_permissions` e `acl_user_permissions`.

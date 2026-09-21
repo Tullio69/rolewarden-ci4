@@ -54,6 +54,11 @@ class Guard
             throw new ProtectionException(ProtectionException::SYSTEM_RECORD);
         }
 
+        // Decided by the author: move or delete the children first, never orphan them silently.
+        if ($this->store->childRoleIds($roleId) !== []) {
+            throw new ProtectionException(ProtectionException::ROLE_HAS_CHILDREN);
+        }
+
         $this->assertRoleStopsBeingSuper($roleId);
     }
 

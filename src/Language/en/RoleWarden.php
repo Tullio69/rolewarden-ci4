@@ -9,5 +9,6 @@ return [
         'hierarchyCycle' => 'A role cannot inherit from itself or from one of its descendants.',
         'parentMissing' => 'The parent role does not exist.',
         'systemRecord' => 'System records cannot be deleted.',
+        'roleHasChildren' => 'This role has child roles. Move or delete them first.',
     ],
 ];

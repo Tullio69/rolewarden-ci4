@@ -17,7 +17,9 @@ class PermissionModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = ['slug', 'area', 'description', 'is_system'];
     protected $useTimestamps = true;
+    protected $beforeUpdate = ['collectHolders'];
     protected $beforeDelete = ['guardDelete'];
+    protected $afterUpdate = ['forgetHolders'];
     protected $afterDelete = ['forgetHolders'];
 
     /** @var list<int> */
@@ -46,6 +48,25 @@ class PermissionModel extends Model
 
         foreach ($slugs as $row) {
             service('rolewardenGuard')->assertPermissionDeletable($row['slug']);
+        }
+
+        return $this->collectHolders($data);
+    }
+
+    /**
+     * Renaming or deleting a permission changes what its holders can do, so
+     * remember them before the write and forget them after.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    protected function collectHolders(array $data): array
+    {
+        $ids = array_map('intval', (array) ($data['id'] ?? []));
+
+        if ($ids === []) {
+            throw new InvalidArgumentException('Permissions must be written by primary key.');
         }
 
         $links = $this->db->table(config('RoleWarden')->table('role_permissions'))->select('role_id')->whereIn('permission_id', $ids)->get()->getResultArray();

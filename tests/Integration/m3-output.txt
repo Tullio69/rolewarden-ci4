@@ -1,0 +1,76 @@
+PASS target commit 41db1d1
+PASS Authorization unchanged since 246d031
+PASS Authorization no framework references outside comments
+PASS rolewarden_test emptied after snapshot
+PASS temporary app configuration isolated
+PASS migration CodeIgniter\Settings
+PASS migration CodeIgniter\Shield
+PASS migration RoleWarden
+PASS guest helpers false/empty
+PASS service shared resolver
+PASS HTTP database isolated
+RUNTIME ["8.3.11","v4.7.4","v1.4.1"]
+PASS host provider selected
+PASS Shield permission alias untouched
+PASS guest filter redirects login
+PASS user 1 Shield subclass
+PASS user 1 can users.view
+PASS user 1 can users.update
+PASS user 1 can users.delete
+PASS user 1 can roles.view
+PASS user 1 can extra.unknown
+PASS user 1 any-of
+PASS user 2 Shield subclass
+PASS user 2 can users.view
+PASS user 2 can users.update
+PASS user 2 can users.delete
+PASS user 2 can roles.view
+PASS user 2 can extra.unknown
+PASS user 2 any-of
+PASS user 3 Shield subclass
+PASS user 3 can users.view
+PASS user 3 can users.update
+PASS user 3 can users.delete
+PASS user 3 can roles.view
+PASS user 3 can extra.unknown
+PASS user 3 any-of
+PASS user 4 Shield subclass
+PASS user 4 can users.view
+PASS user 4 can users.update
+PASS user 4 can users.delete
+PASS user 4 can roles.view
+PASS user 4 can extra.unknown
+PASS user 4 any-of
+PASS user 5 Shield subclass
+PASS user 5 can users.view
+PASS user 5 can users.update
+PASS user 5 can users.delete
+PASS user 5 can roles.view
+PASS user 5 can extra.unknown
+PASS user 5 any-of
+PASS direct group only
+PASS group case insensitive
+PASS deleted group omitted
+FAIL user 1 rejects all malformed slugs [true,true,false,true,true,true,true,true]
+FAIL user 2 rejects all malformed slugs [true,true,false,true,true,true,true,true]
+FAIL user 3 rejects all malformed slugs [true,true,false,true,true,true,true,true]
+REPRO uppercase {"entity":true,"resolver":"InvalidArgumentException"}
+PASS Shield session login
+PASS helpers authenticated
+PASS any-of route passes
+PASS denied route does not execute
+PASS denied message translated
+PASS forgetUser next request same login
+PASS forgetRole child revoked next request
+PASS forgetRole grandchild revoked
+PASS any-of route second permission passes
+PASS filter revocation without logout
+PASS role grant next request
+PASS soft-deleted parent grants nothing
+PASS soft-deleted direct role disappears
+PASS configured Shield users table
+PASS configured table inactive denies
+PASS HTTP E_ALL no PHP diagnostics
+PASS database restored exactly
+TOTAL 69 PASS, 3 FAIL
+PASS safety sibling .env unchanged; temporary app removed

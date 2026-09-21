@@ -18,7 +18,7 @@ class User extends ShieldUser
      */
     public function can(string ...$permissions): bool
     {
-        return service('rolewarden')->canAny((int) $this->id, array_map('strtolower', array_values($permissions)));
+        return service('rolewarden')->canAny((int) $this->id, array_values($permissions));
     }
 
     public function hasPermission(string $permission): bool

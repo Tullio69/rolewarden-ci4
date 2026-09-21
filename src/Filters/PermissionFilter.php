@@ -15,7 +15,7 @@ class PermissionFilter extends AbstractAuthFilter
 {
     protected function isAuthorized(array $arguments): bool
     {
-        return service('rolewarden')->canAny((int) auth()->id(), array_map('strtolower', array_values($arguments)));
+        return service('rolewarden')->canAny((int) auth()->id(), array_values($arguments));
     }
 
     protected function redirectToDeniedUrl(): RedirectResponse

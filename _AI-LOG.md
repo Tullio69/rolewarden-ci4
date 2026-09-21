@@ -153,3 +153,24 @@ Formato di ogni voce:
 - Cosa ho fatto: M3 Aggancio Shield. Store su DB CI4 e cache sul driver CI4 dietro i contratti di M2; servizio `rolewarden`; entita' utente che estende quella di Shield con `can()`/`hasPermission()` instradati al resolver (semantica "almeno uno" come Shield); `inGroup()`/`getGroups()` mappati sugli slug dei ruoli assegnati, senza ereditarieta'; filtro di rotta con alias `can`; helper `can`, `can_any`, `can_all`, `permissions`. `src/Authorization/` non toccato. Unit test e phpstan verdi.
 - Stato: parziale (in attesa del collaudo Codex)
 - Note per il prossimo: decisioni dell'utente: l'host imposta `Config\Auth::$userProvider = \RoleWarden\Models\UserModel::class` con una riga (nessun Registrar che lo sovrascrive); `inGroup('x')` = ruolo assegnato con slug `x`. Limiti noti: `addGroup/removeGroup/addPermission` di Shield scrivono ancora nelle tabelle Shield e non influenzano il resolver; l'invalidazione della cache alle scritture arriva con M4/M5. Alias filtro `can` (non `permission`, gia' di Shield). Uno slug non valido in `can()` lancia `InvalidArgumentException`, anche dal filtro. Collaudare solo su `rolewarden_test`, mai su `rolewarden`.
+
+### [2026-09-21 22:12] - Codex
+- Tipo: review
+- Scope: `tests/Integration/verify-m3.php`, `verify-m3.ps1`, `m3-output.txt`, `M3-REPORT.md`; `_AI-LOG.md`
+- Cosa ho fatto: preparato collaudo M3 contro specifica e decisioni sul commit `41db1d1`: provider Shield, precedenza, gruppi diretti, filtro/helper, richieste HTTP con stessa sessione e invalidazione, soft delete e nome tabella utenti configurabile. Esecuzione bloccata prima di ogni operazione DB: connessione 127.0.0.1:3306 rifiutata (mysqli 2002), Docker engine assente. Quattro controlli eseguiti PASS (commit, Authorization invariato da 246d031, scansione meccanica confine framework, pulizia app temporanea/hash .env sorella); zero FAIL, controlli funzionali NON ESEGUITI. Sintassi PHP e diff --check superati.
+- Stato: bloccato, M3 non approvata; verificatore funzionale e fixture ancora da validare quando il DB sara' disponibile.
+- Note per il prossimo: avviare il DB previsto e rilanciare verify-m3.ps1 con RW_DB_PASSWORD nell'ambiente (mai in file); override opzionali RW_DB_HOSTNAME/RW_DB_PORT/RW_DB_USERNAME. Nessun accesso al DB rolewarden e nessuna modifica a rolewarden_test; app temporanea rimossa, sorella invariata. Ambiguita' pregresse separate nel report, nessuna scelta arbitraria. Deviazione metodologica dichiarata: estrazione iniziale firme Resolver con contesto ha esposto accidentalmente alcune righe di corpo; nessuna lettura degli altri file implementativi vietati o test unitari. Nessuna modifica produzione/spec, nessun commit. Lock rilasciato. Timestamp host; voce collocata dopo il passaggio M3 indipendentemente dagli orari precedenti.
+
+### [2026-09-21 22:54] - Codex
+- Tipo: review
+- Scope: `tests/Integration/verify-m3.php`, `verify-m3.ps1`, `m3-output.txt`, `M3-REPORT.md`; `_AI-LOG.md`
+- Cosa ho fatto: ripreso e completato il collaudo M3 su `41db1d1`, con DB disponibile. Corrette solo le fixture e l'isolamento del runner (classmap Composer della app sorella, bootstrap router HTTP, colonna permission inesistente). Esito finale: 70 PASS, 3 FAIL, un difetto D1: can('USERS.view') dell'entita' non rifiuta lo slug maiuscolo, mentre il resolver lancia InvalidArgumentException; riprodotto su utente ordinario, super admin e inattivo. Precedenza, gruppi diretti case-insensitive, filtri/helper, invalidazione tra richieste senza logout, soft delete e tabella utenti configurabile passano.
+- Stato: completato, M3 non approvata; dettagli e riproduzione minima nel report.
+- Note per il prossimo: runtime PHP 8.3.11 / CI4 4.7.4 / Shield 1.4.1. Authorization invariato da 246d031, src invariato dal commit richiesto; nessuna lettura implementativa o test unitario nella ripresa. Ambiguita' pregresse separate, non decise. rolewarden_test svuotato dopo snapshot e ripristinato con confronto riuscito; rolewarden mai selezionato o modificato. Server fermato, app temporanea rimossa, .env sorella invariato. Nessuna credenziale in file, nessun commit. Lock trovato libero e riacquisito all'inizio della ripresa, ora rilasciato.
+
+### [2026-09-21 22:50] - Claude
+- Tipo: fix
+- Scope: `src/Entities/User.php`, `src/Filters/PermissionFilter.php`
+- Cosa ho fatto: correzione del difetto D1 del collaudo M3 di Codex (70 PASS, 3 FAIL): l'entita' e il filtro portavano gli slug in minuscolo prima del resolver, mascherando uno slug maiuscolo non valido. Rimossa la normalizzazione: `can('USERS.view')` ora lancia `InvalidArgumentException` come il resolver. Nessun cambio a `inGroup()`, che resta case-insensitive.
+- Stato: parziale (in attesa della riverifica Codex)
+- Note per il prossimo: le sei ambiguita' di specifica elencate in `tests/Integration/M3-REPORT.md` restano aperte e vanno decise dall'autore, non da noi.

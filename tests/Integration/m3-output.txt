@@ -1,4 +1,4 @@
-PASS target commit 41db1d1
+PASS target commit 1f77d6b
 PASS Authorization unchanged since 246d031
 PASS Authorization no framework references outside comments
 PASS rolewarden_test emptied after snapshot
@@ -51,13 +51,15 @@ PASS user 5 any-of
 PASS direct group only
 PASS group case insensitive
 PASS deleted group omitted
-FAIL user 1 rejects all malformed slugs [true,true,false,true,true,true,true,true]
-FAIL user 2 rejects all malformed slugs [true,true,false,true,true,true,true,true]
-FAIL user 3 rejects all malformed slugs [true,true,false,true,true,true,true,true]
-REPRO uppercase {"entity":true,"resolver":"InvalidArgumentException"}
+PASS user 1 rejects all malformed slugs
+PASS user 2 rejects all malformed slugs
+PASS user 3 rejects all malformed slugs
+REPRO uppercase {"entity":"InvalidArgumentException","resolver":"InvalidArgumentException"}
 PASS Shield session login
 PASS helpers authenticated
 PASS any-of route passes
+PASS uppercase filter raises InvalidArgumentException
+PASS uppercase route does not silently grant
 PASS denied route does not execute
 PASS denied message translated
 PASS forgetUser next request same login
@@ -72,5 +74,6 @@ PASS configured Shield users table
 PASS configured table inactive denies
 PASS HTTP E_ALL no PHP diagnostics
 PASS database restored exactly
-TOTAL 69 PASS, 3 FAIL
+TOTAL 74 PASS, 0 FAIL
 PASS safety sibling .env unchanged; temporary app removed
+FINAL 75 PASS, 0 FAIL; exit code 0; D1 CLOSED; M3 APPROVED within agreed scope; six specification ambiguities remain undecided

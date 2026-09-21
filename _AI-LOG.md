@@ -174,3 +174,10 @@ Formato di ogni voce:
 - Cosa ho fatto: correzione del difetto D1 del collaudo M3 di Codex (70 PASS, 3 FAIL): l'entita' e il filtro portavano gli slug in minuscolo prima del resolver, mascherando uno slug maiuscolo non valido. Rimossa la normalizzazione: `can('USERS.view')` ora lancia `InvalidArgumentException` come il resolver. Nessun cambio a `inGroup()`, che resta case-insensitive.
 - Stato: parziale (in attesa della riverifica Codex)
 - Note per il prossimo: le sei ambiguita' di specifica elencate in `tests/Integration/M3-REPORT.md` restano aperte e vanno decise dall'autore, non da noi.
+
+### [2026-09-21 22:59] - Codex
+- Tipo: review
+- Scope: `tests/Integration/verify-m3.php`, `M3-REPORT.md`, `m3-output.txt`; `_AI-LOG.md`
+- Cosa ho fatto: riverifica M3 a HEAD `1f77d6b8074e271b232596f580a5f7dfc697cc9b` mediante `verify-m3.ps1`, senza leggere implementazione o test unitari. Conservati tutti i 73 controlli precedenti, aggiornato il target commit; i 70 PASS restano verdi e i tre FAIL D1 ora passano. Aggiunti due controlli: filtro can con USERS.view lancia InvalidArgumentException e rotta HTTP maiuscola non esegue il controller (500 con InvalidArgumentException), per lo stesso utente autorizzato sulla rotta minuscola. Totale finale 75 PASS, 0 FAIL (74 PHP piu' cleanup PowerShell), exit code 0. Aggiornati report e output.
+- Stato: completato; D1 chiuso, M3 approvata nel perimetro concordato.
+- Note per il prossimo: sei ambiguita' di specifica separate e non decise. PHP 8.3.11 / CI4 4.7.4 / Shield 1.4.1, E_ALL senza diagnostica PHP. Solo rolewarden_test, snapshot e ripristino con confronto esatto riuscito; rolewarden mai selezionato o modificato. Server fermato, app temporanea rimossa, hash .env sorella invariato. Authorization invariato da 246d031, src e HEAD invariati; lint PHP e diff --check superati. Nessuna credenziale scritta in file, nessun commit. Lock acquisito prima delle modifiche e rilasciato a fine verifica.

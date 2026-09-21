@@ -30,7 +30,7 @@ function command(array $args): array
 }
 $repo = dirname(__DIR__, 2);
 [$exit, $head] = command(['git','-C',$repo,'rev-parse','HEAD']);
-check('target commit 41db1d1', $exit === 0 && trim($head) === '41db1d15eba787d8a5a89d46487fff961ff793fa');
+check('target commit 1f77d6b', $exit === 0 && trim($head) === '1f77d6b8074e271b232596f580a5f7dfc697cc9b');
 [$exit] = command(['git','-C',$repo,'diff','--quiet','246d031','--','src/Authorization']);
 check('Authorization unchanged since 246d031', $exit === 0);
 $frameworkTokens = 0;
@@ -129,6 +129,12 @@ class M3Probe extends \CodeIgniter\Controller {
    if ($action === 'forgetUser') { $r->forgetUser((int)$id); }
    if ($action === 'forgetRole') { $r->forgetRole((int)$id); }
    if ($action === 'message') { return $this->response->setJSON(['error'=>session()->getFlashdata('error'),'expected'=>lang('RoleWarden.accessDenied')]); }
+   if ($action === 'filter-uppercase') {
+    $filter = config('Filters')->aliases['can'];
+    try { (new $filter())->before($this->request, ['USERS.view']); $result = 'no exception'; }
+    catch (\InvalidArgumentException) { $result = 'InvalidArgumentException'; }
+    return $this->response->setJSON(['result'=>$result]);
+   }
    if ($action === 'uppercase') {
     $u = $provider->findById((int)$id); $result = [];
     foreach (['entity'=>fn()=>$u->can('USERS.view'), 'resolver'=>fn()=>$r->can((int)$id,'USERS.view')] as $key=>$call) {
@@ -178,6 +184,7 @@ $routes->get('m3/(:segment)/(:num)', 'M3Probe::run/$1/$2');
 $routes->get('m3/(:segment)', 'M3Probe::run/$1');
 $routes->get('m3-allow', 'M3Probe::allowed', ['filter'=>'can:users.view,users.update']);
 $routes->get('m3-deny', 'M3Probe::allowed', ['filter'=>'can:users.delete']);
+$routes->get('m3-uppercase', 'M3Probe::allowed', ['filter'=>'can:USERS.view']);
 PHP);
     @mkdir($app . '/app/Commands');
     file_put_contents($app . '/app/Commands/M3Env.php', <<<'PHP'
@@ -256,6 +263,9 @@ PHP);
     if (isset($helpers[3]) && is_array($helpers[3])) { sort($helpers[3]); }
     check('helpers authenticated',$helpers===[true,true,true,['roles.view','users.update','users.view']],$helpers);
     check('any-of route passes',http('m3-allow')['json']===['passed'=>true]);
+    check('uppercase filter raises InvalidArgumentException',(http('m3/filter-uppercase')['json']['result']??null)==='InvalidArgumentException');
+    $uppercase=http('m3-uppercase');
+    check('uppercase route does not silently grant',$uppercase['status']===500&&($uppercase['json']['passed']??false)!==true&&str_contains($uppercase['body'],'InvalidArgumentException'),$uppercase['status']);
     $denied=http('m3-deny'); $message=http('m3/message')['json'];
     check('denied route does not execute',($denied['json']['passed']??false)!==true&&($denied['status']>=300),$denied['status']);
     check('denied message translated',is_string($message['expected']??null)&&$message['expected']!=='RoleWarden.accessDenied'&&(($message['error']??null)===$message['expected']||str_contains($denied['body'],$message['expected'])),$message);

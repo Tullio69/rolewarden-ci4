@@ -1,0 +1,12 @@
+PASS Target HEAD 670dd97
+PASS PHP 8.3.11
+PASS Extension mysqli
+PASS Extension curl
+PASS Extension dom
+BLOCKED Explicit RW_DB_USERNAME / RW_DB_PASSWORD missing; no DB connection attempted
+Functional panel checks: NOT EXECUTED by this preflight
+Preflight: 5 PASS, 1 BLOCKED
+
+[2026-09-22 08:01] RESUME HEAD 670dd97730bb121d06f2c355034ecec0fef96089
+BLOCKED: RW_DB_USERNAME/RW_DB_PASSWORD/RW_DB_HOSTNAME/RW_DB_PORT absent in Process, User, Machine.
+Functional checks: 0 PASS, 0 FAIL, NOT RUN. No database connection or mutation. No temporary application/server created.

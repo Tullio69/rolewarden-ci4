@@ -277,9 +277,32 @@ class M4Cases extends \CodeIgniter\CLI\BaseCommand
             }
             $this->check('rename override-only holder stored link intact',
                 db_connect()->table('acl_user_permissions')->where(['user_id'=>$holders[3],'permission_id'=>$p,'granted'=>1])->countAllResults()===1);
-            $resolver->forgetUser($holders[3]);
-            $this->check('rename override-only holder correct after explicit forget',
+            $this->check('rename override-only holder remains correct without explicit forget',
                 !$resolver->can($holders[3],$old)&&$resolver->can($holders[3],$new));
+            foreach (['rename','delete'] as $operation) {
+                [$p,$old]=$this->permission(); $new=$old.'renamed';
+                $parent=$this->role(); $child=$this->role($parent); $super=$this->role(null,1);
+                $holders=[$this->user(),$this->user(),$this->user(),$this->user()];
+                $this->link($holders[0],$parent); $this->link($holders[1],$child);
+                $this->link($holders[3],$super);
+                $this->add('acl_role_permissions',['role_id'=>$parent,'permission_id'=>$p]);
+                $this->add('acl_user_permissions',['user_id'=>$holders[2],'permission_id'=>$p,'granted'=>1]);
+                // No permission grant on the super role: a stale negative must visibly change.
+                $this->add('acl_user_permissions',['user_id'=>$holders[3],'permission_id'=>$p,'granted'=>0]);
+                foreach ($holders as $i=>$u) {
+                    $this->check('D3 '.$operation.' warm old holder '.$i,$resolver->can($u,$old)===($i!==3));
+                    $this->check('D3 '.$operation.' warm new holder '.$i,$resolver->can($u,$new)===($i===3));
+                }
+                $this->allowed('D3 '.$operation.' permission write',
+                    fn()=>$operation==='rename' ? (new PermissionModel())->update($p,['slug'=>$new]) : (new PermissionModel())->delete($p),
+                    fn()=>$operation==='rename' ? $this->row('acl_permissions',$p)['slug']===$new : $this->row('acl_permissions',$p)===null);
+                foreach ($holders as $i=>$u) {
+                    $this->check('D3 '.$operation.' immediate old holder '.$i,$resolver->can($u,$old)===($i===3));
+                    $this->check('D3 '.$operation.' immediate new holder '.$i,$resolver->can($u,$new)===($operation==='rename' ? $i!==3 : $i===3));
+                }
+                $this->check('D3 '.$operation.' override links',
+                    db_connect()->table('acl_user_permissions')->where('permission_id',$p)->countAllResults()===($operation==='rename'?2:0));
+            }
             // Clear the test cache only after all M4 assertions, before independent M3 fixtures reuse IDs.
             cache()->clean();
         } catch (\Throwable $e) {

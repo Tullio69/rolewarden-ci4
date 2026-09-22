@@ -1,6 +1,6 @@
-PASS target HEAD 91039c7
+PASS target HEAD 52d8726
 PASS Resolver and original contracts unchanged since 246d031
-PASS Authorization no framework references outside comments
+PASS Authorization unchanged since prior M4 boundary verification
 PASS rolewarden_test emptied after snapshot
 PASS temporary app configuration isolated
 PASS migration CodeIgniter\Settings
@@ -244,13 +244,49 @@ PASS rename old slug denied holder 1
 PASS rename new slug holder 1
 PASS rename old slug denied holder 2
 PASS rename new slug holder 2
-FAIL rename old slug denied holder 3
-FAIL rename new slug holder 3
+PASS rename old slug denied holder 3
+PASS rename new slug holder 3
 PASS rename old slug denied holder 4
 PASS rename new slug holder 4
 PASS rename override-only holder stored link intact
-PASS rename override-only holder correct after explicit forget
-M4 CASES 240 PASS, 2 FAIL
+PASS rename override-only holder remains correct without explicit forget
+PASS D3 rename warm old holder 0
+PASS D3 rename warm new holder 0
+PASS D3 rename warm old holder 1
+PASS D3 rename warm new holder 1
+PASS D3 rename warm old holder 2
+PASS D3 rename warm new holder 2
+PASS D3 rename warm old holder 3
+PASS D3 rename warm new holder 3
+PASS D3 rename permission write
+PASS D3 rename immediate old holder 0
+PASS D3 rename immediate new holder 0
+PASS D3 rename immediate old holder 1
+PASS D3 rename immediate new holder 1
+PASS D3 rename immediate old holder 2
+PASS D3 rename immediate new holder 2
+PASS D3 rename immediate old holder 3
+PASS D3 rename immediate new holder 3
+PASS D3 rename override links
+PASS D3 delete warm old holder 0
+PASS D3 delete warm new holder 0
+PASS D3 delete warm old holder 1
+PASS D3 delete warm new holder 1
+PASS D3 delete warm old holder 2
+PASS D3 delete warm new holder 2
+PASS D3 delete warm old holder 3
+PASS D3 delete warm new holder 3
+PASS D3 delete permission write
+PASS D3 delete immediate old holder 0
+PASS D3 delete immediate new holder 0
+PASS D3 delete immediate old holder 1
+PASS D3 delete immediate new holder 1
+PASS D3 delete immediate old holder 2
+PASS D3 delete immediate new holder 2
+PASS D3 delete immediate old holder 3
+PASS D3 delete immediate new holder 3
+PASS D3 delete override links
+M4 CASES 278 PASS, 0 FAIL
 PASS M4 command completed
 M3 REGRESSION (all original functional controls)
 PASS guest helpers false/empty
@@ -342,11 +378,53 @@ PASS HTTP rename new slug granted same login
 PASS HTTP override-only rename warm
 PASS HTTP override-only rename write
 PASS HTTP override-only rename same login
-FAIL HTTP override-only rename old slug denied
-FAIL HTTP override-only rename new slug granted
-REPRO override-only rename {"user":12,"permission":5,"old":true,"new":false}
-PASS HTTP override-only rename correct after explicit forget
+PASS HTTP override-only rename old slug denied
+PASS HTTP override-only rename new slug granted
+REPRO override-only rename {"user":12,"permission":5,"old":false,"new":true}
+PASS HTTP override-only rename remains correct without explicit forget
+PASS HTTP D3 role rename warm old
+PASS HTTP D3 role rename warm new
+PASS HTTP D3 role rename write
+PASS HTTP D3 role rename immediate
+PASS HTTP D3 role rename same session
+PASS HTTP D3 role rename next request old
+PASS HTTP D3 role rename next request new
+PASS HTTP D3 role delete warm old
+PASS HTTP D3 role delete warm new
+PASS HTTP D3 role delete write
+PASS HTTP D3 role delete immediate
+PASS HTTP D3 role delete same session
+PASS HTTP D3 role delete next request old
+PASS HTTP D3 role delete next request new
+PASS HTTP D3 positive rename warm old
+PASS HTTP D3 positive rename warm new
+PASS HTTP D3 positive rename write
+PASS HTTP D3 positive rename immediate
+PASS HTTP D3 positive rename same session
+PASS HTTP D3 positive rename next request old
+PASS HTTP D3 positive rename next request new
+PASS HTTP D3 positive delete warm old
+PASS HTTP D3 positive delete warm new
+PASS HTTP D3 positive delete write
+PASS HTTP D3 positive delete immediate
+PASS HTTP D3 positive delete same session
+PASS HTTP D3 positive delete next request old
+PASS HTTP D3 positive delete next request new
+PASS HTTP D3 negative rename warm old
+PASS HTTP D3 negative rename warm new
+PASS HTTP D3 negative rename write
+PASS HTTP D3 negative rename immediate
+PASS HTTP D3 negative rename same session
+PASS HTTP D3 negative rename next request old
+PASS HTTP D3 negative rename next request new
+PASS HTTP D3 negative delete warm old
+PASS HTTP D3 negative delete warm new
+PASS HTTP D3 negative delete write
+PASS HTTP D3 negative delete immediate
+PASS HTTP D3 negative delete same session
+PASS HTTP D3 negative delete next request old
+PASS HTTP D3 negative delete next request new
 PASS HTTP E_ALL no PHP diagnostics
 PASS database restored exactly
-TOTAL 339 PASS, 4 FAIL
+TOTAL 421 PASS, 0 FAIL
 PASS safety sibling .env unchanged; temporary app removed

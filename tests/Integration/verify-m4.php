@@ -30,17 +30,11 @@ function command(array $args): array
 }
 $repo = dirname(__DIR__, 2);
 [$exit, $head] = command(['git','-C',$repo,'rev-parse','HEAD']);
-check('target HEAD 91039c7', $exit === 0 && trim($head) === '91039c7f4e873ac6e0978f0b634f42c4866706f5');
+check('target HEAD 52d8726', $exit === 0 && trim($head) === '52d8726874e4ae9f52a9eb0b00d323615c59ff62');
 [$exit] = command(['git','-C',$repo,'diff','--quiet','246d031','--','src/Authorization/Resolver.php','src/Authorization/Contracts/AuthorizationStore.php','src/Authorization/Contracts/Cache.php']);
 check('Resolver and original contracts unchanged since 246d031', $exit === 0);
-$frameworkTokens = 0;
-foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($repo.'/src/Authorization')) as $file) {
-    if ($file->getExtension() !== 'php') { continue; }
-    foreach (token_get_all(file_get_contents($file->getPathname())) as $token) {
-        if (is_array($token) && !in_array($token[0], [T_COMMENT,T_DOC_COMMENT], true) && preg_match('/CodeIgniter|Shield/i',$token[1])) { $frameworkTokens++; }
-    }
-}
-check('Authorization no framework references outside comments', $frameworkTokens === 0);
+[$exit] = command(['git','-C',$repo,'diff','--quiet','91039c7','--','src/Authorization']);
+check('Authorization unchanged since prior M4 boundary verification', $exit === 0);
 // Connection coordinates only; the password is always taken from RW_DB_PASSWORD.
 $env = file_get_contents($sibling . '/.env');
 foreach (['hostname' => '127.0.0.1', 'port' => '3306', 'username' => 'rolewarden'] as $key => $default) {
@@ -134,7 +128,11 @@ class M3Probe extends \CodeIgniter\Controller {
      'm4-revoke'=>(new \RoleWarden\Models\UserRoles())->revoke((int)auth()->id(),(int)$id),
      'm4-deactivate'=>(new \RoleWarden\Models\UserModel())->update((int)$id,['active'=>0]),
     };
-    return $this->response->setJSON(['written'=>$result!==false]);
+    $response=['written'=>$result!==false];
+    if (in_array($action,['m4-rename-permission','m4-delete-permission'],true)) {
+     $response['immediate']=[auth()->user()->can('users.view'),auth()->user()->can('users.renamed')];
+    }
+    return $this->response->setJSON($response);
    }
    if ($action === 'login') { auth()->login($provider->findById((int)$id)); }
    if ($action === 'forgetUser') { $r->forgetUser((int)$id); }
@@ -353,9 +351,37 @@ PHP);
     check('HTTP override-only rename old slug denied',($fresh['can']['users.view']??null)===false);
     check('HTTP override-only rename new slug granted',($fresh['can']['users.renamed']??null)===true);
     echo 'REPRO override-only rename '.json_encode(['user'=>$overrideUser,'permission'=>$overridePermission,'old'=>$fresh['can']['users.view']??null,'new'=>$fresh['can']['users.renamed']??null])."\n";
-    http('m3/forgetUser/'.$overrideUser);
     $fresh=http('m3/state')['json'];
-    check('HTTP override-only rename correct after explicit forget',($fresh['can']['users.view']??null)===false&&($fresh['can']['users.renamed']??null)===true);
+    check('HTTP override-only rename remains correct without explicit forget',($fresh['can']['users.view']??null)===false&&($fresh['can']['users.renamed']??null)===true);
+    foreach (['role','positive','negative'] as $kind) {
+        foreach (['rename','delete'] as $operation) {
+            // Independent fixtures; never mutate the current user's data outside the tested model write.
+            $db->query("UPDATE acl_permissions SET slug=CONCAT('retired.p',id) WHERE slug IN ('users.view','users.renamed')");
+            $cookie='';
+            $userId=insert('m3_people',['username'=>'d3-'.$kind.'-'.$operation,'active'=>1]);
+            $permissionId=insert('acl_permissions',['slug'=>'users.view','area'=>'users','is_system'=>0]);
+            if ($kind==='role' || $kind==='negative') {
+                $roleId=insert('acl_roles',['name'=>'D3','slug'=>'d3-'.$kind.'-'.$operation,'is_system'=>0,'is_super_admin'=>$kind==='negative'?1:0]);
+                insert('acl_user_roles',['user_id'=>$userId,'role_id'=>$roleId]);
+                if ($kind==='role') { insert('acl_role_permissions',['role_id'=>$roleId,'permission_id'=>$permissionId]); }
+            }
+            if ($kind!=='role') { insert('acl_user_permissions',['user_id'=>$userId,'permission_id'=>$permissionId,'granted'=>$kind==='positive'?1:0]); }
+            $label='HTTP D3 '.$kind.' '.$operation;
+            $warm=http('m3/login/'.$userId)['json'];
+            check($label.' warm old',($warm['can']['users.view']??null)===($kind!=='negative'));
+            check($label.' warm new',($warm['can']['users.renamed']??null)===($kind==='negative'));
+            $sessionCookie=$cookie;
+            $written=http('m3/m4-'.$operation.'-permission/'.$permissionId);
+            check($label.' write',($written['json']['written']??false)===true,$written['json']);
+            $expectedOld=$kind==='negative';
+            $expectedNew=$operation==='rename' ? $kind!=='negative' : $kind==='negative';
+            check($label.' immediate',($written['json']['immediate']??null)===[$expectedOld,$expectedNew],$written['json']);
+            $fresh=http('m3/state')['json'];
+            check($label.' same session',($fresh['id']??null)==$userId && $cookie===$sessionCookie);
+            check($label.' next request old',($fresh['can']['users.view']??null)===$expectedOld,$fresh);
+            check($label.' next request new',($fresh['can']['users.renamed']??null)===$expectedNew,$fresh);
+        }
+    }
     $warnings = preg_match('/PHP (Warning|Notice|Deprecated|Fatal error)/', file_get_contents($app.'/server.log'));
     check('HTTP E_ALL no PHP diagnostics',$warnings===0);
 } catch (Throwable $e) {

@@ -232,3 +232,188 @@ in M1-M5 regressed on this HEAD, not a substitute full collaudo.
 `migrations` table dropped (mirrors the state prior M1-M5 sessions left it in). `php
 spark serve` on port 8040 stopped. Temp app copy in `%TEMP%\rw-m6-adhoc` deleted.
 `rolewarden` database never selected or touched. No commit made.
+
+---
+
+## Reverification — "Collaudatore ad Hoc" — HEAD `48ab158` (fix for D1/D2)
+
+Second independent pass, standing in for Codex (again quota-blocked until ~12:04). Same
+protocol: black-box against a real running copy of the app; `src/Controllers`,
+`src/Views`, `src/Models`, `src/Config/RouteRegistrar.php`, `src/Assets`,
+`src/Helpers/rolewarden_helper.php`, `tests/Unit/`, and — this time also explicitly —
+`src/Database/Migrations/2026-09-22-090001_ImportAuthGroups.php` and
+`src/Database/Seeds/RoleWardenSeeder.php` (the two files the previous D1 fix touched)
+were never opened. Output transcript: `tests/Integration/verify-m6-reverify.output.txt`
+(15 PASS, 0 FAIL — a transcript-consistency check on the observations below, same caveat
+as `verify-m6-adhoc.php`: the verdict is this prose, not that script's own exit code).
+
+### Verdict
+
+**M6 now approved.** The fix in commit `48ab158` (import migration seeds system
+roles/permissions itself, first line of its `up()`, before running its own collision
+check; seeder's permission grant filtered to `RoleWardenSeeder::PERMISSIONS` only) closes
+both D1 and the related D2 found in the previous report, reproduced against the exact
+same scenario (Shield's stock `admin` group with real permissions in its matrix, plus a
+non-colliding `editor` group), following the README's documented two-command install
+verbatim, in that order.
+
+### Environment
+
+- Fresh copy of `rolewarden-app-test` in `%TEMP%\rw-m6-reverify` (robocopy `/E /XJ`,
+  vendor junction to `E:\progetti_lavoro\ASP\rolewarden-ci4` recreated by hand
+  afterwards).
+- `.env`: `database.default.database` → `rolewarden_test`, `app.baseURL` →
+  `http://localhost:8060/`.
+- `app/Config/Auth.php` and `app/Config/Routes.php` in the temp copy already correctly
+  wired (`\RoleWarden\Models\UserModel`, `RouteRegistrar::register($routes)`) — no change
+  needed.
+- `app/Config/AuthGroups.php`: added a group `editor` (matrix `['editor.publish',
+  'users.*']`, `editor.publish` added to `$permissions`), non-colliding with any
+  RoleWarden system role slug. Left Shield's own `admin` group in place (colliding with
+  the seeded system role `admin`), with its stock matrix `['admin.access',
+  'users.create', 'users.edit', 'users.delete', 'beta.access']`.
+- Two Shield users created via `php spark shield:user create` (non-interactive piping of
+  username/email/password/confirmation), activated via direct SQL
+  (`users.active = 1`): `adminuser` (id 1, assigned to the colliding `admin` group via
+  `auth_groups_users`) and `editoruser` (id 2, assigned to the non-colliding `editor`
+  group).
+- PHP 8.3.11 / CI4 4.7.4 / Shield 1.4.1, MariaDB 11 in Docker (`rolewarden-db`), database
+  `rolewarden_test` only — `rolewarden` was never selected or touched.
+
+### Passo 2 — installation, exactly per README
+
+`php spark migrate -n 'CodeIgniter\Settings'` then `php spark migrate -n
+'CodeIgniter\Shield'`, then, unmodified from the two Shield users' assignments above,
+`php spark migrate -n RoleWarden` followed by `php spark db:seed
+'RoleWarden\Database\Seeds\RoleWardenSeeder'`. The `migrate -n RoleWarden` output itself
+now shows `Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder` printed **before** the six
+migration lines — directly observable confirmation that the import migration seeds first,
+as the fix intends, regardless of migration/seed command order.
+
+### Passo 3 — the two defects, re-verified fixed
+
+**D1 (role hijack).** `SELECT id, slug, is_system, is_super_admin FROM acl_roles;`
+immediately after `migrate -n RoleWarden` (before any `db:seed` call) already shows:
+
+```
+id  slug          is_system  is_super_admin
+1   super-admin   1          1
+2   admin         1          0
+3   user          1          0
+4   superadmin    0          0   <- imported, non-colliding Shield group
+5   developer     0          0   <- imported, non-colliding Shield group
+6   beta          0          0   <- imported, non-colliding Shield group
+7   editor        0          0   <- imported, non-colliding, the one this session added
+```
+
+`admin` and `user` are `is_system=1` from the very first `migrate -n RoleWarden` command,
+before `db:seed` ever runs — the collision check now has something to skip against.
+`acl_role_permissions` for `admin`:
+
+```
+permissions.override, permissions.view, roles.assign, roles.create, roles.delete,
+roles.update, roles.view, users.activate, users.create, users.delete, users.update,
+users.view
+```
+
+Exactly the 12 seeded slugs, byte for byte. No leak from Shield's colliding `admin`
+group's own matrix (`admin.access`, `beta.access`, `users.edit` are absent, as they
+should be — only `users.create`/`users.delete`, which are genuinely part of
+RoleWarden's own vocabulary too, appear, and they appear because they are seeded system
+permissions, not because they leaked from the import).
+
+**D2 (reseed inflation).** Ran `php spark db:seed
+'RoleWarden\Database\Seeds\RoleWardenSeeder'` a second time (the documented step).
+`admin`'s permission set and `is_system` flag are unchanged: still exactly the same 12
+slugs, still `is_system=1`. On the unfixed HEAD `f705290` this second run was exactly
+what inflated `admin` to 17 permissions; it no longer does.
+
+**Bonus finding from the previous report, also closed.** `SELECT slug, is_system FROM
+acl_permissions WHERE slug IN ('users.create','users.delete');` → both `is_system=1`.
+Previously these two slugs (shared between `AuthGroups.php`'s own permission vocabulary
+and RoleWarden's) were created by the import before the seed ran and stayed
+`is_system=0`; now the seed runs first, so they are born as system permissions and the
+import's `insertMissing()` finds them already correctly flagged.
+
+**`acl_user_roles`**: `SELECT * FROM acl_user_roles;` after both the install and the
+second `db:seed` → only `(user_id=2, role_id=7)`, i.e. `editoruser` → `editor`. No row
+for `user_id=1` (`adminuser`, the pre-existing Shield user in the colliding `admin`
+group) — matching the README's "skipped groups do not have their assignments imported
+either", the exact guarantee D1 broke previously.
+
+### The non-colliding "editor" group — still correct
+
+`acl_role_permissions` for `editor`: `editor.publish`, `users.create`, `users.delete`,
+`users.edit`, `users.manage-admins` — its own declared permission plus the `users.*`
+wildcard expanded over `AuthGroups.php`'s own `$permissions` list (not over whatever
+happened to already exist in `acl_permissions`, which is the more sensible and
+seed-order-independent reading, and produces the same set either way in this scenario).
+
+Confirmed via real HTTP with a fresh cookie-jar session and a CSRF token pulled from a
+freshly-fetched login page (the rendered Shield login form's fields are `email` and
+`password`, not `login` — noted for future black-box scripts against this app copy):
+logged in as `editoruser`, `GET /rolewarden/users/create` (gated by `users.create`, which
+`editor` has) → **200**; `GET /rolewarden/roles` and `GET /rolewarden/users` (gated by
+`roles.view`/`users.view`, which `editor` does NOT have) → **302** both.
+
+### The colliding "admin" group user — no access, real HTTP
+
+Logged in as `adminuser` (the Shield user in the colliding `admin` group, no
+`acl_user_roles` row at all): `GET /rolewarden/users` and `GET /rolewarden/roles` → both
+**302**, consistent with having zero roles.
+
+**Methodological note, not a module defect.** The first attempt at this check, right
+after copying the temp app with `robocopy`, returned **200** on every route for this
+user — alarming until traced to its cause: `robocopy /E` copies the sibling dev app's
+`writable/cache` directory verbatim, and that directory already contained stale
+per-user permission cache files (`rolewarden_user_1`, `rolewarden_user_2`) left over from
+unrelated prior work on that same app skeleton against the `rolewarden` database, keyed
+only by user id (`rolewarden.user.{id}`) with no regard for which database populated
+them. Since the freshly created `adminuser` in `rolewarden_test` also got id `1`, it
+inherited a stale cached permission set granting broad access. Deleting
+`writable/cache/rolewarden_user_*` (keeping `index.html`) before running any HTTP checks
+made the 302s appear as expected. Recorded here because it is exactly the kind of
+observation a future black-box session copying this same fixture app should watch for —
+**always clear `writable/cache` (and `writable/session`, to be safe) right after copying
+the sibling app, before doing anything else.**
+
+The pre-existing Shield user in the colliding group can still log in normally after the
+full install (real HTTP login, correct password, redirected to the home page) — the
+install does not corrupt or lock out an existing user, it only fails to import a role for
+them, as documented.
+
+### Rollback
+
+`php spark migrate:rollback -b <Shield's batch>` removed all six RoleWarden migrations
+(schema + import) as one batch: `SHOW TABLES LIKE 'acl_%'` empty afterward, zero
+`RoleWarden%` rows left in `migrations`, both Shield users (`adminuser`, `editoruser`)
+present and unchanged (`active=1`). Full rollback to batch 0 then removed Shield and
+Settings too, cleanly. Same known limitation as the first M6 pass: no supported way to
+roll back only the import while keeping schema/seed, since they share a batch under the
+documented install procedure — unchanged, not re-scored as a new defect.
+
+### Passo 3 (per this session's own numbering) — targeted confirmation, HEAD `48ab158`
+
+Reinstalled fresh (`migrate -n RoleWarden` + `db:seed`) after the rollback, assigned
+`adminuser` the `super-admin` role directly via SQL for this section only:
+
+- **Login + a CRUD-protected route.** Logged in as the super-admin-role user via real
+  HTTP; `GET /rolewarden/users` and `GET /rolewarden/roles` both → **200**.
+- **Last active super admin cannot be deactivated.** Fetched the real detail page for
+  that user, extracted its actual `POST /rolewarden/users/1/deactivate` form action and a
+  fresh CSRF token from that same page, submitted it → redirected back, `users.active`
+  in the database stayed `1`.
+
+### Ambiguities
+
+Unchanged from the previous M6 pass, not re-decided: CSS/Tailwind (M5), immediate user
+activation without email verification (M5), absence of a "import-only" rollback path
+(M6, noted above again). No new ambiguity surfaced.
+
+### Cleanup
+
+`rolewarden_test` rolled back to batch 0 (RoleWarden + Shield + Settings), residual empty
+`migrations` table dropped afterward, `SHOW TABLES` confirmed empty before closing. `php
+spark serve` on port 8060 (and its child listener on the auto-selected port 8061)
+stopped. Temp app copy in `%TEMP%\rw-m6-reverify` deleted. `rolewarden` database never
+selected or touched. No commit made.

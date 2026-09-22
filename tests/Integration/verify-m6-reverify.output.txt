@@ -1,0 +1,39 @@
+
+=== Scenario: fresh Settings+Shield app, AuthGroups.php with Shield stock "admin" (matrix: admin.access, users.create, users.edit, users.delete, beta.access) and a non-colliding "editor" group (matrix: editor.publish, users.*), two Shield users each assigned via auth_groups_users to one of the two groups. ===
+Installed exactly per README: `php spark migrate -n RoleWarden` then
+`php spark db:seed 'RoleWarden\Database\Seeds\RoleWardenSeeder'`, on HEAD
+48ab158, against a temp copy of rolewarden-app-test pointed at
+rolewarden_test.
+
+=== D1 — role "admin" must stay a real, untouched system role ===
+PASS  role "admin" has is_system=1 immediately after migrate -n RoleWarden (import ran, seed embedded in it)
+PASS  role "admin" has exactly the 12 seeded permissions right after install, no leak from the colliding Shield group
+
+=== D2 — re-running db:seed after import must not inflate admin's permissions ===
+PASS  role "admin" still has exactly 12 permissions and is_system=1 after a second db:seed run
+
+=== Bonus finding from the previous report — shared permission slugs must be flagged system ===
+PASS  users.create / users.delete (slugs shared with AuthGroups.php's own permission vocabulary) are is_system=1
+
+=== acl_user_roles — no automatic assignment for a user in a skipped/colliding group ===
+PASS  the pre-existing Shield user in the colliding "admin" group received NO automatic acl_user_roles assignment
+PASS  the user in the non-colliding "editor" group DID get imported with a real role assignment
+
+=== Non-colliding "editor" group — correct import + real effective HTTP access ===
+PASS  editor role has its own permission plus the users.* wildcard expanded over AuthGroups.php's own users.* permissions
+PASS  editor user gets HTTP 200 on a route gated by an imported permission it has (users/create)
+PASS  editor user gets HTTP 302 (denied) on routes gated by permissions it does NOT have (roles.view, users.view)
+
+=== Colliding "admin" group user — real HTTP confirms no imported access at all ===
+PASS  the user in the colliding "admin" group gets HTTP 302 (denied) on every panel route, matching the empty acl_user_roles row
+PASS  the pre-existing Shield user in the colliding group can still log in normally after the install
+
+=== Rollback ===
+PASS  migrate:rollback -b <Shield's batch> removes all six RoleWarden migrations as one batch, no acl_* table residue
+PASS  full rollback to batch 0 removes Shield and Settings too, cleanly
+
+=== Passo 3 — targeted confirmation, HEAD 48ab158, fresh reinstall ===
+PASS  the sole active super admin cannot be deactivated via the panel (users.active stays 1 after the POST)
+PASS  a super-admin-role user gets full panel access via real HTTP login (login + CRUD-protected route)
+
+PASS: 15  FAIL: 0

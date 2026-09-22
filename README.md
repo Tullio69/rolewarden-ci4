@@ -91,6 +91,27 @@ php spark migrate:rollback -b <previous batch>
 
 `-b 0` rolls back everything, Shield included.
 
+## Wiring the admin panel
+
+Add one line to the host's `app/Config/Routes.php`, next to the existing
+`service('auth')->routes($routes);` line Shield already needs:
+
+```php
+\RoleWarden\Config\RouteRegistrar::register($routes);
+```
+
+This registers `/rolewarden/users`, `/rolewarden/roles`, `/rolewarden/permissions` and
+their actions, gated by the `session` and `can:<permission>` filters, plus a route that
+serves the panel's CSS/JS straight from the package (no publish step, no copy under
+`public/`). The file is deliberately not named `Config/Routes.php`: CI4 auto-includes any
+file at that path in every registered namespace, which would run it a second time and
+crash on the re-declared class.
+
+Every panel view is resolved through CI4's own override mechanism: to replace
+`src/Views/roles/show.php`, copy it to
+`app/Views/overrides/RoleWarden/Views/roles/show.php` in the host application. No file in
+this package needs editing.
+
 ## Conventions
 
 - Table prefix `acl_`, configurable, deliberately distinct from Shield's `auth_`

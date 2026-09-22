@@ -34,3 +34,17 @@ if (! function_exists('permissions')) {
         return auth()->loggedIn() ? service('rolewarden')->permissions((int) auth()->id()) : [];
     }
 }
+
+if (! function_exists('rw_panel')) {
+    /**
+     * Renders a panel screen inside the shared layout.
+     *
+     * @param array<string, mixed> $data
+     */
+    function rw_panel(string $view, array $data, string $active, string $title): string
+    {
+        $body = view($view, $data);
+
+        return view('RoleWarden\Views\layouts\panel', ['active' => $active, 'title' => $title, 'body' => $body]);
+    }
+}

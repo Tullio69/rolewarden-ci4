@@ -1,0 +1,99 @@
+
+=== Setup: authenticate both test users ===
+PASS  super admin login redirects (session established)
+PASS  limited user login redirects (session established)
+PASS  resolved fixture ids from DB
+
+=== 1. Access control ===
+PASS  anonymous GET /rolewarden/users is not served directly (redirect to login)
+PASS  limited user (has users.view) can open the users list
+PASS  limited user (no users.create) is denied the create form server-side
+PASS  super admin markup includes a create-user link/action
+PASS  limited user markup omits the create-user link/action entirely (not just disabled)
+PASS  super admin markup includes a delete-user action
+PASS  limited user markup omits the delete-user action entirely
+PASS  limited user direct POST to a delete route they lack permission for is refused server-side
+PASS  forced delete attempt without permission did not remove the row
+
+=== 2. CRUD users ===
+PASS  create user request accepted
+PASS  created user exists in DB with the submitted email
+PASS  created user appears in the users list with the correct email
+PASS  created user detail page shows the correct email
+PASS  edit user request accepted
+PASS  username updated in DB
+PASS  deactivate request accepted
+PASS  user deactivated in DB
+PASS  activate request accepted
+PASS  user reactivated in DB
+PASS  assign role request accepted
+PASS  role assignment persisted in DB
+PASS  revoke role request accepted
+PASS  role revocation persisted in DB
+PASS  grant override request accepted
+PASS  override persisted as granted (1) in DB
+PASS  deny override request accepted
+PASS  override persisted as denied (0) in DB
+PASS  clear override request accepted
+PASS  override removed from DB
+PASS  delete user request accepted
+PASS  user soft-deleted in DB (deleted_at set)
+PASS  fixture precondition: exactly one active super admin before protection test
+PASS  deactivating the sole active super admin via the panel is rejected (DB unchanged)
+PASS  no SQL error text leaked on rejected deactivation
+PASS  deleting the sole active super admin via the panel is rejected (DB unchanged)
+PASS  no SQL error text leaked on rejected deletion
+
+=== 3. CRUD roles ===
+PASS  create role request accepted
+PASS  created role exists in DB
+PASS  edit role request accepted
+PASS  role name updated in DB
+PASS  delete role request accepted
+PASS  role soft-deleted in DB
+PASS  system role (admin) cannot be deleted via the panel
+PASS  no SQL error text leaked on rejected system-role deletion
+PASS  fixture precondition: parent/child roles created
+PASS  role with an active child cannot be deleted via the panel
+PASS  hierarchy cycle (parent becoming child of its own child) rejected
+PASS  no SQL error text leaked on rejected cycle
+
+=== 4. Permission matrix ===
+PASS  fixture precondition: matrix test role created
+PASS  role detail page (matrix) loads
+PASS  matrix markup references known areas/actions (users/view)
+PASS  single-cell matrix save endpoint responds without a full-page redirect
+PASS  single-cell save response is not a full HTML page (partial/JSON endpoint, not a page reload)
+PASS  matrix cell grant persisted in DB
+PASS  role detail reloads after matrix save
+PASS  matrix cell state persists to the next request without logout
+PASS  fixture precondition: matrix child role created
+PASS  child role detail page loads
+PASS  child role matrix markup indicates the origin of an inherited permission (inherited/parent wording present)
+PASS  parent role grant is untouched after attempting to revoke it via the child
+PASS  attempting to revoke an inherited permission on the child does not create a child-level denial that could shadow the parent
+
+=== 5. Permissions list read-only ===
+PASS  permissions list loads for super admin
+PASS  permissions list page contains no POST-method form (no write action exposed)
+PASS  permissions list page contains no delete/update action links
+
+=== 6. Overridable view resolution ===
+PASS  host override view under app/Views/overrides/RoleWarden/Views/permissions/index.php wins over the module view
+
+=== 7. Cross-cutting security ===
+PASS  POST with an invalid CSRF token is rejected
+PASS  CSRF-rejected delete did not affect the DB
+PASS  nonexistent user id does not leak a SQL error
+PASS  nonexistent user id yields a clean not-found response
+PASS  role name containing quotes/SQL metacharacters does not trigger a visible SQL error
+
+=== 8. Live revocation without logout ===
+PASS  limited user can open users list before revocation
+PASS  super admin revokes users.view from the limited role via the matrix endpoint
+PASS  users.view removed from the limited role in DB
+PASS  limited user is denied on the very next request after the revocation, same session, no logout
+
+=== Summary ===
+PASS: 77
+FAIL: 0

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace RoleWarden\Controllers;
 
+use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use RoleWarden\Authorization\ProtectionException;
@@ -26,7 +28,14 @@ class UsersController extends BaseController
         $status = (string) $this->request->getGet('status');
 
         if ($search !== '') {
-            $userModel->groupStart()->like('username', $search)->orLike('email', $search)->groupEnd();
+            // The email lives in Shield's identities table, not on the user row.
+            $userModel->groupStart()->like('username', $search)->orWhereIn(
+                'id',
+                static fn (BaseBuilder $builder): BaseBuilder => $builder->select('user_id')
+                    ->from(config('Auth')->tables['identities'])
+                    ->where('type', Session::ID_TYPE_EMAIL_PASSWORD)
+                    ->like('secret', $search),
+            )->groupEnd();
         }
 
         if ($roleId !== null && $roleId !== '') {
@@ -233,6 +242,10 @@ class UsersController extends BaseController
 
     public function delete(int $id): RedirectResponse
     {
+        if ($id === (int) auth()->id()) {
+            return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_error', lang('RoleWarden.panel.users.cannotDisableSelf'));
+        }
+
         try {
             model(UserModel::class)->delete($id);
         } catch (ProtectionException $e) {
@@ -256,6 +269,10 @@ class UsersController extends BaseController
 
     public function deactivate(int $id): RedirectResponse
     {
+        if ($id === (int) auth()->id()) {
+            return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_error', lang('RoleWarden.panel.users.cannotDisableSelf'));
+        }
+
         try {
             model(UserModel::class)->update($id, ['active' => false]);
         } catch (ProtectionException $e) {
@@ -269,9 +286,11 @@ class UsersController extends BaseController
     {
         $roleId = (int) $this->request->getPost('role_id');
 
-        if ($roleId > 0) {
-            (new UserRoles())->assign($id, $roleId);
+        if (model(UserModel::class)->find($id) === null || model(RoleModel::class)->find($roleId) === null) {
+            throw PageNotFoundException::forPageNotFound();
         }
+
+        (new UserRoles())->assign($id, $roleId);
 
         return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_success', lang('RoleWarden.panel.users.roleAssigned'));
     }

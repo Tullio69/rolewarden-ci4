@@ -35,9 +35,9 @@
       <div class="rw-auth-row">
         <span class="rw-m-num">02</span>
         <div class="rw-field">
-          <div class="rw-auth-labelline"><label class="rw-label" for="password"><?= lang('Auth.password') ?></label></div>
+          <div class="rw-auth-labelline"><label class="rw-label" for="password"><?= lang('Auth.password') ?></label><?php if (setting('Auth.allowMagicLinkLogins')) : ?><a href="<?= url_to('magic-link') ?>"><?= lang('Auth.forgotPassword') ?></a><?php endif ?></div>
           <div class="rw-auth-pw">
-            <input class="rw-input" :type="show ? 'text' : 'password'" id="password" name="password" autocomplete="current-password" required>
+            <input class="rw-input" type="password" :type="show ? 'text' : 'password'" id="password" name="password" autocomplete="current-password" required>
             <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" @click="show = !show" :aria-pressed="show" aria-controls="password" x-text="show ? '<?= esc(lang('RoleWarden.panel.auth.hide'), 'js') ?>' : '<?= esc(lang('RoleWarden.panel.auth.show'), 'js') ?>'"></button>
           </div>
         </div>

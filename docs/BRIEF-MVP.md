@@ -39,9 +39,11 @@ Decisioni gia' prese. Non si cambiano nel codice: se una sembra sbagliata, si se
 | CodeIgniter | 4.5 minimo, collaudato fino all'ultima 4.x |
 | Shield | `^1.4`, fissato il 20 settembre 2026 sviluppando su 1.4.1 |
 | Database | MySQL o MariaDB, InnoDB |
-| Pannello | View CI4 server-side, Tailwind, Alpine.js |
+| Pannello | View CI4 server-side, CSS scritto a mano nell'MVP (Tailwind arriva con il design system in v1.0), Alpine.js |
 | Prefisso tabelle | `acl_`, configurabile, distinto da `auth_` di Shield |
 | Distribuzione | Composer, piu' cartella da copiare per chi non lo usa |
+
+**Deciso il 2026-09-22.** La riga sul CSS del pannello e' cambiata rispetto alla stesura iniziale: CLAUDE.md vieta script di generazione per HTML/CSS/JS, e una pipeline Tailwind e' esattamente questo. Per l'MVP il pannello usa CSS scritto a mano con un primo livello di token in variabili CSS (colori, spaziatura, forma), spartano di proposito. Tailwind e il design system completo (tre livelli di token, tre temi, personalizzatore) restano pianificati per la v1.0, dove la grafica si rifa' comunque da zero.
 
 **Struttura attesa.** Il modulo e' un pacchetto Composer con un namespace unico, che si installa in un'applicazione CI4 ospite. Dentro, la separazione segue gli strati della specifica: le classi di autorizzazione senza dipendenze dal framework da una parte, gli agganci a CI4 e a Shield dall'altra, le view e gli asset del pannello in una terza.
 

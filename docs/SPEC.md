@@ -292,7 +292,7 @@ L'MVP non si vende. Serve a dimostrare che la stratificazione regge su un proget
 
 ## Pannello admin
 
-View CI4 server-side, Tailwind per lo stile, Alpine.js per l'interattivita' locale. Nessun passaggio di build obbligatorio per l'acquirente: il CSS compilato viaggia nel pacchetto e chi vuole ricompilarlo trova la configurazione Tailwind inclusa. Componenti su merakiui.com e tailblocks.cc per coerenza visiva.
+View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09-22:** nell'MVP lo stile e' CSS scritto a mano (CLAUDE.md vieta script di generazione, e una pipeline Tailwind lo sarebbe), un solo tema spartano, senza passaggio di build per nessuno. Tailwind e i componenti di riferimento su merakiui.com e tailblocks.cc restano il piano per la v1.0, quando arriva il design system vero descritto sotto.
 
 **Schermate.**
 

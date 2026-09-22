@@ -307,3 +307,10 @@ Formato di ogni voce:
 - Cosa ho fatto: decisione dell'autore su una delle due ambiguita' aperte segnalate in M5. Confermato: un utente creato da pannello viene attivato subito, senza verifica email. E' una scelta deliberata per un flusso amministrativo (l'admin crea l'account, non e' l'utente stesso a registrarsi), non un difetto da correggere.
 - Stato: completato
 - Note per il prossimo: resta aperta una sola ambiguita', quella su CSS scritto a mano invece di Tailwind (vedi voce M5 delle 2026-09-22 08:10 e il report M5 del Collaudatore ad Hoc).
+
+### [2026-09-22 10:20] - Claude
+- Tipo: docs
+- Scope: `docs/BRIEF-MVP.md`, `docs/SPEC.md`, `_AI-LOG.md`
+- Cosa ho fatto: decisione dell'autore sull'ultima ambiguita' aperta (CSS a mano vs Tailwind). Confermato: Tailwind e il design system completo restano pianificati per la v1.0; l'MVP resta con il CSS a mano gia' scritto in M5, un solo tema spartano. Aggiornati i due documenti esportati in `docs/` per riflettere la decisione (tabella "Stack e struttura" in BRIEF-MVP.md, apertura della sezione "Pannello admin" in SPEC.md), con nota datata.
+- Stato: completato
+- Note per il prossimo: le copie originali dei documenti vivono su Claude (fuori da questo repository); vanno allineate a mano con la stessa modifica quando possibile, come richiesto da CLAUDE.md ("se una decisione cambia si aggiorna prima l'originale e poi si riesporta in docs/"). Nessuna ambiguita' aperta residua da M5/M6: tutte e due sono state decise dall'autore.

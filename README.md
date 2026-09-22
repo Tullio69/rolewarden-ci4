@@ -91,6 +91,21 @@ php spark migrate:rollback -b <previous batch>
 
 `-b 0` rolls back everything, Shield included.
 
+### Importing existing Shield groups
+
+`php spark migrate -n RoleWarden` also runs a migration that reads the host's
+`app/Config/AuthGroups.php` (its `$groups`, `$permissions` and `$matrix`) and the
+assignments already in `auth_groups_users`, turning them into roles, permissions and
+assignments here. It is the entry path for an app that already used Shield's own
+groups before adding this module.
+
+A group whose slug already names an existing role — most commonly `admin` or `user`,
+Shield's own stock group names, which collide with two of the seeded system roles — is
+skipped rather than merged into it: the import never changes what an existing role can
+do. Skipped groups do not have their assignments imported either. Rolling back removes
+exactly what the import created, by slug, and never touches a role or permission it
+did not create.
+
 ## Wiring the admin panel
 
 Add one line to the host's `app/Config/Routes.php`, next to the existing

@@ -37,7 +37,7 @@
       <?php endif ?>
     </header>
 
-    <main class="rw-page">
+    <main class="rw-content">
       <?= view('RoleWarden\Views\partials\flash') ?>
       <?= $body ?>
     </main>

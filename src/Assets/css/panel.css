@@ -77,8 +77,8 @@
 .rw [hidden] { display: none !important; }
 .rw *, .rw *::before, .rw *::after { box-sizing: border-box; }
 .rw :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.rw a { color: var(--accent); text-decoration: none; }
-.rw a:hover { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
+.rw a:not(.rw-btn) { color: var(--accent); text-decoration: none; }
+.rw a:not(.rw-btn):hover { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
 .rw-serif { font-family: var(--font-serif); font-weight: 400; }
 .rw-mono { font-family: var(--font-mono); }
 .rw-muted { color: var(--ink-muted); }
@@ -161,7 +161,7 @@ html, body { margin: 0; background: var(--surface); }
 .rw-who small { display: block; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
 .rw-who i { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--rule-strong); border-radius: 2px; font: 500 12px/1 var(--font-sans); font-style: normal; color: var(--ink-muted); }
 
-.rw-page { padding: var(--space-12) var(--space-12) var(--space-16) 0; }
+.rw-content { padding: var(--space-12) var(--space-12) var(--space-16) 0; }
 .rw-page-head { display: grid; grid-template-columns: 1fr 296px; gap: 48px; margin-left: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--rule-strong); }
 .rw-page-head h1 { margin: 4px 0 8px; font: 400 32px/40px var(--font-serif); letter-spacing: -.01em; }
 .rw-page-head p { margin: 0; max-width: 560px; color: var(--ink-muted); }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RoleWarden\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use RoleWarden\Database\Seeds\RoleWardenSeeder;
 
 /**
  * Entry path for an app that already has Shield configured: reads the host's
@@ -14,16 +15,26 @@ use CodeIgniter\Database\Migration;
  * removes exactly the slugs this file would import, never touching
  * hand-created records.
  *
+ * Runs the system seed first, unconditionally: the README installs this
+ * migration and the seeder as two separate commands, in that order, so the
+ * system roles ("admin", "user" among them) would not exist yet when this
+ * file's collision check runs. Without this, Shield's own stock group
+ * names "admin"/"user" would import as ordinary roles, and the seeder
+ * would then find those slugs already taken and grant them the full
+ * system permission set anyway, leaving what looks like our protected
+ * "admin" role actually unprotected and holding Shield's grants too.
+ * RoleWardenSeeder::run() is idempotent, so calling it again from the
+ * documented `db:seed` step afterward is a no-op.
+ *
  * A group whose slug already names an existing role is skipped entirely
  * (not merged into it, not granted its matrix, no assignments imported for
- * it): "admin" and "user" are Shield's own stock group names, identical to
- * two of our seeded system role slugs, and silently folding a Shield
- * group's grants into our system "admin" role would change what it can do
- * without anyone asking for that. A permission slug that already exists is
- * reused as-is (permission slugs are a shared vocabulary, not a namespace
- * we own), and a wildcard in the matrix ("area.*") expands to every listed
- * permission in that area. A slug that does not fit "area.action" is
- * skipped rather than failing the whole import.
+ * it): folding a Shield group's grants into an existing role would change
+ * what it can do without anyone asking for that. A permission slug that
+ * already exists is reused as-is (permission slugs are a shared
+ * vocabulary, not a namespace we own), and a wildcard in the matrix
+ * ("area.*") expands to every listed permission in that area. A slug that
+ * does not fit "area.action" is skipped rather than failing the whole
+ * import.
  */
 class ImportAuthGroups extends Migration
 {
@@ -31,6 +42,8 @@ class ImportAuthGroups extends Migration
 
     public function up(): void
     {
+        config('Database')->seeder()->call(RoleWardenSeeder::class);
+
         $cfg = config('RoleWarden');
         $auth = config('AuthGroups');
         $now = date('Y-m-d H:i:s');

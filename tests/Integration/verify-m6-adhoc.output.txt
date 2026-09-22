@@ -1,0 +1,31 @@
+
+=== Reproduction — collision defect (admin role hijacked by import order) ===
+This script documents, with a runnable SQL trace, the exact database state
+observed at the end of the manual collaudo this session against a real
+CI4 app copy (temp copy of rolewarden-app-test, rolewarden_test database,
+Shield + Settings + RoleWarden migrated in the README's documented order,
+AuthGroups.php extended with a colliding "admin" group carrying real
+permissions and a non-colliding "editor" group). Re-run the manual
+procedure in M6-REPORT.md against a fresh rolewarden_test to reproduce
+against the real migration/seeder rather than this transcript.
+PASS  defect: role "admin" ends up is_system=0 (should be 1, it is a seeded system role)
+PASS  defect: role "admin" permissions != RoleWardenSeeder::PERMISSIONS exactly
+PASS  defect: exact extra permissions leaked from the colliding Shield "admin" group
+PASS  bonus defect: users.create / users.delete (shared slugs) stay is_system=0 after seeding, because import created them first
+PASS  defect: pre-existing user in the colliding "admin" group received an automatic acl_user_roles assignment
+
+=== Confirmed correct — non-colliding "editor" group ===
+PASS  editor group imported as a new, non-system role with exactly its declared + wildcard-expanded permissions
+PASS  editor user gets real effective access: 200 on a route gated by an imported permission (users.create form), 302 on routes gated by permissions it does not have (roles.view, users.view)
+
+=== Rollback ===
+PASS  migrate:rollback -b <previous batch> removes all six RoleWarden migrations (schema + import) as one batch, no residue
+PASS  full rollback to batch 0 removes Shield and Settings too, cleanly, framework tables only remain (users, auth_*)
+
+=== Passo 4 — targeted regression (HEAD f705290, only authorization/panel already approved in M1-M5) ===
+PASS  a negative user-level override still beats an assigned super-admin role (HTTP 302 on the overridden permission, 200 elsewhere)
+PASS  the sole active super admin cannot be deactivated via the panel (POST .../deactivate leaves users.active=1)
+PASS  a hierarchy cycle is rejected at save (role 4 parent set to role 3, whose own parent is already role 4, is rejected; parent_id stays NULL)
+PASS  a raw SQL write bypassing the models does NOT invalidate the cache (documented limitation from M4, re-confirmed, not a new defect)
+
+PASS: 13  FAIL: 0

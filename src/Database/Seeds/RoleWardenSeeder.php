@@ -72,8 +72,18 @@ class RoleWardenSeeder extends Seeder
             }
         }
 
+        // Only this seeder's own 12 slugs: the table can hold more by the time this
+        // runs (the AuthGroups import adds its own), and those are not ours to grant.
+        $ownSlugs = [];
+
+        foreach (self::PERMISSIONS as $area => $actions) {
+            foreach (array_keys($actions) as $action) {
+                $ownSlugs[] = "{$area}.{$action}";
+            }
+        }
+
         $permissionIds = array_column(
-            $this->db->table($cfg->table('permissions'))->select('id')->get()->getResultArray(),
+            $this->db->table($cfg->table('permissions'))->select('id')->whereIn('slug', $ownSlugs)->get()->getResultArray(),
             'id',
         );
 

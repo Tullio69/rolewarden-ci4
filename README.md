@@ -106,6 +106,12 @@ do. Skipped groups do not have their assignments imported either. Rolling back r
 exactly what the import created, by slug, and never touches a role or permission it
 did not create.
 
+This migration runs the system seed itself before importing, because it and
+`RoleWardenSeeder` are two separate commands in the install steps above and the import's
+own collision check needs the system roles to already exist. Running
+`php spark db:seed 'RoleWarden\Database\Seeds\RoleWardenSeeder'` afterward, as documented,
+stays a safe no-op either way.
+
 ## Wiring the admin panel
 
 Add one line to the host's `app/Config/Routes.php`, next to the existing

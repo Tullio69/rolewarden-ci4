@@ -37,14 +37,16 @@ if (! function_exists('permissions')) {
 
 if (! function_exists('rw_panel')) {
     /**
-     * Renders a panel screen inside the shared layout.
+     * Renders a panel screen inside the shared layout. $crumbs is the inner
+     * HTML of the breadcrumb nav; left empty, the layout shows just the
+     * active section's own name.
      *
      * @param array<string, mixed> $data
      */
-    function rw_panel(string $view, array $data, string $active, string $title): string
+    function rw_panel(string $view, array $data, string $active, string $title, string $crumbs = ''): string
     {
         $body = view($view, $data);
 
-        return view('RoleWarden\Views\layouts\panel', ['active' => $active, 'title' => $title, 'body' => $body]);
+        return view('RoleWarden\Views\layouts\panel', ['active' => $active, 'title' => $title, 'body' => $body, 'crumbs' => $crumbs]);
     }
 }

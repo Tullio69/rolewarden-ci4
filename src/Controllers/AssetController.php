@@ -7,12 +7,12 @@ namespace RoleWarden\Controllers;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
- * Serves the panel's CSS/JS straight from the package, so the host app never
- * needs a publish step or a copy under its own public/ folder.
+ * Serves the panel's CSS/JS/fonts straight from the package, so the host app
+ * never needs a publish step or a copy under its own public/ folder.
  */
 class AssetController extends BaseController
 {
-    private const CONTENT_TYPES = ['css' => 'text/css', 'js' => 'text/javascript'];
+    private const CONTENT_TYPES = ['css' => 'text/css', 'js' => 'text/javascript', 'woff2' => 'font/woff2'];
 
     /**
      * A nested path arrives as one segment or several depending on the

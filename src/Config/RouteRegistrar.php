@@ -37,7 +37,6 @@ class RouteRegistrar
                 $routes->post('users/(:num)/roles', 'UsersController::assignRole/$1', ['filter' => 'can:roles.assign']);
                 $routes->post('users/(:num)/roles/(:num)/revoke', 'UsersController::revokeRole/$1/$2', ['filter' => 'can:roles.assign']);
                 $routes->post('users/(:num)/permissions', 'UsersController::setOverride/$1', ['filter' => 'can:permissions.override']);
-                $routes->post('users/(:num)/permissions/(:num)/clear', 'UsersController::clearOverride/$1/$2', ['filter' => 'can:permissions.override']);
 
                 $routes->get('roles', 'RolesController::index', ['filter' => 'can:roles.view']);
                 $routes->get('roles/create', 'RolesController::create', ['filter' => 'can:roles.create']);

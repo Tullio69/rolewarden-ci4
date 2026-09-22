@@ -6,5 +6,5 @@ $error = session()->getFlashdata('rw_error');
   <div class="rw-flash rw-flash--success" role="status"><?= esc($success) ?></div>
 <?php endif ?>
 <?php if ($error) : ?>
-  <div class="rw-flash rw-flash--error" role="alert"><?= esc($error) ?></div>
+  <div class="rw-flash rw-flash--error" role="alert"><b>Error:</b> <?= esc($error) ?></div>
 <?php endif ?>

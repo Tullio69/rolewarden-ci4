@@ -1,0 +1,52 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>RoleWarden</title>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--surface); color: var(--ink); overflow: hidden; }
+  .cover { position: relative; height: 288px; width: 960px; overflow: hidden; }
+  .art { position: absolute; top: 0; left: 480px; width: 480px; height: 288px; }
+  .art svg { display: block; }
+  .accent { fill: var(--accent); }
+  .tint { fill: var(--accent-tint); }
+  .deep { fill: var(--ink); }
+  .ok { fill: var(--granted); }
+  .no { fill: var(--denied); }
+  .blk { rx: var(--radius-0); }
+  .hair { stroke: var(--rule-strong); stroke-width: 1; }
+  .words { position: absolute; left: 48px; bottom: 48px; max-width: 440px; }
+  .name { margin: 0; font: 400 80px/.92 var(--font-serif); letter-spacing: -.02em; color: var(--ink); }
+  .tag { margin: 12px 0 0 3px; font: 400 14px/20px var(--font-sans); color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="art" aria-hidden="true">
+    <svg viewBox="0 0 480 288" width="480" height="288">
+      <!--
+        blocks      accent (ink blue) 192x240 bled off the top, the identity colour · accent-tint 144x176 · ink 104x128 bled off the right · granted 48x16 and denied 16x16, small because they only ever mean a state
+        arrangement one tall slab with satellites, bottoms on one line space-16 above the edge, space-4 gutters
+        pattern     four hairline rules in rule-strong at a size-row (44px) pitch crossing the blocks, from "rules, not boxes": the ledger's own lines
+        scales      sides in space-4 / space-12 multiples; gutters space-4; pitch size-row; corners radius-0
+      -->
+      <rect class="accent blk" x="24" y="-16" width="192" height="240"/>
+      <rect class="tint blk" x="232" y="48" width="144" height="176"/>
+      <rect class="deep blk" x="392" y="96" width="104" height="128"/>
+      <rect class="ok blk" x="232" y="240" width="48" height="16"/>
+      <rect class="no blk" x="288" y="240" width="16" height="16"/>
+      <line class="hair" x1="0" y1="80.5" x2="480" y2="80.5"/>
+      <line class="hair" x1="0" y1="124.5" x2="480" y2="124.5"/>
+      <line class="hair" x1="0" y1="168.5" x2="480" y2="168.5"/>
+      <line class="hair" x1="0" y1="212.5" x2="480" y2="212.5"/>
+    </svg>
+  </div>
+  <div class="words">
+    <h1 class="name">RoleWarden</h1>
+    <p class="tag">Roles and permissions for CodeIgniter 4, kept like a ledger.</p>
+  </div>
+</div>
+</body>
+</html>

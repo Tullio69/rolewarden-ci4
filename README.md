@@ -133,6 +133,18 @@ Every panel view is resolved through CI4's own override mechanism: to replace
 `app/Views/overrides/RoleWarden/Views/roles/show.php` in the host application. No file in
 this package needs editing.
 
+The sign-in screen is Shield's own login route, restyled: point Shield's own view setting
+at ours, one line in the host's `app/Config/Auth.php`, next to the `$views` array Shield
+already scaffolds there:
+
+```php
+'login' => '\RoleWarden\Views\auth\login',
+```
+
+Registration and password recovery stay exactly Shield's own screens (this module does
+not touch identity or credentials); only the login screen has a matching design in
+`docs/design-system/` so far.
+
 ## Conventions
 
 - Table prefix `acl_`, configurable, deliberately distinct from Shield's `auth_`

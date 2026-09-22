@@ -1,0 +1,19 @@
+<!-- @dsCard group="Forms" height=210 subtitle="Input, select, checkbox (checked, mixed, off)" -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Form controls</title>
+<style> body{margin:0} .wrap{padding:20px 24px;display:grid;grid-template-columns:280px 220px 1fr;gap:32px;align-items:start} .stack{display:flex;flex-direction:column;gap:12px} </style></head>
+<body>
+<div class="rw wrap">
+  <div class="stack">
+    <div class="rw-field"><label class="rw-label" for="e">Email address</label><input class="rw-input" id="e" type="email" value="dana.whitfield@northwind-studio.test"></div>
+    <div class="rw-field"><label class="rw-label" for="s">Search users</label><input class="rw-input" id="s" type="search" placeholder="Name or email"></div>
+  </div>
+  <div class="rw-field"><label class="rw-label" for="r">Role</label><select class="rw-select" id="r"><option>All roles</option><option>Administrator</option><option selected>Editor</option></select></div>
+  <div class="stack">
+    <label class="rw-check-row"><input type="checkbox" class="rw-check" checked> Remember me</label>
+    <label class="rw-check-row"><input type="checkbox" class="rw-check" id="mixed"> Select all in row (mixed)</label>
+    <label class="rw-check-row"><input type="checkbox" class="rw-check"> Show disabled users</label>
+  </div>
+</div>
+<script>document.getElementById('mixed').indeterminate = true;</script>
+</body></html>

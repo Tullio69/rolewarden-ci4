@@ -1,0 +1,246 @@
+<!-- @dsCard group="Screens" height=1100 width=1440 page subtitle="Screen 2 · Users list with search, filters and pagination" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Users</title>
+<style>
+  html, body { margin: 0; background: var(--surface); }
+  .app { display: grid; grid-template-columns: 232px 1fr; min-height: 1100px; width: 1440px; }
+  .side { background: var(--surface-sunk); border-right: 1px solid var(--rule-strong); display: flex; flex-direction: column; }
+  .brand { height: 56px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid var(--rule); }
+  .brand b { font: 400 20px/28px var(--font-serif); color: var(--ink); }
+  .nav { list-style: none; margin: 0; padding: 16px 12px; }
+  .nav a { display: grid; grid-template-columns: 28px 1fr; align-items: center; height: 36px; padding: 0 12px; border-radius: 4px; color: var(--ink); font: 500 14px/20px var(--font-sans); }
+  .nav a:hover { background: var(--surface); text-decoration: none; color: var(--ink); }
+  .nav a span { font-size: 12px; color: var(--ink-faint); font-weight: 400; }
+  .nav a[aria-current="page"] { background: var(--accent-tint); color: var(--accent); font-weight: 600; }
+  .nav a[aria-current="page"] span { color: var(--accent); }
+  .side-foot { margin-top: auto; padding: 16px 24px; border-top: 1px solid var(--rule); }
+  .top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; border-bottom: 1px solid var(--rule); }
+  .crumbs { display: flex; gap: 8px; align-items: center; color: var(--ink-muted); }
+  .crumbs [aria-current] { color: var(--ink); font-weight: 500; }
+  .who { display: flex; align-items: center; gap: 12px; background: none; border: 0; padding: 4px 8px; border-radius: 4px; cursor: pointer; color: var(--ink); font: inherit; text-align: right; }
+  .who:hover { background: var(--surface-sunk); }
+  .who small { display: block; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+  .who i { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--rule-strong); border-radius: 2px; font: 500 12px/1 var(--font-sans); font-style: normal; color: var(--ink-muted); }
+  .page { padding: 48px 48px 64px 0; }
+  .head { display: grid; grid-template-columns: 1fr 296px; gap: 48px; margin-left: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--rule-strong); }
+  .head h1 { margin: 4px 0 8px; font: 400 32px/40px var(--font-serif); letter-spacing: -.01em; }
+  .head p { margin: 0; max-width: 560px; color: var(--ink-muted); }
+  .facts { margin: 0; align-self: end; }
+  .facts div { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--rule); }
+  .facts div:last-child { border-bottom: 0; }
+  .facts dt { color: var(--ink-muted); }
+  .facts dd { margin: 0; }
+  .fig { font: 400 28px/32px var(--font-serif); }
+  .fig-sm { font: 400 20px/28px var(--font-serif); }
+  .toolbar { display: flex; align-items: flex-end; gap: 16px; margin: 24px 0 16px 48px; }
+  .toolbar .grow { flex: 1; }
+  .search { position: relative; width: 320px; }
+  .search svg { position: absolute; left: 11px; bottom: 10px; color: var(--ink-muted); }
+  .search .rw-input { width: 100%; padding-left: 34px; }
+  .toolbar .rw-select { width: 176px; }
+  table.users { border-collapse: collapse; width: 1112px; }
+  .users th, .users td { padding: 0 12px; }
+  .users thead th { height: 44px; text-align: left; vertical-align: bottom; padding-bottom: 12px; border-bottom: 1px solid var(--rule-strong); }
+  .users tbody td { height: 48px; border-bottom: 1px solid var(--rule); }
+  .users tbody tr:hover > :not(.num):not(.anno) { background: var(--surface-sunk); }
+  .users .num { width: 48px; padding: 0 12px 0 0; text-align: right; font-size: 12px; color: var(--ink-faint); }
+  .users .name { width: 196px; font-weight: 600; }
+  .users .name a { color: var(--ink); }
+  .users .name a:hover { color: var(--accent); }
+  .users .email { width: 290px; white-space: nowrap; color: var(--ink-muted); }
+  .users .roles { width: 196px; white-space: nowrap; }
+  .users .roles span + span { margin-left: 4px; }
+  .users .status { width: 110px; }
+  .users .login { width: 172px; text-align: right; white-space: nowrap; }
+  .users .login.never { color: var(--ink-faint); }
+  .users .anno { width: 200px; padding-left: 24px; white-space: nowrap; }
+  .sort { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--ink); border-radius: 2px; }
+  .empty td { height: 120px; text-align: center; color: var(--ink-muted); }
+  .footer { display: flex; justify-content: space-between; align-items: center; margin: 0 0 0 48px; width: 1064px; height: 56px; border-top: 1px solid var(--rule-strong); margin-top: -1px; }
+</style>
+</head>
+<body>
+<div class="rw app">
+  <aside class="side" aria-label="Main">
+    <div class="brand"><b>RoleWarden</b></div>
+    <ul class="nav">
+      <li><a href="#" aria-current="page"><span>01</span>Users</a></li>
+      <li><a href="#"><span>02</span>Roles</a></li>
+      <li><a href="#"><span>03</span>Permissions</a></li>
+      <li><a href="#"><span>04</span>Settings</a></li>
+    </ul>
+    <div class="side-foot rw-note">Northwind Studio · CRM<br>RoleWarden 1.4.0</div>
+  </aside>
+
+  <div>
+    <header class="top">
+      <nav class="crumbs" aria-label="Breadcrumb"><span aria-current="page">Users</span></nav>
+      <button class="who" type="button" aria-haspopup="menu"><span>Nadia Ferreira<small>Administrator</small></span><i aria-hidden="true">NF</i></button>
+    </header>
+
+    <main class="page">
+      <div class="head">
+        <div>
+          <div class="rw-header">Directory</div>
+          <h1>Users</h1>
+          <p>Everyone who can sign in to Northwind Studio CRM. Roles decide what they can do; per-user overrides are set on each user's page.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Users</dt><dd class="fig">41</dd></div>
+          <div><dt>Active</dt><dd class="fig-sm">36</dd></div>
+          <div><dt>Disabled</dt><dd class="fig-sm">5</dd></div>
+        </dl>
+      </div>
+
+      <div class="toolbar">
+        <div class="rw-field search">
+          <label class="rw-label" for="q">Search</label>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          <input class="rw-input" id="q" type="search" placeholder="Name or email" autocomplete="off">
+        </div>
+        <div class="rw-field">
+          <label class="rw-label" for="fRole">Role</label>
+          <select class="rw-select" id="fRole"><option value="">All roles</option><option>Administrator</option><option>Editor</option><option>Author</option><option>Support agent</option><option>Viewer</option></select>
+        </div>
+        <div class="rw-field">
+          <label class="rw-label" for="fStatus">Status</label>
+          <select class="rw-select" id="fStatus"><option value="">Any status</option><option value="active">Active</option><option value="disabled">Disabled</option></select>
+        </div>
+        <button class="rw-btn rw-btn--ghost" type="button" id="clear" hidden>Clear filters</button>
+        <div class="grow"></div>
+        <button class="rw-btn rw-btn--secondary" type="button">Export CSV</button>
+        <button class="rw-btn rw-btn--primary" type="button">Invite user</button>
+      </div>
+
+      <table class="users">
+        <thead>
+          <tr>
+            <th class="num" scope="col"></th>
+            <th class="name rw-header" scope="col">Name</th>
+            <th class="email rw-header" scope="col">Email</th>
+            <th class="roles rw-header" scope="col">Roles</th>
+            <th class="status rw-header" scope="col">Status</th>
+            <th class="login rw-header" scope="col" aria-sort="descending"><button class="sort" type="button" id="sort">Last login <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path id="arrow" d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></th>
+            <th class="anno rw-header" scope="col" style="color:var(--ink-faint)">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+
+      <div class="footer">
+        <span class="rw-muted" id="count" role="status" aria-live="polite"></span>
+        <nav aria-label="Pagination"><ul class="rw-pager" id="pager"></ul></nav>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Fictional directory. Emails use the reserved .test domain.
+  var D = 'northwind-studio.test';
+  var U = [
+    ['Nadia Ferreira','nadia.ferreira',['Administrator'],1,'22 Sep 2026, 09:14','you'],
+    ['Tomás Reyes','tomas.reyes',['Editor'],1,'22 Sep 2026, 08:57','1 override'],
+    ['Priya Nair','priya.nair',['Editor','Support agent'],1,'22 Sep 2026, 08:41','2 overrides'],
+    ['Jonas Lindqvist','jonas.lindqvist',['Editor'],1,'21 Sep 2026, 17:22','1 override'],
+    ['Amara Okafor','amara.okafor',['Author'],1,'21 Sep 2026, 16:05',''],
+    ['Hugo Marchetti','hugo.marchetti',['Support agent'],1,'21 Sep 2026, 14:48',''],
+    ['Keiko Tanabe','keiko.tanabe',['Administrator'],1,'21 Sep 2026, 11:30','2FA required'],
+    ['Marcus Bell','marcus.bell',['Support agent'],0,'21 Sep 2026, 09:12','disabled 22 Sep'],
+    ['Declan Moore','declan.moore',['Author'],1,'20 Sep 2026, 19:02',''],
+    ['Sofia Albescu','sofia.albescu',['Viewer'],1,'20 Sep 2026, 10:16',''],
+    ['Pieter de Vries','pieter.devries',['Support agent'],0,'20 Sep 2026, 08:15','locked: 5 failed sign-ins'],
+    ['Rafael Duarte','rafael.duarte',['Author','Viewer'],1,'19 Sep 2026, 15:40',''],
+    ['Ingrid Halvorsen','ingrid.halvorsen',['Editor'],1,'19 Sep 2026, 09:03',''],
+    ['Malik Osei','malik.osei',['Support agent'],1,'18 Sep 2026, 13:27',''],
+    ['Clara Weiss','clara.weiss',['Author'],1,'18 Sep 2026, 08:12',''],
+    ['Yusuf Demir','yusuf.demir',['Viewer'],1,'17 Sep 2026, 16:55',''],
+    ['Elena Kowalczyk','elena.kowalczyk',['Editor'],1,'17 Sep 2026, 11:08',''],
+    ['Aiko Mori','aiko.mori',['Author'],1,'16 Sep 2026, 10:21',''],
+    ['Lucas Brandt','lucas.brandt',['Viewer'],1,'15 Sep 2026, 14:36',''],
+    ['Fatima Zahra Idrissi','fatima.idrissi',['Author'],1,'15 Sep 2026, 09:50',''],
+    ['Oliver Grant','oliver.grant',['Support agent'],1,'14 Sep 2026, 17:15',''],
+    ['Beatriz Lopes','beatriz.lopes',['Editor'],1,'13 Sep 2026, 12:02',''],
+    ['Niko Virtanen','niko.virtanen',['Viewer'],1,'12 Sep 2026, 15:33',''],
+    ['Grace Adeyemi','grace.adeyemi',['Author'],1,'11 Sep 2026, 10:47',''],
+    ['Samuel Novak','samuel.novak',['Author'],0,'10 Sep 2026, 08:29','left the company'],
+    ['Leila Haddad','leila.haddad',['Support agent'],1,'09 Sep 2026, 16:10',''],
+    ['Dmitri Sokolov','dmitri.sokolov',['Viewer'],1,'08 Sep 2026, 11:54',''],
+    ['Hannah Clarke','hannah.clarke',['Author'],1,'05 Sep 2026, 13:19',''],
+    ['Mateo Rinaldi','mateo.rinaldi',['Viewer'],1,'03 Sep 2026, 09:37',''],
+    ['Ruth Abebe','ruth.abebe',['Editor'],1,'01 Sep 2026, 17:48',''],
+    ['Chen Wei','chen.wei',['Author'],1,'26 Aug 2026, 14:22',''],
+    ['Isabel Moreno','isabel.moreno',['Viewer'],1,'21 Aug 2026, 09:11',''],
+    ['Kwame Mensah','kwame.mensah',['Author'],1,'18 Aug 2026, 15:59',''],
+    ['Astrid Nilsen','astrid.nilsen',['Viewer'],0,'04 Aug 2026, 12:40','contract ended'],
+    ['Farid Rahimi','farid.rahimi',['Support agent'],1,'29 Jul 2026, 10:33',''],
+    ['Lotte Jansen','lotte.jansen',['Viewer'],1,'15 Jul 2026, 16:26',''],
+    ['Emeka Nwosu','emeka.nwosu',['Author'],0,'02 Jul 2026, 08:58','disabled by admin'],
+    ['Julia Szabo','julia.szabo',['Viewer'],1,'19 Jun 2026, 11:44',''],
+    ['Arjun Mehta','arjun.mehta',['Editor'],1,null,'invited 20 Sep'],
+    ['Noor Al-Sayed','noor.alsayed',['Author'],1,null,'invited 21 Sep'],
+    ['Ben Whitaker','ben.whitaker',['Viewer'],1,null,'invited 21 Sep']
+  ].map(function (r, i) { return { id: i, name: r[0], email: r[1] + '@' + D, roles: r[2], active: !!r[3], login: r[4], note: r[5] }; });
+
+  var PER = 12, page = 1, desc = true;
+  var q = document.getElementById('q'), fr = document.getElementById('fRole'), fs = document.getElementById('fStatus');
+  var rows = document.getElementById('rows'), pager = document.getElementById('pager'), count = document.getElementById('count'), clear = document.getElementById('clear');
+  var esc = function (s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  function list() {
+    var t = q.value.trim().toLowerCase();
+    var out = U.filter(function (u) {
+      return (!t || u.name.toLowerCase().indexOf(t) > -1 || u.email.indexOf(t) > -1) &&
+             (!fr.value || u.roles.indexOf(fr.value) > -1) &&
+             (!fs.value || (fs.value === 'active') === u.active);
+    });
+    return desc ? out : out.slice().reverse();
+  }
+
+  function render() {
+    var all = list(), pages = Math.max(1, Math.ceil(all.length / PER));
+    if (page > pages) page = pages;
+    var start = (page - 1) * PER, slice = all.slice(start, start + PER);
+    clear.hidden = !(q.value || fr.value || fs.value);
+    if (!slice.length) {
+      rows.innerHTML = '<tr class="empty"><td colspan="7">No users match these filters. <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" id="clear2">Clear filters</button></td></tr>';
+      document.getElementById('clear2').onclick = reset;
+    } else {
+      rows.innerHTML = slice.map(function (u, i) {
+        return '<tr>' +
+          '<td class="num">' + String(start + i + 1).padStart(2, '0') + '</td>' +
+          '<td class="name"><a href="#">' + esc(u.name) + '</a></td>' +
+          '<td class="email">' + esc(u.email) + '</td>' +
+          '<td class="roles">' + u.roles.map(function (r) { return '<span class="rw-role">' + r + '</span>'; }).join('') + '</td>' +
+          '<td class="status"><span class="rw-status' + (u.active ? '' : ' rw-status--disabled') + '">' + (u.active ? 'Active' : 'Disabled') + '</span></td>' +
+          '<td class="login' + (u.login ? '' : ' never') + '">' + (u.login || 'Never') + '</td>' +
+          '<td class="anno"><span class="rw-note">' + esc(u.note) + '</span></td>' +
+        '</tr>';
+      }).join('');
+    }
+    count.textContent = all.length ? 'Showing ' + (start + 1) + '-' + (start + slice.length) + ' of ' + all.length + (all.length < U.length ? ' matching' : '') + ' users' : '0 users';
+    var h = '<li><button type="button" class="rw-page" data-p="' + (page - 1) + '"' + (page === 1 ? ' disabled' : '') + '>Previous</button></li>';
+    for (var p = 1; p <= pages; p++) h += '<li><button type="button" class="rw-page" data-p="' + p + '"' + (p === page ? ' aria-current="page"' : '') + ' aria-label="Page ' + p + '">' + p + '</button></li>';
+    h += '<li><button type="button" class="rw-page" data-p="' + (page + 1) + '"' + (page === pages ? ' disabled' : '') + '>Next</button></li>';
+    pager.innerHTML = h;
+  }
+  function reset() { q.value = ''; fr.value = ''; fs.value = ''; page = 1; render(); q.focus(); }
+
+  pager.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b || b.disabled) return; page = +b.dataset.p; render(); var cur = pager.querySelector('[aria-current]'); if (cur) cur.focus(); });
+  [q, fr, fs].forEach(function (el) { el.addEventListener('input', function () { page = 1; render(); }); });
+  clear.onclick = reset;
+  document.getElementById('sort').onclick = function () {
+    desc = !desc;
+    this.parentNode.setAttribute('aria-sort', desc ? 'descending' : 'ascending');
+    document.getElementById('arrow').setAttribute('d', desc ? 'M2 3.5l3 3 3-3' : 'M2 6.5l3-3 3 3');
+    page = 1; render();
+  };
+  render();
+})();
+</script>
+</body>
+</html>

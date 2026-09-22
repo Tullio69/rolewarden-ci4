@@ -1,0 +1,34 @@
+<!-- @dsCard group="Permissions" height=150 subtitle="The five cell states, told apart by shape alone" -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PermissionMark</title>
+<style>
+  body { margin: 0; }
+  .wrap { padding: 20px 24px; }
+  table { border-collapse: collapse; }
+  th { font: 600 12px/16px var(--font-sans); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-muted); text-align: center; padding: 0 12px 10px; border-bottom: 1px solid var(--rule-strong); width: 132px; }
+  td { height: 52px; text-align: center; border-bottom: 1px solid var(--rule); }
+  .mono td { filter: grayscale(1); }
+  .lab { text-align: left; width: 120px; font-size: 12px; color: var(--ink-faint); padding-right: 12px; }
+  .blank { display: inline-block; width: 20px; height: 20px; border: 1px dashed var(--rule-strong); vertical-align: middle; }
+</style></head>
+<body>
+<div class="rw wrap">
+<table>
+  <thead><tr><th class="lab"></th><th>Granted by role</th><th>Inherited</th><th>User override</th><th>Denied for user</th><th>Not granted</th></tr></thead>
+  <tbody>
+    <tr><td class="lab">Themed</td>
+      <td><svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" role="img" aria-label="Granted by role"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></td>
+      <td><svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" role="img" aria-label="Inherited from Author"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></td>
+      <td><svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" role="img" aria-label="Granted by user override"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></td>
+      <td><svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" role="img" aria-label="Denied by user override"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg></td>
+      <td><span class="blank" role="img" aria-label="Not granted"></span></td></tr>
+    <tr class="mono"><td class="lab">Shape only</td>
+      <td><svg class="rw-mark" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="var(--ink)" stroke-width="2.2"/></svg></td>
+      <td><svg class="rw-mark" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="var(--ink)" stroke-width="2"/></svg></td>
+      <td><svg class="rw-mark" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="var(--ink)" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="var(--ink)" stroke-width="1.8"/></svg></td>
+      <td><svg class="rw-mark" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="var(--ink)" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="var(--ink)" stroke-width="1.8"/></svg></td>
+      <td><span class="blank"></span></td></tr>
+  </tbody>
+</table>
+</div>
+</body></html>

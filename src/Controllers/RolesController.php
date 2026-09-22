@@ -27,10 +27,38 @@ class RolesController extends BaseController
             'role_id',
         );
 
+        $holders = [];
+
+        foreach (db_connect()->table(config('RoleWarden')->table('user_roles') . ' ur')
+            ->select('ur.role_id, u.username')
+            ->join(config('Auth')->tables['users'] . ' u', 'u.id = ur.user_id')
+            ->get()->getResultArray() as $row) {
+            $holders[(int) $row['role_id']][] = (string) $row['username'];
+        }
+
+        $permissionCounts = [];
+
+        foreach (db_connect()->table(config('RoleWarden')->table('role_permissions') . ' rp')
+            ->select('rp.role_id, COUNT(*) AS total')->groupBy('rp.role_id')->get()->getResultArray() as $row) {
+            $permissionCounts[(int) $row['role_id']] = (int) $row['total'];
+        }
+
+        $totalPermissions = db_connect()->table(config('RoleWarden')->table('permissions'))->countAllResults();
+
+        $inheritedCounts = [];
+
+        foreach ($roles as $role) {
+            $inheritedCounts[(int) $role['id']] = count($this->inheritedPermissions((int) $role['id']));
+        }
+
         return rw_panel('RoleWarden\Views\roles\index', [
-            'roles' => $roles,
+            'roles' => $this->depthFirst($roles),
             'namesById' => $namesById,
             'counts' => $counts,
+            'holders' => $holders,
+            'permissionCounts' => $permissionCounts,
+            'inheritedCounts' => $inheritedCounts,
+            'totalPermissions' => $totalPermissions,
         ], 'roles', lang('RoleWarden.panel.roles.indexTitle'));
     }
 
@@ -82,7 +110,13 @@ class RolesController extends BaseController
             throw PageNotFoundException::forPageNotFound();
         }
 
-        return rw_panel('RoleWarden\Views\roles\show', $matrix, 'roles', $matrix['role']['name']);
+        $name = (string) $matrix['role']['name'];
+        $crumbs = '<a href="' . esc(site_url('rolewarden/roles')) . '">' . lang('RoleWarden.panel.nav.roles') . '</a>'
+            . '<span aria-hidden="true">/</span><span aria-current="page">' . esc($name) . '</span>';
+
+        $matrix['allRoles'] = model(RoleModel::class)->orderBy('name')->findAll();
+
+        return rw_panel('RoleWarden\Views\roles\show', $matrix, 'roles', $name, $crumbs);
     }
 
     public function edit(int $id): string
@@ -173,7 +207,7 @@ class RolesController extends BaseController
     }
 
     /**
-     * @return array{role: array<string, mixed>, areas: list<string>, actions: list<string>, rows: list<array<string, mixed>>}|null
+     * @return array{role: array<string, mixed>, parentName: ?string, userCount: int, areas: list<string>, actions: list<string>, rows: list<array<string, mixed>>, effective: array<string, int>, totalGranted: int, totalDefined: int}|null
      */
     private function buildMatrix(int $id): ?array
     {
@@ -191,13 +225,13 @@ class RolesController extends BaseController
             $permissions,
         )));
 
-        $direct = array_column(
+        $direct = array_flip(array_map('intval', array_column(
             db_connect()->table(config('RoleWarden')->table('role_permissions'))->select('permission_id')->where('role_id', $id)->get()->getResultArray(),
             'permission_id',
-        );
-        $direct = array_flip(array_map('intval', $direct));
+        )));
 
         $inherited = $this->inheritedPermissions($id);
+        $overrides = $this->holderOverrides($id);
 
         $byArea = [];
 
@@ -206,6 +240,8 @@ class RolesController extends BaseController
         }
 
         $rows = [];
+        $effective = array_fill_keys($actions, 0);
+        $totalGranted = 0;
 
         foreach ($areas as $area) {
             $cells = [];
@@ -214,26 +250,120 @@ class RolesController extends BaseController
                 $permission = $byArea[$area][$action] ?? null;
 
                 if ($permission === null) {
-                    $cells[] = ['action' => $action, 'permissionId' => null, 'checked' => false, 'locked' => false, 'origin' => null];
+                    $cells[] = ['action' => $action, 'permissionId' => null, 'state' => 'none', 'editable' => false, 'tooltip' => ''];
 
                     continue;
                 }
 
-                $origin = $inherited[(int) $permission['id']] ?? null;
+                $permissionId = (int) $permission['id'];
+                $slug = (string) $permission['slug'];
+                $origin = $inherited[$permissionId] ?? null;
+                $roleGrants = $origin !== null || isset($direct[$permissionId]);
+                $ov = $overrides[$permissionId] ?? ['granted' => [], 'denied' => []];
+
+                if ($roleGrants && $ov['denied'] !== []) {
+                    $state = 'deny';
+                    $tooltip = sprintf('%s · Granted by %s, denied for %d user%s: %s', $slug, $origin ?? $role['name'], count($ov['denied']), count($ov['denied']) > 1 ? 's' : '', implode(', ', $ov['denied']));
+                } elseif (! $roleGrants && $ov['granted'] !== []) {
+                    $state = 'grant';
+                    $tooltip = sprintf('%s · Override for %d user%s: %s', $slug, count($ov['granted']), count($ov['granted']) > 1 ? 's' : '', implode(', ', $ov['granted']));
+                } elseif ($origin !== null) {
+                    $state = 'inherit';
+                    $tooltip = sprintf('%s · from %s', $slug, $origin);
+                } elseif (isset($direct[$permissionId])) {
+                    $state = 'role';
+                    $tooltip = sprintf('%s · Granted by %s', $slug, $role['name']);
+                } else {
+                    $state = 'none';
+                    $tooltip = sprintf('%s · Not granted', $slug);
+                }
+
+                if (in_array($state, ['role', 'inherit', 'deny'], true)) {
+                    $effective[$action]++;
+                    $totalGranted++;
+                }
 
                 $cells[] = [
                     'action' => $action,
-                    'permissionId' => (int) $permission['id'],
-                    'checked' => $origin !== null || isset($direct[(int) $permission['id']]),
-                    'locked' => $origin !== null,
-                    'origin' => $origin,
+                    'permissionId' => $permissionId,
+                    'state' => $state,
+                    'editable' => in_array($state, ['role', 'none'], true),
+                    'tooltip' => $tooltip,
                 ];
             }
 
             $rows[] = ['area' => $area, 'cells' => $cells];
         }
 
-        return ['role' => $role, 'areas' => $areas, 'actions' => $actions, 'rows' => $rows];
+        return [
+            'role' => $role,
+            'parentName' => $role['parent_id'] !== null ? ($roleModel->find((int) $role['parent_id'])['name'] ?? null) : null,
+            'userCount' => db_connect()->table(config('RoleWarden')->table('user_roles'))->where('role_id', $id)->countAllResults(),
+            'areas' => $areas,
+            'actions' => $actions,
+            'rows' => $rows,
+            'effective' => $effective,
+            'totalGranted' => $totalGranted,
+            'totalDefined' => count($permissions),
+        ];
+    }
+
+    /**
+     * Roles ordered depth-first (a child directly under its parent), each
+     * carrying its indentation depth for the tree column.
+     *
+     * @param list<array<string, mixed>> $roles
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function depthFirst(array $roles): array
+    {
+        $children = [];
+
+        foreach ($roles as $role) {
+            $children[$role['parent_id'] === null ? 0 : (int) $role['parent_id']][] = $role;
+        }
+
+        $out = [];
+        $walk = function (int $parentId, int $depth) use (&$walk, &$out, $children): void {
+            foreach ($children[$parentId] ?? [] as $role) {
+                $out[] = $role + ['depth' => $depth];
+                $walk((int) $role['id'], $depth + 1);
+            }
+        };
+        $walk(0, 0);
+
+        return $out;
+    }
+
+    /**
+     * Per-user overrides held by users directly assigned this role, split by
+     * permission and by grant/deny, as the usernames holding each.
+     *
+     * @return array<int, array{granted: list<string>, denied: list<string>}>
+     */
+    private function holderOverrides(int $roleId): array
+    {
+        $rows = db_connect()->table(config('RoleWarden')->table('user_permissions') . ' up')
+            ->select('up.permission_id, up.granted, u.username')
+            ->join(config('RoleWarden')->table('user_roles') . ' ur', 'ur.user_id = up.user_id')
+            ->join(config('Auth')->tables['users'] . ' u', 'u.id = up.user_id')
+            ->where('ur.role_id', $roleId)
+            ->get()->getResultArray();
+
+        $out = [];
+
+        foreach ($rows as $row) {
+            $bucket = (int) $row['granted'] === 1 ? 'granted' : 'denied';
+            $out[(int) $row['permission_id']][$bucket][] = (string) $row['username'];
+        }
+
+        foreach ($out as &$entry) {
+            $entry['granted'] ??= [];
+            $entry['denied'] ??= [];
+        }
+
+        return $out;
     }
 
     /**

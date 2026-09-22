@@ -96,3 +96,5 @@ Codex. Quando Codex torna disponibile, non serve ripetere una tappa gia' chiusa 
 
 Inizio sessione: aggiorna "In lavorazione" con nome, orario, scope previsto.
 Fine sessione: riporta "In lavorazione" a "nessuno" e aggiungi una voce nel log.
+
+Per ogni vista del pannello RoleWarden segui docs/design-system/CLAUDE.md

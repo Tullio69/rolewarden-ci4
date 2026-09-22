@@ -1,0 +1,166 @@
+<!-- @dsCard group="Screens" height=900 width=1440 page subtitle="Screen 4 · Roles list with inheritance" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Roles</title>
+<style>
+  html, body { margin: 0; background: var(--surface); }
+  .app { display: grid; grid-template-columns: 232px 1fr; min-height: 900px; width: 1440px; }
+  .side { background: var(--surface-sunk); border-right: 1px solid var(--rule-strong); display: flex; flex-direction: column; }
+  .brand { height: 56px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid var(--rule); }
+  .brand b { font: 400 20px/28px var(--font-serif); color: var(--ink); }
+  .nav { list-style: none; margin: 0; padding: 16px 12px; }
+  .nav a { display: grid; grid-template-columns: 28px 1fr; align-items: center; height: 36px; padding: 0 12px; border-radius: 4px; color: var(--ink); font: 500 14px/20px var(--font-sans); }
+  .nav a:hover { background: var(--surface); text-decoration: none; color: var(--ink); }
+  .nav a span { font-size: 12px; color: var(--ink-faint); font-weight: 400; }
+  .nav a[aria-current="page"] { background: var(--accent-tint); color: var(--accent); font-weight: 600; }
+  .nav a[aria-current="page"] span { color: var(--accent); }
+  .side-foot { margin-top: auto; padding: 16px 24px; border-top: 1px solid var(--rule); }
+  .top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; border-bottom: 1px solid var(--rule); }
+  .crumbs { display: flex; gap: 8px; align-items: center; color: var(--ink-muted); }
+  .crumbs [aria-current] { color: var(--ink); font-weight: 500; }
+  .who { display: flex; align-items: center; gap: 12px; background: none; border: 0; padding: 4px 8px; border-radius: 4px; cursor: pointer; color: var(--ink); font: inherit; text-align: right; }
+  .who:hover { background: var(--surface-sunk); }
+  .who small { display: block; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+  .who i { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--rule-strong); border-radius: 2px; font: 500 12px/1 var(--font-sans); font-style: normal; color: var(--ink-muted); }
+  .page { padding: 48px 48px 64px 0; }
+  .head { display: grid; grid-template-columns: 1fr 296px; gap: 48px; margin-left: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--rule-strong); }
+  .head h1 { margin: 4px 0 8px; font: 400 32px/40px var(--font-serif); letter-spacing: -.01em; }
+  .head p { margin: 0; max-width: 560px; color: var(--ink-muted); }
+  .facts { margin: 0; align-self: end; }
+  .facts div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 6px 0; border-bottom: 1px solid var(--rule); }
+  .facts div:last-child { border-bottom: 0; }
+  .facts dt { color: var(--ink-muted); }
+  .facts dd { margin: 0; text-align: right; }
+  .fig { font: 400 28px/32px var(--font-serif); }
+  .fig-sm { font: 400 20px/28px var(--font-serif); }
+  .bar { display: flex; align-items: center; gap: 16px; margin-left: 48px; min-height: 52px; padding: 8px 8px 8px 16px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .bar.dirty { background: var(--accent-tint); border-color: var(--accent); }
+  .bar .msg { flex: 1; display: flex; align-items: center; gap: 12px; }
+  .bar .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+  .bar .ids { font: 400 12px/16px var(--font-mono); color: var(--ink-muted); }
+  .bar .actions { display: flex; gap: 8px; }
+  .sec-title { display: grid; grid-template-columns: 48px 1fr auto; align-items: baseline; margin: 40px 0 8px; }
+  .sec-title .n { text-align: right; padding-right: 12px; font-size: 12px; color: var(--ink-faint); }
+  .sec-title h2 { margin: 0; font: 400 20px/28px var(--font-serif); }
+
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin: 24px 0 16px 48px; }
+  table.roles { border-collapse: collapse; width: 1112px; }
+  .roles th, .roles td { padding: 0 12px; }
+  .roles thead th { height: 44px; text-align: left; vertical-align: bottom; padding-bottom: 12px; border-bottom: 1px solid var(--rule-strong); }
+  .roles tbody td { height: 64px; border-bottom: 1px solid var(--rule); }
+  .roles tbody tr:hover > :not(.num):not(.anno) { background: var(--surface-sunk); }
+  .roles .num { width: 48px; padding: 0 12px 0 0; text-align: right; font-size: 12px; color: var(--ink-faint); }
+  .roles .role { width: 380px; }
+  .roles .role .tree { display: flex; align-items: flex-start; gap: 8px; }
+  .roles .role .branch { flex: none; width: 16px; height: 20px; border-left: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule-strong); margin-top: -6px; }
+  .roles .role a { font-weight: 600; color: var(--ink); }
+  .roles .role a:hover { color: var(--accent); }
+  .roles .role small { display: block; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+  .roles .parent { width: 140px; }
+  .roles .n { width: 88px; text-align: right; }
+  .roles .perm { width: 150px; text-align: right; white-space: nowrap; }
+  .roles .perm span { color: var(--ink-faint); font-size: 12px; }
+  .roles .act { width: 150px; text-align: right; white-space: nowrap; }
+  .roles .anno { width: 200px; padding-left: 24px; white-space: nowrap; }
+  .roles tfoot td { height: 44px; border-top: 1px solid var(--rule-strong); color: var(--ink-muted); font-size: 12px; }
+  .roles tfoot .n, .roles tfoot .perm { color: var(--ink); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="rw app">
+  <aside class="side" aria-label="Main">
+    <div class="brand"><b>RoleWarden</b></div>
+    <ul class="nav"><li><a href="#"><span>01</span>Users</a></li><li><a href="#" aria-current="page"><span>02</span>Roles</a></li><li><a href="#"><span>03</span>Permissions</a></li><li><a href="#"><span>04</span>Settings</a></li></ul>
+    <div class="side-foot rw-note">Northwind Studio · CRM<br>RoleWarden 1.4.0</div>
+  </aside>
+  <div>
+    <header class="top">
+      <nav class="crumbs" aria-label="Breadcrumb"><span aria-current="page">Roles</span></nav>
+      <button class="who" type="button" aria-haspopup="menu"><span>Nadia Ferreira<small>Administrator</small></span><i aria-hidden="true">NF</i></button>
+    </header>
+    <main class="page">
+      <div class="head">
+        <div>
+          <div class="rw-header">Access</div>
+          <h1>Roles</h1>
+          <p>A role bundles permissions. A role that inherits from a parent gets everything the parent has, and adds its own.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Roles</dt><dd class="fig">5</dd></div>
+          <div><dt>Role assignments</dt><dd class="fig-sm">43</dd></div>
+          <div><dt>Permissions defined</dt><dd class="fig-sm">30</dd></div>
+        </dl>
+      </div>
+      <div class="toolbar">
+        <span class="rw-muted">Indented roles inherit from the role above them.</span>
+        <button class="rw-btn rw-btn--primary" type="button">New role</button>
+      </div>
+      <table class="roles">
+        <thead><tr>
+          <th class="num" scope="col"></th>
+          <th class="role rw-header" scope="col">Role</th>
+          <th class="parent rw-header" scope="col">Inherits from</th>
+          <th class="n rw-header" scope="col">Users</th>
+          <th class="perm rw-header" scope="col">Permissions</th>
+          <th class="act" scope="col"><span hidden>Actions</span></th>
+          <th class="anno rw-header" scope="col" style="color:var(--ink-faint)">Notes</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="num">01</td>
+            <td class="role"><div class="tree"><div><a href="#">Administrator</a><small>Full access to every area, including RoleWarden itself.</small></div></div></td>
+            <td class="parent"><span class="rw-note">none</span></td>
+            <td class="n">2</td>
+            <td class="perm">30 <span>of 30</span></td>
+            <td class="act"><a href="#" class="rw-btn rw-btn--ghost rw-btn--sm">Permissions</a></td>
+            <td class="anno"><span class="rw-note">system role · can't be deleted</span></td>
+          </tr>
+          <tr>
+            <td class="num">02</td>
+            <td class="role"><div class="tree"><div><a href="#">Viewer</a><small>Reads articles and media. Nothing else.</small></div></div></td>
+            <td class="parent"><span class="rw-note">none</span></td>
+            <td class="n">11</td>
+            <td class="perm">2 <span>of 30</span></td>
+            <td class="act"><a href="#" class="rw-btn rw-btn--ghost rw-btn--sm">Permissions</a><button class="rw-btn rw-btn--ghost rw-btn--sm" type="button" style="color:var(--denied)">Delete</button></td>
+            <td class="anno"><span class="rw-note">default for new users</span></td>
+          </tr>
+          <tr>
+            <td class="num">03</td>
+            <td class="role"><div class="tree"><span class="branch" aria-hidden="true"></span><div><a href="#">Author</a><small>Writes and edits their own articles and uploads media.</small></div></div></td>
+            <td class="parent"><span class="rw-role rw-role--parent">Viewer</span></td>
+            <td class="n">14</td>
+            <td class="perm">3 <span>own</span> + 2 <span>inherited</span></td>
+            <td class="act"><a href="#" class="rw-btn rw-btn--ghost rw-btn--sm">Permissions</a><button class="rw-btn rw-btn--ghost rw-btn--sm" type="button" style="color:var(--denied)">Delete</button></td>
+            <td class="anno"><span class="rw-note"></span></td>
+          </tr>
+          <tr>
+            <td class="num">04</td>
+            <td class="role"><div class="tree"><span style="width:24px;flex:none"></span><span class="branch" aria-hidden="true"></span><div><a href="#">Editor</a><small>Edits and publishes articles by others; manages media.</small></div></div></td>
+            <td class="parent"><span class="rw-role rw-role--parent">Author</span></td>
+            <td class="n">7</td>
+            <td class="perm">7 <span>own</span> + 5 <span>inherited</span></td>
+            <td class="act"><a href="#" class="rw-btn rw-btn--ghost rw-btn--sm">Permissions</a><button class="rw-btn rw-btn--ghost rw-btn--sm" type="button" style="color:var(--denied)">Delete</button></td>
+            <td class="anno"><span class="rw-note">3 overrides</span></td>
+          </tr>
+          <tr>
+            <td class="num">05</td>
+            <td class="role"><div class="tree"><span class="branch" aria-hidden="true"></span><div><a href="#">Support agent</a><small>Looks up users and resets their passwords.</small></div></div></td>
+            <td class="parent"><span class="rw-role rw-role--parent">Viewer</span></td>
+            <td class="n">9</td>
+            <td class="perm">4 <span>own</span> + 2 <span>inherited</span></td>
+            <td class="act"><a href="#" class="rw-btn rw-btn--ghost rw-btn--sm">Permissions</a><button class="rw-btn rw-btn--ghost rw-btn--sm" type="button" style="color:var(--denied)">Delete</button></td>
+            <td class="anno"><span class="rw-note"></span></td>
+          </tr>
+        </tbody>
+        <tfoot><tr><td class="num"></td><td class="rw-header" style="padding-left:12px">Total</td><td></td><td class="n">43</td><td class="perm">30 <span>defined</span></td><td></td><td class="anno"><span class="rw-note">41 users; some hold two roles</span></td></tr></tfoot>
+      </table>
+    </main>
+  </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>

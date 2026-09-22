@@ -68,5 +68,31 @@ Procedura obbligatoria:
    difetti che sono tuoi, rilancia Codex per la riverifica e riporta l'esito all'utente
    senza aspettare che lo chieda. Le ambiguita' di specifica non si decidono: si riportano.
 
+### Se Codex non e' disponibile
+
+Quota esaurita, ambiente che rifiuta l'avvio dei processi, o qualunque altro blocco che
+impedisce a Codex di collaudare: non si salta il collaudo e non si dichiara chiusa una
+tappa senza di esso. Si sostituisce Codex con un subagente Claude fresco (tipo
+`general-purpose`), il "Collaudatore ad Hoc", che segue lo stesso identico protocollo,
+in tutto e per tutto:
+
+1. Legge solo specifica, definizione di fatto, `_AI-LOG.md` e i contratti pubblici. Non
+   apre controller, model, view, adapter ne' i test unitari esistenti: se leggesse
+   l'implementazione certificherebbe il comportamento esistente, bug compresi, esattamente
+   il rischio che il protocollo con Codex esiste per evitare.
+2. Collauda in nero (richieste HTTP, query dirette al database) contro un'app CI4 di prova
+   isolata, usando solo `rolewarden_test`, mai `rolewarden`; snapshot e ripristino esatto
+   dei dati a fine collaudo; nessuna credenziale nei file.
+3. Scrive solo in `tests/Integration/` (stesso schema di file di Codex: `verify-m<n>.*`,
+   `M<n>-REPORT.md`, output) e una voce in `_AI-LOG.md` nello stesso formato, con esito
+   PASS/FAIL, stato di approvazione e le ambiguita' di specifica separate dai difetti, mai
+   decise a naso. Nessun commit: lo fa chi lo lancia, dopo aver letto l'esito.
+4. Chi lo lancia non gli fornisce scorciatoie che Codex non avrebbe: stesso perimetro,
+   stessa cecita' sull'implementazione, stesso rigore. L'unica differenza accettabile e' il
+   nome nella voce di log.
+
+Il collaudo del Collaudatore ad Hoc vale come chiusura della tappa alla pari di quello di
+Codex. Quando Codex torna disponibile, non serve ripetere una tappa gia' chiusa cosi'.
+
 Inizio sessione: aggiorna "In lavorazione" con nome, orario, scope previsto.
 Fine sessione: riporta "In lavorazione" a "nessuno" e aggiungi una voce nel log.

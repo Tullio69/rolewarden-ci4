@@ -1,8 +1,3 @@
-== install per README on a fresh rolewarden_test
-Migrations complete.
-Migrations complete.
-Migrations complete.
-Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 
 == 1. Login (design-system view on Shield's controller)
 [PASS] L01    GET /login is 200 and rendered by the RoleWarden view (rw-auth-screen)
@@ -14,9 +9,8 @@ Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] L05c   recovery link text comes from a language string, not raw key (no "RoleWarden." or "Auth." in the text)
 [PASS] L03b   password input keeps the Show/Hide Alpine binding next to the static type
 [PASS] L06    failed login redirects back to login and shows a role="alert" error block
-[PASS] L07    failed login shows Shield's own message ("Error: Unable to log you in. Please check your password.")
-[AMB]  L08    failed-login message differs between a known email with a wrong password and an unknown email
-         -> known email: 'Error: Unable to log you in. Please check your password.' / unknown email: 'Error: Unable to log you in. Please check your credentials.'. Both strings are Shield's own (Auth.invalidPassword / Auth.badAttempt), shown verbatim as the brief asks; Login README says never say which of email or password was wrong. The two requirements conflict.
+[PASS] L07    failed login shows Shield's own message ("Error: Unable to log you in. Please check your credentials.")
+[PASS] L08    wrong password vs unknown email: identical nonempty message
 [PASS] L09    correct credentials + remember: redirect into the panel, remember token stored by Shield
 [PASS] L10    session from the new login view reaches a can:users.view route (200)
 [PASS] L11    after logout the panel is closed again (redirect to login)
@@ -51,12 +45,10 @@ Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] U13b   search by email fragment only (q=theo@northwind) returns exactly Theo
 [PASS] U13c   search with no match: 200, no rows, empty-state text
 [PASS] U13d   search q="o'brien": 200, no SQL text, no injection match-all (0 rows)
-[PASS] U13d   search q="%": 200, no SQL text (20 rows)
-[AMB]  U13w   search q="%" is treated as a LIKE wildcard and matches every user (20 rows on page 1)
-         -> Queries stay parameterized (no SQL text, the injection strings match nothing), but %/_ typed by the user are not matched literally (also q=d_na finds Dana, q=dana%test finds her). SPEC/UsersList README only say "search"; whether wildcard characters must be literal is not specified.
-[PASS] U13d   search q="_": 200, no SQL text (20 rows)
-[AMB]  U13w   search q="_" is treated as a LIKE wildcard and matches every user (20 rows on page 1)
-         -> Queries stay parameterized (no SQL text, the injection strings match nothing), but %/_ typed by the user are not matched literally (also q=d_na finds Dana, q=dana%test finds her). SPEC/UsersList README only say "search"; whether wildcard characters must be literal is not specified.
+[PASS] U13d   search q="%": 200, no SQL text (0 rows)
+[PASS] U13w   literal wildcard search returns no fixture users
+[PASS] U13d   search q="_": 200, no SQL text (0 rows)
+[PASS] U13w   literal wildcard search returns no fixture users
 [PASS] U13d   search q="\\": 200, no SQL text, no injection match-all (0 rows)
 [PASS] U13d   search q="\" OR 1=1 -- ": 200, no SQL text, no injection match-all (0 rows)
 [PASS] U13d   search q="') OR ('1'='1": 200, no SQL text, no injection match-all (0 rows)
@@ -101,7 +93,8 @@ Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] M09    grant effective on Theo's next request, no logout (users/create 200)
 [PASS] M10    revoke (granted=0) with the csrfHash returned by the previous save succeeds and deletes the row
 [PASS] M11    revoke effective on Theo's next request, no logout (users/create refused)
-[PASS] M12    direct POST revoking inherited roles.view on the child is refused or ignored (HTTP 200 { "ok": true, "csrfHash": "5c7d1ec51f588957120bc867b11640e4" }): parent grants intact, Theo still in (200)
+[PASS] M12a   inherited revoke: non-2xx, ok false, origin named, all grants unchanged, not CSRF
+[PASS] M12    direct POST revoking inherited roles.view on the child is refused or ignored (HTTP 422 { "ok": false, "message": "Inherited from V1 Parent: change it on that r): parent grants intact, Theo still in (200)
 [PASS] M13    after that request roles.view is still shown inherited+locked on the child
 [PASS] M14    revoking roles.view on the PARENT removes Theo's access on his next request (cache invalidated down the tree)
 [PASS] M15    re-granting on the parent restores it on the next request
@@ -175,8 +168,7 @@ Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] P10    POST rolewarden/users/4/roles/99999/revoke: reaches the controller (not a CSRF refusal), no 500, no SQL text
 [PASS] P11    add role with role_id=abc: no 500, no SQL text
 [PASS] P12    add role with role_id=99999: no 500, no SQL text, nothing written
-[AMB]  P15    Priya (admin) removed her own admin role through the panel (server accepted it; restored by SQL)
-         -> UserDetail README: "Do not let a user remove their own last Administrator role". The spec never says which RoleWarden role "Administrator" is (system role admin? any role granting users/roles management? super-admin only, already covered by the last-super-admin rule), so this is reported, not decided.
+[PASS] P15    Priya cannot remove her own admin role
 [PASS] RV01   D2 edge: add an existing role to nonexistent user 99999: not a CSRF refusal, no 500, no SQL text, nothing written (HTTP 404)
 [PASS] RV02   D2 no regression: adding an existing role to an existing user still works
 [PASS] RV03   fixture reset through the panel: role removed again
@@ -198,21 +190,4 @@ Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] Z01    no SQL/DB error text in any of 137 responses
 [PASS] Z02    no PHP warning/notice/deprecation in any response
 
-TOTAL: 166 PASS, 0 FAIL
-
-== production-mode spot check (same data)
-[PASS] Q00    production: owner signs in through the RoleWarden login view
-[PASS] Q01    production: users list 200
-[PASS] Q02    production: rolewarden/users?q=mara returns 200 (search works)
-[PASS] Q03    production: rolewarden/users?q=mara shows no SQL text
-[PASS] Q02    production: rolewarden/users?q=Priya returns 200 (search works)
-[PASS] Q03    production: rolewarden/users?q=Priya shows no SQL text
-[PASS] Q05    production: add nonexistent role 99999 to a user: no 500, no SQL text (HTTP 404)
-[PASS] Q05b   production: add a role to nonexistent user 99999: no 500, no SQL text (HTTP 404)
-[PASS] Q06    production: self-deactivation refused, no 500 (HTTP 303)
-[PASS] Q07    production: self-deletion refused, no 500 (HTTP 303)
-[PASS] Q08    production: login page has the recovery link and a static type="password"
-[PASS] Q04    production: nonexistent user 404, no SQL text
-
-TOTAL (production): 12 PASS, 0 FAIL
-exit codes: development=0 production=0
+TOTAL: 171 PASS, 0 FAIL

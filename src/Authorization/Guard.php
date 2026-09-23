@@ -87,6 +87,27 @@ class Guard
     }
 
     /**
+     * Refuses unassigning the only role through which the user holds the permission.
+     * A user override on the permission decides alone, so roles do not matter then.
+     */
+    public function assertKeepsPermission(int $userId, int $exceptRoleId, string $permission): void
+    {
+        if (array_key_exists($permission, $this->store->userOverrides($userId))) {
+            return;
+        }
+
+        foreach ($this->store->userRoleIds($userId) as $id) {
+            if ($id !== $exceptRoleId && $this->roleGrants($id, $permission)) {
+                return;
+            }
+        }
+
+        if ($this->roleGrants($exceptRoleId, $permission)) {
+            throw new ProtectionException(ProtectionException::LAST_ADMIN_ROLE);
+        }
+    }
+
+    /**
      * For deleting or deactivating a user.
      */
     public function assertUserRemovable(int $userId): void
@@ -106,6 +127,33 @@ class Guard
         );
 
         $this->assertSuperAdminRemains(array_values($lost));
+    }
+
+    /**
+     * Super admin is a flag on the assigned role only; permissions come up the parent chain.
+     */
+    private function roleGrants(int $roleId, string $permission): bool
+    {
+        if ($this->store->role($roleId)['isSuperAdmin'] ?? false) {
+            return true;
+        }
+
+        $seen = [];
+
+        for ($id = $roleId; $id !== null && ! isset($seen[$id]); $id = $role['parentId']) {
+            $role = $this->store->role($id);
+
+            if ($role === null) {
+                break;
+            }
+            $seen[$id] = true;
+
+            if (in_array($permission, $role['permissions'], true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function keepsSuperAdmin(int $userId, int $exceptRoleId): bool

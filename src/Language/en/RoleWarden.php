@@ -10,6 +10,7 @@ return [
         'parentMissing' => 'The parent role does not exist.',
         'systemRecord' => 'System records cannot be deleted.',
         'roleHasChildren' => 'This role has child roles. Move or delete them first.',
+        'lastAdminRole' => 'You cannot remove your own role that lets you manage roles.',
     ],
     'panel' => [
         'save' => 'Save',
@@ -147,6 +148,7 @@ return [
             'footSlug' => 'Identifiers follow',
             'matrixNotFound' => 'Role or permission not found.',
             'matrixSaveFailed' => 'Could not save this change.',
+            'matrixInherited' => 'Inherited from %s: change it on that role.',
         ],
         'permissions' => [
             'indexTitle' => 'Permissions',

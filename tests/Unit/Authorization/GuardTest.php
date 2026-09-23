@@ -166,6 +166,53 @@ final class GuardTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
+    public function testRemovingTheOnlyRoleThatGrantsThePermissionIsRefused(): void
+    {
+        $this->role(1);
+        $this->role(2, 1);
+        $this->store->roles[1]['permissions'] = ['roles.assign'];
+        $this->user(10, [2]);
+        $this->refused(fn () => $this->guard->assertKeepsPermission(10, 2, 'roles.assign'));
+    }
+
+    public function testRemovingARoleIsFineWhenAnotherRoleOrSuperRoleGrantsThePermission(): void
+    {
+        $this->role(1);
+        $this->role(2);
+        $this->role(3, 1);
+        $this->role(4, null, true);
+        $this->store->roles[1]['permissions'] = ['roles.assign'];
+        $this->store->roles[2]['permissions'] = ['roles.assign'];
+        $this->user(10, [2, 3]);
+        $this->user(11, [2, 4]);
+        $this->guard->assertKeepsPermission(10, 2, 'roles.assign');
+        $this->guard->assertKeepsPermission(11, 2, 'roles.assign');
+        $this->addToAssertionCount(2);
+    }
+
+    public function testRemovingASuperRoleThatAloneGrantsThePermissionIsRefused(): void
+    {
+        $this->role(1, null, true);
+        $this->user(10, [1]);
+        $this->refused(fn () => $this->guard->assertKeepsPermission(10, 1, 'roles.assign'));
+    }
+
+    public function testUserOverrideOrRoleWithoutThePermissionAllowsRemoval(): void
+    {
+        $this->role(1);
+        $this->role(2);
+        $this->store->roles[1]['permissions'] = ['roles.assign'];
+        $this->user(10, [1]);
+        $this->user(11, [1]);
+        $this->user(12, [2]);
+        $this->store->overrides[10] = ['roles.assign' => true];
+        $this->store->overrides[11] = ['roles.assign' => false];
+        $this->guard->assertKeepsPermission(10, 1, 'roles.assign');
+        $this->guard->assertKeepsPermission(11, 1, 'roles.assign');
+        $this->guard->assertKeepsPermission(12, 2, 'roles.assign');
+        $this->addToAssertionCount(3);
+    }
+
     public function testDeletingTheLastSuperAdminRoleIsRefused(): void
     {
         $this->role(1, null, true);

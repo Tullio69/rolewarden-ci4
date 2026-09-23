@@ -35,8 +35,8 @@ $displayName = (string) ($user->username ?? $user->email);
         <td class="rw-l-ctl">
           <a class="rw-btn rw-btn--ghost rw-btn--sm" href="<?= esc(site_url('rolewarden/roles/' . $summary['id'])) ?>"><?= lang('RoleWarden.panel.roles.permissionsAction') ?></a>
           <?php if (can('roles.assign')) : ?>
-            <?php if ($summary['id'] === $lastSuperAdminRoleId) : ?>
-              <button class="rw-btn rw-btn--ghost rw-btn--sm" type="button" disabled title="<?= esc(lang('RoleWarden.protection.lastSuperAdmin')) ?>"><?= lang('RoleWarden.panel.users.revoke') ?></button>
+            <?php if (isset($lockedRoles[$summary['id']])) : ?>
+              <button class="rw-btn rw-btn--ghost rw-btn--sm" type="button" disabled title="<?= esc($lockedRoles[$summary['id']]) ?>"><?= lang('RoleWarden.panel.users.revoke') ?></button>
             <?php else : ?>
               <form method="post" action="<?= esc(site_url('rolewarden/users/' . $user->id . '/roles/' . $summary['id'] . '/revoke')) ?>" style="display:inline">
                 <?= csrf_field() ?>

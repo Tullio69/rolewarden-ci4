@@ -318,6 +318,8 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 
 **Temi.** Una sola foglia di variabili CSS controlla colori, tipografia, spaziatura, forma, elevazione e movimento. Cambiare stile e' un file, non una ricerca globale nelle classi. Tre temi preimpostati con variante chiara e scura, piu' il personalizzatore: dettagli nella sezione dedicata.
 
+**Decisioni del 2026-09-23 sulle ambiguita' del collaudo v1.0.** (A1) Un login fallito mostra sempre lo stesso messaggio, che non rivela se l'email e' registrata. (A2) Un utente non puo' revocarsi da solo un ruolo senza il quale perderebbe `roles.assign`: l'"ultimo ruolo Administrator" del design system si definisce per permesso, non per nome. (A3) Nella matrice di un ruolo, la revoca diretta di una casella ereditata dal padre si rifiuta con un messaggio che nomina il ruolo d'origine, invece di rispondere successo senza effetto. (A4) Nella ricerca utenti `%` e `_` si cercano come testo, non fanno da jolly.
+
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 
 ## Design system

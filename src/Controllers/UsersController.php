@@ -6,9 +6,9 @@ namespace RoleWarden\Controllers;
 
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use RoleWarden\Authorization\ProtectionException;
 use RoleWarden\Entities\User;
 use RoleWarden\Models\PermissionModel;
@@ -28,6 +28,10 @@ class UsersController extends BaseController
         $status = (string) $this->request->getGet('status');
 
         if ($search !== '') {
+            // CI4 appends ESCAPE to LIKE but leaves the bound value alone: % and _ must match literally.
+            $escape = db_connect()->likeEscapeChar;
+            $search = str_replace([$escape, '%', '_'], [$escape . $escape, $escape . '%', $escape . '_'], $search);
+
             // The email lives in Shield's identities table, not on the user row.
             $userModel->groupStart()->like('username', $search)->orWhereIn(
                 'id',
@@ -164,6 +168,19 @@ class UsersController extends BaseController
             }
         }
 
+        // Revoke buttons to disable, with the reason shown as their title.
+        $lockedRoles = $lastSuperAdminRoleId === null ? [] : [$lastSuperAdminRoleId => lang('RoleWarden.protection.lastSuperAdmin')];
+
+        if ($id === (int) auth()->id()) {
+            foreach ($assignedRoles as $role) {
+                try {
+                    service('rolewardenGuard')->assertKeepsPermission($id, (int) $role['id'], 'roles.assign');
+                } catch (ProtectionException $e) {
+                    $lockedRoles[(int) $role['id']] ??= lang('RoleWarden.protection.' . $e->reason);
+                }
+            }
+        }
+
         $name = (string) ($user->username ?? $user->email);
         $crumbs = '<a href="' . esc(site_url('rolewarden/users')) . '">' . lang('RoleWarden.panel.nav.users') . '</a>'
             . '<span aria-hidden="true">/</span><span aria-current="page">' . esc($name) . '</span>';
@@ -188,6 +205,7 @@ class UsersController extends BaseController
             'matrix' => $matrix,
             'overrideCount' => $overrideCount,
             'lastSuperAdminRoleId' => $lastSuperAdminRoleId,
+            'lockedRoles' => $lockedRoles,
             'isSelf' => (int) auth()->id() === $id,
         ], 'users', $name, $crumbs);
     }
@@ -298,6 +316,9 @@ class UsersController extends BaseController
     public function revokeRole(int $id, int $roleId): RedirectResponse
     {
         try {
+            if ($id === (int) auth()->id()) {
+                service('rolewardenGuard')->assertKeepsPermission($id, $roleId, 'roles.assign');
+            }
             (new UserRoles())->revoke($id, $roleId);
         } catch (ProtectionException $e) {
             return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_error', lang('RoleWarden.protection.' . $e->reason));

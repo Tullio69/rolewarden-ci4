@@ -17,6 +17,7 @@ class ProtectionException extends RuntimeException
     public const PARENT_MISSING = 'parentMissing';
     public const SYSTEM_RECORD = 'systemRecord';
     public const ROLE_HAS_CHILDREN = 'roleHasChildren';
+    public const LAST_ADMIN_ROLE = 'lastAdminRole';
 
     public function __construct(public readonly string $reason, string $message = '')
     {

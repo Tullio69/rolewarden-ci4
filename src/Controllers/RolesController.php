@@ -191,6 +191,12 @@ class RolesController extends BaseController
             return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'message' => lang('RoleWarden.panel.roles.matrixNotFound')]);
         }
 
+        $inherited = $this->inheritedPermissions($id);
+
+        if (! $granted && isset($inherited[$permissionId])) {
+            return $this->response->setStatusCode(422)->setJSON(['ok' => false, 'message' => sprintf(lang('RoleWarden.panel.roles.matrixInherited'), $inherited[$permissionId]), 'csrfHash' => csrf_hash()]);
+        }
+
         try {
             $repository = new RolePermissions();
 

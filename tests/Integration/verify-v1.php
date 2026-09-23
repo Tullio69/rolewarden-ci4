@@ -131,11 +131,7 @@ $a1 = $alert($e1);
 $a2 = $alert($e2);
 check('L06', 'failed login redirects back to login and shows a role="alert" error block', str_contains($loc1, 'login') && $a1 !== '', "location=$loc1 alert='$a1'");
 check('L07', "failed login shows Shield's own message (\"$a1\")", stripos($a1, 'Unable to log you in') !== false || stripos($a1, 'credentials') !== false, "alert text '$a1'");
-if ($a1 !== '' && $a1 === $a2) {
-    check('L08', 'wrong password vs unknown email: identical message, no field named as wrong', true);
-} else {
-    amb('L08', 'failed-login message differs between a known email with a wrong password and an unknown email', "known email: '$a1' / unknown email: '$a2'. Both strings are Shield's own (Auth.invalidPassword / Auth.badAttempt), shown verbatim as the brief asks; Login README says never say which of email or password was wrong. The two requirements conflict.");
-}
+check('L08', 'wrong password vs unknown email: identical nonempty message', $a1 !== '' && $a1 === $a2, "known='$a1'; unknown='$a2'");
 
 $rem = new Client('remember');
 $before = (int) q1('SELECT COUNT(*) FROM auth_remember_tokens');
@@ -251,8 +247,8 @@ foreach (["o'brien", '%', '_', '\\', '" OR 1=1 -- ', "') OR ('1'='1"] as $qq) {
     $rr = user_rows($own->clean());
     $wild = in_array($qq, ['%', '_'], true);
     check('U13d', "search q=" . json_encode($qq) . ": 200, no SQL text" . ($wild ? '' : ', no injection match-all') . ' (' . count($rr) . ' rows)', $own->status === 200 && ! leaks_sql($own->body) && ($wild || $rr === []), "HTTP {$own->status}; rows " . count($rr));
-    if ($wild && $rr !== []) {
-        amb('U13w', "search q=" . json_encode($qq) . ' is treated as a LIKE wildcard and matches every user (' . count($rr) . ' rows on page 1)', 'Queries stay parameterized (no SQL text, the injection strings match nothing), but %/_ typed by the user are not matched literally (also q=d_na finds Dana, q=dana%test finds her). SPEC/UsersList README only say "search"; whether wildcard characters must be literal is not specified.');
+    if ($wild) {
+        check('U13w', 'literal wildcard search returns no fixture users', $rr === [], 'Unexpected literal wildcard matches');
     }
 }
 seen($own->get('rolewarden/users?q=northwind&role=' . $role('v1-limited')), 'owner GET users?q+role');
@@ -374,8 +370,11 @@ check('M11', 'revoke effective on Theo\'s next request, no logout (users/create 
 
 // child cannot revoke what the parent grants: direct request on the locked cell
 $parentRows = q('SELECT * FROM acl_role_permissions WHERE role_id=? ORDER BY permission_id', [$P]);
+$allRoleRows = q('SELECT * FROM acl_role_permissions ORDER BY role_id, permission_id');
 $own->post('rolewarden/roles/' . $C . '/permissions', ['permission_id' => $perm('roles.view'), 'granted' => 0], 'rolewarden/roles/' . $C, $AJAX);
 seen($own, 'owner POST revoke inherited');
+$inheritedJson = json_decode($own->body, true);
+check('M12a', 'inherited revoke: non-2xx, ok false, origin named, all grants unchanged, not CSRF', $own->status >= 400 && $own->status < 500 && ($inheritedJson['ok'] ?? null) === false && str_contains($own->body, 'V1 Parent') && ! csrf_refused($own) && q('SELECT * FROM acl_role_permissions ORDER BY role_id, permission_id') === $allRoleRows, "HTTP {$own->status}");
 $resp = "HTTP {$own->status} " . preg_replace('/\s+/', ' ', substr(trim($own->body), 0, 80));
 seen($child->get('rolewarden/roles'), 'child GET roles after inherited revoke attempt');
 check('M12', "direct POST revoking inherited roles.view on the child is refused or ignored ($resp): parent grants intact, Theo still in (200)", q('SELECT * FROM acl_role_permissions WHERE role_id=? ORDER BY permission_id', [$P]) === $parentRows && $child->status === 200, "Theo status {$child->status}");
@@ -582,7 +581,7 @@ $selfRevoke = (int) q1('SELECT COUNT(*) FROM acl_user_roles WHERE user_id=? AND 
 if (! $selfRevoke) {
     q('INSERT INTO acl_user_roles (user_id, role_id) VALUES (?,?)', [$pid2, $role('admin')]);
     array_map('unlink', array_filter(glob(getenv('RW_V1_APP') . '/writable/cache/*') ?: [], fn ($f) => is_file($f) && basename($f) !== 'index.html'));
-    amb('P15', 'Priya (admin) removed her own admin role through the panel (server accepted it; restored by SQL)', 'UserDetail README: "Do not let a user remove their own last Administrator role". The spec never says which RoleWarden role "Administrator" is (system role admin? any role granting users/roles management? super-admin only, already covered by the last-super-admin rule), so this is reported, not decided.');
+    check('P15', 'Priya cannot remove her own admin role', false, 'Own last roles.assign role removed');
 } else {
     check('P15', 'Priya cannot remove her own admin role', true);
 }

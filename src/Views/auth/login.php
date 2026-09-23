@@ -20,6 +20,10 @@
     </div>
 
     <?php $error = session('error') ?? (is_array(session('errors')) ? implode(' ', session('errors')) : session('errors')); ?>
+    <?php // Shield's wrong-password text differs from the unknown-email one and would reveal registered emails.
+    if ($error === lang('Auth.invalidPassword')) {
+        $error = lang('Auth.badAttempt');
+    } ?>
 
     <form class="rw-auth-form" action="<?= url_to('login') ?>" method="post" novalidate>
       <?= csrf_field() ?>

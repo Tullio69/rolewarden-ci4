@@ -334,3 +334,76 @@ passes: no SQL or DB error text in any of 137 responses. Z02: no PHP warning, no
 - No commit, and no changes to `src/` or `docs/`.
 - Limits unchanged: without a real browser, visual fidelity, Alpine behaviour and the rendered
   accessible names of matrix cells are not certified.
+
+---
+
+# Collaudo delle decisioni A1-A4 del 2026-09-23 e regressione v1.0 (Collaudatore ad Hoc, 2026-09-23)
+
+Sostituisce Codex (ucciso dal sistema per memoria insufficiente), stesso protocollo. Oggetto: il working
+tree non committato (non HEAD) dopo le correzioni A1-A4 delle 07:35. Letti solo SPEC (in particolare
+"Pannello admin" e "Decisioni del 2026-09-23"), BRIEF, `_AI-LOG.md`, `docs/design-system/` (README
+Login e UserDetail), `src/Authorization/Contracts/`, README e i file di `tests/Integration/`. Mai
+aperti controller, model, view, asset, helper, `RouteRegistrar`, `Guard.php`, `tests/Unit/` ne' il diff di `src/`.
+
+## Verdetto
+
+**Approvata.** A1-A4: 49 PASS / 0 FAIL in development e 49 PASS / 0 FAIL in production, 1 ambiguita'.
+Regressione: `verify-v1.php` (development) 171 PASS / 0 FAIL, `verify-v1.prod.php` (production)
+12 PASS / 0 FAIL. Nessun testo SQL a schermo in nessuna risposta. Nessun difetto confermato.
+
+## Esito per decisione (identico in development e production)
+
+- **A1 PASS.** Login fallito con email registrata e password errata, e con email sconosciuta: stesso
+  blocco `role="alert"`, "Error: Unable to log you in. Please check your credentials.". POST arrivato
+  all'autenticazione (non un rifiuto CSRF), redirect a `login`. Nella suite v1.0 L08 ora e' un controllo (PASS).
+- **A2 PASS.** Admin con il solo ruolo `admin` sulla propria pagina: il controllo del ruolo (etichettato
+  "Remove", come nel README UserDetail) e' disabilitato con `title` "You cannot remove your own role that
+  lets you manage roles."; la POST diretta di revoca e' rifiutata (303 con "Error: You cannot remove your own
+  role that lets you manage roles."), `acl_user_roles` invariata. Consentita, con ruolo tolto nel DB e
+  controllo non disabilitato in pagina, quando un altro ruolo concede `roles.assign` direttamente o tramite
+  il ruolo padre. Consentita con override utente concesso su `roles.assign`. Consentita la revoca del proprio
+  ruolo `user` (non concede `roles.assign`). Consentita la revoca di `admin` a un ALTRO utente. La protezione
+  dell'ultimo super admin regge ("This would leave the system without an active super admin", ruolo intatto).
+  Nella suite v1.0 P15 ora e' un controllo (Priya non puo' togliersi `admin`: PASS).
+- **A3 PASS.** Revoca diretta di una cella ereditata dal padre: HTTP 422, `{"ok":false,"message":"Inherited
+  from A1A4 parent: change it on that role."}`, nessuna riga di `acl_role_permissions` cambiata, non e' un
+  rifiuto CSRF. Revoca di una cella posseduta direttamente: 2xx, `ok: true`, cancellata solo quella riga.
+  Nella suite v1.0 M12a (nuovo) PASS.
+- **A4 PASS.** `q=%` e `q=_` trovano solo gli utenti il cui username contiene davvero `%`/`_`, `q=d_na`
+  non trova nessuno, `A4%` e `A4_` trovano l'utente esatto; "Dana" e il frammento email `dana@northwind`
+  trovano Dana; `O'Brien` trova l'utente con l'apostrofo senza errori. Nella suite v1.0 U13w ora e' un
+  controllo (PASS), le stringhe di iniezione restano senza risultati.
+
+## Ambiguita' (riportate, non decise)
+
+- **A2.DENY.** "Un override su `roles.assign` decide da solo" non e' esercitabile via HTTP nel caso
+  negato: con `roles.assign` negato l'attore non puo' usare la rotta di revoca (POST -> 303 verso la home,
+  nessun messaggio, ruolo intatto, non CSRF). Osservabile e verificato solo che il rifiuto non viene dalla
+  regola di auto-protezione. Se l'autore intendeva altro (es. revoca da parte di un altro utente), va detto.
+- **Spiegazione del controllo disabilitato (minore).** Il README UserDetail chiede di spiegare "in the
+  marginal note"; la spiegazione e' solo nel `title` del bottone, la cella `rw-anno` della riga e' vuota.
+  Stesso schema gia' accettato per l'auto-disattivazione nella riverifica precedente. Da decidere se il
+  `title` basta (un `title` su un bottone disabilitato non e' esposto in modo affidabile ai lettori di schermo).
+
+## Errori degli script trovati e corretti (non difetti del modulo)
+
+- I file parziali del run Codex interrotto sono stati rivisti prima dell'uso: ripristinato il fallback
+  del token CSRF da file di sessione in `verify-v1.lib.php` (la variante di Codex via `login/magic-link`
+  non era stata validata), ripristinata la ricerca della view da sovrascrivere in X05; tenute le
+  conversioni L08/U13w/P15 in controlli e il nuovo M12a. `verify-v1-a1a4.run.py` sostituito da
+  `verify-v1-a1a4.sh` (riscriveva `app/Config/Database.php` della copia; non serve).
+- Primo giro: A2.UI FAIL perche' lo script cercava un bottone "Revoke", mentre il pannello (e il README)
+  lo chiamano "Remove". Corretto lo script; ricontrollato sull'HTML servito.
+
+## Ambiente e igiene
+
+- `verify-v1-a1a4.sh`: snapshot `mariadb-dump --skip-dump-date --skip-comments rolewarden_test`, copia di
+  `rolewarden-app-test` nello scratchpad (`robocopy /E /XJ`), junction verso il modulo ricreata a mano, cache
+  e sessioni svuotate subito, nella `.env` della copia righe password tolte, database `rolewarden_test`,
+  base URL `:8070`. Credenziali solo da `RW_DB_*`. Installazione da README su database ricreato prima di
+  ogni fase (suite v1.0 dev; A1-A4 dev; A1-A4 + spot check prod), un solo `php -S` alla volta.
+- Fine: `rolewarden_test` ripristinato, md5 del dump identico allo snapshot (`b98a95c14161f0186fb51fab93a6e114`,
+  0 tabelle come trovato); `rolewarden` mai toccato; 0 `php.exe`; copia rimossa (prima la junction);
+  cookie jar e log del server cancellati. Output in `verify-v1.output.txt`, `verify-v1.prod.output.txt`,
+  `verify-v1-a1a4.{development,production}.output.txt`. Nessun commit.
+- Limite invariato: resa visiva e comportamento Alpine non certificabili senza browser.

@@ -2,8 +2,8 @@
 # A1-A4 + v1.0 regression, black-box (Collaudatore ad Hoc). Usage: verify-v1-a1a4.sh <scratch-dir>
 # Snapshots rolewarden_test, copies ../rolewarden-app-test into <scratch-dir>/app (junctions excluded),
 # re-creates the Composer junction by hand, then per phase: fresh README install, ONE php -S on :8070.
-#   development: verify-v1.php (full suite), then fresh install + verify-v1-a1a4.php
-#   production : fresh install + verify-v1-a1a4.php, then verify-v1.prod.php
+#   development: verify-v1.php (full suite), then fresh install + verify-v1-anno.php, fresh install + verify-v1-a1a4.php
+#   production : fresh install + verify-v1-anno.php, fresh install + verify-v1-a1a4.php, then verify-v1.prod.php
 # Always: server stopped, rolewarden_test restored from the snapshot and re-dumped for the checksum,
 # junction removed before the copy. Credentials only from RW_DB_* (never written to files).
 set -u
@@ -85,10 +85,18 @@ echo "== DEVELOPMENT: full v1.0 suite"
 install; start_server development
 php "$HERE/verify-v1.php" >"$HERE/verify-v1.output.txt" 2>&1 || RC=1
 tail -3 "$HERE/verify-v1.output.txt"; stop_server
+echo "== DEVELOPMENT: marginal notes (UserDetail)"
+install; start_server development
+RW_ANNO_ENV=development php "$HERE/verify-v1-anno.php" >"$HERE/verify-v1-anno.development.output.txt" 2>&1 || RC=1
+tail -1 "$HERE/verify-v1-anno.development.output.txt"; stop_server
 echo "== DEVELOPMENT: A1-A4"
 install; start_server development
 php "$HERE/verify-v1-a1a4.php" >"$HERE/verify-v1-a1a4.development.output.txt" 2>&1 || RC=1
 tail -2 "$HERE/verify-v1-a1a4.development.output.txt"; stop_server
+echo "== PRODUCTION: marginal notes (UserDetail)"
+install; start_server production
+RW_ANNO_ENV=production php "$HERE/verify-v1-anno.php" >"$HERE/verify-v1-anno.production.output.txt" 2>&1 || RC=1
+tail -1 "$HERE/verify-v1-anno.production.output.txt"; stop_server
 echo "== PRODUCTION: A1-A4 + v1.0 production spot check"
 install; start_server production
 php "$HERE/verify-v1-a1a4.php" >"$HERE/verify-v1-a1a4.production.output.txt" 2>&1 || RC=1

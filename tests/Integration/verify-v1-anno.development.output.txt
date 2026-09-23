@@ -1,0 +1,36 @@
+== [development] own page, sole roles.assign role (Priya: admin only)
+[PASS] FIX    Priya Nair signs in
+[PASS] DEVE.R1 own page: Remove of the admin role disabled
+[PASS] DEVE.R2 own page: marginal note of the admin row carries the explanation
+[PASS] DEVE.R3 the explanation appears on no other row
+EVIDENCE DEVE role note: 'You cannot remove your own role that lets you manage roles.'
+== [development] own page: Deactivate / Delete
+[PASS] DEVE.S1 own page: Deactivate disabled
+[PASS] DEVE.S2 own page: Status note explains (not the ordinary "reversible")
+[PASS] DEVE.S3 own page: Delete disabled
+[PASS] DEVE.S4 own page: Delete note explains the same self protection
+[PASS] DEVE.S5 own page: self-protection text is not on the role or password rows
+EVIDENCE DEVE self note: 'You cannot disable or delete your own account.'
+== [development] own page with a second roles.assign grant (role removable)
+[PASS] DEVE.R4 removable admin role: Remove enabled on both role rows
+[PASS] DEVE.R5 removable role: no lock explanation on any role row
+== [development] last super admin's page viewed by another admin (Priya -> Dana)
+[PASS] DEVE.L1 last super admin: Deactivate and Delete disabled
+[PASS] DEVE.L2 last super admin: both notes explain the last-super-admin protection
+EVIDENCE DEVE last-super-admin note: 'This would leave the system without an active super admin.'
+[PASS] DEVE.L3 with a second active super admin: Deactivate/Delete enabled, no lock note
+== [development] normal and inactive users viewed by an admin
+[PASS] DEVE.N1 normal user: Deactivate and Delete enabled
+[PASS] DEVE.N2 normal user: Status note is the ordinary "reversible" note
+[PASS] DEVE.N3 normal user: Delete note carries no lock explanation
+[PASS] DEVE.N4 normal user: role rows removable with no lock note
+[PASS] DEVE.X1 role name with markup is escaped on the page
+[PASS] DEVE.N5 inactive user: Activate enabled with the ordinary "reversible" note
+== [development] Dana on her own page (self and last super admin at once)
+[PASS] FIX    Dana Whitfield signs in
+[PASS] DEVE.D1 owner own page: Deactivate/Delete disabled, both notes explain (non-empty, not "reversible")
+EVIDENCE DEVE owner own page notes: status='You cannot disable or delete your own account.' delete='You cannot disable or delete your own account.'
+== [development] escaping and SQL text
+[PASS] DEVE.X2 every marginal note is escaped text inside rw-note (7 pages)
+[PASS] DEVE.SQL no SQL/DB error text on the pages
+TOTAL marginal notes (development): 24 PASS, 0 FAIL

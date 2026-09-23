@@ -6,7 +6,8 @@ EVIDENCE A1 ["Error: Unable to log you in. Please check your credentials.","Erro
 == A2 own role removal
 [PASS] FIX    A2OnlyAdmin signs in
 [PASS] A2.UI  sole admin: Remove control of the admin role disabled, with an explanation
-EVIDENCE A2.UI title='You cannot remove your own role that lets you manage roles.'; marginal note cell=''
+[PASS] A2.UIa sole admin: the explanation is in the marginal note of the same row
+EVIDENCE A2.UI title='You cannot remove your own role that lets you manage roles.'; marginal note of the row='You cannot remove your own role that lets you manage roles.'
 [PASS] CSRF   sole admin self revoke fresh page token
 [PASS] REACHED sole admin self revoke is not a CSRF rejection
 EVIDENCE sole admin self revoke: HTTP 303 -> Error: You cannot remove your own role that lets you manage roles. | to A2OnlyAdmin&rsquo;s overrides
@@ -65,4 +66,4 @@ EVIDENCE A3 HTTP 422 {"ok":false,"message":"Inherited from A1A4 parent: change i
 [PASS] A4.SEARCH literal/substring query "dana@northwind" returns exact users
 [PASS] A4.SEARCH literal/substring query "O'Brien" returns exact users
 [PASS] SQL    no SQL/DB error text in dedicated responses
-TOTAL A1-A4: 49 PASS, 0 FAIL; 1 ambiguity
+TOTAL A1-A4: 50 PASS, 0 FAIL; 1 ambiguity

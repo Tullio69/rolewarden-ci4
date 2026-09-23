@@ -407,3 +407,63 @@ Regressione: `verify-v1.php` (development) 171 PASS / 0 FAIL, `verify-v1.prod.ph
   cookie jar e log del server cancellati. Output in `verify-v1.output.txt`, `verify-v1.prod.output.txt`,
   `verify-v1-a1a4.{development,production}.output.txt`. Nessun commit.
 - Limite invariato: resa visiva e comportamento Alpine non certificabili senza browser.
+
+---
+
+# Collaudo nota a margine UserDetail (decisione 2026-09-23, voce delle 18:20) - Collaudatore ad Hoc (Claude)
+
+Working tree non committato (non HEAD), in sostituzione di Codex (memoria insufficiente), stesso protocollo:
+letti solo SPEC, BRIEF, `_AI-LOG.md`, `docs/design-system/` (README UserDetail), `src/Authorization/Contracts/`,
+README e i file di `tests/Integration/`; mai aperti controller, model, view, asset, helper, `RouteRegistrar`,
+`Guard.php`, test unitari ne' il diff di `src/`. Markup ricavato solo dall'HTML servito (sonda preliminare).
+
+**Esito: PASS. Decisione approvata.**
+
+| Suite | development | production |
+|---|---|---|
+| `verify-v1-anno.php` (nuovo) | 24 PASS / 0 FAIL | 24 PASS / 0 FAIL |
+| `verify-v1-a1a4.php` (A2.UIa aggiunto) | 50 PASS / 0 FAIL, 1 ambiguita' | 50 PASS / 0 FAIL, 1 ambiguita' |
+| `verify-v1.php` | 171 PASS / 0 FAIL | - |
+| `verify-v1.prod.php` | - | 12 PASS / 0 FAIL |
+
+## Controlli nuovi (`verify-v1-anno.php`, uguali nelle due fasi, prefisso DEVE/PROD)
+
+- R1-R3: Priya (solo `admin`) sulla propria pagina: Remove del ruolo Admin disabilitato; la `td.rw-anno`
+  della stessa riga contiene "You cannot remove your own role that lets you manage roles."; il testo non
+  compare su nessun'altra riga. PASS.
+- R4-R5: con un secondo ruolo che concede `roles.assign`, Remove attivo su entrambe le righe e nessuna nota
+  di blocco. PASS.
+- S1-S5: propria pagina: Deactivate e Delete disabilitati, note di entrambe le righe "You cannot disable or
+  delete your own account." (al posto di "reversible"), testo assente dalle altre righe. PASS.
+- L1-L3: pagina di Dana (unico super admin attivo) vista da Priya: Deactivate e Delete disabilitati, note
+  "This would leave the system without an active super admin."; con un secondo super admin attivo i controlli
+  tornano attivi e la nota sparisce. PASS.
+- N1-N5: Mara vista da Priya: Deactivate e Delete attivi, nota Status "reversible", nota Delete vuota, Remove
+  attivo senza nota; Lena (inattiva): Activate con nota "reversible". PASS.
+- D1: Dana sulla propria pagina (vale sia l'auto-protezione sia l'ultimo super admin): controlli disabilitati,
+  note presenti; mostrata la nota di auto-protezione. PASS.
+- X1-X2, SQL: nome ruolo con markup (`Anno <i>x</i> & "q"`) servito escapato; ogni nota a margine e' testo
+  escapato dentro `rw-note` (7 pagine); nessun testo SQL. PASS.
+
+## Regressione
+
+- `verify-v1-a1a4.php`: A2.UI invariato (bottone disabilitato + `title`), aggiunto **A2.UIa** che richiede la
+  stessa spiegazione nella nota a margine della riga del bottone: PASS in entrambe le fasi. L'ambiguita' minore
+  "spiegazione solo nel `title`" del collaudo precedente e' quindi risolta.
+- Nessuna regressione su v1.0 e A1-A4.
+
+## Ambiguita' (non decise)
+
+- A2.DENY, invariata: con override negato su `roles.assign` la revoca del proprio ruolo non e' esercitabile via
+  HTTP (la rotta richiede quel permesso); verificato solo che il rifiuto non viene dall'auto-protezione.
+- Osservazione, non difetto: quando valgono insieme auto-protezione e ultimo super admin (D1) la pagina mostra
+  solo il motivo di auto-protezione; il README non dice quale prevalga.
+
+## Ambiente e igiene
+
+- `verify-v1-a1a4.sh` esteso con una fase "marginal notes" su installazione fresca in development e in
+  production (una sonda preliminare solo development, stesso harness via `RW_PROBE`). Un solo `php -S` alla volta.
+- Fine (entrambi i giri): `rolewarden_test` ripristinato, md5 del dump identico allo snapshot
+  (`b98a95c14161f0186fb51fab93a6e114`, 0 tabelle come trovato); `rolewarden` mai toccato; 0 `php.exe`; copia
+  rimossa (prima la junction); cookie jar e log del server cancellati. Output in
+  `verify-v1-anno.{development,production}.output.txt` e negli output gia' esistenti. Nessun commit.

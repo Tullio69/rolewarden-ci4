@@ -6,6 +6,7 @@ $matrixConfig = [
     'rows' => $matrix['rows'],
 ];
 $displayName = (string) ($user->username ?? $user->email);
+$lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($lastSuperAdminRoleId !== null ? lang('RoleWarden.protection.lastSuperAdmin') : null);
 ?>
 <div class="rw-page-head">
   <div>
@@ -45,7 +46,7 @@ $displayName = (string) ($user->username ?? $user->email);
             <?php endif ?>
           <?php endif ?>
         </td>
-        <td class="rw-anno"></td>
+        <td class="rw-anno"><?php if (can('roles.assign') && isset($lockedRoles[$summary['id']])) : ?><span class="rw-note"><?= esc($lockedRoles[$summary['id']]) ?></span><?php endif ?></td>
       </tr>
     <?php endforeach ?>
     <?php if (can('roles.assign') && $availableRoles !== []) : ?>
@@ -169,8 +170,8 @@ $displayName = (string) ($user->username ?? $user->email);
         <td class="rw-l-value rw-muted"><?= lang('RoleWarden.panel.users.statusHint') ?></td>
         <td class="rw-l-ctl">
           <?php if ($user->active) : ?>
-            <?php if ($lastSuperAdminRoleId !== null || $isSelf) : ?>
-              <button class="rw-btn rw-btn--danger rw-btn--sm" type="button" disabled title="<?= esc($isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : lang('RoleWarden.protection.lastSuperAdmin')) ?>"><?= lang('RoleWarden.panel.users.deactivate') ?></button>
+            <?php if ($lockReason !== null) : ?>
+              <button class="rw-btn rw-btn--danger rw-btn--sm" type="button" disabled title="<?= esc($lockReason) ?>"><?= lang('RoleWarden.panel.users.deactivate') ?></button>
             <?php else : ?>
               <form method="post" action="<?= esc(site_url('rolewarden/users/' . $user->id . '/deactivate')) ?>" style="display:inline">
                 <?= csrf_field() ?>
@@ -184,7 +185,7 @@ $displayName = (string) ($user->username ?? $user->email);
             </form>
           <?php endif ?>
         </td>
-        <td class="rw-anno"><span class="rw-note"><?= lang('RoleWarden.panel.users.reversible') ?></span></td>
+        <td class="rw-anno"><span class="rw-note"><?= $user->active && $lockReason !== null ? esc($lockReason) : lang('RoleWarden.panel.users.reversible') ?></span></td>
       </tr>
     <?php endif ?>
     <?php if (can('users.delete')) : ?>
@@ -193,13 +194,13 @@ $displayName = (string) ($user->username ?? $user->email);
         <th class="rw-l-key" scope="row"><b><?= lang('RoleWarden.panel.delete') ?></b></th>
         <td class="rw-l-value rw-muted"><?= lang('RoleWarden.panel.users.deleteHint') ?></td>
         <td class="rw-l-ctl">
-          <?php if ($lastSuperAdminRoleId !== null || $isSelf) : ?>
-            <button class="rw-btn rw-btn--danger rw-btn--sm" type="button" disabled title="<?= esc($isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : lang('RoleWarden.protection.lastSuperAdmin')) ?>"><?= lang('RoleWarden.panel.delete') ?></button>
+          <?php if ($lockReason !== null) : ?>
+            <button class="rw-btn rw-btn--danger rw-btn--sm" type="button" disabled title="<?= esc($lockReason) ?>"><?= lang('RoleWarden.panel.delete') ?></button>
           <?php else : ?>
             <button class="rw-btn rw-btn--danger rw-btn--sm" type="button" onclick="rwConfirm('confirm-delete-user')"><?= lang('RoleWarden.panel.delete') ?></button>
           <?php endif ?>
         </td>
-        <td class="rw-anno"></td>
+        <td class="rw-anno"><?php if ($lockReason !== null) : ?><span class="rw-note"><?= esc($lockReason) ?></span><?php endif ?></td>
       </tr>
     <?php endif ?>
   </tbody>

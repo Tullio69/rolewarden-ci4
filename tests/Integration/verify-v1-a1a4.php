@@ -73,13 +73,17 @@ foreach (['direct','parent'] as $name) q('INSERT INTO acl_role_permissions (role
 $admin = $role('admin');
 [$only, $c] = actor('A2OnlyAdmin', [$admin]);
 $c->get("rolewarden/users/$only"); capture($c, 'only-admin own page');
-// Served markup: the role row's control is labelled "Remove" (UserDetail README), the explanation sits in its title.
+// Served markup: the role row's control is labelled "Remove" (UserDetail README); the explanation must be
+// in the marginal note (td.rw-anno) of that same row (author decision 2026-09-23), the title is kept too.
 preg_match_all('/<button\b[^>]*\bdisabled\b[^>]*>\s*(?:Remove|Revoke)\s*<\/button>/', $c->clean(), $buttons);
 $why = '';
 foreach ($buttons[0] as $b) if (preg_match('/title="([^"]+)"/', $b, $t)) $why = html_entity_decode($t[1]);
-preg_match('/<td class="rw-anno">(.*?)<\/td>/s', $c->clean(), $anno);
+$rowNote = '';
+preg_match_all('/<tr\b.*?<\/tr>/s', $c->clean(), $trs);
+foreach ($trs[0] as $tr) if (preg_match('/<button\b[^>]*\bdisabled\b[^>]*>\s*(?:Remove|Revoke)\s*<\/button>/', $tr) && preg_match('/<td class="rw-anno">(.*?)<\/td>/s', $tr, $anno)) $rowNote = trim(preg_replace('/\s+/', ' ', html_entity_decode(strip_tags($anno[1]))));
 check('A2.UI', 'sole admin: Remove control of the admin role disabled, with an explanation', $c->status === 200 && count($buttons[0]) === 1 && $why !== '', 'disabled controls: ' . count($buttons[0]) . "; explanation '$why'");
-echo "EVIDENCE A2.UI title='$why'; marginal note cell='" . trim(strip_tags($anno[1] ?? '')) . "'\n";
+check('A2.UIa', 'sole admin: the explanation is in the marginal note of the same row', $rowNote !== '' && $rowNote === $why, "row note '$rowNote'; title '$why'");
+echo "EVIDENCE A2.UI title='$why'; marginal note of the row='$rowNote'\n";
 [$status,$text,$before] = revoke($c,$only,$admin,'sole admin self revoke');
 check('A2.BLOCK', 'own last roles.assign role refused and all assignments unchanged', assigned($only,$admin) && q('SELECT * FROM acl_user_roles ORDER BY user_id,role_id') === $before && $status < 500 && $text !== '', "HTTP $status; role present=" . (int)assigned($only,$admin));
 echo 'EVIDENCE A2.BLOCK HTTP ' . $status . ' role_present=' . (int)assigned($only,$admin) . "\n";

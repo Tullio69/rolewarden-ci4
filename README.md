@@ -60,6 +60,10 @@ If port 3306 or 8080 is already taken, override them without editing the file:
 DB_PORT=3307 ADMINER_PORT=8081 docker compose up -d
 ```
 
+Then open Adminer on the port you chose. If another project's Adminer already sits on
+8080, that page still loads, but its `db` is a different server: "Access denied for user
+'root'" there means you are on the wrong Adminer, not using the wrong password.
+
 `docker compose down -v` deletes the data volume and recreates both databases from
 scratch on the next start. Use it when migrations leave the schema in a state that is
 faster to rebuild than to repair.

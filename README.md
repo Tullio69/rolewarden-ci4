@@ -112,6 +112,30 @@ own collision check needs the system roles to already exist. Running
 `php spark db:seed 'RoleWarden\Database\Seeds\RoleWardenSeeder'` afterward, as documented,
 stays a safe no-op either way.
 
+### Creating the first super admin
+
+The seeder creates the roles but assigns them to no one, and the panel needs someone
+who can already manage roles. Create the account with Shield and activate it (Shield
+creates it inactive):
+
+```
+php spark shield:user create -n admin -e you@example.com
+php spark shield:user activate -e you@example.com
+```
+
+Then give it the `super-admin` role, once, from any SQL client:
+
+```sql
+INSERT INTO acl_user_roles (user_id, role_id)
+SELECT i.user_id, r.id
+FROM auth_identities i
+JOIN acl_roles r ON r.slug = 'super-admin'
+WHERE i.type = 'email_password' AND i.secret = 'you@example.com';
+```
+
+Replace `acl_` if you changed `rolewarden.tablePrefix`. From then on, every other role
+and assignment is managed from the panel.
+
 ## Wiring the admin panel
 
 Add one line to the host's `app/Config/Routes.php`, next to the existing

@@ -10,6 +10,6 @@ Columns: row number gutter (`note`, numbering continues across pages), Name (`bo
 
 - Filters apply as you type and reset to page 1; Clear filters restores everything and returns focus to Search.
 - No results: one row reading "No users match these filters." with a Clear filters button, never an illustration.
-- Sorting: the Last active header is a button; it sorts by the user's last activity, not by the last sign-in; `aria-sort` on the `th` reflects the direction.
+- Sorting: the Last active header is a button; it sorts by the user's last activity, not by the last sign-in; `aria-sort` on the `th` reflects the direction. Users with no activity yet ("Never") come last when sorting newest first and first when sorting oldest first.
 - Alpine sketch: `x-data="{ q:'', role:'', status:'', page:1 }"`, filters bound with `x-model` and debounced requests to the CodeIgniter controller; server-side pagination via CI4's Pager.
 - Don't add avatars, checkboxes or bulk actions unless the product needs them; don't color status or roles.

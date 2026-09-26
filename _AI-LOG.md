@@ -462,3 +462,10 @@ Formato di ogni voce:
 - Stato: completato
 - Note per il prossimo: il controllo e' infrastruttura del collaudo, non un'asserzione: non cambia cosa viene verificato.
 
+### [2026-09-26 04:50] - Claude
+- Tipo: docs
+- Scope: `docs/design-system/components/UsersList/README.md`, `_AI-LOG.md`
+- Cosa ho fatto: decisione dell'autore sull'ambiguita' del Collaudatore D: si tiene il comportamento attuale e lo si scrive nel README di UsersList. Gli utenti senza attivita' ("Never") vanno in fondo nell'ordine dal piu' recente e in testa nell'ordine dal meno recente.
+- Stato: completato
+- Note per il prossimo: U04 in `verify-v1.php` oggi stampa la posizione degli utenti senza attivita' senza giudicarla (riga `[INFO]`); ora che la specifica la fissa, al prossimo collaudo va trasformata in controllo.
+

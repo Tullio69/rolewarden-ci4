@@ -434,3 +434,10 @@ Formato di ogni voce:
 - Stato: completato. **Definizione di fatto dell'MVP interamente verificata.**
 - Note per il prossimo: aperte per l'autore, non bloccanti: (1) README UsersList "sorting by last login" contro ordinamento per ultima attivita' di Shield; (2) dove atterrare dopo il login con il solo wiring del README (oggi la `/` di Shield); (3) valutare se consigliare nel README CI4 >= 4.7.4 per le 5 advisory di 4.7.0. Copie originali di SPEC/BRIEF/design system su Claude da riallineare a mano (minimo CI4 4.7, A2.DENY, DoD spuntata).
 
+### [2026-09-26 03:58] - Claude
+- Tipo: docs
+- Scope: `docs/design-system/components/UsersList/README.md`, `_AI-LOG.md`
+- Cosa ho fatto: decisione dell'autore sull'ambiguita' di B: l'elenco utenti ordina per ultima attivita' (timestamp last-active di Shield), non per ultimo login. Allineato il README del componente UsersList (descrizione, dati forniti, colonna "Last active", ordinamento).
+- Stato: completato
+- Note per il prossimo: l'etichetta della colonna nel pannello (`src/Language/en/RoleWarden.php`, chiave `lastLogin`, "Last login") e i `preview.html` di UsersList/UserDetail dicono ancora "Last login": da allineare se l'autore lo chiede. Copia originale del design system su Claude da riallineare a mano.
+

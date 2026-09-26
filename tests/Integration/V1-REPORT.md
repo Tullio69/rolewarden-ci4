@@ -527,3 +527,57 @@ Nessuno.
   0 tabelle come trovato); 0 `php.exe`; copia rimossa (prima la junction); log del server e cookie jar
   cancellati. Nel log dell'app solo i rifiuti CSRF voluti, nessun warning/notice/deprecation. Output in
   `verify-v1.output.txt` e `verify-v1.prod.output.txt` (quest'ultimo identico al precedente). Nessun commit.
+
+---
+
+# Collaudo 2026-09-26: posizione degli utenti senza attivita' nell'ordinamento (Collaudatore ad Hoc E)
+
+Collaudatore ad Hoc E (Claude), in sostituzione di Codex, stesso protocollo. Letti solo `_AI-LOG.md`, il
+README UsersList di `docs/design-system/` (voce "Sorting", fissata dall'autore il 2026-09-26) e i file di
+`tests/Integration/`. Mai aperti controller, model, view, lang, asset, helper, `RouteRegistrar`, `Guard.php`,
+`tests/Unit/`. Codice del modulo: working tree committato (HEAD `dafd861`, `src/` pulito).
+
+## Esito
+
+**PASS.** `verify-v1.php` (development) 177 PASS / 0 FAIL (173 precedenti + 4 nuovi); `verify-v1.prod.php`
+(production) 12 PASS / 0 FAIL. **Posizione degli utenti senza attivita' conforme alla specifica, approvata.**
+
+## Controlli cambiati in `verify-v1.php`
+
+La riga `[INFO] U04` (stampata, non giudicata) e' sostituita da quattro controlli. L'elenco e' percorso tutto,
+pagina per pagina, seguendo il link "Next" del pager, in entrambi i versi: nessuna ipotesi sul numero di utenti
+o sulla dimensione della pagina. Gli altri controlli, U03 e U04 compresi, sono invariati.
+
+- U04a: almeno un utente con `users.last_active` NULL, letto dal database dopo il percorso (Jonas). PASS.
+- U04b: in entrambi i versi ogni utente non cancellato compare una e una sola volta (conteggio dal database) e
+  ogni pagina mantiene `aria-sort` nel verso richiesto (il pager conserva `sort`). PASS.
+- U04c: dal piu' recente (default) gli utenti senza attivita' sono le ultime righe dell'ultima pagina, e le
+  righe prima di loro seguono esattamente l'ordine `last_active DESC` del database. PASS.
+- U04d: dal meno recente (`sort=asc`) gli utenti senza attivita' sono le prime righe di pagina 1, e le righe
+  dopo di loro seguono esattamente l'ordine `last_active ASC` del database. PASS.
+
+Controprova dei predicati fuori dal pannello: con l'utente senza attivita' in testa o in mezzo nel verso
+decrescente (e in fondo o in mezzo nel crescente) U04c e U04d risultano FAIL.
+
+## Difetti
+
+Nessuno.
+
+## Ambiguita' (non decise)
+
+Nessuna nuova. Quella segnalata da D (posizione degli utenti "Never") e' chiusa dalla specifica.
+
+## Ambiente e igiene
+
+- Copia di `rolewarden-app-test` nello scratchpad (`robocopy /E /XJ`), junction verso il modulo ricreata a mano,
+  `writable/cache` e `writable/session` svuotate, log dell'app azzerati. `.env` della copia preparato prima del
+  lancio: una sola riga `database.default.database = rolewarden_test`, righe della password tolte, base URL
+  `http://localhost:8070/`. `verify-v1.sh` completo (install da zero, development, production), un solo
+  `php -S` alla volta su :8070, credenziali solo da `RW_DB_*`.
+- Log dell'app: solo i rifiuti CSRF voluti (6 `SecurityException`), nessun warning/notice/deprecation.
+- Fine: `rolewarden_test` ripristinato dallo snapshot, md5 del dump identico prima e dopo
+  (`e682501ee20ca4e61bb81f7b48315d4a`, 0 tabelle come trovato). `rolewarden` non toccato: dai soli metadati di
+  `information_schema`, 14 tabelle, ultima creazione 2026-09-22 07:41, `update_time` NULL su tutte, identici
+  prima e dopo. 0 `php.exe`; copia rimossa (prima la junction); log del server e cookie jar cancellati.
+  Output in `verify-v1.output.txt` e `verify-v1.prod.output.txt` (quest'ultimo identico al precedente).
+  Nessun commit, `_AI-LOG.md` non modificato.

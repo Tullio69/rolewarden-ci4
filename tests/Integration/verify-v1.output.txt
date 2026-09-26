@@ -32,7 +32,10 @@
 [PASS] U02b   users list: no "Last login" label left
 [PASS] U03    default order: most recent last activity first (users.last_active DESC, set by SQL), owner first
 [PASS] U04    sort=asc: aria-sort="ascending", least recent activity first (users.last_active ASC), owner not on page 1
-[INFO] U04    users without activity ([3]): desc page 1 positions [], asc page 1 positions [0]
+[PASS] U04a   at least one user without activity (users.last_active NULL in the DB)
+[PASS] U04b   pager walk: every user listed once in both directions, sort kept on every page
+[PASS] U04c   newest first: users without activity come after every user with activity (last rows of the last page)
+[PASS] U04d   oldest first: users without activity come before every user with activity (first rows of page 1)
 [PASS] U05    "Never" shown in the row of a user without activity (Jonas, last_active NULL)
 [PASS] U05b   user detail: header fact labelled "Last active", no "Last login" label left
 [PASS] U06    row-number gutter starts at 01
@@ -189,7 +192,7 @@
 [PASS] X05    host override app/Views/overrides/RoleWarden/Views/roles/show.php wins, removing it restores the module view
 
 == 9. Global sweep over every response
-[PASS] Z01    no SQL/DB error text in any of 139 responses
+[PASS] Z01    no SQL/DB error text in any of 143 responses
 [PASS] Z02    no PHP warning/notice/deprecation in any response
 
-TOTAL: 173 PASS, 0 FAIL
+TOTAL: 177 PASS, 0 FAIL

@@ -469,3 +469,10 @@ Formato di ogni voce:
 - Stato: completato
 - Note per il prossimo: U04 in `verify-v1.php` oggi stampa la posizione degli utenti senza attivita' senza giudicarla (riga `[INFO]`); ora che la specifica la fissa, al prossimo collaudo va trasformata in controllo.
 
+### [2026-09-26 05:20] - Collaudatore ad Hoc E (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-v1.php`, `verify-v1.output.txt`, `verify-v1.prod.output.txt`, `V1-REPORT.md`; database `rolewarden_test`; `_AI-LOG.md` (voce trascritta dall'orchestratore)
+- Cosa ho fatto: collaudo in nero, in sostituzione di Codex, stesso protocollo. La riga [INFO] U04 diventa quattro controlli (U04a-d) contro la voce "Sorting" del README UsersList: elenco percorso tutto seguendo "Next" in entrambi i versi, utenti senza attivita' in fondo dal piu' recente e in testa dal meno recente, righe con attivita' nell'ordine esatto del database, ogni utente una sola volta, `aria-sort` mantenuto su ogni pagina. Condizioni di U04c/U04d provate anche su ordini sbagliati costruiti a mano: falliscono come devono. verify-v1.sh completo sul codice committato (HEAD `dafd861`), `.env` della copia preparato prima del lancio (il controllo su `rolewarden_test` non ha fermato nulla).
+- Stato: completato. Esito **PASS**: development 177 PASS / 0 FAIL, production 12 PASS / 0 FAIL. **Approvato.**
+- Note per il prossimo: nessun difetto, nessuna nuova ambiguita'. `rolewarden_test` ripristinato, md5 `e682501e...` identico prima e dopo (0 tabelle; l'md5 differisce dal `b98a95c1...` delle sessioni precedenti pur con 0 tabelle, probabilmente per l'intestazione del dump dopo la ricreazione del database); `rolewarden` non toccato (solo metadati `information_schema`, invariati); 0 `php.exe`, copia rimossa. Nessun commit.
+

@@ -221,8 +221,36 @@ $asc = array_column(user_rows($ua), 'id');
 $ascDated = array_values(array_diff($asc, $nullIds));
 $expectAsc = array_slice($byActive('ASC'), 0, count($ascDated));
 check('U04', 'sort=asc: aria-sort="ascending", least recent activity first (users.last_active ASC), owner not on page 1', str_contains($ua, 'aria-sort="ascending"') && count($ascDated) >= 5 && $ascDated === $expectAsc && ! in_array($U['owner']['id'], $asc, true), 'page ids with activity ' . json_encode($ascDated) . ' expected ' . json_encode($expectAsc));
-// Where users without activity sit is not specified by the UsersList README: printed, not judged.
-printf("[INFO] U04    users without activity (%s): desc page 1 positions %s, asc page 1 positions %s\n", json_encode($nullIds), json_encode(array_keys(array_intersect($ids, $nullIds))), json_encode(array_keys(array_intersect($asc, $nullIds))));
+// UsersList README, Sorting (2026-09-26): users with no activity ("Never") come last newest first,
+// first oldest first. Judged on the whole list, walked page by page through the pager's Next link,
+// so the check does not depend on how many users there are or on the page size.
+$walk = function (string $start, string $dir) use ($own): array {
+    $all = [];
+    $bad = [];
+    $url = $start;
+    for ($p = 1; $url !== '' && $p <= 50; $p++) {
+        seen($own->get($url), "owner GET users $dir page $p");
+        $h = $own->clean();
+        if ($own->status !== 200 || ! str_contains($h, 'aria-sort="' . $dir . '"')) {
+            $bad[] = "page $p: HTTP {$own->status}, aria-sort $dir " . (str_contains($h, 'aria-sort="' . $dir . '"') ? 'kept' : 'lost');
+        }
+        $all = array_merge($all, array_column(user_rows($h), 'id'));
+        $url = preg_match('/<a\b[^>]*href="([^"]+)"[^>]*>\s*Next\s*</', $h, $nm) ? html_entity_decode($nm[1]) : '';
+    }
+    return [$all, $bad];
+};
+[$allDesc, $badDesc] = $walk('rolewarden/users', 'descending');
+[$allAsc, $badAsc] = $walk('rolewarden/users?sort=asc', 'ascending');
+$nullIds = array_map('intval', array_column(q('SELECT id FROM users WHERE deleted_at IS NULL AND last_active IS NULL ORDER BY id'), 'id'));
+$live = (int) q1('SELECT COUNT(*) FROM users WHERE deleted_at IS NULL');
+$sortedNull = function (array $xs): array { sort($xs); return $xs; };
+$dbDesc = $byActive('DESC');
+$dbAsc = $byActive('ASC');
+check('U04a', 'at least one user without activity (users.last_active NULL in the DB)', count($nullIds) >= 1, 'no NULL last_active');
+check('U04b', 'pager walk: every user listed once in both directions, sort kept on every page', ! $badDesc && ! $badAsc && count($allDesc) === $live && count(array_unique($allDesc)) === $live && count($allAsc) === $live && count(array_unique($allAsc)) === $live, "users in DB $live; desc " . count($allDesc) . ' rows (' . count(array_unique($allDesc)) . ' distinct), asc ' . count($allAsc) . ' rows (' . count(array_unique($allAsc)) . ' distinct); ' . implode('; ', array_merge($badDesc, $badAsc)));
+$tailDesc = array_slice($allDesc, count($allDesc) - count($nullIds));
+check('U04c', 'newest first: users without activity come after every user with activity (last rows of the last page)', $nullIds && $sortedNull($tailDesc) === $nullIds && array_slice($allDesc, 0, count($dbDesc)) === $dbDesc, 'NULL ids ' . json_encode($nullIds) . ' at positions ' . json_encode(array_keys(array_intersect($allDesc, $nullIds))) . ' of ' . count($allDesc) . '; dated prefix matches DB order: ' . json_encode(array_slice($allDesc, 0, count($dbDesc)) === $dbDesc));
+check('U04d', 'oldest first: users without activity come before every user with activity (first rows of page 1)', $nullIds && $sortedNull(array_slice($allAsc, 0, count($nullIds))) === $nullIds && array_slice($allAsc, count($nullIds)) === $dbAsc, 'NULL ids ' . json_encode($nullIds) . ' at positions ' . json_encode(array_keys(array_intersect($allAsc, $nullIds))) . ' of ' . count($allAsc) . '; dated suffix matches DB order: ' . json_encode(array_slice($allAsc, count($nullIds)) === $dbAsc));
 seen($own->get('rolewarden/users?q=jonas'), 'owner GET users q=jonas');
 $jr = preg_match('#<tr\b[^>]*>(?:(?!</tr>).)*?/users/' . $U['limited']['id'] . '"(?:(?!</tr>).)*</tr>#s', $own->clean(), $jm) ? $jm[0] : '';
 check('U05', '"Never" shown in the row of a user without activity (Jonas, last_active NULL)', (int) q1('SELECT COUNT(*) FROM users WHERE id=? AND last_active IS NULL', [$U['limited']['id']]) === 1 && str_contains(strip_tags($jr), 'Never'), 'row: ' . substr(trim(preg_replace('/\s+/', ' ', strip_tags($jr))), 0, 200));

@@ -117,7 +117,7 @@ Il modulo estende Shield, non lo sostituisce. Shield resta padrone dell'identita
 
 **Il limite da dichiarare in vetrina.** Il modulo richiede Shield installato. Chi ha un'autenticazione propria e non vuole Shield non e' un nostro acquirente, e va scritto nella descrizione dell'item, non scoperto dopo l'acquisto.
 
-**Versioni minime.** PHP 8.3 e CodeIgniter 4.7, collaudati fino a PHP 8.5 e all'ultima 4.x. Shield chiede molto meno, PHP 8.1 e CI 4.3.5 ([requisiti di Shield](https://github.com/codeigniter4/shield)), ma PHP 8.1 non riceve piu' patch dalla fine del 2025 e PHP 8.2 esce di supporto il 31 dicembre 2026 ([calendario PHP](https://www.php.net/supported-versions.php)). Dichiarare 8.2 significherebbe pubblicare un prodotto il cui minimo e' gia' scaduto pochi mesi dopo l'uscita, con la prima domanda di supporto che arriva da chi sta su un runtime senza patch. Da 8.3 il minimo resta in sicurezza fino a fine 2027, e su hosting condiviso 8.3 e' ormai ovunque. Su CI4 il salto da 4.3.5 a 4.7 costa poco all'acquirente, perche' gli aggiornamenti dentro il ramo 4 sono indolori, e ci evita di sostenere API che il framework ha gia' superato. Minimo alzato a CodeIgniter 4.7 il 2026-09-25: la cartella `app/Views/overrides/` su cui poggia la sovrascrittura delle view esiste solo da 4.7.0 (collaudo matrice di versioni, D1), e 4.5.8 porta 6 advisory di sicurezza note.
+**Versioni minime.** PHP 8.3 e CodeIgniter 4.7.4, collaudati fino a PHP 8.5 e all'ultima 4.x. Shield chiede molto meno, PHP 8.1 e CI 4.3.5 ([requisiti di Shield](https://github.com/codeigniter4/shield)), ma PHP 8.1 non riceve piu' patch dalla fine del 2025 e PHP 8.2 esce di supporto il 31 dicembre 2026 ([calendario PHP](https://www.php.net/supported-versions.php)). Dichiarare 8.2 significherebbe pubblicare un prodotto il cui minimo e' gia' scaduto pochi mesi dopo l'uscita, con la prima domanda di supporto che arriva da chi sta su un runtime senza patch. Da 8.3 il minimo resta in sicurezza fino a fine 2027, e su hosting condiviso 8.3 e' ormai ovunque. Su CI4 il salto da 4.3.5 a 4.7 costa poco all'acquirente, perche' gli aggiornamenti dentro il ramo 4 sono indolori, e ci evita di sostenere API che il framework ha gia' superato. Minimo alzato a CodeIgniter 4.7 il 2026-09-25: la cartella `app/Views/overrides/` su cui poggia la sovrascrittura delle view esiste solo da 4.7.0 (collaudo matrice di versioni, D1), e 4.5.8 porta 6 advisory di sicurezza note. Il 2026-09-26 il minimo e' salito a 4.7.4, che corregge le 5 advisory di sicurezza ancora presenti in 4.7.0.
 
 ## Modello dati
 
@@ -533,7 +533,7 @@ flowchart LR
 | Migrazioni | Installazione pulita, rollback completo, innesto su database gia' popolato |
 | Revisione di sicurezza | Escape dell'output, CSRF, query parametrizzate, nessun errore SQL a schermo, hash delle password |
 | Criteri di completamento | La lista dell'MVP, voce per voce, e poi quella di ogni versione |
-| Compatibilita' | PHP 8.3 fino a 8.5, CI4 4.7 fino all'ultima 4.x, intervallo di versioni Shield dichiarato |
+| Compatibilita' | PHP 8.3 fino a 8.5, CI4 4.7.4 fino all'ultima 4.x, intervallo di versioni Shield dichiarato |
 
 **Cosa non passa da nessuno dei due.** Le decisioni di prodotto restano in questo documento. Quando un test rivela che la specifica e' ambigua, il difetto e' della specifica: si aggiorna qui e poi si riprende, non si aggiusta il codice a naso.
 
@@ -550,7 +550,7 @@ Otto punti, quattro gia' chiusi. Nessuno di quelli rimasti blocca l'MVP: si poss
 | Punto di partenza del codice | Chiusa: progetto nuovo solo per CI4. Nessun core multi-framework, ma la logica di autorizzazione resta in classi che non toccano il framework, pronte da estrarre se un giorno arriva la versione Laravel. Di AuthConnect si recupera il backend a pezzi, come riferimento, non come base da ripulire | Chiusa |
 | Rapporto con Shield | Chiusa: estensione. Shield resta padrone di identita' e autenticazione, il modulo prende autorizzazione, pannello e notifiche, agganciandosi tramite entita' utente, authenticator e action. Shield diventa una dipendenza dichiarata | Chiusa |
 | Nome commerciale | Da scegliere, verificando che non sia gia' occupato su CodeCanyon e come dominio | v1.0 |
-| Versione minima di PHP e CI4 | Chiusa: PHP 8.3 e CodeIgniter 4.7 come minimi (4.5 fino al 2026-09-25), collaudo fino a PHP 8.5 e all'ultima 4.x | Chiusa |
+| Versione minima di PHP e CI4 | Chiusa: PHP 8.3 e CodeIgniter 4.7.4 come minimi (4.5 fino al 2026-09-25, 4.7 fino al 2026-09-26), collaudo fino a PHP 8.5 e all'ultima 4.x | Chiusa |
 | Prezzo e struttura licenza | Da fissare dopo aver guardato cosa chiedono gli item analoghi in vetrina | v1.0 |
 | Lingua di sviluppo | Codice e documentazione in inglese, interfaccia tradotta anche in italiano | v1.0 |
 | Divisione del lavoro Claude Code e Codex | Chiusa: Claude Code scrive, Codex collauda e verifica contro la specifica, mai contro il codice | Chiusa |

@@ -16,7 +16,7 @@
     "homepage": "https://rolewarden.com",
     "require": {
         "php": "^8.3",
-        "codeigniter4/framework": "^4.7",
+        "codeigniter4/framework": "^4.7.4",
         "codeigniter4/shield": "^1.4"
     },
     "require-dev": {

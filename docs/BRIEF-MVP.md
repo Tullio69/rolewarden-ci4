@@ -36,7 +36,7 @@ Decisioni gia' prese. Non si cambiano nel codice: se una sembra sbagliata, si se
 | Voce | Valore |
 | --- | --- |
 | PHP | 8.3 minimo, collaudato fino a 8.5 |
-| CodeIgniter | 4.7 minimo (era 4.5, alzato il 2026-09-25: la sovrascrittura delle view richiede 4.7), collaudato fino all'ultima 4.x |
+| CodeIgniter | 4.7.4 minimo (era 4.5; 4.7 dal 2026-09-25 perche' la sovrascrittura delle view lo richiede, 4.7.4 dal 2026-09-26 per le advisory di sicurezza di 4.7.0), collaudato fino all'ultima 4.x |
 | Shield | `^1.4`, fissato il 20 settembre 2026 sviluppando su 1.4.1 |
 | Database | MySQL o MariaDB, InnoDB |
 | Pannello | View CI4 server-side, CSS scritto a mano nell'MVP (Tailwind arriva con il design system in v1.0), Alpine.js |
@@ -112,9 +112,9 @@ L'MVP e' finito quando questa lista e' interamente spuntata da Codex. Sono verif
 - [x] La migrazione di importazione trasforma i gruppi di `AuthGroups.php` in ruoli e permessi in database
 - [x] Nessun errore ne' warning con il report degli errori al massimo livello
 - [x] Nessun errore SQL visibile a schermo in nessun percorso, compresi quelli di fallimento
-- [x] Funziona su PHP 8.3 e sull'ultima versione collaudata, su CI4 4.7 e sull'ultima 4.x
+- [x] Funziona su PHP 8.3 e sull'ultima versione collaudata, su CI4 4.7.4 e sull'ultima 4.x
 
-**Spuntata il 2026-09-26.** Voci verificate dai collaudi indipendenti M1-M6, v1.0 e matrice di versioni (`tests/Integration/M*-REPORT.md`, `V1-REPORT.md`, `MVP-MATRIX-REPORT.md`): PHP 8.3 + CI4 4.7.0, PHP 8.3 + CI4 4.7.4, PHP 8.5 + CI4 4.7.4, tutte PASS. Il minimo CI4 e' 4.7 dal 2026-09-25.
+**Spuntata il 2026-09-26.** Voci verificate dai collaudi indipendenti M1-M6, v1.0 e matrice di versioni (`tests/Integration/M*-REPORT.md`, `V1-REPORT.md`, `MVP-MATRIX-REPORT.md`): PHP 8.3 + CI4 4.7.0, PHP 8.3 + CI4 4.7.4, PHP 8.5 + CI4 4.7.4, tutte PASS. Il minimo CI4 e' 4.7 dal 2026-09-25 e 4.7.4 dal 2026-09-26, versione gia' coperta da due combinazioni della matrice.
 
 ## Protocollo con Codex
 

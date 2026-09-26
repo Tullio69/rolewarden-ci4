@@ -1,0 +1,20 @@
+[PASS] M6R.01 [reseeded] role admin is a system role (is_system=1, not super admin)
+[PASS] M6R.02 [reseeded] role admin has exactly the 12 seeded permissions, nothing from the colliding Shield group
+[PASS] M6R.03 [reseeded] users.create / users.delete (shared with AuthGroups.php) are system permissions
+[PASS] M6R.04 [reseeded] non-colliding group editor imported as a non-system root role
+[PASS] M6R.05 [reseeded] editor role = editor.publish + users.* expanded over AuthGroups.php's own users.* permissions
+[PASS] M6R.06 [reseeded] acl_user_roles: editoruser -> editor imported, adminuser (skipped colliding group) has no role
+[PASS] M6R.07 [reseeded] the two pre-existing Shield users are untouched (usernames, active=1)
+[PASS] M6R.08 [reseeded] Shield's own auth_groups_users rows are left as they were
+[PASS] M6H.01 editoruser (imported role) signs in
+[PASS] M6H.02 editoruser gets 200 on a route gated by an imported permission it holds (users/create)
+[PASS] M6H.03 editoruser is denied rolewarden/users (permission not held)
+[PASS] M6H.03 editoruser is denied rolewarden/roles (permission not held)
+[PASS] M6H.03 editoruser is denied rolewarden/permissions (permission not held)
+[PASS] M6H.04 adminuser (skipped colliding group) still signs in after the install
+[PASS] M6H.05 adminuser has no imported access: rolewarden/users denied
+[PASS] M6H.05 adminuser has no imported access: rolewarden/users/create denied
+[PASS] M6H.05 adminuser has no imported access: rolewarden/roles denied
+[PASS] M6H.05 adminuser has no imported access: rolewarden/permissions denied
+[PASS] M6H.06 no SQL text and no PHP Deprecated/Warning/Notice in any M6 response
+TOTAL M6 [reseeded]: 19 PASS, 0 FAIL

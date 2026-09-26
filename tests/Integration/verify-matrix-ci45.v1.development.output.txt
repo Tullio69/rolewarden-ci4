@@ -1,0 +1,194 @@
+
+== 1. Login (design-system view on Shield's controller)
+[PASS] L01    GET /login is 200 and rendered by the RoleWarden view (rw-auth-screen)
+[PASS] L02    form posts to url_to(login) with csrf_field, email, password, remember
+[PASS] L03    password input is type="password" in the served HTML (hidden without relying on JS)
+[PASS] L04    Show/Hide button carries aria-pressed (bound) and aria-controls
+[PASS] L05    forgot-password link present on login (Shield magic-link recovery is enabled and served: HTTP 200)
+[PASS] L05b   recovery link is an <a> that resolves (href=http://localhost:8070/index.php/login/magic-link, text "Forgot your password?", HTTP 200)
+[PASS] L05c   recovery link text comes from a language string, not raw key (no "RoleWarden." or "Auth." in the text)
+[PASS] L03b   password input keeps the Show/Hide Alpine binding next to the static type
+[PASS] L06    failed login redirects back to login and shows a role="alert" error block
+[PASS] L07    failed login shows Shield's own message ("Error: Unable to log you in. Please check your credentials.")
+[PASS] L08    wrong password vs unknown email: identical nonempty message
+[PASS] L09    correct credentials + remember: redirect into the panel, remember token stored by Shield
+[PASS] L10    session from the new login view reaches a can:users.view route (200)
+[PASS] L11    after logout the panel is closed again (redirect to login)
+[PASS] L12    disabled user (active=0, admin role) gets no panel access
+
+== 2. Route gating unchanged (M5)
+[PASS] G01    anonymous: every panel GET redirects to login
+[PASS] G02    limited user (users.view only) signs in
+[PASS] G03    limited: users list 200
+[PASS] G04    limited: "New user" button not rendered (SPEC: unusable buttons are not rendered)
+[PASS] G05    limited: routes gated by other permissions are refused
+[PASS] G06    limited: POST users/{id}/permissions refused (by permission, not CSRF) and nothing written
+[PASS] G07    limited: POST roles/{id}/permissions (self-escalation on own role) refused (by permission, not CSRF), nothing written
+[PASS] G08    limited: POST users/{id}/deactivate refused (by permission, not CSRF), user still active
+
+== 3. UsersList
+[PASS] U00    owner (only active super admin) signs in
+[PASS] U01    sidebar marks Users with aria-current="page"
+[PASS] U02    Last login header has aria-sort and a sort control
+[PASS] U03    default order: most recent successful login first, matching auth_logins (owner signed in last)
+[PASS] U04    sort=asc: aria-sort="ascending" and never-logged-in users first, owner not on page 1 top
+[PASS] U05    "Never" shown for a user who never signed in
+[PASS] U06    row-number gutter starts at 01
+[PASS] U07    36 users: list paginates, current page marked aria-current="page"
+         pager markup: <ul class="rw-pager"> <li> <span class="rw-page" aria-disabled="true">Previous</span> </li> <li> <span class="rw-page" aria-current="page">1</span> </li> <li> <a class="rw-page" href="http://localhost:8070/index.php/rolewarden/users?page=2" aria-label="Page 2">2</a> </li> <li> <a class="rw-page" href="http://localhost:8070/index.php/rolewarden/users?page=2">Next</a> </li> </ul>
+[PASS] U08    Previous is disabled (not hidden) on page 1
+[PASS] U09    page 2: row numbering continues across pages
+[PASS] U10    pager count text in a role="status" region
+[PASS] U11    search q=mara: no SQL error text on screen
+[PASS] U12    search q=mara (email/name) returns 200 with only Mara
+[PASS] U13    search by name q=Priya returns 200 with Priya
+[PASS] U13b   search by email fragment only (q=theo@northwind) returns exactly Theo
+[PASS] U13c   search with no match: 200, no rows, empty-state text
+[PASS] U13d   search q="o'brien": 200, no SQL text, no injection match-all (0 rows)
+[PASS] U13d   search q="%": 200, no SQL text (0 rows)
+[PASS] U13w   literal wildcard search returns no fixture users
+[PASS] U13d   search q="_": 200, no SQL text (0 rows)
+[PASS] U13w   literal wildcard search returns no fixture users
+[PASS] U13d   search q="\\": 200, no SQL text, no injection match-all (0 rows)
+[PASS] U13d   search q="\" OR 1=1 -- ": 200, no SQL text, no injection match-all (0 rows)
+[PASS] U13d   search q="') OR ('1'='1": 200, no SQL text, no injection match-all (0 rows)
+[PASS] U13e   search combined with role filter (q=northwind & role=V1 Limited) returns only Jonas
+[PASS] U13f   search is case-insensitive on name (q=PRIYA)
+[PASS] U14    role filter: only holders of V1 Limited
+[PASS] U15    Clear filters control appears when a filter is set
+[PASS] U16    status=inactive: only the disabled user
+[PASS] U17    status=active + role=admin: Priya only (Lena is inactive)
+[PASS] U18    no results: one row "No users match these filters."
+[PASS] U19    tampered query rolewarden/users?role=abc: no 500, no SQL text
+[PASS] U19    tampered query rolewarden/users?role=99999: no 500, no SQL text
+[PASS] U19    tampered query rolewarden/users?status=%27%20OR%201=1--: no 500, no SQL text
+[PASS] U19    tampered query rolewarden/users?sort=%27;DROP: no 500, no SQL text
+[PASS] U19    tampered query rolewarden/users?page=-5: no 500, no SQL text
+[PASS] U19    tampered query rolewarden/users?page=abc: no 500, no SQL text
+
+== 4. RolesList
+[PASS] R01    role create with parent over HTTP persists (parent = V1 Child)
+[PASS] R02    role name/description with markup is escaped in the list
+[PASS] R03    sidebar marks Roles with aria-current="page"
+[PASS] R04    depth-first: V1 Child directly under V1 Parent, V1 Grandchild directly under V1 Child
+[PASS] R05    "Inherits from" and elbow for every row match acl_roles.parent_id
+[PASS] R06    indentation grows per level (grandchild row is marked deeper than child row)
+[PASS] R07    permission counts: child "1 own + 2 inherited", grandchild "0 own + 3 inherited"
+[PASS] R08    system roles: no Delete button, note explains why
+[PASS] R09    delete dialog of V1 Limited names the user who loses it
+[PASS] R10    footer totals match DB (36 assignments, 17 permissions)
+[PASS] R11    cycle (V1 Parent -> V1 Grandchild) refused at save, DB unchanged
+[PASS] R12    system role delete refused server side
+
+== 5. Role permission matrix
+[PASS] M00    Theo (V1 Child holder) signs in
+[PASS] M01    Theo reaches roles list via inherited roles.view (200)
+[PASS] M02    Theo has no users.create yet
+[PASS] M03    matrix config: inherited cells locked with origin (roles.view, permissions.view "from V1 Parent")
+[PASS] M04    own grant users.view: state role, editable
+[PASS] M05    cell buttons bind aria-pressed and aria-disabled; legend shows the 5 marks with the README SVG shapes
+[PASS] M06    row and column select-all checkboxes present, unsaved bar with Discard / Save changes and "All changes saved."
+[PASS] M07    footer "Effective" line: view column counts 3 (1 own + 2 inherited)
+[PASS] M08    single-cell save (granted=1) answers ok + fresh csrfHash and persists in acl_role_permissions
+[PASS] M09    grant effective on Theo's next request, no logout (users/create 200)
+[PASS] M10    revoke (granted=0) with the csrfHash returned by the previous save succeeds and deletes the row
+[PASS] M11    revoke effective on Theo's next request, no logout (users/create refused)
+[PASS] M12a   inherited revoke: non-2xx, ok false, origin named, all grants unchanged, not CSRF
+[PASS] M12    direct POST revoking inherited roles.view on the child is refused or ignored (HTTP 422 { "ok": false, "message": "Inherited from V1 Parent: change it on that r): parent grants intact, Theo still in (200)
+[PASS] M13    after that request roles.view is still shown inherited+locked on the child
+[PASS] M14    revoking roles.view on the PARENT removes Theo's access on his next request (cache invalidated down the tree)
+[PASS] M15    re-granting on the parent restores it on the next request
+[PASS] M16    role endpoint without CSRF token: refused, nothing written
+[PASS] M16b   role endpoint without CSRF: no SQL error text on screen
+[PASS] M17    role endpoint with a wrong CSRF token: refused, nothing written
+[PASS] M17b   role endpoint wrong CSRF: no SQL error text on screen
+[PASS] M18    role endpoint permission_id='abc': no 500, no SQL text
+[PASS] M18    role endpoint permission_id='99999': no 500, no SQL text
+[PASS] M18    role endpoint permission_id='1 OR 1=1': no 500, no SQL text
+[PASS] M18    role endpoint permission_id='': no 500, no SQL text
+[PASS] M18    role endpoint permission_id='-1': no 500, no SQL text
+[PASS] M18    role endpoint permission_id='1.5': no 500, no SQL text
+[PASS] M19    role endpoint on nonexistent role 99999: no 500, no SQL text, nothing written
+
+== 6. UserDetail and per-user overrides
+[PASS] D00    Mara (role user, no permissions) signs in
+[PASS] D01    Mara has no users.view yet
+[PASS] D02    sections A Roles, B Effective permissions, C Account lettered in the gutter
+[PASS] D03    user matrix + five-mark legend + unsaved bar present
+[PASS] D04    deferred features not offered: no Send reset link / Sign out everywhere / Export CSV / Invite / Settings controls
+[PASS] D05    override grant (granted=1) persists as granted=1
+[PASS] D06    grant override effective on Mara's next request, no logout (200)
+[PASS] D07    user matrix shows users.view as state grant, header fact Overrides = 1
+[PASS] D08    request without granted removes the override row
+[PASS] D09    removal effective on Mara's next request (refused again)
+[PASS] D10    Priya (admin) signs in
+[PASS] D11    deny override (granted=0) on a role grant: stored as 0 and Priya refused on next request
+[PASS] D12    Priya's matrix: users.view deny, users.create still role
+[PASS] D13    admin role matrix summarises the denial and names Priya ("denied for 1 user")
+[PASS] D14    override cells are read-only on the role matrix (editable=false)
+[PASS] D15    Priya now super admin: denied users.view still refused, other routes open (deny beats super admin)
+[PASS] D16    clearing the denial reopens users.view on the next request
+[PASS] D17    second super admin removed again (owner is the only active super admin)
+[PASS] D18    removing the role that fed a denial keeps the override row
+[PASS] D19    override endpoint without CSRF: refused, nothing written
+[PASS] D19b   override endpoint without CSRF: no SQL error text on screen
+[PASS] D20    override endpoint with wrong CSRF: refused, nothing written
+[PASS] D21    override endpoint permission_id='abc': no 500, no SQL text
+[PASS] D21    override endpoint permission_id='99999': no 500, no SQL text
+[PASS] D21    override endpoint permission_id='1 OR 1=1': no 500, no SQL text
+         OBS: permission_id='1 OR 1=1' was accepted and written as [{"user_id":4,"permission_id":1,"granted":1,"created_at":null,"updated_at":null}] (lenient integer cast)
+[PASS] D21    override endpoint permission_id='': no 500, no SQL text
+[PASS] D21    override endpoint permission_id='-1': no 500, no SQL text
+[PASS] D22    override endpoint granted='2': no 500/SQL text, stored value (if any) is 0/1
+[PASS] D22    override endpoint granted='yes': no 500/SQL text, stored value (if any) is 0/1
+[PASS] D22    override endpoint granted='-1': no 500/SQL text, stored value (if any) is 0/1
+[PASS] D23    override endpoint on nonexistent user 99999: no 500, no SQL text, nothing written
+
+== 7. M4 protections through the rewritten panel
+[PASS] P01    last active super admin cannot lose the super admin role (self)
+[PASS] P02    last active super admin cannot lose it through another admin (roles.assign)
+[PASS] P03    last active super admin cannot be deactivated by another admin
+[PASS] P04    last active super admin cannot be deleted by another admin
+[PASS] P07    own page (owner): Deactivate/Delete controls disabled or absent
+[PASS] P07b   own page (Priya, admin): Deactivate/Delete controls disabled or absent
+[PASS] P05    Priya (admin) cannot delete themselves (server side) [HTTP 303 -> http://localhost:8070/index.php/rolewarden/users/2]
+[PASS] P06    Priya (admin) cannot deactivate themselves (server side) [HTTP 303 -> http://localhost:8070/index.php/rolewarden/users/2]
+[PASS] P08    fixture: Priya made second super admin
+[PASS] P05b   Owner (super admin, another one present) cannot delete themselves (server side) [HTTP 303 -> http://localhost:8070/index.php/rolewarden/users/1]
+[PASS] P06b   Owner (super admin, another one present) cannot deactivate themselves (server side) [HTTP 303 -> http://localhost:8070/index.php/rolewarden/users/1]
+[PASS] P08b   fixture reset through the panel: Priya no longer super admin
+[PASS] P09    rolewarden/users/99999: 404 (no 500, no SQL text)
+[PASS] P09    rolewarden/roles/99999: 404 (no 500, no SQL text)
+[PASS] P09    rolewarden/users/abc: 404 (no 500, no SQL text)
+[PASS] P09    rolewarden/roles/99999/edit: 404 (no 500, no SQL text)
+[PASS] P09    rolewarden/users/99999/edit: 404 (no 500, no SQL text)
+[PASS] P10    POST rolewarden/users/99999/deactivate: reaches the controller (not a CSRF refusal), no 500, no SQL text
+[PASS] P10    POST rolewarden/users/99999/delete: reaches the controller (not a CSRF refusal), no 500, no SQL text
+[PASS] P10    POST rolewarden/roles/99999/delete: reaches the controller (not a CSRF refusal), no 500, no SQL text
+[PASS] P10    POST rolewarden/users/4/roles/99999/revoke: reaches the controller (not a CSRF refusal), no 500, no SQL text
+[PASS] P11    add role with role_id=abc: no 500, no SQL text
+[PASS] P12    add role with role_id=99999: no 500, no SQL text, nothing written
+[PASS] P15    Priya cannot remove her own admin role
+[PASS] RV01   D2 edge: add an existing role to nonexistent user 99999: not a CSRF refusal, no 500, no SQL text, nothing written (HTTP 404)
+[PASS] RV02   D2 no regression: adding an existing role to an existing user still works
+[PASS] RV03   fixture reset through the panel: role removed again
+[PASS] RV04   owner still reaches the panel after the refused self-actions (session intact)
+[PASS] RV05   D3 no regression: an admin can still deactivate another user
+[PASS] RV06   D4 no regression: an admin can still delete another user
+[PASS] RV07   D3: refused self-deactivation is explained after the redirect ("Error:")
+[PASS] P13    form POST (deactivate) without CSRF refused, user still active, no SQL text
+[PASS] P14    form POST (role create) with wrong CSRF refused, nothing written
+
+== 8. Links, assets, view override
+[PASS] X01    every link/asset on the panel pages resolves (44 checked, no 4xx/5xx)
+[PASS] X02    panel.css served as text/css and defines every token of docs/design-system/tokens.css
+[PASS] X03    panel.css has a [data-theme="dark"] token set and :focus-visible outlines on var(--focus)
+[PASS] X04    asset route does not serve files outside the asset folder (path traversal)
+[FAIL] X05    host override app/Views/overrides/RoleWarden/Views/roles/show.php wins, removing it restores the module view
+         -> override not applied or not reverted; views seen: ["layouts\\panel.php","partials\\flash.php","roles\\show.php"]
+
+== 9. Global sweep over every response
+[PASS] Z01    no SQL/DB error text in any of 137 responses
+[PASS] Z02    no PHP warning/notice/deprecation in any response
+
+TOTAL: 170 PASS, 1 FAIL

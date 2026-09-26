@@ -8,8 +8,9 @@ config file and into the database, and adds an admin panel to manage them at run
 ## Requirements
 
 - PHP 8.3 or later (tested up to 8.5)
-- CodeIgniter 4.5 or later (tested up to the latest 4.x)
-- CodeIgniter Shield (supported range fixed during M0)
+- CodeIgniter 4.7 or later (tested up to the latest 4.x). 4.7 is the first release with the
+  `app/Views/overrides/` folder the panel relies on for view overrides
+- CodeIgniter Shield 1.4 or later within 1.x (`^1.4`)
 - MySQL or MariaDB with InnoDB
 
 ## Status
@@ -142,7 +143,14 @@ and assignment is managed from the panel.
 
 ## Wiring the admin panel
 
-Add one line to the host's `app/Config/Routes.php`, next to the existing
+Point Shield at RoleWarden's user model in the host's `app/Config/Auth.php`, so that
+`auth()->user()->can()` goes through RoleWarden's resolver instead of Shield's config groups:
+
+```php
+public string $userProvider = \RoleWarden\Models\UserModel::class;
+```
+
+Then add one line to the host's `app/Config/Routes.php`, next to the existing
 `service('auth')->routes($routes);` line Shield already needs:
 
 ```php

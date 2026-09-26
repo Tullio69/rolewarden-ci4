@@ -1,0 +1,74 @@
+verify-matrix-ci470 run 2026-09-26 03:40
+PHP 8.3.11 (cli) (built: Aug 27 2024 21:28:35) (NTS Visual C++ 2019 x64)
+codeigniter4/framework 4.7.0
+codeigniter4/settings 2.4.0
+codeigniter4/shield 1.4.1
+rolewarden/codeigniter4-rolewarden dev-master
+module: e6a20d3 (working tree: 0 changed files under src/)
+junction: JUNCTION>     codeigniter4-rolewarden [E:\progetti_lavoro\ASP\rolewarden-ci4]
+rolewarden_test snapshot md5=b98a95c14161f0186fb51fab93a6e114
+== development: verify-v1.php
+php -S stderr: 0 PHP diagnostics
+writable/logs WARNING: 0
+writable/logs NOTICE: 0
+writable/logs DEPRECATED: 0
+writable/logs ERROR: 0
+writable/logs CRITICAL: 6
+writable/logs ALERT: 0
+writable/logs EMERGENCY: 0
+      6 CRITICAL CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+== development: verify-v1-anno.php
+php -S stderr: 0 PHP diagnostics
+writable/logs WARNING: 0
+writable/logs NOTICE: 0
+writable/logs DEPRECATED: 0
+writable/logs ERROR: 0
+writable/logs CRITICAL: 0
+writable/logs ALERT: 0
+writable/logs EMERGENCY: 0
+== development: verify-v1-a1a4.php
+php -S stderr: 0 PHP diagnostics
+writable/logs WARNING: 0
+writable/logs NOTICE: 0
+writable/logs DEPRECATED: 0
+writable/logs ERROR: 0
+writable/logs CRITICAL: 0
+writable/logs ALERT: 0
+writable/logs EMERGENCY: 0
+== production: verify-v1-anno.php
+php -S stderr: 0 PHP diagnostics
+writable/logs WARNING: 0
+writable/logs NOTICE: 0
+writable/logs DEPRECATED: 0
+writable/logs ERROR: 0
+writable/logs CRITICAL: 0
+writable/logs ALERT: 0
+writable/logs EMERGENCY: 0
+== production: verify-v1-a1a4.php + verify-v1.prod.php
+php -S stderr: 0 PHP diagnostics
+writable/logs WARNING: 0
+writable/logs NOTICE: 0
+writable/logs DEPRECATED: 0
+writable/logs ERROR: 0
+writable/logs CRITICAL: 0
+writable/logs ALERT: 0
+writable/logs EMERGENCY: 0
+== graft: HTTP development
+php -S stderr: 0 PHP diagnostics
+writable/logs WARNING: 0
+writable/logs NOTICE: 0
+writable/logs DEPRECATED: 0
+writable/logs ERROR: 0
+writable/logs CRITICAL: 0
+writable/logs ALERT: 0
+writable/logs EMERGENCY: 0
+== graft: HTTP production
+php -S stderr: 0 PHP diagnostics
+writable/logs WARNING: 0
+writable/logs NOTICE: 0
+writable/logs DEPRECATED: 0
+writable/logs ERROR: 0
+writable/logs CRITICAL: 0
+writable/logs ALERT: 0
+writable/logs EMERGENCY: 0
+snapshot md5=b98a95c14161f0186fb51fab93a6e114 restored md5=b98a95c14161f0186fb51fab93a6e114 MATCH

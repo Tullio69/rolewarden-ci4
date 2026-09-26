@@ -1,0 +1,4 @@
+[PASS] M6B.01 rollback to the batch before RoleWarden leaves no acl_* table
+[PASS] M6B.02 no RoleWarden row left in migrations
+[PASS] M6B.03 Shield users and their groups survive the module rollback
+TOTAL M6 [rolledback]: 3 PASS, 0 FAIL

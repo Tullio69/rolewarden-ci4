@@ -1,0 +1,34 @@
+== REJECT: appstarter 4.6.*, framework pinned 4.6.*, then composer require of the module (must be refused)
+framework installed: 
+-- composer require rolewarden/codeigniter4-rolewarden:@dev 
+./composer.json has been updated
+Running composer update rolewarden/codeigniter4-rolewarden
+Loading composer repositories with package information
+Updating dependencies
+Your requirements could not be resolved to an installable set of packages.
+
+  Problem 1
+    - Root composer.json requires rolewarden/codeigniter4-rolewarden @dev -> satisfiable by rolewarden/codeigniter4-rolewarden[dev-master].
+    - rolewarden/codeigniter4-rolewarden dev-master requires codeigniter4/framework ^4.7 -> found codeigniter4/framework[v4.7.0, ..., v4.7.4] but it conflicts with your root composer.json require (4.6.*).
+
+Use the option --with-all-dependencies (-W) to allow upgrades, downgrades and removals for packages currently locked to specific versions.
+
+Installation failed, reverting ./composer.json and ./composer.lock to their original content.
+exit code: 2 -> REFUSED
+module in vendor: no; composer.json unchanged: yes
+-- composer require rolewarden/codeigniter4-rolewarden:@dev -W
+./composer.json has been updated
+Running composer update rolewarden/codeigniter4-rolewarden --with-all-dependencies
+Loading composer repositories with package information
+Updating dependencies
+Your requirements could not be resolved to an installable set of packages.
+
+  Problem 1
+    - Root composer.json requires rolewarden/codeigniter4-rolewarden @dev -> satisfiable by rolewarden/codeigniter4-rolewarden[dev-master].
+    - rolewarden/codeigniter4-rolewarden dev-master requires codeigniter4/framework ^4.7 -> found codeigniter4/framework[v4.7.0, ..., v4.7.4] but it conflicts with your root composer.json require (4.6.*).
+
+
+Installation failed, reverting ./composer.json and ./composer.lock to their original content.
+exit code: 2 -> REFUSED
+module in vendor: no; composer.json unchanged: yes
+app46 removed: yes

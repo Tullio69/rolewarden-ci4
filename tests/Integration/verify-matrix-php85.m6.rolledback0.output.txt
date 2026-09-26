@@ -1,0 +1,2 @@
+[PASS] M6Z.01 rollback -b 0 removes Settings, Shield and RoleWarden cleanly (only the migrations table left)
+TOTAL M6 [rolledback0]: 1 PASS, 0 FAIL

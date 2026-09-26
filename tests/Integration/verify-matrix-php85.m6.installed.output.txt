@@ -1,0 +1,9 @@
+[PASS] M6I.01 [installed] role admin is a system role (is_system=1, not super admin)
+[PASS] M6I.02 [installed] role admin has exactly the 12 seeded permissions, nothing from the colliding Shield group
+[PASS] M6I.03 [installed] users.create / users.delete (shared with AuthGroups.php) are system permissions
+[PASS] M6I.04 [installed] non-colliding group editor imported as a non-system root role
+[PASS] M6I.05 [installed] editor role = editor.publish + users.* expanded over AuthGroups.php's own users.* permissions
+[PASS] M6I.06 [installed] acl_user_roles: editoruser -> editor imported, adminuser (skipped colliding group) has no role
+[PASS] M6I.07 [installed] the two pre-existing Shield users are untouched (usernames, active=1)
+[PASS] M6I.08 [installed] Shield's own auth_groups_users rows are left as they were
+TOTAL M6 [installed]: 8 PASS, 0 FAIL

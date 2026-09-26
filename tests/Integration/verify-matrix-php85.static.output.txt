@@ -1,0 +1,14 @@
+PHP 8.5.11 (cli) (built: Sep 22 2026 13:51:38) (NTS Visual C++ 2022 x64)
+== STATIC: php -l on src/ with PHP 8.5
+lint: 46 files, 0 with output
+== STATIC: link every class-like declaration under src/ (E_ALL, no app boot)
+loaded=33 skipped(no class)=13
+
+issues=0
+== STATIC: spark under PHP 8.5
+spark : rc=0 lines=71
+spark routes: rc=0 lines=42
+spark namespaces: rc=0 lines=18
+static FAILS=0
+php.exe still running: 3
+copy left in place: C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/e4eb42b6-9af8-45b2-9069-e8785e84a866/scratchpad/app85

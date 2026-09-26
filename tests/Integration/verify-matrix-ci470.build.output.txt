@@ -1,0 +1,22 @@
+[32m./composer.json has been updated[39m
+[32mRunning composer update codeigniter4/framework rolewarden/codeigniter4-rolewarden --with-all-dependencies[39m
+[32mLoading composer repositories with package information[39m
+[32mUpdating dependencies[39m
+[32mLock file operations: 3 installs, 1 update, 0 removals[39m
+  - Downgrading [32mcodeigniter4/framework[39m ([33mv4.7.4[39m => [33mv4.7.0[39m)
+  - Locking [32mcodeigniter4/settings[39m ([33mv2.4.0[39m)
+  - Locking [32mcodeigniter4/shield[39m ([33mv1.4.1[39m)
+  - Locking [32mrolewarden/codeigniter4-rolewarden[39m ([33mdev-master[39m)
+[32mWriting lock file[39m
+[32mInstalling dependencies from lock file (including require-dev)[39m
+[32mPackage operations: 3 installs, 1 update, 0 removals[39m
+  - Downloading [32mcodeigniter4/framework[39m ([33mv4.7.0[39m)
+ 0/1 [>---------------------------]   0%[1G[2K 1/1 [============================] 100%[1G[2K  - Installing [32mcodeigniter4/settings[39m ([33mv2.4.0[39m): Extracting archive
+  - Installing [32mcodeigniter4/shield[39m ([33mv1.4.1[39m): Extracting archive
+  - Downgrading [32mcodeigniter4/framework[39m ([33mv4.7.4[39m => [33mv4.7.0[39m): Extracting archive
+  - Installing [32mrolewarden/codeigniter4-rolewarden[39m ([33mdev-master[39m): Junctioning from E:/progetti_lavoro/ASP/rolewarden-ci4
+ 0/3 [>---------------------------]   0%[1G[2K 1/3 [=========>------------------]  33%[1G[2K 2/3 [==================>---------]  66%[1G[2K 3/3 [============================] 100%[1G[2K[32mGenerating optimized autoload files[39m
+[32m26 packages you are using are looking for funding.[39m
+[32mUse the `composer fund` command to find out more![39m
+[30;43mFound 5 security vulnerability advisories affecting 1 package.[39;49m
+Run "composer audit" for a full list of advisories.

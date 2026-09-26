@@ -1,0 +1,127 @@
+Migrations complete.
+Migrations complete.
+Password : Password confirmation : User "adminuser" created
+Activate the user adminuser ? [y, n]: User "adminuser" activated
+Add the user "adminuser" to the group "admin" ? [y, n]: User "adminuser" added to group "admin"
+Password : Password confirmation : User "editoruser" created
+Activate the user editoruser ? [y, n]: User "editoruser" activated
+Add the user "editoruser" to the group "editor" ? [y, n]: User "editoruser" added to group "editor"
+
+=== graft step: pre 
+[PASS] PRE.1  existing app: Shield users adminuser and editoruser exist and are active
+[PASS] PRE.2  Shield groups assigned (default "user" plus admin / editor)
+[PASS] PRE.3  no RoleWarden table before the module install
+TOTAL step pre : 3 PASS, 0 FAIL
+-- php spark migrate -n RoleWarden
+
+CodeIgniter v4.7.0 Command Line Tool - Server Time: 2026-09-26 01:43:30 UTC+00:00
+
+Running all new migrations...
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Running: (RoleWarden) 2026-09-22-090001_RoleWarden\Database\Migrations\ImportAuthGroups
+Migrations complete.
+
+=== graft step: migrated 
+[PASS] MIG.0  migrate -n RoleWarden creates a batch of its own, after Shield's
+[PASS] MIG.1  system roles present: super-admin (system, super), admin and user (system)
+[PASS] MIG.2-superadmin non-colliding group "superadmin" imported as an ordinary role with its matrix expanded
+[PASS] MIG.2-developer non-colliding group "developer" imported as an ordinary role with its matrix expanded
+[PASS] MIG.2-beta non-colliding group "beta" imported as an ordinary role with its matrix expanded
+[PASS] MIG.2-editor non-colliding group "editor" imported as an ordinary role with its matrix expanded
+[PASS] MIG.3  no other role created
+[PASS] MIG.4  colliding group "admin" skipped: role admin keeps exactly the 12 seeded permissions (no admin.access / beta.access / users.edit leak)
+[PASS] MIG.5  colliding group "user" skipped: role user gets nothing from AuthGroups
+[PASS] MIG.6  assignments: only editoruser -> editor imported; admin and user (colliding, skipped) assignments not imported
+[PASS] MIG.7  slugs shared with AuthGroups (users.create, users.delete) remain system permissions
+[PASS] MIG.8  Shield users, identities, groups and user permissions unchanged by the install
+TOTAL step migrated : 12 PASS, 0 FAIL
+-- php spark db:seed RoleWardenSeeder
+
+CodeIgniter v4.7.0 Command Line Tool - Server Time: 2026-09-26 01:43:31 UTC+00:00
+
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+
+=== graft step: seeded 
+[PASS] SEED.1 system roles present: super-admin (system, super), admin and user (system)
+[PASS] SEED.2-superadmin non-colliding group "superadmin" imported as an ordinary role with its matrix expanded
+[PASS] SEED.2-developer non-colliding group "developer" imported as an ordinary role with its matrix expanded
+[PASS] SEED.2-beta non-colliding group "beta" imported as an ordinary role with its matrix expanded
+[PASS] SEED.2-editor non-colliding group "editor" imported as an ordinary role with its matrix expanded
+[PASS] SEED.3 no other role created
+[PASS] SEED.4 colliding group "admin" skipped: role admin keeps exactly the 12 seeded permissions (no admin.access / beta.access / users.edit leak)
+[PASS] SEED.5 colliding group "user" skipped: role user gets nothing from AuthGroups
+[PASS] SEED.6 assignments: only editoruser -> editor imported; admin and user (colliding, skipped) assignments not imported
+[PASS] SEED.7 slugs shared with AuthGroups (users.create, users.delete) remain system permissions
+[PASS] SEED.8 Shield users, identities, groups and user permissions unchanged by the install
+[PASS] SEED.9 db:seed after the import is a no-op (acl_* content identical)
+TOTAL step seeded : 12 PASS, 0 FAIL
+
+=== graft step: http development
+[PASS] Hdevelopment.1 pre-existing user editoruser still logs in with the password set before the install
+[PASS] Hdevelopment.2 editoruser: route gated by an imported permission (users.create) -> 200
+[PASS] Hdevelopment.3a editoruser: rolewarden/users (permission not held) is denied
+[PASS] Hdevelopment.3b editoruser: rolewarden/roles (permission not held) is denied
+[PASS] Hdevelopment.3c editoruser: rolewarden/permissions (permission not held) is denied
+[PASS] Hdevelopment.4 inGroup() on the graft: editoruser inGroup("editor") true (imported role), inGroup("admin") false
+[PASS] Hdevelopment.5 pre-existing user adminuser (colliding "admin" group) still logs in
+[PASS] Hdevelopment.6 adminuser without imported roles: rolewarden/users denied
+[PASS] Hdevelopment.7a adminuser made super admin with the README SQL: rolewarden/users -> 200
+[PASS] Hdevelopment.7b adminuser made super admin with the README SQL: rolewarden/roles -> 200
+[PASS] Hdevelopment.7c adminuser made super admin with the README SQL: rolewarden/permissions -> 200
+[PASS] Hdevelopment.8 inGroup("super-admin") true for the user holding that role
+[PASS] Hdevelopment.9 roles list shows the imported roles
+TOTAL step http development: 13 PASS, 0 FAIL
+
+=== graft step: http production
+[PASS] Hproduction.1 pre-existing user editoruser still logs in with the password set before the install
+[PASS] Hproduction.2 editoruser: route gated by an imported permission (users.create) -> 200
+[PASS] Hproduction.3a editoruser: rolewarden/users (permission not held) is denied
+[PASS] Hproduction.3b editoruser: rolewarden/roles (permission not held) is denied
+[PASS] Hproduction.3c editoruser: rolewarden/permissions (permission not held) is denied
+[PASS] Hproduction.4 inGroup() on the graft: editoruser inGroup("editor") true (imported role), inGroup("admin") false
+[PASS] Hproduction.5 pre-existing user adminuser (colliding "admin" group) still logs in
+[PASS] Hproduction.7a adminuser made super admin with the README SQL: rolewarden/users -> 200
+[PASS] Hproduction.7b adminuser made super admin with the README SQL: rolewarden/roles -> 200
+[PASS] Hproduction.7c adminuser made super admin with the README SQL: rolewarden/permissions -> 200
+[PASS] Hproduction.8 inGroup("super-admin") true for the user holding that role
+[PASS] Hproduction.9 roles list shows the imported roles
+TOTAL step http production: 12 PASS, 0 FAIL
+-- php spark migrate:rollback -b 2 (batch before RoleWarden's)
+
+CodeIgniter v4.7.0 Command Line Tool - Server Time: 2026-09-26 01:43:49 UTC+00:00
+
+Rolling back migrations to batch:  2
+	Rolling back: (RoleWarden) 2026-09-22-090001_RoleWarden\Database\Migrations\ImportAuthGroups
+	Rolling back: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Rolling back: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Rolling back: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+Done rolling back migrations.
+
+=== graft step: rolledback 
+[PASS] RB.1   rollback to the batch before RoleWarden's: no acl_* table left
+[PASS] RB.2   no RoleWarden row left in migrations
+[PASS] RB.3   Shield users, identities, groups and permissions identical to before the install
+[PASS] RB.4   table set identical to the pre-install one
+[PASS] RB.5   Settings and Shield migrations still recorded
+TOTAL step rolledback : 5 PASS, 0 FAIL
+-- php spark migrate:rollback -b 0
+
+CodeIgniter v4.7.0 Command Line Tool - Server Time: 2026-09-26 01:43:49 UTC+00:00
+
+Rolling back migrations to batch:  0
+	Rolling back: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+	Rolling back: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+	Rolling back: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Rolling back: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+Done rolling back migrations.
+
+=== graft step: rolledback0 
+[PASS] RB0.1  rollback -b 0: only the (empty) migrations table is left
+TOTAL step rolledback0 : 1 PASS, 0 FAIL

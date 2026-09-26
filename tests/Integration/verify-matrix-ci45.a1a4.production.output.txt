@@ -1,0 +1,69 @@
+== A1 identical failed-login messages
+[PASS] A1.POST failed login reaches authentication and redirects to login
+[PASS] A1.POST failed login reaches authentication and redirects to login
+[PASS] A1     registered wrong password / unknown email: identical nonempty alert
+EVIDENCE A1 ["Error: Unable to log you in. Please check your credentials.","Error: Unable to log you in. Please check your credentials."]
+== A2 own role removal
+[PASS] FIX    A2OnlyAdmin signs in
+[PASS] A2.UI  sole admin: Remove control of the admin role disabled, with an explanation
+[PASS] A2.UIa sole admin: the explanation is in the marginal note of the same row
+EVIDENCE A2.UI title='You cannot remove your own role that lets you manage roles.'; marginal note of the row='You cannot remove your own role that lets you manage roles.'
+[PASS] CSRF   sole admin self revoke fresh page token
+[PASS] REACHED sole admin self revoke is not a CSRF rejection
+EVIDENCE sole admin self revoke: HTTP 303 -> Error: You cannot remove your own role that lets you manage roles. | to A2OnlyAdmin&rsquo;s overrides
+[PASS] A2.BLOCK own last roles.assign role refused and all assignments unchanged
+EVIDENCE A2.BLOCK HTTP 303 role_present=1
+[PASS] FIX    A2Withdirect signs in
+[PASS] A2.UI+direct own page: no Remove control disabled when another direct role grants roles.assign
+[PASS] CSRF   second direct grant self revoke fresh page token
+[PASS] REACHED second direct grant self revoke is not a CSRF rejection
+EVIDENCE second direct grant self revoke: HTTP 303 -> 
+[PASS] A2.direct admin removable with another direct roles.assign grant
+[PASS] FIX    A2Withchild signs in
+[PASS] A2.UI+child own page: no Remove control disabled when another child role grants roles.assign
+[PASS] CSRF   second child grant self revoke fresh page token
+[PASS] REACHED second child grant self revoke is not a CSRF rejection
+EVIDENCE second child grant self revoke: HTTP 303 -> 
+[PASS] A2.child admin removable with another child roles.assign grant
+[PASS] FIX    A2Override1 signs in
+[PASS] CSRF   override=1 self revoke fresh page token
+[PASS] REACHED override=1 self revoke is not a CSRF rejection
+EVIDENCE override=1 self revoke: HTTP 303 -> 
+[PASS] A2.OV1 user override roles.assign=1: own admin removal allowed
+[PASS] FIX    A2Override0 signs in
+[PASS] CSRF   override=0 self revoke fresh page token
+[PASS] REACHED override=0 self revoke is not a CSRF rejection
+EVIDENCE override=0 self revoke: HTTP 303 -> 
+[PASS] A2.OV0 user override roles.assign=0: refusal (if any) is not the self-protection rule
+[AMB]  A2.DENY denied override on roles.assign: "removal allowed" cannot be exercised over HTTP
+         -> HTTP 303, role kept, message ''. With roles.assign denied the actor cannot use the revoke route at all (route authorization), so the decision "an override decides alone" is only observable as: not refused by the self-protection rule.
+[PASS] FIX    A2PlainRole signs in
+[PASS] CSRF   self non-granting role fresh page token
+[PASS] REACHED self non-granting role is not a CSRF rejection
+EVIDENCE self non-granting role: HTTP 303 -> Role removed. | to A2PlainRole&rsquo;s overrides
+[PASS] A2.PLAIN own role without roles.assign removable
+[PASS] CSRF   admin revokes another admin fresh page token
+[PASS] REACHED admin revokes another admin is not a CSRF rejection
+EVIDENCE admin revokes another admin: HTTP 303 -> Role removed. | to A2OtherAdmin&rsquo;s overrides
+[PASS] A2.OTHER admin may revoke admin from another user
+[PASS] CSRF   last super admin via another admin fresh page token
+[PASS] REACHED last super admin via another admin is not a CSRF rejection
+EVIDENCE last super admin via another admin: HTTP 303 -> Error: This would leave the system without an active super admin. | to DanaWhitfield&rsquo;s overrides
+[PASS] A2.SUPER last active super admin remains protected
+== A3 inherited and direct permission revocation
+[PASS] FIX    A3MatrixActor signs in
+[PASS] A3.REJECT inherited revoke: non-2xx, ok=false, origin role named, not CSRF
+[PASS] A3.DB  refused inherited revoke changes no role grants
+EVIDENCE A3 HTTP 422 {"ok":false,"message":"Inherited from A1A4 parent: change it on that role."}
+[PASS] A3.DIRECT direct grant revoke succeeds and deletes only that cell
+== A4 literal search
+[PASS] A4.SEARCH literal/substring query "%" returns exact users
+[PASS] A4.SEARCH literal/substring query "_" returns exact users
+[PASS] A4.SEARCH literal/substring query "d_na" returns exact users
+[PASS] A4.SEARCH literal/substring query "A4%" returns exact users
+[PASS] A4.SEARCH literal/substring query "A4_" returns exact users
+[PASS] A4.SEARCH literal/substring query "Dana" returns exact users
+[PASS] A4.SEARCH literal/substring query "dana@northwind" returns exact users
+[PASS] A4.SEARCH literal/substring query "O'Brien" returns exact users
+[PASS] SQL    no SQL/DB error text in dedicated responses
+TOTAL A1-A4: 50 PASS, 0 FAIL; 1 ambiguity

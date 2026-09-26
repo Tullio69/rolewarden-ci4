@@ -1,0 +1,14 @@
+[PASS] Q00    production: owner signs in through the RoleWarden login view
+[PASS] Q01    production: users list 200
+[PASS] Q02    production: rolewarden/users?q=mara returns 200 (search works)
+[PASS] Q03    production: rolewarden/users?q=mara shows no SQL text
+[PASS] Q02    production: rolewarden/users?q=Priya returns 200 (search works)
+[PASS] Q03    production: rolewarden/users?q=Priya shows no SQL text
+[PASS] Q05    production: add nonexistent role 99999 to a user: no 500, no SQL text (HTTP 404)
+[PASS] Q05b   production: add a role to nonexistent user 99999: no 500, no SQL text (HTTP 404)
+[PASS] Q06    production: self-deactivation refused, no 500 (HTTP 303)
+[PASS] Q07    production: self-deletion refused, no 500 (HTTP 303)
+[PASS] Q08    production: login page has the recovery link and a static type="password"
+[PASS] Q04    production: nonexistent user 404, no SQL text
+
+TOTAL (production): 12 PASS, 0 FAIL

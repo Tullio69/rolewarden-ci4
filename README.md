@@ -9,7 +9,9 @@ config file and into the database, and adds an admin panel to manage them at run
 
 - PHP 8.3 or later (tested up to 8.5)
 - CodeIgniter 4.7 or later (tested up to the latest 4.x). 4.7 is the first release with the
-  `app/Views/overrides/` folder the panel relies on for view overrides
+  `app/Views/overrides/` folder the panel relies on for view overrides. Use 4.7.4 or later:
+  earlier 4.7 releases carry known security advisories in the framework itself, fixed in 4.7.4
+  (run `composer audit` in your application to check)
 - CodeIgniter Shield 1.4 or later within 1.x (`^1.4`)
 - MySQL or MariaDB with InnoDB
 

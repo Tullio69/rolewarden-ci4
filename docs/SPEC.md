@@ -500,7 +500,7 @@ La review di CodeCanyon boccia piu' spesso per confezionamento che per codice. Q
 
 Quattro requisiti, tutti da soddisfare prima della pubblicazione.
 
-1. **Reset periodico dei dati.** Chi prova il pannello cancella ruoli e utenti, e il visitatore successivo trova macerie. Uno script che ricrea lo stato iniziale, con la modalita' vetrina attiva per cambiare ruolo al volo.
+1. **Reset periodico dei dati.** Chi prova il pannello cancella ruoli e utenti, e il visitatore successivo trova macerie. Uno script che ricrea lo stato iniziale, con la modalita' vetrina attiva per cambiare ruolo al volo. **Deciso il 2026-09-26 (A1 del collaudo V0):** la modalita' vetrina nasce in V8 con l'app demo; fino ad allora il reset ricrea lo stato iniziale senza vetrina, e dalla V8 la riattiva a ogni reset.
 2. **Isolamento verso l'esterno.** Nessuna email che parte davvero, nessuna notifica, nessun analytics sulle pagine della demo. Il programma di invio va sostituito a livello di sistema, non solo disattivato nell'applicazione: regge anche quando si aggiunge un nuovo punto di invio.
 3. **Nessuna indicizzazione.** Header `X-Robots-Tag: noindex` nella configurazione del web server e `robots.txt` che vieta tutto. Contenuto di prova indicizzato accanto al sito di vendita danneggia entrambi.
 4. **Un ambiente di test separato dalla demo.** La demo e' la produzione di rolewarden.com: le versioni nuove si provano altrove prima di arrivarci. Un sottodominio, un database dedicato, un branch di test da cui la demo avanza solo per merge fast-forward.

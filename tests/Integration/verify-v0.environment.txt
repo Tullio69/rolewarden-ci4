@@ -1,0 +1,10 @@
+Collaudo V0, 2026-09-26
+Docker inspect, solo rolewarden-demo-web e rolewarden-demo-db: exit 1, Access is denied sul pipe dockerDesktopLinuxEngine.
+Git Bash: exit 1 all'avvio, CreateFileMapping / Win32 error 5; docker exec non eseguito.
+Git demo HEAD iniziale/finale: fc75c2b7152201b649dd28be12ad62ae5c4ebf0c.
+Git status demo iniziale/finale: nessuna modifica.
+git grep -I -l -i -E 'password|passwd|secret|token|BEGIN .*PRIVATE KEY': 19 nomi di file; nessun contenuto esposto o salvato.
+git grep -I -l -E 'BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE KEY|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|AKIA[A-Z0-9]{16}': nessuna corrispondenza.
+La scansione non dimostra assenza di credenziali arbitrarie.
+Esecuzione HTTP finale: 64 PASS, 0 FAIL, 22 risposte. Dettagli in verify-v0.output.json.
+Deploy finali non eseguibili; home identiche, stato pulito DB non certificato.

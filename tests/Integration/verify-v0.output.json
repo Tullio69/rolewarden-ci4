@@ -1,0 +1,399 @@
+{
+  "conteggi": {
+    "PASS": 64
+  },
+  "numero_risposte_http": 22,
+  "controlli": [
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET / (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET / (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090: home disponibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090: account pubblici presenti"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /robots.txt (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /robots.txt (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090: robots vieta tutti i percorsi"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /verify-v0-pagina-inesistente (404): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /verify-v0-pagina-inesistente (404): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090: pagina inesistente restituisce 404"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /rolewarden/users (302): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /rolewarden/users (302): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090: pannello anonimo redirige al login"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /login (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /login (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 POST /login (303): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 POST /login (303): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 account admin: login redirige"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /rolewarden/users (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /rolewarden/users (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 account admin: accesso autenticato al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /login (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /login (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 POST /login (303): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 POST /login (303): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 account viewer: login redirige"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /rolewarden/users (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET /rolewarden/users (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 account viewer: accesso autenticato al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET / (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090 GET / (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.localhost:8090: home finale identica a quella iniziale"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET / (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET / (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090: home disponibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090: account pubblici presenti"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /robots.txt (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /robots.txt (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090: robots vieta tutti i percorsi"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /verify-v0-pagina-inesistente (404): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /verify-v0-pagina-inesistente (404): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090: pagina inesistente restituisce 404"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /rolewarden/users (302): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /rolewarden/users (302): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090: pannello anonimo redirige al login"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /login (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /login (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 POST /login (303): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 POST /login (303): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 account admin: login redirige"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /rolewarden/users (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /rolewarden/users (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 account admin: accesso autenticato al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /login (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /login (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 POST /login (303): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 POST /login (303): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 account viewer: login redirige"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /rolewarden/users (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET /rolewarden/users (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 account viewer: accesso autenticato al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET / (200): noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090 GET / (200): nessuna diagnostica PHP/SQL riconoscibile"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.localhost:8090: home finale identica a quella iniziale"
+    }
+  ],
+  "risposte": [
+    {
+      "richiesta": "staging.localhost:8090 GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "2cfa194c7d0b230cd498b4d987df433f533b526c85dda04fdea43e5069f4044d"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET /robots.txt (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET /verify-v0-pagina-inesistente (404)",
+      "status": 404,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET /rolewarden/users (302)",
+      "status": 302,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "e1afe3f99a626236808957d453f7d6ab2e260e0a1a04b933793d83cbd10c012f"
+    },
+    {
+      "richiesta": "staging.localhost:8090 POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "02d5fdf93902ef2c276ed77c68727502ac834c0a15390f8fc7f7fff8685eb66c"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "1c73a3a59b0e63cb4a606d0669fccf1652fd6b4272357984ce34febd44cd04a1"
+    },
+    {
+      "richiesta": "staging.localhost:8090 POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "72b4dea32a2ad09c131397591280311c639b84feb888180e604c1a693d9bce0f"
+    },
+    {
+      "richiesta": "staging.localhost:8090 GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "2cfa194c7d0b230cd498b4d987df433f533b526c85dda04fdea43e5069f4044d"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "7a488de9726130d68b201e5fdab6354d7cb9136bbbd8d1aac5422ab35e196762"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET /robots.txt (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET /verify-v0-pagina-inesistente (404)",
+      "status": 404,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET /rolewarden/users (302)",
+      "status": 302,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "ec3f5dcc339eb621fd309adcdbd8e72e5391ae6657b7c0808a7bd9f69b8aa18b"
+    },
+    {
+      "richiesta": "demo.localhost:8090 POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "95963f59dd14fa509047a453133b2af86fe67ee1d882c76f5583f9afc8d43130"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "03756fa5f3e3806159c384212893dc26c8e216816acd82cf22c90dad97798afa"
+    },
+    {
+      "richiesta": "demo.localhost:8090 POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "8514f08c02c62cb4da39d2d1dd54f5d4c9bb288587e453a7348a085d621d76fe"
+    },
+    {
+      "richiesta": "demo.localhost:8090 GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "sha256_corpo": "7a488de9726130d68b201e5fdab6354d7cb9136bbbd8d1aac5422ab35e196762"
+    }
+  ],
+  "limite": "Solo HTTP; Docker non accessibile nella sessione di collaudo."
+}

@@ -476,3 +476,10 @@ Formato di ogni voce:
 - Stato: completato. Esito **PASS**: development 177 PASS / 0 FAIL, production 12 PASS / 0 FAIL. **Approvato.**
 - Note per il prossimo: nessun difetto, nessuna nuova ambiguita'. `rolewarden_test` ripristinato, md5 `e682501e...` identico prima e dopo (0 tabelle; l'md5 differisce dal `b98a95c1...` delle sessioni precedenti pur con 0 tabelle, probabilmente per l'intestazione del dump dopo la ricreazione del database); `rolewarden` non toccato (solo metadati `information_schema`, invariati); 0 `php.exe`, copia rimossa. Nessun commit.
 
+### [2026-09-26 05:30] - Claude
+- Tipo: docs
+- Scope: `docs/BRIEF-v1.0.md` (nuovo), `CLAUDE.md`, `_AI-LOG.md`
+- Cosa ho fatto: aperta la v1.0. Scritto con l'autore il brief v1.0 come documento su Claude (originale: https://claude.ai/code/artifact/795055ee-64e6-4f32-90e7-7e8be2dc3d3b), approvato ed esportato in `docs/BRIEF-v1.0.md`. Nove tappe V0-V8 (ambiente demo, riscontri e impostazioni, account, log attivita', email di sicurezza, temi, importazione CSV, confezione, demo e documentazione), definizione di fatto con 12 voci funzionali e 8 di pubblicazione. `CLAUDE.md` ora rimanda anche al brief v1.0.
+- Stato: completato
+- Note per il prossimo: la prima tappa e' V0 e richiede hosting e accessi per rolewarden.com dall'autore. Decisioni aperte nel brief: Tailwind o CSS a mano (blocca V5), lingue dell'interfaccia e pacchetto senza Composer (V7), prezzo e licenza (pubblicazione). Da riportare nella SPEC: il nome RoleWarden risulta ancora "da scegliere" nella tabella delle decisioni aperte.
+

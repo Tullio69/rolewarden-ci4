@@ -3,8 +3,8 @@
 Modulo CodeIgniter 4 per ruoli e permessi in database, con pannello di amministrazione,
 costruito come estensione di Shield. Destinazione: vendita su CodeCanyon.
 
-La specifica completa sta in `docs/SPEC.md`, l'ordine di lavoro dell'MVP in
-`docs/BRIEF-MVP.md`. Sono la fonte di verita' e vanno letti prima di iniziare: questo
+La specifica completa sta in `docs/SPEC.md`, l'ordine di lavoro dell'MVP (chiuso) in
+`docs/BRIEF-MVP.md`, quello della v1.0 (in corso) in `docs/BRIEF-v1.0.md`. Sono la fonte di verita' e vanno letti prima di iniziare: questo
 file riassume solo cio' che serve avere sempre sotto mano. Le copie originali vivono
 come documenti su Claude; se una decisione cambia si aggiorna prima l'originale e poi
 si riesporta in `docs/`.

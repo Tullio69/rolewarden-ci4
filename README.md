@@ -179,6 +179,17 @@ already scaffolds there:
 'login' => '\RoleWarden\Views\auth\login',
 ```
 
+To land on the panel after signing in, change the `login` entry of the `$redirects` array
+Shield scaffolds in the same file (Shield's default is `/`):
+
+```php
+'login' => 'rolewarden/users',
+```
+
+Shield still sends a user back to the page they were trying to open, when there was one.
+A user without `users.view` is turned away by the panel's permission check, as on any
+panel URL, so set this only if most people who sign in are administrators.
+
 Registration and password recovery stay exactly Shield's own screens (this module does
 not touch identity or credentials); only the login screen has a matching design in
 `docs/design-system/` so far.

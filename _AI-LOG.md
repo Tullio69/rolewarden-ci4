@@ -511,3 +511,10 @@ Formato di ogni voce:
 - Stato: completato. Collaudo: Codex solo parte HTTP (Docker negato alla sua sandbox), poi Collaudatore ad Hoc, interrotto una volta per memoria dell'host e rieseguito completo: **330 PASS / 0 FAIL, V0 approvata sulla replica.**
 - Note per il prossimo: restano da fare sul VPS vero, quando l'autore da' gli accessi: messa online e verifica dal vivo di firewall SMTP e reset orario. Il repo `rolewarden-demo` va creato su GitHub dall'autore (privato) per il push. Osservazioni non bloccanti dal collaudo: header `X-Powered-By` esposto (valutare `expose_php = Off` nel provisioning), un deploy rifiutato aggiorna comunque i riferimenti remoti con `git fetch`.
 
+### [2026-09-26 23:30] - Claude
+- Tipo: fix
+- Scope: repo `../rolewarden-demo` (`ops/php/rolewarden.ini`, ex `mail-sink.ini`; `ops/server/provision.sh`, `docker/web/entrypoint.sh`), commit `43817b0` su `staging` e `main`, solo locale
+- Cosa ho fatto: su richiesta dell'autore, chiusa l'osservazione del collaudo V0 sull'header `X-Powered-By`: l'ini PHP condiviso da web e CLI ora imposta anche `expose_php = Off`. Verificato sulla replica ricostruita: nessun `X-Powered-By` su staging e demo, `mail()` finisce ancora nel sink (messaggio di prova rimosso), deploy di staging e fast-forward della demo riusciti.
+- Stato: completato
+- Note per il prossimo: il repo `rolewarden-demo` non ha ancora un remoto; il push si fa quando l'autore crea `Tullio69/rolewarden-demo` su GitHub.
+

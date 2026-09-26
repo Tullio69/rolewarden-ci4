@@ -1,4 +1,3 @@
-
 == 1. Login (design-system view on Shield's controller)
 [PASS] L01    GET /login is 200 and rendered by the RoleWarden view (rw-auth-screen)
 [PASS] L02    form posts to url_to(login) with csrf_field, email, password, remember
@@ -29,10 +28,13 @@
 == 3. UsersList
 [PASS] U00    owner (only active super admin) signs in
 [PASS] U01    sidebar marks Users with aria-current="page"
-[PASS] U02    Last login header has aria-sort and a sort control
-[PASS] U03    default order: most recent successful login first, matching auth_logins (owner signed in last)
-[PASS] U04    sort=asc: aria-sort="ascending" and never-logged-in users first, owner not on page 1 top
-[PASS] U05    "Never" shown for a user who never signed in
+[PASS] U02    Last active header has aria-sort and a sort control
+[PASS] U02b   users list: no "Last login" label left
+[PASS] U03    default order: most recent last activity first (users.last_active DESC, set by SQL), owner first
+[PASS] U04    sort=asc: aria-sort="ascending", least recent activity first (users.last_active ASC), owner not on page 1
+[INFO] U04    users without activity ([3]): desc page 1 positions [], asc page 1 positions [0]
+[PASS] U05    "Never" shown in the row of a user without activity (Jonas, last_active NULL)
+[PASS] U05b   user detail: header fact labelled "Last active", no "Last login" label left
 [PASS] U06    row-number gutter starts at 01
 [PASS] U07    36 users: list paginates, current page marked aria-current="page"
          pager markup: <ul class="rw-pager"> <li> <span class="rw-page" aria-disabled="true">Previous</span> </li> <li> <span class="rw-page" aria-current="page">1</span> </li> <li> <a class="rw-page" href="http://localhost:8070/index.php/rolewarden/users?page=2" aria-label="Page 2">2</a> </li> <li> <a class="rw-page" href="http://localhost:8070/index.php/rolewarden/users?page=2">Next</a> </li> </ul>
@@ -187,7 +189,7 @@
 [PASS] X05    host override app/Views/overrides/RoleWarden/Views/roles/show.php wins, removing it restores the module view
 
 == 9. Global sweep over every response
-[PASS] Z01    no SQL/DB error text in any of 137 responses
+[PASS] Z01    no SQL/DB error text in any of 139 responses
 [PASS] Z02    no PHP warning/notice/deprecation in any response
 
-TOTAL: 171 PASS, 0 FAIL
+TOTAL: 173 PASS, 0 FAIL

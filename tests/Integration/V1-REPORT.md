@@ -467,3 +467,63 @@ README e i file di `tests/Integration/`; mai aperti controller, model, view, ass
   (`b98a95c14161f0186fb51fab93a6e114`, 0 tabelle come trovato); `rolewarden` mai toccato; 0 `php.exe`; copia
   rimossa (prima la junction); cookie jar e log del server cancellati. Output in
   `verify-v1-anno.{development,production}.output.txt` e negli output gia' esistenti. Nessun commit.
+
+---
+
+# Collaudo 2026-09-26: ordinamento per ultima attivita' ed etichetta "Last active" (Collaudatore ad Hoc D)
+
+Collaudatore ad Hoc D (Claude), in sostituzione di Codex, stesso protocollo. Letti solo SPEC, BRIEF,
+`_AI-LOG.md`, README, `docs/design-system/` (README UsersList e UserDetail, `preview.html`) e i file di
+`tests/Integration/`. Mai aperti controller, model, view, lang, asset, helper, `RouteRegistrar`, `Guard.php`,
+`tests/Unit/` ne' il diff di `src/`. Working tree non committato.
+
+## Esito
+
+**PASS.** `verify-v1.php` (development) 173 PASS / 0 FAIL; `verify-v1.prod.php` (production) 12 PASS / 0 FAIL.
+**Ordinamento per ultima attivita' ed etichetta "Last active" approvati.**
+
+## Controlli cambiati o nuovi in `verify-v1.php`
+
+- Dati: subito dopo il login del proprietario, `users.last_active` e' impostato via SQL su `rolewarden_test`:
+  tutti a NULL, poi Dana 2025-06-11, Priya 06-10, Mara 06-09, Theo 06-08, Lena 06-07, bulk01-30 in gennaio
+  2025 (un giorno di distanza l'uno dall'altro); Jonas resta senza attivita'. L'ordine atteso si rilegge dal
+  database dopo ogni GET, quindi non dipende dai tempi delle richieste (pareggio al secondo visto da B).
+- U02: l'intestazione ordinabile con `aria-sort` si chiama "Last active". PASS.
+- U02b (nuovo): nell'elenco non compare piu' "Last login" (debug toolbar esclusa). PASS.
+- U03 (riscritto): ordine di default per `last_active` decrescente; gli id con attivita' in pagina 1
+  coincidono con il prefisso dell'ordine dal database, Dana prima, `aria-sort="descending"`. PASS.
+- U04 (riscritto): `sort=asc` con `aria-sort="ascending"`, id con attivita' in ordine crescente come nel
+  database, Dana non in pagina 1. PASS. La vecchia richiesta "chi non ha mai fatto login per primo" e' tolta:
+  la posizione degli utenti senza attivita' non e' specificata, quindi e' solo stampata (`[INFO]`): in fondo
+  nell'ordine decrescente, in testa nel crescente.
+- U05 (riscritto): la riga di Jonas (`last_active` NULL, verificato nel database) mostra "Never". PASS.
+- U05b (nuovo): nel dettaglio utente il fatto d'intestazione e' `<dt>Last active</dt>` e "Last login" non
+  compare. PASS.
+
+## Difetti
+
+Nessuno.
+
+## Ambiguita' (non decise)
+
+- Minore: il README UsersList non dice dove vanno gli utenti senza attivita' ("Never") nei due versi
+  dell'ordinamento. Il pannello li mette in fondo in decrescente e in testa in crescente; non giudicato.
+
+## Ambiente e igiene
+
+- Copia di `rolewarden-app-test` nello scratchpad (`robocopy /E /XJ`), junction verso il modulo ricreata a mano,
+  `writable/cache` e `writable/session` svuotate. Un solo `php -S` alla volta (:8070), development e production
+  via `verify-v1.sh`, credenziali solo da `RW_DB_*`.
+- Incidente di procedura, dichiarato: al primo lancio avevo dimenticato di portare il `.env` della copia su
+  `rolewarden_test` (lo fanno `verify-v1-a1a4.sh` e `verify-matrix-*.sh`, non `verify-v1.sh`). Quel giro ha
+  eseguito `spark migrate` (3 namespace, "Migrations complete") e il seeder di RoleWarden sul database
+  `rolewarden`, poi si e' fermato sulle fixture (tabelle assenti in `rolewarden_test`) prima di qualsiasi
+  richiesta HTTP. Nessun dato di `rolewarden` e' stato letto; dai soli metadati di `information_schema`:
+  14 tabelle, nessuna creata di recente (ultima 2026-09-22), `update_time` NULL su tutte in due letture dopo l'incidente, quindi
+  nessuna scrittura registrata da InnoDB dall'avvio del container. Da confermare dall'autore se lo ritiene.
+  Corretto il `.env` della copia (database `rolewarden_test`, righe password tolte, base URL :8070) e rilanciato
+  da zero: e' il giro riportato qui.
+- Fine: `rolewarden_test` ripristinato dallo snapshot, md5 del dump identico (`b98a95c14161f0186fb51fab93a6e114`,
+  0 tabelle come trovato); 0 `php.exe`; copia rimossa (prima la junction); log del server e cookie jar
+  cancellati. Nel log dell'app solo i rifiuti CSRF voluti, nessun warning/notice/deprecation. Output in
+  `verify-v1.output.txt` e `verify-v1.prod.output.txt` (quest'ultimo identico al precedente). Nessun commit.

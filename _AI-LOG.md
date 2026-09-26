@@ -441,3 +441,17 @@ Formato di ogni voce:
 - Stato: completato
 - Note per il prossimo: l'etichetta della colonna nel pannello (`src/Language/en/RoleWarden.php`, chiave `lastLogin`, "Last login") e i `preview.html` di UsersList/UserDetail dicono ancora "Last login": da allineare se l'autore lo chiede. Copia originale del design system su Claude da riallineare a mano.
 
+### [2026-09-26 04:15] - Collaudatore ad Hoc D (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-v1.php` (U02-U05 riscritti, U02b e U05b nuovi), output `verify-v1.output.txt`, `verify-v1.prod.output.txt`, sezione nuova in fondo a `tests/Integration/V1-REPORT.md`; `_AI-LOG.md` (voce trascritta dall'orchestratore)
+- Cosa ho fatto: collaudo in nero della decisione del 2026-09-26 (elenco utenti ordinato per ultima attivita' di Shield, etichetta "Last active" in elenco e dettaglio) sul working tree non committato, in sostituzione di Codex, stesso protocollo. U03/U04 ora ricavano l'ordine atteso da `users.last_active` impostato via SQL con valori distinti e distanti giorni: niente piu' dipendenza dai tempi. Nuovi controlli: nessun "Last login" in elenco e dettaglio, `<dt>Last active</dt>` nel dettaglio, "Never" nella riga di un utente senza attivita'. Development e production.
+- Stato: completato. Esito **PASS**: `verify-v1.php` 173 PASS / 0 FAIL, `verify-v1.prod.php` 12 PASS / 0 FAIL. **Decisione approvata.**
+- Note per il prossimo: nessun difetto. Ambiguita' minore non decisa: posizione degli utenti senza attivita' nei due versi dell'ordinamento (oggi in fondo in decrescente, in testa in crescente), non specificata dal README UsersList. Incidente di procedura: al primo lancio il `.env` della copia puntava ancora a `rolewarden`, quindi `spark migrate` e `RoleWardenSeeder` sono girati su `rolewarden` prima che le fixture fallissero, senza richieste HTTP. `verify-v1.sh` non prepara da solo il `.env` della copia: va fatto a mano come in `verify-v1-a1a4.sh`. `rolewarden_test` ripristinato (0 tabelle, md5 `b98a95c1...`); 0 `php.exe`, copia rimossa. Nessun commit.
+
+### [2026-09-26 04:25] - Claude
+- Tipo: fix
+- Scope: `src/Language/en/RoleWarden.php`, `src/Views/users/{index,show}.php`, `docs/design-system/` (README, tokens.json, UsersList e UserDetail README/preview), `composer.json`, `README.md`, `docs/SPEC.md`, `docs/BRIEF-MVP.md`, `_AI-LOG.md`
+- Cosa ho fatto: decisioni dell'autore del 2026-09-26. Etichetta del pannello "Last login" -> "Last active" (chiave `lastActive`) in elenco e dettaglio, allineati preview ed esempi del design system; U03 adattato dal Collaudatore D (PASS). README: come atterrare sul pannello dopo il login (`$redirects['login']`). Minimo CodeIgniter portato a `^4.7.4` (advisory di sicurezza di 4.7.0), gia' coperto dalla matrice. Primo push su `origin` (github.com:Tullio69/rolewarden-ci4, branch `master`). Verificato in sola lettura l'incidente di D su `rolewarden`: ultima migrazione ancora del 2026-09-22 (batch 2), nessuna tabella con `update_time` dall'avvio del container (2026-09-25 20:22), conteggi `acl_*` invariati: nessuna scrittura. PHPUnit 44/44.
+- Stato: completato
+- Note per il prossimo: aperta per l'autore la posizione degli utenti senza attivita' nell'ordinamento. Rischio da chiudere: `verify-v1.sh` usato da solo lascia la copia puntata su `rolewarden`; chi lo lancia deve preparare il `.env` o usare i driver `verify-matrix-*.sh`. Copie originali di SPEC/BRIEF/design system su Claude da riallineare a mano.
+

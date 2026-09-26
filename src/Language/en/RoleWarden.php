@@ -57,7 +57,7 @@ return [
             'newUser' => 'New user',
             'empty' => 'No users match these filters.',
             'showing' => 'Showing %d–%d of %d users',
-            'lastLogin' => 'Last login',
+            'lastActive' => 'Last active',
             'never' => 'Never',
             'you' => 'you',
             'override' => 'override',

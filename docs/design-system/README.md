@@ -2,7 +2,7 @@ RoleWarden is an admin panel for roles and permissions in CodeIgniter 4 apps. It
 
 ## Content fundamentals
 
-- Write in plain, short English. Sentence case everywhere ("Save changes", "Last login"), except column headers, which are set in the `header` style (uppercase).
+- Write in plain, short English. Sentence case everywhere ("Save changes", "Last active"), except column headers, which are set in the `header` style (uppercase).
 - Address the admin as "you"; the product never says "we" or "I". No exclamation marks, no emoji.
 - Name things by what they are: "Editor inherits from Author", "7 users", "2 unsaved changes", "Denied for 1 user".
 - Permission identifiers are code: always `area.action` in lowercase, set in `code` or `code-sm` (`users.delete`, `roles.assign`).

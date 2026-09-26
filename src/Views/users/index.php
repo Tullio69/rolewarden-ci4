@@ -61,7 +61,7 @@ $sortHref = site_url('rolewarden/users') . '?' . http_build_query(array_filter([
       <th class="rw-c-roles rw-header" scope="col"><?= lang('RoleWarden.panel.nav.roles') ?></th>
       <th class="rw-c-status rw-header" scope="col"><?= lang('RoleWarden.panel.users.status') ?></th>
       <th class="rw-c-login rw-header" scope="col" aria-sort="<?= $sort === 'DESC' ? 'descending' : 'ascending' ?>">
-        <a class="rw-sort" href="<?= esc($sortHref) ?>"><?= lang('RoleWarden.panel.users.lastLogin') ?>
+        <a class="rw-sort" href="<?= esc($sortHref) ?>"><?= lang('RoleWarden.panel.users.lastActive') ?>
           <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="<?= $sort === 'DESC' ? 'M2 3.5l3 3 3-3' : 'M2 6.5l3-3 3 3' ?>" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
         </a>
       </th>

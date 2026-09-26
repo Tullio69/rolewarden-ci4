@@ -191,21 +191,44 @@ check('G08', 'limited: POST users/{id}/deactivate refused (by permission, not CS
 echo "\n== 3. UsersList\n";
 $own = new Client('owner');
 check('U00', 'owner (only active super admin) signs in', $own->login($U['owner']['email'], $pw), "status {$own->status}");
+// Last activity (Shield users.last_active) is set here by direct SQL, distinct and days apart,
+// so the expected order never depends on request timing (B's tie at the second, 2026-09-25).
+// Only Jonas (limited) is left without activity; the owner's own GETs may move hers to "now",
+// which keeps her first either way. The expected order is read back from the DB after each GET.
+q('UPDATE users SET last_active = NULL');
+foreach (['owner' => '2025-06-11 12:00:00', 'admin2' => '2025-06-10 12:00:00', 'subject' => '2025-06-09 12:00:00', 'child' => '2025-06-08 12:00:00', 'disabled' => '2025-06-07 12:00:00'] as $k => $d) {
+    q('UPDATE users SET last_active = ? WHERE id = ?', [$d, $U[$k]['id']]);
+}
+for ($i = 1; $i <= 30; $i++) {
+    q('UPDATE users SET last_active = ? WHERE username = ?', [sprintf('2025-01-%02d 10:00:00', $i), sprintf('bulk%02d', $i)]);
+}
+$byActive = fn (string $dir): array => array_map('intval', array_column(q("SELECT id FROM users WHERE deleted_at IS NULL AND last_active IS NOT NULL ORDER BY last_active $dir, id"), 'id'));
+$nullIds = array_map('intval', array_column(q('SELECT id FROM users WHERE deleted_at IS NULL AND last_active IS NULL'), 'id'));
+$noText = fn (string $html): string => preg_replace('/<div id="debug-bar".*$/s', '', $html);
 seen($own->get('rolewarden/users'), 'owner GET users');
 $ul = $own->clean();
 check('U01', 'sidebar marks Users with aria-current="page"', (bool) preg_match('/<a href="[^"]*rolewarden\/users" aria-current="page"/', $ul), 'missing');
-check('U02', 'Last login header has aria-sort and a sort control', (bool) preg_match('/<th[^>]*aria-sort="(ascending|descending)"[^>]*>\s*<(a|button)[^>]*>\s*Last login/s', $ul), 'missing');
+check('U02', 'Last active header has aria-sort and a sort control', (bool) preg_match('/<th[^>]*aria-sort="(ascending|descending)"[^>]*>\s*<(a|button)[^>]*>\s*Last active/s', $ul), 'missing');
+check('U02b', 'users list: no "Last login" label left', stripos($noText($ul), 'Last login') === false, 'found "Last login"');
 $rows = user_rows($ul);
 $ids = array_column($rows, 'id');
-$lastOf = fn (int $id): string => (string) q1('SELECT COALESCE(MAX(date), "") FROM auth_logins WHERE user_id=? AND success=1', [$id]);
-$firstIds = array_slice($ids, 0, 3);
-$expect = array_map('intval', array_column(q('SELECT u.id FROM users u JOIN auth_logins l ON l.user_id=u.id AND l.success=1 GROUP BY u.id ORDER BY MAX(l.date) DESC LIMIT 3'), 'id'));
-check('U03', 'default order: most recent successful login first, matching auth_logins (owner signed in last)', $firstIds === $expect && $firstIds[0] === $U['owner']['id'], 'first rows ' . json_encode($firstIds) . ' expected ' . json_encode($expect));
+$dated = array_values(array_diff($ids, $nullIds));
+$expect = array_slice($byActive('DESC'), 0, count($dated));
+check('U03', 'default order: most recent last activity first (users.last_active DESC, set by SQL), owner first', count($dated) >= 5 && $dated === $expect && $ids[0] === $U['owner']['id'] && str_contains($ul, 'aria-sort="descending"'), 'page ids with activity ' . json_encode($dated) . ' expected ' . json_encode($expect) . '; first row ' . ($ids[0] ?? '?'));
 seen($own->get('rolewarden/users?sort=asc'), 'owner GET users asc');
 $ua = $own->clean();
 $asc = array_column(user_rows($ua), 'id');
-check('U04', 'sort=asc: aria-sort="ascending" and never-logged-in users first, owner not on page 1 top', str_contains($ua, 'aria-sort="ascending"') && ($asc[0] ?? 0) !== $U['owner']['id'] && ! in_array($U['owner']['id'], array_slice($asc, 0, 3), true), 'asc ids ' . json_encode(array_slice($asc, 0, 5)));
-check('U05', '"Never" shown for a user who never signed in', str_contains($ua, 'Never'), 'no Never cell');
+$ascDated = array_values(array_diff($asc, $nullIds));
+$expectAsc = array_slice($byActive('ASC'), 0, count($ascDated));
+check('U04', 'sort=asc: aria-sort="ascending", least recent activity first (users.last_active ASC), owner not on page 1', str_contains($ua, 'aria-sort="ascending"') && count($ascDated) >= 5 && $ascDated === $expectAsc && ! in_array($U['owner']['id'], $asc, true), 'page ids with activity ' . json_encode($ascDated) . ' expected ' . json_encode($expectAsc));
+// Where users without activity sit is not specified by the UsersList README: printed, not judged.
+printf("[INFO] U04    users without activity (%s): desc page 1 positions %s, asc page 1 positions %s\n", json_encode($nullIds), json_encode(array_keys(array_intersect($ids, $nullIds))), json_encode(array_keys(array_intersect($asc, $nullIds))));
+seen($own->get('rolewarden/users?q=jonas'), 'owner GET users q=jonas');
+$jr = preg_match('#<tr\b[^>]*>(?:(?!</tr>).)*?/users/' . $U['limited']['id'] . '"(?:(?!</tr>).)*</tr>#s', $own->clean(), $jm) ? $jm[0] : '';
+check('U05', '"Never" shown in the row of a user without activity (Jonas, last_active NULL)', (int) q1('SELECT COUNT(*) FROM users WHERE id=? AND last_active IS NULL', [$U['limited']['id']]) === 1 && str_contains(strip_tags($jr), 'Never'), 'row: ' . substr(trim(preg_replace('/\s+/', ' ', strip_tags($jr))), 0, 200));
+seen($own->get('rolewarden/users/' . $U['admin2']['id']), 'owner GET user priya (label)');
+$dl = $noText($own->clean());
+check('U05b', 'user detail: header fact labelled "Last active", no "Last login" label left', (bool) preg_match('/<dt>\s*Last active\s*<\/dt>/', $dl) && stripos($dl, 'Last login') === false, 'dt labels: ' . json_encode(preg_match_all('/<dt>(.*?)<\/dt>/s', $dl, $dm) ? $dm[1] : []));
 check('U06', 'row-number gutter starts at 01', ($rows[0]['n'] ?? 0) === 1, 'first n ' . ($rows[0]['n'] ?? '?'));
 // pagination
 $pagerHtml = $ul;

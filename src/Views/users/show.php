@@ -16,7 +16,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
   </div>
   <dl class="rw-facts">
     <div><dt><?= lang('RoleWarden.panel.users.status') ?></dt><dd><?php if ($user->active) : ?><span class="rw-status"><?= lang('RoleWarden.panel.users.active') ?></span><?php else : ?><span class="rw-status rw-status--disabled"><?= lang('RoleWarden.panel.users.inactive') ?></span><?php endif ?></dd></div>
-    <div><dt><?= lang('RoleWarden.panel.users.lastLogin') ?></dt><dd><?= $user->last_active !== null ? esc($user->last_active->toLocalizedString('d MMM y, HH:mm')) : lang('RoleWarden.panel.users.never') ?></dd></div>
+    <div><dt><?= lang('RoleWarden.panel.users.lastActive') ?></dt><dd><?= $user->last_active !== null ? esc($user->last_active->toLocalizedString('d MMM y, HH:mm')) : lang('RoleWarden.panel.users.never') ?></dd></div>
     <div><dt><?= lang('RoleWarden.panel.users.memberSince') ?></dt><dd><?= $user->created_at !== null ? esc($user->created_at->toLocalizedString('d MMM y')) : '—' ?></dd></div>
     <div><dt><?= lang('RoleWarden.panel.users.overrides') ?></dt><dd class="rw-fig-sm"><?= (int) $overrideCount ?></dd></div>
   </dl>

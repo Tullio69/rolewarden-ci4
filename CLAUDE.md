@@ -36,6 +36,13 @@ si riesporta in `docs/`.
 - Componenti JS: dichiarazione e controller nello stesso file, controller come funzione separata
 - HTML, CSS e JavaScript scritti a mano, nessuno script di generazione
 
+## Repository
+
+- Remoto `origin`: `git@github.com:Tullio69/rolewarden-ci4.git`
+- Branch principale e predefinito: `main` (rinominato da `master` il 2026-09-26; `master`
+  non esiste piu', ne' in locale ne' sul remoto)
+- Push solo su richiesta dell'utente
+
 ## Cosa fermarsi a chiedere
 
 Scostamenti dai vincoli, nuove dipendenze oltre CI4 e Shield, modifiche allo schema non

@@ -33,6 +33,15 @@ start_server() { # $1 = CI_ENVIRONMENT (set in the copy's .env: CI4 lets .env wi
 
 sql() { docker exec -e MYSQL_PWD="$RW_DB_PASSWORD" rolewarden-db mariadb -u"$RW_DB_USERNAME" -e "$1"; }
 
+# Guard: CI4 lets the copy's .env win over $DBENV, so a copy still pointing at the development
+# database would be migrated and seeded there. Refuse to run unless .env names rolewarden_test.
+DBLINES=$(grep -E '^[[:space:]]*database\.default\.database[[:space:]]*=' "$APP/.env" 2>/dev/null)
+if [ "$(printf '%s\n' "$DBLINES" | grep -c .)" -ne 1 ] || ! printf '%s' "$DBLINES" | grep -qE "=[[:space:]]*['\"]?rolewarden_test['\"]?[[:space:]]*$"; then
+  echo "ABORT: $APP/.env must set exactly one 'database.default.database = rolewarden_test' line."
+  echo "Found: ${DBLINES:-none}. Nothing was run."
+  exit 4
+fi
+
 echo "== install per README on a fresh rolewarden_test"
 sql "DROP DATABASE rolewarden_test; CREATE DATABASE rolewarden_test;"
 find "$APP"/writable/cache -type f ! -name index.html -delete; rm -f "$APP"/writable/session/ci_session* 2>/dev/null

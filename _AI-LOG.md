@@ -455,3 +455,10 @@ Formato di ogni voce:
 - Stato: completato
 - Note per il prossimo: aperta per l'autore la posizione degli utenti senza attivita' nell'ordinamento. Rischio da chiudere: `verify-v1.sh` usato da solo lascia la copia puntata su `rolewarden`; chi lo lancia deve preparare il `.env` o usare i driver `verify-matrix-*.sh`. Copie originali di SPEC/BRIEF/design system su Claude da riallineare a mano.
 
+### [2026-09-26 04:40] - Claude
+- Tipo: fix
+- Scope: `tests/Integration/verify-v1.sh`, `_AI-LOG.md`
+- Cosa ho fatto: chiuso il rischio emerso dall'incidente del Collaudatore D. `verify-v1.sh` ora si ferma (exit 4, nulla eseguito) se il `.env` della copia non contiene esattamente una riga `database.default.database = rolewarden_test`: CI4 fa vincere il `.env` sulle variabili passate dallo script, quindi senza controllo una copia puntata su `rolewarden` veniva migrata e seminata li'. Provato su copie finte (senza `.env`, `rolewarden`, tra virgolette, due righe, solo commentata, `rolewarden_test2`: tutti fermati) e sulla sola condizione con le varianti valide (passano). Nessun accesso al database durante le prove. Push su `origin` del commit precedente.
+- Stato: completato
+- Note per il prossimo: il controllo e' infrastruttura del collaudo, non un'asserzione: non cambia cosa viene verificato.
+

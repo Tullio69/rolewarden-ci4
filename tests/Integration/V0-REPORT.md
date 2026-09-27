@@ -199,3 +199,73 @@ Due osservazioni informative, fuori dai criteri di V0 e non classificate come di
 - `/var/mail-sink` vuoto e `/tmp` del container vuoto.
 
 Non toccati: il container `rolewarden-db` e i database `rolewarden` e `rolewarden_test`, i container `scolibro_*` e il repo host `rolewarden-demo` (HEAD `ab9348f`, pulito prima e dopo, verificato a ogni fase). Nessun commit. Nessuna credenziale nei file del collaudo: lo script e l'output non contengono le password.
+
+---
+
+# Collaudo V0 dal vivo sul VPS: Collaudatore ad Hoc (Claude)
+
+Data: 27 settembre 2026, 01:20-02:02 (ora del server, CEST). Il collaudo sostituisce Codex con lo stesso protocollo. Ho letto solo SPEC ("App demo", "Requisiti di pubblicazione"), BRIEF-v1.0 (V0), `_AI-LOG.md`, questo rapporto, i due README di rolewarden-demo e le risposte HTTP. Non ho aperto nessun file vietato, né in locale né sul server: `ops/deploy.sh`, `ops/reset.sh`, `ops/php/*`, `~/bin/mail-sink`, `public/.htaccess`, `app/**`, `docker/**`. Del `.env` ho letto solo i nomi delle chiavi e la riga del database. Le credenziali le ha lette lo script e le ha passate a `mysql` con `MYSQL_PWD`, senza stamparle. Ambienti: https://staging.rolewarden.com (branch `staging`) e https://demo.rolewarden.com (branch `main`), entrambi al commit `48971ef`.
+
+**Esito: PASS. 399 PASS / 0 FAIL, 24 INFO, 73 risposte HTTP registrate, più circa 330 campioni del poller.** Nessun difetto.
+
+## Riproduzione
+
+Lo script gira sul server come utente `rolewarden`: `curl` del PC locale non raggiunge i siti.
+
+```sh
+ssh rolewarden-vps 'install -d -m 700 ~/tmp/v0live && cat > ~/tmp/v0live/verify-v0-live.py' < tests/Integration/verify-v0-live.py
+ssh rolewarden-vps 'cd ~/tmp/v0live && python3 verify-v0-live.py pre tls http cron'   # sola lettura
+ssh rolewarden-vps 'cd ~/tmp/v0live && python3 verify-v0-live.py deploy reset mail ff envguard final'
+ssh rolewarden-vps 'cd ~/tmp/v0live && python3 verify-v0-live.py cronwatch'          # entro 40 minuti dal minuto 0
+ssh rolewarden-vps 'cat ~/tmp/v0live/verify-v0-live.output.json' > tests/Integration/verify-v0-live.output.json
+ssh rolewarden-vps 'rm -rf ~/tmp/v0live'
+```
+
+- HTTP con `curl --resolve <host>:443:86.48.6.193`, sempre con il certificato verificato (mai `-k`). Cookie e corpi dei POST passano a curl su stdin (`-K -`), non sulla riga di comando visibile agli altri utenti del server.
+- Le fasi con scritture aspettano di essere fuori dai minuti 55-03, per non sovrapporsi al reset orario.
+- Lo stato fra le fasi sta in `~/tmp/v0live/state.json`, che viene rimosso a fine collaudo. L'output non contiene password.
+
+## Risultati per punto
+
+| Punto | Esito | PASS | Evidenza |
+| --- | --- | --- | --- |
+| 1. HTTPS e login | PASS | 19 | curl senza `-k` esce con 0 e dichiara "SSL certificate verify ok" su entrambi. Certificati Let's Encrypt: CN `staging.rolewarden.com` e `demo.rolewarden.com`, SAN corrispondente, TLS 1.3, validi fino al 25 dicembre 2026. `deploy.sh staging` e `deploy.sh demo` escono con 0 e restano su `48971ef`, working tree pulito. Login di admin@example.com e viewer@example.com, gli account della home, fino al pannello su entrambi, con identità verificata nella riga "you". Righe dopo il deploy: 4 ruoli, 12 permessi, 8 utenti, 8 utente-ruolo, 15 ruolo-permesso, 0 override, 0 gruppi Shield, 10 migrazioni. Staging e demo sono identici. |
+| 2. Cancellazioni e reset | PASS su entrambi | 36 | Dal pannello, via POST, ho cancellato il ruolo non di sistema `viewer` (`is_system` 0) e l'utente con l'id più alto diverso dall'admin, e le righe cambiano. `reset.sh <env>` dalla checkout giusta esce con 0. Dopo il reset tornano identici al primo deploy ruoli, permessi, utenti (email, username, stato), utente-ruolo, ruolo-permesso, override, gruppi Shield e migrazioni. La sessione aperta prima del reset rimanda a `/login`. |
+| 3. 503 durante il reset | PASS | 24 | Home campionata ogni 250 ms. Il 503 compare in tutti e quattro i reset: deploy staging 17/25, deploy demo 14/21, reset staging 18/20, reset demo 17/19. Ogni 503 ha `X-Robots-Tag: noindex, nofollow`, nessun `X-Powered-By` e nessuna diagnostica. Nessun altro 5xx, nessun errore di connessione. |
+| 4. Email | PASS; firewall SMTP non attivo (osservazione) | 4 | Un POST a `/login/magic-link` di Shield su ciascun sito produce esattamente un file nuovo in `~/mail-sink`, con l'indirizzo del destinatario. Il firewall, prova `timeout 5 bash -c '</dev/tcp/smtp.gmail.com/587'`: **OPEN**. La regola facoltativa del README non è attiva. |
+| 5. noindex, robots, X-Powered-By | PASS | 14 + 219 | Tutte le 73 risposte registrate hanno `X-Robots-Tag` con noindex, nessun `X-Powered-By` e nessuna diagnostica PHP/SQL. Per stato: 54 risposte 200, 13 redirect 303 (POST di login e azioni), 4 redirect 302 (pannello anonimo verso `/login`), 2 errori 404. Per i 503 vedi il punto 3. `robots.txt` risponde `User-agent: *` / `Disallow: /` su entrambi. |
+| 6. Fast-forward | PASS | 32 | Bare clone temporaneo di GitHub in `~/tmp/v0live/ff`, usato come origin della sola checkout. (a) main avanti a staging: la demo rifiuta con "origin/main has commits that are not on origin/staging ... Nothing was changed.". (b) staging riscritto: rifiuta con "origin/staging is not a fast-forward of the deployed commit 48971ef. Nothing was changed.". (c) main = staging, entrambi riscritti: la demo rifiuta allo stesso modo. In tutti i casi: exit diverso da 0, HEAD sempre `48971ef`, working tree pulito, CHECKSUM TABLE di entrambi i database ed elenco dei database invariati, solo 200 durante il tentativo (nessun 503), la sessione aperta prima resta valida. Alla fine l'origin è ripristinato all'URL originale, `origin/main` e `origin/staging` puntano di nuovo a `48971ef` e la cartella temporanea è rimossa. |
+| 7. Guardia `.env` | PASS | 16 | Tre casi, con una copia di riserva in `~/tmp`: staging verso `rolewarden_demo`, demo verso `rolewarden_staging`, staging verso `rolewarden_v0_estraneo`, verificato inesistente prima della prova. Ogni volta: "ABORT: .env names database '...', expected 'rolewarden_<env>'. Nothing was changed.", checksum ed elenco dei database invariati, home 200 e non 503, `.env` ripristinato con sha256 identico. Non ho mai usato come destinazione un database estraneo esistente, come `rolewarden`, `staging` o `demo`. |
+| 8. Cron e diagnostica | PASS | 11 | `crontab -l`, solo lettura, contiene esattamente la riga del README. Prima delle 02:00 `reset.log` non esisteva ancora: il cron era stato installato dopo le 01:00. Ho osservato il reset vero delle 02:00. `reset.log` è stato scritto ("reset demo: done 2026-09-27T00:00:10Z"), con 11 risposte 503 su 177 campioni a 500 ms e ogni 503 con noindex. Dopo il reset la demo ha le stesse righe del primo deploy, commit `48971ef` e home identica byte per byte. Nessuna diagnostica PHP/SQL in nessuna risposta. |
+| Contorno e finale | PASS | 8 + 16 | Prima del collaudo: `48971ef` su entrambi, branch giusti, working tree puliti, `.env` corretti, sink e `~/tmp` vuoti. Alla fine: `deploy.sh` di entrambi con exit 0, stessi commit, origin, sha256 dei `.env` e righe di prima, home identica, sink riportato vuoto, elenco dei database visibili invariato. |
+
+## Difetti
+
+Nessuno.
+
+## Ambiguità (non decise)
+
+- **B1, `HEAD /` risponde 404.** Su entrambi i siti, in HTTPS e in HTTP, `curl -I /` risponde `404 Not Found`, mentre `GET /` risponde 200. Gli header sono comunque corretti: noindex, nessun `X-Powered-By`. Il controllo "after any change" del runbook usa proprio `curl -sI`, e un monitor di disponibilità che usa HEAD vedrebbe la demo giù. La SPEC chiede una "demo online sempre raggiungibile" ma non parla di HEAD. Non è deciso se sia un difetto.
+- **B2, HTTP in chiaro senza redirect.** `http://<host>/` serve l'app (200, con noindex) invece di rimandare a HTTPS, e il form di login si può quindi usare in chiaro. SPEC e runbook non ne parlano.
+
+## Osservazioni
+
+- La regola firewall SMTP facoltativa non è attiva: da `rolewarden` la porta 587 di smtp.gmail.com è raggiungibile. Oggi l'isolamento regge solo sul `sendmail_path` del pool FPM.
+- Nota già presente nel rapporto: un deploy rifiutato esegue comunque `git fetch`. Durante il punto 6 i riferimenti remoti hanno visto commit temporanei. Il ripristino li ha riportati a `48971ef`, ma gli oggetti restano nel repo locale finché non passa `git gc`.
+
+## Limiti del collaudo
+
+- Che il sink non inoltri nulla l'ho constatato solo come presenza del file. La coda dell'MTA di sistema non l'ho letta, perché è condivisa con gli altri siti.
+- Le richieste HTTP partono dal server stesso, con `--resolve`. Il certificato e le risposte non sono stati verificati da una rete esterna.
+- Nel punto 7, per qualche secondo per caso, il sito ha letto un `.env` che nominava l'altro database. Le checksum invariate dicono che nessuna richiesta ci ha scritto.
+- La demo è pubblica: visitatori reali possono aver fatto richieste durante il collaudo. Non ne ho viste tracce: checksum, confronti e sessioni sono tutti coerenti.
+- Ho osservato un solo reset orario, quello delle 02:00.
+
+## Stato finale degli ambienti
+
+- Staging e demo: commit `48971ef51799a261d903425824eb69e23c0ec12b`, branch `staging` e `main`, working tree pulito, origin `git@github-rolewarden-demo:Tullio69/rolewarden-demo.git`, `origin/main` = `origin/staging` = `48971ef`, `.env` con sha256 identico a prima.
+- Righe per ambiente: 4 ruoli, 12 permessi, 8 utenti, 8 utente-ruolo, 15 ruolo-permesso, 0 override, 0 gruppi Shield, 10 migrazioni. Sono uguali al primo deploy; la demo è stata poi resettata dal cron delle 02:00, con le stesse righe.
+- `~/mail-sink` e `~/tmp` vuoti, come all'inizio. `~/tmp/v0live` è stato rimosso.
+- Crontab non modificato. Nessun servizio riavviato e nessuna configurazione Apache, PHP o Virtualmin toccata. Nessun push, nessun commit, branch remoti invariati: GitHub è stato solo letto con clone e fetch.
+
+Non ho toccato nulla fuori da `/home/rolewarden`, né altri database oltre a `rolewarden_staging` e `rolewarden_demo`. `SHOW DATABASES` è stato solo letto. Nessuna credenziale nei file del collaudo.

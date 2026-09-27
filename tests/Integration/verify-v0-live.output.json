@@ -1,0 +1,2715 @@
+{
+  "conteggi": {
+    "PASS": 399,
+    "INFO": 24
+  },
+  "numero_risposte_http": 73,
+  "controlli": [
+    {
+      "esito": "PASS",
+      "controllo": "pre staging: commit pubblicato 48971ef",
+      "dettaglio": "48971ef51799a261d903425824eb69e23c0ec12b"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "pre staging: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "pre staging: branch staging"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "pre staging: .env nomina rolewarden_staging"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "pre demo: commit pubblicato 48971ef",
+      "dettaglio": "48971ef51799a261d903425824eb69e23c0ec12b"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "pre demo: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "pre demo: branch main"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "pre demo: .env nomina rolewarden_demo"
+    },
+    {
+      "esito": "INFO",
+      "controllo": "pre: mail sink e ~/tmp prima",
+      "dettaglio": {
+        "sink": [],
+        "tmp": []
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: HTTPS con certificato verificato (curl senza -k, exit 0)",
+      "dettaglio": 0
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: curl dichiara il certificato valido",
+      "dettaglio": [
+        "SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384",
+        "subject: CN=staging.rolewarden.com",
+        "start date: Sep 26 22:06:48 2026 GMT",
+        "expire date: Dec 25 22:06:47 2026 GMT",
+        "subjectAltName: host \"staging.rolewarden.com\" matched cert's \"staging.rolewarden.com\"",
+        "issuer: C=US; O=Let's Encrypt; CN=YR2",
+        "SSL certificate verify ok."
+      ]
+    },
+    {
+      "esito": "INFO",
+      "controllo": "1 staging: certificato",
+      "dettaglio": [
+        "SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384",
+        "subject: CN=staging.rolewarden.com",
+        "start date: Sep 26 22:06:48 2026 GMT",
+        "expire date: Dec 25 22:06:47 2026 GMT",
+        "subjectAltName: host \"staging.rolewarden.com\" matched cert's \"staging.rolewarden.com\"",
+        "issuer: C=US; O=Let's Encrypt; CN=YR2",
+        "SSL certificate verify ok."
+      ]
+    },
+    {
+      "esito": "INFO",
+      "controllo": "1 staging: richiesta HTTP in chiaro",
+      "dettaglio": "200"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: HTTPS con certificato verificato (curl senza -k, exit 0)",
+      "dettaglio": 0
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: curl dichiara il certificato valido",
+      "dettaglio": [
+        "SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384",
+        "subject: CN=demo.rolewarden.com",
+        "start date: Sep 26 20:53:49 2026 GMT",
+        "expire date: Dec 25 20:53:48 2026 GMT",
+        "subjectAltName: host \"demo.rolewarden.com\" matched cert's \"demo.rolewarden.com\"",
+        "issuer: C=US; O=Let's Encrypt; CN=YR1",
+        "SSL certificate verify ok."
+      ]
+    },
+    {
+      "esito": "INFO",
+      "controllo": "1 demo: certificato",
+      "dettaglio": [
+        "SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384",
+        "subject: CN=demo.rolewarden.com",
+        "start date: Sep 26 20:53:49 2026 GMT",
+        "expire date: Dec 25 20:53:48 2026 GMT",
+        "subjectAltName: host \"demo.rolewarden.com\" matched cert's \"demo.rolewarden.com\"",
+        "issuer: C=US; O=Let's Encrypt; CN=YR1",
+        "SSL certificate verify ok."
+      ]
+    },
+    {
+      "esito": "INFO",
+      "controllo": "1 demo: richiesta HTTP in chiaro",
+      "dettaglio": "200"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 staging: home 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (302): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (302): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (302): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 staging: pannello anonimo 302 verso /login",
+      "dettaglio": 302
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /verify-v0-live-inesistente (404): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /verify-v0-live-inesistente (404): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /verify-v0-live-inesistente (404): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 staging: pagina inesistente 404",
+      "dettaglio": 404
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /robots.txt (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /robots.txt (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /robots.txt (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 staging: robots.txt vieta tutto",
+      "dettaglio": "User-agent: *\nDisallow: /\n"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 staging: pagina di login 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 demo: home 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (302): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (302): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (302): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 demo: pannello anonimo 302 verso /login",
+      "dettaglio": 302
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /verify-v0-live-inesistente (404): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /verify-v0-live-inesistente (404): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /verify-v0-live-inesistente (404): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 demo: pagina inesistente 404",
+      "dettaglio": 404
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /robots.txt (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /robots.txt (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /robots.txt (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 demo: robots.txt vieta tutto",
+      "dettaglio": "User-agent: *\nDisallow: /\n"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 demo: pagina di login 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 crontab: riga del reset orario della demo identica al README",
+      "dettaglio": [
+        "0 * * * * /home/rolewarden/domains/demo.rolewarden.com/app/ops/reset.sh demo >> /home/rolewarden/domains/demo.rolewarden.com/logs/reset.log 2>&1"
+      ]
+    },
+    {
+      "esito": "INFO",
+      "controllo": "8 reset.log",
+      "dettaglio": {
+        "esiste": false,
+        "ultime_righe": []
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: deploy.sh esce con 0",
+      "dettaglio": 0
+    },
+    {
+      "esito": "INFO",
+      "controllo": "3 staging deploy: campioni HTTP della home",
+      "dettaglio": {
+        "200": 8,
+        "503": 17
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging deploy: 503 osservato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging deploy: ogni 503 ha X-Robots-Tag noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging deploy: ogni 503 senza diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging deploy: ogni 503 senza X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging deploy: nessun 5xx diverso da 503 e nessun errore di connessione"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging deploy: ogni campione ha noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: pubblicato 48971ef",
+      "dettaglio": "48971ef51799a261d903425824eb69e23c0ec12b"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: home 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: account pubblici sulla home",
+      "dettaglio": 2
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: login admin (admin@example.com) arriva al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 staging: POST di login risponde 303",
+      "dettaglio": 303
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging: login viewer (viewer@example.com) arriva al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 staging: POST di login risponde 303",
+      "dettaglio": 303
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: deploy.sh esce con 0",
+      "dettaglio": 0
+    },
+    {
+      "esito": "INFO",
+      "controllo": "3 demo deploy: campioni HTTP della home",
+      "dettaglio": {
+        "200": 7,
+        "503": 14
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo deploy: 503 osservato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo deploy: ogni 503 ha X-Robots-Tag noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo deploy: ogni 503 senza diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo deploy: ogni 503 senza X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo deploy: nessun 5xx diverso da 503 e nessun errore di connessione"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo deploy: ogni campione ha noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: pubblicato 48971ef",
+      "dettaglio": "48971ef51799a261d903425824eb69e23c0ec12b"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: home 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: account pubblici sulla home",
+      "dettaglio": 2
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: login admin (admin@example.com) arriva al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 demo: POST di login risponde 303",
+      "dettaglio": 303
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 demo: login viewer (viewer@example.com) arriva al pannello"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "5 demo: POST di login risponde 303",
+      "dettaglio": 303
+    },
+    {
+      "esito": "INFO",
+      "controllo": "1 righe dopo il deploy (staging)",
+      "dettaglio": {
+        "ruoli": 4,
+        "permessi": 12,
+        "utenti": 8,
+        "utente_ruolo": 8,
+        "ruolo_permesso": 15,
+        "utente_permesso": 0,
+        "gruppi_shield": 0,
+        "migrazioni": 10
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "1 staging e demo hanno le stesse righe dopo il deploy"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: login admin"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/roles (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/roles (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/roles (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: il pannello offre la cancellazione di un ruolo"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: il ruolo offerto (viewer) non e' di sistema",
+      "dettaglio": [
+        "viewer",
+        "0"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /rolewarden/roles/4/delete (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /rolewarden/roles/4/delete (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /rolewarden/roles/4/delete (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/roles (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/roles (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/roles (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: ruolo viewer cancellato via HTTP",
+      "dettaglio": "0"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users/8 (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users/8 (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users/8 (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: il pannello offre la cancellazione di un utente"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /rolewarden/users/8/delete (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /rolewarden/users/8/delete (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /rolewarden/users/8/delete (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: utente 8 cancellato via HTTP",
+      "dettaglio": "0"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: le cancellazioni cambiano le righe"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: reset.sh esce con 0",
+      "dettaglio": 0
+    },
+    {
+      "esito": "INFO",
+      "controllo": "3 staging reset: campioni HTTP della home",
+      "dettaglio": {
+        "503": 18,
+        "200": 2
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging reset: 503 osservato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging reset: ogni 503 ha X-Robots-Tag noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging reset: ogni 503 senza diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging reset: ogni 503 senza X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging reset: nessun 5xx diverso da 503 e nessun errore di connessione"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 staging reset: ogni campione ha noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset ruoli identici al primo reset",
+      "dettaglio": {
+        "attese": 4,
+        "trovate": 4
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset permessi identici al primo reset",
+      "dettaglio": {
+        "attese": 12,
+        "trovate": 12
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset utenti identici al primo reset",
+      "dettaglio": {
+        "attese": 8,
+        "trovate": 8
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset utente_ruolo identici al primo reset",
+      "dettaglio": {
+        "attese": 8,
+        "trovate": 8
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset ruolo_permesso identici al primo reset",
+      "dettaglio": {
+        "attese": 15,
+        "trovate": 15
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset utente_permesso identici al primo reset",
+      "dettaglio": {
+        "attese": 0,
+        "trovate": 0
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset gruppi_shield identici al primo reset",
+      "dettaglio": {
+        "attese": 0,
+        "trovate": 0
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: dopo il reset migrazioni identici al primo reset",
+      "dettaglio": {
+        "attese": 10,
+        "trovate": 10
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (302): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (302): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (302): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: la sessione precedente al reset non vale piu'",
+      "dettaglio": 302
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 staging: home 200 dopo il reset",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: login admin"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/roles (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/roles (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/roles (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: il pannello offre la cancellazione di un ruolo"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: il ruolo offerto (viewer) non e' di sistema",
+      "dettaglio": [
+        "viewer",
+        "0"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /rolewarden/roles/4/delete (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /rolewarden/roles/4/delete (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /rolewarden/roles/4/delete (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/roles (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/roles (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/roles (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: ruolo viewer cancellato via HTTP",
+      "dettaglio": "0"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users/8 (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users/8 (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users/8 (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: il pannello offre la cancellazione di un utente"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /rolewarden/users/8/delete (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /rolewarden/users/8/delete (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /rolewarden/users/8/delete (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: utente 8 cancellato via HTTP",
+      "dettaglio": "0"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: le cancellazioni cambiano le righe"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: reset.sh esce con 0",
+      "dettaglio": 0
+    },
+    {
+      "esito": "INFO",
+      "controllo": "3 demo reset: campioni HTTP della home",
+      "dettaglio": {
+        "503": 17,
+        "200": 2
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo reset: 503 osservato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo reset: ogni 503 ha X-Robots-Tag noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo reset: ogni 503 senza diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo reset: ogni 503 senza X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo reset: nessun 5xx diverso da 503 e nessun errore di connessione"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "3 demo reset: ogni campione ha noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset ruoli identici al primo reset",
+      "dettaglio": {
+        "attese": 4,
+        "trovate": 4
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset permessi identici al primo reset",
+      "dettaglio": {
+        "attese": 12,
+        "trovate": 12
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset utenti identici al primo reset",
+      "dettaglio": {
+        "attese": 8,
+        "trovate": 8
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset utente_ruolo identici al primo reset",
+      "dettaglio": {
+        "attese": 8,
+        "trovate": 8
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset ruolo_permesso identici al primo reset",
+      "dettaglio": {
+        "attese": 15,
+        "trovate": 15
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset utente_permesso identici al primo reset",
+      "dettaglio": {
+        "attese": 0,
+        "trovate": 0
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset gruppi_shield identici al primo reset",
+      "dettaglio": {
+        "attese": 0,
+        "trovate": 0
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: dopo il reset migrazioni identici al primo reset",
+      "dettaglio": {
+        "attese": 10,
+        "trovate": 10
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (302): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (302): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (302): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: la sessione precedente al reset non vale piu'",
+      "dettaglio": 302
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "2 demo: home 200 dopo il reset",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login/magic-link (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login/magic-link (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login/magic-link (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "4 staging: pagina del link magico 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login/magic-link (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login/magic-link (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login/magic-link (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "4 staging: email del link magico (richiesta HTTP) finisce come file in ~/mail-sink",
+      "dettaglio": {
+        "prima": 0,
+        "dopo": 1
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login/magic-link (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login/magic-link (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login/magic-link (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "4 demo: pagina del link magico 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login/magic-link (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login/magic-link (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login/magic-link (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "4 demo: email del link magico (richiesta HTTP) finisce come file in ~/mail-sink",
+      "dettaglio": {
+        "prima": 1,
+        "dopo": 2
+      }
+    },
+    {
+      "esito": "INFO",
+      "controllo": "4 connessione dal server a smtp.gmail.com:587 (regola firewall facoltativa)",
+      "dettaglio": "OPEN"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: origin temporaneo preparato in ~/tmp",
+      "dettaglio": ""
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: deploy.sh demo si rifiuta (exit diverso da 0)",
+      "dettaglio": 5
+    },
+    {
+      "esito": "INFO",
+      "controllo": "6 demo con main avanti a staging: campioni HTTP della home durante il deploy rifiutato",
+      "dettaglio": {
+        "200": 2
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: nessun 503 durante il deploy rifiutato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: stesso commit pubblicato",
+      "dettaglio": [
+        "48971ef51799a261d903425824eb69e23c0ec12b",
+        "48971ef51799a261d903425824eb69e23c0ec12b"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: stessi dati (CHECKSUM TABLE dei due database, elenco database)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: la sessione aperta prima resta valida (nessun reset)",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: home 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "INFO",
+      "controllo": "6 demo con main avanti a staging: messaggio di rifiuto",
+      "dettaglio": [
+        "ABORT: origin/main has commits that are not on origin/staging. Deploy them to staging first. Nothing was changed."
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo con main avanti a staging: il messaggio dice che nulla e' cambiato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: origin temporaneo preparato in ~/tmp",
+      "dettaglio": ""
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: deploy.sh staging si rifiuta (exit diverso da 0)",
+      "dettaglio": 5
+    },
+    {
+      "esito": "INFO",
+      "controllo": "6 staging non fast-forward: campioni HTTP della home durante il deploy rifiutato",
+      "dettaglio": {
+        "200": 2
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: nessun 503 durante il deploy rifiutato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: stesso commit pubblicato",
+      "dettaglio": [
+        "48971ef51799a261d903425824eb69e23c0ec12b",
+        "48971ef51799a261d903425824eb69e23c0ec12b"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: stessi dati (CHECKSUM TABLE dei due database, elenco database)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: la sessione aperta prima resta valida (nessun reset)",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: home 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "INFO",
+      "controllo": "6 staging non fast-forward: messaggio di rifiuto",
+      "dettaglio": [
+        "ABORT: origin/staging is not a fast-forward of the deployed commit 48971ef. Nothing was changed."
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging non fast-forward: il messaggio dice che nulla e' cambiato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): origin temporaneo preparato in ~/tmp",
+      "dettaglio": ""
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /login (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com POST /login (303): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): deploy.sh demo si rifiuta (exit diverso da 0)",
+      "dettaglio": 5
+    },
+    {
+      "esito": "INFO",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): campioni HTTP della home durante il deploy rifiutato",
+      "dettaglio": {
+        "200": 2
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): nessun 503 durante il deploy rifiutato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): stesso commit pubblicato",
+      "dettaglio": [
+        "48971ef51799a261d903425824eb69e23c0ec12b",
+        "48971ef51799a261d903425824eb69e23c0ec12b"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): stessi dati (CHECKSUM TABLE dei due database, elenco database)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET /rolewarden/users (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): la sessione aperta prima resta valida (nessun reset)",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): home 200",
+      "dettaglio": 200
+    },
+    {
+      "esito": "INFO",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): messaggio di rifiuto",
+      "dettaglio": [
+        "ABORT: origin/main is not a fast-forward of the deployed commit 48971ef. Nothing was changed."
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo non fast-forward (main = staging, entrambi riscritti): il messaggio dice che nulla e' cambiato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging: origin ripristinato",
+      "dettaglio": "git@github-rolewarden-demo:Tullio69/rolewarden-demo.git"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 staging: origin/main e origin/staging di nuovo 48971ef",
+      "dettaglio": [
+        "48971ef51799a261d903425824eb69e23c0ec12b",
+        "48971ef51799a261d903425824eb69e23c0ec12b"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo: origin ripristinato",
+      "dettaglio": "git@github-rolewarden-demo:Tullio69/rolewarden-demo.git"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 demo: origin/main e origin/staging di nuovo 48971ef",
+      "dettaglio": [
+        "48971ef51799a261d903425824eb69e23c0ec12b",
+        "48971ef51799a261d903425824eb69e23c0ec12b"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "6 ~/tmp/v0live/ff rimosso"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 rolewarden_v0_estraneo non esiste (destinazione mai esistente)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_demo: .env modificato (una riga)",
+      "dettaglio": 1
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_demo: reset.sh si rifiuta",
+      "dettaglio": 4
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_demo: database invariati e nessun database creato"
+    },
+    {
+      "esito": "INFO",
+      "controllo": "7 staging -> rolewarden_demo: messaggio di rifiuto",
+      "dettaglio": [
+        "ABORT: .env names database 'rolewarden_demo', expected 'rolewarden_staging'. Nothing was changed."
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_demo: sito non lasciato in 503",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging: .env ripristinato (sha256 identico)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 demo -> rolewarden_staging: .env modificato (una riga)",
+      "dettaglio": 1
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 demo -> rolewarden_staging: reset.sh si rifiuta",
+      "dettaglio": 4
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 demo -> rolewarden_staging: database invariati e nessun database creato"
+    },
+    {
+      "esito": "INFO",
+      "controllo": "7 demo -> rolewarden_staging: messaggio di rifiuto",
+      "dettaglio": [
+        "ABORT: .env names database 'rolewarden_staging', expected 'rolewarden_demo'. Nothing was changed."
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 demo -> rolewarden_staging: sito non lasciato in 503",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 demo: .env ripristinato (sha256 identico)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_v0_estraneo: .env modificato (una riga)",
+      "dettaglio": 1
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_v0_estraneo: reset.sh si rifiuta",
+      "dettaglio": 4
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_v0_estraneo: database invariati e nessun database creato"
+    },
+    {
+      "esito": "INFO",
+      "controllo": "7 staging -> rolewarden_v0_estraneo: messaggio di rifiuto",
+      "dettaglio": [
+        "ABORT: .env names database 'rolewarden_v0_estraneo', expected 'rolewarden_staging'. Nothing was changed."
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging -> rolewarden_v0_estraneo: sito non lasciato in 503",
+      "dettaglio": 200
+    },
+    {
+      "esito": "PASS",
+      "controllo": "7 staging: .env ripristinato (sha256 identico)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final staging: deploy.sh esce con 0",
+      "dettaglio": 0
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final staging: commit pubblicato 48971ef",
+      "dettaglio": "48971ef51799a261d903425824eb69e23c0ec12b"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final staging: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final staging: origin invariato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final staging: .env invariato (sha256)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final staging: stesse righe del primo deploy"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "staging.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final staging: home 200 identica a quella dopo il primo deploy"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final demo: deploy.sh esce con 0",
+      "dettaglio": 0
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final demo: commit pubblicato 48971ef",
+      "dettaglio": "48971ef51799a261d903425824eb69e23c0ec12b"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final demo: working tree pulito"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final demo: origin invariato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final demo: .env invariato (sha256)"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final demo: stesse righe del primo deploy"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final demo: home 200 identica a quella dopo il primo deploy"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final: mail sink riportato allo stato iniziale",
+      "dettaglio": {
+        "rimossi": 2
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "final: databases visibili invariati"
+    },
+    {
+      "esito": "INFO",
+      "controllo": "stato finale",
+      "dettaglio": {
+        "commit": {
+          "staging": "48971ef51799a261d903425824eb69e23c0ec12b",
+          "demo": "48971ef51799a261d903425824eb69e23c0ec12b"
+        },
+        "righe": {
+          "staging": {
+            "ruoli": 4,
+            "permessi": 12,
+            "utenti": 8,
+            "utente_ruolo": 8,
+            "ruolo_permesso": 15,
+            "utente_permesso": 0,
+            "gruppi_shield": 0,
+            "migrazioni": 10
+          },
+          "demo": {
+            "ruoli": 4,
+            "permessi": 12,
+            "utenti": 8,
+            "utente_ruolo": 8,
+            "ruolo_permesso": 15,
+            "utente_permesso": 0,
+            "gruppi_shield": 0,
+            "migrazioni": 10
+          }
+        }
+      }
+    },
+    {
+      "esito": "INFO",
+      "controllo": "8 demo reset orario (cron): campioni HTTP della home",
+      "dettaglio": {
+        "200": 166,
+        "503": 11
+      }
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo reset orario (cron): 503 osservato"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo reset orario (cron): ogni 503 ha X-Robots-Tag noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo reset orario (cron): ogni 503 senza diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo reset orario (cron): ogni 503 senza X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo reset orario (cron): nessun 5xx diverso da 503 e nessun errore di connessione"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo reset orario (cron): ogni campione ha noindex"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 reset.log scritto dal cron"
+    },
+    {
+      "esito": "INFO",
+      "controllo": "8 reset.log, righe nuove",
+      "dettaglio": [
+        "",
+        "CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 00:00:04 UTC+00:00",
+        "",
+        "Seeded: RoleWarden\\Database\\Seeds\\RoleWardenSeeder",
+        "Seeded: App\\Database\\Seeds\\DemoSeeder",
+        "reset demo: done 2026-09-27T00:00:10Z"
+      ]
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo dopo il reset orario: stesse righe del primo deploy"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo dopo il reset orario: commit 48971ef",
+      "dettaglio": "48971ef51799a261d903425824eb69e23c0ec12b"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): X-Robots-Tag noindex",
+      "dettaglio": "noindex, nofollow"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessun X-Powered-By"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "demo.rolewarden.com GET / (200): nessuna diagnostica PHP/SQL"
+    },
+    {
+      "esito": "PASS",
+      "controllo": "8 demo dopo il reset orario: home 200 identica"
+    }
+  ],
+  "comandi": [
+    {
+      "comando": "ops/deploy.sh staging",
+      "exit": 0,
+      "ultime_righe": [
+        "CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-26 23:21:55 UTC+00:00",
+        "",
+        "Seeded: RoleWarden\\Database\\Seeds\\RoleWardenSeeder",
+        "Seeded: App\\Database\\Seeds\\DemoSeeder",
+        "reset staging: done 2026-09-26T23:22:00Z",
+        "deploy staging: 48971ef"
+      ]
+    },
+    {
+      "comando": "ops/deploy.sh demo",
+      "exit": 0,
+      "ultime_righe": [
+        "CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-26 23:22:07 UTC+00:00",
+        "",
+        "Seeded: RoleWarden\\Database\\Seeds\\RoleWardenSeeder",
+        "Seeded: App\\Database\\Seeds\\DemoSeeder",
+        "reset demo: done 2026-09-26T23:22:11Z",
+        "deploy demo: 48971ef"
+      ]
+    },
+    {
+      "comando": "ops/reset.sh staging",
+      "exit": 0,
+      "ultime_righe": [
+        "",
+        "CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-26 23:22:26 UTC+00:00",
+        "",
+        "Seeded: RoleWarden\\Database\\Seeds\\RoleWardenSeeder",
+        "Seeded: App\\Database\\Seeds\\DemoSeeder",
+        "reset staging: done 2026-09-26T23:22:31Z"
+      ]
+    },
+    {
+      "comando": "ops/reset.sh demo",
+      "exit": 0,
+      "ultime_righe": [
+        "",
+        "CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-26 23:22:38 UTC+00:00",
+        "",
+        "Seeded: RoleWarden\\Database\\Seeds\\RoleWardenSeeder",
+        "Seeded: App\\Database\\Seeds\\DemoSeeder",
+        "reset demo: done 2026-09-26T23:22:44Z"
+      ]
+    },
+    {
+      "comando": "ops/deploy.sh demo",
+      "exit": 5,
+      "ultime_righe": [
+        "ABORT: origin/main has commits that are not on origin/staging. Deploy them to staging first. Nothing was changed."
+      ]
+    },
+    {
+      "comando": "ops/deploy.sh staging",
+      "exit": 5,
+      "ultime_righe": [
+        "ABORT: origin/staging is not a fast-forward of the deployed commit 48971ef. Nothing was changed."
+      ]
+    },
+    {
+      "comando": "ops/deploy.sh demo",
+      "exit": 5,
+      "ultime_righe": [
+        "ABORT: origin/main is not a fast-forward of the deployed commit 48971ef. Nothing was changed."
+      ]
+    },
+    {
+      "comando": "ops/reset.sh staging",
+      "exit": 4,
+      "ultime_righe": [
+        "ABORT: .env names database 'rolewarden_demo', expected 'rolewarden_staging'. Nothing was changed."
+      ]
+    },
+    {
+      "comando": "ops/reset.sh demo",
+      "exit": 4,
+      "ultime_righe": [
+        "ABORT: .env names database 'rolewarden_staging', expected 'rolewarden_demo'. Nothing was changed."
+      ]
+    },
+    {
+      "comando": "ops/reset.sh staging",
+      "exit": 4,
+      "ultime_righe": [
+        "ABORT: .env names database 'rolewarden_v0_estraneo', expected 'rolewarden_staging'. Nothing was changed."
+      ]
+    },
+    {
+      "comando": "ops/deploy.sh staging",
+      "exit": 0,
+      "ultime_righe": [
+        "CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-26 23:24:31 UTC+00:00",
+        "",
+        "Seeded: RoleWarden\\Database\\Seeds\\RoleWardenSeeder",
+        "Seeded: App\\Database\\Seeds\\DemoSeeder",
+        "reset staging: done 2026-09-26T23:24:36Z",
+        "deploy staging: 48971ef"
+      ]
+    },
+    {
+      "comando": "ops/deploy.sh demo",
+      "exit": 0,
+      "ultime_righe": [
+        "CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-26 23:24:40 UTC+00:00",
+        "",
+        "Seeded: RoleWarden\\Database\\Seeds\\RoleWardenSeeder",
+        "Seeded: App\\Database\\Seeds\\DemoSeeder",
+        "reset demo: done 2026-09-26T23:24:44Z",
+        "deploy demo: 48971ef"
+      ]
+    }
+  ],
+  "risposte": [
+    {
+      "richiesta": "staging.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aabf66fb583e13762824244511a89c91947e0e1c28fb1b780364a9b0d0abab73"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (302)",
+      "status": 302,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /verify-v0-live-inesistente (404)",
+      "status": 404,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /robots.txt (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "84e22b6dd530737795ee525b3e691d89c4d81828e935e0ff8920508e73b57e2f"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (302)",
+      "status": 302,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /verify-v0-live-inesistente (404)",
+      "status": 404,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /robots.txt (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "2587ec9ac879321ca0749299fb9a1744113e0f88b03de7d872aa85bdfc7d1a67"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aabf66fb583e13762824244511a89c91947e0e1c28fb1b780364a9b0d0abab73"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "3f1f7c9872fab5e2aae33f3c8f9c694ee23634e72c1e18e65d4c50d8a11a8158"
+    },
+    {
+      "richiesta": "staging.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "58ed824774999ff2ae96e0895937efadb2bb6289fd813962135e5d627e62a60b"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "09696879220e0ee6e3a9c8e57fac11717b6a1499cf01e82982e005178c050e08"
+    },
+    {
+      "richiesta": "staging.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "beb3eaafd4cab428ba6b280e43f6bdff5ef17c9793bd0e3e0f7ce1ce3282f921"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "1c9e0827223efc8a69b49fe9c1c724c4fcf98e543f9adb6b7650b6dc4510b4a5"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "b8c1c093524c9245f7fa79add69008efefb85e1e88524ed1e9a5896b43689fe1"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "3dec2441ddda3506deaf35030f556f23d37b9072feaad86a412394016d49386e"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "6285a748ffcf95ddfbdc36f85ef1738e281eaabacf6e53a0150946f52576e4eb"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "6651e846299a3cc41bc11e01afeb67bd469df64994f7c141225ef71785d12507"
+    },
+    {
+      "richiesta": "staging.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "12306744bc12212da717ad23e57713acf421d9b774afe24096b2947504396756"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/roles (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "6cfd1bf33367dd75edaaff19006d003f194d8d77680cdca311b255e2711b7a6a"
+    },
+    {
+      "richiesta": "staging.rolewarden.com POST /rolewarden/roles/4/delete (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/roles (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "fd1ad074b6809bd98ca0fd2665d4a7a3fb118cdde6a81c1314deaca301945e04"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "c0cc99169bd8ef5e6d144a3c0e25f3de6932bd905e85dd5085fbd139708ce54a"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users/8 (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "089f995b1e552fa7fb452879f75405f16bc721b320d00e5eec90dccaaff0607e"
+    },
+    {
+      "richiesta": "staging.rolewarden.com POST /rolewarden/users/8/delete (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "f2847f7d76351ab41264ed42428def07a6209c116f98d4784f15595d71a61738"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (302)",
+      "status": 302,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aabf66fb583e13762824244511a89c91947e0e1c28fb1b780364a9b0d0abab73"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "0de2c5c63ce0e4b0ad4b822a623dd79a67ea3a9a3e4e6ce49096befa0b8d6af7"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "81d8404ca32fbe973fc3cfee041452b8b839ff2100b4af2905ee52debc448288"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/roles (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "2dfd08269025473be99901f827d44b2886e70183224161dc8cecfb0ce0ba33a9"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /rolewarden/roles/4/delete (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/roles (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "6eac9010c05c41bd9b748ff6df030dc9a0b4240a5dda58d58addcec2813e78c8"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "6c1927b975b61f504b45b9360b741782b6a1c9eccbf3536be081d9492a34c92b"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users/8 (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "0c8270f7d493e7583c3ddc64bca52809c94f20771a91c7a9441277c6bd59f8ce"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /rolewarden/users/8/delete (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aff9745fdf643a3d2ae009e6b435f45892d641cb2feaf072e873ec059a4f131f"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (302)",
+      "status": 302,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /login/magic-link (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e715608f34398befb9495c2bd5c03ad6f9695a9f34501980c2a06e529d1f3c31"
+    },
+    {
+      "richiesta": "staging.rolewarden.com POST /login/magic-link (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e31270c56e744cdb3225392f2c43e3eb49be5fa9639af214c8a33ba6930baf1c"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /login/magic-link (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "70b0b77de6650777131a59905b8e844f78fb23f84c0c79657d24f186c4ee8073"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /login/magic-link (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e31270c56e744cdb3225392f2c43e3eb49be5fa9639af214c8a33ba6930baf1c"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "7db443e356382db5ce3bbc7fdb6a2b52ae3633f62e8b705274b0a3f4092a59fd"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "fb29fcf9a3000668cdc810bfc87ab5ba5d79b1747362613ea75fcd687f5474b6"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "fb29fcf9a3000668cdc810bfc87ab5ba5d79b1747362613ea75fcd687f5474b6"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "8360b3e1fc6cd7cb375819c8d6f5e4e210dff579480613c81558d2d593519d8b"
+    },
+    {
+      "richiesta": "staging.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "f85aef30ed28797a5d3fa7b7042e8676f8ca02e1e909584cd2fbf145ee9addd8"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "f85aef30ed28797a5d3fa7b7042e8676f8ca02e1e909584cd2fbf145ee9addd8"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aabf66fb583e13762824244511a89c91947e0e1c28fb1b780364a9b0d0abab73"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /login (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "cb96a048e338ba0ce6311a8fc009538b6022ae87852e130e3e89eb6253cdf062"
+    },
+    {
+      "richiesta": "demo.rolewarden.com POST /login (303)",
+      "status": 303,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "fb29fcf9a3000668cdc810bfc87ab5ba5d79b1747362613ea75fcd687f5474b6"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET /rolewarden/users (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "fb29fcf9a3000668cdc810bfc87ab5ba5d79b1747362613ea75fcd687f5474b6"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aabf66fb583e13762824244511a89c91947e0e1c28fb1b780364a9b0d0abab73"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aabf66fb583e13762824244511a89c91947e0e1c28fb1b780364a9b0d0abab73"
+    },
+    {
+      "richiesta": "staging.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "aabf66fb583e13762824244511a89c91947e0e1c28fb1b780364a9b0d0abab73"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    },
+    {
+      "richiesta": "demo.rolewarden.com GET / (200)",
+      "status": 200,
+      "x_robots_tag": "noindex, nofollow",
+      "x_powered_by": false,
+      "sha256_corpo": "08d1dca563bcc0b43791408a129dce0682ae9f1800206d906b7961a8b86e263a"
+    }
+  ]
+}

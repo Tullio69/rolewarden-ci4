@@ -518,3 +518,17 @@ Formato di ogni voce:
 - Stato: completato
 - Note per il prossimo: il repo `rolewarden-demo` non ha ancora un remoto; il push si fa quando l'autore crea `Tullio69/rolewarden-demo` su GitHub.
 
+### [2026-09-27 02:05] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-v0-live.py` e `verify-v0-live.output.json` (nuovi), sezione "Collaudo V0 dal vivo sul VPS" in fondo a `V0-REPORT.md`; sul VPS solo `/home/rolewarden` (checkout staging e demo, `~/tmp/v0live` temporanea, `~/mail-sink`) e i database `rolewarden_staging` e `rolewarden_demo`; `_AI-LOG.md`
+- Cosa ho fatto: collaudo in nero dal vivo di V0 su staging.rolewarden.com e demo.rolewarden.com (`48971ef`), in sostituzione di Codex, stesso protocollo, nessun file vietato aperto. Lo script gira sul server via SSH, con HTTP `curl --resolve` e certificato verificato. Eseguiti tutti gli 8 punti, piu' l'osservazione del reset orario vero delle 02:00.
+- Stato: completato. Esito **PASS**: 399 PASS / 0 FAIL, 24 INFO, 73 risposte HTTP. Per punto: 1 19, 2 36, 3 24, 4 4, 5 14+219, 6 32, 7 16, 8 11, contorno 8, finale 16. **V0 approvata dal vivo.**
+- Note per il prossimo: nessun difetto. Ambiguita' non decise: B1, `HEAD /` risponde 404 su entrambi (il check del runbook usa `curl -sI`); B2, HTTP in chiaro serve l'app senza redirect a HTTPS. Osservazione: la regola firewall SMTP facoltativa NON e' attiva (porta 587 verso smtp.gmail.com OPEN). Stato finale: `48971ef` su entrambi, origin, `.env` (sha256) e crontab invariati, righe 4/12/8/8/15/0/0/10 come al primo deploy, `~/mail-sink` e `~/tmp` vuoti. Nulla toccato fuori da `/home/rolewarden` e dai due database. Nessun commit, nessun push.
+
+### [2026-09-27 02:10] - Claude
+- Tipo: feature
+- Scope: repo `../rolewarden-demo` (fino a `48971ef` su `staging` e `main`, pushati); VPS `rolewarden.com` (solo `/home/rolewarden`: checkout, `~/bin/mail-sink`, deploy key, crontab); qui `_AI-LOG.md` e i file del collaudo dal vivo
+- Cosa ho fatto: V0 messa online. Il VPS si e' rivelato un host Virtualmin condiviso con una ventina di siti (utente `rolewarden` senza sudo): abbandonati provision.sh e vhost propri; noindex, 503 e rimozione di X-Powered-By spostati in `public/.htaccess` (con `SymLinksIfOwnerMatch`, l'unica opzione symlink ammessa da Virtualmin); `public_html` dei due sottodomini come symlink a `app/public`; reset che svuota le tabelle invece di ricreare il database; mail sink per pool FPM impostato dall'autore in Virtualmin. Durante l'impostazione, una riga `sendmail_path` scritta senza `php_admin_value[...]` ha fermato PHP-FPM 8.4 (00:29-00:31) per tutti i siti 8.4 del server; corretta dall'autore da root, tutti i pool ripartiti. Risolti anche il redirect di staging (alias `*.rolewarden.com` del dominio principale, tolto in Virtualmin) e il certificato autofirmato di staging (Let's Encrypt richiesto sul sottodominio).
+- Stato: completato. **V0 chiusa**: approvata sulla replica (330/0) e dal vivo (Collaudatore ad Hoc, 399 PASS / 0 FAIL, compreso un reset orario reale alle 02:00).
+- Note per il prossimo: ambiguita' dal collaudo dal vivo, da decidere dall'autore: B1 `HEAD /` risponde 404 mentre `GET /` 200; B2 `http://` serve l'app senza redirect a HTTPS. Osservazione: la regola firewall SMTP facoltativa non e' attiva, l'isolamento email regge sul solo `sendmail_path` del pool. Lezione: prima di ricaricare PHP-FPM su un server condiviso si lancia `php-fpm8.4 -t`. Prossima tappa del brief: V1 (riscontri e impostazioni).
+

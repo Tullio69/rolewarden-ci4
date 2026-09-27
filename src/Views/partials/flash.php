@@ -1,8 +1,9 @@
 <?php
 // Toasts (docs/design-system/components/Toast). Server-side messages arrive as flashdata
 // (rw_success, rw_warning, rw_error); client-side ones as a `rw-toast` window event.
+// `error` is the key CodeIgniter's CSRF redirect (production) and the `can` filter use.
 $toasts = [];
-foreach (['success' => 'rw_success', 'warning' => 'rw_warning', 'error' => 'rw_error'] as $type => $key) {
+foreach ([['success', 'rw_success'], ['warning', 'rw_warning'], ['error', 'rw_error'], ['error', 'error']] as [$type, $key]) {
     $message = session()->getFlashdata($key);
     if (is_string($message) && $message !== '') {
         $toasts[] = ['type' => $type, 'message' => $message];

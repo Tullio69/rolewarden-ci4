@@ -1,0 +1,103 @@
+
+== A. Upgrade path: install 3631fd2 per README, then replace the module folder with 86f6935
+   module -> mod-3631fd2
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:46:51 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ns Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions Running: (RoleWarden) 2026-09-22-090001_RoleWarden\Database\Migrations\ImportAuthGroups Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:46:52 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] A01    3631fd2 installed per README, admin signed in, no settings.* permission, no Settings menu
+   module -> mod-86f6935
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:46:55 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-27-100001_RoleWarden\Database\Migrations\AddSettingsPermissions Migrations complete.
+[PASS] A02    Upgrade: `php spark migrate -n RoleWarden` succeeds and adds settings.view + settings.update
+[PASS] A03    Upgrade: both granted to the admin role
+[INFO] settings.* granted to roles other than admin after upgrade: []
+[PASS] A04    Admin signed in before the upgrade opens Settings at the next request, without logging out
+[PASS] A05    Same admin now sees the Settings menu entry
+   spark migrate:rollback -b 3 -f (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:46:57 UTC+00:00 Rolling back migrations to batch: 3 Rolling back: (RoleWarden) 2026-09-27-100001_RoleWarden\Database\Migrations\AddSettingsPermissions Done rolling back migrations.
+[PASS] A06    Rollback of the upgrade batch (-b 3): acl_* tables and migrations identical to before the upgrade
+[PASS] A07    After rollback no settings.* permission remains
+[PASS] A08    After rollback the same admin is refused on Settings at the next request
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:46:59 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-27-100001_RoleWarden\Database\Migrations\AddSettingsPermissions Migrations complete.
+[PASS] A09    Migration re-applies after the rollback
+
+== B. Fresh install of 86f6935 per README
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:47:00 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): nning: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions Running: (RoleWarden) 2026-09-22-090001_RoleWarden\Database\Migrations\ImportAuthGroups Running: (RoleWarden) 2026-09-27-100001_RoleWarden\Database\Migrations\AddSettingsPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:47:01 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] B01    Fresh install: settings.view + settings.update exist and are granted to admin
+   spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
+[PASS] B02    Fresh install: rollback to Shield's batch removes every RoleWarden table and migration row; settings table empty
+   spark migrate -n RoleWarden (rc=0): nning: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions Running: (RoleWarden) 2026-09-22-090001_RoleWarden\Database\Migrations\ImportAuthGroups Running: (RoleWarden) 2026-09-27-100001_RoleWarden\Database\Migrations\AddSettingsPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 12:47:02 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+
+== C. settings.view / settings.update
+[PASS] C01    Admin: Settings in the menu
+[PASS] C02    Without settings.view (users.view only; roles.view + users.view): no Settings menu entry
+[PASS] C03    Without settings.view GET /rolewarden/settings is refused
+[INFO] refusal of C03: HTTP 302 -> http://localhost:8070/index.php
+[PASS] C04    Anonymous GET /rolewarden/settings goes to login
+[PASS] C05    settings.view without settings.update: Settings in the menu
+[PASS] C06    settings.view only: page opens, value shown, no Save button rendered
+[INFO] viewer page: select disabled=true, POST form present=true
+[PASS] C07    settings.view only: POST refused (not by CSRF), nothing stored
+[INFO] refusal of C07: HTTP 303 -> http://localhost:8070/index.php
+[PASS] C08    No settings permission at all: POST refused, nothing stored
+
+== D. Settings screen
+[PASS] D01    Section "Roles" with the default-role row and a <select>
+[PASS] D02    Options: "None" plus every non-super-admin role; no super admin role (super-admin, m1-root) offered
+[PASS] D03    Before any save: Last changed "Never", value None
+[PASS] D04    Save default role = user: success toast (HTTP 303 then 200)
+[PASS] D05    Re-read: user selected; "Last changed" is a date, "By" is the admin
+[INFO] settings rows: [{"class":"RoleWarden\\Config\\RoleWarden","key":"defaultRole","value":"user","type":"string","context":null},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedAt","value":"2026-09-27 12:47:11","type":"string","context":null},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedBy","value":"2","type":"integer","context":null}]
+[PASS] D06    POST default_role=super-admin rejected with an error toast, value unchanged
+[PASS] D07    POST default_role=m1-root rejected with an error toast, value unchanged
+[PASS] D08    POST default_role=zz-no-such-role rejected with an error toast, value unchanged
+[INFO] POST default_role=<admin role id> (an id, not a slug): HTTP 303, toasts=[{"type":"error","alert":true,"kind":"Error:","msg":"That role no longer exists. Reload the page and choose another one.","close":false}], unchanged=true
+[PASS] D10    POST without CSRF token refused, value unchanged
+[PASS] D11    POST with a forged CSRF token refused, value unchanged
+[INFO] POST without default_role: toasts=[{"type":"success","alert":false,"kind":"Saved","msg":"Settings saved.","close":false}] selected=
+
+== E. Toasts on the existing screens
+[PASS] E01    Served stack: div.rw-toasts with aria-live="polite"; close button aria-label="Dismiss" only in the JS template
+[PASS] E02    Create role: success toast (HTTP 303 then 200)
+[PASS] E03    Update role: success toast (HTTP 303 then 200)
+[PASS] E04    Delete a system role (refused): error toast (HTTP 303 then 200)
+[PASS] E05    Role form validation: "Error:" stays on the form page, no toast
+[PASS] E06    User form validation: errors stay on the form page, no toast
+[PASS] E07    Assign a role to a user: success toast (HTTP 303 then 200)
+[PASS] E08    Revoke a role from a user: success toast (HTTP 303 then 200)
+[PASS] E09    Revoke own role holding roles.assign (refused, A2): error toast (HTTP 303 then 200)
+[PASS] E10    Deactivate a user: success toast (HTTP 303 then 200)
+[INFO] matrix save ok: HTTP 200 {"ok":true}
+[PASS] E11    Matrix save succeeds as JSON ok:true
+[PASS] E12    Matrix, inherited cell revoked: JSON error whose message says what to do and names the origin role
+[INFO] E12 message: Inherited from V1 Parent: change it on that role.
+[PASS] E13    Matrix, unknown permission: JSON error with a non-empty message, no SQL text
+[PASS] E14    User overrides, unknown permission: JSON error with a non-empty message
+[INFO] 404 messages: role matrix='Role or permission not found.' user overrides='User or permission not found.'
+[INFO] matrix save with forged CSRF: HTTP 403 body={ "title": "CodeIgniter\\Security\\Exceptions\\SecurityException", "type": "CodeIgniter\\Security\\Exceptions\\SecurityException", "code": 403, "message": "The action you requested is not allowed.", "
+
+== F. Default role for new users
+[PASS] F01    Default v1-limited: user registered through Shield /register gets exactly v1-limited
+[PASS] F02a   Create user from the panel: success toast (HTTP 303 then 200)
+[PASS] F02    Default v1-limited: user created from the panel gets exactly v1-limited
+[PASS] F03    Default set back to None and re-read as None
+[PASS] F04    Default None: registered and panel-created users get no role
+[PASS] F05    Default set to the custom role m1-temp
+[PASS] F06    The chosen default role can then be deleted from the panel
+[PASS] F07    Deleted default role: Shield registration still succeeds and gives no role
+[PASS] F08    Deleted default role: panel creation still succeeds (success toast) and gives no role
+[PASS] F09    Settings page still opens after the default role was deleted
+[INFO] Settings after the default role was deleted: selected=, toasts=[], stored=[{"class":"RoleWarden\\Config\\RoleWarden","key":"defaultRole","value":"m1-temp"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedAt","value":"2026-09-27 12:47:35"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedBy","value":"2"}]
+[PASS] G05    Deferred controls (reset link, sign out everywhere, CSV, invite, V2/V3/v1.5 settings rows, Reset section) not rendered on users, user, roles, settings
+
+== G. No PHP or SQL error text, clean logs
+[PASS] G01    No SQL/PHP error text on 26 captured pages
+[PASS] G04    No non-error flash box and no granted-coloured success toast on the captured pages
+[INFO] app log: 3 CSRF refusals (provoked), other entries >= warning: 0
+[PASS] G02    App log: no warning/notice/deprecation/error besides the provoked CSRF refusals
+[PASS] G03    Built-in server stderr: no PHP Warning/Notice/Deprecated/Fatal
+
+RESULT: 58 checks, 58 PASS, 0 FAIL

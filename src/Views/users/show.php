@@ -3,6 +3,7 @@ $matrixConfig = [
     'saveUrl' => site_url('rolewarden/users/' . $user->id . '/permissions'),
     'csrfName' => csrf_token(),
     'csrfHash' => csrf_hash(),
+    'messages' => ['saved' => lang('RoleWarden.panel.toast.changesSaved'), 'failed' => lang('RoleWarden.panel.users.overrideSaveFailed')],
     'rows' => $matrix['rows'],
 ];
 $displayName = (string) ($user->username ?? $user->email);

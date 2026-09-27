@@ -48,6 +48,9 @@ class RouteRegistrar
                 $routes->post('roles/(:num)/permissions', 'RolesController::updatePermissions/$1', ['filter' => 'can:roles.update']);
 
                 $routes->get('permissions', 'PermissionsController::index', ['filter' => 'can:permissions.view']);
+
+                $routes->get('settings', 'SettingsController::index', ['filter' => 'can:settings.view']);
+                $routes->post('settings', 'SettingsController::update', ['filter' => 'can:settings.update']);
             },
         );
     }

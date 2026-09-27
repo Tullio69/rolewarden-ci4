@@ -97,6 +97,13 @@ php spark migrate:rollback -b <previous batch>
 
 `-b 0` rolls back everything, Shield included.
 
+### Updating the module
+
+Replace the module's folder (or run `composer update`), then run
+`php spark migrate -n RoleWarden`. New versions ship their changes to existing data as
+migrations, never as edits you make by hand. For example, the migration for the Settings
+screen gives the `admin` role the new permissions `settings.view` and `settings.update`.
+
 ### Importing existing Shield groups
 
 `php spark migrate -n RoleWarden` also runs a migration that reads the host's
@@ -192,6 +199,20 @@ panel URL, so set this only if most people who sign in are administrators.
 Registration and password recovery stay exactly Shield's own screens (this module does
 not touch identity or credentials); only the login screen has a matching design in
 `docs/design-system/` so far.
+
+### Settings and the default role
+
+`/rolewarden/settings` shows module options that change at runtime. It needs
+`settings.view` to open and `settings.update` to save. The values live in CodeIgniter's
+Settings library, in the `settings` table Shield already uses. In this version the screen
+holds one option: the **default role for new users**. That role goes to everyone who
+registers through Shield and to everyone created from the panel. A super admin role cannot
+be the default. The starting value is `RoleWarden\Config\RoleWarden::$defaultRole` (`null`, no
+role), which the host app can change by extending that config class.
+
+The registration hook lives in the module's `Config/Events.php`. CodeIgniter includes it by
+itself, as long as the host's `app/Config/Modules.php` keeps module discovery on for
+`events`, which is the default.
 
 ## Conventions
 

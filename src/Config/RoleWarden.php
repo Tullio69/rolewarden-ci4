@@ -16,6 +16,13 @@ class RoleWarden extends BaseConfig
     public string $tablePrefix = 'acl_';
 
     /**
+     * Slug of the role given to every new user (registered through Shield or
+     * created from the panel); null for none. This is only the starting value:
+     * the Settings screen of the panel changes it at runtime.
+     */
+    public ?string $defaultRole = null;
+
+    /**
      * Full name of a module table, e.g. table('roles') => 'acl_roles'.
      */
     public function table(string $name): string

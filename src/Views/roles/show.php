@@ -3,6 +3,7 @@ $matrixConfig = [
     'saveUrl' => site_url('rolewarden/roles/' . $role['id'] . '/permissions'),
     'csrfName' => csrf_token(),
     'csrfHash' => csrf_hash(),
+    'messages' => ['saved' => lang('RoleWarden.panel.toast.changesSaved'), 'failed' => lang('RoleWarden.panel.roles.matrixSaveFailed')],
     'roleName' => $role['name'],
     'rows' => $rows,
 ];

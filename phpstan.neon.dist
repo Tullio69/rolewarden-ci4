@@ -7,6 +7,7 @@ parameters:
     scanDirectories:
         - vendor/codeigniter4/framework/system
         - vendor/codeigniter4/shield/src
+        - vendor/codeigniter4/settings/src
     excludePaths:
         analyseAndScan:
             - src/Views/*

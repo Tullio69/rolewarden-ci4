@@ -22,6 +22,9 @@
       <?php if (can('permissions.view')) : ?>
         <li><a href="<?= esc(site_url('rolewarden/permissions')) ?>"<?= $active === 'permissions' ? ' aria-current="page"' : '' ?>><span>03</span><?= lang('RoleWarden.panel.nav.permissions') ?></a></li>
       <?php endif ?>
+      <?php if (can('settings.view')) : ?>
+        <li><a href="<?= esc(site_url('rolewarden/settings')) ?>"<?= $active === 'settings' ? ' aria-current="page"' : '' ?>><span>04</span><?= lang('RoleWarden.panel.nav.settings') ?></a></li>
+      <?php endif ?>
     </ul>
   </aside>
 

@@ -320,6 +320,12 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 
 **Decisioni del 2026-09-23 sulle ambiguita' del collaudo v1.0.** (A1) Un login fallito mostra sempre lo stesso messaggio, che non rivela se l'email e' registrata. (A2) Un utente non puo' revocarsi da solo un ruolo senza il quale perderebbe `roles.assign`: l'"ultimo ruolo Administrator" del design system si definisce per permesso, non per nome. Se un override negato toglie gia' `roles.assign` all'utente, la revoca non e' raggiungibile affatto: la rotta stessa richiede quel permesso, ed e' il comportamento voluto (decisione del 2026-09-25, A2.DENY). (A3) Nella matrice di un ruolo, la revoca diretta di una casella ereditata dal padre si rifiuta con un messaggio che nomina il ruolo d'origine, invece di rispondere successo senza effetto. (A4) Nella ricerca utenti `%` e `_` si cercano come testo, non fanno da jolly.
 
+**Decisioni del 2026-09-27 (V1).**
+- **Riscontri.** I toast seguono il componente `Toast` del design system. Il tipo si capisce dalla parola iniziale ("Saved", "Warning:", "Error:"), non dal colore; solo l'errore usa `denied`. Esito e attenzione spariscono dopo 5 secondi, gli errori restano finché non si chiudono. Gli errori di validazione di un campo restano nel modulo, non vanno nei toast.
+- **Impostazioni.** Le impostazioni del modulo si salvano con la libreria Settings di CodeIgniter, già usata da Shield: nessuna tabella nuova. Servono i permessi `settings.view` e `settings.update`, concessi ad `admin`; una migrazione di dati li porta anche sulle installazioni esistenti.
+- **Ruolo predefinito.** In V1 l'unica impostazione è il ruolo predefinito per i nuovi utenti, assegnato sia a chi si registra tramite Shield sia a chi viene creato dal pannello. Un ruolo super admin non può essere il predefinito. Un ruolo con poteri amministrativi, come `admin`, resta scegliibile: la responsabilità è di chi lo imposta.
+- **Voci fuori da V1.** Le altre voci della schermata Settings del design system arrivano con le loro tappe: sessione, ricordami e blocco in V2; conservazione del log in V3; password e 2FA in v1.5. Ruoli multipli per utente, profondità dell'ereditarietà e reset ai valori di serie non sono previsti.
+
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 
 ## Design system

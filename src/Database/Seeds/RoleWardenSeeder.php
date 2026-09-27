@@ -39,6 +39,10 @@ class RoleWardenSeeder extends Seeder
             'view' => 'View permissions',
             'override' => 'Grant or deny a permission to a single user',
         ],
+        'settings' => [
+            'view' => 'View module settings',
+            'update' => 'Change module settings',
+        ],
     ];
 
     /** Roles that receive every seeded permission. */
@@ -72,7 +76,7 @@ class RoleWardenSeeder extends Seeder
             }
         }
 
-        // Only this seeder's own 12 slugs: the table can hold more by the time this
+        // Only this seeder's own slugs: the table can hold more by the time this
         // runs (the AuthGroups import adds its own), and those are not ours to grant.
         $ownSlugs = [];
 

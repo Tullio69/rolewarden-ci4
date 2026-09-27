@@ -1,0 +1,22 @@
+<!-- @dsCard group="Feedback" height=260 subtitle="Success, warning and error, stacked as on the page" -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Toast</title>
+<style> body{margin:0} .wrap{position:relative;height:260px} .wrap .rw-toasts{position:absolute} </style></head>
+<body>
+<div class="rw wrap">
+  <div class="rw-toasts" aria-live="polite">
+    <div class="rw-toast rw-toast--success">
+      <p><span class="rw-toast__kind">Saved</span> Role Editor saved.</p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">&times;</button>
+    </div>
+    <div class="rw-toast rw-toast--warning">
+      <p><span class="rw-toast__kind">Warning:</span> 3 users now inherit this permission from Editor.</p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">&times;</button>
+    </div>
+    <div class="rw-toast rw-toast--error" role="alert">
+      <p><span class="rw-toast__kind">Error:</span> Could not save this change. Reload the page and try again.</p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">&times;</button>
+    </div>
+  </div>
+</div>
+</body></html>

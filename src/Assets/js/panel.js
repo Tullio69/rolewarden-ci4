@@ -1,7 +1,95 @@
 document.addEventListener('alpine:init', () => {
+  Alpine.data('rwToasts', rwToastsController);
+  Alpine.data('rwSettings', rwSettingsController);
   Alpine.data('rwMatrix', rwMatrixController);
   Alpine.data('rwUserMatrix', rwUserMatrixController);
 });
+
+/** Shows a toast from anywhere on the page: rwToast('error', 'Could not save this change.'). */
+function rwToast(type, message) {
+  window.dispatchEvent(new CustomEvent('rw-toast', { detail: { type, message } }));
+}
+
+const RW_TOAST_LIFETIME = 5000; // ms; errors stay until closed
+const RW_TOAST_MAX = 3;
+
+/**
+ * Toast stack (docs/design-system/components/Toast). Starts with the server's
+ * flash messages and takes new ones from the `rw-toast` window event. Success
+ * and warning leave after RW_TOAST_LIFETIME, paused while the pointer or focus
+ * is inside the stack; errors stay until closed.
+ */
+function rwToastsController(config) {
+  return {
+    kinds: config.kinds,
+    items: [],
+    paused: false,
+    nextId: 1,
+
+    init() {
+      for (const message of config.messages) this.push(message);
+      setInterval(() => this.tick(100), 100);
+    },
+
+    push(detail) {
+      if (!detail || !detail.message || !(detail.type in this.kinds)) return;
+      const visible = this.items.filter((t) => !t.leaving);
+      if (visible.length >= RW_TOAST_MAX) this.close(visible[0].id);
+      this.items.push({ id: this.nextId++, type: detail.type, message: detail.message, left: RW_TOAST_LIFETIME, leaving: false });
+    },
+
+    tick(ms) {
+      if (this.paused) return;
+      for (const toast of this.items) {
+        if (toast.type === 'error' || toast.leaving) continue;
+        toast.left -= ms;
+        if (toast.left <= 0) this.close(toast.id);
+      }
+    },
+
+    close(id) {
+      const toast = this.items.find((t) => t.id === id);
+      if (!toast || toast.leaving) return;
+      toast.leaving = true;
+      setTimeout(() => { this.items = this.items.filter((t) => t.id !== id); }, 120);
+    },
+  };
+}
+
+/**
+ * Settings screen (docs/design-system/components/Settings): marks each changed
+ * row and lists the changed settings in the bar with Discard and Save. Saving
+ * is a plain form post, so the screen also works without JavaScript.
+ */
+function rwSettingsController(config) {
+  return {
+    saved: { ...config.values },
+    cur: { ...config.values },
+    names: config.names,
+    labels: config.labels,
+
+    changed() {
+      return Object.keys(this.saved).filter((k) => this.cur[k] !== this.saved[k]);
+    },
+
+    isChanged(key) {
+      return this.cur[key] !== this.saved[key];
+    },
+
+    summary() {
+      const n = this.changed().length;
+      return (n === 1 ? this.labels.one : this.labels.many).replace('%d', String(n));
+    },
+
+    changedNames() {
+      return this.changed().map((k) => this.names[k]).join(', ');
+    },
+
+    discard() {
+      this.cur = { ...this.saved };
+    },
+  };
+}
 
 function rwConfirm(id) {
   const dialog = document.getElementById(id);
@@ -37,6 +125,7 @@ function rwMatrixController(config) {
     saveUrl: config.saveUrl,
     csrfName: config.csrfName,
     csrfHash: config.csrfHash,
+    messages: config.messages,
     roleName: config.roleName,
     rows: config.rows,
     saving: false,
@@ -133,6 +222,7 @@ function rwMatrixController(config) {
     async save() {
       if (this.saving) return;
       this.saving = true;
+      let savedAny = false;
 
       try {
         for (const k of this.changes()) {
@@ -155,15 +245,18 @@ function rwMatrixController(config) {
           if (data && data.csrfHash) this.csrfHash = data.csrfHash;
 
           if (!response.ok || !data || !data.ok) {
-            window.alert((data && data.message) || 'Could not save this change.');
-            this.saving = false;
+            rwToast('error', (data && data.message) || this.messages.failed);
             return;
           }
 
           this.saved[k] = this.cur[k];
           cell.state = this.cur[k];
           cell.editable = this.cur[k] === 'role' || this.cur[k] === 'none';
+          savedAny = true;
         }
+        if (savedAny) rwToast('success', this.messages.saved);
+      } catch (e) {
+        rwToast('error', this.messages.failed);
       } finally {
         this.saving = false;
       }
@@ -183,6 +276,7 @@ function rwUserMatrixController(config) {
     saveUrl: config.saveUrl,
     csrfName: config.csrfName,
     csrfHash: config.csrfHash,
+    messages: config.messages,
     rows: config.rows,
     saving: false,
     base: {},
@@ -256,6 +350,7 @@ function rwUserMatrixController(config) {
     async save() {
       if (this.saving) return;
       this.saving = true;
+      let savedAny = false;
 
       try {
         for (const k of this.changes()) {
@@ -278,8 +373,7 @@ function rwUserMatrixController(config) {
           if (data && data.csrfHash) this.csrfHash = data.csrfHash;
 
           if (!response.ok || !data || !data.ok) {
-            window.alert((data && data.message) || 'Could not save this change.');
-            this.saving = false;
+            rwToast('error', (data && data.message) || this.messages.failed);
             return;
           }
 
@@ -288,7 +382,11 @@ function rwUserMatrixController(config) {
           } else {
             delete this.saved[k];
           }
+          savedAny = true;
         }
+        if (savedAny) rwToast('success', this.messages.saved);
+      } catch (e) {
+        rwToast('error', this.messages.failed);
       } finally {
         this.saving = false;
       }

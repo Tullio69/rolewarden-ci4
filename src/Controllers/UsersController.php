@@ -16,6 +16,7 @@ use RoleWarden\Models\RoleModel;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Models\UserPermissions;
 use RoleWarden\Models\UserRoles;
+use RoleWarden\Settings\DefaultRole;
 use Throwable;
 
 class UsersController extends BaseController
@@ -129,7 +130,9 @@ class UsersController extends BaseController
             'password' => $this->request->getPost('password'),
         ]);
         $userModel->save($user);
-        $userModel->activate($userModel->findById($userModel->getInsertID()));
+        $userId = (int) $userModel->getInsertID();
+        $userModel->activate($userModel->findById($userId));
+        DefaultRole::assignTo($userId);
 
         return redirect()->to(site_url('rolewarden/users'))->with('rw_success', lang('RoleWarden.panel.users.created'));
     }

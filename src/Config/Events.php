@@ -23,6 +23,10 @@ Events::on('pre_system', static function (): void {
     Sessions::track();
 });
 
+Events::on('post_system', static function (): void {
+    Sessions::registerNew();
+});
+
 Events::on('logout', static function (): void {
     Sessions::forgetCurrent();
 });

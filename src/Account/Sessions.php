@@ -50,21 +50,7 @@ final class Sessions
         $token = session(self::KEY);
 
         if (! is_string($token)) {
-            $token = bin2hex(random_bytes(32));
-            session()->set(self::KEY, $token);
-            self::$current = hash('sha256', $token);
-            $request = service('request');
-            $now = date('Y-m-d H:i:s');
-
-            self::table()->insert([
-                'user_id' => $userId,
-                'token_hash' => self::$current,
-                'remember_selector' => self::rememberSelector($userId),
-                'ip_address' => $request->getIPAddress(),
-                'user_agent' => mb_substr((string) $request->getUserAgent(), 0, 255),
-                'created_at' => $now,
-                'last_seen_at' => $now,
-            ]);
+            self::start($userId);
 
             return;
         }
@@ -98,6 +84,25 @@ final class Sessions
 
         if ($changes !== []) {
             self::table()->where('id', $row['id'])->update($changes);
+        }
+    }
+
+    /**
+     * post_system: a sign-in made during this request (the login form, or
+     * Shield's remember-me check signing a returning browser back in) gets its
+     * row now, so it is listed and revocable before its next request.
+     */
+    public static function registerNew(): void
+    {
+        if (is_cli() || session_status() !== PHP_SESSION_ACTIVE) {
+            return;
+        }
+
+        helper('setting');
+        $info = session(setting('Auth.sessionConfig')['field']);
+
+        if (is_array($info) && isset($info['id']) && ! isset($info['auth_action']) && ! is_string(session(self::KEY))) {
+            self::start((int) $info['id']);
         }
     }
 
@@ -211,6 +216,25 @@ final class Sessions
 
         $sessions->delete();
         $tokens->delete();
+    }
+
+    private static function start(int $userId): void
+    {
+        $token = bin2hex(random_bytes(32));
+        session()->set(self::KEY, $token);
+        self::$current = hash('sha256', $token);
+        $request = service('request');
+        $now = date('Y-m-d H:i:s');
+
+        self::table()->insert([
+            'user_id' => $userId,
+            'token_hash' => self::$current,
+            'remember_selector' => self::rememberSelector($userId),
+            'ip_address' => $request->getIPAddress(),
+            'user_agent' => mb_substr((string) $request->getUserAgent(), 0, 255),
+            'created_at' => $now,
+            'last_seen_at' => $now,
+        ]);
     }
 
     /**

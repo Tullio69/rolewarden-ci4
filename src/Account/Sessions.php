@@ -31,10 +31,12 @@ final class Sessions
     /** SHA-256 of the token of this request's session, once tracked. */
     private static ?string $current = null;
 
+    private static ?bool $ready = null;
+
     public static function track(): void
     {
         // No cookie, no session to look at: don't start one for every guest.
-        if (is_cli() || $_COOKIE === []) {
+        if (is_cli() || $_COOKIE === [] || ! self::ready()) {
             return;
         }
 
@@ -94,7 +96,7 @@ final class Sessions
      */
     public static function registerNew(): void
     {
-        if (is_cli() || session_status() !== PHP_SESSION_ACTIVE) {
+        if (is_cli() || session_status() !== PHP_SESSION_ACTIVE || ! self::ready()) {
             return;
         }
 
@@ -112,7 +114,7 @@ final class Sessions
      */
     public static function forgetCurrent(): void
     {
-        if (self::$current !== null) {
+        if (self::$current !== null && self::ready()) {
             self::table()->where('token_hash', self::$current)->delete();
             self::$current = null;
         }
@@ -126,6 +128,10 @@ final class Sessions
      */
     public static function forUser(int $userId): array
     {
+        if (! self::ready()) {
+            return ['sessions' => [], 'remembered' => []];
+        }
+
         $tokens = [];
 
         foreach (self::rememberTable()->where('user_id', $userId)->where('expires >', date('Y-m-d H:i:s'))->get()->getResultArray() as $token) {
@@ -163,6 +169,10 @@ final class Sessions
 
     public static function revokeSession(int $userId, int $id): bool
     {
+        if (! self::ready()) {
+            return false;
+        }
+
         $row = self::table()->where('id', $id)->where('user_id', $userId)->get()->getRowArray();
 
         if ($row === null) {
@@ -180,6 +190,10 @@ final class Sessions
 
     public static function revokeRemembered(int $userId, int $tokenId): bool
     {
+        if (! self::ready()) {
+            return false;
+        }
+
         $token = self::rememberTable()->where('id', $tokenId)->where('user_id', $userId)->get()->getRowArray();
 
         if ($token === null) {
@@ -199,6 +213,10 @@ final class Sessions
      */
     public static function revokeAll(int $userId): void
     {
+        if (! self::ready()) {
+            return;
+        }
+
         $keep = self::$current !== null
             ? self::table()->where('token_hash', self::$current)->where('user_id', $userId)->get()->getRowArray()
             : null;
@@ -279,6 +297,16 @@ final class Sessions
         }
 
         return explode(':', $cookie, 2)[0];
+    }
+
+    /**
+     * Whether the sessions table exists. Between replacing the module's folder
+     * and running its migrations (or after rolling them back) it does not, and
+     * the panel keeps working with sessions simply untracked.
+     */
+    private static function ready(): bool
+    {
+        return self::$ready ??= db_connect()->tableExists(config('RoleWarden')->table('sessions'));
     }
 
     private static function table(): BaseBuilder

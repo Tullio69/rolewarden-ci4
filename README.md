@@ -204,8 +204,8 @@ not touch identity or credentials); only the login screen has a matching design 
 
 `/rolewarden/settings` shows module options that change at runtime. It needs
 `settings.view` to open and `settings.update` to save. The values live in CodeIgniter's
-Settings library, in the `settings` table Shield already uses. In this version the screen
-holds one option: the **default role for new users**. That role goes to everyone who
+Settings library, in the `settings` table Shield already uses. Its **Roles** section
+holds the **default role for new users**. That role goes to everyone who
 registers through Shield and to everyone created from the panel. A super admin role cannot
 be the default. The starting value is `RoleWarden\Config\RoleWarden::$defaultRole` (`null`, no
 role), which the host app can change by extending that config class.

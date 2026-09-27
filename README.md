@@ -102,7 +102,7 @@ php spark migrate:rollback -b <previous batch>
 Replace the module's folder (or run `composer update`), then run
 `php spark migrate -n RoleWarden`. New versions ship their changes to existing data as
 migrations, never as edits you make by hand. For example, the migration for the Settings
-screen gives the `admin` role the new permissions `settings.view` and `settings.update`.
+screen gives the `admin` role the new permissions `settings.view` and `settings.update`, and the one for sessions gives it `sessions.view` and `sessions.revoke`.
 
 ### Importing existing Shield groups
 
@@ -213,6 +213,32 @@ role), which the host app can change by extending that config class.
 The registration hook lives in the module's `Config/Events.php`. CodeIgniter includes it by
 itself, as long as the host's `app/Config/Modules.php` keeps module discovery on for
 `events`, which is the default.
+
+### Sign-in rules, profile and sessions
+
+The Settings screen also holds the **Sign-in** rules: session lifetime (how long a
+signed-in user may stay idle), "Remember me" (Shield's own `Auth.sessionConfig`, stored
+through the same Settings library, so Shield reads it with no change), the lock after
+failed sign-ins with its duration, and the sign-in attempts accepted per minute from one IP
+address. Their starting values are in `RoleWarden\Config\RoleWarden`.
+
+- The lock counts the failures Shield records in `auth_logins`. Keep
+  `Config\Auth::$recordLoginAttempt` at its default (record everything) or at least at
+  failures; with `RECORD_LOGIN_ATTEMPT_NONE` there is nothing to count.
+- The limits run in the `rw-signin` filter, which the module registers by itself on the
+  `login` route (a host that moves Shield's login route puts `rw-signin` on its own path in
+  `app/Config/Filters.php`). Shield's `auth-rates` filter, if the host uses it, still caps
+  every IP at 10 requests a minute; remove it to let the setting go higher.
+
+Every signed-in user has a **profile** at `/rolewarden/profile`, where they change their
+password by confirming the current one, and a **sessions** screen at `/rolewarden/sessions`
+listing the browsers signed in to their account. Signing a session out, or forgetting a
+remembered browser, takes effect at that browser's next request. Changing the password signs
+out every other session. On the user detail screen, `sessions.view` shows another user's
+sessions and `sessions.revoke` signs them out.
+
+Sessions are tracked in the `acl_sessions` table by a `pre_system` hook in the module's
+`Config/Events.php`, so the host has nothing to wire.
 
 ## Conventions
 

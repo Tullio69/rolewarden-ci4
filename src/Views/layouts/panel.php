@@ -33,10 +33,10 @@
       <nav class="rw-crumbs" aria-label="Breadcrumb"><?= $crumbs !== '' ? $crumbs : '<span aria-current="page">' . esc(ucfirst($active)) . '</span>' ?></nav>
       <?php $me = auth()->user(); ?>
       <?php if ($me !== null) : ?>
-        <span class="rw-who">
+        <a class="rw-who" href="<?= esc(site_url('rolewarden/profile')) ?>"<?= in_array($active, ['profile', 'sessions'], true) ? ' aria-current="page"' : '' ?>>
           <span><?= esc($me->username ?? $me->email) ?><small><?= esc(($me->getGroups()[0] ?? '') !== '' ? ucfirst($me->getGroups()[0]) : '') ?></small></span>
           <i aria-hidden="true"><?= esc(strtoupper(substr((string) ($me->username ?? $me->email), 0, 2))) ?></i>
-        </span>
+        </a>
       <?php endif ?>
     </header>
 

@@ -207,6 +207,11 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
   </tbody>
 </table>
 
+<?php if ($sessions !== null) : ?>
+  <div class="rw-section-title"><span class="rw-section-n">D</span><h2><?= lang('RoleWarden.panel.account.sessionsTitle') ?></h2></div>
+  <?= view('RoleWarden\Views\partials\sessions', ['list' => $sessions, 'base' => 'rolewarden/users/' . $user->id . '/sessions', 'canRevoke' => can('sessions.revoke')]) ?>
+<?php endif ?>
+
 <?php if (can('users.delete') && $lastSuperAdminRoleId === null && ! $isSelf) : ?>
   <dialog id="confirm-delete-user" class="rw-confirm">
     <h2><?= esc(sprintf(lang('RoleWarden.panel.users.confirmDeleteTitle'), $displayName)) ?></h2>

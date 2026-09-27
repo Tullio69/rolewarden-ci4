@@ -64,7 +64,7 @@ function rwToastsController(config) {
 function rwSettingsController(config) {
   return {
     saved: { ...config.values },
-    cur: { ...config.values },
+    cur: { ...(config.current || config.values) },
     names: config.names,
     labels: config.labels,
 

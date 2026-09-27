@@ -156,7 +156,7 @@ html, body { margin: 0; background: var(--surface); }
 .rw-topbar { height: var(--size-topbar); display: flex; align-items: center; justify-content: space-between; padding: 0 48px; border-bottom: 1px solid var(--rule); }
 .rw-crumbs { display: flex; gap: 8px; align-items: center; color: var(--ink-muted); }
 .rw-crumbs [aria-current] { color: var(--ink); font-weight: 500; }
-.rw-who { display: flex; align-items: center; gap: 12px; background: none; border: 0; padding: 4px 8px; border-radius: 4px; cursor: pointer; color: var(--ink); font: inherit; text-align: right; }
+.rw-who { display: flex; align-items: center; gap: 12px; background: none; border: 0; padding: 4px 8px; border-radius: 4px; cursor: pointer; color: var(--ink); font: inherit; text-align: right; text-decoration: none; }
 .rw-who:hover { background: var(--surface-sunk); }
 .rw-who small { display: block; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
 .rw-who i { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--rule-strong); border-radius: 2px; font: 500 12px/1 var(--font-sans); font-style: normal; color: var(--ink-muted); }
@@ -342,6 +342,9 @@ dialog.rw-confirm .rw-confirm-actions { display: flex; justify-content: flex-end
 .rw-ledger.rw-settings .rw-l-key small { display: block; margin-top: 2px; max-width: 320px; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
 .rw-ledger.rw-settings .rw-l-value { width: 504px; }
 .rw-ledger.rw-settings .rw-l-value .rw-select { width: 240px; }
+.rw-ledger.rw-settings .rw-unit { display: inline-flex; align-items: center; gap: 8px; }
+.rw-ledger.rw-settings .rw-unit .rw-input { width: 96px; text-align: right; }
+.rw-ledger.rw-settings .rw-field-error { margin: 6px 0 0; }
 .rw-ledger.rw-settings .rw-anno { width: 200px; padding-left: 24px; }
 .rw-ledger.rw-settings tr.rw-changed .rw-m-num { color: var(--accent); font-weight: 600; }
 .rw-ledger.rw-settings tr.rw-changed .rw-note { color: var(--accent); }

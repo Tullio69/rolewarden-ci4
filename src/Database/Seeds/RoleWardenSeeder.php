@@ -43,6 +43,10 @@ class RoleWardenSeeder extends Seeder
             'view' => 'View module settings',
             'update' => 'Change module settings',
         ],
+        'sessions' => [
+            'view' => 'See the signed-in sessions of other users',
+            'revoke' => 'Sign other users out of their sessions',
+        ],
     ];
 
     /** Roles that receive every seeded permission. */

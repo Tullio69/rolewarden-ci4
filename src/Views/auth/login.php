@@ -51,7 +51,7 @@
         <div class="rw-auth-row">
           <span class="rw-m-num">03</span>
           <div class="rw-auth-opts">
-            <label class="rw-check-row"><input class="rw-check" type="checkbox" name="remember"<?= old('remember') ? ' checked' : '' ?>> <?= lang('Auth.rememberMe') ?></label>
+            <label class="rw-check-row"><input class="rw-check" type="checkbox" name="remember"<?= old('remember') ? ' checked' : '' ?>> <?php $length = (int) setting('Auth.sessionConfig')['rememberLength']; ?><?= $length % 86400 === 0 ? lang('RoleWarden.panel.auth.rememberFor', [intdiv($length, 86400)]) : lang('Auth.rememberMe') ?></label>
           </div>
         </div>
       <?php endif ?>

@@ -121,7 +121,7 @@ Il modulo estende Shield, non lo sostituisce. Shield resta padrone dell'identita
 
 ## Modello dati
 
-Le tabelle di Shield restano sue e non le tocchiamo. Il modulo ne aggiunge otto, con prefisso configurabile, tutte create da migrazioni CI4 reversibili e nessuna chiave esterna verso tabelle dell'applicazione ospite, tranne quella verso `users` che Shield gia' impone.
+Le tabelle di Shield restano sue e non le tocchiamo. Il modulo ne aggiunge nove, con prefisso configurabile, tutte create da migrazioni CI4 reversibili e nessuna chiave esterna verso tabelle dell'applicazione ospite, tranne quella verso `users` che Shield gia' impone.
 
 | Tabella | Contenuto | Di chi e' | Introdotta in |
 | --- | --- | --- | --- |
@@ -135,6 +135,7 @@ Le tabelle di Shield restano sue e non le tocchiamo. Il modulo ne aggiunge otto,
 | `acl_role_permissions` | Permessi concessi a un ruolo | Modulo | MVP |
 | `acl_user_roles` | Ruoli assegnati a un utente | Modulo | MVP |
 | `acl_user_permissions` | Override per utente, con esito concesso o negato | Modulo | MVP |
+| `acl_sessions` | Sessioni aperte per browser, con hash del token, IP, user agent, ultimo accesso e selettore del remember token collegato | Modulo | v1.0 |
 | `acl_activity_log` | Chi ha cambiato cosa, su quale oggetto, quando | Modulo | v1.0 |
 | `acl_notifications` | Notifiche per utente, con tipo, payload, stato letto | Modulo | v1.5 |
 | `acl_notification_preferences` | Scelte per utente su tipo di evento e canale | Modulo | v1.5 |
@@ -325,6 +326,14 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 - **Impostazioni.** Le impostazioni del modulo si salvano con la libreria Settings di CodeIgniter, già usata da Shield: nessuna tabella nuova. Servono i permessi `settings.view` e `settings.update`, concessi ad `admin`; una migrazione di dati li porta anche sulle installazioni esistenti.
 - **Ruolo predefinito.** In V1 l'unica impostazione è il ruolo predefinito per i nuovi utenti, assegnato sia a chi si registra tramite Shield sia a chi viene creato dal pannello. Un ruolo super admin non può essere il predefinito. Un ruolo con poteri amministrativi, come `admin`, resta scegliibile: la responsabilità è di chi lo imposta.
 - **Voci fuori da V1.** Le altre voci della schermata Settings del design system arrivano con le loro tappe: sessione, ricordami e blocco in V2; conservazione del log in V3; password e 2FA in v1.5. Ruoli multipli per utente, profondità dell'ereditarietà e reset ai valori di serie non sono previsti.
+
+**Decisioni del 2026-09-27 (V2).**
+- **Sessioni.** Shield non tiene un elenco delle sessioni di un utente, e CI4 ruota l'id di sessione: il modulo aggiunge la tabella `acl_sessions` (id, user_id verso `users` in cascata, token_hash univoco, remember_selector, ip_address, user_agent, created_at, last_seen_at). Al primo accesso di una sessione vi si salva un token casuale e la riga col suo hash; un aggancio `pre_system` controlla la riga a ogni richiesta, e se manca chiude la sessione. La revoca vale quindi dalla richiesta successiva.
+- **Remember token.** Restano quelli di Shield in `auth_remember_tokens`. La riga di sessione ricorda il selettore del token del proprio browser: revocare la sessione cancella anche quel token, revocare il token chiude anche le sessioni che ha aperto. La revoca totale cancella tutte le sessioni e tutti i token dell'utente, tranne la sessione di chi la chiede.
+- **Durata della sessione.** Inattività massima modificabile dalle Impostazioni (30 minuti, 2 ore, 8 ore, 24 ore; predefinita 2 ore), applicata con `last_seen_at`. Scaduta per inattività, la sessione si chiude ma il remember token resta: il browser ricordato rientra da solo.
+- **Ricordami.** Si salva nella `Auth.sessionConfig` di Shield tramite la libreria Settings (spento, 7, 30, 90 giorni). Shield la legge già con `setting()`: nulla di Shield è riscritto.
+- **Throttling.** Shield offre solo il filtro `auth-rates`, fisso a 10 richieste al minuto per IP. Il modulo aggiunge il filtro `rw-signin` sulla rotta di login: un limite per IP configurabile (servizio `throttler` di CI4) e un blocco per email dopo N fallimenti dall'ultimo accesso riuscito, per una durata configurabile, contati da `auth_logins` di Shield. Il blocco vale per l'email digitata, registrata o no, così non rivela quali email esistono. Nessuna tabella nuova.
+- **Profilo e permessi.** Profilo e sessioni proprie sono raggiungibili da ogni utente autenticato, senza permessi. Vedere e revocare le sessioni altrui richiede `sessions.view` e `sessions.revoke`, concessi ad `admin` con una migrazione di dati. Cambiare la password richiede quella attuale e chiude tutte le altre sessioni dell'utente.
 
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 

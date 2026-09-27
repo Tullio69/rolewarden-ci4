@@ -37,6 +37,17 @@ class RouteRegistrar
                 $routes->post('users/(:num)/roles', 'UsersController::assignRole/$1', ['filter' => 'can:roles.assign']);
                 $routes->post('users/(:num)/roles/(:num)/revoke', 'UsersController::revokeRole/$1/$2', ['filter' => 'can:roles.assign']);
                 $routes->post('users/(:num)/permissions', 'UsersController::setOverride/$1', ['filter' => 'can:permissions.override']);
+                $routes->post('users/(:num)/sessions/revoke-all', 'AccountController::revokeUserAll/$1', ['filter' => 'can:sessions.revoke']);
+                $routes->post('users/(:num)/sessions/(:num)/revoke', 'AccountController::revokeUser/$1/$2', ['filter' => 'can:sessions.revoke']);
+                $routes->post('users/(:num)/sessions/remembered/(:num)/revoke', 'AccountController::revokeUserRemembered/$1/$2', ['filter' => 'can:sessions.revoke']);
+
+                // The signed-in user's own account: no permission beyond being signed in.
+                $routes->get('profile', 'AccountController::profile');
+                $routes->post('profile/password', 'AccountController::password');
+                $routes->get('sessions', 'AccountController::sessions');
+                $routes->post('sessions/revoke-all', 'AccountController::revokeOwnAll');
+                $routes->post('sessions/(:num)/revoke', 'AccountController::revokeOwn/$1');
+                $routes->post('sessions/remembered/(:num)/revoke', 'AccountController::revokeOwnRemembered/$1');
 
                 $routes->get('roles', 'RolesController::index', ['filter' => 'can:roles.view']);
                 $routes->get('roles/create', 'RolesController::create', ['filter' => 'can:roles.create']);

@@ -9,6 +9,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Shield\Authentication\Authenticators\Session;
+use RoleWarden\Account\Sessions;
 use RoleWarden\Authorization\ProtectionException;
 use RoleWarden\Entities\User;
 use RoleWarden\Models\PermissionModel;
@@ -210,6 +211,7 @@ class UsersController extends BaseController
             'lastSuperAdminRoleId' => $lastSuperAdminRoleId,
             'lockedRoles' => $lockedRoles,
             'isSelf' => (int) auth()->id() === $id,
+            'sessions' => can('sessions.view') ? Sessions::forUser($id) : null,
         ], 'users', $name, $crumbs);
     }
 

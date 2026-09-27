@@ -1,0 +1,671 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+module: dd56279
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 20:25:09 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): Running: (RoleWarden) 2026-09-27-100001_RoleWarden\Database\Migrations\AddSettingsPermissions Running: (RoleWarden) 2026-09-27-200001_RoleWarden\Database\Migrations\CreateSessions Running: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-27 20:25:11 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] PRE    Admin login
+
+HTML rolewarden/settings status=200
+
+<!doctype html>
+<html lang="en">
+<head>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://localhost:8070/index.php/rolewarden/assets/css/panel.css">
+  
+  
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Main">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://localhost:8070/index.php/rolewarden/users"><span>01</span>Users</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/roles"><span>02</span>Roles</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/permissions"><span>03</span>Permissions</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/settings" aria-current="page"><span>04</span>Settings</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Breadcrumb"><span aria-current="page">Settings</span></nav>
+                    <a class="rw-who" href="http://localhost:8070/index.php/rolewarden/profile">
+          <span>PriyaNair<small>Admin</small></span>
+          <i aria-hidden="true">PR</i>
+        </a>
+          </header>
+
+    <main class="rw-content">
+      
+<div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Saved&quot;,&quot;warning&quot;&#x3A;&quot;Warning&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Error&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+
+
+      
+<div class="rw-page-head">
+  <div>
+    <div class="rw-header">RoleWarden</div>
+    <h1>Settings</h1>
+    <p>Rules that apply to every user of this application. Changes take effect at each user's next request.</p>
+      </div>
+  <dl class="rw-facts">
+    <div><dt>Last changed</dt><dd>Never</dd></div>
+    <div><dt>By</dt><dd>&mdash;</dd></div>
+  </dl>
+</div>
+
+<form method="post" action="http://localhost:8070/index.php/rolewarden/settings" novalidate x-data="rwSettings(&#x7B;&quot;values&quot;&#x3A;&#x7B;&quot;default_role&quot;&#x3A;&quot;&quot;,&quot;session_lifetime&quot;&#x3A;&quot;7200&quot;,&quot;remember_length&quot;&#x3A;&quot;2592000&quot;,&quot;lock_attempts&quot;&#x3A;&quot;5&quot;,&quot;lock_minutes&quot;&#x3A;&quot;15&quot;,&quot;sign_in_rate&quot;&#x3A;&quot;10&quot;&#x7D;,&quot;current&quot;&#x3A;&#x7B;&quot;default_role&quot;&#x3A;&quot;&quot;,&quot;session_lifetime&quot;&#x3A;&quot;7200&quot;,&quot;remember_length&quot;&#x3A;&quot;2592000&quot;,&quot;lock_attempts&quot;&#x3A;&quot;5&quot;,&quot;lock_minutes&quot;&#x3A;&quot;15&quot;,&quot;sign_in_rate&quot;&#x3A;&quot;10&quot;&#x7D;,&quot;names&quot;&#x3A;&#x7B;&quot;session_lifetime&quot;&#x3A;&quot;Session&#x20;lifetime&quot;,&quot;remember_length&quot;&#x3A;&quot;Remember&#x20;me&quot;,&quot;lock_attempts&quot;&#x3A;&quot;Lock&#x20;after&#x20;failed&#x20;sign-ins&quot;,&quot;lock_minutes&quot;&#x3A;&quot;Lock&#x20;duration&quot;,&quot;sign_in_rate&quot;&#x3A;&quot;Sign-in&#x20;attempts&#x20;per&#x20;address&quot;,&quot;default_role&quot;&#x3A;&quot;Default&#x20;role&#x20;for&#x20;new&#x20;users&quot;&#x7D;,&quot;labels&quot;&#x3A;&#x7B;&quot;one&quot;&#x3A;&quot;&#x25;d&#x20;unsaved&#x20;change&quot;,&quot;many&quot;&#x3A;&quot;&#x25;d&#x20;unsaved&#x20;changes&quot;&#x7D;&#x7D;)">
+  <input type="hidden" name="csrf_test_name" value="[csrf]">
+      <div class="rw-bar rw-settings-bar" :class="{ 'rw-bar--dirty': changed().length }" role="status" aria-live="polite">
+      <template x-if="changed().length">
+        <div class="rw-bar-msg">
+          <span class="rw-bar-dot" aria-hidden="true"></span>
+          <b x-text="summary()"></b>
+          <span class="rw-muted" x-text="changedNames()"></span>
+        </div>
+      </template>
+      <div class="rw-bar-msg rw-muted" x-show="! changed().length">All changes saved.</div>
+      <div class="rw-bar-actions">
+        <button type="button" class="rw-btn rw-btn--ghost" x-show="changed().length" x-cloak @click="discard()">Discard</button>
+        <button type="submit" class="rw-btn rw-btn--primary" :disabled="! changed().length">Save settings</button>
+      </div>
+    </div>
+  
+  <div class="rw-section-title"><span class="rw-section-n">A</span><h2>Sign-in</h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+              <tr :class="{ 'rw-changed': isChanged('session_lifetime') }">
+          <td class="rw-m-num">01</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-session_lifetime">Session lifetime</label>
+            <small>How long a signed-in user stays signed in without doing anything.</small>
+          </th>
+          <td class="rw-l-value"><select class="rw-select" id="rw-session_lifetime" name="session_lifetime" x-model="cur.session_lifetime"><option value="1800">30 minutes</option><option value="7200" selected>2 hours</option><option value="28800">8 hours</option><option value="86400">1 day</option></select></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('session_lifetime') ? 'changed' : ''"></span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('remember_length') }">
+          <td class="rw-m-num">02</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-remember_length">Remember me</label>
+            <small>How long "Remember me" keeps a user signed in on one browser. Off hides the option.</small>
+          </th>
+          <td class="rw-l-value"><select class="rw-select" id="rw-remember_length" name="remember_length" x-model="cur.remember_length"><option value="0">Off</option><option value="604800">7 days</option><option value="2592000" selected>30 days</option><option value="7776000">90 days</option></select></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('remember_length') ? 'changed' : 'shown\x20on\x20the\x20sign\x2Din\x20page'">shown on the sign-in page</span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('lock_attempts') }">
+          <td class="rw-m-num">03</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-lock_attempts">Lock after failed sign-ins</label>
+            <small>Failed attempts on one email before it is locked.</small>
+          </th>
+          <td class="rw-l-value"><span class="rw-unit"><input class="rw-input" type="number" id="rw-lock_attempts" name="lock_attempts" min="3" max="20" required value="5" x-model="cur.lock_attempts"><span class="rw-muted">attempts</span></span></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('lock_attempts') ? 'changed' : ''"></span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('lock_minutes') }">
+          <td class="rw-m-num">04</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-lock_minutes">Lock duration</label>
+            <small>How long a locked email has to wait before trying again.</small>
+          </th>
+          <td class="rw-l-value"><span class="rw-unit"><input class="rw-input" type="number" id="rw-lock_minutes" name="lock_minutes" min="1" max="1440" required value="15" x-model="cur.lock_minutes"><span class="rw-muted">minutes</span></span></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('lock_minutes') ? 'changed' : ''"></span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('sign_in_rate') }">
+          <td class="rw-m-num">05</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-sign_in_rate">Sign-in attempts per address</label>
+            <small>Sign-in attempts accepted from one IP address in a minute, whatever the email.</small>
+          </th>
+          <td class="rw-l-value"><span class="rw-unit"><input class="rw-input" type="number" id="rw-sign_in_rate" name="sign_in_rate" min="5" max="100" required value="10" x-model="cur.sign_in_rate"><span class="rw-muted">per minute</span></span></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('sign_in_rate') ? 'changed' : ''"></span></td>
+        </tr>
+          </tbody>
+  </table>
+
+  <div class="rw-section-title"><span class="rw-section-n">B</span><h2>Roles</h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+      <tr :class="{ 'rw-changed': isChanged('default_role') }">
+        <td class="rw-m-num">06</td>
+        <th class="rw-l-key" scope="row">
+          <label for="rw-default-role">Default role for new users</label>
+          <small>Given to everyone who registers or is created from this panel. Super admin roles are not offered.</small>
+        </th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-default-role" name="default_role" x-model="cur.default_role">
+            <option value="" selected>None</option>
+                          <option value="admin">Admin</option>
+                          <option value="beta">Beta User</option>
+                          <option value="developer">Developer</option>
+                          <option value="superadmin">Super Admin</option>
+                          <option value="user">User</option>
+                          <option value="v1-child">V1 Child</option>
+                          <option value="v1-limited">V1 Limited</option>
+                          <option value="v1-parent">V1 Parent</option>
+                      </select>
+        </td>
+        <td class="rw-anno"><span class="rw-note" x-text="isChanged('default_role') ? 'changed' : ''"></span></td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+
+
+    </main>
+  </div>
+</div>
+</body>
+</html>
+
+
+
+
+HTML rolewarden/profile status=200
+
+<!doctype html>
+<html lang="en">
+<head>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://localhost:8070/index.php/rolewarden/assets/css/panel.css">
+  
+  
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Main">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://localhost:8070/index.php/rolewarden/users"><span>01</span>Users</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/roles"><span>02</span>Roles</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/permissions"><span>03</span>Permissions</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/settings"><span>04</span>Settings</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Breadcrumb"><span aria-current="page">Profile</span></nav>
+                    <a class="rw-who" href="http://localhost:8070/index.php/rolewarden/profile" aria-current="page">
+          <span>PriyaNair<small>Admin</small></span>
+          <i aria-hidden="true">PR</i>
+        </a>
+          </header>
+
+    <main class="rw-content">
+      
+<div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Saved&quot;,&quot;warning&quot;&#x3A;&quot;Warning&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Error&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+
+
+      
+<div class="rw-page-head">
+  <div>
+    <div class="rw-header">Your account</div>
+    <h1>PriyaNair</h1>
+    <p>priya@northwind-studio.test</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Member since</dt><dd>27 Sep 2026</dd></div>
+    <div><dt>Sessions</dt><dd class="rw-fig-sm"><a href="http://localhost:8070/index.php/rolewarden/sessions">1</a></dd></div>
+  </dl>
+</div>
+
+<div class="rw-section-title"><span class="rw-section-n">A</span><h2>Change password</h2></div>
+<form class="rw-form" method="post" action="http://localhost:8070/index.php/rolewarden/profile/password">
+  <input type="hidden" name="csrf_test_name" value="[csrf]">  <div class="rw-field"><label class="rw-label" for="rw-current-password">Current password</label><input class="rw-input" type="password" id="rw-current-password" name="current_password" autocomplete="current-password" required></div>  <div class="rw-field"><label class="rw-label" for="rw-password">New password</label><input class="rw-input" type="password" id="rw-password" name="password" autocomplete="new-password" required></div>  <div class="rw-field"><label class="rw-label" for="rw-password-confirm">Repeat the new password</label><input class="rw-input" type="password" id="rw-password-confirm" name="password_confirm" autocomplete="new-password" required></div>  <p class="rw-field-hint">Changing the password signs you out of every other browser.</p>
+  <div class="rw-form-actions">
+    <button class="rw-btn rw-btn--primary" type="submit">Change password</button>
+  </div>
+</form>
+
+<div class="rw-section-title"><span class="rw-section-n">B</span><h2>Sessions</h2></div>
+<table class="rw-ledger">
+  <tbody>
+    <tr>
+      <td class="rw-m-num">01</td>
+      <th class="rw-l-key" scope="row"><b>Sessions</b><small>Browsers signed in to this account. Signing one out takes effect at its next request.</small></th>
+      <td class="rw-l-value rw-muted">1 signed in</td>
+      <td class="rw-l-ctl"><a class="rw-btn rw-btn--secondary rw-btn--sm" href="http://localhost:8070/index.php/rolewarden/sessions">Manage sessions</a></td>
+      <td class="rw-anno"></td>
+    </tr>
+  </tbody>
+</table>
+
+
+    </main>
+  </div>
+</div>
+</body>
+</html>
+
+
+
+
+HTML rolewarden/sessions status=200
+
+<!doctype html>
+<html lang="en">
+<head>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sessions &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://localhost:8070/index.php/rolewarden/assets/css/panel.css">
+  
+  
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Main">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://localhost:8070/index.php/rolewarden/users"><span>01</span>Users</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/roles"><span>02</span>Roles</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/permissions"><span>03</span>Permissions</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/settings"><span>04</span>Settings</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Breadcrumb"><span aria-current="page">Sessions</span></nav>
+                    <a class="rw-who" href="http://localhost:8070/index.php/rolewarden/profile" aria-current="page">
+          <span>PriyaNair<small>Admin</small></span>
+          <i aria-hidden="true">PR</i>
+        </a>
+          </header>
+
+    <main class="rw-content">
+      
+<div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Saved&quot;,&quot;warning&quot;&#x3A;&quot;Warning&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Error&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+
+
+      
+<div class="rw-page-head" style="grid-template-columns:1fr">
+  <div>
+    <div class="rw-header">Your account</div>
+    <h1>Sessions</h1>
+    <p>Browsers signed in to this account. Signing one out takes effect at its next request.</p>
+  </div>
+</div>
+
+
+<table class="rw-ledger">
+  <tbody>
+          <tr>
+        <td class="rw-m-num">01</td>
+        <th class="rw-l-key" scope="row">
+          <b>Unknown browser on unknown system</b>
+          <small>::1 &middot; signed in 27 Sep 2026, 20:25</small>
+        </th>
+        <td class="rw-l-value rw-muted">
+          Active Just now                  </td>
+        <td class="rw-l-ctl">
+                  </td>
+        <td class="rw-anno"><span class="rw-note">this browser</span></td>
+      </tr>
+                  <tr>
+        <td class="rw-m-num"></td>
+        <th class="rw-l-key" scope="row"><b>Every other browser</b><small>Signs out all sessions and forgets all remembered browsers, except the one you are using.</small></th>
+        <td class="rw-l-value"></td>
+        <td class="rw-l-ctl">
+          <form method="post" action="http://localhost:8070/index.php/rolewarden/sessions/revoke-all" style="display:inline">
+            <input type="hidden" name="csrf_test_name" value="[csrf]">            <button class="rw-btn rw-btn--danger rw-btn--sm" type="submit">Sign out everywhere else</button>
+          </form>
+        </td>
+        <td class="rw-anno"></td>
+      </tr>
+      </tbody>
+</table>
+
+
+
+
+    </main>
+  </div>
+</div>
+</body>
+</html>
+
+
+
+
+HTML rolewarden/users/4 status=200
+
+<!doctype html>
+<html lang="en">
+<head>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MaraOkafor &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://localhost:8070/index.php/rolewarden/assets/css/panel.css">
+  
+  
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Main">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://localhost:8070/index.php/rolewarden/users" aria-current="page"><span>01</span>Users</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/roles"><span>02</span>Roles</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/permissions"><span>03</span>Permissions</a></li>
+                    <li><a href="http://localhost:8070/index.php/rolewarden/settings"><span>04</span>Settings</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Breadcrumb"><a href="http://localhost:8070/index.php/rolewarden/users">Users</a><span aria-hidden="true">/</span><span aria-current="page">MaraOkafor</span></nav>
+                    <a class="rw-who" href="http://localhost:8070/index.php/rolewarden/profile">
+          <span>PriyaNair<small>Admin</small></span>
+          <i aria-hidden="true">PR</i>
+        </a>
+          </header>
+
+    <main class="rw-content">
+      
+<div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Saved&quot;,&quot;warning&quot;&#x3A;&quot;Warning&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Error&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+
+
+      
+<div class="rw-page-head">
+  <div>
+    <div class="rw-header">User</div>
+    <h1>MaraOkafor</h1>
+    <p>mara@northwind-studio.test</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Status</dt><dd><span class="rw-status">Active</span></dd></div>
+    <div><dt>Last active</dt><dd>19 Sep 2026, 08:00</dd></div>
+    <div><dt>Member since</dt><dd>27 Sep 2026</dd></div>
+    <div><dt>Overrides</dt><dd class="rw-fig-sm">0</dd></div>
+  </dl>
+</div>
+
+<div class="rw-section-title"><span class="rw-section-n">A</span><h2>Roles</h2></div>
+<table class="rw-ledger">
+  <tbody>
+          <tr>
+        <td class="rw-m-num">01</td>
+        <th class="rw-l-key" scope="row">
+          <b>User</b>
+                  </th>
+        <td class="rw-l-value rw-muted">0 own + 0 inherited permissions</td>
+        <td class="rw-l-ctl">
+          <a class="rw-btn rw-btn--ghost rw-btn--sm" href="http://localhost:8070/index.php/rolewarden/roles/3">Permissions</a>
+                                    <form method="post" action="http://localhost:8070/index.php/rolewarden/users/4/roles/3/revoke" style="display:inline">
+                <input type="hidden" name="csrf_test_name" value="[csrf]">                <button class="rw-btn rw-btn--ghost rw-btn--sm" type="submit">Remove</button>
+              </form>
+                              </td>
+        <td class="rw-anno"></td>
+      </tr>
+              <tr>
+        <td class="rw-m-num"></td>
+        <td class="rw-l-key"><label class="rw-label" for="add-role">Add a role</label></td>
+        <td class="rw-l-value">
+          <form method="post" action="http://localhost:8070/index.php/rolewarden/users/4/roles" class="rw-add-role">
+            <input type="hidden" name="csrf_test_name" value="[csrf]">            <select class="rw-select" id="add-role" name="role_id">
+                              <option value="2">Admin</option>
+                              <option value="6">Beta User</option>
+                              <option value="5">Developer</option>
+                              <option value="1">Super admin</option>
+                              <option value="4">Super Admin</option>
+                              <option value="8">V1 Child</option>
+                              <option value="9">V1 Limited</option>
+                              <option value="7">V1 Parent</option>
+                          </select>
+            <button class="rw-btn rw-btn--secondary rw-btn--sm" type="submit">Add</button>
+          </form>
+        </td>
+        <td class="rw-l-ctl"></td>
+        <td class="rw-anno"></td>
+      </tr>
+      </tbody>
+</table>
+
+<div class="rw-section-title"><span class="rw-section-n">B</span><h2>Effective permissions</h2></div>
+  <div x-data="rwUserMatrix(&#x7B;&quot;saveUrl&quot;&#x3A;&quot;http&#x3A;&#x5C;&#x2F;&#x5C;&#x2F;localhost&#x3A;8070&#x5C;&#x2F;index.php&#x5C;&#x2F;rolewarden&#x5C;&#x2F;users&#x5C;&#x2F;4&#x5C;&#x2F;permissions&quot;,&quot;csrfName&quot;&#x3A;&quot;csrf_test_name&quot;,&quot;csrfHash&quot;&#x3A;&quot;966cc9160d4b4d404f9a057be0b7a9fc&quot;,&quot;messages&quot;&#x3A;&#x7B;&quot;saved&quot;&#x3A;&quot;Changes&#x20;saved.&quot;,&quot;failed&quot;&#x3A;&quot;Could&#x20;not&#x20;save&#x20;this&#x20;change.&#x20;Reload&#x20;the&#x20;page&#x20;and&#x20;try&#x20;again.&quot;&#x7D;,&quot;rows&quot;&#x3A;&#x5B;&#x7B;&quot;area&quot;&#x3A;&quot;admin&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;access&quot;,&quot;permissionId&quot;&#x3A;17,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;admin.access&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;settings&quot;,&quot;permissionId&quot;&#x3A;18,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;admin.settings&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;edit&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;manage-admins&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;beta&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;access&quot;,&quot;permissionId&quot;&#x3A;21,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;beta.access&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;settings&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;edit&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;manage-admins&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;permissions&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;access&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;settings&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;12,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;permissions.override&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;11,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;permissions.view&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;edit&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;manage-admins&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;roles&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;access&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;settings&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;6,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;roles.view&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;10,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;roles.assign&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;7,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;roles.create&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;9,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;roles.delete&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;8,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;roles.update&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;edit&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;manage-admins&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;sessions&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;access&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;settings&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;15,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;sessions.view&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;16,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;sessions.revoke&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;edit&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;manage-admins&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;settings&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;access&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;settings&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;13,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;settings.view&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;14,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;settings.update&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;edit&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;manage-admins&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;users&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;access&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;settings&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;1,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;users.view&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;2,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;users.create&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;4,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;users.delete&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;3,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;users.update&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;5,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;users.activate&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;edit&quot;,&quot;permissionId&quot;&#x3A;20,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;users.edit&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;manage-admins&quot;,&quot;permissionId&quot;&#x3A;19,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;tooltip&quot;&#x3A;&quot;users.manage-admins&#x20;&#x5C;u00b7&#x20;Not&#x20;granted&quot;&#x7D;&#x5D;&#x7D;&#x5D;&#x7D;)">
+    <div class="rw-matrix-tools">
+      <span class="rw-muted">Click a cell to add or remove an override for MaraOkafor only. Roles stay unchanged.</span>
+      <ul class="rw-legend" aria-label="Legend">
+        <li><svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>Granted by role</li>
+        <li><svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>Inherited</li>
+        <li><svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>User override</li>
+        <li><svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg>Denied for user</li>
+        <li><span class="rw-mark-blank" aria-hidden="true"></span>Not granted</li>
+      </ul>
+    </div>
+
+    <div class="rw-bar" :class="{ 'rw-bar--dirty': changes().length }" role="status" aria-live="polite">
+      <template x-if="changes().length">
+        <div class="rw-bar-msg">
+          <span class="rw-bar-dot" aria-hidden="true"></span>
+          <span><b x-text="changes().length + ' unsaved ' + (changes().length > 1 ? 'changes' : 'change')"></b> to MaraOkafor&rsquo;s overrides</span>
+        </div>
+      </template>
+      <template x-if="!changes().length">
+        <div class="rw-bar-msg rw-muted">All changes saved.</div>
+      </template>
+      <div class="rw-bar-actions">
+        <button type="button" class="rw-btn rw-btn--ghost" @click="discard()" x-show="changes().length">Discard</button>
+        <button type="button" class="rw-btn rw-btn--primary" @click="save()" :disabled="!changes().length || saving">Save overrides</button>
+      </div>
+    </div>
+
+    <table class="rw-matrix">
+      <thead>
+        <tr>
+          <th class="rw-m-num" scope="col"></th>
+          <th class="rw-m-area rw-header" scope="col">Area</th>
+          <th class="rw-m-act rw-header">access</th><th class="rw-m-act rw-header">settings</th><th class="rw-m-act rw-header">override</th><th class="rw-m-act rw-header">view</th><th class="rw-m-act rw-header">assign</th><th class="rw-m-act rw-header">create</th><th class="rw-m-act rw-header">delete</th><th class="rw-m-act rw-header">update</th><th class="rw-m-act rw-header">revoke</th><th class="rw-m-act rw-header">activate</th><th class="rw-m-act rw-header">edit</th><th class="rw-m-act rw-header">manage-admins</th>          <th class="rw-m-anno rw-m-anno--wide" scope="col" style="color:var(--ink-faint)">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="(row, i) in rows" :key="row.area">
+          <tr>
+            <td class="rw-m-num" x-text="String(i + 1).padStart(2, '0')"></td>
+            <th class="rw-m-area" scope="row"><b x-text="row.area"></b><code x-text="row.area + '.*'"></code></th>
+            <template x-for="cell in row.cells" :key="cell.action">
+              <td class="rw-m-act">
+                <template x-if="cell.permissionId !== null">
+                  <button type="button" class="rw-cell" :class="{ 'rw-cell--changed': saved[key(row.area, cell.action)] !== cur[key(row.area, cell.action)] }" :title="tooltip(row.area, cell.action)" @click="toggleCell(row.area, cell.action)" x-html="mark(row.area, cell.action)"></button>
+                </template>
+              </td>
+            </template>
+            <td class="rw-m-anno rw-m-anno--wide"></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+<p class="rw-hint rw-note">An override beats every role. Remove it to fall back to what the roles grant.</p>
+
+<div class="rw-section-title"><span class="rw-section-n">C</span><h2>Account</h2></div>
+<table class="rw-ledger">
+  <tbody>
+          <tr>
+        <td class="rw-m-num">01</td>
+        <th class="rw-l-key" scope="row"><b>Password</b></th>
+        <td class="rw-l-value rw-muted">Set a new password for this user.</td>
+        <td class="rw-l-ctl"><a class="rw-btn rw-btn--secondary rw-btn--sm" href="http://localhost:8070/index.php/rolewarden/users/4/edit">Change password</a></td>
+        <td class="rw-anno"></td>
+      </tr>
+              <tr>
+        <td class="rw-m-num">02</td>
+        <th class="rw-l-key" scope="row"><b>Status</b></th>
+        <td class="rw-l-value rw-muted">Disabling blocks sign-in and keeps roles and history.</td>
+        <td class="rw-l-ctl">
+                                    <form method="post" action="http://localhost:8070/index.php/rolewarden/users/4/deactivate" style="display:inline">
+                <input type="hidden" name="csrf_test_name" value="[csrf]">                <button class="rw-btn rw-btn--danger rw-btn--sm" type="submit">Deactivate</button>
+              </form>
+                              </td>
+        <td class="rw-anno"><span class="rw-note">reversible</span></td>
+      </tr>
+              <tr>
+        <td class="rw-m-num">03</td>
+        <th class="rw-l-key" scope="row"><b>Delete</b></th>
+        <td class="rw-l-value rw-muted">Permanently removes this user.</td>
+        <td class="rw-l-ctl">
+                      <button class="rw-btn rw-btn--danger rw-btn--sm" type="button" onclick="rwConfirm('confirm-delete-user')">Delete</button>
+                  </td>
+        <td class="rw-anno"></td>
+      </tr>
+      </tbody>
+</table>
+
+  <div class="rw-section-title"><span class="rw-section-n">D</span><h2>Sessions</h2></div>
+  
+<table class="rw-ledger">
+  <tbody>
+                  <tr>
+        <td class="rw-m-num"></td>
+        <td class="rw-l-key rw-muted" colspan="4">No browser is signed in.</td>
+      </tr>
+      </tbody>
+</table>
+
+
+
+  <dialog id="confirm-delete-user" class="rw-confirm">
+    <h2>Delete MaraOkafor?</h2>
+    <p>This cannot be undone.</p>
+    <div class="rw-confirm-actions">
+      <button type="button" class="rw-btn rw-btn--ghost" onclick="rwCancelConfirm('confirm-delete-user')">Cancel</button>
+      <form method="post" action="http://localhost:8070/index.php/rolewarden/users/4/delete">
+        <input type="hidden" name="csrf_test_name" value="[csrf]">        <button type="submit" class="rw-btn rw-btn--danger">Delete</button>
+      </form>
+    </div>
+  </dialog>
+
+
+    </main>
+  </div>
+</div>
+</body>
+</html>
+
+
+
+
+HTML login status=200
+
+<!doctype html>
+<html lang="en">
+<head>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+  <link rel="stylesheet" href="http://localhost:8070/index.php/rolewarden/assets/css/panel.css">
+  
+</head>
+<body>
+<div class="rw rw-auth-screen">
+  <div class="rw-auth-sheet" x-data="{ show: false }">
+    <div class="rw-auth-row rw-auth-head">
+      <span class="rw-m-num"></span>
+      <div>
+        <div class="rw-header">localhost</div>
+        <h1>Login</h1>
+        <p>Use the email address your administrator gave you.</p>
+      </div>
+    </div>
+
+        
+    <form class="rw-auth-form" action="http://localhost:8070/index.php/login" method="post" novalidate>
+      <input type="hidden" name="csrf_test_name" value="[csrf]">
+      <div class="rw-auth-row">
+        <span class="rw-m-num">01</span>
+        <div class="rw-field">
+          <label class="rw-label" for="email">Email Address</label>
+          <input class="rw-input" id="email" name="email" type="email" inputmode="email" autocomplete="email" value="" required>
+        </div>
+      </div>
+
+      <div class="rw-auth-row">
+        <span class="rw-m-num">02</span>
+        <div class="rw-field">
+          <div class="rw-auth-labelline"><label class="rw-label" for="password">Password</label><a href="http://localhost:8070/index.php/login/magic-link">Forgot your password?</a></div>
+          <div class="rw-auth-pw">
+            <input class="rw-input" type="password" :type="show ? 'text' : 'password'" id="password" name="password" autocomplete="current-password" required>
+            <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" @click="show = !show" :aria-pressed="show" aria-controls="password" x-text="show ? 'Hide' : 'Show'"></button>
+          </div>
+        </div>
+      </div>
+
+              <div class="rw-auth-row">
+          <span class="rw-m-num">03</span>
+          <div class="rw-auth-opts">
+            <label class="rw-check-row"><input class="rw-check" type="checkbox" name="remember"> Remember me for 30 days</label>
+          </div>
+        </div>
+      
+      <div class="rw-auth-row rw-auth-submit" style="border-bottom:0">
+        <span class="rw-m-num"></span>
+        <div>
+          <button class="rw-btn rw-btn--primary" type="submit">Login</button>
+                  </div>
+      </div>
+    </form>
+
+    <div class="rw-auth-row rw-auth-foot">
+      <span class="rw-m-num"></span>
+      <p class="rw-note" style="margin:0">Trouble signing in? Ask an administrator to check your account.</p>
+    </div>
+  </div>
+  <span class="rw-auth-corner rw-note">Access managed by RoleWarden</span>
+</div>
+</body>
+</html>
+
+
+

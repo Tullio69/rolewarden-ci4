@@ -1,0 +1,26 @@
+2026-09-27: environment preflight
+PHP mysqli and curl available; authenticated connection to 127.0.0.1:3307 / rolewarden_test succeeded; 0 tables.
+No pre-existing php.exe process observed.
+Git Bash: CreateFileMapping Win32 error 5.
+Docker: dockerDesktopLinuxEngine pipe access denied.
+mysqldump.exe: WinError 740, elevation required.
+First guarded probe aborted before migrations because of CRLF in generated .env; corrected newline handling.
+First snapshot/restore identical SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64.
+Second probe session 48914 started. Subsequent exec_command calls fail at CreateProcessAsUserW with error 5.
+Completed runner restoration: SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Completed runner restoration: SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+2026-09-27: Collaudatore ad Hoc (Claude) takes over on 5c7bfc5; Git Bash, Docker and PHP available; rolewarden_test 0 tables; no php.exe running; port 8070 free.
+Collaudatore ad Hoc, mode test: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode extra: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode regression: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode adapt: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode adapt: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode adapt: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode regression: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode adapt: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode test: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode extra: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+2026-09-27: re-verification of D1 on 37bb47f (Collaudatore ad Hoc).
+Collaudatore ad Hoc, mode adapt: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode test: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True
+Collaudatore ad Hoc, mode extra: restored SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True

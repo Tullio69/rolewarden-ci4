@@ -32,7 +32,7 @@
         <span class="rw-m-num">01</span>
         <div class="rw-field">
           <label class="rw-label" for="email"><?= lang('Auth.email') ?></label>
-          <input class="rw-input" id="email" name="email" type="email" inputmode="email" autocomplete="email" value="<?= esc(old('email')) ?>" required>
+          <input class="rw-input" id="email" name="email" type="email" inputmode="email" autocomplete="email" value="<?= esc(is_string(old('email')) ? old('email') : '') ?>" required>
         </div>
       </div>
 

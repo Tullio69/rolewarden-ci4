@@ -47,7 +47,7 @@ final class SecurityMail
         $device = self::device($userAgent);
 
         if (self::isNewAccess($ip, $device, $seen)) {
-            self::queue($user, 'newSignIn', 'new_sign_in', ['ip' => $ip, 'device' => $device, 'at' => date('Y-m-d H:i')]);
+            self::queue($user, 'newSignIn', 'new_sign_in', ['ip' => $ip, 'device' => $device, 'at' => date('Y-m-d H:i T')]);
         }
     }
 
@@ -85,7 +85,7 @@ final class SecurityMail
 
     public static function passwordChanged(User $user, bool $byAdmin): void
     {
-        self::queue($user, 'passwordChanged', 'password_changed', ['byAdmin' => $byAdmin, 'at' => date('Y-m-d H:i')]);
+        self::queue($user, 'passwordChanged', 'password_changed', ['byAdmin' => $byAdmin, 'at' => date('Y-m-d H:i T')]);
     }
 
     /**
@@ -140,7 +140,9 @@ final class SecurityMail
             $email->setTo($message['to']);
             $email->setSubject($message['subject']);
             $email->setMailType('html');
-            $email->setMessage(view('RoleWarden\Views\emails\\' . $message['view'], $message['data']));
+            $html = view('RoleWarden\Views\emails\\' . $message['view'], $message['data']);
+            $email->setMessage($html);
+            $email->setAltMessage(self::text($html));
 
             if (! $email->send(false)) {
                 log_message('error', 'RoleWarden: security email to {to} not sent.', ['to' => $message['to']]);
@@ -193,6 +195,18 @@ final class SecurityMail
         $holders = array_values(array_filter($ids, static fn (int $id): bool => $resolver->can($id, 'security.alerts')));
 
         return $holders === [] ? [] : model(UserModel::class)->whereIn('id', $holders)->findAll();
+    }
+
+    /**
+     * Plain-text part: one line per paragraph or <br>, entities decoded (the
+     * automatic one from CodeIgniter runs lines together and keeps &lt;).
+     */
+    public static function text(string $html): string
+    {
+        $html = preg_replace('#<(br|/p|/h1)\b[^>]*>#i', "\n", $html) ?? $html;
+        $lines = array_map('trim', explode("\n", html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+
+        return implode("\n", array_values(array_filter($lines, static fn (string $line): bool => $line !== '')));
     }
 
     /** Browser and system, without versions: what a person calls "my device". */

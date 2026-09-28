@@ -40,8 +40,8 @@ final class SecurityMailTest extends TestCase
     {
         $html = '<h1>Title</h1><p>When: 21:35<br>Device: &lt;i&gt;Chrome</p>';
 
-        $this->assertSame("Title
+        $this->assertSame('Title
 When: 21:35
-Device: <i>Chrome", SecurityMail::text($html));
+Device: <i>Chrome', SecurityMail::text($html));
     }
 }

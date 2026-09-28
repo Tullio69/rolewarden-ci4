@@ -1,0 +1,204 @@
+== 1 Upgrade from 3805640, rollback, fresh install ==
+module: 3805640
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:19 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ning: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions Running: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:20 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[INFO] Effective Config\Email (spark config:check, selected keys): {"protocol":"smtp","SMTPHost":"127.0.0.1","SMTPPort":"1026","SMTPCrypto":"","fromEmail":"noreply@rolewarden.test"}
+[PASS] S00    Effective mail settings point at Mailpit (smtp 127.0.0.1:1026) before any HTTP request
+[INFO] Baseline 3805640: login with email[]: POST HTTP 500, next GET /login HTTP 200
+[INFO] Baseline 3805640: login POST without CSRF token: HTTP 303 signed_in=true
+[PASS] U01    V3 baseline: no security.alerts permission
+[INFO] stopping server pid=18984
+[INFO] termination requested=true
+[INFO] server closed
+module: 2028ea2
+[PASS] U02    Folder replaced, before migrate: signed-in panel still usable
+[PASS] U02b   Folder replaced, before migrate: sign-in from a new device works (no 500, no SQL)
+[INFO] Messages captured in the pre-migrate window: 1
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:30 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+[PASS] U03    Upgrade grants security.alerts to admin
+[PASS] U03b   Only admin gets security.alerts from the data migration
+[PASS] U03c   Upgrade adds no table (SPEC Modello dati lists none for V4)
+[PASS] U03d   Upgraded admin panel works
+[INFO] stopping server pid=40288
+[INFO] termination requested=true
+[INFO] server closed
+   spark migrate:rollback -b 3 -f (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:31 UTC+00:00 Rolling back migrations to batch: 3 Rolling back: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Done rolling back migrations.
+[PASS] U04    Rollback restores ACL, migrations and tables exactly
+module: 3805640
+[PASS] U05    Restored 3805640 folder works after rollback
+[INFO] stopping server pid=28820
+[INFO] termination requested=true
+[INFO] server closed
+module: 2028ea2
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:33 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+[PASS] U06    Upgrade applies again after rollback
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:34 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:35 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U07    Fresh install grants security.alerts to admin
+   spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
+[PASS] U08    Fresh install rolls back cleanly (no acl_ table left)
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:41:37 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+== Fixtures ==
+[INFO] acl_user_permissions columns: ["user_id:int(11) unsigned","permission_id:int(11) unsigned","granted:tinyint(1)","created_at:datetime","updated_at:datetime"]
+[INFO] Sign-in settings now: {"lock_attempts":"3","lock_minutes":"1","sign_in_rate":"100"}
+== 2 New device or IP ==
+[PASS] N01    Very first sign-in: succeeds, no email
+[INFO] Recorded IP of the first sign-in: 127.0.0.1
+[PASS] N02    Same device and IP again: no email
+[PASS] N03    Same browser and system, other browser version, same IP: no email (device = browser and system)
+[PASS] N04    New device (Firefox on Linux), known IP: exactly one email to the user
+[INFO] new-device From=RoleWarden Test <noreply@rolewarden.test> To=["newdev@v4.test"] Subject="New sign-in to your localhost account" HTML=1305B Text="localhost New sign-in to your account Hello V4newdev, Your account was just used to sign in from a device or address it has not used before. When: 2026-09-28 21:41Device: Firefox \/ LinuxAddress: 127.0.0.1 If this was you, there is nothing to do. If it was not, change your password now and sign out the sessions you do not recognise. Review your sessions You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C01    New sign-in email: recipient is only the user
+[PASS] C02    Sender is the host Config\Email from (noreply@rolewarden.test / RoleWarden Test)
+[PASS] C03    Subject present, about a sign-in
+[PASS] C04    Text names the device (browser and system)
+[PASS] C05    Text names the address
+[PASS] C06    Text carries the date
+[PASS] C07    No password or hash in the email
+[PASS] N05    That device again: no email
+[PASS] N06    Known browser on a system never paired with it (Chrome on Linux): one email
+[INFO] Edge on Windows after Chrome on Windows (Edge UA also contains "Chrome/"): 1 email(s)
+[PASS] N08    Failed sign-in from a new device: no email
+[PASS] N09    Success from a device seen only in a failed attempt: one email
+[PASS] C04b   Text names Safari and macOS/Mac
+-- new IP over HTTP: server rebound to [::1] --
+[INFO] stopping server pid=5544
+[INFO] termination requested=true
+[INFO] server closed
+[INFO] Recorded IP now: ::1 (was 127.0.0.1)
+[PASS] N10    New IP with a known device: exactly one email
+[INFO] new-ip From=RoleWarden Test <noreply@rolewarden.test> To=["newdev@v4.test"] Subject="New sign-in to your localhost account" HTML=1303B Text="localhost New sign-in to your account Hello V4newdev, Your account was just used to sign in from a device or address it has not used before. When: 2026-09-28 21:42Device: Chrome \/ Windows 10Address: ::1 If this was you, there is nothing to do. If it was not, change your password now and sign out the sessions you do not recognise. Review your sessions You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C05b   Text names the new address
+[PASS] C06b   Text carries the date
+[PASS] N11    Same new IP and device again: no email
+[PASS] N12    IP seen and device seen (never together): no email
+[PASS] N13    History is per user: device and IP used by another user are new for this one
+[PASS] N14    Only failed attempts before: the first successful sign-in sends nothing
+[PASS] N15    Device and IP known from auth_logins history (DB insert): no email
+[PASS] N16    Same user, known IP, new device (history from DB insert): one email
+[INFO] stopping server pid=40072
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] N17    Known device, IP never used by this user (127.0.0.1 vs history ::1): one email
+[PASS] N18    Markup user agent from a new device: one email
+[INFO] markup From=RoleWarden Test <noreply@rolewarden.test> To=["esc@v4.test"] Subject="New sign-in to your localhost account" HTML=1330B Text="localhost New sign-in to your account Hello &lt;i&gt;V4esc&lt;\/i&gt;, Your account was just used to sign in from a device or address it has not used before. When: 2026-09-28 21:42Device: Opera \/ Unknown PlatformAddress: 127.0.0.1 If this was you, there is nothing to do. If it was not, change your password now and sign out the sessions you do not recognise. Review your sessions You receive this email because it concerns the security of your account. It cannot be turned off."
+[INFO] HTML part present: yes; escaped name present: yes; name in text: yes
+[PASS] C08    HTML part carries no raw markup from the user name or user agent
+== 3 Password changed ==
+[PASS] P01    Wrong current password: nothing changes, no email
+[PASS] P02    Weak new password: refused, no email
+[PASS] P02b   Dictionary new password: refused, no email
+[PASS] P03    Mismatched confirmation: refused, no email
+[PASS] P04    Profile change without CSRF token: refused, no email
+[PASS] P05    Correct change from the profile: exactly one email, to the user
+[INFO] password-profile From=RoleWarden Test <noreply@rolewarden.test> To=["pwchange@v4.test"] Subject="Your localhost password was changed" HTML=961B Text="localhost Your password was changed Hello V4pwchange, The password of your account was changed from your profile on 2026-09-28 21:42. If you did not expect this, contact an administrator straight away. You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C09    Password email: To the user, From the host sender, subject about the password
+[PASS] C10    Password email carries neither old/new password nor either hash
+[INFO] Password email mentions date: yes, address: no
+[INFO] Admin sets "abc": HTTP 303, password CHANGED, 1 email(s) to ["pwchange@v4.test"], field error shown: no, toasts [{"type":"success","alert":false,"kind":"Saved","msg":"User updated.","close":false}]
+[PASS] P06    Admin-set weak password: an email is sent if and only if the password actually changed
+[PASS] P07    Admin set without CSRF token: refused, no email
+[PASS] P08    Admin edit without a password: no password email
+[PASS] P09    Admin sets a new password: exactly one email, to the user (not to the admin)
+[INFO] password-admin From=RoleWarden Test <noreply@rolewarden.test> To=["pwchange@v4.test"] Subject="Your localhost password was changed" HTML=956B Text="localhost Your password was changed Hello V4pwrenamed, An administrator set a new password for your account on 2026-09-28 21:42. If you did not expect this, contact an administrator straight away. You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C11    Admin-set password email carries neither password nor hash
+== 4 Too many attempts ==
+[INFO] Expected security.alerts holders: super admin (owner), admin2, positive override; not: users.view-only, user, child, disabled admin, admin with negative override (override column `granted`)
+[PASS] L01    Below the threshold (2 of 3 failures): no email at all
+[INFO] Lock messages: 1=[Error: Unable to log you in. Please check your credentials.] 2=[Error: Unable to log you in. Please check your credentials.] 3=[Error: Unable to log you in. Please check your credentials.] 4(correct password)=[Error: Too many failed sign-ins for this email. Try again in 1 minute.]; messages after 3rd failure: 4
+[PASS] L02    Configured threshold (3) blocks the next attempt even with the right password
+[PASS] L03    User receives exactly one lock email
+[PASS] L04-0  Holder of security.alerts receives exactly one lock alert (dana@northwind-studio.test)
+[PASS] L04-1  Holder of security.alerts receives exactly one lock alert (priya@northwind-studio.test)
+[PASS] L04-2  Holder of security.alerts receives exactly one lock alert (ovrgrant@v4.test)
+[PASS] L05    Nobody without security.alerts receives it (incl. disabled admin, negative override)
+[PASS] L06    One alert per lock, not per attempt (6 attempts, one per recipient)
+[INFO] lock-user From=RoleWarden Test <noreply@rolewarden.test> To=["lock@v4.test"] Subject="Too many failed sign-ins on localhost" HTML=1115B Text="localhost Too many failed sign-ins Hello V4lock, Someone tried to sign in as lock@v4.test with a wrong password too many times. Sign-in for this email is locked for 1 minute. Address: 127.0.0.1 If it was you, wait and try again. If it was not, your password is still safe; consider changing it once you are back in. You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C12    Lock email to the user: From the host sender, no password typed
+[INFO] lock-admin From=RoleWarden Test <noreply@rolewarden.test> To=["priya@northwind-studio.test"] Subject="Too many failed sign-ins on localhost" HTML=1223B Text="localhost Too many failed sign-ins Hello PriyaNair, The email lock@v4.test reached the limit of failed sign-ins and is locked for 1 minute. Address: 127.0.0.1 Check the activity log for other attempts from the same address. See the sign-in attempts You receive this email because it concerns the security of your account. It cannot be turned off."
+[INFO] Admin alert names the locked email: yes; date: no; address: yes
+[PASS] C13    Admin alert carries no typed password
+[INFO] Second lock after expiry reached after 4 more attempt(s)
+[PASS] L07    After the lock expires, a new lock sends a new alert, once per recipient
+[PASS] L08    Unregistered email: nothing sent to it
+[PASS] L09    Unregistered email: each security.alerts holder gets exactly one alert
+[PASS] L10    Unregistered email: nobody without the permission receives it
+[INFO] Alert for "x&y79@v4.test": HTML contains escaped form; raw form in HTML: no
+[PASS] C14    Typed email with & is escaped in the HTML alert
+[PASS] L11    Threshold 5: no alert after 3 or 4 failures
+[PASS] L12    Threshold 5 blocks the sixth attempt
+[PASS] L13    Threshold 5: the alert fires at the new threshold, once to the user and each holder
+[PASS] L14    Failures counted since the last success: 2 + success + 2 at threshold 3 sends no alert
+== 6 Sending after the response ==
+[INFO] Baseline new-device sign-in with Mailpit up: 1.20s, HTTP 303, 1 email(s)
+[INFO] docker stop rolewarden-mail rc=0 rolewarden-mail
+[PASS] M01    Mail server down: sign-in answers normally (redirect, then page 200), no error on screen
+[INFO] Sign-in with Mailpit stopped (connection refused): 3.14s
+[INFO] Stalling SMTP listener on 127.0.0.1:1026 (accepts, never greets; sends nothing anywhere): listening
+[PASS] M02    Mail server hanging: sign-in answers normally, no error on screen
+[INFO] Sign-in with a hanging SMTP server (host SMTPTimeout 5s): 16.18s
+[INFO] Stalling listener closed
+[INFO] docker start rolewarden-mail rc=0 rolewarden-mail
+[INFO] Log lines at WARNING or above while the mail server was down: ["ERROR - 2026-09-28 21:44:06 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:1026 (Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione) in E:\\progetti_lavoro\\ASP\\rolewarden-ci4\\tests\\Integration\\verify-v4.work\\app\\vendor\\codeigniter4\\framework\\system\\Email\\Email.php:1836","ERROR - 2026-09-28 21:44:06 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.","ERROR - 2026-09-28 21:44:06 --> ","ERROR - 2026-09-28 21:44:06 --> RoleWarden: security email to late2@v4.test not sent.","ERROR - 2026-09-28 21:44:18 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.","ERROR - 2026-09-28 21:44:18 --> ","ERROR - 2026-09-28 21:44:18 --> RoleWarden: security email to late3@v4.test not sent."]
+[PASS] M03    Mail server down/hanging: at most a handled send error in the log, no unhandled exception
+[PASS] M04    Mailpit back: the next new-device email is delivered again
+[INFO] Response time with hanging SMTP 16.18s vs baseline 1.20s
+[INFO] fastcgi_finish_request available to the php -S server: no (CLI built-in server SAPI)
+[AMB]  M05    Response waits for a hanging SMTP server on the built-in server
+         -> 16.18s vs 1.20s baseline; php -S has no fastcgi_finish_request, which SPEC names as the way the response leaves first
+== 7 Extension and override ==
+[INFO] rolewarden.mail payloads recorded: 37; keys of last: ["to","subject","view","data"]; views: ["new_sign_in","password_changed","too_many_attempts"]
+[PASS] X01    rolewarden.mail fires with to, subject, view and data (README)
+[PASS] X02    No plain password in any rolewarden.mail payload
+[INFO] Password hashes found in rolewarden.mail payload data: 0
+[PASS] X03    A listener returning false takes the message over: nothing is sent
+[PASS] X04    Without that listener verdict the same email is sent again
+[INFO] Override files created: ["app\/Views\/overrides\/RoleWarden\/Views\/emails\/new_sign_in.php","app\/Views\/overrides\/RoleWarden\/Views\/emails\/password_changed.php","app\/Views\/overrides\/RoleWarden\/Views\/emails\/too_many_attempts.php"]
+[PASS] X05    Override of the new sign-in template in app/Views/overrides/RoleWarden/Views/emails/ is used
+[PASS] X06    Override of the password template is used
+[PASS] X07    Override of the lock alert template is used
+[INFO] Effective fromEmail now: ""
+[INFO] stopping server pid=2660
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] X08    No fromEmail: sign-in and admin password change still work
+[PASS] X09    No fromEmail: panel pages answer 200
+[PASS] X10    No fromEmail: nothing is sent
+[INFO] Log lines at WARNING or above without fromEmail: ["WARNING - 2026-09-28 21:44:49 --> RoleWarden: security email not sent, Config\\Email::$fromEmail is empty.","WARNING - 2026-09-28 21:44:52 --> RoleWarden: security email not sent, Config\\Email::$fromEmail is empty."]
+[PASS] X11    No fromEmail: a warning is logged (README), nothing worse
+[INFO] stopping server pid=14568
+[INFO] termination requested=true
+[INFO] server closed
+== 9 Publication ==
+[INFO] Login POST without CSRF token: HTTP 303 location=http://localhost:8070/index.php/rolewarden/users auth_logins +1 csrf_refused=false signed_in=true
+[AMB]  Z01    Login POST without CSRF token is accepted
+         -> HTTP 303, signed in=true; Shield route, host global csrf filter off in the test app (also on 3805640)
+[PASS] Z02    Settings POST without CSRF token is refused
+[FAIL] Z03-0  Login with array field(s) {"email":"array","password":"string"}: no 500, no PHP/SQL error, not signed in
+         -> HTTP 500
+[FAIL] Z03-1  Login with array field(s) {"email":"array","password":"string"}: no 500, no PHP/SQL error, not signed in
+         -> HTTP 500
+[AMB]  Z03-2  Login with password as array (email string)
+         -> HTTP 500; raised inside Shield (see log: ValidationRules::max_byte TypeError), not by a module file
+[AMB]  Z03-3  Login with password as array (email array)
+         -> HTTP 500; raised inside Shield (see log: ValidationRules::max_byte TypeError), not by a module file
+[FAIL] Z03-4  Login with array field(s) {"email":"array","password":"string"}: no 500, no PHP/SQL error, not signed in
+         -> HTTP 500
+[INFO] Messages after the array/CSRF posts: 1
+[FAIL] Z04    No SQL error text and no HTTP 500 in any page seen (165)
+         -> ["http:\/\/localhost:8070\/index.php\/login HTTP 500","http:\/\/localhost:8070\/index.php\/login HTTP 500","http:\/\/localhost:8070\/index.php\/login HTTP 500"]
+[FAIL] Z05    Application log at threshold 9: no warning or error outside the deliberate SMTP-down and no-fromEmail phases
+         -> CRITICAL - 2026-09-28 21:44:58 --> ErrorException: Array to string conversion
+CRITICAL - 2026-09-28 21:44:59 --> ErrorException: Array to string conversion
+CRITICAL - 2026-09-28 21:45:02 --> ErrorException: Array to string conversion
+[INFO] stopping server pid=42476
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] Z06    PHP built-in server log (error_reporting=-1): no PHP warning, notice, deprecation or fatal
+V4 RESULT 95 checks 90 PASS 5 FAIL
+[MAIL] captured=1 non-test=[]

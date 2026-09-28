@@ -1,0 +1,196 @@
+== 1 Upgrade, rollback and fresh install ==
+module: 3805640
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:07 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ning: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions Running: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:08 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] A01    V3 baseline lacks security.alerts (adapted V4)
+module: 2028ea2
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:09 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+[PASS] A02    Upgrade grants both sessions permissions to admin
+[PASS] A03    Upgrade creates sessions table
+   spark migrate:rollback -b 3 -f (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:09 UTC+00:00 Rolling back migrations to batch: 3 Rolling back: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Done rolling back migrations.
+[PASS] A04    Rollback returns ACL and migration rows to baseline
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:10 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+[PASS] A05    Upgrade reapplies
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:11 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:12 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] A06    Fresh install grants sessions permissions
+   spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
+[PASS] A07    Fresh rollback removes module tables
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:55:14 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] A08    Admin opens V2 settings
+[PASS] G01    Documented initial session/remember values
+== 2 Own sessions and remembered revocation ==
+[PASS] B00    Each sign-in creates exactly one tracked session row
+[PASS] B01    Ordinary user accesses profile and sessions
+[PASS] B02    Three independent browsers are tracked
+[INFO] Session forms [["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/4\/revoke","Sign out"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/3\/revoke","Sign out"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/revoke-all","Sign out everywhere else"]]
+[PASS] B01b   Own list offers a Sign out for each other browser and none for this one
+[PASS] T01    Own single sign out: success toast (HTTP 303 then 200)
+[PASS] B02b   Only the chosen row is gone
+[PASS] B03    Single revocation refuses remembered browser on NEXT request
+[PASS] B04    Revoked remembered browser cannot silently return
+[PASS] B05    Single revocation preserves actor and other session
+[PASS] T02    Own sign out everywhere else: success toast (HTTP 303 then 200)
+[PASS] B06    Everywhere else preserves requester
+[PASS] B07    Everywhere else refuses all others next request
+== 3 Remembered browser with no open session ==
+[INFO] Orphan forms [["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/remembered\/3\/revoke","Forget"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/revoke-all","Sign out everywhere else"]]
+[PASS] T03    Forget remembered browser: success toast (HTTP 303 then 200)
+[PASS] C01    Forgotten browser without session no longer returns
+[PASS] C02    Revoking remember token also closes its open session on next request
+== 4 Other users, direct POST permissions ==
+[INFO] Admin session forms {"3":["http:\/\/localhost:8070\/index.php\/rolewarden\/users\/4\/sessions\/9\/revoke","Sign out"],"4":["http:\/\/localhost:8070\/index.php\/rolewarden\/users\/4\/sessions\/8\/revoke","Sign out"],"5":["http:\/\/localhost:8070\/index.php\/rolewarden\/users\/4\/sessions\/2\/revoke","Sign out"],"6":["http:\/\/localhost:8070\/index.php\/rolewarden\/users\/4\/sessions\/revoke-all","Sign out everywhere else"]}
+[PASS] D01    Admin can see another users sessions
+[PASS] D02    sessions.view sees sessions without revoke buttons
+[PASS] D03    Without sessions.view session section absent
+[PASS] D04-viewer Direct POST without revoke permission denied beyond CSRF
+[PASS] D04-limited Direct POST without revoke permission denied beyond CSRF
+[PASS] D05a   Admin detail lists a Sign out for the chosen session
+[PASS] T04    Admin single sign out of another user: success toast (HTTP 303 then 200)
+[PASS] D05    Admin revocation takes effect on target next request
+[PASS] D05b   Only the chosen session and its remember token are gone; the other browser stays
+[PASS] D06    sessions.revoke does not grant sessions.view
+[INFO] D07 revoke-only direct POST HTTP 303 location=http://localhost:8070/index.php/rolewarden/users/4 session still present=false
+[PASS] T05    Admin sign out everywhere for another user: success toast (HTTP 303 then 200)
+[PASS] D08    Admin total revocation leaves the target with no sessions and no tokens
+== 5 Inactivity ==
+[PASS] E00    Session idle for less than the 2 hour default stays signed in
+[PASS] E01    Idle nonremembered session expires next request
+[PASS] E02    Idle remembered browser enters again
+[INFO] idle session ids old=[14,15] next=[16]
+[PASS] E03    Remembered re-entry uses a NEW PHP session
+[PASS] E05    Re-entered session is tracked within its own request and listed on the admin detail
+[PASS] E04    Revocation immediately after automatic re-entry applies next request
+[INFO] ids after further request=[]
+== 6 Password profile ==
+[PASS] F01    Wrong current password rejected with error under field and no toast
+[PASS] F01b   Rejected change leaves password unchanged
+[PASS] F02    Weak new password rejected with error under field and no toast
+[PASS] F02b   Rejected change leaves password unchanged
+[PASS] F03    Missing confirmation rejected with error under field and no toast
+[PASS] F03b   Rejected change leaves password unchanged
+[PASS] F04    Mismatched confirmation rejected with error under field and no toast
+[PASS] F04b   Rejected change leaves password unchanged
+[PASS] T06    Password changed: success toast (HTTP 303 then 200)
+[PASS] F05    Password change keeps requesting browser
+[PASS] F06    Password change revokes other remembered browser next request
+[PASS] F06b   Password change revokes other plain browser; only the requester remains
+[PASS] F07    New password works and old does not
+== 7 Sign-in settings validation and persistence ==
+[PASS] G02-session_lifetime-1800 Allowed value persists
+[PASS] G02-session_lifetime-7200 Allowed value persists
+[PASS] G02-session_lifetime-28800 Allowed value persists
+[PASS] G02-session_lifetime-86400 Allowed value persists
+[PASS] G02-remember_length-0 Allowed value persists
+[PASS] G03-0  Login remember option reflects setting
+[PASS] G04-0  Remember me off: a forced remember=on creates no remember token
+[PASS] G02-remember_length-604800 Allowed value persists
+[PASS] G03-604800 Login remember option reflects setting
+[PASS] G04-604800 Remember token lifetime matches selected duration
+[PASS] G02-remember_length-2592000 Allowed value persists
+[PASS] G03-2592000 Login remember option reflects setting
+[PASS] G04-2592000 Remember token lifetime matches selected duration
+[PASS] G02-remember_length-7776000 Allowed value persists
+[PASS] G03-7776000 Login remember option reflects setting
+[PASS] G04-7776000 Remember token lifetime matches selected duration
+[PASS] T07    Settings saved: success toast (HTTP 303 then 200)
+[PASS] G05-lock_attempts-3 Numeric boundary persists
+[PASS] G05-lock_attempts-20 Numeric boundary persists
+[PASS] G05-lock_minutes-1 Numeric boundary persists
+[PASS] G05-lock_minutes-1440 Numeric boundary persists
+[PASS] G05-sign_in_rate-5 Numeric boundary persists
+[PASS] G05-sign_in_rate-100 Numeric boundary persists
+[PASS] G06-session_lifetime-1799 Out of range rejected inline without writes/toast
+[PASS] G06-session_lifetime-bad Out of range rejected inline without writes/toast
+[PASS] G06-remember_length-1 Out of range rejected inline without writes/toast
+[PASS] G06-remember_length--1 Out of range rejected inline without writes/toast
+[PASS] G06-lock_attempts-2 Out of range rejected inline without writes/toast
+[PASS] G06-lock_attempts-21 Out of range rejected inline without writes/toast
+[PASS] G06-lock_attempts-3.5 Out of range rejected inline without writes/toast
+[PASS] G06-lock_minutes-0 Out of range rejected inline without writes/toast
+[PASS] G06-lock_minutes-1441 Out of range rejected inline without writes/toast
+[PASS] G06-lock_minutes-x Out of range rejected inline without writes/toast
+[PASS] G06-sign_in_rate-4 Out of range rejected inline without writes/toast
+[PASS] G06-sign_in_rate-101 Out of range rejected inline without writes/toast
+[PASS] G06-sign_in_rate-5.5 Out of range rejected inline without writes/toast
+[PASS] G07    View-only settings has no save button
+[PASS] G08    Only settings.update saves via direct POST
+== 8 Email lock and IP rate ==
+[PASS] H01-known-1 Failure does not authenticate
+[PASS] H01-known-2 Failure does not authenticate
+[PASS] H01-known-3 Failure does not authenticate
+[INFO] lock known HTTP 303 alert=Error: Too many failed sign-ins for this email. Try again in 1 minute.
+[PASS] H02-known Email is locked at attempt beyond threshold
+[PASS] H02b   Still locked before the configured minute has passed
+[PASS] H03    Registered email unlocks after duration
+[PASS] H01-unknown-1 Failure does not authenticate
+[PASS] H01-unknown-2 Failure does not authenticate
+[PASS] H01-unknown-3 Failure does not authenticate
+[INFO] lock unknown HTTP 303 alert=Error: Too many failed sign-ins for this email. Try again in 1 minute.
+[PASS] H02-unknown Email is locked at attempt beyond threshold
+[INFO] unlocked unknown alert=Error: Unable to log you in. Please check your credentials.
+[PASS] H04    Unknown email returns normal failure after lock expires
+[PASS] H05    Same locked response for registered and unknown email
+[PASS] H07    A successful sign-in restarts the failure count
+[INFO] rate GET 1 status=200
+[INFO] rate POST 1 status=303 logins=1 alert=Error: Unable to log you in. Please check your credentials.
+[INFO] rate GET 2 status=200
+[INFO] rate POST 2 status=303 logins=1 alert=Error: Unable to log you in. Please check your credentials.
+[INFO] rate GET 3 status=200
+[INFO] rate POST 3 status=303 logins=1 alert=Error: Unable to log you in. Please check your credentials.
+[INFO] rate GET 4 status=200
+[INFO] rate POST 4 status=303 logins=1 alert=Error: Unable to log you in. Please check your credentials.
+[INFO] rate GET 5 status=200
+[INFO] rate POST 5 status=303 logins=1 alert=Error: Unable to log you in. Please check your credentials.
+[INFO] rate GET 6 status=200
+[INFO] rate POST 6 status=303 logins=0 alert=Error: Too many sign-in attempts from this address. Wait a minute and try again.
+[PASS] H06    Configured IP limit: five attempts reach Shield, sixth blocked
+== 10 HTTP publication checks in both environments ==
+[INFO] stopping server pid=45224
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J01-development New form has CSRF
+[PASS] J02-development Missing CSRF is refused
+[PASS] J03-development Stored profile name escaped
+[PASS] J07-development Hostile user agent never rendered raw on own and admin session lists
+[INFO] J07 escaped UA text shown: own=false admin=false
+[PASS] J08-development Malformed id refused without SQL text
+[PASS] J08-development Malformed id refused without SQL text
+[PASS] J08-development Malformed id refused without SQL text
+[INFO] stopping server pid=13568
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] J04    No SQL/PHP error text on all captured responses
+[PASS] J05    Max-level app log clean except deliberately rejected CSRF
+[PASS] J06    PHP server log has no warnings/errors
+RESULT 141 checks 141 PASS 0 FAIL
+[MAIL] captured=8 non-test=[]

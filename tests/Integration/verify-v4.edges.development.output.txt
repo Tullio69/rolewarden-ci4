@@ -1,0 +1,70 @@
+module: 2028ea2
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:52:40 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-28 21:52:42 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[STORAGE] [{"class":"RoleWarden\\Config\\RoleWarden","key":"defaultRole","value":""},{"class":"RoleWarden\\Config\\RoleWarden","key":"sessionLifetime","value":"7200"},{"class":"Config\\Auth","key":"sessionConfig","value":"a:4:{s:5:\"field\";s:4:\"user\";s:16:\"allowRemembering\";b:1;s:18:\"rememberCookieName\";s:8:\"remember\";s:14:\"rememberLength\";i:2592000;}"},{"class":"RoleWarden\\Config\\RoleWarden","key":"lockAttempts","value":"5"},{"class":"RoleWarden\\Config\\RoleWarden","key":"lockMinutes","value":"15"},{"class":"RoleWarden\\Config\\RoleWarden","key":"signInRate","value":"100"},{"class":"RoleWarden\\Config\\RoleWarden","key":"activityRetentionDays","value":"365"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedAt","value":"2026-09-28 21:52:45"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedBy","value":"2"},{"class":"RoleWarden\\Config\\RoleWarden","key":"activityPrunedOn","value":"2026-09-28"}]
+[PASS] D1a    Actor email finds event before deletion, without any rename
+[PASS] D1b    Unchanged actor email finds event after panel deletion
+[PASS] D1c    Actor name still finds the same event after deletion
+[PASS] D1d    Deleted actor login remains searchable by username
+[HISTORY] [{"actor_id":7,"actor_label":"DeletedActorV3","action":"role.created","subject_label":"Deleted actor object","details":"{\"slug\":\"deleted-actor-role\"}"}]
+[STORAGE] [{"class":"RoleWarden\\Config\\RoleWarden","key":"defaultRole","value":""},{"class":"RoleWarden\\Config\\RoleWarden","key":"sessionLifetime","value":"7200"},{"class":"Config\\Auth","key":"sessionConfig","value":"a:4:{s:5:\"field\";s:4:\"user\";s:16:\"allowRemembering\";b:1;s:18:\"rememberCookieName\";s:8:\"remember\";s:14:\"rememberLength\";i:2592000;}"},{"class":"RoleWarden\\Config\\RoleWarden","key":"lockAttempts","value":"5"},{"class":"RoleWarden\\Config\\RoleWarden","key":"lockMinutes","value":"15"},{"class":"RoleWarden\\Config\\RoleWarden","key":"signInRate","value":"100"},{"class":"RoleWarden\\Config\\RoleWarden","key":"activityRetentionDays","value":"365"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedAt","value":"2026-09-28 21:52:45"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedBy","value":"2"},{"class":"RoleWarden\\Config\\RoleWarden","key":"activityPrunedOn","value":"2026-09-28"}]
+[PASS] LF-%   Shield login search escapes literal %
+[PASS] LF-_   Shield login search escapes literal _
+[PASS] LF-dates Shield date endpoints include both whole-day boundaries
+[PASS] LF-merge Merged sources ordered newest first
+[PASS] LF-user User-only filter covers both sources
+[PASS] LF-period Period-only filter covers both sources
+[PASS] LF-action Action-only filter excludes sign-ins
+[PASS] LF-link See activity link opens a populated user-filtered list
+[PASS] E23a   Event session.revoked recorded once
+[PASS] E23b   Event has author, object, time and address
+[PASS] E23c   Combined user/action/inclusive date filters find session.revoked
+[PASS] E24a   Event session.all_revoked recorded once
+[PASS] E24b   Event has author, object, time and address
+[PASS] E24c   Combined user/action/inclusive date filters find session.all_revoked
+[PASS] E25-owna Event session.remembered_forgotten recorded once
+[PASS] E25-ownb Event has author, object, time and address
+[PASS] E25-ownc Combined user/action/inclusive date filters find session.remembered_forgotten
+[PASS] E25-admina Event session.remembered_forgotten recorded once
+[PASS] E25-adminb Event has author, object, time and address
+[PASS] E25-adminc Combined user/action/inclusive date filters find session.remembered_forgotten
+[PASS] E26a   Event role.updated recorded once
+[PASS] E26b   Event has author, object, time and address
+[PASS] E26c   Combined user/action/inclusive date filters find role.updated
+[PASS] DETAILS-role Role edit JSON records both old and new values
+[PASS] E27a   Event user.password_set recorded once
+[PASS] E27b   Event has author, object, time and address
+[PASS] E27c   Combined user/action/inclusive date filters find user.password_set
+[PASS] DETAILS-secret Activity details contain neither password nor its authentication hash
+[PASS] CSRF-rolewarden/users/create-0 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/create-0 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/users/4/edit-0 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/4/edit-0 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/users/4-0 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/4-0 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/users/4-1 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/4-1 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/users/4-2 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/4-2 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/users/4-3 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/4-3 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/users/4-4 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/4-4 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/users/4-5 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/users/4-5 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/roles/create-0 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/roles/create-0 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/roles/10/edit-0 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/roles/10/edit-0 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-rolewarden/roles/10-0 Panel mutation form exposes CSRF
+[PASS] CSRF-reject-rolewarden/roles/10-0 Missing CSRF cannot mutate ACL or create successful log entry
+[PASS] CSRF-matrix-rolewarden/roles/10 AJAX matrix missing CSRF refused without successful event
+[PASS] CSRF-matrix-rolewarden/users/4 AJAX matrix missing CSRF refused without successful event
+[PASS] EDGE-LOG Application logs at maximum threshold: no unexpected errors/warnings
+[INFO] stopping server pid=43300
+[INFO] termination requested=true
+[INFO] server closed
+V3 RESULT 57 checks 57 PASS 0 FAIL
+[MAIL] captured=3 non-test=[]

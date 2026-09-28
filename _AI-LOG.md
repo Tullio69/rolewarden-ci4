@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude
-**Agente:** Claude Code (Opus)
-**Dalle:** 2026-09-28 23:30
-**Scope:** V4 Email di sicurezza: `src/` (invio, eventi di accesso, template), permesso `security.alerts`, `docker-compose.yml` (mailpit), `docs/SPEC.md`, `README.md`
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -594,3 +594,17 @@ Formato di ogni voce:
 - Cosa ho fatto: V3 Log attivita'. Decisioni approvate e scritte nella specifica prima del codice: tabella `acl_activity_log` con nomi copiati e FK autore ON DELETE SET NULL, accessi letti da `auth_logins` di Shield e uniti nella stessa lista (UNION ALL), conservazione 90 giorni / 1 anno / per sempre con pulizia giornaliera senza cron, permesso `activity.view`, evento `rolewarden.activity`. Corretto il difetto D1 del collaudo (filtri ricevuti come array -> HTTP 500), anche sull'elenco utenti dove esisteva dall'MVP.
 - Stato: completato. **V3 approvata dal collaudo HTTP**: Codex 489/497 (D1), riverifica interrotta dalla quota di Codex e completata dal Collaudatore ad Hoc, 899/899 su a602071.
 - Note per il prossimo: resta il controllo visivo in browser della schermata Activity e della sezione C delle Impostazioni. Ambiguita' A1 (email storiche nella ricerca) e A2 (CRUD del catalogo permessi, che il pannello non ha) in `tests/Integration/V3-REPORT.md`, da decidere dall'autore. `rolewarden-db` ora sulla porta 3317 (3307 occupata da qrart-mysql). Decisioni V4 gia' approvate, da scrivere nella specifica: nuovo IP o dispositivo, permesso `security.alerts`, invio a fine richiesta con evento `rolewarden.mail`, mailpit nel docker-compose.
+
+### [2026-09-29 00:20] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-v4.run.py`, `verify-v4.php`, `verify-v4.snapshot.php` (nuovi), output `verify-v4.*.output.txt`, `verify-v4.v4.*.mail-events.json`, `verify-v4.environment.txt`, `V4-REPORT.md`; questa voce in `_AI-LOG.md` (Stato corrente non modificato)
+- Cosa ho fatto: collaudo in nero di V4 Email di sicurezza su `2028ea2`, baseline `3805640`, in sostituzione di Codex (quota esaurita), stesso protocollo: nessun controller, model, view (template email compresi), sorgente vietato, test unitario o diff aperto; contenuto delle email letto solo da Mailpit, nomi dei template dal campo `view` dell'evento `rolewarden.mail`. Aggiornamento, rollback e installazione nuova; nuovo dispositivo/IP (IP nuovo via HTTP rilegando il server su `[::1]`, storico aggiuntivo con insert dichiarati in `auth_logins`); password dal profilo e dall'admin; blocco con soglia 3 e 5 dalle Impostazioni, destinatari per permesso (super admin, admin, override positivo sì; admin disattivato e override negativo no); contenuto ed escape; Mailpit fermato e server SMTP appeso; listener che restituisce false, override dei tre template, `fromEmail` vuoto; regressione V2/V3 adattata; CSRF, array nel login, log.
+- Stato: completato. Esito **FAIL per un solo difetto: 1079 PASS / 10 FAIL su 1089** (V4 90/95 in development e in production; regressione 899/899). **V4 non approvata** finché D1 non è corretto. Controllo visivo in browser e client di posta dovuto.
+- Note per il prossimo: D1, `email[]` nel login dà HTTP 500 sul GET /login successivo (`Array to string conversion` in `src/Views/auth/login.php` riga 35, dal log); su 3805640 il 500 era sulla POST, in `SignInThrottle.php`. Ambiguità non decise in `V4-REPORT.md`: A1 login senza token CSRF accettato (rotta Shield, csrf globale spento nell'app di prova, anche su 3805640); A2 con `php -S` la risposta aspetta l'SMTP (+15 s con server appeso), l'invio dopo la risposta sotto FPM resta da verificare altrove; A3 password come array: 500 dentro Shield; A4 data in UTC senza fuso. Osservazioni: parte text/plain senza separatori e con entità HTML. Email: solo Mailpit, destinatari tutti `*.test`, Mailpit vuoto alla fine, container acceso. Dump di `rolewarden_test` identico in tutti i 19 cicli (SHA256 `f7f37c04…e21e64`, 0 tabelle alla fine); nessun php.exe o python.exe residuo; `verify-v4.work` rimossa (prima la junction). Incidente: un `taskkill /IM php.exe` globale usato una volta per chiudere un mio server di prova. Nessun commit.
+
+### [2026-09-29 00:30] - Claude
+- Tipo: feature
+- Scope: `src/Account/SecurityMail.php`, `src/Views/emails/`, `src/Settings/SignIn.php` (`recentFailures`), `src/Filters/SignInThrottle.php`, `Config/Events.php`, `AccountController`, `UsersController`, migrazione `AddSecurityPermissions`, seeder, lingua, `src/Views/auth/login.php`, `docker-compose.yml` (servizio `mail`, Mailpit), `docs/SPEC.md`, `README.md`, test unitari; commit 2028ea2, c0ab8fc
+- Cosa ho fatto: V4 Email di sicurezza, con le decisioni approvate scritte nella specifica prima del codice (nuovo IP o dispositivo, password cambiata anche da admin, avviso di blocco una volta per blocco a utente e titolari di `security.alerts`, invio dopo la risposta con evento `rolewarden.mail`, template sovrascrivibili, Mailpit per il collaudo). Collaudo del Collaudatore ad Hoc (Codex senza quota): 1079/1089, un solo difetto D1 (email come array al login -> 500 sulla GET successiva, preesistente). Corretto in c0ab8fc, insieme a parte testo leggibile delle email e fuso orario nell'ora.
+- Stato: parziale. **V4 non ancora approvata**: manca la riverifica di c0ab8fc.
+- Note per il prossimo: riprendere con la riverifica di D1 su c0ab8fc (Codex, se ha quota, altrimenti Collaudatore ad Hoc; mandato come `tests/Integration/V4-REPORT.md`, porta DB 3317, email solo su Mailpit 1026/8026). Ambiguita' da decidere dall'autore, dettagli nel report: A1 login senza token CSRF accettato perche' il filtro `csrf` globale dell'ospite e' spento (proteggere la rotta nel modulo o documentarlo), A2 fuori da PHP-FPM la risposta attende l'SMTP, A3 password come array -> 500 dentro la validazione di Shield, A4 ore in UTC (ora con fuso indicato). Il Collaudatore ha eseguito una volta `taskkill /F /IM php.exe` generico: nessun altro PHP risultava attivo. Poi V5 (temi): prima decisione "Tailwind o CSS a mano". Il `.env` di `../rolewarden-app-test` invia email a Mailpit (127.0.0.1:1026). Nessun push.

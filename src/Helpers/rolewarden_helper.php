@@ -35,6 +35,19 @@ if (! function_exists('permissions')) {
     }
 }
 
+if (! function_exists('rw_query')) {
+    /**
+     * A query-string value as text: '' when missing or when it is not a
+     * string (e.g. ?q[]=x), so filters never see an array.
+     */
+    function rw_query(string $key): string
+    {
+        $value = service('request')->getGet($key);
+
+        return is_string($value) ? trim($value) : '';
+    }
+}
+
 if (! function_exists('rw_panel')) {
     /**
      * Renders a panel screen inside the shared layout. $crumbs is the inner

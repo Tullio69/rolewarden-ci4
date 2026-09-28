@@ -26,9 +26,9 @@ class UsersController extends BaseController
     public function index(): string
     {
         $userModel = model(UserModel::class);
-        $search = (string) $this->request->getGet('q');
-        $roleId = $this->request->getGet('role');
-        $status = (string) $this->request->getGet('status');
+        $search = rw_query('q');
+        $roleId = rw_query('role');
+        $status = rw_query('status');
 
         if ($search !== '') {
             // CI4 appends ESCAPE to LIKE but leaves the bound value alone: % and _ must match literally.
@@ -60,7 +60,7 @@ class UsersController extends BaseController
             $userModel->where('active', 0);
         }
 
-        $sort = (string) $this->request->getGet('sort') === 'asc' ? 'ASC' : 'DESC';
+        $sort = rw_query('sort') === 'asc' ? 'ASC' : 'DESC';
         $users = $userModel->orderBy('last_active', $sort)->orderBy('id', 'DESC')->paginate(20);
         $pager = $userModel->pager;
         $pager->only(['q', 'role', 'status', 'sort']);

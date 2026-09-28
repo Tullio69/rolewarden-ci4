@@ -19,10 +19,10 @@ class ActivityController extends BaseController
     public function index(): string
     {
         $filters = [
-            'user' => trim((string) $this->request->getGet('user')),
-            'action' => (string) $this->request->getGet('action'),
-            'from' => (string) $this->request->getGet('from'),
-            'to' => (string) $this->request->getGet('to'),
+            'user' => rw_query('user'),
+            'action' => rw_query('action'),
+            'from' => rw_query('from'),
+            'to' => rw_query('to'),
         ];
         $actions = [...ActivityLog::SIGN_IN_ACTIONS, ...ActivityLog::ACTIONS];
 
@@ -30,7 +30,7 @@ class ActivityController extends BaseController
             $filters['action'] = '';
         }
 
-        $page = max(1, (int) $this->request->getGet('page'));
+        $page = max(1, (int) rw_query('page'));
         $result = ActivityLog::page($filters, $page, self::PER_PAGE);
 
         $pager = service('pager');

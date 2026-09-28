@@ -7,6 +7,7 @@ namespace RoleWarden\Config;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Account\ActivityLog;
+use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Settings\DefaultRole;
 
@@ -28,6 +29,15 @@ Events::on('pre_system', static function (): void {
 
 Events::on('post_system', static function (): void {
     Sessions::registerNew();
+});
+
+// Security emails (RoleWarden\Account\SecurityMail), sent after the response.
+Events::on('login', static function (User $user): void {
+    SecurityMail::onLogin($user);
+});
+
+Events::on('failedLogin', static function (array $credentials): void {
+    SecurityMail::onFailedLogin($credentials);
 });
 
 Events::on('logout', static function (User $user): void {

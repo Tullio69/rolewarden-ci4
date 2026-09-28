@@ -10,6 +10,7 @@ use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use RoleWarden\Account\ActivityLog;
+use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Authorization\ProtectionException;
 use RoleWarden\Entities\User;
@@ -270,6 +271,7 @@ class UsersController extends BaseController
 
         if ($newPassword !== '') {
             ActivityLog::record('user.password_set', 'user', $id, $after['username']);
+            SecurityMail::passwordChanged($user, true);
         }
 
         return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_success', lang('RoleWarden.panel.users.updated'));

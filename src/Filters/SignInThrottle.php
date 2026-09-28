@@ -35,29 +35,14 @@ class SignInThrottle implements FilterInterface
             return redirect()->back()->withInput()->with('error', lang('RoleWarden.signIn.tooMany'));
         }
 
-        $email = trim((string) $request->getPost('email'));
+        $email = $request->getPost('email');
+        $email = is_string($email) ? trim($email) : '';
 
         if ($email === '') {
             return null;
         }
 
-        $minutes = (int) setting('RoleWarden.lockMinutes');
-        $attempts = (int) setting('RoleWarden.lockAttempts');
-        $logins = db_connect()->table(config('Auth')->tables['logins']);
-        $since = date('Y-m-d H:i:s', time() - $minutes * 60);
-        $lastSuccess = $logins->select('date')->where('identifier', $email)->where('success', 1)->orderBy('date', 'desc')->limit(1)->get()->getRow('date');
-
-        if ($lastSuccess !== null && $lastSuccess > $since) {
-            $since = $lastSuccess;
-        }
-
-        $failures = array_map(
-            static fn (array $row): int => (int) strtotime($row['date']),
-            $logins->select('date')->where('identifier', $email)->where('success', 0)->where('date >', $since)
-                ->orderBy('date', 'desc')->limit($attempts)->get()->getResultArray(),
-        );
-
-        $wait = SignIn::lockedFor($failures, $attempts, $minutes, time());
+        $wait = SignIn::lockedFor(SignIn::recentFailures($email), (int) setting('RoleWarden.lockAttempts'), (int) setting('RoleWarden.lockMinutes'), time());
 
         if ($wait > 0) {
             return redirect()->back()->withInput()->with('error', lang('RoleWarden.signIn.locked', [(int) ceil($wait / 60)]));

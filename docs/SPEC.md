@@ -341,6 +341,13 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 - **Conservazione.** Dalle Impostazioni: 90 giorni, 1 anno (predefinito) o per sempre. La pulizia gira alla prima scrittura del giorno, senza cron, e tocca solo `acl_activity_log`: `auth_logins` resta di Shield.
 - **Permesso ed estensione.** La schermata richiede `activity.view`, concesso ad `admin`. Ogni voce scritta emette l'evento CI4 `rolewarden.activity`, il punto d'aggancio per l'applicazione ospite.
 
+**Decisioni del 2026-09-28 (V4).**
+- **Nuovo accesso.** Dopo un login riuscito parte l'email se l'IP oppure il dispositivo (browser e sistema, dallo user agent) non compaiono in nessun accesso riuscito precedente dello stesso utente in `auth_logins`. Al primissimo accesso non parte nulla: non c'è niente con cui confrontare.
+- **Password cambiata.** L'email va all'utente quando cambia la propria password dal profilo e quando gliela imposta un amministratore.
+- **Troppi tentativi.** Quando un'email raggiunge la soglia di blocco, parte un avviso all'utente, se l'email è registrata, e a chi ha il permesso `security.alerts`, concesso ad `admin` con una migrazione di dati. Un avviso per blocco, non uno per tentativo.
+- **Invio.** Le email si accodano durante la richiesta e partono dopo l'invio della risposta (funzione di shutdown, preceduta da `fastcgi_finish_request()` quando esiste; `post_system` di CodeIgniter scatta prima della risposta e la rallenterebbe), con il servizio Email di CodeIgniter e la `Config\Email` dell'ospite. Prima di ogni invio parte l'evento `rolewarden.mail`: se un listener restituisce `false`, l'invio diretto non avviene, così un'applicazione con una coda propria prende il messaggio. I template sono view sovrascrivibili come quelle del pannello.
+- **Collaudo.** I messaggi si catturano con Mailpit, servizio del docker-compose di sviluppo, mai con un invio reale.
+
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 
 ## Design system

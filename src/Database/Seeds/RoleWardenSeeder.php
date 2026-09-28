@@ -50,6 +50,9 @@ class RoleWardenSeeder extends Seeder
         'activity' => [
             'view' => 'Read the activity log',
         ],
+        'security' => [
+            'alerts' => 'Receive security alert emails (too many failed sign-ins)',
+        ],
     ];
 
     /** Roles that receive every seeded permission. */

@@ -107,6 +107,32 @@ final class SignIn
     }
 
     /**
+     * Timestamps of the failed sign-ins for $email that count towards the
+     * lock: since its last successful sign-in, within the lock duration,
+     * newest first, at most as many as the lock needs. Read from Shield's
+     * auth_logins.
+     *
+     * @return list<int>
+     */
+    public static function recentFailures(string $email): array
+    {
+        helper('setting');
+        $logins = db_connect()->table(config('Auth')->tables['logins']);
+        $since = date('Y-m-d H:i:s', time() - (int) setting('RoleWarden.lockMinutes') * 60);
+        $lastSuccess = $logins->select('date')->where('identifier', $email)->where('success', 1)->orderBy('date', 'desc')->limit(1)->get()->getRow('date');
+
+        if ($lastSuccess !== null && $lastSuccess > $since) {
+            $since = $lastSuccess;
+        }
+
+        return array_map(
+            static fn (array $row): int => (int) strtotime($row['date']),
+            $logins->select('date')->where('identifier', $email)->where('success', 0)->where('date >', $since)
+                ->orderBy('date', 'desc')->limit((int) setting('RoleWarden.lockAttempts'))->get()->getResultArray(),
+        );
+    }
+
+    /**
      * Seconds until an email whose failed sign-ins are $failures unlocks; 0
      * when it is not locked. $failures are the timestamps of the failures
      * since its last successful sign-in within the last $minutes. Attempts

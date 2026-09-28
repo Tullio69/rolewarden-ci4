@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Shield\Authentication\Passwords;
 use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Account\ActivityLog;
+use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Models\UserModel;
 
@@ -56,6 +57,7 @@ class AccountController extends BaseController
         // A changed password is often a reaction to someone else having it.
         Sessions::revokeAll((int) $user->id);
         ActivityLog::record('account.password_changed', 'user', (int) $user->id, ActivityLog::userLabel($user));
+        SecurityMail::passwordChanged($user, false);
 
         return redirect()->to($back)->with('rw_success', lang('RoleWarden.panel.account.passwordChanged'));
     }

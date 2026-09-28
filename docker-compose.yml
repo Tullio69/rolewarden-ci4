@@ -38,5 +38,15 @@ services:
       db:
         condition: service_healthy
 
+  # Catches every email the test app sends: nothing leaves this machine. Read the messages at
+  # http://localhost:${MAIL_UI_PORT:-8026} or through its API (/api/v1/messages).
+  mail:
+    image: axllent/mailpit:latest
+    container_name: rolewarden-mail
+    restart: unless-stopped
+    ports:
+      - "${MAIL_SMTP_PORT:-1026}:1025"
+      - "${MAIL_UI_PORT:-8026}:8025"
+
 volumes:
   db-data:

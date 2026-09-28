@@ -66,6 +66,12 @@ Then open Adminer on the port you chose. If another project's Adminer already si
 8080, that page still loads, but its `db` is a different server: "Access denied for user
 'root'" there means you are on the wrong Adminer, not using the wrong password.
 
+The same command starts Mailpit, which catches every email the test application sends:
+point the test app at it in its `.env` (`email.protocol = smtp`, `email.SMTPHost =
+127.0.0.1`, `email.SMTPPort = 1026`, `email.SMTPCrypto = ''`) and read the messages on
+<http://localhost:8026>. Nothing leaves the machine. `MAIL_SMTP_PORT` and `MAIL_UI_PORT`
+move it the same way as the ports above.
+
 `docker compose down -v` deletes the data volume and recreates both databases from
 scratch on the next start. Use it when migrations leave the schema in a state that is
 faster to rebuild than to repair.
@@ -102,8 +108,9 @@ php spark migrate:rollback -b <previous batch>
 Replace the module's folder (or run `composer update`), then run
 `php spark migrate -n RoleWarden`. New versions ship their changes to existing data as
 migrations, never as edits you make by hand. For example, the migration for the Settings
-screen gives the `admin` role the new permissions `settings.view` and `settings.update`, the one for sessions gives it `sessions.view` and `sessions.revoke`, and the one for
-the activity log gives it `activity.view`.
+screen gives the `admin` role the new permissions `settings.view` and `settings.update`, the one for sessions gives it `sessions.view` and `sessions.revoke`, the one for
+the activity log gives it `activity.view`, and the one for security emails gives it
+`security.alerts`.
 
 ### Importing existing Shield groups
 
@@ -240,6 +247,24 @@ sessions and `sessions.revoke` signs them out.
 
 Sessions are tracked in the `acl_sessions` table by a `pre_system` hook in the module's
 `Config/Events.php`, so the host has nothing to wire.
+
+### Security emails
+
+The module emails a user when their account signs in from a device or an address it has
+never used before (not on the very first sign-in), when their password changes (from the
+profile or set by an administrator), and when their email reaches the lock after too many
+failed sign-ins. That last alert also goes to everyone holding `security.alerts` (granted to
+`admin`), and is sent once per lock.
+
+- Emails use CodeIgniter's Email service with the host's `app/Config/Email.php`, which must
+  have a `fromEmail`; without one they are skipped and a warning is logged.
+- They are sent after the response has gone out, from a shutdown function, so no page waits
+  for the mail server.
+- Before each email the event `rolewarden.mail` fires with the message (`to`, `subject`,
+  `view`, `data`). A listener that returns `false` takes the message over, for example to put
+  it on the host's own queue, and the module does not send it.
+- The templates are views in `RoleWarden\Views\emails`; override one by copying it to
+  `app/Views/overrides/RoleWarden/Views/emails/`.
 
 ### Activity log
 

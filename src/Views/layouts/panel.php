@@ -25,6 +25,9 @@
       <?php if (can('settings.view')) : ?>
         <li><a href="<?= esc(site_url('rolewarden/settings')) ?>"<?= $active === 'settings' ? ' aria-current="page"' : '' ?>><span>04</span><?= lang('RoleWarden.panel.nav.settings') ?></a></li>
       <?php endif ?>
+      <?php if (can('activity.view')) : ?>
+        <li><a href="<?= esc(site_url('rolewarden/activity')) ?>"<?= $active === 'activity' ? ' aria-current="page"' : '' ?>><span>05</span><?= lang('RoleWarden.panel.nav.activity') ?></a></li>
+      <?php endif ?>
     </ul>
   </aside>
 

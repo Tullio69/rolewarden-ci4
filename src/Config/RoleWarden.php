@@ -43,6 +43,12 @@ class RoleWarden extends BaseConfig
     public int $signInRate = 10;
 
     /**
+     * Days the activity log keeps its entries; 0 keeps them forever. Starting
+     * value of the Settings screen. Shield's own auth_logins is not pruned.
+     */
+    public int $activityRetentionDays = 365;
+
+    /**
      * Full name of a module table, e.g. table('roles') => 'acl_roles'.
      */
     public function table(string $name): string

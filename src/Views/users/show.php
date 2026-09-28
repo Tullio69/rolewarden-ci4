@@ -20,6 +20,9 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
     <div><dt><?= lang('RoleWarden.panel.users.lastActive') ?></dt><dd><?= $user->last_active !== null ? esc($user->last_active->toLocalizedString('d MMM y, HH:mm')) : lang('RoleWarden.panel.users.never') ?></dd></div>
     <div><dt><?= lang('RoleWarden.panel.users.memberSince') ?></dt><dd><?= $user->created_at !== null ? esc($user->created_at->toLocalizedString('d MMM y')) : '—' ?></dd></div>
     <div><dt><?= lang('RoleWarden.panel.users.overrides') ?></dt><dd class="rw-fig-sm"><?= (int) $overrideCount ?></dd></div>
+    <?php if (can('activity.view')) : ?>
+      <div><dt><?= lang('RoleWarden.panel.nav.activity') ?></dt><dd><a href="<?= esc(site_url('rolewarden/activity') . '?' . http_build_query(['user' => $user->email])) ?>"><?= lang('RoleWarden.panel.activity.forUser') ?></a></dd></div>
+    <?php endif ?>
   </dl>
 </div>
 

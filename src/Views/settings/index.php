@@ -6,15 +6,18 @@
  * @var list<array<string, mixed>> $roles       roles that may be the default (no super admin)
  * @var string                     $defaultRole slug, '' for none
  * @var array<string, int>         $signIn      RoleWarden\Settings\SignIn::values()
+ * @var int                        $retention   activity log retention in days, 0 = forever
+ * @var int                        $logEntries
  * @var array<string, string>      $errors      field => message
  * @var string|null                $changedAt
  * @var string|null                $changedBy
  * @var bool                       $canUpdate
  */
 
+use RoleWarden\Account\ActivityLog;
 use RoleWarden\Settings\SignIn;
 
-$saved = ['default_role' => $defaultRole] + array_map('strval', $signIn);
+$saved = ['default_role' => $defaultRole, 'activity_retention' => (string) $retention] + array_map('strval', $signIn);
 // After a rejected save the controls show what was posted, marked as changed.
 $shown = [];
 foreach ($saved as $key => $value) {
@@ -30,6 +33,7 @@ $settingsConfig = [
         'lock_minutes' => lang('RoleWarden.panel.settings.lockMinutes'),
         'sign_in_rate' => lang('RoleWarden.panel.settings.signInRate'),
         'default_role' => lang('RoleWarden.panel.settings.defaultRole'),
+        'activity_retention' => lang('RoleWarden.panel.settings.retention'),
     ],
     'labels' => ['one' => lang('RoleWarden.panel.settings.unsavedOne'), 'many' => lang('RoleWarden.panel.settings.unsavedMany')],
 ];
@@ -78,6 +82,10 @@ $rows = [
     ['sign_in_rate', lang('RoleWarden.panel.settings.signInRateHelp'), $number('sign_in_rate', lang('RoleWarden.panel.settings.rateUnit')), ''],
 ];
 $changedNote = esc(lang('RoleWarden.panel.settings.changed'), 'js');
+// 90 days, 1 year, then "forever" last; a value set in code outside these stays offered.
+$retentions = SignIn::choices(ActivityLog::RETENTIONS, $retention);
+usort($retentions, static fn (int $a, int $b): int => ($a === 0 ? PHP_INT_MAX : $a) <=> ($b === 0 ? PHP_INT_MAX : $b));
+$logNote = lang('RoleWarden.panel.settings.entries', [$logEntries]);
 ?>
 <div class="rw-page-head">
   <div>
@@ -147,6 +155,28 @@ $changedNote = esc(lang('RoleWarden.panel.settings.changed'), 'js');
           </select>
         </td>
         <td class="rw-anno"><span class="rw-note" x-text="isChanged('default_role') ? '<?= $changedNote ?>' : ''"></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="rw-section-title"><span class="rw-section-n">C</span><h2><?= lang('RoleWarden.panel.settings.sectionActivity') ?></h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+      <tr :class="{ 'rw-changed': isChanged('activity_retention') }">
+        <td class="rw-m-num"><?= str_pad((string) (count($rows) + 2), 2, '0', STR_PAD_LEFT) ?></td>
+        <th class="rw-l-key" scope="row">
+          <label for="rw-activity_retention"><?= lang('RoleWarden.panel.settings.retention') ?></label>
+          <small><?= lang('RoleWarden.panel.settings.retentionHelp') ?></small>
+        </th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-activity_retention" name="activity_retention" x-model="cur.activity_retention"<?= $disabled ?><?= $invalid('activity_retention') ?>>
+            <?php foreach ($retentions as $days) : ?>
+              <option value="<?= $days ?>"<?= (string) $days === $shown['activity_retention'] ? ' selected' : '' ?>><?= $days === 0 ? lang('RoleWarden.panel.settings.forever') : ($days % 365 === 0 ? lang('RoleWarden.panel.settings.years', [intdiv($days, 365)]) : lang('RoleWarden.panel.settings.days', [$days])) ?></option>
+            <?php endforeach ?>
+          </select>
+          <?= $error('activity_retention') ?>
+        </td>
+        <td class="rw-anno"><span class="rw-note" x-text="isChanged('activity_retention') ? '<?= $changedNote ?>' : '<?= esc($logNote, 'js') ?>'"><?= esc($logNote) ?></span></td>
       </tr>
     </tbody>
   </table>

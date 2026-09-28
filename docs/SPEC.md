@@ -335,6 +335,12 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 - **Throttling.** Shield offre solo il filtro `auth-rates`, fisso a 10 richieste al minuto per IP. Il modulo aggiunge il filtro `rw-signin` sulla rotta di login: un limite per IP configurabile (servizio `throttler` di CI4) e un blocco per email dopo N fallimenti dall'ultimo accesso riuscito, per una durata configurabile, contati da `auth_logins` di Shield. Il blocco vale per l'email digitata, registrata o no, così non rivela quali email esistono. Nessuna tabella nuova.
 - **Profilo e permessi.** Profilo e sessioni proprie sono raggiungibili da ogni utente autenticato, senza permessi. Vedere e revocare le sessioni altrui richiede `sessions.view` e `sessions.revoke`, concessi ad `admin` con una migrazione di dati. Cambiare la password richiede quella attuale e chiude tutte le altre sessioni dell'utente.
 
+**Decisioni del 2026-09-28 (V3).**
+- **Tabella.** `acl_activity_log`: id, actor_id verso `users` con ON DELETE SET NULL, actor_label (nome dell'autore all'epoca, così lo storico sopravvive alla cancellazione), action (`area.evento`, es. `role.updated`), subject_type, subject_id, subject_label, details (JSON con i valori prima e dopo), ip_address, created_at. Indici su created_at, actor_id, action e (subject_type, subject_id).
+- **Accessi.** I login riusciti e falliti restano nel registro di Shield, `auth_logins`, e non si copiano: la schermata del log unisce le due tabelle in una lista sola, filtrabile allo stesso modo. Nel log del modulo va solo ciò che Shield non registra: modifiche a utenti, ruoli, permessi e impostazioni, uscite, revoche di sessione.
+- **Conservazione.** Dalle Impostazioni: 90 giorni, 1 anno (predefinito) o per sempre. La pulizia gira alla prima scrittura del giorno, senza cron, e tocca solo `acl_activity_log`: `auth_logins` resta di Shield.
+- **Permesso ed estensione.** La schermata richiede `activity.view`, concesso ad `admin`. Ogni voce scritta emette l'evento CI4 `rolewarden.activity`, il punto d'aggancio per l'applicazione ospite.
+
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 
 ## Design system

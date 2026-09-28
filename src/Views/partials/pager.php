@@ -13,7 +13,17 @@ $current = $pager->getCurrentPage();
           <span class="rw-page" aria-disabled="true"><?= lang('RoleWarden.panel.previous') ?></span>
         <?php endif ?>
       </li>
+      <?php $gap = false; ?>
       <?php for ($page = 1; $page <= $pages; $page++) : ?>
+        <?php // First, last and two either side of the current page; a gap shows as an ellipsis.
+        if ($page !== 1 && $page !== $pages && abs($page - $current) > 2) {
+            if (! $gap) {
+                echo '<li><span class="rw-page" aria-hidden="true">&hellip;</span></li>';
+                $gap = true;
+            }
+            continue;
+        }
+        $gap = false; ?>
         <li>
           <?php if ($page === $current) : ?>
             <span class="rw-page" aria-current="page"><?= $page ?></span>

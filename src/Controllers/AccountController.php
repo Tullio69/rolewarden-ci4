@@ -8,6 +8,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Shield\Authentication\Passwords;
 use CodeIgniter\Shield\Entities\User;
+use RoleWarden\Account\ActivityLog;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Models\UserModel;
 
@@ -54,6 +55,7 @@ class AccountController extends BaseController
 
         // A changed password is often a reaction to someone else having it.
         Sessions::revokeAll((int) $user->id);
+        ActivityLog::record('account.password_changed', 'user', (int) $user->id, ActivityLog::userLabel($user));
 
         return redirect()->to($back)->with('rw_success', lang('RoleWarden.panel.account.passwordChanged'));
     }
@@ -98,23 +100,41 @@ class AccountController extends BaseController
 
     private function revoke(int $userId, int $id, string $back): RedirectResponse
     {
-        return Sessions::revokeSession($userId, $id)
-            ? redirect()->to(site_url($back))->with('rw_success', lang('RoleWarden.panel.account.sessionRevoked'))
-            : redirect()->to(site_url($back))->with('rw_error', lang('RoleWarden.panel.account.sessionGone'));
+        if (! Sessions::revokeSession($userId, $id)) {
+            return redirect()->to(site_url($back))->with('rw_error', lang('RoleWarden.panel.account.sessionGone'));
+        }
+
+        $this->log('session.revoked', $userId);
+
+        return redirect()->to(site_url($back))->with('rw_success', lang('RoleWarden.panel.account.sessionRevoked'));
     }
 
     private function revokeRemembered(int $userId, int $id, string $back): RedirectResponse
     {
-        return Sessions::revokeRemembered($userId, $id)
-            ? redirect()->to(site_url($back))->with('rw_success', lang('RoleWarden.panel.account.rememberedRevoked'))
-            : redirect()->to(site_url($back))->with('rw_error', lang('RoleWarden.panel.account.sessionGone'));
+        if (! Sessions::revokeRemembered($userId, $id)) {
+            return redirect()->to(site_url($back))->with('rw_error', lang('RoleWarden.panel.account.sessionGone'));
+        }
+
+        $this->log('session.remembered_forgotten', $userId);
+
+        return redirect()->to(site_url($back))->with('rw_success', lang('RoleWarden.panel.account.rememberedRevoked'));
     }
 
     private function revokeAll(int $userId, string $back): RedirectResponse
     {
         Sessions::revokeAll($userId);
+        $this->log('session.all_revoked', $userId);
 
         return redirect()->to(site_url($back))->with('rw_success', lang('RoleWarden.panel.account.allRevoked'));
+    }
+
+    private function log(string $action, int $userId): void
+    {
+        $user = model(UserModel::class)->find($userId);
+
+        if ($user !== null) {
+            ActivityLog::record($action, 'user', $userId, ActivityLog::userLabel($user));
+        }
     }
 
     private function existing(int $userId): int

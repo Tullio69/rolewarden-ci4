@@ -47,6 +47,9 @@ class RoleWardenSeeder extends Seeder
             'view' => 'See the signed-in sessions of other users',
             'revoke' => 'Sign other users out of their sessions',
         ],
+        'activity' => [
+            'view' => 'Read the activity log',
+        ],
     ];
 
     /** Roles that receive every seeded permission. */

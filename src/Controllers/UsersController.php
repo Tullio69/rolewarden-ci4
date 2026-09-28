@@ -9,6 +9,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Shield\Authentication\Authenticators\Session;
+use RoleWarden\Account\ActivityLog;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Authorization\ProtectionException;
 use RoleWarden\Entities\User;
@@ -134,6 +135,8 @@ class UsersController extends BaseController
         $userId = (int) $userModel->getInsertID();
         $userModel->activate($userModel->findById($userId));
         DefaultRole::assignTo($userId);
+        $defaultRole = DefaultRole::role();
+        ActivityLog::record('user.created', 'user', $userId, (string) $this->request->getPost('username'), $defaultRole !== null ? ['role' => $defaultRole['name']] : []);
 
         return redirect()->to(site_url('rolewarden/users'))->with('rw_success', lang('RoleWarden.panel.users.created'));
     }
@@ -247,10 +250,9 @@ class UsersController extends BaseController
             return redirect()->back()->withInput()->with('rw_errors', $this->validator->getErrors());
         }
 
-        $user->fill([
-            'username' => $this->request->getPost('username'),
-            'email' => $this->request->getPost('email'),
-        ]);
+        $before = ['username' => $user->username, 'email' => $user->email];
+        $after = ['username' => (string) $this->request->getPost('username'), 'email' => (string) $this->request->getPost('email')];
+        $user->fill($after);
 
         $newPassword = (string) $this->request->getPost('password');
 
@@ -259,6 +261,16 @@ class UsersController extends BaseController
         }
 
         $userModel->save($user);
+
+        $changes = ActivityLog::diff($before, $after);
+
+        if ($changes !== []) {
+            ActivityLog::record('user.updated', 'user', $id, $after['username'], $changes);
+        }
+
+        if ($newPassword !== '') {
+            ActivityLog::record('user.password_set', 'user', $id, $after['username']);
+        }
 
         return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_success', lang('RoleWarden.panel.users.updated'));
     }
@@ -269,10 +281,16 @@ class UsersController extends BaseController
             return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_error', lang('RoleWarden.panel.users.cannotDisableSelf'));
         }
 
+        $user = model(UserModel::class)->find($id);
+
         try {
             model(UserModel::class)->delete($id);
         } catch (ProtectionException $e) {
             return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_error', lang('RoleWarden.protection.' . $e->reason));
+        }
+
+        if ($user !== null) {
+            ActivityLog::record('user.deleted', 'user', $id, ActivityLog::userLabel($user));
         }
 
         return redirect()->to(site_url('rolewarden/users'))->with('rw_success', lang('RoleWarden.panel.users.deleted'));
@@ -285,6 +303,7 @@ class UsersController extends BaseController
 
         if ($user instanceof User) {
             $userModel->activate($user);
+            ActivityLog::record('user.activated', 'user', $id, ActivityLog::userLabel($user));
         }
 
         return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_success', lang('RoleWarden.panel.users.activated'));
@@ -302,6 +321,10 @@ class UsersController extends BaseController
             return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_error', lang('RoleWarden.protection.' . $e->reason));
         }
 
+        if (($user = model(UserModel::class)->find($id)) !== null) {
+            ActivityLog::record('user.deactivated', 'user', $id, ActivityLog::userLabel($user));
+        }
+
         return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_success', lang('RoleWarden.panel.users.deactivated'));
     }
 
@@ -309,11 +332,15 @@ class UsersController extends BaseController
     {
         $roleId = (int) $this->request->getPost('role_id');
 
-        if (model(UserModel::class)->find($id) === null || model(RoleModel::class)->find($roleId) === null) {
+        $user = model(UserModel::class)->find($id);
+        $role = model(RoleModel::class)->find($roleId);
+
+        if ($user === null || $role === null) {
             throw PageNotFoundException::forPageNotFound();
         }
 
         (new UserRoles())->assign($id, $roleId);
+        ActivityLog::record('user.role_assigned', 'user', $id, ActivityLog::userLabel($user), ['role' => $role['name']]);
 
         return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_success', lang('RoleWarden.panel.users.roleAssigned'));
     }
@@ -329,6 +356,13 @@ class UsersController extends BaseController
             return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_error', lang('RoleWarden.protection.' . $e->reason));
         }
 
+        $user = model(UserModel::class)->find($id);
+        $role = model(RoleModel::class)->withDeleted()->find($roleId);
+
+        if ($user !== null && $role !== null) {
+            ActivityLog::record('user.role_revoked', 'user', $id, ActivityLog::userLabel($user), ['role' => $role['name']]);
+        }
+
         return redirect()->to(site_url('rolewarden/users/' . $id))->with('rw_success', lang('RoleWarden.panel.users.roleRevoked'));
     }
 
@@ -337,7 +371,10 @@ class UsersController extends BaseController
         $permissionId = (int) $this->request->getPost('permission_id');
         $granted = $this->request->getPost('granted');
 
-        if (model(UserModel::class)->find($id) === null || model(PermissionModel::class)->find($permissionId) === null) {
+        $user = model(UserModel::class)->find($id);
+        $permission = model(PermissionModel::class)->find($permissionId);
+
+        if ($user === null || $permission === null) {
             return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'message' => lang('RoleWarden.panel.users.overrideNotFound')]);
         }
 
@@ -350,6 +387,9 @@ class UsersController extends BaseController
         } catch (Throwable) {
             return $this->response->setStatusCode(500)->setJSON(['ok' => false, 'message' => lang('RoleWarden.panel.users.overrideSaveFailed')]);
         }
+
+        $action = $granted === null ? 'user.override_cleared' : ($granted === '1' ? 'user.override_granted' : 'user.override_denied');
+        ActivityLog::record($action, 'user', $id, ActivityLog::userLabel($user), ['permission' => $permission['slug']]);
 
         return $this->response->setJSON(['ok' => true, 'csrfHash' => csrf_hash()]);
     }

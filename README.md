@@ -102,7 +102,8 @@ php spark migrate:rollback -b <previous batch>
 Replace the module's folder (or run `composer update`), then run
 `php spark migrate -n RoleWarden`. New versions ship their changes to existing data as
 migrations, never as edits you make by hand. For example, the migration for the Settings
-screen gives the `admin` role the new permissions `settings.view` and `settings.update`, and the one for sessions gives it `sessions.view` and `sessions.revoke`.
+screen gives the `admin` role the new permissions `settings.view` and `settings.update`, the one for sessions gives it `sessions.view` and `sessions.revoke`, and the one for
+the activity log gives it `activity.view`.
 
 ### Importing existing Shield groups
 
@@ -239,6 +240,30 @@ sessions and `sessions.revoke` signs them out.
 
 Sessions are tracked in the `acl_sessions` table by a `pre_system` hook in the module's
 `Config/Events.php`, so the host has nothing to wire.
+
+### Activity log
+
+`/rolewarden/activity` (permission `activity.view`) lists every change made from the panel to
+users, roles, permissions and settings, sessions signed out, sign-outs, and every sign-in
+attempt, newest first, with who did it, on what, when and from which address. It filters by
+user (name or email, also finding users since deleted), action and period.
+
+- Changes are written to `acl_activity_log`, with the author's and the object's names copied
+  in, so the history stays readable after they are renamed or deleted.
+- Sign-in attempts are not copied: they are read from Shield's `auth_logins` and merged into
+  the same list.
+- The Settings screen sets how long entries are kept: 90 days, 1 year (the default,
+  `RoleWarden\Config\RoleWarden::$activityRetentionDays`) or forever. Older entries are
+  deleted once a day, on the first write of the day; no cron job is needed. `auth_logins` is
+  Shield's and is left alone.
+- Every entry fires the CodeIgniter event `rolewarden.activity` with the row as its argument,
+  so the host app can react to it:
+
+```php
+Events::on('rolewarden.activity', static function (array $entry): void {
+    // $entry['action'] is e.g. 'role.updated'; $entry['details'] is JSON.
+});
+```
 
 ## Conventions
 

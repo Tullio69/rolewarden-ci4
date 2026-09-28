@@ -7,6 +7,7 @@ namespace RoleWarden\Controllers;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
+use RoleWarden\Account\ActivityLog;
 use RoleWarden\Authorization\ProtectionException;
 use RoleWarden\Models\PermissionModel;
 use RoleWarden\Models\RoleModel;
@@ -88,7 +89,7 @@ class RolesController extends BaseController
         $parentId = $this->request->getPost('parent_id');
 
         try {
-            model(RoleModel::class)->insert([
+            $newId = model(RoleModel::class)->insert([
                 'slug' => $this->request->getPost('slug'),
                 'name' => $this->request->getPost('name'),
                 'description' => $this->request->getPost('description'),
@@ -98,6 +99,8 @@ class RolesController extends BaseController
         } catch (ProtectionException $e) {
             return redirect()->back()->withInput()->with('rw_error', lang('RoleWarden.protection.' . $e->reason));
         }
+
+        ActivityLog::record('role.created', 'role', (int) $newId, (string) $this->request->getPost('name'), ['slug' => (string) $this->request->getPost('slug')]);
 
         return redirect()->to(site_url('rolewarden/roles'))->with('rw_success', lang('RoleWarden.panel.roles.created'));
     }
@@ -157,15 +160,28 @@ class RolesController extends BaseController
 
         $parentId = $this->request->getPost('parent_id');
 
+        $after = [
+            'name' => (string) $this->request->getPost('name'),
+            'description' => (string) $this->request->getPost('description'),
+            'parent_id' => $parentId !== '' && $parentId !== null ? (int) $parentId : null,
+            'is_super_admin' => $this->request->getPost('is_super_admin') === '1' ? 1 : 0,
+        ];
+
         try {
-            $roleModel->update($id, [
-                'name' => $this->request->getPost('name'),
-                'description' => $this->request->getPost('description'),
-                'parent_id' => $parentId !== '' && $parentId !== null ? (int) $parentId : null,
-                'is_super_admin' => $this->request->getPost('is_super_admin') === '1' ? 1 : 0,
-            ]);
+            $roleModel->update($id, $after);
         } catch (ProtectionException $e) {
             return redirect()->back()->withInput()->with('rw_error', lang('RoleWarden.protection.' . $e->reason));
+        }
+
+        // The parent is shown by name, which is what a reader of the log recognises.
+        $parentName = static fn ($parentId): ?string => $parentId !== null ? ($roleModel->withDeleted()->find((int) $parentId)['name'] ?? null) : null;
+        $changes = ActivityLog::diff(
+            ['name' => $role['name'], 'description' => (string) $role['description'], 'parent' => $parentName($role['parent_id']), 'is_super_admin' => (int) $role['is_super_admin']],
+            ['name' => $after['name'], 'description' => $after['description'], 'parent' => $parentName($after['parent_id']), 'is_super_admin' => $after['is_super_admin']],
+        );
+
+        if ($changes !== []) {
+            ActivityLog::record('role.updated', 'role', $id, $after['name'], $changes);
         }
 
         return redirect()->to(site_url('rolewarden/roles/' . $id))->with('rw_success', lang('RoleWarden.panel.roles.updated'));
@@ -173,10 +189,16 @@ class RolesController extends BaseController
 
     public function delete(int $id): RedirectResponse
     {
+        $role = model(RoleModel::class)->find($id);
+
         try {
             model(RoleModel::class)->delete($id);
         } catch (ProtectionException $e) {
             return redirect()->to(site_url('rolewarden/roles/' . $id))->with('rw_error', lang('RoleWarden.protection.' . $e->reason));
+        }
+
+        if ($role !== null) {
+            ActivityLog::record('role.deleted', 'role', $id, $role['name'], ['slug' => $role['slug']]);
         }
 
         return redirect()->to(site_url('rolewarden/roles'))->with('rw_success', lang('RoleWarden.panel.roles.deleted'));
@@ -187,7 +209,10 @@ class RolesController extends BaseController
         $permissionId = (int) $this->request->getPost('permission_id');
         $granted = $this->request->getPost('granted') === '1';
 
-        if (model(RoleModel::class)->find($id) === null || model(PermissionModel::class)->find($permissionId) === null) {
+        $role = model(RoleModel::class)->find($id);
+        $permission = model(PermissionModel::class)->find($permissionId);
+
+        if ($role === null || $permission === null) {
             return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'message' => lang('RoleWarden.panel.roles.matrixNotFound')]);
         }
 
@@ -208,6 +233,8 @@ class RolesController extends BaseController
         } catch (Throwable) {
             return $this->response->setStatusCode(500)->setJSON(['ok' => false, 'message' => lang('RoleWarden.panel.roles.matrixSaveFailed')]);
         }
+
+        ActivityLog::record($granted ? 'role.permission_granted' : 'role.permission_revoked', 'role', $id, $role['name'], ['permission' => $permission['slug']]);
 
         return $this->response->setJSON(['ok' => true, 'csrfHash' => csrf_hash()]);
     }

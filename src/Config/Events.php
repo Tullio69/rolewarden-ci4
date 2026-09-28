@@ -6,6 +6,7 @@ namespace RoleWarden\Config;
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\Shield\Entities\User;
+use RoleWarden\Account\ActivityLog;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Settings\DefaultRole;
 
@@ -15,6 +16,8 @@ use RoleWarden\Settings\DefaultRole;
 // A user who registers through Shield gets the default role from the Settings screen.
 Events::on('register', static function (User $user): void {
     DefaultRole::assignTo((int) $user->id);
+    $role = DefaultRole::role();
+    ActivityLog::record('user.registered', 'user', (int) $user->id, ActivityLog::userLabel($user), $role !== null ? ['role' => $role['name']] : [], $user);
 });
 
 // Signed-in sessions (RoleWarden\Account\Sessions): pre_system runs before routing and
@@ -27,6 +30,7 @@ Events::on('post_system', static function (): void {
     Sessions::registerNew();
 });
 
-Events::on('logout', static function (): void {
+Events::on('logout', static function (User $user): void {
     Sessions::forgetCurrent();
+    ActivityLog::record('auth.logout', 'user', (int) $user->id, ActivityLog::userLabel($user), [], $user);
 });

@@ -62,6 +62,8 @@ class RouteRegistrar
 
                 $routes->get('settings', 'SettingsController::index', ['filter' => 'can:settings.view']);
                 $routes->post('settings', 'SettingsController::update', ['filter' => 'can:settings.update']);
+
+                $routes->get('activity', 'ActivityController::index', ['filter' => 'can:activity.view']);
             },
         );
     }

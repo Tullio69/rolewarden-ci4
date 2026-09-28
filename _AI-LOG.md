@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude
+**Agente:** Claude Code (Opus)
+**Dalle:** 2026-09-28 23:30
+**Scope:** V4 Email di sicurezza: `src/` (invio, eventi di accesso, template), permesso `security.alerts`, `docker-compose.yml` (mailpit), `docs/SPEC.md`, `README.md`
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -573,3 +573,24 @@ Formato di ogni voce:
 - Cosa ho fatto: V2 Account. Decisioni approvate dall'autore e scritte nella specifica prima del codice: tabella `acl_sessions` (con `remember_selector`), throttling per IP e blocco per email contati da `auth_logins`, durata sessione per inattivita'. Profilo con cambio password (chiude le altre sessioni), schermata Sessioni, sessioni altrui nel dettaglio utente con `sessions.view`/`sessions.revoke`, sezione Sign-in delle Impostazioni (ricordami salvato nella `Auth.sessionConfig` di Shield). Su richiesta dell'autore, margine della schermata Permissions allineato a Roles. Corretti tre difetti emersi dal collaudo: rientro con remember-me tracciato solo alla richiesta successiva (a0327fe), messaggio flash `error` di CI4 non mostrato come toast in production (5c7bfc5), pannello in 500 senza la tabella delle sessioni (37bb47f).
 - Stato: completato. **V2 approvata dal collaudo HTTP**: Codex bloccato prima dall'ambiente (processi negati) e poi dalla quota; Collaudatore ad Hoc 280/282 su 5c7bfc5, riverifica 290/290 su 37bb47f.
 - Note per il prossimo: resta il controllo visivo in browser di Profilo, Sessioni e sezione Sign-in. Ambiguita' A1-A6 in `tests/Integration/V2-REPORT.md`, da decidere dall'autore (A1: `sessions.revoke` senza `sessions.view` revoca via POST diretto). Il `.env` di `../rolewarden-app-test` ora punta alla porta 3307 (prima 3306, che e' scolibro). In `%TEMP%` restano 26 file `rwv1-*.jar` degli script di collaudo, da togliere a mano. Nessun push.
+
+### [2026-09-28 22:44] - Codex
+- Tipo: review
+- Scope: `tests/Integration/verify-v3.*`, `tests/Integration/V3-REPORT.md`; questa voce in `_AI-LOG.md` (Stato corrente non modificato)
+- Cosa ho fatto: collaudo indipendente HTTP V3 su `0e3d6f6` in main, baseline `162ccd4`, contro le sole sezioni di specifica/documentazione autorizzate e l'HTML servito, senza leggere implementazione, test unitari o diff dei commit. Riutilizzato l'impianto V2 in copie temporanee: sostituzione cartella da git archive, migrazione, rollback, installazione nuova, eventi del pannello/account/Shield, ricerca e paginazione, storico, conservazione, permessi, CSRF ed escape, development/production. Adattamenti V2 e correzioni dello strumento espliciti nel report.
+- Stato: completato. **V3 NON APPROVATA: 489 PASS / 8 FAIL su 497 controlli** (V3 principale 142/150, supplementare 57/57, regressione V2 188/188 + 77/77 + 25/25). Un difetto D1: filtri activity passati come array causano HTTP 500, errore PHP a schermo in development e CRITICAL Array to string conversion nei log in entrambi gli ambienti.
+- Note per il prossimo: riproduzione D1 e ambiguita' separate in `V3-REPORT.md`: A1 ricerca di vecchie email dopo cambio email/cancellazione fisica; A2 CRUD del catalogo permessi non esposto dal pannello (concessioni/revoche/override collaudati). Controllo visivo in browser dovuto. Solo `rolewarden_test` su 127.0.0.1:3317; nove snapshot/ripristini identici SHA256 `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`, database finale vuoto. Nessuna email reale, nessun processo PHP/Python residuo, junction rimossa prima di `verify-v3.work`; app sorella non modificata. Nessun commit o push. Modifiche preesistenti al log preservate.
+
+### [2026-09-28 23:10] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-v3.run.py` (destinazione `a602071`, ambiente come argomento, `RW_V3_NEW` per il controllo di sensibilita'), `verify-v3.cases.php` (`rows3` su corpo vuoto, controlli `SCALAR-*` in `arrays3`), output `verify-v3.recheck.*`, `verify-v3.environment.txt`, sezione di riverifica in cima a `V3-REPORT.md`; questa voce in `_AI-LOG.md` (Stato corrente non modificato)
+- Cosa ho fatto: riverifica di V3 su `a602071` (0e3d6f6 + correzione dei filtri) in sostituzione di Codex (quota esaurita), stesso protocollo, nessun file d'implementazione, test unitario o diff aperto. Rieseguite suite V3 principale, supplementare e regressione V2 adattata (test, extra, adapt) in development e production, piu' la nuova suite `arrays`: 24 varianti di parametri array per `/rolewarden/activity` (`user`, `action`, `from`, `to`, `page`) e 24 per `/rolewarden/users` (`q`, `role`, `status`, `sort`, `page`), con combinazioni, e controlli dei filtri con valori normali.
+- Stato: completato. Esito **PASS: 899/899** (v3 139+139, edges 57+57, arrays 55+55, test 141+154, extra 31+39, adapt 16+16). **D1 corretto** anche sull'elenco utenti: tutte le richieste HTTP 200, log applicativo a soglia 9 e log del server PHP senza warning o errori. Controllo di sensibilita': la stessa suite su `0e3d6f6` fallisce 39/55, su entrambe le rotte. **V3 approvata per il collaudo HTTP.**
+- Note per il prossimo: restano dovuti il controllo visivo in browser e le decisioni dell'autore su A1 (email storiche nella ricerca) e A2 (CRUD del catalogo permessi), in `V3-REPORT.md`, non decise. Un primo `v3 production` si e' interrotto per un difetto dello strumento (`loadHTML('')` sul 403 a corpo vuoto), corretto e rieseguito. Dump di `rolewarden_test` identico prima e dopo in tutti i 14 cicli (SHA256 `f7f37c04…e21e64`, 0 tabelle alla fine); nessun php.exe o python.exe residuo; `verify-v3.work` rimossa (prima la junction). Nessun commit.
+
+### [2026-09-28 23:30] - Claude
+- Tipo: feature
+- Scope: `src/Account/ActivityLog.php`, `src/Controllers/ActivityController.php`, `src/Views/activity/index.php`, strumentazione in `UsersController`, `RolesController`, `SettingsController`, `AccountController`, `Config/Events.php`; migrazioni `CreateActivityLog` e `AddActivityPermissions`; seeder, rotte, menu, `partials/pager.php` (puntini), sezione C delle Impostazioni, lingua, `rw_query()` nell'helper; `docs/SPEC.md`, `README.md`, `tests/Unit/Account/ActivityLogTest.php`; commit 0e3d6f6, a602071
+- Cosa ho fatto: V3 Log attivita'. Decisioni approvate e scritte nella specifica prima del codice: tabella `acl_activity_log` con nomi copiati e FK autore ON DELETE SET NULL, accessi letti da `auth_logins` di Shield e uniti nella stessa lista (UNION ALL), conservazione 90 giorni / 1 anno / per sempre con pulizia giornaliera senza cron, permesso `activity.view`, evento `rolewarden.activity`. Corretto il difetto D1 del collaudo (filtri ricevuti come array -> HTTP 500), anche sull'elenco utenti dove esisteva dall'MVP.
+- Stato: completato. **V3 approvata dal collaudo HTTP**: Codex 489/497 (D1), riverifica interrotta dalla quota di Codex e completata dal Collaudatore ad Hoc, 899/899 su a602071.
+- Note per il prossimo: resta il controllo visivo in browser della schermata Activity e della sezione C delle Impostazioni. Ambiguita' A1 (email storiche nella ricerca) e A2 (CRUD del catalogo permessi, che il pannello non ha) in `tests/Integration/V3-REPORT.md`, da decidere dall'autore. `rolewarden-db` ora sulla porta 3317 (3307 occupata da qrart-mysql). Decisioni V4 gia' approvate, da scrivere nella specifica: nuovo IP o dispositivo, permesso `security.alerts`, invio a fine richiesta con evento `rolewarden.mail`, mailpit nel docker-compose.

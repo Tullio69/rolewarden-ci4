@@ -34,7 +34,10 @@ si riesporta in `docs/`.
 - Ogni stringa dell'interfaccia nei file di lingua fin da subito
 - Codice e documentazione in inglese
 - Componenti JS: dichiarazione e controller nello stesso file, controller come funzione separata
-- HTML, CSS e JavaScript scritti a mano, nessuno script di generazione
+- HTML e JavaScript scritti a mano. Il CSS del pannello si compila con la CLI standalone di
+  Tailwind v4 (niente Node ne' npm) da un sorgente scritto a mano; il CSS compilato si committa,
+  chi installa il modulo non esegue build. Le classi componente `rw-*` restano, definite nel
+  sorgente Tailwind sui token. Nessun altro script di generazione (deciso il 2026-09-30, V5)
 
 ## Repository
 

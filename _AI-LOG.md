@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude
-**Agente:** Claude Code (Opus)
-**Dalle:** 2026-10-03
-**Scope:** V5 Temi: `src/Assets/css/` (sorgente Tailwind e CSS compilato), `bin/` (script della CLI Tailwind), viste e controller del personalizzatore, `docs/SPEC.md`, `README.md`
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -648,3 +648,25 @@ Formato di ogni voce:
   - da sistemare a mano: due coppie `tail`/`grep` orfane dei miei monitor (PID 26328/42716, 29472/26372), chiusura negata dai permessi; restano le cartelle di profili Chrome bloccati da Windows `tests/Integration/verify-v5.work` (junction gia' rimossa) e `scratchpad/chrome`.
 
   Controllo visivo in browser vero dovuto all'autore. Nessun commit.
+
+### [2026-10-03 16:30] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-v5.php` (nuovi controlli di riverifica W00b, J01-J04, X03b, H-LOG-PATH; nessuna asserzione precedente cambiata), output `verify-v5.<modo>.<ambiente>.95c90e7.*`, `verify-v5.environment.txt`, sezione "Riverifica" in cima a `V5-REPORT.md`; questa voce (Stato corrente non modificato)
+- Cosa ho fatto: riverifica in nero di V5 su `95c90e7` (d3c7dbb + correzioni), baseline `bd7488e`, stesso mandato e perimetro, nessun file vietato ne' diff aperto. Ho rieseguito la suite V5 completa con la parte in Chrome, sulla pagina servita senza registrazione manuale dei componenti. Ho controllato i componenti Alpine su toast, Impostazioni, matrice del ruolo e dell'utente, e rieseguito la regressione V2/V3/V4 in development e production.
+- Stato: completato. Esito **PASS**: V5 177/177 in development e 177/177 in production; regressione 1562/1564, con 2 FAIL di V2 G07 gia' noto come superato (G07v5 PASS). **D1-D5 corretti, V5 approvata per il collaudo.**
+- Note per il prossimo:
+  - D1: i componenti partono, nessun errore in console su nessuna schermata, e il salvataggio dal browser scrive i colori scelti e quelli derivati.
+  - D2: nessun valore grezzo fuori dalla geometria delle icone, ne' nel CSS ne' negli stili inline.
+  - D3: il raggio non valido viene rifiutato con errore sotto il campo.
+  - D4: il messaggio dice «listed themes».
+  - D5: il warning nomina il file `theme.json`.
+  - Restano da decidere A1-A3, non decise: dimensioni fisse, confronto WCAG solo con `surface`, valori fuori formato silenziosi. Resta dovuto anche il controllo visivo in un browser vero.
+  - Pulizia: 16 cicli con dump identico (SHA256 `f7f37c04…e21e64`), database vuoto; Mailpit vuoto e healthy; nessun php/python mio attivo, Chrome chiusi.
+  - Restano dal collaudo precedente: tail/grep orfani (PID 26328/42716, 29472/26372) e le cartelle di profili Chrome bloccate da Windows, `tests/Integration/verify-v5.work` e `scratchpad/chrome`. Nessun commit.
+
+### [2026-10-03] - Claude
+- Tipo: feature
+- Scope: `resources/css/panel.css` (sorgente Tailwind), `src/Assets/css/panel.css` (compilato), `bin/build-css`, `src/Settings/Theme.php`, `src/Settings/ColorScheme.php`, `src/Controllers/AppearanceController.php`, `src/Views/appearance/`, layout, login, helper, migrazione `AddAppearancePermissions`, seeder, lingua, font Plex Sans 700, `documentation/design-guide.html`, `CLAUDE.md`, `docs/SPEC.md`, `README.md`, `tests/Unit/Settings/ThemeTest.php`; commit d1291a5, a402fee, d3c7dbb, 95c90e7
+- Cosa ho fatto: V5 Temi. Decisioni approvate e scritte nella specifica: Tailwind v4 con CLI standalone e CSS compilato committato, classi `rw-*` dentro Tailwind, file di tema in `writable/rolewarden/theme.json` (vince `app/Config/RoleWarden/theme.json`), chiaro/scuro per utente, permesso `appearance.update`, niente tipografia personalizzata in v1.0, temi approvati su anteprima. Token su tre livelli, temi Console/Clarity/Contrast in chiaro e scuro, personalizzatore con anteprima dal vivo e avvisi WCAG AA, temi e componenti dell'ospite (`$extraThemes`, `$themeStylesheet`), design guide con i valori letti dal CSS vero. Corretto il difetto D1 del collaudo, preesistente: Alpine partiva prima che `panel.js` registrasse i componenti, quindi in un browser vero toast JS, barra delle Impostazioni, matrice e personalizzatore non funzionavano; piu' D2-D5 minori.
+- Stato: completato. **V5 approvata dal collaudo**: Codex fermato da un errore di configurazione del modello (`gpt-6.1-sol` non ammesso con l'account ChatGPT); Collaudatore ad Hoc, anche in Chrome headless con profilo isolato: FAIL su d3c7dbb (D1-D5), riverifica PASS su 95c90e7, 177/177 per ambiente, regressione con il solo G07 superato da V5.
+- Note per il prossimo: ambiguita' V5 da decidere dall'autore (A1 misure fisse non colonne/icone; A2 controllo WCAG solo su `surface`; A3 valori fuori formato ignorati in silenzio). Restano il controllo visivo in browser vero per V2-V5 e le ambiguita' aperte di V3/V4. Da sistemare a mano: processi orfani `tail`/`grep` (PID 26328/42716, 29472/26372) e cartelle di profili Chrome non cancellabili (`tests/Integration/verify-v5.work`, `scratchpad/chrome`). Codex richiede di cambiare il modello predefinito nella sua configurazione. Prossima tappa V6 Importazione CSV. Nessun push.

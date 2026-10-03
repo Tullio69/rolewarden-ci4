@@ -1,5 +1,80 @@
 # V5 — Temi: collaudo indipendente
 
+## Riverifica — 2026-10-03, Collaudatore ad Hoc (Claude), commit `95c90e7` (V5 = `d3c7dbb` + `95c90e7`)
+
+**Esito: PASS. Suite V5: 177/177 in development e 177/177 in production, 0 FAIL, più l'ambiguità A1, registrata e non contata. Regressione V2/V3/V4: 1562/1564; i 2 FAIL sono V2 G07, già noto come superato da V5. Il suo intento è ricontrollato da G07v5, che passa. D1-D5 sono corretti. V5 approvata per il collaudo.** Le ambiguità A1-A3 restano aperte, separate e non decise. Il controllo visivo in un browser vero resta dovuto all'autore.
+
+Lo stesso mandato, perimetro e regole del collaudo. Modulo da `git archive 95c90e7`, baseline di aggiornamento `bd7488e`, aggancio come cartella sostituibile. Nessun file vietato aperto e nessuna lettura del diff. Comando: `RW_V5_NEW=95c90e7 python tests/Integration/verify-v5.run.py <modo> <ambiente>`.
+
+### Totali
+
+| Suite | development | production |
+| --- | ---: | ---: |
+| V5 (`verify-v5.php`, 170 controlli del collaudo + 7 di riverifica) | 177/177 | 177/177 |
+| Regressione V4 (baseline `3805640`) | 232/232 | 232/232 |
+| Regressione V2 `test` / `extra` / `adapt` | 140/141 + 31 + 16 | 153/154 + 39 + 16 |
+| Regressione V3 principale / supplementare / filtri array | 139 + 69 + 55 | 139 + 69 + 55 |
+| **Totale** | **859/860** | **880/881** |
+
+Evidenze: `verify-v5.<modo>.<ambiente>.95c90e7.*` (output, log di fase, CSS servito, audit dei token, schermate) e `verify-v5.environment.txt`.
+
+### Difetti dichiarati corretti: verificati
+
+**D1, corretto.** Sulla pagina così come viene servita, senza nessuna registrazione manuale:
+- **personalizzatore** (W00):
+  - compare il messaggio «all clear»;
+  - un testo sotto AA viene segnalato e l'anteprima applica il colore scelto;
+- **salvataggio dal browser** (W00b): il file di tema contiene i colori scelti, compresi quelli derivati: `light.ink #c8c8c8`, `accent #0b4f8a`, `accent-hover #094171`, `accent-tint #d9e2e9`, `on-accent #ffffff` e `dark.ink #eeeeee`, insieme a tema Contrast, raggio 8 e densità Comfortable;
+- **schermate con Alpine**, controllate per nome e stato di avvio (J01-J04):
+  - `rwToasts` su ogni pagina;
+  - `rwSettings` nelle Impostazioni;
+  - `rwMatrix` nella matrice di un ruolo;
+  - `rwUserMatrix` nel dettaglio utente;
+- **comportamento in pagina** (J01-J04):
+  - un toast spinto da JavaScript compare nella pila;
+  - cambiando un valore delle Impostazioni, la barra passa a «1 unsaved change … Discard / Save settings»;
+  - la matrice espone il suo stato (`changes()`) e disegna i segni;
+- **console**: nessun errore JavaScript su queste schermate (J04), sul personalizzatore (W14), sulle 14 schermate più il login nei 3 temi in chiaro e in scuro (R-*-js) e con il quarto tema (X09, X10).
+
+**D2, corretto.**
+- **CSS servito** (T05): non resta nessun valore grezzo nei gruppi dei token fuori dalle eccezioni dichiarate. Restano solo i valori esenti di geometria delle icone: segno della casella, pallino di stato, punto di modifica della matrice, icona di ricerca, ramo dell'albero.
+- **Markup servito** (P11): nessuno stile inline con colori o lunghezze non nulle. Restano solo token (`color:var(--ink-faint)`, `color:var(--denied)`) e zeri o parole chiave (`border-bottom:0`, `margin:0`, `display:inline`, `white-space:nowrap`, `grid-template-columns:1fr`).
+
+**D3, corretto.** Un raggio non valido (`8px;}*{color:red}`) non viene salvato e l'errore compare sotto il campo (C02-8). Gli altri casi di validazione restano verdi.
+
+**D4, corretto.** Con il quarto tema dichiarato, il messaggio è «Error: Choose one of the listed themes.» (X03b).
+
+**D5, corretto.** Il warning per un file di tema non valido nomina il file di tema, cioè `…\app\writable\rolewarden/theme.json` oppure `…\app\app\Config/RoleWarden/theme.json`, e non più un sorgente del modulo (H-LOG-PATH). Nella fase dei file ostili:
+- ci sono 18 warning per 6 file non validi (3 per posizione) su 3-4 richieste ciascuno, coerenti con al più uno per richiesta;
+- non c'è nessun errore PHP (H-LOG).
+
+### Aspettative superate e strumento
+
+- **V2 G07** resta superato da V5 (pulsanti della barra in alto) e non è stato modificato: G07v5 ne ricontrolla l'intento e passa in entrambi gli ambienti.
+- **Nuovi controlli di riverifica** in `verify-v5.php`: W00b, J01-J04, X03b, H-LOG-PATH. Nessuna asserzione del collaudo precedente è stata cambiata.
+
+### Ambiguità ancora aperte (non decise)
+
+- **A1:** dimensioni fisse che non sono né colonne né icone. Elenco nel collaudo qui sotto, invariato.
+- **A2:** il controllo WCAG confronta i colori solo con lo sfondo `surface`.
+- **A3:** valori fuori formato accettati o scartati in silenzio. I campi inviati come array e il colore derivato nascosto non valido si comportano come nel collaudo (C03 e C02-10, informativi).
+
+### Pulizia della riverifica
+
+- **Database:** 16 cicli di snapshot e ripristino, tutti identici, SHA-256 `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`; database vuoto alla fine. In tutto il collaudo e la riverifica i cicli sono 38, tutti identici.
+- **Email:** solo Mailpit, destinatari `*.test`; Mailpit vuoto alla fine, `rolewarden-mail` healthy. La suite V4 lo ferma e lo riavvia per le prove SMTP.
+- **Processi:**
+  - nessun `php.exe` o `python.exe` attivo;
+  - ogni istanza di Chrome headless avviata è terminata (P10);
+  - nessun nuovo monitor in questa riverifica.
+- **Restano dal collaudo precedente**, da sistemare a mano:
+  - le coppie `tail`/`grep` orfane (PID 26328/42716 e 29472/26372);
+  - la cartella bloccata `tests/Integration/verify-v5.work`, con profili Chrome non cancellabili da Windows (junction già rimossa);
+  - `scratchpad/chrome`, che contiene anche i profili di questa riverifica, con lo stesso blocco di Windows.
+
+  La cartella di lavoro `verify-v5.work2` è stata rimossa da ogni giro (prima la junction).
+- Nessun commit, nessun push.
+
 ## Collaudo — 2026-10-03, Collaudatore ad Hoc (Claude), commit `d3c7dbb`
 
 **Esito: FAIL. Suite V5: 160 PASS / 10 FAIL su 170 controlli in ciascun ambiente (development e production), più 1 ambiguità non contata. Regressione V2/V3/V4: 1385 PASS su 1387, con 2 FAIL superati da V5 (G07, uno per ambiente), il cui intento è stato ricontrollato con G07v5, che passa. V5 non è approvata.** Il difetto bloccante è D1: in un browser vero i componenti Alpine del pannello non partono. Per questo il personalizzatore non mostra né l'anteprima dal vivo né gli avvisi WCAG AA, e salvando dal browser i colori scelti vanno persi. Ci sono poi quattro difetti minori (D2-D5) e tre ambiguità di specifica (A1-A3), che non decido io.

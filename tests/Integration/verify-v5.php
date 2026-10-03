@@ -438,6 +438,8 @@ try {
     // Instrument correction (second development run): the served run's Save posts base=contrast with no
     // colours, so the theme is reset to Console here; the contrast references below assume Console.
     info('Theme file left by the served run: ' . json_encode(tf()));
+    $servedSaved = (string) tf();
+    check('W00b', 'As served, Save from the browser stores the chosen colours in the theme file (D1 recheck)', str_contains($servedSaved, '#c8c8c8') && str_contains($servedSaved, 'contrast'), $servedSaved);
     @unlink(theme_file());
     $r = browser($wsteps(true), 'customiser-started');
     $s = fn ($t) => by_tag($r, $t)['value'] ?? [];
@@ -472,6 +474,30 @@ try {
     $saved = json_decode((string) tf(), true); $savedTheme = tf();
     check('W15', 'A low-contrast text colour is accepted by a plain save too (a warning, never a refusal)', is_array($saved) && str_contains((string) $savedTheme, '#c8c8c8') && str_contains((string) $savedTheme, 'contrast'), (string) $savedTheme);
     logs_take('customiser-browser');
+
+    echo "-- Alpine screens as served (D1 recheck) --\n";
+    $childId = (int) q1("SELECT id FROM acl_roles WHERE slug='v1-child'");
+    $ALP = "(() => { const els = [...document.querySelectorAll('[x-data]')]; return els.map((e) => { const d = e._x_dataStack && e._x_dataStack[0]; return [e.getAttribute('x-data').split('(')[0].trim(), !!d && Object.keys(d).length > 0]; }); })()";
+    $r = browser([
+        ['op' => 'login', 'url' => $base . 'login', 'email' => $U['admin2']['email'], 'password' => $pw],
+        ['op' => 'goto', 'url' => $base . 'rolewarden/users', 'tag' => 'users'], ['op' => 'eval', 'tag' => 'users-x', 'expr' => $ALP],
+        ['op' => 'eval', 'tag' => 'toast', 'expr' => "(async () => { rwToast('success', 'V5 toast probe'); await new Promise((r) => setTimeout(r, 300)); return [...document.querySelectorAll('.rw-toasts .rw-toast')].map((t) => t.innerText.trim()); })()"],
+        ['op' => 'goto', 'url' => $base . 'rolewarden/settings', 'tag' => 'settings'], ['op' => 'eval', 'tag' => 'settings-x', 'expr' => $ALP],
+        ['op' => 'eval', 'tag' => 'settings-dirty', 'expr' => "(async () => { const s = document.querySelector('select[name=session_lifetime]'); const before = document.querySelector('.rw-bar') ? document.querySelector('.rw-bar').innerText.trim() : null; s.value = s.value === '1800' ? '86400' : '1800'; s.dispatchEvent(new Event('change', { bubbles: true })); await new Promise((r) => setTimeout(r, 200)); const bar = document.querySelector('.rw-bar'); return { before, after: bar ? bar.innerText.trim() : null, dirty: bar ? bar.className : null }; })()"],
+        ['op' => 'goto', 'url' => $base . 'rolewarden/roles/' . $childId, 'tag' => 'matrix'], ['op' => 'eval', 'tag' => 'matrix-x', 'expr' => $ALP],
+        ['op' => 'eval', 'tag' => 'matrix-api', 'expr' => "(() => { const e = document.querySelector('[x-data^=rwMatrix]'); const d = e && e._x_dataStack && e._x_dataStack[0]; return d ? { changes: typeof d.changes === 'function' ? d.changes().length : null, marks: document.querySelectorAll('.rw-mark').length } : null; })()"],
+        ['op' => 'goto', 'url' => $base . 'rolewarden/users/' . $U['subject']['id'], 'tag' => 'usermatrix'], ['op' => 'eval', 'tag' => 'usermatrix-x', 'expr' => $ALP],
+    ], 'alpine-screens');
+    $xs = [];
+    foreach (['users', 'settings', 'matrix', 'usermatrix'] as $k) $xs[$k] = by_tag($r, "$k-x")['value'] ?? null;
+    info('Alpine components per screen [name, started]: ' . json_encode($xs) . '; toast: ' . json_encode(by_tag($r, 'toast')['value'] ?? null) . '; settings bar: ' . json_encode(by_tag($r, 'settings-dirty')['value'] ?? null) . '; matrix: ' . json_encode(by_tag($r, 'matrix-api')['value'] ?? null));
+    $notStarted = []; foreach ($xs as $k => $list) foreach ((array) $list as [$n, $ok]) if (str_starts_with($n, 'rw') && ! $ok) $notStarted[] = "$k:$n";
+    $names = array_merge(...array_map(fn ($l) => array_column((array) $l, 0), array_values($xs)));
+    check('J01', 'Toasts, Settings, role matrix and user matrix: every rw* Alpine component is running (as served)', $notStarted === [] && count(array_intersect(['rwToasts', 'rwSettings', 'rwMatrix', 'rwUserMatrix'], $names)) === 4, json_encode([$notStarted, array_values(array_unique($names))]));
+    check('J02', 'A toast pushed from JavaScript appears in the stack', in_array(true, array_map(fn ($t) => str_contains($t, 'V5 toast probe'), (array) (by_tag($r, 'toast')['value'] ?? [])), true));
+    $sd = by_tag($r, 'settings-dirty')['value'] ?? [];
+    check('J03', 'Settings: changing a value updates the changes bar', ($sd['after'] ?? null) !== null && ($sd['after'] ?? '') !== ($sd['before'] ?? ''), json_encode($sd));
+    check('J04', 'No JavaScript error on users, settings, role matrix and user matrix', ($r['consoleErrors'] ?? ['?']) === [] && $r['errors'] === [], json_encode(array_map(fn ($e) => strtok($e, "\n"), array_slice($r['consoleErrors'] ?? [], 0, 4))));
 
     // =====================================================================================
     echo "== 6 The theme survives a module update ==\n";
@@ -544,6 +570,10 @@ try {
     $php = array_values(array_filter($hl, fn ($l) => preg_match('/^(ERROR|CRITICAL|ALERT|EMERGENCY) /', $l) || preg_match('/(ErrorException|TypeError|Warning - |Notice - |Deprecated - |json_decode)/', $l)));
     info('Log lines at WARNING or above with hostile theme files: ' . json_encode(array_slice(bad_lines($hl), 0, 8), JSON_UNESCAPED_SLASHES));
     check('H-LOG', 'Hostile theme files cause no PHP error, warning or exception in the log', $php === [], implode("\n", array_slice($php, 0, 8)));
+    $tw = array_values(array_filter($hl, fn ($l) => str_contains($l, 'RoleWarden: theme file')));
+    $wrong = array_values(array_filter($tw, fn ($l) => ! str_contains($l, 'theme.json') || str_contains($l, 'Theme.php')));
+    info('Theme-file warnings: ' . count($tw) . '; sample: ' . json_encode(array_slice(array_values(array_unique(array_map(fn ($l) => preg_replace('/^\S+ - \S+ \S+ --> /', '', $l), $tw))), 0, 4), JSON_UNESCAPED_SLASHES));
+    check('H-LOG-PATH', 'The warning for an invalid theme file names that theme file (D5 recheck)', $tw !== [] && $wrong === [], json_encode(array_slice($wrong, 0, 3), JSON_UNESCAPED_SLASHES));
     file_put_contents(theme_file(), (string) $savedTheme); // restore the saved theme for the next phases
 
     // =====================================================================================
@@ -640,6 +670,9 @@ try {
     $h = page($adm, 'rolewarden/users'); $lp = page(new Client('v5-anon-ocean'), 'login');
     check('X02', 'Saving Ocean: <html data-rw-theme="ocean"> and the host stylesheet linked on panel and login pages', html_theme($h) === 'ocean' && str_contains(html_entity_decode($h), 'localhost:8070/css/rolewarden-ocean.css') && str_contains(html_entity_decode($lp), 'localhost:8070/css/rolewarden-ocean.css'), json_encode([html_theme($h), tf()]));
     $hb = save_theme($adm, ['base' => 'oceanx']);
+    $msg = preg_match('/class="rw-field-error"[^>]*>(.*?)<\/p>/s', $hb, $mm) ? trim(strip_tags($mm[1])) : '';
+    info('Error with four themes offered: ' . json_encode($msg));
+    check('X03b', 'With four themes offered the error does not speak of three (D4 recheck)', $msg !== '' && ! preg_match('/\bthree\b/i', $msg), $msg);
     check('X03', 'An undeclared theme is still refused', str_contains((string) tf(), 'ocean') && ! str_contains((string) tf(), 'oceanx') && error_under($hb, 'base'));
     $chip = "(() => { const c = document.createElement('span'); c.className = 'v5-host-chip'; c.textContent = 'Host chip'; document.querySelector('.rw-content').appendChild(c); const s = getComputedStyle(c), p = document.createElement('span'); document.body.appendChild(p); const res = (t) => { p.style.color = 'var(' + t + ')'; return getComputedStyle(p).color; }; const o = { bg: s.backgroundColor, color: s.color, radius: s.borderTopLeftRadius, raised: res('--surface-raised'), ink: res('--ink'), surface: res('--surface'), rule: res('--rule'), rowsize: getComputedStyle(document.documentElement).getPropertyValue('--size-row').trim(), textmd: getComputedStyle(document.documentElement).getPropertyValue('--text-md').trim() }; p.remove(); return o; })()";
     $r = browser([

@@ -1,0 +1,186 @@
+== V3 upgrade and fresh install ==
+module: 3805640
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 12:30:40 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ning: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions Running: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 12:30:41 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U01    V2 baseline has no activity permission/menu
+[INFO] stopping server pid=24768
+[INFO] termination requested=true
+[INFO] server closed
+module: 95c90e7
+[PASS] U02    Folder replaced before migrate: signed-in panel remains usable
+   spark migrate -n RoleWarden (rc=0): atabase\Seeds\RoleWardenSeeder Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Migrations complete.
+[PASS] U03    Upgrade grants activity.view to admin
+[PASS] U04    Upgraded admin sees Activity menu and list
+[INFO] stopping server pid=3140
+[INFO] termination requested=true
+[INFO] server closed
+   spark migrate:rollback -b 3 -f (rc=0): 0-03 12:30:46 UTC+00:00 Rolling back migrations to batch: 3 Rolling back: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Rolling back: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Done rolling back migrations.
+[PASS] U05    Rollback restores ACL/migrations exactly and removes log table
+module: 3805640
+[PASS] U06    Restored V2 folder works after rollback
+[INFO] stopping server pid=12624
+[INFO] termination requested=true
+[INFO] server closed
+module: 95c90e7
+   spark migrate -n RoleWarden (rc=0): atabase\Seeds\RoleWardenSeeder Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Migrations complete.
+[PASS] U07    V3 migration applies again
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 12:30:49 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): oleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 12:30:51 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U08    Fresh install grants activity.view
+[PASS] C01    Default retention is one year
+[PASS] P01    Without activity.view no menu or See activity link
+[PASS] P02    Direct activity GET without permission denied
+[PASS] P03    Anonymous activity GET denied
+[PASS] P04    With activity.view See activity link present
+[PASS] P05    activity.view alone allows the list
+== Panel events ==
+[PASS] E01a   Event role.created recorded once
+[PASS] E01b   Event has author, object, time and address
+[PASS] E01c   Combined user/action/inclusive date filters find role.created
+[PASS] E02a   Event role.updated recorded once
+[PASS] E02b   Event has author, object, time and address
+[PASS] E02c   Combined user/action/inclusive date filters find role.updated
+[PASS] E03a   Event user.created recorded once
+[PASS] E03b   Event has author, object, time and address
+[PASS] E03c   Combined user/action/inclusive date filters find user.created
+[PASS] E04a   Event user.updated recorded once
+[PASS] E04b   Event has author, object, time and address
+[PASS] E04c   Combined user/action/inclusive date filters find user.updated
+[PASS] E05a   Event user.password_set recorded once
+[PASS] E05b   Event has author, object, time and address
+[PASS] E05c   Combined user/action/inclusive date filters find user.password_set
+[PASS] E06a   Event user.deactivated recorded once
+[PASS] E06b   Event has author, object, time and address
+[PASS] E06c   Combined user/action/inclusive date filters find user.deactivated
+[PASS] E07a   Event user.activated recorded once
+[PASS] E07b   Event has author, object, time and address
+[PASS] E07c   Combined user/action/inclusive date filters find user.activated
+[PASS] E08a   Event user.role_assigned recorded once
+[PASS] E08b   Event has author, object, time and address
+[PASS] E08c   Combined user/action/inclusive date filters find user.role_assigned
+[PASS] E09a   Event user.role_revoked recorded once
+[PASS] E09b   Event has author, object, time and address
+[PASS] E09c   Combined user/action/inclusive date filters find user.role_revoked
+[MATRIX] {"url":"http:\/\/localhost:8070\/index.php\/rolewarden\/roles\/11\/permissions","status":200,"response":{"ok":true,"csrfHash":"b976fb1ab565c6d06e84c068bf383aea"}}
+[PASS] E10a   Event role.permission_granted recorded once
+[PASS] E10b   Event has author, object, time and address
+[PASS] E10c   Combined user/action/inclusive date filters find role.permission_granted
+[MATRIX] {"url":"http:\/\/localhost:8070\/index.php\/rolewarden\/roles\/11\/permissions","status":200,"response":{"ok":true,"csrfHash":"5041809712e268a5b040f53189d6754e"}}
+[PASS] E11a   Event role.permission_revoked recorded once
+[PASS] E11b   Event has author, object, time and address
+[PASS] E11c   Combined user/action/inclusive date filters find role.permission_revoked
+[MATRIX] {"url":"http:\/\/localhost:8070\/index.php\/rolewarden\/users\/8\/permissions","status":200,"response":{"ok":true,"csrfHash":"55e39763d64789d6659118b9a7987fb4"}}
+[PASS] E12a   Event user.override_granted recorded once
+[PASS] E12b   Event has author, object, time and address
+[PASS] E12c   Combined user/action/inclusive date filters find user.override_granted
+[MATRIX] {"url":"http:\/\/localhost:8070\/index.php\/rolewarden\/users\/8\/permissions","status":200,"response":{"ok":true,"csrfHash":"a25c1bf50afbefb4d19844e956054481"}}
+[PASS] E13a   Event user.override_denied recorded once
+[PASS] E13b   Event has author, object, time and address
+[PASS] E13c   Combined user/action/inclusive date filters find user.override_denied
+[MATRIX] {"url":"http:\/\/localhost:8070\/index.php\/rolewarden\/users\/8\/permissions","status":200,"response":{"ok":true,"csrfHash":"03dbd5a4581d1ad9d45d2d1249610480"}}
+[PASS] E14a   Event user.override_cleared recorded once
+[PASS] E14b   Event has author, object, time and address
+[PASS] E14c   Combined user/action/inclusive date filters find user.override_cleared
+[PASS] E15a   Event settings.updated recorded once
+[PASS] E15b   Event has author, object, time and address
+[PASS] E15c   Combined user/action/inclusive date filters find settings.updated
+[PASS] E16a   Event session.revoked recorded once
+[PASS] E16b   Event has author, object, time and address
+[PASS] E16c   Combined user/action/inclusive date filters find session.revoked
+[PASS] E17a   Event session.all_revoked recorded once
+[PASS] E17b   Event has author, object, time and address
+[PASS] E17c   Combined user/action/inclusive date filters find session.all_revoked
+[PASS] E18a   Event account.password_changed recorded once
+[PASS] E18b   Event has author, object, time and address
+[PASS] E18c   Combined user/action/inclusive date filters find account.password_changed
+[PASS] E19a   Shield registration writes a registration event
+[PASS] E19b   Registration found with combined filters
+[PASS] E20a   Event auth.logout recorded once
+[PASS] E20b   Event has author, object, time and address
+[PASS] E20c   Combined user/action/inclusive date filters find auth.logout
+[PASS] E21a   Event user.deleted recorded once
+[PASS] E21b   Event has author, object, time and address
+[PASS] E21c   Combined user/action/inclusive date filters find user.deleted
+[PASS] E22a   Event role.deleted recorded once
+[PASS] E22b   Event has author, object, time and address
+[PASS] E22c   Combined user/action/inclusive date filters find role.deleted
+[PASS] S01    Role creation retains old object label after rename/delete
+[PASS] S02    Object markup escaped in activity HTML
+[PASS] S03    Deleted subject searchable by original email
+[PASS] S04    Deleted subject searchable by original name
+== Accesses and filters ==
+[PASS] L01    Shield records one success and two failures
+[PASS] L02    Sign-ins do not create copies in module log
+[PASS] L03    Sign-in retrievable with all filters: mara@northwind-studio.test auth.login
+[PASS] L04    Sign-in retrievable with all filters: mara@northwind-studio.test auth.failed
+[PASS] L05    Sign-in retrievable with all filters: unregistered@v3.test auth.failed
+[PASS] L06    Known sign-in searchable by username
+[PASS] F01-%  User search treats literal characters as text: %
+[PASS] F01-_  User search treats literal characters as text: _
+[PASS] F01-Literal%_V3 User search treats literal characters as text: Literal%_V3
+[PASS] F01-literal%_v3@v3.test User search treats literal characters as text: literal%_v3@v3.test
+[PASS] F02    Empty state has explanatory text and no event rows
+[PASS] F03    Date endpoints include midnight and 23:59:59, exclude adjacent days
+[PASS] F04    Pagination exposes a later page
+[PASS] F05    Every pagination link preserves all filters
+[PASS] F06    Following next page returns distinct matching events
+[OBSERVATION] Permission catalogue forms: [{"action":"http:\/\/localhost:8070\/index.php\/rolewarden\/appearance\/mode","fields":{"csrf_test_name":"2dde8c4da8db9fe0381f88f48ea8fbeb"},"text":"System Light Dark","html":"<form class=\"rw-mode\" method=\"post\" action=\"http:\/\/localhost:8070\/index.php\/rolewarden\/appearance\/mode\" aria-label=\"Light or dark\">\r\n          <input type=\"hidden\" name=\"csrf_test_name\" value=\"2dde8c4da8db9fe0381f88f48ea8fbeb\">                      <button type=\"submit\" name=\"mode\" value=\"system\" aria-pressed=\"true\">System<\/button>\r\n                      <button type=\"submit\" name=\"mode\" value=\"light\" aria-pressed=\"false\">Light<\/button>\r\n                      <button type=\"submit\" name=\"mode\" value=\"dark\" aria-pressed=\"false\">Dark<\/button>\r\n                  <\/form>"}]
+== Author history ==
+[PASS] S05    Actor snapshot remains readable after rename
+[PASS] S06-OldAuthorV3 Deleted actor searchable by historical name/email
+[PASS] S06-newauthor@v3.test Deleted actor searchable by historical name/email
+[AMBIGUITY A1] Former email after email change and panel deletion: []
+[PASS] S07    Physical deletion preserves event and nulls actor_id
+[PASS] S08    Historic author name remains searchable after physical deletion
+[AMBIGUITY A1] Last email after physical deletion: []
+== Retention ==
+[PASS] C02    Exactly 90 days, one year and forever offered
+[PASS] C03-89 Invalid retention refused below control without changing settings
+[PASS] C03-366 Invalid retention refused below control without changing settings
+[PASS] C03--1 Invalid retention refused below control without changing settings
+[PASS] C03-bad Invalid retention refused below control without changing settings
+[PASS] C03-90.5 Invalid retention refused below control without changing settings
+[PASS] C03-' OR 1=1 -- Invalid retention refused below control without changing settings
+[PASS] C04-90 Retention option roundtrips
+[PASS] C07-90 Reading the log alone does not purge aged entries
+[PASS] C05-90 First write purges expired module rows only
+[PASS] C06-90 Retention never changes auth_logins
+[PASS] C08-90 Second write the same day does not run cleanup again
+[PASS] C04-365 Retention option roundtrips
+[PASS] C07-365 Reading the log alone does not purge aged entries
+[PASS] C05-365 First write purges expired module rows only
+[PASS] C06-365 Retention never changes auth_logins
+[PASS] C08-365 Second write the same day does not run cleanup again
+[PASS] C04-0  Retention option roundtrips
+[PASS] C07-0  Reading the log alone does not purge aged entries
+[PASS] C05-0  First write purges expired module rows only
+[PASS] C06-0  Retention never changes auth_logins
+[PASS] C08-0  Second write the same day does not run cleanup again
+== Publication in development and production ==
+[INFO] stopping server pid=30676
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] Z10-development-0 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z11-development Search text is escaped
+[PASS] Z10-development-1 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z10-development-2 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z10-development-3 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z10-development-4 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z10-development-5 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z10-development-6 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z10-development-7 Malformed/hostile activity filter has no SQL/PHP error
+[PASS] Z12-development Missing CSRF cannot change retention or record success
+[PASS] Z13-development Stored author markup escaped in activity
+[INFO] stopping server pid=41940
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] Z01    Application logs at maximum threshold: no unexpected errors/warnings
+[PASS] Z02    Captured HTTP responses do not expose SQL/PHP errors
+[PASS] Z03    PHP server logs have no warnings/errors
+V3 RESULT 139 checks 139 PASS 0 FAIL
+[MAIL] captured=4 non-test=[]
+[WRITABLE] entries created during the run (logs/sessions/cache/theme): 263

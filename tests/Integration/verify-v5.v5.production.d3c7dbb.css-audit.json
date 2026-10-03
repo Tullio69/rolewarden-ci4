@@ -1,0 +1,3634 @@
+{
+    "rules": 297,
+    "token_names": [
+        "--accent",
+        "--accent-hover",
+        "--accent-tint",
+        "--backdrop",
+        "--control-border",
+        "--d-accent",
+        "--d-accent-hover",
+        "--d-accent-tint",
+        "--d-backdrop",
+        "--d-control-border",
+        "--d-denied",
+        "--d-denied-tint",
+        "--d-granted",
+        "--d-granted-tint",
+        "--d-ink",
+        "--d-ink-faint",
+        "--d-ink-muted",
+        "--d-on-accent",
+        "--d-on-denied",
+        "--d-rule",
+        "--d-rule-strong",
+        "--d-shadow-float",
+        "--d-surface",
+        "--d-surface-raised",
+        "--d-surface-sunk",
+        "--denied",
+        "--denied-tint",
+        "--ease-out",
+        "--focus",
+        "--focus-width",
+        "--font-mono",
+        "--font-sans",
+        "--font-serif",
+        "--font-title",
+        "--granted",
+        "--granted-tint",
+        "--gutter",
+        "--ink",
+        "--ink-faint",
+        "--ink-muted",
+        "--l-accent",
+        "--l-accent-hover",
+        "--l-accent-tint",
+        "--l-backdrop",
+        "--l-control-border",
+        "--l-denied",
+        "--l-denied-tint",
+        "--l-granted",
+        "--l-granted-tint",
+        "--l-ink",
+        "--l-ink-faint",
+        "--l-ink-muted",
+        "--l-on-accent",
+        "--l-on-denied",
+        "--l-rule",
+        "--l-rule-strong",
+        "--l-shadow-float",
+        "--l-surface",
+        "--l-surface-raised",
+        "--l-surface-sunk",
+        "--leading-2xl",
+        "--leading-lg",
+        "--leading-md",
+        "--leading-xl",
+        "--leading-xs",
+        "--motion-base",
+        "--motion-fast",
+        "--on-accent",
+        "--on-denied",
+        "--p-black",
+        "--p-blue-200",
+        "--p-blue-275",
+        "--p-blue-650",
+        "--p-blue-725",
+        "--p-blue-75",
+        "--p-blue-800",
+        "--p-blue-950",
+        "--p-graphite-100",
+        "--p-graphite-175",
+        "--p-graphite-25",
+        "--p-graphite-275",
+        "--p-graphite-375",
+        "--p-graphite-425",
+        "--p-graphite-50",
+        "--p-graphite-525",
+        "--p-graphite-575",
+        "--p-graphite-625",
+        "--p-graphite-700",
+        "--p-graphite-75",
+        "--p-graphite-800",
+        "--p-graphite-850",
+        "--p-graphite-900",
+        "--p-graphite-925",
+        "--p-graphite-930",
+        "--p-green-200",
+        "--p-green-225",
+        "--p-green-275",
+        "--p-green-50",
+        "--p-green-525",
+        "--p-green-55",
+        "--p-green-600",
+        "--p-green-650",
+        "--p-green-75",
+        "--p-green-800",
+        "--p-green-805",
+        "--p-green-825",
+        "--p-indigo-150",
+        "--p-indigo-250",
+        "--p-indigo-50",
+        "--p-indigo-650",
+        "--p-indigo-725",
+        "--p-indigo-825",
+        "--p-indigo-875",
+        "--p-mono-100",
+        "--p-mono-200",
+        "--p-mono-325",
+        "--p-mono-425",
+        "--p-mono-50",
+        "--p-mono-650",
+        "--p-mono-725",
+        "--p-mono-850",
+        "--p-mono-925",
+        "--p-mono-975",
+        "--p-navy-725",
+        "--p-navy-75",
+        "--p-navy-825",
+        "--p-red-100",
+        "--p-red-275",
+        "--p-red-300",
+        "--p-red-325",
+        "--p-red-50",
+        "--p-red-575",
+        "--p-red-600",
+        "--p-red-675",
+        "--p-red-75",
+        "--p-red-850",
+        "--p-red-855",
+        "--p-red-875",
+        "--p-red-925",
+        "--p-red-930",
+        "--p-red-975",
+        "--p-slate-125",
+        "--p-slate-25",
+        "--p-slate-250",
+        "--p-slate-350",
+        "--p-slate-450",
+        "--p-slate-50",
+        "--p-slate-500",
+        "--p-slate-55",
+        "--p-slate-575",
+        "--p-slate-650",
+        "--p-slate-725",
+        "--p-slate-825",
+        "--p-slate-875",
+        "--p-slate-925",
+        "--p-slate-930",
+        "--p-slate-950",
+        "--p-white",
+        "--p-yellow-100",
+        "--p-yellow-175",
+        "--p-yellow-800",
+        "--radius-md",
+        "--radius-sm",
+        "--rule",
+        "--rule-strong",
+        "--rule-strong-width",
+        "--rule-width",
+        "--shadow-float",
+        "--size-cell",
+        "--size-control",
+        "--size-control-sm",
+        "--size-empty",
+        "--size-head",
+        "--size-row",
+        "--size-row-lg",
+        "--size-row-md",
+        "--size-row-xl",
+        "--size-sidebar",
+        "--size-square",
+        "--size-topbar",
+        "--space-0-5",
+        "--space-1",
+        "--space-1-5",
+        "--space-10",
+        "--space-12",
+        "--space-16",
+        "--space-2",
+        "--space-2-5",
+        "--space-3",
+        "--space-4",
+        "--space-5",
+        "--space-6",
+        "--space-7",
+        "--space-8",
+        "--surface",
+        "--surface-raised",
+        "--surface-sunk",
+        "--text-2xl",
+        "--text-lg",
+        "--text-md",
+        "--text-sm",
+        "--text-xl",
+        "--text-xs",
+        "--tw-blur",
+        "--tw-brightness",
+        "--tw-contrast",
+        "--tw-drop-shadow",
+        "--tw-drop-shadow-alpha",
+        "--tw-drop-shadow-color",
+        "--tw-drop-shadow-size",
+        "--tw-grayscale",
+        "--tw-hue-rotate",
+        "--tw-invert",
+        "--tw-opacity",
+        "--tw-saturate",
+        "--tw-sepia",
+        "--weight-body",
+        "--weight-medium",
+        "--weight-strong",
+        "--weight-title"
+    ],
+    "token_defs": {
+        "--tw-blur": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-brightness": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-contrast": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-grayscale": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-hue-rotate": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-invert": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-opacity": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-saturate": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-sepia": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-drop-shadow": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-drop-shadow-color": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--tw-drop-shadow-alpha": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "100%"
+            ]
+        ],
+        "--tw-drop-shadow-size": [
+            [
+                "@layer properties @supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b))))",
+                "*,:before,:after,::backdrop",
+                "initial"
+            ]
+        ],
+        "--p-white": [
+            [
+                "",
+                ":root",
+                "#fff"
+            ]
+        ],
+        "--p-black": [
+            [
+                "",
+                ":root",
+                "#000"
+            ]
+        ],
+        "--p-graphite-25": [
+            [
+                "",
+                ":root",
+                "#fafaf9"
+            ]
+        ],
+        "--p-graphite-50": [
+            [
+                "",
+                ":root",
+                "#f2f2f0"
+            ]
+        ],
+        "--p-graphite-75": [
+            [
+                "",
+                ":root",
+                "#ebebe8"
+            ]
+        ],
+        "--p-graphite-100": [
+            [
+                "",
+                ":root",
+                "#e4e5e7"
+            ]
+        ],
+        "--p-graphite-175": [
+            [
+                "",
+                ":root",
+                "#c8cace"
+            ]
+        ],
+        "--p-graphite-275": [
+            [
+                "",
+                ":root",
+                "#aeb2b9"
+            ]
+        ],
+        "--p-graphite-375": [
+            [
+                "",
+                ":root",
+                "#91959d"
+            ]
+        ],
+        "--p-graphite-425": [
+            [
+                "",
+                ":root",
+                "#878b93"
+            ]
+        ],
+        "--p-graphite-525": [
+            [
+                "",
+                ":root",
+                "#6f747d"
+            ]
+        ],
+        "--p-graphite-575": [
+            [
+                "",
+                ":root",
+                "#62676f"
+            ]
+        ],
+        "--p-graphite-625": [
+            [
+                "",
+                ":root",
+                "#565b63"
+            ]
+        ],
+        "--p-graphite-700": [
+            [
+                "",
+                ":root",
+                "#43464c"
+            ]
+        ],
+        "--p-graphite-800": [
+            [
+                "",
+                ":root",
+                "#2e3034"
+            ]
+        ],
+        "--p-graphite-850": [
+            [
+                "",
+                ":root",
+                "#232428"
+            ]
+        ],
+        "--p-graphite-900": [
+            [
+                "",
+                ":root",
+                "#1c1d20"
+            ]
+        ],
+        "--p-graphite-925": [
+            [
+                "",
+                ":root",
+                "#17191c"
+            ]
+        ],
+        "--p-graphite-930": [
+            [
+                "",
+                ":root",
+                "#161719"
+            ]
+        ],
+        "--p-slate-25": [
+            [
+                "",
+                ":root",
+                "#f5f6f8"
+            ]
+        ],
+        "--p-slate-50": [
+            [
+                "",
+                ":root",
+                "#eef0f5"
+            ]
+        ],
+        "--p-slate-55": [
+            [
+                "",
+                ":root",
+                "#eceef1"
+            ]
+        ],
+        "--p-slate-125": [
+            [
+                "",
+                ":root",
+                "#d5d9df"
+            ]
+        ],
+        "--p-slate-250": [
+            [
+                "",
+                ":root",
+                "#b4bac6"
+            ]
+        ],
+        "--p-slate-350": [
+            [
+                "",
+                ":root",
+                "#959cab"
+            ]
+        ],
+        "--p-slate-450": [
+            [
+                "",
+                ":root",
+                "#7c8491"
+            ]
+        ],
+        "--p-slate-500": [
+            [
+                "",
+                ":root",
+                "#6e7686"
+            ]
+        ],
+        "--p-slate-575": [
+            [
+                "",
+                ":root",
+                "#5f6773"
+            ]
+        ],
+        "--p-slate-650": [
+            [
+                "",
+                ":root",
+                "#4b5563"
+            ]
+        ],
+        "--p-slate-725": [
+            [
+                "",
+                ":root",
+                "#3a3f4c"
+            ]
+        ],
+        "--p-slate-825": [
+            [
+                "",
+                ":root",
+                "#262a34"
+            ]
+        ],
+        "--p-slate-875": [
+            [
+                "",
+                ":root",
+                "#1b1e26"
+            ]
+        ],
+        "--p-slate-925": [
+            [
+                "",
+                ":root",
+                "#111827"
+            ]
+        ],
+        "--p-slate-930": [
+            [
+                "",
+                ":root",
+                "#14161c"
+            ]
+        ],
+        "--p-slate-950": [
+            [
+                "",
+                ":root",
+                "#0f1116"
+            ]
+        ],
+        "--p-mono-50": [
+            [
+                "",
+                ":root",
+                "#f0f0f0"
+            ]
+        ],
+        "--p-mono-100": [
+            [
+                "",
+                ":root",
+                "#e4e4e7"
+            ]
+        ],
+        "--p-mono-200": [
+            [
+                "",
+                ":root",
+                "#c4c4cc"
+            ]
+        ],
+        "--p-mono-325": [
+            [
+                "",
+                ":root",
+                "#a1a1aa"
+            ]
+        ],
+        "--p-mono-425": [
+            [
+                "",
+                ":root",
+                "#8c8c8c"
+            ]
+        ],
+        "--p-mono-650": [
+            [
+                "",
+                ":root",
+                "#52525b"
+            ]
+        ],
+        "--p-mono-725": [
+            [
+                "",
+                ":root",
+                "#404040"
+            ]
+        ],
+        "--p-mono-850": [
+            [
+                "",
+                ":root",
+                "#262626"
+            ]
+        ],
+        "--p-mono-925": [
+            [
+                "",
+                ":root",
+                "#161618"
+            ]
+        ],
+        "--p-mono-975": [
+            [
+                "",
+                ":root",
+                "#0a0a0b"
+            ]
+        ],
+        "--p-blue-75": [
+            [
+                "",
+                ":root",
+                "#e7edf8"
+            ]
+        ],
+        "--p-blue-200": [
+            [
+                "",
+                ":root",
+                "#b3c9f5"
+            ]
+        ],
+        "--p-blue-275": [
+            [
+                "",
+                ":root",
+                "#93b2f0"
+            ]
+        ],
+        "--p-blue-650": [
+            [
+                "",
+                ":root",
+                "#1e4ea6"
+            ]
+        ],
+        "--p-blue-725": [
+            [
+                "",
+                ":root",
+                "#173e86"
+            ]
+        ],
+        "--p-blue-800": [
+            [
+                "",
+                ":root",
+                "#243251"
+            ]
+        ],
+        "--p-blue-950": [
+            [
+                "",
+                ":root",
+                "#0f1a33"
+            ]
+        ],
+        "--p-indigo-50": [
+            [
+                "",
+                ":root",
+                "#eef0ff"
+            ]
+        ],
+        "--p-indigo-150": [
+            [
+                "",
+                ":root",
+                "#c7d0fe"
+            ]
+        ],
+        "--p-indigo-250": [
+            [
+                "",
+                ":root",
+                "#a5b4fc"
+            ]
+        ],
+        "--p-indigo-650": [
+            [
+                "",
+                ":root",
+                "#4338ca"
+            ]
+        ],
+        "--p-indigo-725": [
+            [
+                "",
+                ":root",
+                "#3730a3"
+            ]
+        ],
+        "--p-indigo-825": [
+            [
+                "",
+                ":root",
+                "#262a52"
+            ]
+        ],
+        "--p-indigo-875": [
+            [
+                "",
+                ":root",
+                "#1a1b4b"
+            ]
+        ],
+        "--p-navy-75": [
+            [
+                "",
+                ":root",
+                "#dde7f7"
+            ]
+        ],
+        "--p-navy-725": [
+            [
+                "",
+                ":root",
+                "#0b3d91"
+            ]
+        ],
+        "--p-navy-825": [
+            [
+                "",
+                ":root",
+                "#072a66"
+            ]
+        ],
+        "--p-yellow-100": [
+            [
+                "",
+                ":root",
+                "#fde047"
+            ]
+        ],
+        "--p-yellow-175": [
+            [
+                "",
+                ":root",
+                "#facc15"
+            ]
+        ],
+        "--p-yellow-800": [
+            [
+                "",
+                ":root",
+                "#3a3210"
+            ]
+        ],
+        "--p-green-50": [
+            [
+                "",
+                ":root",
+                "#e8f6ee"
+            ]
+        ],
+        "--p-green-55": [
+            [
+                "",
+                ":root",
+                "#e5f1e9"
+            ]
+        ],
+        "--p-green-75": [
+            [
+                "",
+                ":root",
+                "#dcefe2"
+            ]
+        ],
+        "--p-green-200": [
+            [
+                "",
+                ":root",
+                "#4ade80"
+            ]
+        ],
+        "--p-green-225": [
+            [
+                "",
+                ":root",
+                "#6fd39a"
+            ]
+        ],
+        "--p-green-275": [
+            [
+                "",
+                ":root",
+                "#74c690"
+            ]
+        ],
+        "--p-green-525": [
+            [
+                "",
+                ":root",
+                "#15803d"
+            ]
+        ],
+        "--p-green-600": [
+            [
+                "",
+                ":root",
+                "#1c6b3a"
+            ]
+        ],
+        "--p-green-650": [
+            [
+                "",
+                ":root",
+                "#0b5d23"
+            ]
+        ],
+        "--p-green-800": [
+            [
+                "",
+                ":root",
+                "#1f3327"
+            ]
+        ],
+        "--p-green-805": [
+            [
+                "",
+                ":root",
+                "#173326"
+            ]
+        ],
+        "--p-green-825": [
+            [
+                "",
+                ":root",
+                "#10301c"
+            ]
+        ],
+        "--p-red-50": [
+            [
+                "",
+                ":root",
+                "#fdecec"
+            ]
+        ],
+        "--p-red-75": [
+            [
+                "",
+                ":root",
+                "#fbe9e7"
+            ]
+        ],
+        "--p-red-100": [
+            [
+                "",
+                ":root",
+                "#f8e0e0"
+            ]
+        ],
+        "--p-red-275": [
+            [
+                "",
+                ":root",
+                "#f59a94"
+            ]
+        ],
+        "--p-red-300": [
+            [
+                "",
+                ":root",
+                "#ff8a80"
+            ]
+        ],
+        "--p-red-325": [
+            [
+                "",
+                ":root",
+                "#f2897e"
+            ]
+        ],
+        "--p-red-575": [
+            [
+                "",
+                ":root",
+                "#c0262d"
+            ]
+        ],
+        "--p-red-600": [
+            [
+                "",
+                ":root",
+                "#b3261e"
+            ]
+        ],
+        "--p-red-675": [
+            [
+                "",
+                ":root",
+                "#9b1111"
+            ]
+        ],
+        "--p-red-850": [
+            [
+                "",
+                ":root",
+                "#3a2220"
+            ]
+        ],
+        "--p-red-855": [
+            [
+                "",
+                ":root",
+                "#3b1f21"
+            ]
+        ],
+        "--p-red-875": [
+            [
+                "",
+                ":root",
+                "#3d1414"
+            ]
+        ],
+        "--p-red-925": [
+            [
+                "",
+                ":root",
+                "#2b0e0f"
+            ]
+        ],
+        "--p-red-930": [
+            [
+                "",
+                ":root",
+                "#2a0f0c"
+            ]
+        ],
+        "--p-red-975": [
+            [
+                "",
+                ":root",
+                "#1a0505"
+            ]
+        ],
+        "--space-0-5": [
+            [
+                "",
+                ":root",
+                "2px"
+            ]
+        ],
+        "--space-1": [
+            [
+                "",
+                ":root",
+                "4px"
+            ]
+        ],
+        "--space-1-5": [
+            [
+                "",
+                ":root",
+                "6px"
+            ]
+        ],
+        "--space-2": [
+            [
+                "",
+                ":root",
+                "8px"
+            ]
+        ],
+        "--space-2-5": [
+            [
+                "",
+                ":root",
+                "10px"
+            ]
+        ],
+        "--space-3": [
+            [
+                "",
+                ":root",
+                "12px"
+            ]
+        ],
+        "--space-4": [
+            [
+                "",
+                ":root",
+                "16px"
+            ]
+        ],
+        "--space-5": [
+            [
+                "",
+                ":root",
+                "20px"
+            ]
+        ],
+        "--space-6": [
+            [
+                "",
+                ":root",
+                "24px"
+            ]
+        ],
+        "--space-7": [
+            [
+                "",
+                ":root",
+                "28px"
+            ]
+        ],
+        "--space-8": [
+            [
+                "",
+                ":root",
+                "32px"
+            ]
+        ],
+        "--space-10": [
+            [
+                "",
+                ":root",
+                "40px"
+            ]
+        ],
+        "--space-12": [
+            [
+                "",
+                ":root",
+                "48px"
+            ]
+        ],
+        "--space-16": [
+            [
+                "",
+                ":root",
+                "64px"
+            ]
+        ],
+        "--size-cell": [
+            [
+                "",
+                ":root",
+                "96px"
+            ]
+        ],
+        "--motion-fast": [
+            [
+                "",
+                ":root",
+                ".12s"
+            ]
+        ],
+        "--motion-base": [
+            [
+                "",
+                ":root",
+                ".16s"
+            ]
+        ],
+        "--ease-out": [
+            [
+                "",
+                ":root",
+                "cubic-bezier(0, 0, .2, 1)"
+            ]
+        ],
+        "--font-serif": [
+            [
+                "",
+                ":root",
+                "\"IBM Plex Serif\", Georgia, \"Times New Roman\", serif"
+            ]
+        ],
+        "--font-sans": [
+            [
+                "",
+                ":root",
+                "\"IBM Plex Sans\", system-ui, -apple-system, \"Segoe UI\", sans-serif"
+            ]
+        ],
+        "--font-mono": [
+            [
+                "",
+                ":root",
+                "\"IBM Plex Mono\", ui-monospace, \"SFMono-Regular\", Menlo, monospace"
+            ]
+        ],
+        "--l-surface": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-25)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-white)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-white)"
+            ]
+        ],
+        "--l-surface-sunk": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-50)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-25)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-50)"
+            ]
+        ],
+        "--l-surface-raised": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-white)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-white)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-white)"
+            ]
+        ],
+        "--l-ink": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-925)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-925)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-black)"
+            ]
+        ],
+        "--l-ink-muted": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-625)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-650)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-850)"
+            ]
+        ],
+        "--l-ink-faint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-575)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-575)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-725)"
+            ]
+        ],
+        "--l-rule": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-100)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-55)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-425)"
+            ]
+        ],
+        "--l-rule-strong": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-175)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-125)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-850)"
+            ]
+        ],
+        "--l-control-border": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-425)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-450)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-850)"
+            ]
+        ],
+        "--l-accent": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-blue-650)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-indigo-650)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-navy-725)"
+            ]
+        ],
+        "--l-accent-hover": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-blue-725)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-indigo-725)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-navy-825)"
+            ]
+        ],
+        "--l-on-accent": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-white)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-white)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-white)"
+            ]
+        ],
+        "--l-accent-tint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-blue-75)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-indigo-50)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-navy-75)"
+            ]
+        ],
+        "--l-granted": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-green-600)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-green-525)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-green-650)"
+            ]
+        ],
+        "--l-granted-tint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-green-55)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-green-50)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-green-75)"
+            ]
+        ],
+        "--l-denied": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-red-600)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-red-575)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-red-675)"
+            ]
+        ],
+        "--l-denied-tint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-red-75)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-red-50)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-red-100)"
+            ]
+        ],
+        "--l-on-denied": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-white)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-white)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-white)"
+            ]
+        ],
+        "--d-surface": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-900)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-930)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-975)"
+            ]
+        ],
+        "--d-surface-sunk": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-930)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-950)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-black)"
+            ]
+        ],
+        "--d-surface-raised": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-850)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-875)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-925)"
+            ]
+        ],
+        "--d-ink": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-75)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-50)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-white)"
+            ]
+        ],
+        "--d-ink-muted": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-275)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-250)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-100)"
+            ]
+        ],
+        "--d-ink-faint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-375)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-350)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-200)"
+            ]
+        ],
+        "--d-rule": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-800)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-825)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-650)"
+            ]
+        ],
+        "--d-rule-strong": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-700)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-725)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-325)"
+            ]
+        ],
+        "--d-control-border": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-graphite-525)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-slate-500)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-325)"
+            ]
+        ],
+        "--d-accent": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-blue-275)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-indigo-250)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-yellow-175)"
+            ]
+        ],
+        "--d-accent-hover": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-blue-200)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-indigo-150)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-yellow-100)"
+            ]
+        ],
+        "--d-on-accent": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-blue-950)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-indigo-875)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-mono-975)"
+            ]
+        ],
+        "--d-accent-tint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-blue-800)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-indigo-825)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-yellow-800)"
+            ]
+        ],
+        "--d-granted": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-green-275)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-green-225)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-green-200)"
+            ]
+        ],
+        "--d-granted-tint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-green-800)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-green-805)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-green-825)"
+            ]
+        ],
+        "--d-denied": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-red-325)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-red-275)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-red-300)"
+            ]
+        ],
+        "--d-denied-tint": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-red-850)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-red-855)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-red-875)"
+            ]
+        ],
+        "--d-on-denied": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--p-red-930)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--p-red-925)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--p-red-975)"
+            ]
+        ],
+        "--l-shadow-float": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "0 1px 2px #17191c14, 0 4px 12px #17191c0f"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "0 1px 2px #17191c14, 0 4px 12px #17191c0f"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "0 1px 2px #17191c14, 0 4px 12px #17191c0f"
+            ]
+        ],
+        "--d-shadow-float": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "0 1px 2px #0006, 0 4px 12px #0000004d"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "0 1px 2px #0006, 0 4px 12px #0000004d"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "0 1px 2px #0006, 0 4px 12px #0000004d"
+            ]
+        ],
+        "--l-backdrop": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "#17191c66"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "#17191c66"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "#17191c66"
+            ]
+        ],
+        "--d-backdrop": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "#0009"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "#0009"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "#0009"
+            ]
+        ],
+        "--text-xs": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "12px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "12px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "13px"
+            ]
+        ],
+        "--text-sm": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "12px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "14px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "14px"
+            ]
+        ],
+        "--text-md": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "13px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "15px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "15px"
+            ]
+        ],
+        "--text-lg": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "18px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "21px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "21px"
+            ]
+        ],
+        "--text-xl": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "26px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "30px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "28px"
+            ]
+        ],
+        "--text-2xl": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "30px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "34px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "32px"
+            ]
+        ],
+        "--leading-xs": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "16px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "16px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "18px"
+            ]
+        ],
+        "--leading-md": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "18px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "22px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "22px"
+            ]
+        ],
+        "--leading-lg": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "24px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "28px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "28px"
+            ]
+        ],
+        "--leading-xl": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "30px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "36px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "34px"
+            ]
+        ],
+        "--leading-2xl": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "36px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "42px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "40px"
+            ]
+        ],
+        "--weight-body": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "400"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "400"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "500"
+            ]
+        ],
+        "--weight-medium": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "500"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "500"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "600"
+            ]
+        ],
+        "--weight-strong": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "600"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "600"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "700"
+            ]
+        ],
+        "--weight-title": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "400"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "400"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "700"
+            ]
+        ],
+        "--font-title": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "var(--font-serif)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "var(--font-serif)"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "var(--font-sans)"
+            ]
+        ],
+        "--gutter": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "40px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "56px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "48px"
+            ]
+        ],
+        "--size-sidebar": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "216px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "248px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "232px"
+            ]
+        ],
+        "--size-topbar": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "52px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "64px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "56px"
+            ]
+        ],
+        "--size-control": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "32px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "40px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "40px"
+            ]
+        ],
+        "--size-control-sm": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "26px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "32px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "32px"
+            ]
+        ],
+        "--size-square": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "30px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "36px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "36px"
+            ]
+        ],
+        "--size-row": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "36px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "52px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "46px"
+            ]
+        ],
+        "--size-row-md": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "40px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "56px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "50px"
+            ]
+        ],
+        "--size-row-lg": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "48px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "64px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "56px"
+            ]
+        ],
+        "--size-row-xl": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "52px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "72px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "64px"
+            ]
+        ],
+        "--size-head": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "64px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "80px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "72px"
+            ]
+        ],
+        "--size-empty": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "100px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "140px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "120px"
+            ]
+        ],
+        "--radius-sm": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "2px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "4px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "0px"
+            ]
+        ],
+        "--radius-md": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "3px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "8px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "2px"
+            ]
+        ],
+        "--rule-width": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "1px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "1px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "1px"
+            ]
+        ],
+        "--rule-strong-width": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "1px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "1px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "2px"
+            ]
+        ],
+        "--focus-width": [
+            [
+                "",
+                ":root,:root[data-rw-theme=console]",
+                "2px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=clarity]",
+                "2px"
+            ],
+            [
+                "",
+                ":root[data-rw-theme=contrast]",
+                "3px"
+            ]
+        ],
+        "--surface": [
+            [
+                "",
+                ":root",
+                "var(--l-surface)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-surface)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-surface)"
+            ]
+        ],
+        "--surface-sunk": [
+            [
+                "",
+                ":root",
+                "var(--l-surface-sunk)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-surface-sunk)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-surface-sunk)"
+            ]
+        ],
+        "--surface-raised": [
+            [
+                "",
+                ":root",
+                "var(--l-surface-raised)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-surface-raised)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-surface-raised)"
+            ]
+        ],
+        "--ink": [
+            [
+                "",
+                ":root",
+                "var(--l-ink)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-ink)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-ink)"
+            ]
+        ],
+        "--ink-muted": [
+            [
+                "",
+                ":root",
+                "var(--l-ink-muted)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-ink-muted)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-ink-muted)"
+            ]
+        ],
+        "--ink-faint": [
+            [
+                "",
+                ":root",
+                "var(--l-ink-faint)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-ink-faint)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-ink-faint)"
+            ]
+        ],
+        "--rule": [
+            [
+                "",
+                ":root",
+                "var(--l-rule)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-rule)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-rule)"
+            ]
+        ],
+        "--rule-strong": [
+            [
+                "",
+                ":root",
+                "var(--l-rule-strong)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-rule-strong)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-rule-strong)"
+            ]
+        ],
+        "--control-border": [
+            [
+                "",
+                ":root",
+                "var(--l-control-border)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-control-border)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-control-border)"
+            ]
+        ],
+        "--accent": [
+            [
+                "",
+                ":root",
+                "var(--l-accent)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-accent)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-accent)"
+            ]
+        ],
+        "--accent-hover": [
+            [
+                "",
+                ":root",
+                "var(--l-accent-hover)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-accent-hover)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-accent-hover)"
+            ]
+        ],
+        "--on-accent": [
+            [
+                "",
+                ":root",
+                "var(--l-on-accent)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-on-accent)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-on-accent)"
+            ]
+        ],
+        "--accent-tint": [
+            [
+                "",
+                ":root",
+                "var(--l-accent-tint)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-accent-tint)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-accent-tint)"
+            ]
+        ],
+        "--granted": [
+            [
+                "",
+                ":root",
+                "var(--l-granted)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-granted)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-granted)"
+            ]
+        ],
+        "--granted-tint": [
+            [
+                "",
+                ":root",
+                "var(--l-granted-tint)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-granted-tint)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-granted-tint)"
+            ]
+        ],
+        "--denied": [
+            [
+                "",
+                ":root",
+                "var(--l-denied)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-denied)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-denied)"
+            ]
+        ],
+        "--denied-tint": [
+            [
+                "",
+                ":root",
+                "var(--l-denied-tint)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-denied-tint)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-denied-tint)"
+            ]
+        ],
+        "--on-denied": [
+            [
+                "",
+                ":root",
+                "var(--l-on-denied)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-on-denied)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-on-denied)"
+            ]
+        ],
+        "--shadow-float": [
+            [
+                "",
+                ":root",
+                "var(--l-shadow-float)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-shadow-float)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-shadow-float)"
+            ]
+        ],
+        "--backdrop": [
+            [
+                "",
+                ":root",
+                "var(--l-backdrop)"
+            ],
+            [
+                "",
+                ":root[data-rw-mode=dark]",
+                "var(--d-backdrop)"
+            ],
+            [
+                "@media (prefers-color-scheme:dark)",
+                ":root:not([data-rw-mode=light])",
+                "var(--d-backdrop)"
+            ]
+        ],
+        "--focus": [
+            [
+                "",
+                ":root",
+                "var(--accent)"
+            ]
+        ]
+    },
+    "uses": {
+        "--font-sans": 13,
+        "--text-md": 7,
+        "--leading-md": 7,
+        "--weight-body": 10,
+        "--ink": 30,
+        "--surface": 4,
+        "--focus-width": 2,
+        "--focus": 2,
+        "--accent": 19,
+        "--accent-hover": 2,
+        "--font-title": 8,
+        "--weight-title": 8,
+        "--font-mono": 3,
+        "--ink-muted": 30,
+        "--ink-faint": 14,
+        "--text-xs": 29,
+        "--leading-xs": 20,
+        "--weight-strong": 10,
+        "--space-2": 26,
+        "--size-control": 5,
+        "--space-4": 22,
+        "--radius-md": 11,
+        "--weight-medium": 9,
+        "--motion-fast": 4,
+        "--ease-out": 5,
+        "--on-accent": 4,
+        "--surface-raised": 8,
+        "--control-border": 7,
+        "--surface-sunk": 10,
+        "--accent-tint": 6,
+        "--denied": 12,
+        "--denied-tint": 3,
+        "--size-control-sm": 4,
+        "--space-2-5": 5,
+        "--text-sm": 4,
+        "--space-1-5": 7,
+        "--space-3": 32,
+        "--space-8": 7,
+        "--radius-sm": 7,
+        "--rule-strong-width": 19,
+        "--rule-strong": 20,
+        "--granted": 1,
+        "--size-row": 5,
+        "--rule-width": 19,
+        "--rule": 16,
+        "--gutter": 28,
+        "--space-1": 9,
+        "--shadow-float": 3,
+        "--size-square": 3,
+        "--size-sidebar": 1,
+        "--size-topbar": 2,
+        "--space-6": 15,
+        "--text-lg": 5,
+        "--leading-lg": 4,
+        "--space-7": 1,
+        "--space-12": 2,
+        "--space-16": 2,
+        "--text-2xl": 2,
+        "--leading-2xl": 2,
+        "--text-xl": 1,
+        "--leading-xl": 1,
+        "--space-10": 1,
+        "--space-5": 5,
+        "--size-row-md": 3,
+        "--size-head": 1,
+        "--size-empty": 1,
+        "--size-row-lg": 2,
+        "--size-row-xl": 1,
+        "--backdrop": 1,
+        "--space-0-5": 3,
+        "--motion-base": 1,
+        "--tw-blur": 1,
+        "--tw-brightness": 1,
+        "--tw-contrast": 1,
+        "--tw-grayscale": 1,
+        "--tw-hue-rotate": 1,
+        "--tw-invert": 1,
+        "--tw-saturate": 1,
+        "--tw-sepia": 1,
+        "--tw-drop-shadow": 1
+    },
+    "primitive_reads_in_components": [],
+    "primitive_reads_by_non_mode_tokens": [],
+    "raw_in_token_groups": [
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-btn",
+            "prop": "border",
+            "value": "1px solid #0000",
+            "kind": [
+                "colour",
+                "length"
+            ],
+            "group": "colour"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-input,.rw-select",
+            "prop": "border",
+            "value": "1px solid var(--control-border)",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check",
+            "prop": "border",
+            "value": "1px solid var(--control-border)",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check:before",
+            "prop": "border-left",
+            "value": "2px solid var(--on-accent)",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check:before",
+            "prop": "border-bottom",
+            "value": "2px solid var(--on-accent)",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check:indeterminate:before",
+            "prop": "border-bottom",
+            "value": "2px solid var(--on-accent)",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-status:before",
+            "prop": "border",
+            "value": "1.5px solid var(--ink)",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-page",
+            "prop": "border",
+            "value": "1px solid #0000",
+            "kind": [
+                "colour",
+                "length"
+            ],
+            "group": "colour"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-cell--changed:after",
+            "prop": "top",
+            "value": "3px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-cell--changed:after",
+            "prop": "right",
+            "value": "3px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-search svg",
+            "prop": "bottom",
+            "value": "10px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-search svg",
+            "prop": "left",
+            "value": "11px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-list-footer",
+            "prop": "margin-top",
+            "value": "-1px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-tree-branch",
+            "prop": "margin-top",
+            "value": "-6px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-auth-pw button",
+            "prop": "top",
+            "value": "4px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-auth-pw button",
+            "prop": "right",
+            "value": "4px",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-auth-alert",
+            "prop": "border",
+            "value": "1px solid var(--denied)",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-flash",
+            "prop": "border",
+            "value": "1px solid",
+            "kind": [
+                "length"
+            ],
+            "group": "border width"
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-toast__close",
+            "prop": "margin",
+            "value": "-2px -8px 0 0",
+            "kind": [
+                "length"
+            ],
+            "group": "spacing"
+        }
+    ],
+    "raw_outside_token_groups": [
+        {
+            "ctx": "@layer components",
+            "sel": ".rw :focus-visible",
+            "prop": "outline-offset",
+            "value": "2px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw a:not(.rw-btn):hover",
+            "prop": "text-underline-offset",
+            "value": "3px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-header",
+            "prop": "letter-spacing",
+            "value": ".04em",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-select",
+            "prop": "background-position",
+            "value": "calc(100% - 17px) 16px,calc(100% - 12px) 16px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-select",
+            "prop": "background-size",
+            "value": "5px 5px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check",
+            "prop": "width",
+            "value": "16px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check",
+            "prop": "height",
+            "value": "16px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check:before",
+            "prop": "width",
+            "value": "9px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check:before",
+            "prop": "height",
+            "value": "5px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check:before",
+            "prop": "transform",
+            "value": "rotate(-45deg)translate(1px,-1px)",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-check:indeterminate:before",
+            "prop": "width",
+            "value": "8px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-role",
+            "prop": "height",
+            "value": "20px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-mark",
+            "prop": "width",
+            "value": "20px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-mark",
+            "prop": "height",
+            "value": "20px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-table th",
+            "prop": "letter-spacing",
+            "value": ".04em",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-status:before",
+            "prop": "width",
+            "value": "8px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-status:before",
+            "prop": "height",
+            "value": "8px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-shell",
+            "prop": "min-height",
+            "value": "100vh",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-who i",
+            "prop": "width",
+            "value": "32px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-page-head",
+            "prop": "grid-template-columns",
+            "value": "1fr 296px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-page-head h1",
+            "prop": "letter-spacing",
+            "value": "-.01em",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-page-head p",
+            "prop": "max-width",
+            "value": "560px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-legend .rw-mark-blank",
+            "prop": "width",
+            "value": "20px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-legend .rw-mark-blank",
+            "prop": "height",
+            "value": "20px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-bar-dot",
+            "prop": "width",
+            "value": "8px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-bar-dot",
+            "prop": "height",
+            "value": "8px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-matrix .rw-m-area",
+            "prop": "width",
+            "value": "232px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-matrix .rw-m-act",
+            "prop": "width",
+            "value": "104px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-matrix .rw-m-all",
+            "prop": "width",
+            "value": "96px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-matrix .rw-m-anno",
+            "prop": "width",
+            "value": "264px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-matrix .rw-m-anno--wide",
+            "prop": "width",
+            "value": "312px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-cell",
+            "prop": "width",
+            "value": "44px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-cell:hover",
+            "prop": "box-shadow",
+            "value": "inset 0 0 0 1px var(--control-border)",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-cell[aria-disabled=true]:hover",
+            "prop": "box-shadow",
+            "value": "inset 0 0 0 1px var(--rule-strong)",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-cell--changed:after",
+            "prop": "width",
+            "value": "6px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-cell--changed:after",
+            "prop": "height",
+            "value": "6px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-search",
+            "prop": "width",
+            "value": "320px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-users .rw-c-name",
+            "prop": "width",
+            "value": "196px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-users .rw-c-email",
+            "prop": "width",
+            "value": "290px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-users .rw-c-roles",
+            "prop": "width",
+            "value": "196px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-users .rw-c-status",
+            "prop": "width",
+            "value": "110px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-users .rw-c-login",
+            "prop": "width",
+            "value": "172px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-anno",
+            "prop": "width",
+            "value": "200px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-roles .rw-c-role",
+            "prop": "width",
+            "value": "380px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-tree-spacer",
+            "prop": "width",
+            "value": "24px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-tree-branch",
+            "prop": "width",
+            "value": "16px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-tree-branch",
+            "prop": "height",
+            "value": "20px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-roles .rw-c-parent",
+            "prop": "width",
+            "value": "140px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-roles .rw-c-n",
+            "prop": "width",
+            "value": "88px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-roles .rw-c-perm",
+            "prop": "width",
+            "value": "150px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-t-roles .rw-c-act",
+            "prop": "width",
+            "value": "160px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger .rw-l-key",
+            "prop": "width",
+            "value": "232px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger .rw-l-value",
+            "prop": "width",
+            "value": "568px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-add-role .rw-select",
+            "prop": "width",
+            "value": "200px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": "dialog.rw-confirm",
+            "prop": "width",
+            "value": "440px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-form",
+            "prop": "max-width",
+            "value": "480px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-auth-screen",
+            "prop": "min-height",
+            "value": "100vh",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-auth-sheet",
+            "prop": "width",
+            "value": "448px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-auth-head h1",
+            "prop": "letter-spacing",
+            "value": "-.01em",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger.rw-settings .rw-l-key",
+            "prop": "width",
+            "value": "360px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger.rw-settings .rw-l-key small",
+            "prop": "max-width",
+            "value": "320px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger.rw-settings .rw-l-value",
+            "prop": "width",
+            "value": "504px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger.rw-settings .rw-l-value .rw-select",
+            "prop": "width",
+            "value": "240px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger.rw-settings .rw-unit .rw-input",
+            "prop": "width",
+            "value": "96px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-ledger.rw-settings .rw-anno",
+            "prop": "width",
+            "value": "200px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-toasts",
+            "prop": "width",
+            "value": "360px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-toasts",
+            "prop": "max-width",
+            "value": "calc(100vw - 2 * var(--space-6))",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-toast__close",
+            "prop": "width",
+            "value": "24px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-toast__close",
+            "prop": "height",
+            "value": "24px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-toast__close:focus-visible",
+            "prop": "outline-offset",
+            "value": "2px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components @keyframes rw-toast-in",
+            "sel": "0%",
+            "prop": "transform",
+            "value": "translateY(8px)",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-appearance-row .rw-input",
+            "prop": "width",
+            "value": "280px",
+            "kind": [
+                "length"
+            ]
+        },
+        {
+            "ctx": "@layer components",
+            "sel": ".rw-appearance-toast",
+            "prop": "max-width",
+            "value": "420px",
+            "kind": [
+                "length"
+            ]
+        }
+    ]
+}

@@ -629,3 +629,22 @@ Formato di ogni voce:
 - Cosa ho fatto: chiusa la V4. Corretti D1 (login con email come array -> 500 sulla GET successiva) e D2 (titolo duplicato nella parte text/plain delle email), piu' fuso orario nelle ore delle email. Codex ha riverificato c0ab8fc (1287/1301, D2 trovato, prove SMTP bloccate perche' non puo' usare Docker); il Collaudatore ad Hoc ha chiuso la riverifica finale su a107e94. CLAUDE.md aggiornato con la decisione V5 su Tailwind.
 - Stato: completato. **V4 approvata dal collaudo HTTP: 1363/1363 su a107e94.**
 - Note per il prossimo: ambiguita' V4 da decidere dall'autore (A1 login senza CSRF col filtro globale dell'ospite spento; A2 con `php -S` la risposta attende l'SMTP, verifica sotto FPM dovuta; A3 password come array -> 500 dentro Shield; A4 formato dell'ora). Restano anche A1/A2 della V3 e il controllo visivo in browser e client di posta per V2-V4. Prossima tappa V5 Temi, decisioni Tailwind gia' prese (CLI standalone v4, CSS compilato committato, classi `rw-*` dentro Tailwind).
+
+### [2026-10-03 14:05] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-v5.run.py`, `verify-v5.php`, `verify-v5.browser.mjs` (Chrome headless via CDP), `verify-v5.css.py` (audit dei token sul CSS servito), output `verify-v5.<modo>.<ambiente>.d3c7dbb.*`, `verify-v5.environment.txt`, `V5-REPORT.md`; questa voce (Stato corrente non modificato)
+- Cosa ho fatto: collaudo in nero di V5 Temi su `d3c7dbb`, baseline `bd7488e`, in sostituzione di Codex (errore di configurazione del modello), stesso protocollo. Nessun file vietato aperto: CSS e JS esaminati solo come serviti via HTTP. Ho verificato: aggiornamento per sostituzione della cartella, rollback, installazione nuova e assenza di build; token sul CSS servito; resa di login e 14 schermate in 3 temi x chiaro/scuro in Chrome; chiaro/scuro per utente; personalizzatore (validazione, file, download, ripristino con conferma, precedenza di `app/Config/RoleWarden/theme.json`, 26 file di tema ostili); sopravvivenza del tema all'aggiornamento; quarto tema e componente dell'ospite; pubblicazione. Regressione V2/V3/V4 sul nuovo commit in development e production.
+- Stato: completato. Esito **FAIL**: V5 160/170 in development e 160/170 in production (piu' 1 ambiguita'); regressione 1385/1387, con 2 FAIL superati da V5 (V2 G07, intento ricontrollato da G07v5 PASS). **V5 non approvata.**
+- Note per il prossimo: D1 bloccante, anteriore alla V5 (presente gia' su `bd7488e`). `panel.js` registra i componenti su `alpine:init`, ma viene eseguito dopo `alpine.min.js` (entrambi `defer`), che parte in un microtask; in Chrome quindi nessun componente Alpine si avvia (`rwToasts`/`rwAppearance is not defined`). Effetti: niente anteprima e niente avvisi WCAG nel personalizzatore, e il salvataggio dal browser perde i colori (`colors: []`). Con il componente avviato a mano dal collaudo, avvisi e anteprima funzionano (W01-W13). Difetti minori:
+  - D2: valori grezzi nel CSS (`1px` dei bordi, offset di `4px`/`-2px -8px`) e `style` inline nelle viste ruoli e permessi;
+  - D3: raggio `8abc` convertito in 8 e salvato invece di essere rifiutato;
+  - D4: messaggio «three themes» anche con un quarto tema;
+  - D5: il warning per un file di tema non valido nomina `src/Settings/Theme.php` invece del file di tema.
+
+  Ambiguita' da decidere, non decise: A1, dimensioni fisse fuori dalle eccezioni dichiarate; A2, il controllo WCAG confronta solo con lo sfondo (`surface`), non con `surface-raised`/`surface-sunk`; A3, valori fuori formato accettati o scartati in silenzio. Correzioni del runner: i glob dei log del server nelle suite V3/V4 non trovavano file anche nel runner V4. Pulizia:
+  - database: 22 cicli con dump identico (SHA256 `f7f37c04…e21e64`), database vuoto;
+  - email: Mailpit vuoto, `rolewarden-mail` healthy;
+  - processi: nessun php/python/Chrome mio attivo;
+  - da sistemare a mano: due coppie `tail`/`grep` orfane dei miei monitor (PID 26328/42716, 29472/26372), chiusura negata dai permessi; restano le cartelle di profili Chrome bloccati da Windows `tests/Integration/verify-v5.work` (junction gia' rimossa) e `scratchpad/chrome`.
+
+  Controllo visivo in browser vero dovuto all'autore. Nessun commit.

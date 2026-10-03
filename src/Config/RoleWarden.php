@@ -49,6 +49,29 @@ class RoleWarden extends BaseConfig
     public int $activityRetentionDays = 365;
 
     /**
+     * Light or dark for a user who has not chosen: 'system' follows the
+     * browser. Each user changes it from the top bar (stored per user).
+     */
+    public string $colorScheme = 'system';
+
+    /**
+     * Themes of the host application, offered by the Appearance screen next to
+     * Console, Clarity and Contrast: slug => label, e.g. ['ocean' => 'Ocean'].
+     * Each one needs a :root[data-rw-theme="ocean"] block in $themeStylesheet
+     * (see the design guide, "A fourth theme"). Slugs: lowercase, digits, dashes.
+     *
+     * @var array<string, string>
+     */
+    public array $extraThemes = [];
+
+    /**
+     * URL of a stylesheet of the host application loaded after the panel's own,
+     * for extra themes and for components the host adds; null for none.
+     * Example: base_url('css/rolewarden-theme.css').
+     */
+    public ?string $themeStylesheet = null;
+
+    /**
      * Full name of a module table, e.g. table('roles') => 'acl_roles'.
      */
     public function table(string $name): string

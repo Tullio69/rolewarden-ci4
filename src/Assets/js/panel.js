@@ -3,6 +3,7 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('rwSettings', rwSettingsController);
   Alpine.data('rwMatrix', rwMatrixController);
   Alpine.data('rwUserMatrix', rwUserMatrixController);
+  Alpine.data('rwAppearance', rwAppearanceController);
 });
 
 /** Shows a toast from anywhere on the page: rwToast('error', 'Could not save this change.'). */
@@ -392,4 +393,145 @@ function rwUserMatrixController(config) {
       }
     },
   };
+}
+
+/**
+ * Appearance screen: applies the form to this very page while it is edited
+ * (theme on <html data-rw-theme>, overrides as inline custom properties), reads
+ * the starting theme's own values from the computed style rather than keeping a
+ * copy, derives hover, tint and on-accent from the accent, and lists every text
+ * colour that falls under WCAG AA on its background. Saving is a plain post.
+ */
+function rwAppearanceController(config) {
+  const KEYS = ['surface', 'surface-raised', 'ink', 'ink-muted', 'ink-faint', 'accent', 'accent-hover', 'accent-tint', 'on-accent', 'granted', 'denied'];
+  const EDITABLE = ['surface', 'ink', 'accent', 'accent-hover', 'accent-tint', 'on-accent'];
+  const PREFIX = { light: 'l', dark: 'd' };
+  const PAIRS = [['ink', 'surface', 4.5], ['ink-muted', 'surface', 4.5], ['ink-faint', 'surface', 4.5], ['accent', 'surface', 4.5], ['on-accent', 'accent', 4.5], ['granted', 'surface', 4.5], ['denied', 'surface', 4.5]];
+
+  return {
+    base: config.base,
+    radius: config.radius,
+    density: config.density,
+    colors: { light: { ...config.colors.light }, dark: { ...config.colors.dark } },
+    labels: config.labels,
+    defaults: { light: {}, dark: {} },
+    tick: 0,
+
+    init() {
+      // The saved overrides are replaced by the form state while this page is open.
+      const saved = document.querySelector('link[href*="rolewarden/theme.css"]');
+      if (saved) saved.disabled = true;
+      this.readDefaults();
+      this.apply();
+      this.$watch('base', () => { this.readDefaults(); this.apply(); });
+      this.$watch('radius', () => this.apply());
+      this.$watch('density', () => this.apply());
+    },
+
+    readDefaults() {
+      const root = document.documentElement;
+      const inline = root.getAttribute('style');
+      root.dataset.rwTheme = this.base;
+      root.removeAttribute('style');
+      const computed = getComputedStyle(root);
+      for (const mode of ['light', 'dark']) {
+        for (const key of KEYS) {
+          this.defaults[mode][key] = rwHex(computed.getPropertyValue('--' + PREFIX[mode] + '-' + key).trim());
+        }
+      }
+      if (inline) root.setAttribute('style', inline);
+      this.tick++;
+    },
+
+    effective(mode, key) {
+      this.tick;
+      return this.colors[mode][key] || this.defaults[mode][key] || '#000000';
+    },
+
+    setColor(mode, key, value) {
+      this.colors[mode][key] = value;
+      if (key === 'accent' || (key === 'surface' && this.colors[mode].accent)) this.derive(mode);
+      this.apply();
+    },
+
+    clearColor(mode, key) {
+      delete this.colors[mode][key];
+      if (key === 'accent') ['accent-hover', 'accent-tint', 'on-accent'].forEach((k) => delete this.colors[mode][k]);
+      else if (key === 'surface' && this.colors[mode].accent) this.derive(mode);
+      this.apply();
+    },
+
+    derive(mode) {
+      const accent = this.colors[mode].accent;
+      this.colors[mode]['accent-hover'] = rwMix(accent, mode === 'light' ? '#000000' : '#ffffff', 0.18);
+      this.colors[mode]['accent-tint'] = rwMix(accent, this.effective(mode, 'surface'), 0.86);
+      this.colors[mode]['on-accent'] = rwContrast(accent, '#ffffff') >= rwContrast(accent, '#0a0a0b') ? '#ffffff' : '#0a0a0b';
+    },
+
+    apply() {
+      const root = document.documentElement;
+      root.dataset.rwTheme = this.base;
+      for (const mode of ['light', 'dark']) {
+        for (const key of EDITABLE) {
+          const name = '--' + PREFIX[mode] + '-' + key;
+          if (this.colors[mode][key]) root.style.setProperty(name, this.colors[mode][key]);
+          else root.style.removeProperty(name);
+        }
+      }
+      if (this.radius !== '') {
+        root.style.setProperty('--radius-md', this.radius + 'px');
+        root.style.setProperty('--radius-sm', Math.floor(Number(this.radius) / 2) + 'px');
+      } else {
+        root.style.removeProperty('--radius-md');
+        root.style.removeProperty('--radius-sm');
+      }
+      const sizes = config.densities[this.density] || null;
+      for (const key of Object.keys(config.densities.compact)) {
+        if (sizes) root.style.setProperty('--size-' + key, sizes[key] + 'px');
+        else root.style.removeProperty('--size-' + key);
+      }
+      this.tick++;
+    },
+
+    warnings() {
+      this.tick;
+      const found = [];
+      for (const mode of ['light', 'dark']) {
+        for (const [fg, bg, threshold] of PAIRS) {
+          const ratio = rwContrast(this.effective(mode, fg), this.effective(mode, bg));
+          if (ratio < threshold) {
+            found.push(this.labels.pairs[fg] + ' (' + this.labels.modes[mode] + ') ' + ratio.toFixed(1) + ':1, ' + this.labels.below);
+          }
+        }
+      }
+      return found;
+    },
+  };
+}
+
+/** #rgb, #rrggbb or rgb(...) as #rrggbb (computed custom properties keep what was written). */
+function rwHex(value) {
+  if (/^#[0-9a-f]{6}$/i.test(value)) return value.toLowerCase();
+  if (/^#[0-9a-f]{3}$/i.test(value)) return '#' + value.slice(1).split('').map((c) => c + c).join('').toLowerCase();
+  const m = value.match(/rgba?\(\s*(\d+)[ ,]+(\d+)[ ,]+(\d+)/i);
+  return m ? '#' + [m[1], m[2], m[3]].map((n) => Number(n).toString(16).padStart(2, '0')).join('') : '';
+}
+
+/** Mixes two #rrggbb colours: weight is the share of the second one. */
+function rwMix(a, b, weight) {
+  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16));
+  const pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return '#' + pa.map((v, i) => Math.round(v + (pb[i] - v) * weight).toString(16).padStart(2, '0')).join('');
+}
+
+/** WCAG 2.1 contrast ratio of two #rrggbb colours. */
+function rwContrast(a, b) {
+  if (!/^#[0-9a-f]{6}$/i.test(a) || !/^#[0-9a-f]{6}$/i.test(b)) return 21;
+  const lum = (hex) => {
+    const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+      .map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p);
+  return (x + 0.05) / (y + 0.05);
 }

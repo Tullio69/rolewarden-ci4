@@ -53,6 +53,9 @@ class RoleWardenSeeder extends Seeder
         'security' => [
             'alerts' => 'Receive security alert emails (too many failed sign-ins)',
         ],
+        'appearance' => [
+            'update' => 'Change the panel theme',
+        ],
     ];
 
     /** Roles that receive every seeded permission. */

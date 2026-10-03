@@ -20,6 +20,8 @@ class RouteRegistrar
     public static function register(RouteCollection &$routes): void
     {
         $routes->get('rolewarden/assets/(:any)', '\RoleWarden\Controllers\AssetController::serve/$1');
+        // The theme overrides are public like the other assets: the sign-in page needs them too.
+        $routes->get('rolewarden/theme.css', '\RoleWarden\Controllers\AppearanceController::css');
 
         $routes->group(
             'rolewarden',
@@ -64,6 +66,13 @@ class RouteRegistrar
                 $routes->post('settings', 'SettingsController::update', ['filter' => 'can:settings.update']);
 
                 $routes->get('activity', 'ActivityController::index', ['filter' => 'can:activity.view']);
+
+                $routes->get('appearance', 'AppearanceController::index', ['filter' => 'can:appearance.update']);
+                $routes->post('appearance', 'AppearanceController::update', ['filter' => 'can:appearance.update']);
+                $routes->post('appearance/reset', 'AppearanceController::reset', ['filter' => 'can:appearance.update']);
+                $routes->get('appearance/download', 'AppearanceController::download', ['filter' => 'can:appearance.update']);
+                // Light or dark: every signed-in user chooses their own.
+                $routes->post('appearance/mode', 'AppearanceController::mode');
             },
         );
     }

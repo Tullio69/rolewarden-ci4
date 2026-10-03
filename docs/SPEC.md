@@ -348,6 +348,14 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 - **Invio.** Le email si accodano durante la richiesta e partono dopo l'invio della risposta (funzione di shutdown, preceduta da `fastcgi_finish_request()` quando esiste; `post_system` di CodeIgniter scatta prima della risposta e la rallenterebbe), con il servizio Email di CodeIgniter e la `Config\Email` dell'ospite. Prima di ogni invio parte l'evento `rolewarden.mail`: se un listener restituisce `false`, l'invio diretto non avviene, così un'applicazione con una coda propria prende il messaggio. I template sono view sovrascrivibili come quelle del pannello.
 - **Collaudo.** I messaggi si catturano con Mailpit, servizio del docker-compose di sviluppo, mai con un invio reale.
 
+**Decisioni del 2026-09-30 e del 2026-10-03 (V5).**
+- **Tailwind.** Chiusa la decisione aperta: il CSS del pannello si compila con la CLI standalone di Tailwind v4, senza Node né npm, da un sorgente scritto a mano. Il CSS compilato si committa nel modulo: chi installa non esegue build. Le classi componente `rw-*` restano, definite nel sorgente Tailwind sui token, così le view sovrascritte dagli acquirenti non si rompono.
+- **File di tema.** Il personalizzatore salva il tema (tema di partenza e valori dei token semantici) in `writable/rolewarden/theme.json`, l'unica cartella che il web server può scrivere, fuori dal modulo, così un aggiornamento non lo tocca. Il modulo lo serve come CSS dalla sua rotta degli asset. Il personalizzatore permette anche di scaricarlo, per metterlo sotto versione; se l'applicazione ha un file di tema nella propria cartella `app/`, quello ha la precedenza.
+- **Chiaro e scuro.** La variante la sceglie ogni utente dalla barra in alto (sistema, chiaro, scuro), salvata con la libreria Settings nel contesto dell'utente; senza scelta segue `prefers-color-scheme`. Il tema (Console, Clarity, Contrast) è globale.
+- **Permesso.** Il personalizzatore richiede `appearance.update`, concesso ad `admin` con una migrazione di dati.
+- **Tipografia.** La famiglia tipografica non si personalizza in v1.0 (il brief rimanda la tipografia personalizzata alla v1.5): i temi cambiano pesi e scala, non la famiglia.
+- **Disegno dei temi.** I valori dei tre temi si approvano su un'anteprima applicata alle schermate reali prima di scrivere il codice.
+
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 
 ## Design system

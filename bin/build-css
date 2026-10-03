@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Builds src/Assets/css/panel.css from resources/css/panel.css with the standalone
+# Tailwind CSS CLI (no Node, no npm). The compiled file is committed: people who
+# install the module never run this. Works in Git Bash on Windows, Linux and macOS.
+#
+#   bin/build-css           build once, minified
+#   bin/build-css --watch   rebuild on every change
+set -euo pipefail
+
+VERSION="v4.3.3"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CACHE="$ROOT/bin/.cache"
+
+case "$(uname -s)-$(uname -m)" in
+  Linux-x86_64) ASSET="tailwindcss-linux-x64" ;;
+  Linux-aarch64) ASSET="tailwindcss-linux-arm64" ;;
+  Darwin-arm64) ASSET="tailwindcss-macos-arm64" ;;
+  Darwin-x86_64) ASSET="tailwindcss-macos-x64" ;;
+  MINGW*|MSYS*|CYGWIN*) ASSET="tailwindcss-windows-x64.exe" ;;
+  *) echo "Unsupported platform: $(uname -s) $(uname -m)" >&2; exit 1 ;;
+esac
+
+BIN="$CACHE/$VERSION-$ASSET"
+
+if [ ! -x "$BIN" ]; then
+  mkdir -p "$CACHE"
+  echo "Downloading Tailwind CSS $VERSION ($ASSET)..."
+  curl -fsSL -o "$BIN" "https://github.com/tailwindlabs/tailwindcss/releases/download/$VERSION/$ASSET"
+  chmod +x "$BIN"
+fi
+
+cd "$ROOT"
+
+if [ "${1:-}" = "--watch" ]; then
+  exec "$BIN" -i resources/css/panel.css -o src/Assets/css/panel.css --watch
+fi
+
+"$BIN" -i resources/css/panel.css -o src/Assets/css/panel.css --minify

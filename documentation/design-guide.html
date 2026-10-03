@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoleWarden design guide</title>
+  <!-- The panel's own compiled stylesheet: every sample below is the real thing. -->
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <style>
+    /* Layout of this guide only; colours and type come from the panel tokens. */
+    .guide { max-width: 1120px; margin: 0 auto; padding: var(--space-12) var(--space-6) var(--space-16); }
+    .guide h1 { font: var(--weight-title) var(--text-2xl)/var(--leading-2xl) var(--font-title); margin: var(--space-1) 0 var(--space-2); }
+    .guide h2 { font: var(--weight-title) var(--text-lg)/var(--leading-lg) var(--font-title); margin: var(--space-12) 0 var(--space-3); padding-top: var(--space-6); border-top: var(--rule-strong-width) solid var(--rule-strong); }
+    .guide h3 { font: var(--weight-strong) var(--text-md)/var(--leading-md) var(--font-sans); margin: var(--space-6) 0 var(--space-2); }
+    .guide p, .guide li { max-width: 72ch; color: var(--ink-muted); }
+    .guide strong { color: var(--ink); }
+    .guide code { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink); }
+    .guide pre { background: var(--surface-sunk); border: var(--rule-width) solid var(--rule); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); overflow-x: auto; font: var(--weight-body) var(--text-xs)/var(--leading-xs) var(--font-mono); color: var(--ink); }
+    .switch { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; padding: var(--space-3) 0; background: var(--surface); border-bottom: var(--rule-width) solid var(--rule); }
+    .switch label { display: inline-flex; gap: var(--space-1-5); align-items: center; color: var(--ink); }
+    .tokens { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    .tokens th, .tokens td { text-align: left; padding: var(--space-1-5) var(--space-2); border-bottom: var(--rule-width) solid var(--rule); white-space: nowrap; }
+    .tokens th { font: var(--weight-strong) var(--text-xs)/var(--leading-xs) var(--font-sans); text-transform: uppercase; letter-spacing: .04em; color: var(--ink-muted); }
+    .scroll { overflow-x: auto; }
+    .chip { display: inline-block; width: var(--space-3); height: var(--space-3); border: var(--rule-width) solid var(--rule-strong); vertical-align: -1px; margin-right: var(--space-1-5); }
+    .row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: var(--space-3) 0; }
+  </style>
+</head>
+<body>
+<div class="rw guide">
+  <div class="rw-header">RoleWarden</div>
+  <h1>Design guide</h1>
+  <p>Everything the panel looks like comes from tokens: CSS custom properties read by every component. A theme is nothing more than a set of values for them. This page uses the panel's own stylesheet, so the samples and the values below are always the ones the module ships.</p>
+
+  <div class="switch" role="group" aria-label="Theme and mode shown on this page">
+    <strong>Show</strong>
+    <label><input class="rw-radio" type="radio" name="theme" value="console" checked> Console</label>
+    <label><input class="rw-radio" type="radio" name="theme" value="clarity"> Clarity</label>
+    <label><input class="rw-radio" type="radio" name="theme" value="contrast"> Contrast</label>
+    <span class="rw-faint">|</span>
+    <label><input class="rw-radio" type="radio" name="mode" value="light" checked> Light</label>
+    <label><input class="rw-radio" type="radio" name="mode" value="dark"> Dark</label>
+  </div>
+
+  <h2>Three levels, one rule</h2>
+  <ol>
+    <li><strong>Primitives</strong> (<code>--p-blue-650</code>, <code>--p-graphite-25</code>…): the raw colours. No component ever reads them.</li>
+    <li><strong>Semantic tokens</strong> (<code>--surface</code>, <code>--ink</code>, <code>--accent</code>, <code>--text-md</code>, <code>--size-control</code>…): a role, not a value. Every component reads only these.</li>
+    <li><strong>Component tokens</strong>: only where a component needs an exception, and always derived from a semantic token, never from a primitive.</li>
+  </ol>
+  <p>The rule that keeps the panel coherent: <strong>no raw value in markup or component CSS</strong>, no arbitrary colour in a utility class, no spacing outside the scale. If a component cannot find the token it needs, a token is missing: add it to the scale, do not invent an exception. The only plain values are the widths of individual table columns and the geometry of icons, which are layout rather than theme.</p>
+
+  <h3>How a theme is chosen</h3>
+  <p>The <code>&lt;html&gt;</code> element carries <code>data-rw-theme="console|clarity|contrast"</code> (set from the Appearance screen, for everyone) and, when a user picked one in the top bar, <code>data-rw-mode="light|dark"</code>; without it the panel follows the operating system. Each theme defines its light and dark colours side by side as <code>--l-*</code> and <code>--d-*</code>, and one block picks the pair for the current mode.</p>
+
+  <h2>Colour tokens</h2>
+  <p>Values of the semantic colours in the theme and mode selected above, with the primitive each one points to. Text pairs meet WCAG AA (4.5:1) in all six combinations.</p>
+  <div class="scroll"><table class="tokens" id="colour-tokens"><thead><tr><th>Token</th><th>Role</th><th>Value</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>Type, spacing and shape</h2>
+  <p>IBM Plex Sans for the interface, IBM Plex Serif for page and section titles (Contrast sets titles in bold Sans), IBM Plex Mono only for permission identifiers such as <code>users.delete</code>. Figures are tabular. Families are not customisable in v1.0; themes change sizes and weights.</p>
+  <div class="scroll"><table class="tokens" id="shape-tokens"><thead><tr><th>Token</th><th>Use</th><th>Value</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>Components</h2>
+  <p>Each component exists once, with its variants and states. Class names are the ones to use in a view.</p>
+  <h3>Buttons <code>.rw-btn</code></h3>
+  <div class="row">
+    <button class="rw-btn rw-btn--primary" type="button">Primary</button>
+    <button class="rw-btn rw-btn--secondary" type="button">Secondary</button>
+    <button class="rw-btn rw-btn--ghost" type="button">Ghost</button>
+    <button class="rw-btn rw-btn--danger" type="button">Destructive</button>
+    <button class="rw-btn rw-btn--primary" type="button" disabled>Disabled</button>
+    <button class="rw-btn rw-btn--secondary rw-btn--sm" type="button">Small</button>
+  </div>
+  <h3>Fields <code>.rw-field</code>, <code>.rw-input</code>, <code>.rw-select</code>, <code>.rw-check</code></h3>
+  <div class="row">
+    <div class="rw-field"><label class="rw-label" for="g-email">Email</label><input class="rw-input" id="g-email" value="dana@northwind-studio.test"></div>
+    <div class="rw-field"><label class="rw-label" for="g-role">Role</label><select class="rw-select" id="g-role"><option>Editor</option></select></div>
+    <label class="rw-check-row"><input class="rw-check" type="checkbox" checked> Remember me</label>
+  </div>
+  <p class="rw-field-error"><b>Error:</b> Field errors sit under their control, never in a toast.</p>
+  <h3>Labels <code>.rw-role</code>, <code>.rw-status</code></h3>
+  <div class="row">
+    <span class="rw-role">Editor</span><span class="rw-role rw-role--parent">Author</span>
+    <span class="rw-status">Active</span><span class="rw-status rw-status--disabled">Inactive</span>
+  </div>
+  <h3>Toast <code>.rw-toast</code></h3>
+  <div class="row">
+    <div class="rw-toast" style="max-width: 360px"><p><span class="rw-toast__kind">Saved</span> Changes saved.</p></div>
+    <div class="rw-toast rw-toast--error" style="max-width: 360px"><p><span class="rw-toast__kind">Error:</span> You cannot remove the last super admin.</p></div>
+  </div>
+  <h3>Table <code>.rw-t-users</code> and ledger rows</h3>
+  <table class="rw-t-users">
+    <thead><tr><th class="rw-m-num"></th><th class="rw-header">Username</th><th class="rw-header">Roles</th><th class="rw-header">Status</th></tr></thead>
+    <tbody>
+      <tr><td class="rw-m-num">01</td><td class="rw-c-name">Dana Whitfield</td><td><span class="rw-role">Admin</span></td><td><span class="rw-status">Active</span></td></tr>
+      <tr><td class="rw-m-num">02</td><td class="rw-c-name">Marco Leone</td><td><span class="rw-role">Editor</span></td><td><span class="rw-status rw-status--disabled">Inactive</span></td></tr>
+    </tbody>
+  </table>
+  <p>Rules, not boxes: rows are separated by <code>--rule</code>, sections by <code>--rule-strong</code>. No cards, no zebra stripes. Every table keeps a left gutter (<code>--gutter</code>) for row numbers. Green (<code>--granted</code>) and red (<code>--denied</code>) mean granted and denied or destructive, never decoration. Every control has a visible focus ring (<code>--focus</code>, <code>--focus-width</code>).</p>
+
+  <h2>Customising without touching the module</h2>
+  <p>The Appearance screen changes the starting theme, the background, text and accent colours for light and dark, the corner radius and the density, with a live preview and a warning for any text colour under WCAG AA. It saves <code>writable/rolewarden/theme.json</code>; an application that keeps <code>app/Config/RoleWarden/theme.json</code> under version control wins over it. Neither file belongs to the module, so updating the module keeps the theme.</p>
+
+  <h3>A fourth theme</h3>
+  <p>Add a stylesheet to your application, declare it and the theme in <code>app/Config/RoleWarden.php</code> (a class extending <code>RoleWarden\Config\RoleWarden</code>), and the Appearance screen offers it next to the other three:</p>
+<pre>// app/Config/RoleWarden.php
+class RoleWarden extends \RoleWarden\Config\RoleWarden
+{
+    public array $extraThemes = ['ocean' =&gt; 'Ocean'];
+    public ?string $themeStylesheet = 'https://example.test/css/rolewarden-ocean.css';
+}
+
+/* public/css/rolewarden-ocean.css: map every semantic token, light and dark */
+:root[data-rw-theme="ocean"] {
+  --l-surface: #f7fafb; --l-ink: #0f1d24; --l-accent: #0b6e8a; /* ...every --l-* ... */
+  --d-surface: #0c171c; --d-ink: #e8f2f5; --d-accent: #6cc3dc; /* ...every --d-* ... */
+  --radius-md: 6px; --size-row: 44px; /* shape tokens you want to change */
+}</pre>
+  <p>Start from the table above: copy every colour token for both modes and change the values, then check each text colour against its background (4.5:1 for text, 3:1 for control borders). Leave out a token and the panel falls back to Console's value for it.</p>
+
+  <h3>A component of your own</h3>
+  <p>Put its CSS in the same stylesheet and build it only from semantic tokens: background <code>var(--surface-raised)</code>, text <code>var(--ink)</code>, border <code>var(--rule-width) solid var(--rule-strong)</code>, height <code>var(--size-control)</code>, radius <code>var(--radius-md)</code>, spacing <code>var(--space-*)</code>. Give it a focus state with <code>outline: var(--focus-width) solid var(--focus)</code>. It then follows every theme, mode and customisation automatically.</p>
+</div>
+
+<script>
+  // Fills the token tables from the computed style of the theme and mode selected,
+  // so the values shown are always those of the shipped stylesheet.
+  const COLOURS = [
+    ['surface', 'Page background'], ['surface-sunk', 'Sidebar, hover, wells'], ['surface-raised', 'Fields, menus, dialogs'],
+    ['ink', 'Body text and headings'], ['ink-muted', 'Secondary text'], ['ink-faint', 'Row numbers and notes'],
+    ['rule', 'Row separators'], ['rule-strong', 'Section separators'], ['control-border', 'Field and button borders'],
+    ['accent', 'Primary actions, links, focus'], ['accent-hover', 'Accent on hover'], ['accent-tint', 'Selected and changed'],
+    ['on-accent', 'Text on the accent'], ['granted', 'Granted permission'], ['granted-tint', 'Granted background'],
+    ['denied', 'Denied, destructive'], ['denied-tint', 'Denied background'], ['on-denied', 'Text on denied'],
+  ];
+  const SHAPE = [
+    ['text-xs', 'Notes, headers'], ['text-sm', 'Labels'], ['text-md', 'Body'], ['text-lg', 'Section titles'], ['text-xl', 'Figures'], ['text-2xl', 'Page titles'],
+    ['weight-body', 'Body weight'], ['weight-strong', 'Strong weight'], ['weight-title', 'Title weight'], ['font-title', 'Title family'],
+    ['gutter', 'Page margin and row-number gutter'], ['size-control', 'Buttons and fields'], ['size-row', 'Table rows'], ['size-topbar', 'Top bar'], ['size-sidebar', 'Sidebar'],
+    ['radius-sm', 'Labels, checkboxes'], ['radius-md', 'Buttons, fields'], ['rule-strong-width', 'Strong rules'], ['focus-width', 'Focus ring'],
+    ['space-1', 'Spacing scale (4 px steps)'], ['space-4', ''], ['space-8', ''], ['motion-fast', 'Hover and toast transitions'],
+  ];
+  const root = document.documentElement;
+  function source(name) {
+    for (const sheet of document.styleSheets) {
+      let rules;
+      try { rules = sheet.cssRules; } catch (e) { continue; }
+      for (const rule of rules) {
+        const theme = root.dataset.rwTheme;
+        // The compiled stylesheet drops the quotes: [data-rw-theme=clarity].
+        if (rule.selectorText && new RegExp('data-rw-theme="?' + theme + '"?\]').test(rule.selectorText) && rule.style) {
+          const value = rule.style.getPropertyValue(name).trim();
+          if (value) return value;
+        }
+      }
+    }
+    return '';
+  }
+  function render() {
+    const computed = getComputedStyle(root);
+    const prefix = root.dataset.rwMode === 'dark' ? '--d-' : '--l-';
+    document.querySelector('#colour-tokens tbody').innerHTML = COLOURS.map(([name, role]) => {
+      const value = computed.getPropertyValue('--' + name).trim();
+      const primitive = source(prefix + name).replace(/^var\((.*)\)$/, '$1');
+      return '<tr><td><code>--' + name + '</code></td><td>' + role + '</td><td><span class="chip" style="background:' + value + '"></span><code>' + value + '</code>' + (primitive ? ' <span class="rw-faint">' + primitive + '</span>' : '') + '</td></tr>';
+    }).join('');
+    document.querySelector('#shape-tokens tbody').innerHTML = SHAPE.map(([name, use]) =>
+      '<tr><td><code>--' + name + '</code></td><td>' + use + '</td><td><code>' + computed.getPropertyValue('--' + name).trim() + '</code></td></tr>').join('');
+  }
+  document.querySelectorAll('input[name="theme"]').forEach((input) => input.addEventListener('change', () => { root.dataset.rwTheme = input.value; render(); }));
+  document.querySelectorAll('input[name="mode"]').forEach((input) => input.addEventListener('change', () => { root.dataset.rwMode = input.value; render(); }));
+  root.dataset.rwMode = 'light';
+  render();
+</script>
+</body>
+</html>

@@ -16,3 +16,6 @@ phpstan.neon
 
 # IDE
 /.idea/
+
+# Standalone Tailwind CLI downloaded by bin/build-css
+/bin/.cache/

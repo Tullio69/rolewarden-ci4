@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<?php helper('rolewarden'); ?><html lang="en" <?= rw_html_attributes() ?>>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= lang('Auth.login') ?></title>
-  <link rel="stylesheet" href="<?= esc(site_url('rolewarden/assets/css/panel.css')) ?>">
+  <?= rw_stylesheets() ?>
   <script defer src="<?= esc(site_url('rolewarden/assets/js/vendor/alpine.min.js')) ?>"></script>
 </head>
 <body>

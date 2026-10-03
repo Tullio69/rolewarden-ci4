@@ -23,7 +23,7 @@ final class ActivityLog
         'user.deleted', 'user.role_assigned', 'user.role_revoked', 'user.override_granted', 'user.override_denied',
         'user.override_cleared', 'role.created', 'role.updated', 'role.deleted', 'role.permission_granted',
         'role.permission_revoked', 'settings.updated', 'account.password_changed', 'session.revoked',
-        'session.remembered_forgotten', 'session.all_revoked', 'auth.logout',
+        'session.remembered_forgotten', 'session.all_revoked', 'appearance.updated', 'auth.logout',
     ];
 
     /** Retention choices of the Settings screen, in days; 0 keeps everything. */

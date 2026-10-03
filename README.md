@@ -72,6 +72,12 @@ point the test app at it in its `.env` (`email.protocol = smtp`, `email.SMTPHost
 <http://localhost:8026>. Nothing leaves the machine. `MAIL_SMTP_PORT` and `MAIL_UI_PORT`
 move it the same way as the ports above.
 
+The panel CSS is compiled from `resources/css/panel.css` with the standalone Tailwind CSS
+CLI (no Node or npm): `bin/build-css` downloads the pinned version once into `bin/.cache/` and
+writes `src/Assets/css/panel.css`, which is committed; `bin/build-css --watch` rebuilds on
+every change. Edit the source, never the compiled file. People who install the module never
+build anything.
+
 `docker compose down -v` deletes the data volume and recreates both databases from
 scratch on the next start. Use it when migrations leave the schema in a state that is
 faster to rebuild than to repair.
@@ -110,7 +116,7 @@ Replace the module's folder (or run `composer update`), then run
 migrations, never as edits you make by hand. For example, the migration for the Settings
 screen gives the `admin` role the new permissions `settings.view` and `settings.update`, the one for sessions gives it `sessions.view` and `sessions.revoke`, the one for
 the activity log gives it `activity.view`, and the one for security emails gives it
-`security.alerts`.
+`security.alerts`, and the one for the theme customiser gives it `appearance.update`.
 
 ### Importing existing Shield groups
 
@@ -266,7 +272,28 @@ failed sign-ins. That last alert also goes to everyone holding `security.alerts`
 - The templates are views in `RoleWarden\Views\emails`; override one by copying it to
   `app/Views/overrides/RoleWarden/Views/emails/`.
 
-### Activity log
+### Themes and appearance
+
+The panel ships three themes, **Console** (dense, the default), **Clarity** (airy) and
+**Contrast** (high contrast), each in light and dark. Everyone who is signed in picks light,
+dark or "System" (follow the operating system) from the top bar; the choice is kept per user.
+
+`/rolewarden/appearance` (permission `appearance.update`) sets the theme for everyone: the
+starting theme, background, text and accent colours for light and dark, corner radius and
+density. Every change shows on the page as it is made, and any text colour under WCAG AA is
+flagged (you can still save).
+
+- The result is a theme file of your application, never a module file, so updating the
+  module keeps it: `writable/rolewarden/theme.json`, written by the panel. The folder must be
+  writable by the web server, like the rest of `writable/`.
+- To keep the theme under version control, download it from the Appearance screen and save
+  it as `app/Config/RoleWarden/theme.json`. When that file exists it wins, and the panel
+  shows the theme without letting anyone change it.
+- A fourth theme or a component of your own goes in a stylesheet of your application,
+  declared with `$themeStylesheet` and `$extraThemes` in a class extending
+  `RoleWarden\Config\RoleWarden`. `documentation/design-guide.html` lists every token with
+  its value in each theme and shows how; open it in a browser from the module folder.
+
 
 `/rolewarden/activity` (permission `activity.view`) lists every change made from the panel to
 users, roles, permissions and settings, sessions signed out, sign-outs, and every sign-in

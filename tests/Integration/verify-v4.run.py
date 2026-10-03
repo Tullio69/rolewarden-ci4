@@ -71,7 +71,7 @@ def mailpit(method, path):
 
 
 def env_guard(text):
-    need = ['email.protocol = smtp', 'email.SMTPHost = 127.0.0.1', 'email.SMTPPort = 1026', "email.SMTPCrypto = ''"]
+    need = ['email.protocol = smtp', 'email.SMTPHost = 127.0.0.1', 'email.SMTPPort = 1026', "email.SMTPCrypto = ''", 'email.fromEmail = noreply@rolewarden.test']
     lines = [l.strip() for l in text.splitlines()]
     for n in need:
         if n not in lines:

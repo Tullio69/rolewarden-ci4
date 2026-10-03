@@ -1,0 +1,59 @@
+== U upgrade window, production ==
+module: 3805640
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 07:19:53 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ning: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions Running: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 07:19:54 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U01-production V1 (35f058f) two admins signed in
+[INFO] stopping server pid=44760
+[INFO] termination requested=true
+[INFO] server closed
+module: a107e94
+[INFO] U02-production Folder replaced, migrate not yet run: /login HTTP 200, panel HTTP 200, host home HTTP 200
+[PASS] U02-production Folder replaced, migrate not yet run: no SQL error text on screen (login, panel, host home)
+[PASS] U02-productions Folder replaced, migrate not yet run: login, signed-in panel and host home all answer 200
+[INFO] U02 signed-in request to the host home page: HTTP 200 sql=false
+[INFO] U02 app log: []
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 07:20:00 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+[PASS] U03-production After migrate an admin signed in before the upgrade stays signed in and this browser is listed
+[PASS] U06-production After migrate the admin who browsed during the window is still signed in and listed
+   spark migrate:rollback -b 3 -f (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 07:20:01 UTC+00:00 Rolling back migrations to batch: 3 Rolling back: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Done rolling back migrations.
+[INFO] U04-production V2 migrations rolled back, V2 folder still in place: /login HTTP 200, panel HTTP 200, host home HTTP 200
+[PASS] U04-production V2 migrations rolled back, V2 folder still in place: no SQL error text on screen (login, panel, host home)
+[PASS] U04-productions V2 migrations rolled back, V2 folder still in place: login, signed-in panel and host home all answer 200
+[INFO] U04 app log: []
+[INFO] stopping server pid=21492
+[INFO] termination requested=true
+[INFO] server closed
+module: 3805640
+[INFO] U05-production Rolled back and V1 folder put back: /login HTTP 200, panel HTTP 200, host home HTTP 200
+[PASS] U05-production Rolled back and V1 folder put back: no SQL error text on screen (login, panel, host home)
+[PASS] U05-productions Rolled back and V1 folder put back: login, signed-in panel and host home all answer 200
+[INFO] U05 app log: []
+[INFO] U05 settings rows: []
+[INFO] U05 writable/cache files: ["\\rolewarden_user_1"]
+[INFO] stopping server pid=44104
+[INFO] termination requested=true
+[INFO] server closed
+== R default role through the full V2 form ==
+module: a107e94
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 07:20:04 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-03 07:20:06 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[INFO] settings form fields: ["csrf_test_name","lock_attempts","lock_minutes","sign_in_rate","session_lifetime","remember_length","default_role","activity_retention"]
+[PASS] R01    Default role saved through the full V2 form: success toast (HTTP 303 then 200)
+[PASS] R02    Default role stored and re-read
+[INFO] R03 register: HTTP 303 -> http://localhost:8070/index.php user id=7 shield groups=[{"group":"user"}] acl roles=["v1-limited"]
+[PASS] R03    User registered through Shield gets exactly the default role
+[PASS] R04    User created from the panel gets exactly the default role
+[INFO] super-admin as default: HTTP 303 toasts=[{"type":"error","alert":true,"kind":"Error:","msg":"A super admin role cannot be the default: everyone who signs up would get full control. Choose another role.","close":false}] inline=false
+[PASS] R05    Super admin role refused as default, value unchanged, message shown (inline or toast)
+[INFO] partial POST (default_role only): HTTP 303 stored changed=false toasts=[] inline errors on=["session_lifetime","remember_length","lock_attempts","lock_minutes","sign_in_rate"]
+[PASS] R06    Partial POST without the sign-in fields: nothing written and the refusal is visible
+[INFO] stopping server pid=3808
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] R07    R part: app log clean at max level
+ADAPT RESULT 16 checks 16 PASS 0 FAIL
+[MAIL] captured=1 non-test=[]

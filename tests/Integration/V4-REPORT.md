@@ -1,5 +1,85 @@
 # V4 — Email di sicurezza: collaudo indipendente
 
+## Riverifica finale — 2026-10-03, Collaudatore ad Hoc (Claude), commit `a107e94`
+
+**Esito: PASS. 1363 PASS / 0 FAIL su 1363 controlli, 0 bloccati. D2 corretto, D1 resta corretto, M01-M03 eseguiti e superati in entrambi gli ambienti. V4 approvata per il collaudo HTTP.** Restano da fare tre cose: le decisioni dell'autore su A1-A4 (qui non decise), il controllo visivo in browser e client di posta, la verifica dell'invio dopo la risposta sotto PHP-FPM.
+
+Modulo da `git archive a107e94`, baseline di aggiornamento `3805640`, HEAD del repository `2165136`. Stesso perimetro di Codex: letti solo SPEC, BRIEF, README, `_AI-LOG.md`, `docs/design-system/`, `src/Authorization/Contracts/` e `tests/Integration/`. Nessun controller, model, view, template email, test unitario o diff aperto. Il contenuto delle email viene solo da Mailpit. Comando: `RW_V4_NEW=a107e94 python tests/Integration/verify-v4.run.py <modo> <ambiente>`, un processo per suite e ambiente, ciascuno con snapshot e ripristino propri.
+
+### Totali
+
+| Suite | development | production |
+| --- | ---: | ---: |
+| V4 preesistente (compresi M01-M04) | 95/95 | 95/95 |
+| D1: 24 varianti, POST + GET + log | 72/72 | 72/72 |
+| Contenuto email (`R-TEXT/ENTITY/TZ/LINES/DECODE/CONTENT/BODY`) | 37/37 | 37/37 |
+| D2: confronto con le catture `c0ab8fc` (nuovo, 4 per messaggio x 7) | 28/28 | 28/28 |
+| Regressione V3 principale / supplementare / filtri array | 139 + 57 + 55 | 139 + 57 + 55 |
+| Regressione V2 `test` / `extra` / `adapt` | 141 + 31 + 16 | 154 + 39 + 16 |
+| **Totale** | **671/671** | **692/692** |
+
+Ambiguità registrate e non contate, in ciascun ambiente: M05 (A2), Z01 (A1), Z03-2 e Z03-3 (A3). Evidenze: `verify-v4.<modo>.<ambiente>.a107e94.output.txt`, catture `verify-v4.v4.<ambiente>.a107e94.verify-v4.captured-mail.json` (SHA-256 development `8ab2bd0a…8ced`, production `a1c931ca…a0db`), log applicativi e server con lo stesso prefisso, `verify-v4.environment.txt`.
+
+### D2 — corretto
+
+Ho controllato la parte text/plain delle sette email per ambiente: nuovo dispositivo, nuovo IP, nome con markup, password da profilo, password da admin, blocco all'utente, blocco all'admin. Ora inizia con `localhost`, seguito da una sola occorrenza del titolo:
+
+```text
+localhost
+New sign-in to your account
+Hello V4newdev,
+```
+
+Ho aggiunto quattro controlli in `verify-v4.recheck.php` (`recheck_d2`), contro le catture Mailpit di `c0ab8fc`. Normalizzano **solo** data e ora e, per l'HTML, i commenti `DEBUG-VIEW` di development, che contengono il nome della cartella estratta:
+- `R-D2-ONCE`: la riga del titolo compare esattamente una volta nel testo;
+- `R-D2-TEXT`: il testo è identico, byte per byte salvo la data, a quello di `c0ab8fc` senza la sola prima riga (il titolo duplicato). Quindi non c'è nessun'altra variazione;
+- `R-D2-HTML`: la parte HTML è identica a quella di `c0ab8fc`;
+- `R-D2-HEAD`: mittente, destinatari e oggetto invariati.
+
+Sensibilità: le stesse asserzioni rieseguite offline sulle catture di `c0ab8fc` danno FAIL su `R-D2-ONCE` e `R-D2-TEXT` per tutti e sette i messaggi, e PASS su HTML e intestazioni. Anche i sette `R-CONTENT-*` contro la cattura di `2028ea2`, che con Codex fallivano, ora passano. O1, O2 e l'indicazione `UTC` restano superati.
+
+### SMTP spento o appeso (M01-M03) e misura M05
+
+Docker era comandabile: `docker stop rolewarden-mail` e `docker start` hanno risposto con rc 0. Il container è stato riacceso nel blocco `finally` ed è tornato *healthy*. Con Mailpit fermo ha girato su 127.0.0.1:1026 un listener di prova che accetta la connessione e non risponde mai; non inoltra nulla.
+
+| | development | production |
+| --- | ---: | ---: |
+| Login da dispositivo nuovo, Mailpit attivo (base) | 1,63 s | 1,26 s |
+| M01 Mailpit fermo (connessione rifiutata): 303, poi pagina 200, nessun errore a schermo | PASS, 3,61 s | PASS, 3,25 s |
+| M02 SMTP appeso: stessa cosa | PASS, 16,56 s | PASS, 16,23 s |
+| M03 log: solo errori gestiti (`Email: sendWithSmtp threw ErrorException ...`), nessun CRITICAL o eccezione non gestita | PASS | PASS |
+| M04 Mailpit riacceso: l'email successiva arriva | PASS | PASS |
+
+**M05 / A2, misurato e non deciso:** col server integrato `php -S` la risposta attende l'SMTP. Il ritardo è di circa +2 s con connessione rifiutata e di circa +15 s con server appeso (`SMTPTimeout` di 5 s dell'ospite, più le letture). Il server integrato non ha `fastcgi_finish_request()`: che la risposta non attenda sotto PHP-FPM resta da verificare su un ambiente FPM.
+
+### D1 — non regressione
+
+Ripetuti Z03-0, Z03-1, Z03-4, Z04, Z05 e le 24 varianti `R-D1-*`: `email[]`, `email[0]`, `email[_]`, `email[a][b]`, con e senza password, con remember assente, `remember[]` o `remember[_]`. In ogni caso la POST viene rifiutata senza 500 e senza autenticazione, la GET `/login` successiva risponde 200 con il modulo utilizzabile e il log a soglia 9 non ha warning o errori, senza esclusioni. Nessun warning, notice, deprecation o fatal nel log del server PHP (`error_reporting=-1`).
+
+### Ambiguità (non decise)
+
+- **A1:** il login senza token CSRF è ancora accettato (Z01). Non decisa.
+- **A2:** vedi M05 sopra; la verifica sotto FPM è ancora dovuta.
+- **A3:** la password inviata come array dà ancora 500 dentro la validazione di Shield (Z03-2, Z03-3). Non decisa.
+- **A4:** il sintomo è superato dall'indicazione esplicita `UTC`; nessuna decisione sul formato nella specifica.
+
+### Modifiche allo strumento
+
+Tutte in `tests/Integration/`:
+- aggiunta di `recheck_d2()` in `verify-v4.recheck.php`, chiamata da `recheck_mail()`;
+- nel runner, la guardia iniziale sul `.env` controlla anche `email.fromEmail = noreply@rolewarden.test`.
+
+Nessuna aspettativa preesistente è cambiata. Nota: il replay offline `verify-v4.recheck.php <ambiente> c0ab8fc` ora esegue anche `recheck_d2`, che su quelle catture fallisce per costruzione.
+
+### Ambiente, sicurezza e pulizia
+
+- Solo `rolewarden_test` su 127.0.0.1:3317; credenziali solo da `RW_DB_USERNAME`/`RW_DB_PASSWORD`, mai in file o output. **14 cicli**, tutti con dump identico prima e dopo. SHA-256 iniziale e finale `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`, database vuoto.
+- Il `.env` della copia punta all'SMTP 127.0.0.1:1026, con crypto vuoto e `fromEmail = noreply@rolewarden.test`, ed è verificato prima di ogni avvio; `mail()` è disabilitato nel server. Destinatari solo `*.test` (`[MAIL] non-test=[]` in tutte le esecuzioni). Nessun invio reale. A fine lavoro Mailpit ha **0 messaggi** e `rolewarden-mail` è attivo e *healthy*.
+- Copia in `tests/Integration/verify-v4.work`, modulo agganciato via junction. Il server viene riavviato a ogni scambio e chiuso tramite il proprio processo; nessun `taskkill /IM`. Junction rimossa prima della cartella, `verify-v4.work` assente, **0 processi PHP e Python** residui.
+- Nessun commit, nessun push.
+
+---
+
 ## Riverifica — 2026-09-30, Codex, commit `c0ab8fc`
 
 **D1 corretto. Esito complessivo: 1287 PASS / 14 FAIL su 1301 controlli eseguiti, più 6 controlli SMTP bloccati dall'ambiente. V4 non approvata integralmente:** il confronto richiesto del contenuto rileva una variazione ulteriore, D2 (titolo duplicato nel testo, minore), e le prove con SMTP spento/appeso non sono state rieseguibili. La regressione V2/V3 passa **899/899**. A1-A4 restano separate e non decise; il sintomo di A4 risulta superato.

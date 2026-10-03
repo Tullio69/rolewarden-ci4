@@ -41,6 +41,37 @@ function recheck_mail(string $tag, array $f, bool $capture = true): void
     check("R-BODY-$tag", 'Remaining text matches baseline after removing only the extra leading HTML title',
         $found && $normalize(json_decode($m[4], true)) === $normalize($withoutTitle));
     info("Recheck $tag HTML title=" . json_encode($titleText) . '; exact Text=' . json_encode($text));
+    recheck_d2($tag, $f, $titleText);
+}
+
+// Final recheck of D2 (added by the Collaudatore ad Hoc on a107e94): compare with the c0ab8fc
+// Mailpit captures. Text must equal the c0ab8fc text minus only its first (duplicated title) line;
+// HTML must equal the c0ab8fc HTML. Only dates and DEBUG-VIEW comments (they carry the extraction
+// folder name) are normalized; nothing else.
+function recheck_d2(string $tag, array $f, string $titleText): void
+{
+    global $ENVN, $WORKDIR;
+    $file = dirname($WORKDIR) . "/verify-v4.v4.$ENVN.c0ab8fc.verify-v4.captured-mail.json";
+    $prev = null;
+    foreach (@file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $l) {
+        $r = json_decode($l, true);
+        if (($r['tag'] ?? '') === $tag) $prev = $r;
+    }
+    if ($prev === null) { check("R-D2-PREV-$tag", 'c0ab8fc capture available for comparison', false); return; }
+    $date = static fn (string $s): string => preg_replace('/\d{4}-\d{2}-\d{2}(\s+)\d{2}:\d{2}/', '<DATE>$1<TIME>', $s);
+    $text = (string) $f['Text'];
+    $lines = preg_split('/\r\n|\n/', $text);
+    $titleLines = count(array_filter($lines, fn ($s) => trim($s) === $titleText));
+    check("R-D2-ONCE-$tag", 'Text part contains the title line exactly once', $titleText !== '' && $titleLines === 1, "title lines=$titleLines");
+    $prevText = (string) $prev['Text'];
+    $prevStripped = preg_replace('/^[^\r\n]*\r?\n/', '', $prevText, 1);
+    check("R-D2-TEXT-$tag", 'Text equals the c0ab8fc text minus only its first line (dates normalized, nothing else)',
+        $date($prevStripped) === $date($text) && strtok($prevText, "\r\n") === $titleText,
+        json_encode(['prev' => substr($date($prevStripped), 0, 160), 'now' => substr($date($text), 0, 160)]));
+    $html = static fn (string $s): string => $date(preg_replace('/<!-- DEBUG-VIEW (?:START|ENDED) [^>]*-->\n?/', '', $s));
+    check("R-D2-HTML-$tag", 'HTML part unchanged from c0ab8fc (dates and DEBUG-VIEW comments normalized)', $html((string) $prev['HTML']) === $html((string) $f['HTML']));
+    check("R-D2-HEAD-$tag", 'Sender, recipients and subject unchanged from c0ab8fc',
+        $prev['From'] === $f['From'] && array_column($prev['To'], 'Address') === array_column($f['To'], 'Address') && $prev['Subject'] === $f['Subject']);
 }
 
 function recheck_d1(): void

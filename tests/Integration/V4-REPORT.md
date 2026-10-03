@@ -1,5 +1,94 @@
 # V4 — Email di sicurezza: collaudo indipendente
 
+## Riverifica — 2026-09-30, Codex, commit `c0ab8fc`
+
+**D1 corretto. Esito complessivo: 1287 PASS / 14 FAIL su 1301 controlli eseguiti, più 6 controlli SMTP bloccati dall'ambiente. V4 non approvata integralmente:** il confronto richiesto del contenuto rileva una variazione ulteriore, D2 (titolo duplicato nel testo, minore), e le prove con SMTP spento/appeso non sono state rieseguibili. La regressione V2/V3 passa **899/899**. A1-A4 restano separate e non decise; il sintomo di A4 risulta superato.
+
+Modulo eseguito da `git archive c0ab8fc`; baseline di aggiornamento `3805640`; HEAD del repository rimasto `05ad4eb9836c139de219d3f6818099285be40fb0`. Stesso perimetro documentale del collaudo precedente: nessuna implementazione, template email, test unitario o diff aperto. I contenuti email provengono esclusivamente da Mailpit e dalle catture del precedente collaudo. Nessuna modifica al modulo, commit o push.
+
+### Totali della riverifica
+
+| Suite | development | production |
+| --- | ---: | ---: |
+| V4 preesistente, controlli eseguibili | 92/92, 3 bloccati | 92/92, 3 bloccati |
+| D1: 24 varianti, POST + GET + log per variante | 72/72 | 72/72 |
+| Contenuto email: replay corretto delle catture | 30/37 | 30/37 |
+| Regressione V3 principale | 139/139 | 139/139 |
+| Regressione V3 supplementare | 57/57 | 57/57 |
+| Regressione V3 filtri array | 55/55 | 55/55 |
+| Regressione V2 `test` | 141/141 | 154/154 |
+| Regressione V2 `extra` | 31/31 | 39/39 |
+| Regressione V2 `adapt` | 16/16 | 16/16 |
+| **Totale eseguito** | **633/640** | **654/661** |
+
+I 14 FAIL sono i sette confronti `R-CONTENT-*` in ciascun ambiente: **una sola variazione**, D2. M01-M03 non eseguiti sono contati come bloccati, mai come PASS o FAIL. Anche la misura M05 relativa ad A2 non è eseguibile; era già fuori dal conteggio precedente. M04 ora verifica la consegna con Mailpit disponibile, **non** un recupero dopo un fermo che non è avvenuto.
+
+Evidenze: [riepilogo numerico](verify-v4.recheck-summary.json), `verify-v4.<modo>.<ambiente>.c0ab8fc.output.txt`, `verify-v4.mail-replay.<ambiente>.c0ab8fc.output.txt`, catture `verify-v4.v4.<ambiente>.c0ab8fc.verify-v4.captured-mail.json` (JSONL), log applicativi e server con lo stesso prefisso, [snapshot e pulizia](verify-v4.environment.txt). Gli output storici su `2028ea2` sono preservati.
+
+### D1 — chiuso in development e production
+
+Riproduzione originale Z03-0, array annidato Z03-1 ed email registrata Z03-4: PASS. Aggiunte 24 varianti per ambiente usando i nomi letterali nel corpo POST, senza trasformare `email[]` in `email[0]` nel client:
+
+- `email[]`, `email[0]`, `email[_]`, `email[a][b]`;
+- password assente oppure scalare presente;
+- remember assente, `remember[]=1`, oppure `remember[_]=1`.
+
+Per ciascuna combinazione: POST rifiutata senza HTTP 500, nessuna autenticazione, GET successiva di `/login` nella stessa sessione **200** con modulo utilizzabile, nessun errore PHP/SQL nella risposta. Log D1 a soglia 9 **senza WARNING, NOTICE, DEPRECATED, ERROR, CRITICAL, ALERT o EMERGENCY**, senza esclusioni. Server PHP con `error_reporting=-1`, nessun warning/notice/deprecation/fatal. La cache del throttling viene pulita tra i casi affinché il limite per IP non nasconda il percorso difettoso.
+
+La prova di sensibilità sulla baseline `3805640` continua a produrre 500 sulla POST; è archiviata separatamente. A3 (password array) resta separata: non è una variante scalare di D1 e continua a produrre il TypeError di Shield. Fuori dalla fase D1 i log contengono anche i rifiuti CSRF deliberati e i warning attesi per `fromEmail` vuoto, come nel collaudo precedente.
+
+### Modifiche email dichiarate e D2
+
+**O1 e O2 superate.** Le parti text/plain hanno righe distinte; `When`, `Device`, `Address` iniziano ciascuno su una riga. Il nome di prova appare come testo letterale `<i>V4esc</i>`, senza `&lt;`/`&gt;`; l'HTML ricevuto mantiene l'escape. Tutti i controlli preesistenti su destinatari, mittente, contenuti richiesti, password/hash, permessi, estensione e override passano.
+
+**Fuso verificato:** `UTC` accompagna l'ora sia nel testo sia nell'HTML dei messaggi con data (nuovo accesso e password cambiata, da profilo e da admin). Le email di blocco continuano a non contenere una data, come già osservato in O3. Il sintomo «data senza fuso» di A4 è quindi superato, senza scegliere un formato o un fuso obbligatorio per la specifica.
+
+**D2 — Il testo aggiunge un titolo iniziale duplicato rispetto a `2028ea2`.** È uno scostamento minore dal controllo richiesto «il resto del contenuto invariato», non un problema di invio o sicurezza. Esempio catturato su `c0ab8fc`:
+
+```text
+New sign-in to your account
+localhost
+New sign-in to your account
+Hello V4newdev,
+```
+
+La cattura precedente iniziava con `localhost`, seguito da una sola occorrenza del titolo. Lo stesso avviene per `Your password was changed` e `Too many failed sign-ins`, in entrambi gli ambienti. Sono confrontati sette messaggi per ambiente: nuovo dispositivo, nuovo IP, nome con markup, password da profilo, password da admin, blocco all'utente e blocco all'admin. Il titolo aggiunto coincide con il `<title>` dell'HTML **ricevuto**, letto da Mailpit; non è stato aperto alcun template.
+
+Il confronto normalizza data/ora, indicazione UTC, spaziatura e decodifica delle entità, ma **non** elimina il titolo aggiunto: i sette `R-CONTENT-*` restano FAIL. Un controllo separato `R-BODY-*` dimostra che, tolto soltanto quel prefisso, il testo restante coincide con la cattura precedente; mittente, destinatari e oggetto coincidono. Il confronto storico riguarda il testo catturato e i campi del messaggio, non l'identità byte per byte del vecchio HTML, che il precedente output non conservava integralmente.
+
+### Limite d'ambiente e correzioni dello strumento
+
+`docker stop rolewarden-mail` fallisce con accesso negato alla pipe `dockerDesktopLinuxEngine`. Mailpit resta acceso su 1026/8026: **SMTP spento e appeso non sono stati simulati**. Non sono stati cambiati porta o trasporto per aggirare il vincolo. Restano da rieseguire M01-M03 e la misura M05 con accesso a Docker; la verifica FPM di A2 resta distinta.
+
+Nel primo giro il vecchio runner ignorava l'exit code di Docker e dichiarava falsamente PASS le prove SMTP, compresa M05. Quel giro è conservato come `c0ab8fc.preliminary.*` ed escluso dai totali. Lo strumento ora emette `[BLOCKED]`, salta la simulazione se il fermo fallisce, verifica che il listener SMTP abbia davvero aperto la porta e restituisce un exit code non zero anche quando vi siano solo blocchi.
+
+Due correzioni riguardano esclusivamente i controlli del contenuto: leggere il fuso dall'HTML decodificato senza concatenare le parole dei tag adiacenti; accettare l'andata a capo MIME tra data, ora e UTC. Quest'ultima causava quattro falsi FAIL per ambiente nei controlli di data e confronto del corpo delle email password. È stato rieseguito **solo il confronto sulle stesse catture immutate**, senza nuovi invii o accessi al database:
+
+```powershell
+python tests/Integration/verify-v4.run.py v4 development
+python tests/Integration/verify-v4.run.py v4 production
+# Analogamente: v3, edges, arrays, test, extra, adapt, ciascuno nei due ambienti.
+php tests/Integration/verify-v4.recheck.php development
+php tests/Integration/verify-v4.recheck.php production
+```
+
+Il default del runner è ora `c0ab8fc`, sovrascrivibile con `RW_V4_NEW`. Gli output HTTP definitivi riportano ancora il risultato grezzo **190/201** per ambiente; non sono stati riscritti. Nei totali sopra i loro 37 controlli email sono **sostituiti**, non sommati, dai 37 del replay corretto (**30 PASS / 7 FAIL**), ottenendo **194/201** per la V4 estesa. Gli hash delle catture usate sono riportati negli output del replay. La regressione conserva gli adattamenti V2/V3 già documentati sotto, senza nuove aspettative funzionali.
+
+### Ambiguità, sicurezza e pulizia della riverifica
+
+- **A1:** ancora riproducibile, non decisa.
+- **A2:** non decisa; nuove prove SMTP bloccate dall'ambiente e verifica FPM ancora dovuta.
+- **A3:** ancora riproducibile, non decisa.
+- **A4:** sintomo superato da `UTC` esplicito; nessuna decisione sul formato della specifica. La voce storica sotto resta preservata.
+- Solo `rolewarden_test` su `127.0.0.1:3317`, credenziali esclusivamente da `RW_DB_USERNAME` e `RW_DB_PASSWORD`. **15 cicli con ripristino identico** (14 definitivi + 1 preliminare); database finale vuoto. SHA-256 iniziale/finale: `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`.
+- `.env` della copia su SMTP `127.0.0.1:1026`, crypto vuoto, prima di ogni richiesta; guardia prima di ogni avvio, configurazione effettiva verificata, `mail()` disabilitato nel server. Indirizzi solo `@*.test`; Mailpit finale **0 messaggi**. Nessun invio reale.
+- Un server HTTP PHP alla volta, arrestato tramite il proprio processo/PID. Nessun `taskkill /IM`. Junction rimossa prima della cartella temporanea. Verifica finale: **0 processi PHP, 0 processi Python, `verify-v4.work` assente**.
+- Scritture solo in `tests/Integration/` e nella nuova voce di `_AI-LOG.md`; «Stato corrente» non modificato. Le modifiche concorrenti di Claude restano fuori dall'intervento. Controllo visivo in browser/client email ancora dovuto, fuori da questo incarico.
+
+---
+
+## Collaudo precedente su `2028ea2` — storico preservato
+
 **Esito: FAIL, per un solo difetto (D1). V4 non approvata** finché D1 non è corretto. Tutte le funzioni V4 (nuovo dispositivo o IP, password cambiata, troppi tentativi, invio, estensione, override, mancanza di `fromEmail`) passano in development e production; la regressione V2/V3 passa per intero (899/899). Restano da decidere dall'autore le ambiguità A1-A4, non decise qui. Il controllo visivo in un browser vero resta **dovuto** (fuori da questo incarico).
 
 Commit collaudato: `2028ea2` (main). Baseline di aggiornamento: `3805640`. Data: 2026-09-28/29. Collaudatore: Collaudatore ad Hoc (Claude), in sostituzione di Codex (quota esaurita), stesso protocollo: letti solo `docs/SPEC.md` (Modello dati, Pannello admin con le decisioni V1-V4, Sistema di notifiche), `docs/BRIEF-v1.0.md`, README, `_AI-LOG.md`, `docs/design-system/`, `src/Authorization/Contracts/` e `tests/Integration/`. Nessun controller, model, view (template email compresi), sorgente vietato, test unitario o diff aperto. Il contenuto delle email è letto solo dai messaggi catturati da Mailpit; i nomi dei template sono ricavati dal campo `view` dell'evento documentato `rolewarden.mail`. Le posizioni dei file citate in D1 vengono dai log applicativi (stack trace), non dalla lettura del codice.

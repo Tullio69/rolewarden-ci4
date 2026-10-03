@@ -1,0 +1,117 @@
+Verification: c0ab8fc arrays.development.c0ab8fc
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+module: c0ab8fc
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:33:35 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:33:36 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] ARRAY-baseline-activity Authenticated baseline responds 200
+[ARRAY URL] /index.php/rolewarden/activity?user[]=x HTTP 200
+[PASS] ARRAY-activity-0 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?user[0]=x HTTP 200
+[PASS] ARRAY-activity-1 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?user[_]=1 HTTP 200
+[PASS] ARRAY-activity-2 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?user[nested][0]=x HTTP 200
+[PASS] ARRAY-activity-3 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?action[]=x HTTP 200
+[PASS] ARRAY-activity-4 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?action[0]=x HTTP 200
+[PASS] ARRAY-activity-5 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?action[_]=1 HTTP 200
+[PASS] ARRAY-activity-6 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?action[nested][0]=x HTTP 200
+[PASS] ARRAY-activity-7 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?from[]=x HTTP 200
+[PASS] ARRAY-activity-8 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?from[0]=x HTTP 200
+[PASS] ARRAY-activity-9 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?from[_]=1 HTTP 200
+[PASS] ARRAY-activity-10 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?from[nested][0]=x HTTP 200
+[PASS] ARRAY-activity-11 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?to[]=x HTTP 200
+[PASS] ARRAY-activity-12 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?to[0]=x HTTP 200
+[PASS] ARRAY-activity-13 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?to[_]=1 HTTP 200
+[PASS] ARRAY-activity-14 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?to[nested][0]=x HTTP 200
+[PASS] ARRAY-activity-15 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?page[]=x HTTP 200
+[PASS] ARRAY-activity-16 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?page[0]=x HTTP 200
+[PASS] ARRAY-activity-17 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?page[_]=1 HTTP 200
+[PASS] ARRAY-activity-18 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?page[nested][0]=x HTTP 200
+[PASS] ARRAY-activity-19 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?user[]=x&action[]=x&from[]=x&to[]=x&page[]=x HTTP 200
+[PASS] ARRAY-activity-20 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?user[]=x&page[]=2&action=invalid HTTP 200
+[PASS] ARRAY-activity-21 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?user=scalar&user[]=x HTTP 200
+[PASS] ARRAY-activity-22 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/activity?user[]=x&user=scalar HTTP 200
+[PASS] ARRAY-activity-23 Array filter handled without server error or PHP/SQL diagnostics
+[PASS] ARRAY-baseline-users Authenticated baseline responds 200
+[ARRAY URL] /index.php/rolewarden/users?q[]=x HTTP 200
+[PASS] ARRAY-users-0 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?q[0]=x HTTP 200
+[PASS] ARRAY-users-1 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?q[_]=1 HTTP 200
+[PASS] ARRAY-users-2 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?q[nested][0]=x HTTP 200
+[PASS] ARRAY-users-3 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?role[]=x HTTP 200
+[PASS] ARRAY-users-4 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?role[0]=x HTTP 200
+[PASS] ARRAY-users-5 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?role[_]=1 HTTP 200
+[PASS] ARRAY-users-6 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?role[nested][0]=x HTTP 200
+[PASS] ARRAY-users-7 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?status[]=x HTTP 200
+[PASS] ARRAY-users-8 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?status[0]=x HTTP 200
+[PASS] ARRAY-users-9 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?status[_]=1 HTTP 200
+[PASS] ARRAY-users-10 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?status[nested][0]=x HTTP 200
+[PASS] ARRAY-users-11 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?sort[]=x HTTP 200
+[PASS] ARRAY-users-12 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?sort[0]=x HTTP 200
+[PASS] ARRAY-users-13 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?sort[_]=1 HTTP 200
+[PASS] ARRAY-users-14 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?sort[nested][0]=x HTTP 200
+[PASS] ARRAY-users-15 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?page[]=x HTTP 200
+[PASS] ARRAY-users-16 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?page[0]=x HTTP 200
+[PASS] ARRAY-users-17 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?page[_]=1 HTTP 200
+[PASS] ARRAY-users-18 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?page[nested][0]=x HTTP 200
+[PASS] ARRAY-users-19 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?q[]=x&role[]=x&status[]=x&sort[]=x&page[]=x HTTP 200
+[PASS] ARRAY-users-20 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?q[]=x&page[]=2&role=invalid HTTP 200
+[PASS] ARRAY-users-21 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?q=scalar&q[]=x HTTP 200
+[PASS] ARRAY-users-22 Array filter handled without server error or PHP/SQL diagnostics
+[ARRAY URL] /index.php/rolewarden/users?q[]=x&q=scalar HTTP 200
+[PASS] ARRAY-users-23 Array filter handled without server error or PHP/SQL diagnostics
+[PASS] SCALAR-users-q Scalar q still filters the user list
+[PASS] SCALAR-activity Scalar action+user still filter the activity list
+[PASS] SCALAR-activity-empty Scalar user with no match yields empty list
+[INFO] stopping server pid=33232
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] ARRAY-app-log Threshold 9: no errors or warnings, without exclusions
+[PASS] ARRAY-server-log PHP server log has no errors or warnings
+V3 RESULT 55 checks 55 PASS 0 FAIL
+Test process exit: 0
+[MAIL] captured=1 non-test=[]
+c0ab8fc arrays.development.c0ab8fc: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_after=0

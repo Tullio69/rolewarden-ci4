@@ -10,6 +10,7 @@
  */
 declare(strict_types=1);
 require __DIR__ . '/verify-v3.lib.php';
+require __DIR__ . '/verify-v4.recheck.php';
 
 $ENVN = $argv[5] ?? 'development';
 $WORKDIR = dirname($APP);
@@ -41,6 +42,7 @@ function mails(float $wait = 1.5): array { usleep((int) ($wait * 1e6)); return m
 function to_addr(array $ms, string $a): array { return array_values(array_filter($ms, fn ($m) => in_array(strtolower($a), rcpts($m), true))); }
 function full(array $m): array { $f = mp('GET', 'message/' . $m['ID']); $f['Raw'] = mp('GET', 'message/' . $m['ID'] . '/raw', false); return $f; }
 function show(string $tag, array $f): void {
+    recheck_mail($tag, $f);
     $txt = trim(preg_replace('/\s+/', ' ', (string) ($f['Text'] ?? '')));
     info("$tag From=" . ($f['From']['Name'] ?? '') . ' <' . ($f['From']['Address'] ?? '') . '> To=' . json_encode(array_column($f['To'] ?? [], 'Address')) . ' Subject=' . json_encode($f['Subject'] ?? '') . ' HTML=' . (($f['HTML'] ?? '') === '' ? 'none' : strlen($f['HTML']) . 'B') . ' Text=' . json_encode(mb_substr($txt, 0, 700)));
 }
@@ -409,6 +411,9 @@ try {
     info(sprintf('Baseline new-device sign-in with Mailpit up: %.2fs, HTTP %d, %d email(s)', $t0, $c->status, count(to_addr($ms, $T[0]['email']))));
     [$rc1, $o1] = sh(['docker', 'stop', '-t', '2', 'rolewarden-mail']);
     info("docker stop rolewarden-mail rc=$rc1 $o1");
+    if ($rc1 !== 0) {
+        echo "[BLOCKED] M01-M03/M05: Docker could not stop Mailpit; SMTP failure injection was not exercised.\n";
+    } else {
     $stall = null;
     try {
         $t = microtime(true); $c = login_ua('m1', $T[1]['email'], $pw, UA_FF_LINUX); $t1 = microtime(true) - $t;
@@ -418,6 +423,7 @@ try {
         $code = '$s=@stream_socket_server("tcp://127.0.0.1:1026",$e,$es);if(!$s){fwrite(STDERR,"bind failed: $es\n");exit(1);}echo "listening\n";$h=[];$end=time()+45;while(time()<$end){$x=@stream_socket_accept($s,1);if($x)$h[]=$x;}';
         $stall = proc_open(['php', '-r', $code], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $sp, null, null, ['bypass_shell' => true]);
         $first = fgets($sp[1]);
+        if (trim((string) $first) !== 'listening') throw new RuntimeException('SMTP stall listener did not bind; test cannot continue');
         info('Stalling SMTP listener on 127.0.0.1:1026 (accepts, never greets; sends nothing anywhere): ' . trim((string) $first));
         $t = microtime(true); $c = login_ua('m2', $T[2]['email'], $pw, UA_FF_LINUX); $t2 = microtime(true) - $t;
         $lb = $c->body; $ok2 = ok_login($c); $h = page($c, 'rolewarden/profile');
@@ -434,14 +440,15 @@ try {
     $crit = array_values(array_filter($lines, fn ($l) => preg_match('/^(CRITICAL|ALERT|EMERGENCY) /', $l) || preg_match('/Uncaught/', $l)));
     info('Log lines at WARNING or above while the mail server was down: ' . json_encode(array_values(array_filter($lines, fn ($l) => preg_match('/^(WARNING|NOTICE|ERROR|CRITICAL|ALERT|EMERGENCY) /', $l))), JSON_UNESCAPED_SLASHES));
     check('M03', 'Mail server down/hanging: at most a handled send error in the log, no unhandled exception', $crit === [], json_encode($crit));
-    mp_clear();
-    $c = login_ua('m4', $T[3]['email'], $pw, UA_FF_LINUX); $ms = mails();
-    check('M04', 'Mailpit back: the next new-device email is delivered again', ok_login($c) && count(to_addr($ms, $T[3]['email'])) === 1);
     $late = $GLOBALS['T_STALL'] ?? 0;
     info(sprintf('Response time with hanging SMTP %.2fs vs baseline %.2fs', $late, $t0));
     info('fastcgi_finish_request available to the php -S server: no (CLI built-in server SAPI)');
     if ($late < $t0 + 2) check('M05', 'Response does not wait for the SMTP server (hanging server adds < 2s)', true);
     else amb('M05', 'Response waits for a hanging SMTP server on the built-in server', sprintf('%.2fs vs %.2fs baseline; php -S has no fastcgi_finish_request, which SPEC names as the way the response leaves first', $late, $t0));
+    }
+    mp_clear();
+    $c = login_ua('m4', $T[3]['email'], $pw, UA_FF_LINUX); $ms = mails();
+    check('M04', 'Mailpit available: the next new-device email is delivered', ok_login($c) && count(to_addr($ms, $T[3]['email'])) === 1);
 
     echo "== 7 Extension and override ==\n";
     $ev = events();
@@ -512,6 +519,7 @@ try {
     else amb('Z01', 'Login POST without CSRF token is accepted', 'HTTP ' . $a->status . ', signed in=' . json_encode(ok_login($a)) . '; Shield route, host global csrf filter off in the test app (also on 3805640)');
     $prior = stored(); $f = matching(forms(page($adm, 'rolewarden/settings')), 'Save settings'); unset($f['fields']['csrf_test_name']); submit($adm, $f, ['lock_attempts' => '4']);
     check('Z02', 'Settings POST without CSRF token is refused', stored() === $prior && $adm->status !== 500, 'HTTP ' . $adm->status);
+    recheck_d1();
     $arr = [['email' => ['x@v4.test'], 'password' => 'y'], ['email' => ['a' => ['b' => 'x@v4.test']], 'password' => 'y'], ['email' => $N['email'], 'password' => [$pw]], ['email' => ['x'], 'password' => ['y']], ['email' => [$N['email']], 'password' => $pw]];
     foreach ($arr as $i => $vals) {
         $a = new Client('v4-arr-' . $i); $a->get('login'); $f = matching(forms($a->body), 'Login'); unset($f['fields']['remember']);

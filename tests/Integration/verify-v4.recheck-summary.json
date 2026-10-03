@@ -1,0 +1,187 @@
+{
+  "revision": "c0ab8fc",
+  "rows": [
+    {
+      "mode": "v4",
+      "environment": "development",
+      "source": "verify-v4.v4.development.c0ab8fc.output.txt",
+      "passed": 164,
+      "failed": 0,
+      "blocked": 3
+    },
+    {
+      "mode": "v4",
+      "environment": "production",
+      "source": "verify-v4.v4.production.c0ab8fc.output.txt",
+      "passed": 164,
+      "failed": 0,
+      "blocked": 3
+    },
+    {
+      "mode": "v3",
+      "environment": "development",
+      "source": "verify-v4.v3.development.c0ab8fc.output.txt",
+      "passed": 139,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "v3",
+      "environment": "production",
+      "source": "verify-v4.v3.production.c0ab8fc.output.txt",
+      "passed": 139,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "edges",
+      "environment": "development",
+      "source": "verify-v4.edges.development.c0ab8fc.output.txt",
+      "passed": 57,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "edges",
+      "environment": "production",
+      "source": "verify-v4.edges.production.c0ab8fc.output.txt",
+      "passed": 57,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "arrays",
+      "environment": "development",
+      "source": "verify-v4.arrays.development.c0ab8fc.output.txt",
+      "passed": 55,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "arrays",
+      "environment": "production",
+      "source": "verify-v4.arrays.production.c0ab8fc.output.txt",
+      "passed": 55,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "test",
+      "environment": "development",
+      "source": "verify-v4.test.development.c0ab8fc.output.txt",
+      "passed": 141,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "test",
+      "environment": "production",
+      "source": "verify-v4.test.production.c0ab8fc.output.txt",
+      "passed": 154,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "extra",
+      "environment": "development",
+      "source": "verify-v4.extra.development.c0ab8fc.output.txt",
+      "passed": 31,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "extra",
+      "environment": "production",
+      "source": "verify-v4.extra.production.c0ab8fc.output.txt",
+      "passed": 39,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "adapt",
+      "environment": "development",
+      "source": "verify-v4.adapt.development.c0ab8fc.output.txt",
+      "passed": 16,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "adapt",
+      "environment": "production",
+      "source": "verify-v4.adapt.production.c0ab8fc.output.txt",
+      "passed": 16,
+      "failed": 0,
+      "blocked": 0
+    },
+    {
+      "mode": "mail-replay",
+      "environment": "development",
+      "source": "verify-v4.mail-replay.development.c0ab8fc.output.txt",
+      "passed": 30,
+      "failed": 7,
+      "blocked": 0
+    },
+    {
+      "mode": "mail-replay",
+      "environment": "production",
+      "source": "verify-v4.mail-replay.production.c0ab8fc.output.txt",
+      "passed": 30,
+      "failed": 7,
+      "blocked": 0
+    }
+  ],
+  "passed": 1287,
+  "failed": 14,
+  "blocked": 6,
+  "snapshot_sha256": "f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64",
+  "mailpit_messages": 0,
+  "work_exists": false,
+  "v4_application_log_levels": {
+    "verify-v4.v4.development.c0ab8fc.verify-v4.phase-baseline-sensitivity.log": {
+      "CRITICAL": 1
+    },
+    "verify-v4.v4.development.c0ab8fc.verify-v4.phase-d1.log": {},
+    "verify-v4.v4.development.c0ab8fc.verify-v4.phase-extension.log": {},
+    "verify-v4.v4.development.c0ab8fc.verify-v4.phase-main.log": {
+      "CRITICAL": 2
+    },
+    "verify-v4.v4.development.c0ab8fc.verify-v4.phase-no-from.log": {
+      "WARNING": 2
+    },
+    "verify-v4.v4.development.c0ab8fc.verify-v4.phase-publication.log": {
+      "CRITICAL": 3
+    },
+    "verify-v4.v4.development.c0ab8fc.verify-v4.phase-upgrade.log": {},
+    "verify-v4.v4.production.c0ab8fc.verify-v4.phase-baseline-sensitivity.log": {
+      "CRITICAL": 1
+    },
+    "verify-v4.v4.production.c0ab8fc.verify-v4.phase-d1.log": {},
+    "verify-v4.v4.production.c0ab8fc.verify-v4.phase-extension.log": {},
+    "verify-v4.v4.production.c0ab8fc.verify-v4.phase-main.log": {},
+    "verify-v4.v4.production.c0ab8fc.verify-v4.phase-no-from.log": {
+      "WARNING": 2
+    },
+    "verify-v4.v4.production.c0ab8fc.verify-v4.phase-publication.log": {
+      "CRITICAL": 2
+    },
+    "verify-v4.v4.production.c0ab8fc.verify-v4.phase-upgrade.log": {}
+  },
+  "unchanged_sender_recipients_subject": [
+    "development:new-device",
+    "development:new-ip",
+    "development:markup",
+    "development:password-profile",
+    "development:password-admin",
+    "development:lock-user",
+    "development:lock-admin",
+    "production:new-device",
+    "production:new-ip",
+    "production:markup",
+    "production:password-profile",
+    "production:password-admin",
+    "production:lock-user",
+    "production:lock-admin"
+  ],
+  "final_php_processes": 0,
+  "final_python_processes": 0
+}

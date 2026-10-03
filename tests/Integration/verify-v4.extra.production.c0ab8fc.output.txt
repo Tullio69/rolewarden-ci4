@@ -1,0 +1,53 @@
+module: c0ab8fc
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:39:51 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:39:54 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] X01-production Remembered browser re-enters after configured 30 minute expiry
+[EVIDENCE] after auto-entry sessions=1 tokens=1
+[EVIDENCE] admin revocation HTTP 303 sessions=0 tokens=0
+[PASS] X02-production Admin total revocation denies first request after automatic re-entry
+[PASS] X03-production Revoked re-entry remains denied on second request
+[PASS] X04-production-view-only-0 All admin session POSTs require sessions.revoke
+[PASS] X04-production-view-only-1 All admin session POSTs require sessions.revoke
+[PASS] X04-production-view-only-2 All admin session POSTs require sessions.revoke
+[PASS] X04-production-no-session-perms-0 All admin session POSTs require sessions.revoke
+[PASS] X04-production-no-session-perms-1 All admin session POSTs require sessions.revoke
+[PASS] X04-production-no-session-perms-2 All admin session POSTs require sessions.revoke
+[PASS] X05-production-0 Served new form includes CSRF
+[PASS] X06-production-0 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-0 Redirected CSRF refusal shown as an error toast
+[PASS] X05-production-1 Served new form includes CSRF
+[PASS] X06-production-1 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-1 Redirected CSRF refusal shown as an error toast
+[PASS] X05-production-2 Served new form includes CSRF
+[PASS] X06-production-2 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-2 Redirected CSRF refusal shown as an error toast
+[PASS] X05-production-0 Served new form includes CSRF
+[PASS] X06-production-0 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-0 Redirected CSRF refusal shown as an error toast
+[PASS] X05-production-0 Served new form includes CSRF
+[PASS] X06-production-0 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-0 Redirected CSRF refusal shown as an error toast
+[PASS] X05-production-3 Served new form includes CSRF
+[PASS] X06-production-3 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-3 Redirected CSRF refusal shown as an error toast
+[PASS] X05-production-4 Served new form includes CSRF
+[PASS] X06-production-4 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-4 Redirected CSRF refusal shown as an error toast
+[PASS] X05-production-5 Served new form includes CSRF
+[PASS] X06-production-5 Absent CSRF rejected without session/token/settings mutation
+[PASS] X06t-production-5 Redirected CSRF refusal shown as an error toast
+[PASS] X07-production-1 Own session endpoint refuses foreign/nonexistent session without SQL leak
+[INFO] X07 production id=1 HTTP 303 static toasts=[{"type":"error","alert":true,"kind":"Error:","msg":"That session has already ended. Reload the page to see the current list.","close":false}]
+[PASS] X07t-production-1 Refused foreign/nonexistent session produces an error toast
+[PASS] X07-production-999999999 Own session endpoint refuses foreign/nonexistent session without SQL leak
+[INFO] X07 production id=999999999 HTTP 303 static toasts=[{"type":"error","alert":true,"kind":"Error:","msg":"That session has already ended. Reload the page to see the current list.","close":false}]
+[PASS] X07t-production-999999999 Refused foreign/nonexistent session produces an error toast
+[INFO] stopping server pid=14632
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] X08    Extra responses contain no SQL/PHP errors
+[PASS] X09    Extra max-level logs clean except CSRF refusals
+EXTRA RESULT 39 checks 39 PASS 0 FAIL
+[MAIL] captured=2 non-test=[]

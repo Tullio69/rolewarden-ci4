@@ -1,0 +1,53 @@
+[INFO] Read-only capture SHA256=3846a75a83dff6f8bb203d1ff9efaa89cad5a730ab124f65c6345de9e586e689
+[PASS] R-TEXT-new-device Plain text has separate nonempty lines
+[PASS] R-ENTITY-new-device Plain text has no encoded angle brackets
+[PASS] R-TZ-new-device Date has an explicit timezone in both MIME parts
+[PASS] R-LINES-new-device When, Device and Address each start a separate text line
+[FAIL] R-CONTENT-new-device Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-new-device Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck new-device HTML title="New sign-in to your account"; exact Text="New sign-in to your account\r\nlocalhost\r\nNew sign-in to your account\r\nHello V4newdev,\r\nYour account was just used to sign in from a device or address it has not\r\nused before.\r\nWhen: 2026-09-30 20:20 UTC\r\nDevice: Firefox \/ Linux\r\nAddress: 127.0.0.1\r\nIf this was you, there is nothing to do. If it was not, change your password\r\nnow and sign out the sessions you do not recognise.\r\nReview your sessions\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[PASS] R-TEXT-new-ip Plain text has separate nonempty lines
+[PASS] R-ENTITY-new-ip Plain text has no encoded angle brackets
+[PASS] R-TZ-new-ip Date has an explicit timezone in both MIME parts
+[PASS] R-LINES-new-ip When, Device and Address each start a separate text line
+[FAIL] R-CONTENT-new-ip Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-new-ip Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck new-ip HTML title="New sign-in to your account"; exact Text="New sign-in to your account\r\nlocalhost\r\nNew sign-in to your account\r\nHello V4newdev,\r\nYour account was just used to sign in from a device or address it has not\r\nused before.\r\nWhen: 2026-09-30 20:21 UTC\r\nDevice: Chrome \/ Windows 10\r\nAddress: ::1\r\nIf this was you, there is nothing to do. If it was not, change your password\r\nnow and sign out the sessions you do not recognise.\r\nReview your sessions\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[PASS] R-TEXT-markup Plain text has separate nonempty lines
+[PASS] R-ENTITY-markup Plain text has no encoded angle brackets
+[PASS] R-TZ-markup Date has an explicit timezone in both MIME parts
+[PASS] R-LINES-markup When, Device and Address each start a separate text line
+[PASS] R-DECODE Markup name is decoded as literal text
+[FAIL] R-CONTENT-markup Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-markup Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck markup HTML title="New sign-in to your account"; exact Text="New sign-in to your account\r\nlocalhost\r\nNew sign-in to your account\r\nHello <i>V4esc<\/i>,\r\nYour account was just used to sign in from a device or address it has not\r\nused before.\r\nWhen: 2026-09-30 20:21 UTC\r\nDevice: Opera \/ Unknown Platform\r\nAddress: 127.0.0.1\r\nIf this was you, there is nothing to do. If it was not, change your password\r\nnow and sign out the sessions you do not recognise.\r\nReview your sessions\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[PASS] R-TEXT-password-profile Plain text has separate nonempty lines
+[PASS] R-ENTITY-password-profile Plain text has no encoded angle brackets
+[PASS] R-TZ-password-profile Date has an explicit timezone in both MIME parts
+[FAIL] R-CONTENT-password-profile Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-password-profile Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck password-profile HTML title="Your password was changed"; exact Text="Your password was changed\r\nlocalhost\r\nYour password was changed\r\nHello V4pwchange,\r\nThe password of your account was changed from your profile on 2026-09-30\r\n20:21 UTC.\r\nIf you did not expect this, contact an administrator straight away.\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[PASS] R-TEXT-password-admin Plain text has separate nonempty lines
+[PASS] R-ENTITY-password-admin Plain text has no encoded angle brackets
+[PASS] R-TZ-password-admin Date has an explicit timezone in both MIME parts
+[FAIL] R-CONTENT-password-admin Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-password-admin Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck password-admin HTML title="Your password was changed"; exact Text="Your password was changed\r\nlocalhost\r\nYour password was changed\r\nHello V4pwrenamed,\r\nAn administrator set a new password for your account on 2026-09-30 20:22\r\nUTC.\r\nIf you did not expect this, contact an administrator straight away.\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[PASS] R-TEXT-lock-user Plain text has separate nonempty lines
+[PASS] R-ENTITY-lock-user Plain text has no encoded angle brackets
+[FAIL] R-CONTENT-lock-user Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-lock-user Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck lock-user HTML title="Too many failed sign-ins"; exact Text="Too many failed sign-ins\r\nlocalhost\r\nToo many failed sign-ins\r\nHello V4lock,\r\nSomeone tried to sign in as lock@v4.test with a wrong password too many\r\ntimes. Sign-in for this email is locked for 1 minute.\r\nAddress: 127.0.0.1\r\nIf it was you, wait and try again. If it was not, your password is still\r\nsafe; consider changing it once you are back in.\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[PASS] R-TEXT-lock-admin Plain text has separate nonempty lines
+[PASS] R-ENTITY-lock-admin Plain text has no encoded angle brackets
+[FAIL] R-CONTENT-lock-admin Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-lock-admin Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck lock-admin HTML title="Too many failed sign-ins"; exact Text="Too many failed sign-ins\r\nlocalhost\r\nToo many failed sign-ins\r\nHello PriyaNair,\r\nThe email lock@v4.test reached the limit of failed sign-ins and is locked\r\nfor 1 minute.\r\nAddress: 127.0.0.1\r\nCheck the activity log for other attempts from the same address.\r\nSee the sign-in attempts\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+MAIL REPLAY RESULT 37 checks 30 PASS 7 FAIL

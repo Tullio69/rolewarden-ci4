@@ -21,7 +21,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 WORK = HERE / 'verify-v4.work'
 APP = WORK / 'app'
-OLD, NEW = '3805640', os.environ.get('RW_V4_NEW', '2028ea2')
+OLD, NEW = '3805640', os.environ.get('RW_V4_NEW', 'c0ab8fc')
 MAILPIT = 'http://localhost:8026/api/v1/'
 ENV = os.environ.copy()
 for key in ('RW_DB_USERNAME', 'RW_DB_PASSWORD'):
@@ -102,6 +102,7 @@ def main():
     print('Snapshot SHA256:', hashlib.sha256(before).hexdigest(), flush=True)
     result_code = 1
     has_fail = False
+    has_blocked = False
     try:
         for rev in (OLD, NEW):
             archive = WORK / (rev + '.tar')
@@ -166,10 +167,12 @@ logger.threshold = 9
         elif mode == 'v4':
             script = WORK / 'verify-v4.php'
             shutil.copyfile(HERE / 'verify-v4.php', script)
+            shutil.copyfile(HERE / 'verify-v4.recheck.php', WORK / 'verify-v4.recheck.php')
         with (HERE / ('verify-v4.' + label + '.output.txt')).open('w', encoding='utf-8') as log:
             proc = sp.Popen(['php', '-d', 'error_reporting=-1', str(script), str(APP), str(WORK / OLD), str(WORK / NEW), mode, environment], env=ENV, stdout=sp.PIPE, stderr=sp.STDOUT, text=True, encoding='utf-8', errors='replace')
             for line in proc.stdout:
                 has_fail = has_fail or line.startswith('[FAIL]')
+                has_blocked = has_blocked or line.startswith('[BLOCKED]')
                 log.write(line)
                 log.flush()
                 print(line, end='', flush=True)
@@ -210,7 +213,7 @@ logger.threshold = 9
         if link.is_junction() or link.is_symlink():
             os.rmdir(link)
         shutil.rmtree(WORK)
-    return result_code or int(has_fail)
+    return result_code or int(has_fail) or (2 if has_blocked else 0)
 
 
 if __name__ == '__main__':

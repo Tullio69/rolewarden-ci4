@@ -1,0 +1,317 @@
+Verification: c0ab8fc v4.development.c0ab8fc
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+== 1 Upgrade from 3805640, rollback, fresh install ==
+module: 3805640
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:15 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ning: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions Running: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:16 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[INFO] Effective Config\Email (spark config:check, selected keys): {"protocol":"smtp","SMTPHost":"127.0.0.1","SMTPPort":"1026","SMTPCrypto":"","fromEmail":"noreply@rolewarden.test"}
+[PASS] S00    Effective mail settings point at Mailpit (smtp 127.0.0.1:1026) before any HTTP request
+[INFO] Baseline 3805640: login with email[]: POST HTTP 500, next GET /login HTTP 200
+[INFO] Baseline 3805640: login POST without CSRF token: HTTP 303 signed_in=true
+[PASS] U01    V3 baseline: no security.alerts permission
+[INFO] stopping server pid=15016
+[INFO] termination requested=true
+[INFO] server closed
+module: c0ab8fc
+[PASS] U02    Folder replaced, before migrate: signed-in panel still usable
+[PASS] U02b   Folder replaced, before migrate: sign-in from a new device works (no 500, no SQL)
+[INFO] Messages captured in the pre-migrate window: 1
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:27 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+[PASS] U03    Upgrade grants security.alerts to admin
+[PASS] U03b   Only admin gets security.alerts from the data migration
+[PASS] U03c   Upgrade adds no table (SPEC Modello dati lists none for V4)
+[PASS] U03d   Upgraded admin panel works
+[INFO] stopping server pid=41484
+[INFO] termination requested=true
+[INFO] server closed
+   spark migrate:rollback -b 3 -f (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:29 UTC+00:00 Rolling back migrations to batch: 3 Rolling back: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Done rolling back migrations.
+[PASS] U04    Rollback restores ACL, migrations and tables exactly
+module: 3805640
+[PASS] U05    Restored 3805640 folder works after rollback
+[INFO] stopping server pid=20456
+[INFO] termination requested=true
+[INFO] server closed
+module: c0ab8fc
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:31 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+[PASS] U06    Upgrade applies again after rollback
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:32 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:34 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U07    Fresh install grants security.alerts to admin
+   spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
+[PASS] U08    Fresh install rolls back cleanly (no acl_ table left)
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-09-30 20:20:36 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+== Fixtures ==
+[INFO] acl_user_permissions columns: ["user_id:int(11) unsigned","permission_id:int(11) unsigned","granted:tinyint(1)","created_at:datetime","updated_at:datetime"]
+[INFO] Sign-in settings now: {"lock_attempts":"3","lock_minutes":"1","sign_in_rate":"100"}
+== 2 New device or IP ==
+[PASS] N01    Very first sign-in: succeeds, no email
+[INFO] Recorded IP of the first sign-in: 127.0.0.1
+[PASS] N02    Same device and IP again: no email
+[PASS] N03    Same browser and system, other browser version, same IP: no email (device = browser and system)
+[PASS] N04    New device (Firefox on Linux), known IP: exactly one email to the user
+[PASS] R-TEXT-new-device Plain text has separate nonempty lines
+[PASS] R-ENTITY-new-device Plain text has no encoded angle brackets
+[PASS] R-TZ-new-device Date has an explicit timezone in both MIME parts
+[PASS] R-LINES-new-device When, Device and Address each start a separate text line
+[FAIL] R-CONTENT-new-device Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-new-device Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck new-device HTML title="New sign-in to your account"; exact Text="New sign-in to your account\r\nlocalhost\r\nNew sign-in to your account\r\nHello V4newdev,\r\nYour account was just used to sign in from a device or address it has not\r\nused before.\r\nWhen: 2026-09-30 20:20 UTC\r\nDevice: Firefox \/ Linux\r\nAddress: 127.0.0.1\r\nIf this was you, there is nothing to do. If it was not, change your password\r\nnow and sign out the sessions you do not recognise.\r\nReview your sessions\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[INFO] new-device From=RoleWarden Test <noreply@rolewarden.test> To=["newdev@v4.test"] Subject="New sign-in to your localhost account" HTML=1861B Text="New sign-in to your account localhost New sign-in to your account Hello V4newdev, Your account was just used to sign in from a device or address it has not used before. When: 2026-09-30 20:20 UTC Device: Firefox \/ Linux Address: 127.0.0.1 If this was you, there is nothing to do. If it was not, change your password now and sign out the sessions you do not recognise. Review your sessions You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C01    New sign-in email: recipient is only the user
+[PASS] C02    Sender is the host Config\Email from (noreply@rolewarden.test / RoleWarden Test)
+[PASS] C03    Subject present, about a sign-in
+[PASS] C04    Text names the device (browser and system)
+[PASS] C05    Text names the address
+[PASS] C06    Text carries the date
+[PASS] C07    No password or hash in the email
+[PASS] N05    That device again: no email
+[PASS] N06    Known browser on a system never paired with it (Chrome on Linux): one email
+[INFO] Edge on Windows after Chrome on Windows (Edge UA also contains "Chrome/"): 1 email(s)
+[PASS] N08    Failed sign-in from a new device: no email
+[PASS] N09    Success from a device seen only in a failed attempt: one email
+[PASS] C04b   Text names Safari and macOS/Mac
+-- new IP over HTTP: server rebound to [::1] --
+[INFO] stopping server pid=13000
+[INFO] termination requested=true
+[INFO] server closed
+[INFO] Recorded IP now: ::1 (was 127.0.0.1)
+[PASS] N10    New IP with a known device: exactly one email
+[PASS] R-TEXT-new-ip Plain text has separate nonempty lines
+[PASS] R-ENTITY-new-ip Plain text has no encoded angle brackets
+[PASS] R-TZ-new-ip Date has an explicit timezone in both MIME parts
+[PASS] R-LINES-new-ip When, Device and Address each start a separate text line
+[FAIL] R-CONTENT-new-ip Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-new-ip Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck new-ip HTML title="New sign-in to your account"; exact Text="New sign-in to your account\r\nlocalhost\r\nNew sign-in to your account\r\nHello V4newdev,\r\nYour account was just used to sign in from a device or address it has not\r\nused before.\r\nWhen: 2026-09-30 20:21 UTC\r\nDevice: Chrome \/ Windows 10\r\nAddress: ::1\r\nIf this was you, there is nothing to do. If it was not, change your password\r\nnow and sign out the sessions you do not recognise.\r\nReview your sessions\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[INFO] new-ip From=RoleWarden Test <noreply@rolewarden.test> To=["newdev@v4.test"] Subject="New sign-in to your localhost account" HTML=1859B Text="New sign-in to your account localhost New sign-in to your account Hello V4newdev, Your account was just used to sign in from a device or address it has not used before. When: 2026-09-30 20:21 UTC Device: Chrome \/ Windows 10 Address: ::1 If this was you, there is nothing to do. If it was not, change your password now and sign out the sessions you do not recognise. Review your sessions You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C05b   Text names the new address
+[PASS] C06b   Text carries the date
+[PASS] N11    Same new IP and device again: no email
+[PASS] N12    IP seen and device seen (never together): no email
+[PASS] N13    History is per user: device and IP used by another user are new for this one
+[PASS] N14    Only failed attempts before: the first successful sign-in sends nothing
+[PASS] N15    Device and IP known from auth_logins history (DB insert): no email
+[PASS] N16    Same user, known IP, new device (history from DB insert): one email
+[INFO] stopping server pid=4396
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] N17    Known device, IP never used by this user (127.0.0.1 vs history ::1): one email
+[PASS] N18    Markup user agent from a new device: one email
+[PASS] R-TEXT-markup Plain text has separate nonempty lines
+[PASS] R-ENTITY-markup Plain text has no encoded angle brackets
+[PASS] R-TZ-markup Date has an explicit timezone in both MIME parts
+[PASS] R-LINES-markup When, Device and Address each start a separate text line
+[PASS] R-DECODE Markup name is decoded as literal text
+[FAIL] R-CONTENT-markup Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-markup Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck markup HTML title="New sign-in to your account"; exact Text="New sign-in to your account\r\nlocalhost\r\nNew sign-in to your account\r\nHello <i>V4esc<\/i>,\r\nYour account was just used to sign in from a device or address it has not\r\nused before.\r\nWhen: 2026-09-30 20:21 UTC\r\nDevice: Opera \/ Unknown Platform\r\nAddress: 127.0.0.1\r\nIf this was you, there is nothing to do. If it was not, change your password\r\nnow and sign out the sessions you do not recognise.\r\nReview your sessions\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[INFO] markup From=RoleWarden Test <noreply@rolewarden.test> To=["esc@v4.test"] Subject="New sign-in to your localhost account" HTML=1886B Text="New sign-in to your account localhost New sign-in to your account Hello <i>V4esc<\/i>, Your account was just used to sign in from a device or address it has not used before. When: 2026-09-30 20:21 UTC Device: Opera \/ Unknown Platform Address: 127.0.0.1 If this was you, there is nothing to do. If it was not, change your password now and sign out the sessions you do not recognise. Review your sessions You receive this email because it concerns the security of your account. It cannot be turned off."
+[INFO] HTML part present: yes; escaped name present: yes; name in text: yes
+[PASS] C08    HTML part carries no raw markup from the user name or user agent
+== 3 Password changed ==
+[PASS] P01    Wrong current password: nothing changes, no email
+[PASS] P02    Weak new password: refused, no email
+[PASS] P02b   Dictionary new password: refused, no email
+[PASS] P03    Mismatched confirmation: refused, no email
+[PASS] P04    Profile change without CSRF token: refused, no email
+[PASS] P05    Correct change from the profile: exactly one email, to the user
+[PASS] R-TEXT-password-profile Plain text has separate nonempty lines
+[PASS] R-ENTITY-password-profile Plain text has no encoded angle brackets
+[FAIL] R-TZ-password-profile Date has an explicit timezone in both MIME parts
+         -> 
+[FAIL] R-CONTENT-password-profile Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[FAIL] R-BODY-password-profile Remaining text matches baseline after removing only the extra leading HTML title
+         -> 
+[INFO] Recheck password-profile HTML title="Your password was changed"; exact Text="Your password was changed\r\nlocalhost\r\nYour password was changed\r\nHello V4pwchange,\r\nThe password of your account was changed from your profile on 2026-09-30\r\n20:21 UTC.\r\nIf you did not expect this, contact an administrator straight away.\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[INFO] password-profile From=RoleWarden Test <noreply@rolewarden.test> To=["pwchange@v4.test"] Subject="Your localhost password was changed" HTML=1527B Text="Your password was changed localhost Your password was changed Hello V4pwchange, The password of your account was changed from your profile on 2026-09-30 20:21 UTC. If you did not expect this, contact an administrator straight away. You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C09    Password email: To the user, From the host sender, subject about the password
+[PASS] C10    Password email carries neither old/new password nor either hash
+[INFO] Password email mentions date: yes, address: no
+[INFO] Admin sets "abc": HTTP 303, password CHANGED, 1 email(s) to ["pwchange@v4.test"], field error shown: no, toasts [{"type":"success","alert":false,"kind":"Saved","msg":"User updated.","close":false}]
+[PASS] P06    Admin-set weak password: an email is sent if and only if the password actually changed
+[PASS] P07    Admin set without CSRF token: refused, no email
+[PASS] P08    Admin edit without a password: no password email
+[PASS] P09    Admin sets a new password: exactly one email, to the user (not to the admin)
+[PASS] R-TEXT-password-admin Plain text has separate nonempty lines
+[PASS] R-ENTITY-password-admin Plain text has no encoded angle brackets
+[FAIL] R-TZ-password-admin Date has an explicit timezone in both MIME parts
+         -> 
+[FAIL] R-CONTENT-password-admin Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[FAIL] R-BODY-password-admin Remaining text matches baseline after removing only the extra leading HTML title
+         -> 
+[INFO] Recheck password-admin HTML title="Your password was changed"; exact Text="Your password was changed\r\nlocalhost\r\nYour password was changed\r\nHello V4pwrenamed,\r\nAn administrator set a new password for your account on 2026-09-30 20:22\r\nUTC.\r\nIf you did not expect this, contact an administrator straight away.\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[INFO] password-admin From=RoleWarden Test <noreply@rolewarden.test> To=["pwchange@v4.test"] Subject="Your localhost password was changed" HTML=1522B Text="Your password was changed localhost Your password was changed Hello V4pwrenamed, An administrator set a new password for your account on 2026-09-30 20:22 UTC. If you did not expect this, contact an administrator straight away. You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C11    Admin-set password email carries neither password nor hash
+== 4 Too many attempts ==
+[INFO] Expected security.alerts holders: super admin (owner), admin2, positive override; not: users.view-only, user, child, disabled admin, admin with negative override (override column `granted`)
+[PASS] L01    Below the threshold (2 of 3 failures): no email at all
+[INFO] Lock messages: 1=[Error: Unable to log you in. Please check your credentials.] 2=[Error: Unable to log you in. Please check your credentials.] 3=[Error: Unable to log you in. Please check your credentials.] 4(correct password)=[Error: Too many failed sign-ins for this email. Try again in 1 minute.]; messages after 3rd failure: 4
+[PASS] L02    Configured threshold (3) blocks the next attempt even with the right password
+[PASS] L03    User receives exactly one lock email
+[PASS] L04-0  Holder of security.alerts receives exactly one lock alert (dana@northwind-studio.test)
+[PASS] L04-1  Holder of security.alerts receives exactly one lock alert (priya@northwind-studio.test)
+[PASS] L04-2  Holder of security.alerts receives exactly one lock alert (ovrgrant@v4.test)
+[PASS] L05    Nobody without security.alerts receives it (incl. disabled admin, negative override)
+[PASS] L06    One alert per lock, not per attempt (6 attempts, one per recipient)
+[PASS] R-TEXT-lock-user Plain text has separate nonempty lines
+[PASS] R-ENTITY-lock-user Plain text has no encoded angle brackets
+[FAIL] R-CONTENT-lock-user Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-lock-user Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck lock-user HTML title="Too many failed sign-ins"; exact Text="Too many failed sign-ins\r\nlocalhost\r\nToo many failed sign-ins\r\nHello V4lock,\r\nSomeone tried to sign in as lock@v4.test with a wrong password too many\r\ntimes. Sign-in for this email is locked for 1 minute.\r\nAddress: 127.0.0.1\r\nIf it was you, wait and try again. If it was not, your password is still\r\nsafe; consider changing it once you are back in.\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[INFO] lock-user From=RoleWarden Test <noreply@rolewarden.test> To=["lock@v4.test"] Subject="Too many failed sign-ins on localhost" HTML=1679B Text="Too many failed sign-ins localhost Too many failed sign-ins Hello V4lock, Someone tried to sign in as lock@v4.test with a wrong password too many times. Sign-in for this email is locked for 1 minute. Address: 127.0.0.1 If it was you, wait and try again. If it was not, your password is still safe; consider changing it once you are back in. You receive this email because it concerns the security of your account. It cannot be turned off."
+[PASS] C12    Lock email to the user: From the host sender, no password typed
+[PASS] R-TEXT-lock-admin Plain text has separate nonempty lines
+[PASS] R-ENTITY-lock-admin Plain text has no encoded angle brackets
+[FAIL] R-CONTENT-lock-admin Sender, recipients, subject and words unchanged from captured 2028ea2 message (except date/timezone, spacing and entities)
+         -> 
+[PASS] R-BODY-lock-admin Remaining text matches baseline after removing only the extra leading HTML title
+[INFO] Recheck lock-admin HTML title="Too many failed sign-ins"; exact Text="Too many failed sign-ins\r\nlocalhost\r\nToo many failed sign-ins\r\nHello PriyaNair,\r\nThe email lock@v4.test reached the limit of failed sign-ins and is locked\r\nfor 1 minute.\r\nAddress: 127.0.0.1\r\nCheck the activity log for other attempts from the same address.\r\nSee the sign-in attempts\r\nYou receive this email because it concerns the security of your account. It\r\ncannot be turned off.\r\n\r\n"
+[INFO] lock-admin From=RoleWarden Test <noreply@rolewarden.test> To=["priya@northwind-studio.test"] Subject="Too many failed sign-ins on localhost" HTML=1787B Text="Too many failed sign-ins localhost Too many failed sign-ins Hello PriyaNair, The email lock@v4.test reached the limit of failed sign-ins and is locked for 1 minute. Address: 127.0.0.1 Check the activity log for other attempts from the same address. See the sign-in attempts You receive this email because it concerns the security of your account. It cannot be turned off."
+[INFO] Admin alert names the locked email: yes; date: no; address: yes
+[PASS] C13    Admin alert carries no typed password
+[INFO] Second lock after expiry reached after 4 more attempt(s)
+[PASS] L07    After the lock expires, a new lock sends a new alert, once per recipient
+[PASS] L08    Unregistered email: nothing sent to it
+[PASS] L09    Unregistered email: each security.alerts holder gets exactly one alert
+[PASS] L10    Unregistered email: nobody without the permission receives it
+[INFO] Alert for "x&y93@v4.test": HTML contains escaped form; raw form in HTML: no
+[PASS] C14    Typed email with & is escaped in the HTML alert
+[PASS] L11    Threshold 5: no alert after 3 or 4 failures
+[PASS] L12    Threshold 5 blocks the sixth attempt
+[PASS] L13    Threshold 5: the alert fires at the new threshold, once to the user and each holder
+[PASS] L14    Failures counted since the last success: 2 + success + 2 at threshold 3 sends no alert
+== 6 Sending after the response ==
+[INFO] Baseline new-device sign-in with Mailpit up: 1.41s, HTTP 303, 1 email(s)
+[INFO] docker stop rolewarden-mail rc=1 error during connect: Post "http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/v1.50/containers/rolewarden-mail/stop?t=2": open //./pipe/dockerDesktopLinuxEngine: Access is denied.
+[BLOCKED] M01-M03/M05: Docker could not stop Mailpit; SMTP failure injection was not exercised.
+[PASS] M04    Mailpit available: the next new-device email is delivered
+== 7 Extension and override ==
+[INFO] rolewarden.mail payloads recorded: 35; keys of last: ["to","subject","view","data"]; views: ["new_sign_in","password_changed","too_many_attempts"]
+[PASS] X01    rolewarden.mail fires with to, subject, view and data (README)
+[PASS] X02    No plain password in any rolewarden.mail payload
+[INFO] Password hashes found in rolewarden.mail payload data: 0
+[PASS] X03    A listener returning false takes the message over: nothing is sent
+[PASS] X04    Without that listener verdict the same email is sent again
+[INFO] Override files created: ["app\/Views\/overrides\/RoleWarden\/Views\/emails\/new_sign_in.php","app\/Views\/overrides\/RoleWarden\/Views\/emails\/password_changed.php","app\/Views\/overrides\/RoleWarden\/Views\/emails\/too_many_attempts.php"]
+[PASS] X05    Override of the new sign-in template in app/Views/overrides/RoleWarden/Views/emails/ is used
+[PASS] X06    Override of the password template is used
+[PASS] X07    Override of the lock alert template is used
+[INFO] Effective fromEmail now: ""
+[INFO] stopping server pid=408
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] X08    No fromEmail: sign-in and admin password change still work
+[PASS] X09    No fromEmail: panel pages answer 200
+[PASS] X10    No fromEmail: nothing is sent
+[INFO] Log lines at WARNING or above without fromEmail: ["WARNING - 2026-09-30 20:23:47 --> RoleWarden: security email not sent, Config\\Email::$fromEmail is empty.","WARNING - 2026-09-30 20:23:51 --> RoleWarden: security email not sent, Config\\Email::$fromEmail is empty."]
+[PASS] X11    No fromEmail: a warning is logged (README), nothing worse
+[INFO] stopping server pid=18268
+[INFO] termination requested=true
+[INFO] server closed
+== 9 Publication ==
+[INFO] Login POST without CSRF token: HTTP 303 location=http://localhost:8070/index.php/rolewarden/users auth_logins +1 csrf_refused=false signed_in=true
+[AMB]  Z01    Login POST without CSRF token is accepted
+         -> HTTP 303, signed in=true; Shield route, host global csrf filter off in the test app (also on 3805640)
+[PASS] Z02    Settings POST without CSRF token is refused
+== D1 recheck: literal form keys, POST and subsequent GET ==
+[PASS] R-D1-1-POST email[] password=absent : rejected without 500
+[PASS] R-D1-1-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-1-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-2-POST email[] password=absent &remember[]=1: rejected without 500
+[PASS] R-D1-2-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-2-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-3-POST email[] password=absent &remember[_]=1: rejected without 500
+[PASS] R-D1-3-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-3-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-4-POST email[] password=present : rejected without 500
+[PASS] R-D1-4-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-4-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-5-POST email[] password=present &remember[]=1: rejected without 500
+[PASS] R-D1-5-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-5-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-6-POST email[] password=present &remember[_]=1: rejected without 500
+[PASS] R-D1-6-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-6-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-7-POST email[0] password=absent : rejected without 500
+[PASS] R-D1-7-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-7-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-8-POST email[0] password=absent &remember[]=1: rejected without 500
+[PASS] R-D1-8-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-8-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-9-POST email[0] password=absent &remember[_]=1: rejected without 500
+[PASS] R-D1-9-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-9-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-10-POST email[0] password=present : rejected without 500
+[PASS] R-D1-10-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-10-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-11-POST email[0] password=present &remember[]=1: rejected without 500
+[PASS] R-D1-11-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-11-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-12-POST email[0] password=present &remember[_]=1: rejected without 500
+[PASS] R-D1-12-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-12-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-13-POST email[_] password=absent : rejected without 500
+[PASS] R-D1-13-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-13-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-14-POST email[_] password=absent &remember[]=1: rejected without 500
+[PASS] R-D1-14-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-14-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-15-POST email[_] password=absent &remember[_]=1: rejected without 500
+[PASS] R-D1-15-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-15-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-16-POST email[_] password=present : rejected without 500
+[PASS] R-D1-16-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-16-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-17-POST email[_] password=present &remember[]=1: rejected without 500
+[PASS] R-D1-17-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-17-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-18-POST email[_] password=present &remember[_]=1: rejected without 500
+[PASS] R-D1-18-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-18-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-19-POST email[a][b] password=absent : rejected without 500
+[PASS] R-D1-19-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-19-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-20-POST email[a][b] password=absent &remember[]=1: rejected without 500
+[PASS] R-D1-20-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-20-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-21-POST email[a][b] password=absent &remember[_]=1: rejected without 500
+[PASS] R-D1-21-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-21-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-22-POST email[a][b] password=present : rejected without 500
+[PASS] R-D1-22-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-22-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-23-POST email[a][b] password=present &remember[]=1: rejected without 500
+[PASS] R-D1-23-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-23-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] R-D1-24-POST email[a][b] password=present &remember[_]=1: rejected without 500
+[PASS] R-D1-24-GET Subsequent GET /login in the same session is clean and usable
+[PASS] R-D1-24-LOG D1 logs at threshold 9 have no warning or error (no exclusions)
+[PASS] Z03-0  Login with array field(s) {"email":"array","password":"string"}: no 500, no PHP/SQL error, not signed in
+[PASS] Z03-1  Login with array field(s) {"email":"array","password":"string"}: no 500, no PHP/SQL error, not signed in
+[AMB]  Z03-2  Login with password as array (email string)
+         -> HTTP 500; raised inside Shield (see log: ValidationRules::max_byte TypeError), not by a module file
+[AMB]  Z03-3  Login with password as array (email array)
+         -> HTTP 500; raised inside Shield (see log: ValidationRules::max_byte TypeError), not by a module file
+[PASS] Z03-4  Login with array field(s) {"email":"array","password":"string"}: no 500, no PHP/SQL error, not signed in
+[INFO] Messages after the array/CSRF posts: 1
+[PASS] Z04    No SQL error text and no HTTP 500 in any page seen (161)
+[PASS] Z05    Application log at threshold 9: no warning or error outside the deliberate SMTP-down and no-fromEmail phases
+[INFO] stopping server pid=12408
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] Z06    PHP built-in server log (error_reporting=-1): no PHP warning, notice, deprecation or fatal
+V4 RESULT 201 checks 190 PASS 11 FAIL
+Test process exit: 1
+[MAIL] captured=1 non-test=[]
+c0ab8fc v4.development.c0ab8fc: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_after=0

@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude
+**Agente:** Claude Code (Opus)
+**Dalle:** 2026-09-30
+**Scope:** preparazione V5 Temi (`docs/SPEC.md`, `CLAUDE.md`, nessun file in `src/`). La riverifica V4 in `tests/Integration/` e' affidata a Codex e NON rientra in questo scope.
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -608,3 +608,10 @@ Formato di ogni voce:
 - Cosa ho fatto: V4 Email di sicurezza, con le decisioni approvate scritte nella specifica prima del codice (nuovo IP o dispositivo, password cambiata anche da admin, avviso di blocco una volta per blocco a utente e titolari di `security.alerts`, invio dopo la risposta con evento `rolewarden.mail`, template sovrascrivibili, Mailpit per il collaudo). Collaudo del Collaudatore ad Hoc (Codex senza quota): 1079/1089, un solo difetto D1 (email come array al login -> 500 sulla GET successiva, preesistente). Corretto in c0ab8fc, insieme a parte testo leggibile delle email e fuso orario nell'ora.
 - Stato: parziale. **V4 non ancora approvata**: manca la riverifica di c0ab8fc.
 - Note per il prossimo: riprendere con la riverifica di D1 su c0ab8fc (Codex, se ha quota, altrimenti Collaudatore ad Hoc; mandato come `tests/Integration/V4-REPORT.md`, porta DB 3317, email solo su Mailpit 1026/8026). Ambiguita' da decidere dall'autore, dettagli nel report: A1 login senza token CSRF accettato perche' il filtro `csrf` globale dell'ospite e' spento (proteggere la rotta nel modulo o documentarlo), A2 fuori da PHP-FPM la risposta attende l'SMTP, A3 password come array -> 500 dentro la validazione di Shield, A4 ore in UTC (ora con fuso indicato). Il Collaudatore ha eseguito una volta `taskkill /F /IM php.exe` generico: nessun altro PHP risultava attivo. Poi V5 (temi): prima decisione "Tailwind o CSS a mano". Il `.env` di `../rolewarden-app-test` invia email a Mailpit (127.0.0.1:1026). Nessun push.
+
+### [2026-09-30 22:46] - Codex
+- Tipo: review
+- Scope: `tests/Integration/verify-v4.run.py`, `verify-v4.php`, nuovo `verify-v4.recheck.php`, output/catture/log `verify-v4.*c0ab8fc*`, `verify-v4.recheck-summary.json`, `verify-v4.environment.txt`, sezione di riverifica in cima a `V4-REPORT.md`; questa voce in `_AI-LOG.md` (Stato corrente non modificato).
+- Cosa ho fatto: riverifica indipendente di V4 su `c0ab8fc`, baseline `3805640`, HEAD rimasto `05ad4eb`; nessuna implementazione, template email, test unitario o diff aperto. Suite V4 e regressione V2/V3 adattata nei due ambienti. D1: 24 varianti per ambiente di email[], email[0], email[_], email[a][b], con/senza password e combinazioni remember[]/remember[_], controllando POST, GET successiva e log senza esclusioni. Confrontate sette email per ambiente con le catture su 2028ea2, verificati testo su righe distinte, entita' decodificate e UTC nel testo/HTML. Replay offline delle stesse catture dopo correzione del controllo per il wrapping MIME delle date; output grezzi conservati, nessun doppio conteggio.
+- Stato: parziale per le prove SMTP bloccate dall'ambiente. **D1 corretto; regressione 899/899 PASS. Totale verificato 1287 PASS / 14 FAIL su 1301, piu' 6 controlli SMTP bloccati. V4 non approvata integralmente.** I 14 FAIL sono un unico scostamento minore D2: titolo iniziale duplicato nella parte text/plain delle tre email; tolto quel prefisso, corpo restante, mittente, destinatari e oggetto coincidono con le catture precedenti, salvo le modifiche dichiarate.
+- Note per il prossimo: Docker nega l'accesso alla pipe dockerDesktopLinuxEngine; Mailpit non e' stato fermato, quindi M01-M03 e misura M05 non sono riverificati. Corretto il runner che prima ignorava questo fallimento producendo falsi PASS; il primo giro e' archiviato come preliminary ed escluso dai totali. Restano A1-A4 separate e non decise; sintomo A4 superato da UTC esplicito. Controllo visivo browser/client email e verifica FPM ancora dovuti. Solo rolewarden_test su 127.0.0.1:3317, credenziali esclusivamente RW_DB_USERNAME/RW_DB_PASSWORD; 15 snapshot/ripristini identici (14 definitivi + 1 preliminare), SHA256 f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64. SMTP solo 127.0.0.1:1026 con crypto vuoto, destinatari @*.test, nessun invio reale, Mailpit finale vuoto. Processi propri chiusi per PID, nessun taskkill globale; junction rimossa prima della copia, verify-v4.work assente, zero processi PHP/Python residui. Nessun commit o push; modifiche concorrenti di Claude preservate.

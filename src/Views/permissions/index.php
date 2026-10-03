@@ -1,4 +1,4 @@
-<div class="rw-page-head" style="grid-template-columns:1fr">
+<div class="rw-page-head rw-page-head--single">
   <div>
     <div class="rw-header"><?= lang('RoleWarden.panel.roles.overline') ?></div>
     <h1><?= lang('RoleWarden.panel.permissions.indexTitle') ?></h1>
@@ -13,7 +13,7 @@
     <thead>
       <tr>
         <th class="rw-m-num" scope="col"></th>
-        <th class="rw-c-name rw-header" scope="col" style="width:280px"><?= lang('RoleWarden.panel.permissions.slug') ?></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col"><?= lang('RoleWarden.panel.permissions.slug') ?></th>
         <th class="rw-header" scope="col"><?= lang('RoleWarden.panel.permissions.description') ?></th>
         <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)"><?= lang('RoleWarden.panel.notes') ?></th>
       </tr>

@@ -44,10 +44,16 @@ class AppearanceController extends BaseController
             $errors['base'] = lang('RoleWarden.panel.appearance.chooseTheme');
         }
 
-        $radius = is_string($post['radius'] ?? null) && $post['radius'] !== '' ? (int) $post['radius'] : null;
+        $rawRadius = $post['radius'] ?? '';
+        $radius = null;
 
-        if ($radius !== null && ! in_array($radius, Theme::RADII, true)) {
-            $errors['radius'] = lang('RoleWarden.panel.appearance.chooseListed');
+        if ($rawRadius !== '') {
+            // Only the listed integers, as typed: "8abc" or "2.9" are rejected, not rounded.
+            if (! is_string($rawRadius) || ! ctype_digit($rawRadius) || ! in_array((int) $rawRadius, Theme::RADII, true)) {
+                $errors['radius'] = lang('RoleWarden.panel.appearance.chooseListed');
+            } else {
+                $radius = (int) $rawRadius;
+            }
         }
 
         $density = is_string($post['density'] ?? null) && $post['density'] !== '' ? $post['density'] : null;

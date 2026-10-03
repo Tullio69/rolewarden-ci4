@@ -38,6 +38,9 @@ final class Theme
     /** Semantic colours the customiser sets per mode; hover, tint and on-accent derive from accent. */
     public const COLORS = ['surface', 'ink', 'accent', 'accent-hover', 'accent-tint', 'on-accent'];
 
+    /** The theme read during this request (saving and resetting clear it). */
+    private static ?array $current = null;
+
     /**
      * The built-in themes plus the host's extra ones (Config\RoleWarden::$extraThemes),
      * as slug => label.
@@ -86,12 +89,20 @@ final class Theme
      */
     public static function current(): array
     {
-        foreach ([self::appFile(), self::writableFile()] as $file) {
-            if (is_file($file)) {
+        return self::$current ??= self::read();
+    }
+
+    /**
+     * @return array{base: string, radius: int|null, density: string|null, colors: array{light: array<string, string>, dark: array<string, string>}}
+     */
+    private static function read(): array
+    {
+        foreach ([self::appFile(), self::writableFile()] as $path) {
+            if (is_file($path)) {
                 try {
-                    $data = json_decode((string) file_get_contents($file), true, 8, JSON_THROW_ON_ERROR);
+                    $data = json_decode((string) file_get_contents($path), true, 8, JSON_THROW_ON_ERROR);
                 } catch (JsonException) {
-                    log_message('warning', 'RoleWarden: theme file {file} is not valid JSON, using the default theme.', ['file' => $file]);
+                    log_message('warning', 'RoleWarden: theme file {path} is not valid JSON, using the default theme.', ['path' => $path]);
 
                     return self::normalise([]);
                 }
@@ -159,6 +170,8 @@ final class Theme
         if (@file_put_contents(self::writableFile(), $json, LOCK_EX) === false) {
             throw new RuntimeException('Cannot write ' . self::writableFile());
         }
+
+        self::$current = null;
     }
 
     public static function reset(): void
@@ -166,6 +179,8 @@ final class Theme
         if (is_file(self::writableFile())) {
             @unlink(self::writableFile());
         }
+
+        self::$current = null;
     }
 
     /**

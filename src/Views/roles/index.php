@@ -78,7 +78,7 @@
   <tfoot>
     <tr>
       <td class="rw-m-num"></td>
-      <td class="rw-header" style="padding-left:12px"><?= lang('RoleWarden.panel.roles.total') ?></td>
+      <td class="rw-header rw-c-label"><?= lang('RoleWarden.panel.roles.total') ?></td>
       <td></td>
       <td class="rw-c-n"><?= array_sum($counts) ?></td>
       <td class="rw-c-perm"><?= (int) $totalPermissions ?> <span><?= lang('RoleWarden.panel.roles.defined') ?></span></td>

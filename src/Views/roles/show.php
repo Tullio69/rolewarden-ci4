@@ -109,9 +109,9 @@ $canEdit = can('roles.update');
       <tfoot>
         <tr>
           <td class="rw-m-num"></td>
-          <td class="rw-header" style="padding-left:12px"><?= lang('RoleWarden.panel.roles.effective') ?></td>
+          <td class="rw-header rw-c-label"><?= lang('RoleWarden.panel.roles.effective') ?></td>
           <?php foreach ($actions as $action) : ?>
-            <td class="rw-m-act"><?= (int) $effective[$action] ?><span class="rw-muted" style="font-size:12px"> / <?= count($areas) ?></span></td>
+            <td class="rw-m-act"><?= (int) $effective[$action] ?><span class="rw-muted rw-unit-sm"> / <?= count($areas) ?></span></td>
           <?php endforeach ?>
           <td class="rw-m-all" style="text-align:center;color:var(--ink)"><?= (int) $totalGranted ?></td>
           <td class="rw-m-anno"><span class="rw-note"><?= esc(sprintf(lang('RoleWarden.panel.roles.grantedOfTotal'), $role['name'], $totalDefined)) ?></span></td>

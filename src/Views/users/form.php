@@ -7,9 +7,9 @@
 </div>
 
 <?php if ($errors !== []) : ?>
-  <div class="rw-flash rw-flash--error" style="margin-left:48px">
+  <div class="rw-flash rw-flash--error rw-flash--inset">
     <b>Error:</b>
-    <ul style="margin:4px 0 0 16px; padding:0">
+    <ul>
       <?php foreach ($errors as $error) : ?>
         <li><?= esc($error) ?></li>
       <?php endforeach ?>

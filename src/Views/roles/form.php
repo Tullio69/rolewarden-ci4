@@ -1,5 +1,5 @@
 <?php $isEdit = $role !== null; ?>
-<div class="rw-page-head" style="grid-template-columns:1fr">
+<div class="rw-page-head rw-page-head--single">
   <div>
     <div class="rw-header"><?= lang('RoleWarden.panel.nav.roles') ?></div>
     <h1><?= $isEdit ? lang('RoleWarden.panel.roles.editTitle') : lang('RoleWarden.panel.roles.createTitle') ?></h1>
@@ -7,9 +7,9 @@
 </div>
 
 <?php if ($errors !== []) : ?>
-  <div class="rw-flash rw-flash--error" style="margin-left:48px">
+  <div class="rw-flash rw-flash--error rw-flash--inset">
     <b>Error:</b>
-    <ul style="margin:4px 0 0 16px; padding:0">
+    <ul>
       <?php foreach ($errors as $error) : ?>
         <li><?= esc($error) ?></li>
       <?php endforeach ?>
@@ -35,7 +35,7 @@
 
   <div class="rw-field">
     <label class="rw-label" for="description"><?= lang('RoleWarden.panel.roles.description') ?></label>
-    <textarea class="rw-input" id="description" name="description" rows="3" style="height:auto;padding:8px 12px"><?= esc(old('description', $isEdit ? (string) ($role['description'] ?? '') : '')) ?></textarea>
+    <textarea class="rw-input rw-textarea" id="description" name="description" rows="3"><?= esc(old('description', $isEdit ? (string) ($role['description'] ?? '') : '')) ?></textarea>
   </div>
 
   <div class="rw-field">
@@ -48,7 +48,7 @@
     </select>
   </div>
 
-  <div class="rw-check-field" style="border-bottom:0">
+  <div class="rw-check-field rw-field--last">
     <label class="rw-check-row">
       <input class="rw-check" type="checkbox" name="is_super_admin" value="1"<?= $isEdit && (int) $role['is_super_admin'] === 1 ? ' checked' : '' ?>>
       <?= lang('RoleWarden.panel.roles.superAdmin') ?>

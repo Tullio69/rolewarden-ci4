@@ -321,7 +321,7 @@ return [
             'resetNote' => 'asks to confirm',
             'resetTitle' => 'Reset the theme?',
             'resetBody' => 'Every colour, radius and density change is removed and the panel goes back to Console for everyone.',
-            'chooseTheme' => 'Choose one of the three themes.',
+            'chooseTheme' => 'Choose one of the listed themes.',
             'chooseListed' => 'Choose one of the listed values.',
             'hex' => 'Use a colour like #1e4ea6.',
             'modeLabel' => 'Light or dark',

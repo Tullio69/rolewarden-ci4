@@ -38,7 +38,7 @@ final class SecurityMailTest extends TestCase
 
     public function testThePlainTextPartKeepsOneLinePerLineAndDecodesEntities(): void
     {
-        $html = '<h1>Title</h1><p>When: 21:35<br>Device: &lt;i&gt;Chrome</p>';
+        $html = '<html><head><title>Title</title></head><body><h1>Title</h1><p>When: 21:35<br>Device: &lt;i&gt;Chrome</p></body></html>';
 
         $this->assertSame('Title
 When: 21:35

@@ -203,6 +203,8 @@ final class SecurityMail
      */
     public static function text(string $html): string
     {
+        // The <head> holds a <title> that repeats the heading: only the body is the message.
+        $html = preg_replace('#<head\b.*?</head>#is', '', $html) ?? $html;
         $html = preg_replace('#<(br|/p|/h1)\b[^>]*>#i', "\n", $html) ?? $html;
         $lines = array_map('trim', explode("\n", html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
 

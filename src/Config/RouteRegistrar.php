@@ -29,6 +29,10 @@ class RouteRegistrar
             static function (RouteCollection $routes): void {
                 $routes->get('users', 'UsersController::index', ['filter' => 'can:users.view']);
                 $routes->get('users/create', 'UsersController::create', ['filter' => 'can:users.create']);
+                $routes->get('users/import', 'ImportController::form', ['filter' => 'can:users.import']);
+                $routes->post('users/import/preview', 'ImportController::preview', ['filter' => 'can:users.import']);
+                $routes->post('users/import/confirm', 'ImportController::confirm', ['filter' => 'can:users.import']);
+                $routes->get('users/import/sample', 'ImportController::sample', ['filter' => 'can:users.import']);
                 $routes->post('users', 'UsersController::store', ['filter' => 'can:users.create']);
                 $routes->get('users/(:num)', 'UsersController::show/$1', ['filter' => 'can:users.view']);
                 $routes->get('users/(:num)/edit', 'UsersController::edit/$1', ['filter' => 'can:users.update']);

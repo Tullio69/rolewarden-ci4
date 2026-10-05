@@ -356,6 +356,13 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 - **Tipografia.** La famiglia tipografica non si personalizza in v1.0 (il brief rimanda la tipografia personalizzata alla v1.5): i temi cambiano pesi e scala, non la famiglia.
 - **Disegno dei temi.** I valori dei tre temi si approvano su un'anteprima applicata alle schermate reali prima di scrivere il codice.
 
+**Decisioni del 2026-10-05 (V6).**
+- **Formato.** CSV in UTF-8 (con o senza BOM), separatore virgola o punto e virgola rilevato dall'intestazione, prima riga obbligatoria con i nomi delle colonne in qualunque ordine: `email` e `username` obbligatorie, `role` e `password` facoltative; una colonna sconosciuta rifiuta il file. Al massimo 1000 righe e 1 MB.
+- **Righe.** Email e username con le regole di Shield, unici sia tra gli utenti esistenti sia dentro il file. `role` è lo slug di un ruolo esistente; vuoto vale il ruolo predefinito delle Impostazioni; un ruolo super admin si rifiuta. Gli utenti importati sono attivi.
+- **Password.** Facoltativa: se c'è, segue le regole di robustezza di Shield e viene trasformata in hash da Shield già all'anteprima, così non resta mai in chiaro nella sessione; se manca, l'utente riceve una password casuale che nessuno conosce ed entra con il recupero password di Shield o con quella che gli imposta un admin. Gli inviti via email restano in v1.5.
+- **Due passi, nessuna scrittura parziale.** Il caricamento mostra un'anteprima riga per riga; se anche una sola riga è sbagliata il file è rifiutato per intero, con l'errore riportato sulla sua riga, e nulla viene scritto. Solo un file interamente valido si conferma, e la conferma crea tutti gli utenti in una transazione: o tutti o nessuno. La conferma ricontrolla l'unicità, perché tra anteprima e conferma qualcuno può aver creato un utente.
+- **Permesso e log.** Serve `users.import`, concesso ad `admin` con una migrazione di dati. Ogni utente creato compare nel log attività come `user.imported`.
+
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 
 ## Design system

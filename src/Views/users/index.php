@@ -43,6 +43,9 @@
   <?php if (can('users.create')) : ?>
     <a class="rw-btn rw-btn--primary" href="<?= esc(site_url('rolewarden/users/create')) ?>"><?= lang('RoleWarden.panel.users.newUser') ?></a>
   <?php endif ?>
+  <?php if (can('users.import')) : ?>
+    <a class="rw-btn rw-btn--secondary" href="<?= esc(site_url('rolewarden/users/import')) ?>"><?= lang('RoleWarden.panel.import.title') ?></a>
+  <?php endif ?>
 </form>
 
 <?php

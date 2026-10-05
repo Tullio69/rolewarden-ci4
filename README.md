@@ -116,7 +116,8 @@ Replace the module's folder (or run `composer update`), then run
 migrations, never as edits you make by hand. For example, the migration for the Settings
 screen gives the `admin` role the new permissions `settings.view` and `settings.update`, the one for sessions gives it `sessions.view` and `sessions.revoke`, the one for
 the activity log gives it `activity.view`, and the one for security emails gives it
-`security.alerts`, and the one for the theme customiser gives it `appearance.update`.
+`security.alerts`, the one for the theme customiser gives it `appearance.update`, and the one for the CSV import
+gives it `users.import`.
 
 ### Importing existing Shield groups
 
@@ -271,6 +272,23 @@ failed sign-ins. That last alert also goes to everyone holding `security.alerts`
   it on the host's own queue, and the module does not send it.
 - The templates are views in `RoleWarden\Views\emails`; override one by copying it to
   `app/Views/overrides/RoleWarden/Views/emails/`.
+
+### Importing users from CSV
+
+`/rolewarden/users/import` (permission `users.import`, also linked from the users list)
+creates many users at once. The first row names the columns, in any order: `email` and
+`username` are required, `role` (a role slug; empty gives the default role from Settings) and
+`password` are optional. UTF-8, comma or semicolon, at most 1000 users and 1 MB per file; a
+sample file can be downloaded from the page.
+
+Uploading shows a preview, row by row. If any row is wrong (an invalid or taken email or
+username, a name repeated in the file, an unknown or super admin role, a weak password), the
+whole file is refused with the error on its row and nothing is created. A valid file is
+created on confirmation, in one transaction: every user or none. Imported users are active.
+A user imported without a password gets a random one nobody knows and signs in through
+Shield's password recovery (magic link), or an administrator sets one. Passwords given in the
+file are hashed by Shield as soon as the preview is made. Every imported user appears in the
+activity log as "User imported".
 
 ### Themes and appearance
 

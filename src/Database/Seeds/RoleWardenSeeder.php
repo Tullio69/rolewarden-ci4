@@ -27,6 +27,7 @@ class RoleWardenSeeder extends Seeder
             'update' => 'Edit users',
             'delete' => 'Delete users',
             'activate' => 'Activate and deactivate users',
+            'import' => 'Import users from a CSV file',
         ],
         'roles' => [
             'view' => 'View roles',

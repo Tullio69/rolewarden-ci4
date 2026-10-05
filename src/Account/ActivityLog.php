@@ -19,7 +19,7 @@ final class ActivityLog
 {
     /** Actions written by the module, in the order the filter offers them. */
     public const ACTIONS = [
-        'user.created', 'user.registered', 'user.updated', 'user.password_set', 'user.activated', 'user.deactivated',
+        'user.created', 'user.imported', 'user.registered', 'user.updated', 'user.password_set', 'user.activated', 'user.deactivated',
         'user.deleted', 'user.role_assigned', 'user.role_revoked', 'user.override_granted', 'user.override_denied',
         'user.override_cleared', 'role.created', 'role.updated', 'role.deleted', 'role.permission_granted',
         'role.permission_revoked', 'settings.updated', 'account.password_changed', 'session.revoked',

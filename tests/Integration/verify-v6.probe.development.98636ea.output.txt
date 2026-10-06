@@ -1,0 +1,78 @@
+module: 98636ea
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-05 20:15:59 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-05 20:16:01 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+admin perms: ["activity.view","appearance.update","permissions.override","permissions.view","roles.assign","roles.create","roles.delete","roles.update","roles.view","security.alerts","sessions.revoke","sessions.view","settings.update","settings.view","users.activate","users.create","users.delete","users.import","users.update","users.view"]
+tables: ["acl_activity_log","acl_permissions","acl_role_permissions","acl_roles","acl_sessions","acl_user_permissions","acl_user_roles","auth_groups_users","auth_identities","auth_logins","auth_permissions_users","auth_remember_tokens","auth_token_logins","migrations","settings","users"]
+[INFO] dumped users.html (40095)
+[INFO] dumped import.html (36070)
+import status 200
+links: ["http:\/\/localhost:8070\/index.php\/rolewarden\/assets\/css\/panel.css?v=1791231060","http:\/\/localhost:8070\/index.php\/rolewarden\/users","http:\/\/localhost:8070\/index.php\/rolewarden\/roles","http:\/\/localhost:8070\/index.php\/rolewarden\/permissions","http:\/\/localhost:8070\/index.php\/rolewarden\/settings","http:\/\/localhost:8070\/index.php\/rolewarden\/activity","http:\/\/localhost:8070\/index.php\/rolewarden\/appearance","http:\/\/localhost:8070\/index.php\/rolewarden\/profile","http:\/\/localhost:8070\/index.php\/rolewarden\/users\/import\/sample"]
+form: http://localhost:8070/index.php/rolewarden/appearance/mode {"csrf_test_name":"845415c7e4927e886202cb4d8c5c6df7"} text=System Light Dark
+form: http://localhost:8070/index.php/rolewarden/users/import/preview {"csrf_test_name":"845415c7e4927e886202cb4d8c5c6df7","csv":""} text=CSV file UTF-8, comma or semicolon separated, with the column names in the first row. Check the file
+file form: ["http:\/\/localhost:8070\/index.php\/rolewarden\/users\/import\/preview","csv"]
+sample http://localhost:8070/index.php/rolewarden/users/import/sample -> 200 {"host":"localhost:8070","date":"Mon, 05 Oct 2026 20:16:04 GMT","connection":"close","x-powered-by":"PHP\/8.3.11","expires":"Thu, 19 Nov 1981 08:52:00 GMT","pragma":"no-cache","cache-control":"private, no-transform, no-store, must-revalidate","content-type":"text\/csv; charset=UTF-8","content-disposition":"attachment; filename=\"rolewarden-users.csv\"; filename*=UTF-8''rolewarden-users.csv","content-transfer-encoding":"binary","content-length":"123"}
+[INFO] dumped sample.bin (123)
+upload valid -> 303 loc=http://localhost:8070/index.php/rolewarden/users/import
+[INFO] dumped preview-valid.html (38321)
+[INFO] dumped preview-valid-again.html (36070)
+pv form: http://localhost:8070/index.php/rolewarden/appearance/mode {"csrf_test_name":"6cfbe155576d12dc7b2a5c4f9aee78fe"} text=System Light Dark
+pv form: http://localhost:8070/index.php/rolewarden/users/import/preview {"csrf_test_name":"6cfbe155576d12dc7b2a5c4f9aee78fe","csv":""} text=CSV file UTF-8, comma or semicolon separated, with the column names in the first row. Check the file
+pv form: http://localhost:8070/index.php/rolewarden/users/import/confirm {"csrf_test_name":"6cfbe155576d12dc7b2a5c4f9aee78fe","token":"ccf8e26cfc3466e0e0da7cebfd7a1388"} text=Import 2 users
+users now: 6
+upload invalid -> 303 loc=http://localhost:8070/index.php/rolewarden/users/import
+[INFO] dumped preview-invalid.html (38615)
+upload badheader -> 303 loc=http://localhost:8070/index.php/rolewarden/users/import
+[INFO] dumped preview-badheader.html (37037)
+upload none -> 303 loc=http://localhost:8070/index.php/rolewarden/users/import
+[INFO] dumped preview-none.html (36212)
+PREVIEW-SESSION ci_session10099bce953259c940877530a0f3af37: __ci_last_regenerate|i:1791231362;csrf_test_name|s:32:"c04c9976272765043c292ecbaa19f6c3";_ci_previous_url|s:37:"http://localhost:8070/index.php/login";
+PREVIEW-SESSION ci_sessiona3c8cf1f6ed8257c55219b9827a56cf2: __ci_last_regenerate|i:1791231363;csrf_test_name|s:32:"07d938302594216a14867e97fcfe8aa8";_ci_previous_url|s:55:"http://localhost:8070/index.php/rolewarden/users/import";user|a:1:{s:2:"id";i:2;}rolewarden_session|s:64:"8410fc9c92ea71b3a0f5e49868958d164a2f85ee9c7527eb00f34903e770dd54";rw_import|a:3:{s:5:"token";s:32:"20804cbcd0e0cbc5f817f1d8c46375c2";s:2:"at";i:1791231370;s:4:"rows";a:2:{i:0;a:5:{s:5:"email";s:11:"ann@v6.test";s:8:"username";s:6:"ann.v6";s:6:"roleId";i:3;s:8:"roleName";s:4:"User";s:12:"passwordHash";s:60:"$2y$12$U6J31b4s7KrcHj1v5/GKzOshD4J0ly2OS102rIDPfNmsBH234fbv6";}i:1;a:5:{s:5:"email";s:11:"bob@v6.test";s:8:"username";s:6:"bob.v6";s:6:"roleId";N;s:8:"roleName";s:0:"";s:12:"passwordHash";N;}}}rw_import_preview|a:3:{s:10:"fileErrors";a:0:{}s:4:"rows";a:2:{i:0;a:6:{s:4:"line";i:2;s:5:"email";s:11:"ann@v6.test";s:8:"username";s:6:"ann.v6";s:4:"role";s:4:"User";s:11:"hasPassword";b:1;s:6:"errors";a:0:{}}i:1;a:6:{s:4:"line";i:3;s:5:"email";s:11:"bob@v6.test";s:8:"username";s:6:"bob.v6";s:4:"role";s:0:"";s:11:"hasPassword";b:0;s:6:"errors";a:0:{}}}s:8:"fileName";s:9:"users.csv";}__ci_vars|a:1:{s:17:"rw_import_preview";s:3:"old";}
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\cache\rolewarden_user_2 686
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\cache\throttler_rw-signin-837ec5754f503cfaaee0929fd48974e7 60
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\cache\throttler_rw-signin-837ec5754f503cfaaee0929fd48974e7Time 69
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231362.485318.json 36445
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231362.754259.json 36509
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231363.434475.json 78752
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231363.917665.json 238145
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231364.358311.json 890996
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231364.647670.json 62397
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231365.541974.json 62368
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231365.885538.json 72112
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231366.226173.json 63103
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231366.591061.json 63113
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231367.321603.json 62528
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231367.711657.json 72572
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231368.016610.json 62391
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231368.303072.json 42944
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231368.660821.json 65333
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231368.965767.json 62393
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231369.221871.json 42168
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231369.547405.json 63171
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231369.882891.json 62405
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231370.538550.json 62368
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\debugbar\debugbar_1791231370.917990.json 72107
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\logs\log-2026-10-05.log 2812
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\rw-v4-mail-events.jsonl 207
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\session\ci_session10099bce953259c940877530a0f3af37 151
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\session\ci_sessiona3c8cf1f6ed8257c55219b9827a56cf2 1158
+RECENT E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v6.work\app/writable\tmp\rwv1-v2-admin-40300.jar 220
+submitting http://localhost:8070/index.php/rolewarden/users/import/confirm
+confirm -> 303 loc=http://localhost:8070/index.php/rolewarden/users
+[INFO] dumped after-confirm.html (41498)
+[INFO] dumped import-after.html (36070)
+confirm again -> 403 loc=
+[INFO] dumped confirm-again.html (35216)
+users: [{"id":1,"username":"DanaWhitfield","active":1,"secret":"dana@northwind-studio.test","force_reset":0},{"id":2,"username":"PriyaNair","active":1,"secret":"priya@northwind-studio.test","force_reset":0},{"id":3,"username":"JonasLindqvist","active":1,"secret":"jonas@northwind-studio.test","force_reset":0},{"id":4,"username":"MaraOkafor","active":1,"secret":"mara@northwind-studio.test","force_reset":0},{"id":5,"username":"TheoBrandt","active":1,"secret":"theo@northwind-studio.test","force_reset":0},{"id":6,"username":"LenaSato","active":0,"secret":"lena@northwind-studio.test","force_reset":0},{"id":7,"username":"ann.v6","active":1,"secret":"ann@v6.test","force_reset":0},{"id":8,"username":"bob.v6","active":1,"secret":"bob@v6.test","force_reset":0}]
+log: [{"action":"user.imported","subject_type":"user","subject_id":7,"subject_label":"ann.v6","details":"{\"role\":\"User\"}","actor_label":"PriyaNair"},{"action":"user.imported","subject_type":"user","subject_id":8,"subject_label":"bob.v6","details":null,"actor_label":"PriyaNair"}]
+roles: [{"user_id":1,"slug":"super-admin"},{"user_id":2,"slug":"admin"},{"user_id":6,"slug":"admin"},{"user_id":4,"slug":"user"},{"user_id":7,"slug":"user"},{"user_id":5,"slug":"v1-child"},{"user_id":3,"slug":"v1-limited"}]
+settings: [{"class":"RoleWarden\\Config\\RoleWarden","key":"activityPrunedOn","value":"2026-10-05","context":null}]
+[INFO] dumped activity.html (39806)
+session ci_session10099bce953259c940877530a0f3af37: __ci_last_regenerate|i:1791231362;csrf_test_name|s:32:"c04c9976272765043c292ecbaa19f6c3";_ci_previous_url|s:37:"http://localhost:8070/index.php/login";
+session ci_sessiona3c8cf1f6ed8257c55219b9827a56cf2: __ci_last_regenerate|i:1791231363;csrf_test_name|s:32:"c849597835117194bd0403e9a9c44a58";_ci_previous_url|s:51:"http://localhost:8070/index.php/rolewarden/activity";user|a:1:{s:2:"id";i:2;}rolewarden_session|s:64:"8410fc9c92ea71b3a0f5e49868958d164a2f85ee9c7527eb00f34903e770dd54";__ci_vars|a:0:{}
+[INFO] stopping server pid=40580
+[INFO] termination requested=true
+[INFO] server closed
+[MAIL] captured=1 non-test=[]
+[WRITABLE] entries created during the run (logs/sessions/cache/theme): 33

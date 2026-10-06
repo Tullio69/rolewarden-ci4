@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude
+**Agente:** Claude Code (Opus)
+**Dalle:** 2026-10-05
+**Scope:** V6 Importazione CSV: `src/` (import, controller, viste, lingua, permesso `users.import`), `docs/SPEC.md`, `README.md`
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -677,3 +677,10 @@ Formato di ogni voce:
 - Cosa ho fatto: V2-V5 messe online, su autorizzazione esplicita dell'autore. Push del modulo (`866857d`); nel repo demo il lock porta il modulo da `483bf3d` a `866857d` e `ops/reset.sh` cancella anche `writable/rolewarden/theme.json` (un tema salvato da un visitatore non sopravvive al reset); il messaggio di `9895088` annunciava la modifica al reset che e' entrata solo in `699b332`. Deploy di staging con le migrazioni nuove (sessioni, log attivita', permessi di sessioni, attivita', avvisi, aspetto); verifica dal vivo come demo-admin: otto schermate 200 senza errori, `panel.js` prima di Alpine, log con gli accessi, email "New sign-in" del secondo accesso da dispositivo nuovo finita nel mail sink (poi rimossa), tema salvato e ripristinato (writable scrivibile, `theme.css` e `panel.css` 200), viewer senza Aspetto, noindex. Fast-forward di `main` e deploy della demo, verifica rapida: schermate 200, noindex, certificato valido, mail sink vuoto, cron del reset presente.
 - Stato: completato. **V2-V5 online su staging e demo (`699b332`).**
 - Note per il prossimo: `HEAD /` risponde ancora 404 (ambiguita' B1 di V0, invariata). Restano il controllo visivo in browser vero di V2-V5 e le ambiguita' aperte di V3-V5. Prossima tappa V6 Importazione CSV.
+
+### [2026-10-06 10:00] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v6.php`, `verify-v6.upload.php`, `verify-v6.browser.mjs`, `verify-v6.run.py`, `verify-v6.*` output ed evidenze, `V6-REPORT.md`) e questa voce; nessun file del modulo
+- Cosa ho fatto: collaudo in nero della V6 Importazione CSV su `98636ea` (baseline `6c9fd04`), al posto di Codex fermo per la configurazione del modello. Perimetro di lettura del protocollo; nessuna implementazione aperta. Copia isolata di `rolewarden-app-test`, solo `rolewarden_test` su 3317, email solo a Mailpit, Chrome headless con profilo temporaneo. Suite V6 di 143 controlli in development e production, piu' regressione V5/V4/V2/V3 nei due ambienti.
+- Stato: completato. **Esito FAIL, V6 non approvata.** V6 137/143 per ambiente piu' 1 ambiguita'; regressione V5 177/177, V2/V3/V4 682/683 (dev) e 703/704 (prod), con il solo V2 G07 gia' superato da V5. Difetti: **D1 bloccante**, ~0,5 s a riga (hash di Shield): con `max_execution_time` 30 l'importazione va in HTTP 500 gia' a 100 righe (1000 promesse da SPEC/README), tutto o niente comunque rispettato; **D2 minore**, le password del file saltano il controllo "nothing personal" di Shield (`r.sixd.r.sixd` per username `r.sixd` accettata, la registrazione di Shield la rifiuta). Osservazione: il toast "Fix the rows marked below" anche quando non c'e' nessuna riga.
+- Note per il prossimo: ambiguita' non decise in `V6-REPORT.md` (A1 errori dell'intero file nella sezione Preview invece che sotto il campo; A2 la conferma ricontrolla solo l'unicita', non ruoli diventati super admin o cancellati; A3 la scadenza di 30 minuti non e' scritta in SPEC/README; A4 ruolo e intestazioni senza distinzione di maiuscole). Pulizia: 25 cicli snapshot/ripristino identici (`f7f37c04…`), Mailpit vuoto, nessun processo, `verify-v6.work` rimossa (nessuna junction rimasta); da rimuovere a mano i profili Chrome in `scratchpad/chrome6` (accesso negato da Windows). Controllo visivo in browser vero dovuto all'autore. Nessun commit.

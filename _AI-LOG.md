@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude
-**Agente:** Claude Code (Opus)
-**Dalle:** 2026-10-05
-**Scope:** V6 Importazione CSV: `src/` (import, controller, viste, lingua, permesso `users.import`), `docs/SPEC.md`, `README.md`
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -684,3 +684,17 @@ Formato di ogni voce:
 - Cosa ho fatto: collaudo in nero della V6 Importazione CSV su `98636ea` (baseline `6c9fd04`), al posto di Codex fermo per la configurazione del modello. Perimetro di lettura del protocollo; nessuna implementazione aperta. Copia isolata di `rolewarden-app-test`, solo `rolewarden_test` su 3317, email solo a Mailpit, Chrome headless con profilo temporaneo. Suite V6 di 143 controlli in development e production, piu' regressione V5/V4/V2/V3 nei due ambienti.
 - Stato: completato. **Esito FAIL, V6 non approvata.** V6 137/143 per ambiente piu' 1 ambiguita'; regressione V5 177/177, V2/V3/V4 682/683 (dev) e 703/704 (prod), con il solo V2 G07 gia' superato da V5. Difetti: **D1 bloccante**, ~0,5 s a riga (hash di Shield): con `max_execution_time` 30 l'importazione va in HTTP 500 gia' a 100 righe (1000 promesse da SPEC/README), tutto o niente comunque rispettato; **D2 minore**, le password del file saltano il controllo "nothing personal" di Shield (`r.sixd.r.sixd` per username `r.sixd` accettata, la registrazione di Shield la rifiuta). Osservazione: il toast "Fix the rows marked below" anche quando non c'e' nessuna riga.
 - Note per il prossimo: ambiguita' non decise in `V6-REPORT.md` (A1 errori dell'intero file nella sezione Preview invece che sotto il campo; A2 la conferma ricontrolla solo l'unicita', non ruoli diventati super admin o cancellati; A3 la scadenza di 30 minuti non e' scritta in SPEC/README; A4 ruolo e intestazioni senza distinzione di maiuscole). Pulizia: 25 cicli snapshot/ripristino identici (`f7f37c04…`), Mailpit vuoto, nessun processo, `verify-v6.work` rimossa (nessuna junction rimasta); da rimuovere a mano i profili Chrome in `scratchpad/chrome6` (accesso negato da Windows). Controllo visivo in browser vero dovuto all'autore. Nessun commit.
+
+### [2026-10-06 22:30] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v6.php` con 8 controlli di riverifica e F13d adeguato alla decisione del 2026-10-06, `verify-v6.*.aeead96.*`, `V6-REPORT.md`) e questa voce
+- Cosa ho fatto: riverifica in nero di V6 su `aeead96` (V6 = `98636ea` + `aeead96`), stesso perimetro e regole; suite V6 e regressione V5/V4/V2/V3 in development e production, `max_execution_time` 30.
+- Stato: completato. **Esito PASS, V6 approvata per il collaudo.** V6 151/151 per ambiente (+1 ambiguita'), regressione V5 177/177, V2/V3/V4 682/683 e 703/704 con il solo G07 gia' superato da V5. D1 corretto: 1000 righe senza password in 6-8 s, 50 con password in ~19-20 s di anteprima e ~1-2 s di conferma, 51 rifiutate con "More than 50 rows have a password...", file misti a entrambi i limiti ok, nessun 500. D2 corretto: verdetti delle password identici alla registrazione di Shield. Toast del rifiuto per intero corretto ("The reason is under Preview"). Prima esecuzione con 5 FAIL dovuti a password del collaudo che contenevano lo username: corretto il collaudo e rieseguito.
+- Note per il prossimo: ambiguita' A1-A4 aperte (A3 ora nel README ma non in SPEC; A2 righe ERROR nel log per ruolo cancellato tra anteprima e conferma). Anteprima di 50 password a circa 2/3 del budget di 30 s su questa macchina: margine stretto su host lenti, segnalato e non contato. Pulizia: 45 cicli snapshot identici, Mailpit vuoto, nessun processo; profili Chrome in `scratchpad/chrome6` da rimuovere a mano. Controllo visivo in browser vero dovuto all'autore. Nessun commit.
+
+### [2026-10-06] - Claude
+- Tipo: feature
+- Scope: `src/Users/CsvImport.php`, `src/Users/UserImport.php`, `src/Controllers/ImportController.php`, `src/Views/users/import.php`, elenco utenti, rotte, migrazione `AddImportPermissions`, seeder, lingua, CSS, `docs/SPEC.md`, `README.md`, `tests/Unit/Users/CsvImportTest.php`; commit 98636ea, aeead96
+- Cosa ho fatto: V6 Importazione CSV, con le decisioni dell'autore scritte nella specifica prima del codice (colonne email/username/role/password, password facoltativa con hash di Shield gia' all'anteprima, permesso `users.import`, 1000 righe). Collaudo FAIL su 98636ea: D1 timeout (Shield calcolava l'hash di una password vuota per ogni utente creato col suo model; le password del file costano ~0,4 s l'una), D2 password senza il controllo "nothing personal". Corretti in aeead96: utente salvato attivo e senza email, identita' inserita con `UserIdentityModel` di Shield e l'hash gia' fatto; un solo hash inutilizzabile per le righe senza password; al massimo 50 righe con password (decisione dell'autore del 2026-10-06, scritta in SPEC); controllo password di Shield con il contesto dell'utente; toast proprio per il file rifiutato per intero.
+- Stato: completato. **V6 approvata dal collaudo** (Collaudatore ad Hoc; Codex non si avvia per il modello configurato): riverifica 151/151 per ambiente, regressione con il solo G07 superato da V5.
+- Note per il prossimo: ambiguita' V6 da decidere dall'autore (A1 errori di file nella sezione Preview e non sotto il campo; A2 la conferma ricontrolla solo l'unicita', un ruolo cancellato nel frattempo lascia due ERROR nel log pur con rollback pulito; A3 i 30 minuti dell'anteprima sono nel README ma non in SPEC; A4 ruolo per nome e intestazioni maiuscole accettati). L'anteprima di 50 password usa ~20 s su 30 sulla macchina di sviluppo: su host lenti il margine cala. Da cancellare a mano i profili Chrome in `scratchpad/chrome6` e `tests/Integration/verify-v5.work`. Prossima tappa V7 Confezione (decisioni aperte del brief: lingue dell'interfaccia, pacchetto senza Composer). Nessun push.

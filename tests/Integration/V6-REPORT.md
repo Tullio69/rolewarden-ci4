@@ -1,5 +1,70 @@
 # V6 — Importazione CSV: collaudo indipendente
 
+## Riverifica — 2026-10-06, Collaudatore ad Hoc (Claude), commit `aeead96` (V6 = `98636ea` + `aeead96`)
+
+**Esito: PASS. Suite V6: 151/151 in development e 151/151 in production, 0 FAIL, più l'ambiguità A1 registrata e non contata. Regressione V5 177/177 e V2/V3/V4 682/683 (development) e 703/704 (production), con il solo V2 G07 già superato da V5 (G07v5 passa). D1 e D2 corretti, l'osservazione sul toast anche. V6 approvata per il collaudo.** Le ambiguità A1-A4 restano aperte e non decise. Il controllo visivo in un browser vero resta dovuto all'autore.
+
+Mandato, perimetro e regole sono gli stessi del collaudo. Il modulo viene da `git archive aeead96`, con baseline di aggiornamento `6c9fd04` e aggancio come cartella sostituibile. Il `php.ini` è quello standard, con `max_execution_time = 30`. Non ho aperto né file vietati né il diff. Della correzione ho letto soltanto la nuova regola in SPEC V6 (decisione del 2026-10-06: al massimo 50 righe con password) e nel README. Comando: `RW_V6_NEW=aeead96 python tests/Integration/verify-v6.run.py <modo> <ambiente>`. Le evidenze sono in `verify-v6.<modo>.<ambiente>.aeead96.*`.
+
+### Totali della riverifica
+
+| Suite | development | production |
+| --- | ---: | ---: |
+| V6 (`verify-v6.php`: 143 controlli del collaudo, F13d riscritto, più 8 di riverifica) | 151/151 | 151/151 |
+| Regressione V5 (baseline `bd7488e`) | 177/177 | 177/177 |
+| Regressione V4 (baseline `3805640`) | 232/232 | 232/232 |
+| Regressione V2 `test` / `extra` / `adapt` | 140/141 + 31 + 16 | 153/154 + 39 + 16 |
+| Regressione V3 principale / supplementare / filtri array | 139 + 69 + 55 | 139 + 69 + 55 |
+| **Totale** | **1010/1011** | **1031/1032** |
+
+### D1 corretto: tempi e limiti con `max_execution_time` 30
+
+| Caso | development | production | Controllo |
+| --- | --- | --- | --- |
+| 1000 righe senza password: anteprima / conferma | 1,1 s / 8,4 s, 1000 utenti e 1000 voci di log | 0,7 s / 6,1 s, idem | F13, F13b |
+| 100 righe senza password: conferma (prima: HTTP 500 a 30 s) | 2,0 s, 100 creati | 1,4 s, 100 creati | info |
+| 50 righe con password: anteprima / conferma | 19,8 s / 1,8 s, 50 creati, hash Shield che verifica la password, accesso riuscito | 18,9 s / 1,2 s, idem | F13e-F13g |
+| 51 righe con password | rifiutato per intero, «More than 50 rows have a password. Split the file, or leave passwords empty…», niente scritto | idem | F13h |
+| 1000 righe con password | rifiutato subito per lo stesso motivo, niente 500 | idem | F13d (aspettativa adeguata alla decisione del 2026-10-06) |
+| File misto: 1000 righe, 50 con password, mescolate: anteprima / conferma | 19,6 s / 7,4 s, 1000 creati, password dove date, nessuna password vuota valida | 18,9 s / 6,2 s, idem | F13i, F13j |
+| File misto: 61 righe di cui 51 con password | rifiutato per intero | idem | F13k |
+
+P07, P08 e P09 tornano verdi: nessun HTTP 500, nessuna riga CRITICAL nel log applicativo, nessun fatal nel log del server.
+
+**Nota, non un difetto.** L'anteprima di 50 password richiede circa 19-20 s su questa macchina, cioè circa due terzi del budget di 30 s. Su un host più lento del 50% il margine si esaurisce. Il limite è una decisione dell'autore, e qui la segnalo soltanto.
+
+### D2 corretto
+
+Confronto con la registrazione di Shield sulle stesse password (R06d): import e Shield ora concordano su tutti e cinque i casi. `r.sixd.r.sixd` per lo username `r.sixd` e `v6test-r.reg.c` per `r.reg.c` sono rifiutate da entrambi; `Abcdefgh`, `Qwerty123!` e `Tr0ub4dor&3x` sono accettate da entrambi.
+
+La prima esecuzione della riverifica aveva 5 FAIL (F13e, F13f, F13g, F13i, F13j), ma erano un errore del collaudo: le password dei miei file contenevano lo username della riga (`Fifty-Pass-…` per `fifty.N`) e la correzione di D2 le ha giustamente rifiutate. Con password estranee agli username i controlli passano. L'output definitivo sostituisce quello della prima esecuzione.
+
+### Osservazione sul toast: corretta
+
+Ora un file rifiutato per intero mostra «Error: The file was refused: nothing was created. The reason is under Preview.», senza parlare di righe segnate (V02b).
+
+### Utenti importati: invariati rispetto al collaudo
+
+- Gli utenti sono attivi, con email e username come nel file e il ruolo giusto, ruolo predefinito compreso (I01-I03, R07-R08b).
+- Chi ha la password nel file accede con quella (I05, F13g).
+- Chi non ha password non accede con nessun valore noto e rientra con il magic link catturato da Mailpit (I06-I08). Gli hash dei due utenti senza password controllati sono diversi tra loro.
+- C'è una voce `user.imported` per ogni utente (I09, L01-L03).
+- Nessuna password è in chiaro in pagine, file di `writable/` o tabelle (P06).
+
+### Ambiguità (ancora aperte, non decise)
+
+- **A1-A4:** come nel collaudo qui sotto.
+- **A3** è in parte superata: il README ora dice «A preview stays valid for 30 minutes», e il comportamento coincide (T08 e T09). La SPEC non lo dice ancora.
+- **A2** è invariata: un ruolo cancellato tra anteprima e conferma lascia ancora le due righe `ERROR` del vincolo di chiave esterna nel log, con rollback pulito e niente 500 (T12).
+
+### Pulizia della riverifica
+
+- **Database:** 20 cicli di snapshot e ripristino su `aeead96`, tutti identici, SHA-256 `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`. In tutto il collaudo e la riverifica i cicli sono 45, tutti identici. `rolewarden_test` è vuoto alla fine.
+- **Email e processi:** Mailpit vuoto; nessun `php.exe` o `python.exe` attivo; nessun Chrome del collaudo in esecuzione.
+- **Cartelle:** `verify-v6.work` è rimossa a ogni giro. Restano da cancellare a mano i profili Chrome in `scratchpad/chrome6` (accesso negato da Windows) e `tests/Integration/verify-v5.work`, che viene da V5.
+- Nessun commit, nessun push.
+
+
 ## Collaudo — 2026-10-05/06, Collaudatore ad Hoc (Claude), commit `98636ea`
 
 **Esito: FAIL. Suite V6: 137 PASS / 6 FAIL su 143 controlli in ciascun ambiente (development e production), più 1 ambiguità non contata. I 6 FAIL vengono da due difetti: D1 (bloccante: oltre poche decine di righe l'importazione va in timeout, HTTP 500, con i 30 secondi standard di PHP) e D2 (le password non seguono tutte le regole di Shield). Regressione: V5 177/177 in entrambi gli ambienti; V2/V3/V4 682/683 in development e 703/704 in production, dove l'unico FAIL è V2 G07, già noto come superato da V5 (G07v5 passa). V6 non è approvata.** Tutto il resto della tappa regge: rifiuto per intero con l'errore sulla riga, nessuna scrittura parziale, anteprima che non scrive, conferma in transazione con ricontrollo dell'unicità, permessi, log, toast, tre temi in chiaro e scuro senza errori JavaScript, escape e CSRF.

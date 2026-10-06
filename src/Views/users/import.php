@@ -20,7 +20,7 @@ $invalidRows = $preview === null ? [] : array_filter($preview['rows'], static fn
     <p><?= lang('RoleWarden.panel.import.intro') ?></p>
   </div>
   <dl class="rw-facts">
-    <div><dt><?= lang('RoleWarden.panel.import.limit') ?></dt><dd><?= esc(lang('RoleWarden.panel.import.limitValue', [CsvImport::MAX_ROWS, intdiv(CsvImport::MAX_BYTES, 1024)])) ?></dd></div>
+    <div><dt><?= lang('RoleWarden.panel.import.limit') ?></dt><dd><?= esc(lang('RoleWarden.panel.import.limitValue', [CsvImport::MAX_ROWS, intdiv(CsvImport::MAX_BYTES, 1024), CsvImport::MAX_PASSWORD_ROWS])) ?></dd></div>
     <div><dt><?= lang('RoleWarden.panel.import.sample') ?></dt><dd><a href="<?= esc(site_url('rolewarden/users/import/sample')) ?>"><?= lang('RoleWarden.panel.import.sampleLink') ?></a></dd></div>
   </dl>
 </div>

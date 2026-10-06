@@ -45,6 +45,15 @@ final class CsvImportTest extends TestCase
         $this->assertSame('tooLarge', CsvImport::parse(str_repeat('x', CsvImport::MAX_BYTES + 1))['errors'][0][0]);
     }
 
+    public function testAtMostFiftyRowsMayCarryAPassword(): void
+    {
+        $header = "email,username,password\n";
+        $fifty = str_repeat("a@x.test,ann,secret\n", CsvImport::MAX_PASSWORD_ROWS);
+
+        $this->assertSame([], CsvImport::parse($header . $fifty . "b@x.test,bob,\n")['errors']);
+        $this->assertSame([['tooManyPasswords', [CsvImport::MAX_PASSWORD_ROWS]]], CsvImport::parse($header . $fifty . "b@x.test,bob,secret\n")['errors']);
+    }
+
     public function testExtraValuesOnARowAreReportedNotDropped(): void
     {
         $result = CsvImport::parse("email,username\na@x.test,ann,surplus\n");

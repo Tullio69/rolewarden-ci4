@@ -14,6 +14,12 @@ namespace RoleWarden\Users;
 final class CsvImport
 {
     public const MAX_ROWS = 1000;
+
+    /**
+     * Rows that carry a password: each one costs Shield a hash and a dictionary
+     * check (about 0.4 s), so more would not fit a request's usual 30 seconds.
+     */
+    public const MAX_PASSWORD_ROWS = 50;
     public const MAX_BYTES = 1048576;
     public const REQUIRED = ['email', 'username'];
     public const OPTIONAL = ['role', 'password'];
@@ -93,6 +99,12 @@ final class CsvImport
 
         if (count($rows) > self::MAX_ROWS) {
             return self::fail('tooManyRows', [self::MAX_ROWS]);
+        }
+
+        $withPassword = count(array_filter($rows, static fn (array $row): bool => ($row['values']['password'] ?? '') !== ''));
+
+        if ($withPassword > self::MAX_PASSWORD_ROWS) {
+            return self::fail('tooManyPasswords', [self::MAX_PASSWORD_ROWS]);
         }
 
         return ['rows' => $rows, 'errors' => []];

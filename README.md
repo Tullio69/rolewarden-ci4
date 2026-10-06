@@ -278,8 +278,9 @@ failed sign-ins. That last alert also goes to everyone holding `security.alerts`
 `/rolewarden/users/import` (permission `users.import`, also linked from the users list)
 creates many users at once. The first row names the columns, in any order: `email` and
 `username` are required, `role` (a role slug; empty gives the default role from Settings) and
-`password` are optional. UTF-8, comma or semicolon, at most 1000 users and 1 MB per file; a
-sample file can be downloaded from the page.
+`password` are optional. UTF-8, comma or semicolon, at most 1000 users and 1 MB per file, of
+which at most 50 with a password (each costs Shield a hash and a dictionary check); a sample
+file can be downloaded from the page. A preview stays valid for 30 minutes.
 
 Uploading shows a preview, row by row. If any row is wrong (an invalid or taken email or
 username, a name repeated in the file, an unknown or super admin role, a weak password), the

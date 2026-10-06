@@ -6,6 +6,7 @@ namespace RoleWarden\Users;
 
 use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use CodeIgniter\Shield\Authentication\Passwords;
+use CodeIgniter\Shield\Models\UserIdentityModel;
 use RoleWarden\Account\ActivityLog;
 use RoleWarden\Entities\User;
 use RoleWarden\Models\RoleModel;
@@ -70,11 +71,21 @@ final class UserImport
             ];
 
             if (($v['password'] ?? '') !== '') {
-                $rules['password'] = ['label' => 'Auth.password', 'rules' => ['required', Passwords::getMaxLengthRule(), 'strong_password[]']];
+                $rules['password'] = ['label' => 'Auth.password', 'rules' => ['required', Passwords::getMaxLengthRule()]];
             }
 
             if (! $validation->setRules($rules)->run(['email' => $v['email'], 'username' => $v['username'], 'password' => $v['password'] ?? ''])) {
                 $errors = [...$errors, ...array_values($validation->getErrors())];
+            }
+
+            // Shield's own strength check, with the row's user as context so that a password
+            // built from the username or email is refused, exactly as on Shield's registration.
+            if (($v['password'] ?? '') !== '' && ! isset($validation->getErrors()['password'])) {
+                $check = service('passwords')->check($v['password'], new User(['username' => $v['username'], 'email' => $v['email']]));
+
+                if (! $check->isOK()) {
+                    $errors[] = (string) $check->reason();
+                }
             }
 
             $email = strtolower($v['email']);
@@ -147,18 +158,31 @@ final class UserImport
 
         $db = db_connect();
         $users = model(UserModel::class);
+        // Rows without a password share one hash of a random secret that is thrown away:
+        // nobody can sign in with it, and hashing once keeps a large import fast.
+        $unusable = service('passwords')->hash(bin2hex(random_bytes(32)));
 
         try {
             $db->transException(true)->transStart();
 
+            $identities = model(UserIdentityModel::class);
+
             foreach ($payload as $row) {
-                $user = new User(['username' => $row['username'], 'email' => $row['email']]);
-                // No password in the file: a random one nobody knows; the user signs in through
-                // Shield's password recovery or gets one from an admin.
-                $user->setPasswordHash($row['passwordHash'] ?? service('passwords')->hash(bin2hex(random_bytes(24))));
-                $users->save($user);
+                // The user row first, already active and without an email, so Shield does not
+                // create the email identity itself: it would hash an empty password for each
+                // user (about 0.2 s) before the real hash replaced it.
+                $users->save(new User(['username' => $row['username'], 'active' => 1]));
                 $id = (int) $users->getInsertID();
-                $users->activate($users->findById($id));
+
+                // Then the email identity through Shield's own model, with the hash Shield made
+                // at preview time. No password in the file: the shared unusable hash, and the
+                // user signs in through Shield's password recovery or gets one from an admin.
+                $identities->insert([
+                    'user_id' => $id,
+                    'type' => Session::ID_TYPE_EMAIL_PASSWORD,
+                    'secret' => $row['email'],
+                    'secret2' => $row['passwordHash'] ?? $unusable,
+                ]);
 
                 if ($row['roleId'] !== null) {
                     (new UserRoles())->assign($id, $row['roleId']);

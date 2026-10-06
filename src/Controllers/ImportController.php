@@ -52,7 +52,9 @@ class ImportController extends BaseController
         $preview = ['fileErrors' => $result['fileErrors'], 'rows' => $result['rows'], 'fileName' => $file->getClientName()];
 
         if ($result['payload'] === []) {
-            return $back->with(self::PREVIEW_KEY, $preview)->with('rw_error', lang('RoleWarden.panel.import.refused'));
+            $message = $result['fileErrors'] !== [] ? 'refusedFile' : 'refused';
+
+            return $back->with(self::PREVIEW_KEY, $preview)->with('rw_error', lang('RoleWarden.panel.import.' . $message));
         }
 
         session()->set(self::SESSION_KEY, ['token' => bin2hex(random_bytes(16)), 'at' => time(), 'rows' => $result['payload']]);

@@ -40,8 +40,9 @@ git -C "$ROOT" archive --format=zip --prefix=rolewarden/ -o "$OUT/rolewarden-mod
 echo "Application: CodeIgniter app starter, Shield, translations..."
 composer create-project codeigniter4/appstarter "$APP" --no-dev --no-interaction --quiet
 composer --working-dir="$APP" require codeigniter4/shield:^1.4 codeigniter4/translations:^4.7 --update-no-dev --no-interaction --quiet
-# Shield's own setup publishes app/Config/Auth.php and friends; its "migrate now?" question gets a no.
-(cd "$APP" && echo n | php spark shield:setup >/dev/null)
+# Shield's own setup publishes app/Config/Auth.php and friends. Every question it asks
+# (sender address, "migrate now?") gets a no: the installer and the README cover them.
+(cd "$APP" && { yes n || true; } | php spark shield:setup >/dev/null)
 
 echo "Application: the module in modules/rolewarden..."
 mkdir -p "$APP/modules"
@@ -59,15 +60,30 @@ function edit(string $file, string $search, string $replace): void {
     file_put_contents($path, str_replace($search, $replace, $text));
 }
 $GLOBALS["app"] = $app;
+function replaceArray(string $file, string $property, string $replace): void {
+    $path = $GLOBALS["app"] . "/" . $file;
+    $text = preg_replace("/public array \\\$" . $property . " = \\[\\n.*?\\n    \\];/s", "public array \\\$" . $property . " = " . $replace . ";", file_get_contents($path), -1, $count);
+    if ($count !== 1) {
+        fwrite(STDERR, "build-package: cannot find \${$property} in {$file}\n");
+        exit(1);
+    }
+    file_put_contents($path, $text);
+}
 
 // The module is loaded from its folder: an update replaces modules/rolewarden, nothing else.
-edit("app/Config/Autoload.php", "APP_NAMESPACE => APPPATH,", "APP_NAMESPACE => APPPATH,\n        \"RoleWarden\"  => ROOTPATH . \"modules/rolewarden/src\",");
+edit("app/Config/Autoload.php", "APP_NAMESPACE => APPPATH,", "APP_NAMESPACE => APPPATH,\n        \x27RoleWarden\x27  => ROOTPATH . \x27modules/rolewarden/src\x27,");
 
 // README "Wiring the admin panel".
 edit("app/Config/Auth.php", "public string \$userProvider = UserModel::class;", "public string \$userProvider = \\RoleWarden\\Models\\UserModel::class;");
 edit("app/Config/Auth.php", "\x27login\x27                       => \x27\\CodeIgniter\\Shield\\Views\\login\x27,", "\x27login\x27                       => \x27\\RoleWarden\\Views\\auth\\login\x27,");
 edit("app/Config/Auth.php", "\x27login\x27             => \x27/\x27,", "\x27login\x27             => \x27rolewarden/users\x27,");
 edit("app/Config/Routes.php", "service(\x27auth\x27)->routes(\$routes);", "service(\x27auth\x27)->routes(\$routes);\n\\RoleWarden\\Config\\RouteRegistrar::register(\$routes);");
+
+// Roles live in the panel. Shield keeps only its default group, so the migration that
+// imports Shield groups finds nothing to turn into roles or permissions.
+replaceArray("app/Config/AuthGroups.php", "groups", "[\n        \x27user\x27 => [\x27title\x27 => \x27User\x27, \x27description\x27 => \x27General users of the site.\x27],\n    ]");
+replaceArray("app/Config/AuthGroups.php", "permissions", "[]");
+replaceArray("app/Config/AuthGroups.php", "matrix", "[\n        \x27user\x27 => [],\n    ]");
 
 // The home page opens the installer until RoleWarden is installed, then the panel.
 // Relative Location: before the installer writes .env, baseURL may not be this server.

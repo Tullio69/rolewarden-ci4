@@ -214,7 +214,7 @@ final class Installer
     public static function migrated(BaseConnection $db): bool
     {
         try {
-            $runner = service('migrations', null, false);
+            $runner = service('migrations', null, null, false);
 
             foreach (self::NAMESPACES as $namespace) {
                 $files = $runner->setNamespace($namespace)->findMigrations();
@@ -235,7 +235,7 @@ final class Installer
     {
         try {
             foreach (self::NAMESPACES as $namespace) {
-                $runner = service('migrations', null, false);
+                $runner = service('migrations', null, null, false);
 
                 if (! $runner->setNamespace($namespace)->latest()) {
                     return false;

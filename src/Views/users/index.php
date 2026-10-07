@@ -50,11 +50,11 @@
 
 <?php
 $pageInfo = $pager->getDetails();
-$startNum = ((int) $pageInfo['currentPage'] - 1) * (int) $pageInfo['perPage'];
-$sortHref = site_url('rolewarden/users') . '?' . http_build_query(array_filter([
-    'q' => $search, 'role' => $roleId, 'status' => $status, 'sort' => $sort === 'ASC' ? 'desc' : 'asc',
-]));
-?>
+    $startNum = ((int) $pageInfo['currentPage'] - 1) * (int) $pageInfo['perPage'];
+    $sortHref = site_url('rolewarden/users') . '?' . http_build_query(array_filter([
+        'q' => $search, 'role' => $roleId, 'status' => $status, 'sort' => $sort === 'ASC' ? 'desc' : 'asc',
+    ]));
+    ?>
 <table class="rw-t-users">
   <thead>
     <tr>
@@ -77,11 +77,15 @@ $sortHref = site_url('rolewarden/users') . '?' . http_build_query(array_filter([
     <?php endif ?>
     <?php foreach ($users as $i => $user) : ?>
       <?php
-      $notes = [];
-      if ((int) auth()->id() === (int) $user->id) $notes[] = lang('RoleWarden.panel.users.you');
-      $ovCount = $overrideCounts[$user->id] ?? 0;
-      if ($ovCount > 0) $notes[] = $ovCount . ' ' . lang($ovCount === 1 ? 'RoleWarden.panel.users.override' : 'RoleWarden.panel.users.overridesPlural');
-      ?>
+          $notes = [];
+        if ((int) auth()->id() === (int) $user->id) {
+            $notes[] = lang('RoleWarden.panel.users.you');
+        }
+        $ovCount = $overrideCounts[$user->id] ?? 0;
+        if ($ovCount > 0) {
+            $notes[] = $ovCount . ' ' . lang($ovCount === 1 ? 'RoleWarden.panel.users.override' : 'RoleWarden.panel.users.overridesPlural');
+        }
+        ?>
       <tr>
         <td class="rw-m-num"><?= str_pad((string) ($startNum + $i + 1), 2, '0', STR_PAD_LEFT) ?></td>
         <td class="rw-c-name"><a href="<?= esc(site_url('rolewarden/users/' . $user->id)) ?>"><?= esc($user->username ?? '—') ?></a></td>

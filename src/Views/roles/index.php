@@ -38,11 +38,13 @@
     <?php foreach ($roles as $i => $role) : ?>
       <?php
       $ownCount = $permissionCounts[$role['id']] ?? 0;
-      $inheritedCount = $inheritedCounts[$role['id']] ?? 0;
-      $roleHolders = $holders[$role['id']] ?? [];
-      $note = [];
-      if ((int) $role['is_system'] === 1) $note[] = lang('RoleWarden.panel.roles.systemNote');
-      ?>
+        $inheritedCount = $inheritedCounts[$role['id']] ?? 0;
+        $roleHolders = $holders[$role['id']] ?? [];
+        $note = [];
+        if ((int) $role['is_system'] === 1) {
+            $note[] = lang('RoleWarden.panel.roles.systemNote');
+        }
+        ?>
       <tr>
         <td class="rw-m-num"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></td>
         <td class="rw-c-role">
@@ -95,8 +97,8 @@
       <p>
         <?php $roleHolders = $holders[$role['id']] ?? []; ?>
         <?= $roleHolders === []
-            ? lang('RoleWarden.panel.roles.confirmDeleteNoUsers')
-            : esc(sprintf(lang('RoleWarden.panel.roles.confirmDeleteUsers'), count($roleHolders), implode(', ', $roleHolders))) ?>
+              ? lang('RoleWarden.panel.roles.confirmDeleteNoUsers')
+              : esc(sprintf(lang('RoleWarden.panel.roles.confirmDeleteUsers'), count($roleHolders), implode(', ', $roleHolders))) ?>
       </p>
       <div class="rw-confirm-actions">
         <button type="button" class="rw-btn rw-btn--ghost" onclick="rwCancelConfirm('confirm-delete-<?= (int) $role['id'] ?>')"><?= lang('RoleWarden.panel.cancel') ?></button>

@@ -138,13 +138,15 @@ class InstallController extends Controller
     private function databaseDefaults(): array
     {
         $db = config('Database')->default;
-        $uri = $this->request->getUri();
-        // The address this page was opened at, up to the installer's own path.
-        $path = preg_replace('#/(index\.php/)?rolewarden/install/?$#', '', $uri->getPath()) ?? '';
-        $port = $uri->getPort();
+        // The address this page was opened at, up to the installer's own path. Read from the
+        // request itself: CodeIgniter's URI objects build on baseURL, which is not set yet.
+        $host = (string) $this->request->getServer('HTTP_HOST');
+        $path = (string) parse_url((string) $this->request->getServer('REQUEST_URI'), PHP_URL_PATH);
+        $path = preg_replace('#/(index\.php/)?rolewarden/install/?$#', '', $path) ?? '';
+        $baseURL = preg_match('/^[a-z0-9.\-]+(:\d+)?$/i', $host) === 1 ? ($this->request->isSecure() ? 'https://' : 'http://') . $host . rtrim($path, '/') . '/' : '';
 
         return [
-            'baseURL' => $uri->getScheme() . '://' . $uri->getHost() . ($port !== null ? ':' . $port : '') . rtrim($path, '/') . '/',
+            'baseURL' => $baseURL,
             'hostname' => (string) ($db['hostname'] ?? 'localhost'),
             'port' => (string) ($db['port'] ?? 3306),
             'database' => (string) ($db['database'] ?? ''),

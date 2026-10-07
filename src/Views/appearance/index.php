@@ -82,7 +82,8 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
   <div class="rw-section-title"><span class="rw-section-n">A</span><h2><?= lang('RoleWarden.panel.appearance.sectionTheme') ?></h2></div>
   <table class="rw-ledger rw-settings">
     <tbody>
-      <?php $i = 0; foreach (Theme::bases() as $base => $label) : ?>
+      <?php $i = 0;
+foreach (Theme::bases() as $base => $label) : ?>
         <tr>
           <td class="rw-m-num"><?= str_pad((string) ++$i, 2, '0', STR_PAD_LEFT) ?></td>
           <th class="rw-l-key" scope="row">
@@ -103,7 +104,8 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
       <tr><th class="rw-m-num"></th><th class="rw-l-key"></th><th class="rw-header"><?= lang('RoleWarden.panel.appearance.light') ?></th><th class="rw-header"><?= lang('RoleWarden.panel.appearance.dark') ?></th></tr>
     </thead>
     <tbody>
-      <?php $n = 0; foreach ($colorNames as $key => $name) : ?>
+      <?php $n = 0;
+foreach ($colorNames as $key => $name) : ?>
         <tr>
           <td class="rw-m-num"><?= str_pad((string) ++$n, 2, '0', STR_PAD_LEFT) ?></td>
           <th class="rw-l-key" scope="row"><b><?= esc($name) ?></b><small><?= lang('RoleWarden.panel.appearance.' . $key . 'Help') ?></small></th>

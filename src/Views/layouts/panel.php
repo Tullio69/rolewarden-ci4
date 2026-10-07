@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= esc($title) ?> &middot; RoleWarden</title>
   <?= rw_stylesheets() ?>
-  <?php // panel.js registers its components on alpine:init, so it must run before Alpine starts. ?>
+  <?php // panel.js registers its components on alpine:init, so it must run before Alpine starts.?>
   <script defer src="<?= esc(site_url('rolewarden/assets/js/panel.js')) ?>"></script>
   <script defer src="<?= esc(site_url('rolewarden/assets/js/vendor/alpine.min.js')) ?>"></script>
 </head>

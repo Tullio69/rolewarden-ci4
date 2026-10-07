@@ -23,7 +23,7 @@ $current = $pager->getCurrentPage();
             }
             continue;
         }
-        $gap = false; ?>
+          $gap = false; ?>
         <li>
           <?php if ($page === $current) : ?>
             <span class="rw-page" aria-current="page"><?= $page ?></span>

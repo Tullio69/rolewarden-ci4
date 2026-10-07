@@ -1,0 +1,86 @@
+{
+    "en_keys": 482,
+    "it_keys": 482,
+    "missing_in_it": [],
+    "extra_in_it": [],
+    "placeholders": {
+        "signIn.locked": [
+            "Too many failed sign-ins for this email. Try again in {0, plural, one{# minute} other{# minutes}}.",
+            "Troppi accessi falliti per questa email. Riprova tra {0, plural, one{# minuto} other{# minuti}}."
+        ],
+        "mail.tooManyAttempts.owner": [
+            "Someone tried to sign in as {0} with a wrong password too many times. Sign-in for this email is locked for {1, plural, one{# minute} other{# minutes}}.",
+            "Qualcuno ha provato ad accedere come {0} con una password sbagliata troppe volte. L'accesso con questa email è bloccato per {1, plural, one{# minuto} other{# minuti}}."
+        ],
+        "mail.tooManyAttempts.admin": [
+            "The email {0} reached the limit of failed sign-ins and is locked for {1, plural, one{# minute} other{# minutes}}.",
+            "L'email {0} ha raggiunto il limite di accessi falliti ed è bloccata per {1, plural, one{# minuto} other{# minuti}}."
+        ],
+        "panel.auth.rememberFor": [
+            "Remember me for {0, plural, one{# day} other{# days}}",
+            "Ricordami per {0, plural, one{# giorno} other{# giorni}}"
+        ],
+        "panel.settings.seconds": [
+            "{0, plural, one{# second} other{# seconds}}",
+            "{0, plural, one{# secondo} other{# secondi}}"
+        ],
+        "panel.settings.minutes": [
+            "{0, plural, one{# minute} other{# minutes}}",
+            "{0, plural, one{# minuto} other{# minuti}}"
+        ],
+        "panel.settings.hours": [
+            "{0, plural, one{# hour} other{# hours}}",
+            "{0, plural, one{# ora} other{# ore}}"
+        ],
+        "panel.settings.days": [
+            "{0, plural, one{# day} other{# days}}",
+            "{0, plural, one{# giorno} other{# giorni}}"
+        ],
+        "panel.settings.years": [
+            "{0, plural, one{# year} other{# years}}",
+            "{0, plural, one{# anno} other{# anni}}"
+        ],
+        "panel.settings.entries": [
+            "{0, plural, one{# entry} other{# entries}}",
+            "{0, plural, one{# voce} other{# voci}}"
+        ],
+        "panel.import.rowsRefused": [
+            "{0, plural, one{# row} other{# rows}} of {1} cannot be imported, so nothing from {2} was created. Fix them and upload the file again.",
+            "{0, plural, one{# riga} other{# righe}} su {1} non si possono importare, quindi da {2} non è stato creato nulla. Correggile e carica di nuovo il file."
+        ],
+        "panel.import.ready": [
+            "{0, plural, one{# user is} other{# users are}} ready to import.",
+            "{0, plural, one{# utente è pronto} other{# utenti sono pronti}} per l'importazione."
+        ],
+        "panel.import.confirm": [
+            "Import {0, plural, one{# user} other{# users}}",
+            "Importa {0, plural, one{# utente} other{# utenti}}"
+        ],
+        "panel.import.extraFields": [
+            "This row has {0, plural, one{# value} other{# values}} more than the columns in the first row.",
+            "Questa riga ha {0, plural, one{# valore} other{# valori}} in più delle colonne della prima riga."
+        ],
+        "panel.import.done": [
+            "{0, plural, one{# user} other{# users}} imported.",
+            "{0, plural, one{# utente importato} other{# utenti importati}}."
+        ]
+    },
+    "identical": {
+        "install.databaseTitle": "Database",
+        "install.envFile": ".env",
+        "install.adminEmail": "Email",
+        "install.adminPassword": "Password",
+        "panel.users.email": "Email",
+        "panel.users.password": "Password",
+        "panel.users.account": "Account",
+        "panel.roles.slug": "Slug",
+        "panel.roles.superAdmin": "Super admin",
+        "panel.roles.area": "Area",
+        "panel.permissions.slug": "Slug",
+        "panel.appearance.theme.console": "Console",
+        "panel.appearance.theme.clarity": "Clarity",
+        "panel.appearance.theme.contrast": "Contrast",
+        "panel.import.sectionUpload": "File"
+    },
+    "empty": []
+}

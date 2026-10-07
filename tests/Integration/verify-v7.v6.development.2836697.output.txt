@@ -1,0 +1,256 @@
+== 1 Upgrade from 6c9fd04 by replacing the folder, rollback, fresh install ==
+module: 6c9fd04
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:02 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): oleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:03 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U01    Baseline 6c9fd04 has no users.import permission
+[INFO] Baseline users list has an import link: false, /rolewarden/users/import answers HTTP 404
+[INFO] stopping server pid=3208
+[INFO] termination requested=true
+[INFO] server closed
+module: 2836697
+[PASS] U02    Folder replaced, before migrate: users list 200, no SQL text, no Import button (permission not granted yet)
+[PASS] U02b   Before migrate: /rolewarden/users/import refused cleanly (not 200, not 500)
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:09 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Migrations complete.
+[PASS] U03    Upgrade grants users.import to admin
+[PASS] U03b   Only admin receives users.import from the data migration
+[PASS] U03c   Upgrade adds no table (SPEC: no new table for V6)
+[PASS] U04    After migrate: admin sees "Import users" in the users list and opens the import page
+[PASS] U04b   Super admin also sees the button and the page
+[INFO] stopping server pid=19480
+[INFO] termination requested=true
+[INFO] server closed
+   spark migrate:rollback -b 3 -f (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:12 UTC+00:00 Rolling back migrations to batch: 3 Rolling back: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Done rolling back migrations.
+[PASS] U05    Rollback restores ACL rows, migrations and tables exactly
+[PASS] U06    Rolled back with the 98636ea folder still in place: list 200 without button, import refused (not 500)
+[INFO] stopping server pid=31680
+[INFO] termination requested=true
+[INFO] server closed
+module: 6c9fd04
+[PASS] U07    Restored 6c9fd04 folder works after the rollback
+[INFO] stopping server pid=44660
+[INFO] termination requested=true
+[INFO] server closed
+module: 2836697
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:16 UTC+00:00 Running all new migrations... Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Migrations complete.
+[PASS] U08    Upgrade applies again after the rollback
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:17 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:19 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U09    Fresh install grants users.import to admin only
+   spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
+[PASS] U10    Fresh install rolls back cleanly (no acl_ table left)
+   spark migrate -n RoleWarden (rc=0): (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-07 18:14:21 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+== Fixtures ==
+[INFO] Roles: [{"id":1,"slug":"super-admin","name":"Super admin","is_super_admin":1},{"id":2,"slug":"admin","name":"Admin","is_super_admin":0},{"id":3,"slug":"user","name":"User","is_super_admin":0},{"id":4,"slug":"superadmin","name":"Super Admin","is_super_admin":0},{"id":5,"slug":"developer","name":"Developer","is_super_admin":0},{"id":6,"slug":"beta","name":"Beta User","is_super_admin":0},{"id":7,"slug":"v1-parent","name":"V1 Parent","is_super_admin":0},{"id":8,"slug":"v1-child","name":"V1 Child","is_super_admin":0},{"id":9,"slug":"v1-limited","name":"V1 Limited","is_super_admin":0}]
+[INFO] Default role at start: "" options ["","admin","beta","developer","superadmin","user","v1-child","v1-limited","v1-parent"]
+== 2 Definition of done: one invalid row refuses the file; a valid file creates the users ==
+[PASS] D01    A file with one invalid row (line 4) is refused: no confirm button, the error on line 4 only
+[PASS] D02    Refused file: nothing written (users, identities, roles, overrides, activity log, Shield groups)
+[PASS] D03    Refused file: confirming anyway with a forged token creates nothing
+[PASS] D04    The corrected file previews as ready: 3 rows, confirm button "Import 3 users"
+[PASS] D05    The preview itself writes nothing
+[PASS] D06    Confirming creates the 3 users
+== 3 Format (SPEC V6 Formato) ==
+[PASS] F01    Header in another order (password,role,username,email) is accepted and mapped by name
+[PASS] F01b   Columns are mapped by name: the preview shows email, username and role in the right cells
+[PASS] F02    Only the two required columns (email,username) is accepted
+[PASS] F02b   Required + one optional column (username,email,password) is accepted
+[PASS] F03    An unknown column refuses the whole file
+[PASS] F03b   The unknown column is named in the file error
+[PASS] F04    Missing required column username refuses the file
+[PASS] F04b   The missing column is named in the file error
+[PASS] F04c   Missing required column email refuses the file
+[PASS] F05    A duplicated column (email twice) refuses the file
+[PASS] F06    Semicolon separator detected from the header
+[PASS] F06b   Semicolon file: a comma inside a value is kept as data (password with a comma)
+[PASS] F07    UTF-8 BOM before the header is accepted (email column recognised)
+[PASS] F07b   BOM + semicolon + CRLF line endings (an Excel export) is accepted
+[PASS] F08    Invalid UTF-8 refuses the whole file
+[INFO] Invalid UTF-8 message: ["The file is not UTF-8 text. Save it as \"CSV UTF-8\" and try again."] rows []
+[PASS] F08b   A UTF-16 file (BOM FF FE) is refused, not misread
+[PASS] F09    An empty file (0 bytes) is refused
+[INFO] Empty file: {"http":303,"ready":false,"field":"","file":["The file is empty."],"bar":"","rows":[]} field error=false
+[PASS] F10    A file with only the header is refused (nothing to import, no confirm button)
+[INFO] Header only: {"http":303,"ready":false,"field":"","file":["The file has the column names but no users."],"bar":"","rows":[]}
+[PASS] F11    Quoted fields: quotes, commas and doubled quotes inside values are read as data
+[PASS] F11b   Quoted password imported verbatim: the stored Shield hash verifies Quo"ted,pass;Word9!
+[PASS] F12    A row with more values than columns is refused, with the error on its line
+[PASS] F12b   Extra values: the error is on line 2 and line 3 is fine
+[INFO] Row with fewer values than columns (role/password missing): {"http":303,"ready":true,"field":"","file":[],"bar":"1 user is ready to import. users.csv","rows":["2 ok none/recovery"]}
+[INFO] Header in another case (Email,USERNAME): {"http":303,"ready":true,"field":"","file":[],"bar":"1 user is ready to import. users.csv","rows":["2 ok none/recovery"]}
+[INFO] Header and values with spaces around: {"http":303,"ready":true,"field":"","file":[],"bar":"1 user is ready to import. users.csv","rows":["2 ok none/recovery"]}
+[INFO] Blank line in the middle: {"http":303,"ready":true,"field":"","file":[],"bar":"2 users are ready to import. users.csv","rows":["2 ok none/recovery","4 ok none/recovery"]}
+[INFO] CR-only line endings: {"http":303,"ready":true,"field":"","file":[],"bar":"1 user is ready to import. users.csv","rows":["2 ok none/recovery"]}
+[PASS] F13    1000 rows (the limit) are accepted: 1000 rows ready, nothing written
+[PASS] F13b   Confirming 1000 rows creates exactly 1000 users and 1000 "user.imported" log entries
+[INFO] Timing: preview of 1000 rows 1.1s, confirmation 8.4s
+[PASS] F13c   After the failed or slow confirmation nothing half-done remains (all or nothing)
+[PASS] F13d   Recheck aeead96 (SPEC 2026-10-06: at most 50 rows with a password): 1000 rows with a password are refused for the whole file, quickly, no 500, nothing written
+[PASS] F13e   50 rows with a password (the limit): preview ready, within the request time, nothing written
+[PASS] F13f   50 rows with a password: confirmation creates all 50, each password stored as a Shield hash that verifies it
+[PASS] F13g   A user of the 50-password file signs in with the password of the file
+[INFO] Timing 50 rows with a password: preview 19.3s, confirmation 1.7s
+[PASS] F13h   51 rows with a password are refused for the whole file ("More than 50 rows have a password…"), nothing written
+[INFO] 51-password message: ["More than 50 rows have a password. Split the file, or leave passwords empty and let those users sign in through password recovery.",""]
+[PASS] F13i   Mixed file at both limits (1000 rows, 50 with a password, shuffled): preview ready, nothing written
+[PASS] F13j   Mixed file: confirmation creates all 1000 within the request time, passwords where given
+[INFO] Timing mixed 1000 rows (50 passwords): preview 19.7s, confirmation 7.9s
+[PASS] F13k   Mixed file with 51 passwords among 61 rows is refused for the whole file
+[INFO] Confirmation of 20 rows without password: HTTP 303 in 1.6s (0.08s per row), created 20
+[INFO] Preview of 20 rows with a password each: HTTP 303 in 8.5s (0.43s per row)
+[INFO] Confirmation of 100 rows without password: HTTP 303 in 1.9s, created 100
+[PASS] F14    1001 rows are refused for the whole file
+[PASS] F14b   The 1001-row refusal names the row limit
+[INFO] Size files: 1048576 and 1048577 bytes, rows 1000/1000
+[PASS] F15    A file of exactly 1 MB (1048576 bytes, 1000 rows) is read: no size error, the rows are checked one by one
+[PASS] F16    One byte over 1 MB (1048577 bytes) is refused for its size, with no row read
+[PASS] F17    A 3 MB file (above PHP upload_max_filesize 2M) is refused cleanly, not 500
+[INFO] Where the file errors are shown: under the file field=true, in the preview section=false
+[PASS] F18    No file chosen: error under the file field, nothing written
+== 4 Rows (SPEC V6 Righe, Password) ==
+[PASS] R01    Invalid email refused on its row
+[PASS] R01b   Email over 254 characters refused (Shield max_length)
+[PASS] R01c   Empty email refused
+[PASS] R02    Username shorter than 3 refused
+[PASS] R02b   Username longer than 30 refused
+[PASS] R02c   Username with characters outside Shield's rule (underscore) refused
+[PASS] R02d   Username of exactly 3 and 30 characters accepted
+[PASS] R02e   Username of exactly 30 characters accepted
+[PASS] R02f   Empty username refused
+[PASS] R03    Email of an existing user refused
+[PASS] R03b   Email of an existing user in other case refused
+[PASS] R03c   Username of an existing user refused
+[PASS] R03d   Username of an existing user in other case refused
+[PASS] R04    Same email twice in the file: refused, the repeat flagged
+[PASS] R04b   Same email twice in other case: refused
+[PASS] R04c   Same username twice: refused
+[PASS] R04d   Same username twice in other case: refused
+[PASS] R05    Existing role slug accepted and shown by name
+[PASS] R05b   Unknown role refused
+[PASS] R05c0  Super admin role "super-admin" refused
+[PASS] R05d   A custom role flagged super admin is refused too
+[INFO] Role written by name instead of slug ("Admin"): {"http":303,"ready":true,"field":"","file":[],"bar":"1 user is ready to import. users.csv","rows":["2 ok Admin/recovery"]}
+[PASS] R06    Strong password accepted, shown as "set" (never echoed)
+[PASS] R06b   Short password refused
+[PASS] R06c   Dictionary password refused (Shield DictionaryValidator)
+[INFO] Password verdicts, import vs Shield registration: {"r.sixd.r.sixd":{"import":"refused","shield-register":"refused"},"Abcdefgh":{"import":"accepted","shield-register":"accepted"},"v6test-r.reg.c":{"import":"refused","shield-register":"refused"},"Qwerty123!":{"import":"accepted","shield-register":"accepted"},"Tr0ub4dor&3x":{"import":"accepted","shield-register":"accepted"}}
+[PASS] R06d   Import password verdicts match Shield's own registration on the same passwords (strength rules of Shield)
+[PASS] R06e   No password accepted ("recovery")
+[PASS] R06f   The preview never shows a password value
+[PASS] R07    No default role in Settings (README: null = no role): empty role previews as no role
+[PASS] R07b   Imported with no default role: the user has no role
+[INFO] Default role set to V1 Parent (option "v1-parent"): "v1-parent"
+[PASS] R08    Default role set: empty role previews as that role
+[PASS] R08b   Default role set: the empty-role user gets V1 Parent, the other keeps its own role
+[INFO] Default role removed between preview and confirmation: user r10 got ["v1-parent"]
+== 5 Imported users ==
+[PASS] I01    Imported users are active
+[PASS] I02    Email and username stored as in the file
+[INFO] Stored email case: "Ann.Mixed@V6.test"
+[PASS] I03    Roles as in the file (user, v1-child)
+[PASS] I04    Password from the file: stored only as a hash that verifies it
+[PASS] I05    The user with a password signs in with it
+[PASS] I06    No password in the file: a hash is stored that matches no known value
+[PASS] I07    No password in the file: no known password signs in
+[INFO] Hashes of users imported without a password differ between users: true
+[PASS] I08    The user without a password recovers access with Shield's magic link (email captured by Mailpit)
+[PASS] I09    Each imported user has one "user.imported" entry, authored by the admin
+== 6 Two steps, all or nothing ==
+[PASS] T01    Preview writes nothing and offers a confirmation token
+[PASS] T02    Confirmation without CSRF token refused, nothing created
+[PASS] T03    Confirmation with a wrong token refused, nothing created, no 500
+[PASS] T04    The token used from another session of the same admin is refused
+[INFO] After a wrong token, the right token of the same session no longer confirms (HTTP 303)
+[PASS] T05    Confirmation creates both users
+[PASS] T06    Repeating the confirmation (fresh CSRF, same token) creates nothing more and answers cleanly
+[PASS] T07    Confirmation without any preview in the session refused, nothing created, no 500
+[PASS] T07b   Confirmation with an empty token refused, no 500
+[PASS] T08    A preview older than 30 minutes (aged to 31) is refused, nothing created
+[PASS] T09    A preview aged to 29 minutes still confirms
+[INFO] Created by another admin from the panel: c2@v6.test -> 2193 (HTTP 303)
+[PASS] T10    Email taken between preview and confirmation: confirmation refused, nobody created (all or nothing)
+[PASS] T10b   The refusal says why (error toast: users created after the preview)
+[PASS] T11    Username taken between preview and confirmation: refused, nobody created
+[INFO] Role turned super admin between preview and confirmation: c6 created=true HTTP 303
+[PASS] T12    Role deleted between preview and confirmation: no 500 and no SQL text, and never half the file
+[INFO] Confirming the first of two previews made in a row: p1 created=false, p2 created=false
+== 7 Permissions and log ==
+[PASS] A01    users.view only: no Import button; page, preview, confirmation and sample all refused; nothing written
+[PASS] A02    users.create without users.import: no Import button; page, preview, confirmation and sample all refused; nothing written
+[PASS] A03    admin with a negative users.import override: no Import button; page, preview, confirmation and sample all refused; nothing written
+[PASS] A04    no permission at all: no Import button; page, preview, confirmation and sample all refused; nothing written
+[PASS] A05    Anonymous: import page and sample redirect to login
+[PASS] A06    Sample file: CSV download with the documented header
+[INFO] Sample uploaded back: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 2 cannot be imported, so nothing from rolewarden-users.csv was created. Fix them and upload the file again.","rows":["2 BAD This email already belongs to a user.","3 ok Admin/recovery"]}
+[PASS] A06b   The sample file, uploaded back, has a valid format (rows only flagged for already existing users)
+[INFO] Users created by import (all @v6.test minus fixtures, race users and Shield registrations reg-*): 2184, user.imported entries: 2184
+[PASS] L01    Every imported user has exactly one "user.imported" log entry pointing at it
+[PASS] L02    Users created by others (panel, database) during the race checks are not logged as imported
+[PASS] L03    Activity screen filtered by action shows the entries as "User imported" and nothing else
+[INFO] Filter by action + user (Ann.Mixed): 25 row(s)
+== 8 Interface: toasts, field errors, three themes light and dark in Chrome ==
+[PASS] V01    Refused file: error toast (static and Alpine), errors on the row
+[PASS] V02    File refused for a whole-file reason: error toast
+[PASS] V02b   Recheck aeead96: the toast of a whole-file refusal no longer speaks of rows marked below
+[INFO] Toast text for a whole-file refusal (no row shown): "The file was refused: nothing was created. The reason is under Preview."
+[PASS] V03    Valid preview: no error toast, a status bar with the count and the confirm button
+[PASS] V04    After importing: success toast ("Saved …") on the page reached
+[PASS] V05    No file: the error is under the file field (aria-describedby) and not in a toast
+[AMB]  V06    Whole-file errors (unknown column, size, encoding) are shown in the Preview section, not under the file field
+         -> Mandate point 8 asks for "errori sotto il campo del file"; SPEC V1 says field validation errors stay in the form. The no-file error is under the field (V05), but content errors are listed after the form, in section C, plus an error toast. Whether a content error is a field error is not decided by the SPEC.
+[INFO] browser render-console: chrome pid 40656, steps 46, errors [], console [], profile removed false
+[INFO] browser render-clarity: chrome pid 9108, steps 38, errors [], console [], profile removed false
+[INFO] browser render-contrast: chrome pid 26656, steps 38, errors [], console [], profile removed false
+[PASS] B-console-light Console light: import page empty, refused (error toast shown by Alpine, row marked) and ready (confirm button) render on the tokens
+[PASS] B-console-dark Console dark: import page empty, refused (error toast shown by Alpine, row marked) and ready (confirm button) render on the tokens
+[PASS] B-console-js Console: no JavaScript error and no driver error on the import screens
+[PASS] B-clarity-light Clarity light: import page empty, refused (error toast shown by Alpine, row marked) and ready (confirm button) render on the tokens
+[PASS] B-clarity-dark Clarity dark: import page empty, refused (error toast shown by Alpine, row marked) and ready (confirm button) render on the tokens
+[PASS] B-clarity-js Clarity: no JavaScript error and no driver error on the import screens
+[PASS] B-contrast-light Contrast light: import page empty, refused (error toast shown by Alpine, row marked) and ready (confirm button) render on the tokens
+[PASS] B-contrast-dark Contrast dark: import page empty, refused (error toast shown by Alpine, row marked) and ready (confirm button) render on the tokens
+[PASS] B-contrast-js Contrast: no JavaScript error and no driver error on the import screens
+[PASS] B-confirm In the browser: confirming shows the success toast in the Alpine stack and the user exists
+[INFO] Browser, no file chosen: {"url":"http:\/\/localhost:8070\/index.php\/rolewarden\/users\/import","valid":false,"required":true} (the required attribute stops the form in the browser)
+[PASS] B-READ No visible text below 3:1 on the import screens in any theme or mode
+== 10 Publication ==
+[PASS] P01    CSRF token on the upload form and on the confirmation form
+[PASS] P02    Upload without CSRF token refused: no preview stored, no 500
+[PASS] P03    Markup in CSV values, role and file name is escaped in the preview
+[PASS] P03b   Markup in an unknown column name is escaped in the file error
+[INFO] Malformed binary: {"http":303,"ready":false,"field":"","file":["The file is not UTF-8 text. Save it as \"CSV UTF-8\" and try again."],"bar":"","rows":[]}
+[INFO] Malformed nul: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from nul.csv was created. Fix them and upload the file again.","rows":["2 BAD The Email Address field is required. | 
+[INFO] Malformed newlines: {"http":303,"ready":false,"field":"","file":["The file is empty."],"bar":"","rows":[]}
+[INFO] Malformed cr: {"http":303,"ready":false,"field":"","file":["The file is empty."],"bar":"","rows":[]}
+[INFO] Malformed open-quote: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 2 cannot be imported, so nothing from open-quote.csv was created. Fix them and upload the file again.","rows":["2 BAD The Email Address field must con
+[INFO] Malformed stray-quote: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from stray-quote.csv was created. Fix them and upload the file again.","rows":["2 BAD The Email Address field must co
+[INFO] Malformed long-field: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from long-field.csv was created. Fix them and upload the file again.","rows":["2 BAD The Email Address field cannot e
+[INFO] Malformed many-cols: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from many-cols.csv was created. Fix them and upload the file again.","rows":["2 BAD This row has 4,999 values more th
+[INFO] Malformed header-many: {"http":303,"ready":false,"field":"","file":["A column name appears twice in the first row."],"bar":"","rows":[]}
+[INFO] Malformed zip: {"http":303,"ready":false,"field":"","file":["The file is not UTF-8 text. Save it as \"CSV UTF-8\" and try again."],"bar":"","rows":[]}
+[INFO] Malformed html: {"http":303,"ready":false,"field":"","file":["Unknown column \"<html><body>email\". The columns are email, username, role and password."],"bar":"","rows":[]}
+[INFO] Malformed only-bom: {"http":303,"ready":false,"field":"","file":["The file is empty."],"bar":"","rows":[]}
+[INFO] Malformed semicolon-in-comma: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from semicolon-in-comma.csv was created. Fix them and upload the file again.","rows":["2 BAD The Email Address field 
+[INFO] Malformed tabs: {"http":303,"ready":false,"field":"","file":["Unknown column \"email\tusername\". The columns are email, username, role and password."],"bar":"","rows":[]}
+[INFO] Malformed sql: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from sql.csv was created. Fix them and upload the file again.","rows":["2 BAD This row has 2 values more than the col
+[INFO] Malformed emoji: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from emoji.csv was created. Fix them and upload the file again.","rows":["2 BAD The Username field is not in the corr
+[INFO] Malformed nested: {"http":303,"ready":false,"field":"","file":[],"bar":"Error: 1 row of 1 cannot be imported, so nothing from nested.csv was created. Fix them and upload the file again.","rows":["2 BAD The Email Address field must contain
+[PASS] P04    Malformed files (binary, NUL, open quotes, 900 KB field, 5000 columns, ZIP, HTML, tabs, SQL text, …): no 500, no SQL text, nothing written
+[PASS] P05    Tables intact after the SQL-looking value
+[INFO] Plaintext password in sessions of the Shield registration clients only (Shield register keeps old input; not the import): ["ci_session13f1b1df62956616622e1b45862743d0 holds \"v6test-r.reg.c\"","ci_session3a8704475cc6f4758def9588e7d94406 holds \"r.sixd.r.sixd\""]
+[PASS] P06    No plaintext CSV password (11) in any page seen, any file under writable/ (130: sessions, logs, debug toolbar, cache) or any table
+[PASS] P07    No SQL error text and no HTTP 500 in any page seen (508)
+[INFO] Log lines of the handled rollback (T12, role deleted between preview and confirmation), not counted in P08: ["ERROR - 2026-10-07 18:17:44 --> Cannot add or update a child row: a foreign key constraint fails (`rolewarden_test`.`acl_user_roles`, CONSTRAINT `acl_user_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `acl_roles` (`id`) ON DELETE CASCADE)","ERROR - 2026-10-07 18:17:44 --> RoleWarden: users import rolled back: Cannot add or update a child row: a foreign key constraint fails (`rolewarden_test`.`acl_user_roles`, CONSTRAINT `acl_user_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `acl_role"]
+[PASS] P08    Application log at threshold 9: no warning or error (CSRF refusals excluded)
+[INFO] stopping server pid=23032
+[INFO] termination requested=true
+[INFO] server closed
+[PASS] P09    PHP built-in server log (error_reporting=-1): no PHP warning, notice, deprecation or fatal
+[PASS] P10    Every headless Chrome started by this run has exited (3 instances)
+V6 RESULT 151 checks 151 PASS 0 FAIL 1 AMB
+[MAIL] captured=7 non-test=[]
+[WRITABLE] entries created during the run (logs/sessions/cache/theme): 130

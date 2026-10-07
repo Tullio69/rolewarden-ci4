@@ -61,7 +61,7 @@
         <div>
           <button class="rw-btn rw-btn--primary" type="submit"><?= lang('Auth.login') ?></button>
           <?php if ($error !== null) : ?>
-            <div class="rw-auth-alert" role="alert"><b>Error:</b> <?= esc($error) ?></div>
+            <div class="rw-auth-alert" role="alert"><b><?= lang('RoleWarden.panel.toast.error') ?></b> <?= esc($error) ?></div>
           <?php endif ?>
         </div>
       </div>

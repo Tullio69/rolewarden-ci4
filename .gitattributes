@@ -12,3 +12,5 @@
 /_AI-LOG.md         export-ignore
 /CLAUDE.md          export-ignore
 /AGENTS.md          export-ignore
+/phpstan.neon.dist  export-ignore
+/.php-cs-fixer.dist.php export-ignore

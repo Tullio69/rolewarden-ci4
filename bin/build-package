@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# Builds the two release zips (SPEC, V7 decisions) into build/:
+#
+#   rolewarden-module-<version>.zip  the module alone, for an application that adds it
+#                                    with Composer (what `git archive` exports: no tests,
+#                                    docs or tooling, see .gitattributes)
+#   rolewarden-app-<version>.zip     a complete application for whoever starts from zero
+#                                    or has no Composer: CodeIgniter 4's app starter with
+#                                    Shield, CodeIgniter's translations and the module in
+#                                    modules/rolewarden, vendor/ included, wired as the
+#                                    README describes, opening on the browser installer
+#
+# It assembles files and edits the starter's configuration; it generates no code.
+# Packages the committed HEAD, never the working tree. Needs git, PHP 8.3+ and Composer.
+#
+#   bin/build-package 1.0.0
+set -euo pipefail
+
+VERSION="${1:?usage: bin/build-package <version>}"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+OUT="$ROOT/build"
+APP="$OUT/rolewarden-app-$VERSION"
+
+zipdir() { # zipdir <dir> <zip>: the folder itself as the zip's single top-level entry
+  local parent name
+  parent="$(dirname "$1")"; name="$(basename "$1")"
+  rm -f "$2"
+  if command -v zip >/dev/null; then
+    (cd "$parent" && zip -qr "$2" "$name")
+  else
+    (cd "$parent" && "$(command -v python3 || command -v python)" -m zipfile -c "$2" "$name")
+  fi
+}
+
+rm -rf "$OUT" && mkdir -p "$OUT"
+
+echo "Module zip..."
+git -C "$ROOT" archive --format=zip --prefix=rolewarden/ -o "$OUT/rolewarden-module-$VERSION.zip" HEAD
+
+echo "Application: CodeIgniter app starter, Shield, translations..."
+composer create-project codeigniter4/appstarter "$APP" --no-dev --no-interaction --quiet
+composer --working-dir="$APP" require codeigniter4/shield:^1.4 codeigniter4/translations:^4.7 --update-no-dev --no-interaction --quiet
+# Shield's own setup publishes app/Config/Auth.php and friends; its "migrate now?" question gets a no.
+(cd "$APP" && echo n | php spark shield:setup >/dev/null)
+
+echo "Application: the module in modules/rolewarden..."
+mkdir -p "$APP/modules"
+git -C "$ROOT" archive --format=tar --prefix=rolewarden/ HEAD | tar -x -C "$APP/modules"
+
+php -d error_reporting=-1 -r '
+$app = $argv[1];
+function edit(string $file, string $search, string $replace): void {
+    $path = $GLOBALS["app"] . "/" . $file;
+    $text = file_get_contents($path);
+    if (substr_count($text, $search) !== 1) {
+        fwrite(STDERR, "build-package: cannot find the expected text in {$file}: {$search}\n");
+        exit(1);
+    }
+    file_put_contents($path, str_replace($search, $replace, $text));
+}
+$GLOBALS["app"] = $app;
+
+// The module is loaded from its folder: an update replaces modules/rolewarden, nothing else.
+edit("app/Config/Autoload.php", "APP_NAMESPACE => APPPATH,", "APP_NAMESPACE => APPPATH,\n        \"RoleWarden\"  => ROOTPATH . \"modules/rolewarden/src\",");
+
+// README "Wiring the admin panel".
+edit("app/Config/Auth.php", "public string \$userProvider = UserModel::class;", "public string \$userProvider = \\RoleWarden\\Models\\UserModel::class;");
+edit("app/Config/Auth.php", "\x27login\x27                       => \x27\\CodeIgniter\\Shield\\Views\\login\x27,", "\x27login\x27                       => \x27\\RoleWarden\\Views\\auth\\login\x27,");
+edit("app/Config/Auth.php", "\x27login\x27             => \x27/\x27,", "\x27login\x27             => \x27rolewarden/users\x27,");
+edit("app/Config/Routes.php", "service(\x27auth\x27)->routes(\$routes);", "service(\x27auth\x27)->routes(\$routes);\n\\RoleWarden\\Config\\RouteRegistrar::register(\$routes);");
+
+// The home page opens the installer until RoleWarden is installed, then the panel.
+// Relative Location: before the installer writes .env, baseURL may not be this server.
+edit("app/Config/Routes.php", "\$routes->get(\x27/\x27, \x27Home::index\x27);", "\$routes->get(\x27/\x27, static fn () => service(\x27response\x27)->setStatusCode(302)->setHeader(\x27Location\x27, \\RoleWarden\\Install\\Installer::installed() ? \x27rolewarden/users\x27 : \x27rolewarden/install\x27));");
+
+// The panel speaks English and Italian; the browser picks.
+edit("app/Config/App.php", "public bool \$negotiateLocale = false;", "public bool \$negotiateLocale = true;");
+edit("app/Config/App.php", "public array \$supportedLocales = [\x27en\x27];", "public array \$supportedLocales = [\x27en\x27, \x27it\x27];");
+
+// CSRF on every form, the sign-in form included.
+edit("app/Config/Filters.php", "// \x27csrf\x27,", "\x27csrf\x27,");
+
+// The installer writes .env; the starter ships only its template.
+@unlink("$app/.env");
+' "$APP"
+
+# Nothing of this machine goes in the zip.
+rm -rf "$APP/writable/logs/"*.log "$APP/writable/session/"ci_session* "$APP/tests" "$APP/phpunit.xml.dist" "$APP/builds"
+
+zipdir "$APP" "$OUT/rolewarden-app-$VERSION.zip"
+rm -rf "$APP"
+
+ls -l "$OUT"

@@ -390,6 +390,12 @@
   .rw-auth-submit .rw-btn { width: 100%; justify-content: center; }
   .rw-auth-foot { margin-top: var(--space-8); }
   .rw-auth-corner { position: absolute; left: var(--gutter); bottom: var(--space-8); }
+  .rw-install-block { padding: var(--space-5) 0; border-bottom: var(--rule-width) solid var(--rule); }
+  .rw-install-checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-1-5); }
+  .rw-install-checks li { display: flex; justify-content: space-between; gap: var(--space-3); }
+  .rw-install-checks b { font-weight: var(--weight-medium); color: var(--ink-muted); }
+  .rw-install-checks .is-missing, .rw-install-checks .is-missing b { color: var(--denied); }
+  .rw-install-env { font-family: var(--font-mono); font-size: var(--text-xs); line-height: var(--leading-xs); }
   .rw-auth-corner2 { position: absolute; right: var(--gutter); bottom: var(--space-8); }
 
   [x-cloak] { display: none !important; }

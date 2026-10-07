@@ -22,6 +22,8 @@ class RouteRegistrar
         $routes->get('rolewarden/assets/(:any)', '\RoleWarden\Controllers\AssetController::serve/$1');
         // The theme overrides are public like the other assets: the sign-in page needs them too.
         $routes->get('rolewarden/theme.css', '\RoleWarden\Controllers\AppearanceController::css');
+        // The installer runs before anyone can sign in: no session filter, CSRF still checked.
+        $routes->match(['GET', 'POST'], 'rolewarden/install', '\RoleWarden\Controllers\InstallController::index', ['filter' => 'csrf']);
 
         $routes->group(
             'rolewarden',

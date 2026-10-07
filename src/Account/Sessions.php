@@ -6,6 +6,7 @@ namespace RoleWarden\Account;
 
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\HTTP\UserAgent;
+use Throwable;
 
 /**
  * Signed-in sessions of Shield's session authenticator, one row per browser in
@@ -306,7 +307,12 @@ final class Sessions
      */
     private static function ready(): bool
     {
-        return self::$ready ??= db_connect()->tableExists(config('RoleWarden')->table('sessions'));
+        // Runs on every request, so a database not configured yet (the installer) is not an error.
+        try {
+            return self::$ready ??= db_connect()->tableExists(config('RoleWarden')->table('sessions'));
+        } catch (Throwable) {
+            return self::$ready = false;
+        }
     }
 
     private static function table(): BaseBuilder

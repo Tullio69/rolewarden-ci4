@@ -6,6 +6,7 @@ namespace RoleWarden\Account;
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\UserAgent;
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\SignIn;
@@ -48,7 +49,7 @@ final class SecurityMail
         $device = self::device($userAgent);
 
         if (self::isNewAccess($ip, $device, $seen)) {
-            self::queue($user, 'newSignIn', 'new_sign_in', ['ip' => $ip, 'device' => $device, 'at' => date('Y-m-d H:i T')]);
+            self::queue($user, 'newSignIn', 'new_sign_in', ['ip' => $ip, 'device' => $device, 'at' => time()]);
         }
     }
 
@@ -86,7 +87,7 @@ final class SecurityMail
 
     public static function passwordChanged(User $user, bool $byAdmin): void
     {
-        self::queue($user, 'passwordChanged', 'password_changed', ['byAdmin' => $byAdmin, 'at' => date('Y-m-d H:i T')]);
+        self::queue($user, 'passwordChanged', 'password_changed', ['byAdmin' => $byAdmin, 'at' => time()]);
     }
 
     /**
@@ -173,10 +174,16 @@ final class SecurityMail
         }
 
         $app = (string) (parse_url(config('App')->baseURL, PHP_URL_HOST) ?: 'RoleWarden');
+        // In the recipient's language, not the one of whoever triggered the email.
+        $locale = UserLanguage::forUser(isset($user->id) ? (int) $user->id : null) ?: service('language')->getLocale();
+
+        if (is_int($data['at'] ?? null)) {
+            $data['at'] = Time::createFromTimestamp($data['at'], config('App')->appTimezone, $locale)->toLocalizedString('d MMM y, HH:mm zzz');
+        }
+
         self::$queue[] = [
             'to' => $to,
-            // In the recipient's language, not the one of whoever triggered the email.
-            'locale' => $locale = UserLanguage::forUser(isset($user->id) ? (int) $user->id : null) ?: service('language')->getLocale(),
+            'locale' => $locale,
             'subject' => lang('RoleWarden.mail.' . $subjectKey . '.subject', [$app], $locale),
             'view' => $view,
             'data' => $data + ['app' => $app, 'name' => ActivityLog::userLabel($user)],

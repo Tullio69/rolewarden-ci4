@@ -53,7 +53,7 @@ $canEdit = can('roles.update');
       <template x-if="changes().length">
         <div class="rw-bar-msg">
           <span class="rw-bar-dot" aria-hidden="true"></span>
-          <span><b x-text="changes().length + ' unsaved ' + (changes().length > 1 ? 'changes' : 'change')"></b> to <?= esc($role['name']) ?></span>
+          <span x-text="(changes().length > 1 ? <?= esc(json_encode(sprintf(lang('RoleWarden.panel.roles.unsavedMany'), '%d', $role['name'])), 'attr') ?> : <?= esc(json_encode(sprintf(lang('RoleWarden.panel.roles.unsavedOne'), '%d', $role['name'])), 'attr') ?>).replace('%d', changes().length)"></span>
           <span class="rw-bar-ids" x-text="changedLabels().join(', ')"></span>
         </div>
       </template>
@@ -96,11 +96,11 @@ $canEdit = can('roles.update');
               </td>
             </template>
             <td class="rw-m-all">
-              <input type="checkbox" class="rw-check" :checked="triState(rowKeys(row.area)).checked" :indeterminate.prop="triState(rowKeys(row.area)).indeterminate" @change="toggleRow(row.area, $event.target.checked)" :aria-label="'Grant every action on ' + row.area">
+              <input type="checkbox" class="rw-check" :checked="triState(rowKeys(row.area)).checked" :indeterminate.prop="triState(rowKeys(row.area)).indeterminate" @change="toggleRow(row.area, $event.target.checked)" :aria-label="<?= esc(json_encode(lang('RoleWarden.panel.roles.grantRow')), 'attr') ?>.replace('%s', row.area)">
             </td>
             <td class="rw-m-anno">
               <span class="rw-note" x-show="row.cells.some(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)])">
-                <span class="rw-chg" x-text="row.cells.filter(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)]).length + ' changed'"></span>
+                <span class="rw-chg" x-text="row.cells.filter(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)]).length + <?= esc(json_encode(' ' . lang('RoleWarden.panel.roles.rowChanged')), 'attr') ?>"></span>
               </span>
             </td>
           </tr>
@@ -159,7 +159,7 @@ $canEdit = can('roles.update');
     <p>
       <?= $userCount === 0
           ? lang('RoleWarden.panel.roles.confirmDeleteNoUsers')
-          : esc(sprintf(lang('RoleWarden.panel.roles.confirmDeleteCount'), $userCount)) ?>
+          : esc(lang('RoleWarden.panel.roles.confirmDeleteCount', [$userCount])) ?>
     </p>
     <div class="rw-confirm-actions">
       <button type="button" class="rw-btn rw-btn--ghost" onclick="rwCancelConfirm('confirm-delete-role')"><?= lang('RoleWarden.panel.cancel') ?></button>

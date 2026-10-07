@@ -96,7 +96,7 @@
         <?php $roleHolders = $holders[$role['id']] ?? []; ?>
         <?= $roleHolders === []
             ? lang('RoleWarden.panel.roles.confirmDeleteNoUsers')
-            : esc(sprintf(lang('RoleWarden.panel.roles.confirmDeleteUsers'), count($roleHolders), implode(', ', $roleHolders))) ?>
+            : esc(lang('RoleWarden.panel.roles.confirmDeleteUsers', [count($roleHolders), implode(', ', $roleHolders)])) ?>
       </p>
       <div class="rw-confirm-actions">
         <button type="button" class="rw-btn rw-btn--ghost" onclick="rwCancelConfirm('confirm-delete-<?= (int) $role['id'] ?>')"><?= lang('RoleWarden.panel.cancel') ?></button>

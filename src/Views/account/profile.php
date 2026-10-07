@@ -50,7 +50,7 @@ $field = static function (string $name, string $label, string $autocomplete) use
     <tr>
       <td class="rw-m-num">01</td>
       <th class="rw-l-key" scope="row"><b><?= lang('RoleWarden.panel.account.sessionsTitle') ?></b><small><?= lang('RoleWarden.panel.account.sessionsIntro') ?></small></th>
-      <td class="rw-l-value rw-muted"><?= esc(sprintf(lang('RoleWarden.panel.account.activeCount'), $sessionCount)) ?></td>
+      <td class="rw-l-value rw-muted"><?= esc(lang('RoleWarden.panel.account.activeCount', [$sessionCount])) ?></td>
       <td class="rw-l-ctl"><a class="rw-btn rw-btn--secondary rw-btn--sm" href="<?= esc(site_url('rolewarden/sessions')) ?>"><?= lang('RoleWarden.panel.account.manageSessions') ?></a></td>
       <td class="rw-anno"></td>
     </tr>

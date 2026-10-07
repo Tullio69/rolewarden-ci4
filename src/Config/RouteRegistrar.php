@@ -27,7 +27,7 @@ class RouteRegistrar
 
         $routes->group(
             'rolewarden',
-            ['namespace' => 'RoleWarden\Controllers', 'filter' => ['session', 'csrf']],
+            ['namespace' => 'RoleWarden\Controllers', 'filter' => ['session', 'csrf', 'rw-language']],
             static function (RouteCollection $routes): void {
                 $routes->get('users', 'UsersController::index', ['filter' => 'can:users.view']);
                 $routes->get('users/create', 'UsersController::create', ['filter' => 'can:users.create']);

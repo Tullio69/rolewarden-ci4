@@ -532,17 +532,17 @@ class UsersController extends BaseController
                 if (array_key_exists($permissionId, $overrides)) {
                     $state = $overrides[$permissionId] ? 'grant' : 'deny';
                     $tooltip = $state === 'grant'
-                        ? sprintf('%s · Override: granted to %s only', $slug, $username)
-                        : sprintf('%s · Override: denied. %s', $slug, isset($directBy[$permissionId]) ? 'Granted by ' . implode(', ', $directBy[$permissionId]) : (isset($inheritBy[$permissionId]) ? 'From ' . $inheritBy[$permissionId]['ancestor'] : ''));
+                        ? lang('RoleWarden.panel.tips.overrideGranted', [$slug, $username])
+                        : (isset($directBy[$permissionId]) ? lang('RoleWarden.panel.tips.deniedGranted', [$slug, implode(', ', $directBy[$permissionId])]) : (isset($inheritBy[$permissionId]) ? lang('RoleWarden.panel.tips.deniedFrom', [$slug, $inheritBy[$permissionId]['ancestor']]) : lang('RoleWarden.panel.tips.denied', [$slug])));
                 } elseif (isset($directBy[$permissionId])) {
                     $state = 'role';
-                    $tooltip = sprintf('%s · Granted by %s', $slug, implode(', ', $directBy[$permissionId]));
+                    $tooltip = lang('RoleWarden.panel.tips.grantedBy', [$slug, implode(', ', $directBy[$permissionId])]);
                 } elseif (isset($inheritBy[$permissionId])) {
                     $state = 'inherit';
-                    $tooltip = sprintf('%s · from %s, via %s', $slug, $inheritBy[$permissionId]['ancestor'], implode(', ', array_unique($inheritBy[$permissionId]['via'])));
+                    $tooltip = lang('RoleWarden.panel.tips.fromVia', [$slug, $inheritBy[$permissionId]['ancestor'], implode(', ', array_unique($inheritBy[$permissionId]['via']))]);
                 } else {
                     $state = 'none';
-                    $tooltip = sprintf('%s · Not granted', $slug);
+                    $tooltip = lang('RoleWarden.panel.tips.notGranted', [$slug]);
                 }
 
                 $cells[] = ['action' => $action, 'permissionId' => $permissionId, 'state' => $state, 'tooltip' => $tooltip];

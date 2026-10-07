@@ -48,7 +48,7 @@ $steps = ['requirements' => 1, 'code' => 1, 'database' => 2, 'envManual' => 2, '
     <div class="rw-auth-row rw-auth-head">
       <span class="rw-m-num"></span>
       <div>
-        <div class="rw-header"><?= esc($t('overline', [$steps[$step], 4])) ?></div>
+        <?php if ($step !== 'installed') : ?><div class="rw-header"><?= esc($t('overline', [$steps[$step], 4])) ?></div><?php endif ?>
         <h1><?= esc($t($step . 'Title')) ?></h1>
         <p><?= esc($t($step . 'Intro')) ?></p>
       </div>

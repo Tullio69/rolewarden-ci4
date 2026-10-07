@@ -99,18 +99,29 @@ final class Installer
     }
 
     /**
+     * Whether the default connection names a database at all. Until it does
+     * (the complete application before the installer writes .env), nothing
+     * tries to connect.
+     */
+    public static function databaseConfigured(): bool
+    {
+        $config = config('Database');
+
+        return (string) ($config->{$config->defaultGroup}['database'] ?? '') !== '';
+    }
+
+    /**
      * The database from the current configuration, when it answers and names a
      * database; null otherwise.
      */
     public static function database(): ?BaseConnection
     {
         try {
-            $db = Database::connect(null, false);
-
-            if ((string) $db->database === '') {
+            if (! self::databaseConfigured()) {
                 return null;
             }
 
+            $db = Database::connect(null, false);
             $db->initialize();
 
             return $db;
@@ -214,6 +225,10 @@ final class Installer
     public static function migrated(BaseConnection $db): bool
     {
         try {
+            if (! $db->tableExists(config('Migrations')->table)) {
+                return false;
+            }
+
             $runner = service('migrations', null, null, false);
 
             foreach (self::NAMESPACES as $namespace) {
@@ -291,6 +306,11 @@ final class Installer
 
         try {
             $cfg = config('RoleWarden');
+
+            // Checked first: a query on a missing table is an error in the log.
+            if (! $db->tableExists($cfg->table('user_roles')) || ! $db->tableExists($cfg->table('roles'))) {
+                return false;
+            }
 
             return $db->table($cfg->table('user_roles') . ' ur')
                 ->join($cfg->table('roles') . ' r', 'r.id = ur.role_id')

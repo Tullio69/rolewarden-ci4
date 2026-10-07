@@ -296,19 +296,19 @@ class RolesController extends BaseController
 
                 if ($roleGrants && $ov['denied'] !== []) {
                     $state = 'deny';
-                    $tooltip = sprintf('%s · Granted by %s, denied for %d user%s: %s', $slug, $origin ?? $role['name'], count($ov['denied']), count($ov['denied']) > 1 ? 's' : '', implode(', ', $ov['denied']));
+                    $tooltip = lang('RoleWarden.panel.tips.grantedDenied', [$slug, $origin ?? $role['name'], count($ov['denied']), implode(', ', $ov['denied'])]);
                 } elseif (! $roleGrants && $ov['granted'] !== []) {
                     $state = 'grant';
-                    $tooltip = sprintf('%s · Override for %d user%s: %s', $slug, count($ov['granted']), count($ov['granted']) > 1 ? 's' : '', implode(', ', $ov['granted']));
+                    $tooltip = lang('RoleWarden.panel.tips.overrideFor', [$slug, count($ov['granted']), implode(', ', $ov['granted'])]);
                 } elseif ($origin !== null) {
                     $state = 'inherit';
-                    $tooltip = sprintf('%s · from %s', $slug, $origin);
+                    $tooltip = lang('RoleWarden.panel.tips.from', [$slug, $origin]);
                 } elseif (isset($direct[$permissionId])) {
                     $state = 'role';
-                    $tooltip = sprintf('%s · Granted by %s', $slug, $role['name']);
+                    $tooltip = lang('RoleWarden.panel.tips.grantedBy', [$slug, $role['name']]);
                 } else {
                     $state = 'none';
-                    $tooltip = sprintf('%s · Not granted', $slug);
+                    $tooltip = lang('RoleWarden.panel.tips.notGranted', [$slug]);
                 }
 
                 if (in_array($state, ['role', 'inherit', 'deny'], true)) {

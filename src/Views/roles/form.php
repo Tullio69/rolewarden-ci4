@@ -8,7 +8,7 @@
 
 <?php if ($errors !== []) : ?>
   <div class="rw-flash rw-flash--error rw-flash--inset">
-    <b>Error:</b>
+    <b><?= lang('RoleWarden.panel.toast.error') ?></b>
     <ul>
       <?php foreach ($errors as $error) : ?>
         <li><?= esc($error) ?></li>

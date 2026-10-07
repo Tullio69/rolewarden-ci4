@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RoleWarden\Config;
 
+use RoleWarden\Filters\PanelLanguage;
 use RoleWarden\Filters\PermissionFilter;
 use RoleWarden\Filters\SignInThrottle;
 
@@ -18,7 +19,7 @@ class Registrar
     public static function Filters(): array
     {
         return [
-            'aliases' => ['can' => PermissionFilter::class, 'rw-signin' => SignInThrottle::class],
+            'aliases' => ['can' => PermissionFilter::class, 'rw-signin' => SignInThrottle::class, 'rw-language' => PanelLanguage::class],
             'filters' => ['rw-signin' => ['before' => ['login']]],
         ];
     }

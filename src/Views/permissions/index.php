@@ -24,7 +24,7 @@
           <td class="rw-m-num"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></td>
           <td class="rw-c-name"><code class="rw-mono"><?= esc($permission['slug']) ?></code></td>
           <td><?= esc($permission['description'] ?? '') ?></td>
-          <td class="rw-anno"><?php if ((int) $permission['is_system'] === 1) : ?><span class="rw-note"><?= lang('RoleWarden.panel.roles.systemNote') ?></span><?php endif ?></td>
+          <td class="rw-anno"><?php if ((int) $permission['is_system'] === 1) : ?><span class="rw-note"><?= lang('RoleWarden.panel.permissions.systemNote') ?></span><?php endif ?></td>
         </tr>
       <?php endforeach ?>
     </tbody>

@@ -39,7 +39,8 @@ git -C "$ROOT" archive --format=zip --prefix=rolewarden/ -o "$OUT/rolewarden-mod
 
 echo "Application: CodeIgniter app starter, Shield, translations..."
 composer create-project codeigniter4/appstarter "$APP" --no-dev --no-interaction --quiet
-composer --working-dir="$APP" require codeigniter4/shield:^1.4 codeigniter4/translations:^4.7 --update-no-dev --no-interaction --quiet
+# PHP 8.3 as the module needs, so Composer's own platform check says the same.
+composer --working-dir="$APP" require php:^8.3 codeigniter4/shield:^1.4 codeigniter4/translations:^4.7 --update-no-dev --no-interaction --quiet
 # Shield's own setup publishes app/Config/Auth.php and friends. Every question it asks
 # (sender address, "migrate now?") gets a no: the installer and the README cover them.
 (cd "$APP" && { yes n || true; } | php spark shield:setup >/dev/null)
@@ -47,6 +48,8 @@ composer --working-dir="$APP" require codeigniter4/shield:^1.4 codeigniter4/tran
 echo "Application: the module in modules/rolewarden..."
 mkdir -p "$APP/modules"
 git -C "$ROOT" archive --format=tar --prefix=rolewarden/ HEAD | tar -x -C "$APP/modules"
+# The starter's README is about CodeIgniter; the buyer needs RoleWarden's.
+cp "$APP/modules/rolewarden/README.md" "$APP/README.md"
 
 php -d error_reporting=-1 -r '
 $app = $argv[1];

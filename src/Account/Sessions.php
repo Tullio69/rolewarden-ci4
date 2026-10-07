@@ -6,6 +6,7 @@ namespace RoleWarden\Account;
 
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\HTTP\UserAgent;
+use RoleWarden\Install\Installer;
 use Throwable;
 
 /**
@@ -307,7 +308,12 @@ final class Sessions
      */
     private static function ready(): bool
     {
-        // Runs on every request, so a database not configured yet (the installer) is not an error.
+        // Runs on every request, so a database not configured yet (the installer) is not an error,
+        // and one with no database name is not even tried: nothing to log, nobody else's server hit.
+        if (self::$ready === null && ! Installer::databaseConfigured()) {
+            return self::$ready = false;
+        }
+
         try {
             return self::$ready ??= db_connect()->tableExists(config('RoleWarden')->table('sessions'));
         } catch (Throwable) {

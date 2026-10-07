@@ -36,7 +36,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
           <b><?= esc($summary['name']) ?></b>
           <?php if ($summary['parentChain'] !== []) : ?><small><?= esc(lang('RoleWarden.panel.users.inheritsFrom') . ' ' . implode(', then ', $summary['parentChain'])) ?></small><?php endif ?>
         </th>
-        <td class="rw-l-value rw-muted"><?= esc(sprintf(lang('RoleWarden.panel.users.permissionsSummary'), $summary['ownCount'], $summary['inheritedCount'])) ?></td>
+        <td class="rw-l-value rw-muted"><?= esc(lang('RoleWarden.panel.users.permissionsSummary', [$summary['ownCount'], $summary['inheritedCount']])) ?></td>
         <td class="rw-l-ctl">
           <a class="rw-btn rw-btn--ghost rw-btn--sm" href="<?= esc(site_url('rolewarden/roles/' . $summary['id'])) ?>"><?= lang('RoleWarden.panel.roles.permissionsAction') ?></a>
           <?php if (can('roles.assign')) : ?>
@@ -93,7 +93,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
       <template x-if="changes().length">
         <div class="rw-bar-msg">
           <span class="rw-bar-dot" aria-hidden="true"></span>
-          <span><b x-text="changes().length + ' unsaved ' + (changes().length > 1 ? 'changes' : 'change')"></b> to <?= esc($displayName) ?>&rsquo;s overrides</span>
+          <span x-text="(changes().length > 1 ? <?= esc(json_encode(sprintf(lang('RoleWarden.panel.users.unsavedMany'), '%d', $displayName)), 'attr') ?> : <?= esc(json_encode(sprintf(lang('RoleWarden.panel.users.unsavedOne'), '%d', $displayName)), 'attr') ?>).replace('%d', changes().length)"></span>
         </div>
       </template>
       <template x-if="!changes().length">

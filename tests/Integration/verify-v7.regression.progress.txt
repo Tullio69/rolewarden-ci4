@@ -33,3 +33,40 @@ exit=0 21:27:52
 exit=0 21:28:33
 === arrays production 21:28:34
 exit=0 21:29:01
+--- riverifica 2314cfb 21:52
+=== v6 development 21:52:17
+exit=0 22:00:29
+=== v5 development 22:00:29
+exit=0 22:10:08
+=== v4 development 22:10:08
+exit=1 22:15:13
+=== test development 22:15:13
+exit=1 22:17:39
+=== extra development 22:17:39
+exit=0 22:18:19
+=== adapt development 22:18:19
+exit=0 22:18:54
+=== v3 development 22:18:54
+exit=0 22:20:43
+=== edges development 22:20:43
+exit=0 22:21:33
+=== arrays development 22:21:33
+exit=0 22:22:11
+=== v6 production 22:22:11
+exit=0 22:28:10
+=== v5 production 22:28:10
+exit=0 22:35:05
+=== v4 production 22:35:05
+exit=1 22:39:42
+=== test production 22:39:42
+exit=1 22:41:41
+=== extra production 22:41:41
+exit=0 22:42:17
+=== adapt production 22:42:17
+exit=0 22:42:50
+=== v3 production 22:42:50
+exit=0 22:44:12
+=== edges production 22:44:12
+exit=0 22:44:57
+=== arrays production 22:44:57
+exit=0 22:45:26

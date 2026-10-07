@@ -21,4 +21,12 @@ foreach ($E as $k => $v) {
     if ($v === $I[$k] && preg_match('/[a-z]{3,}/i', $v)) $res['identical'][$k] = $v;
     if (trim($I[$k]) === '' && trim($v) !== '') $res['empty'][] = $k;
 }
-echo json_encode($res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";
+// Plurals (D6 recheck): every ICU plural line formatted with 1 and with 2, both languages.
+$res['plural_samples'] = [];
+foreach (['en' => $E, 'it' => $I] as $loc => $L) foreach ($L as $k => $v) {
+    if (! str_contains($v, 'plural')) continue;
+    foreach ([1, 2] as $n) { $f = msgfmt_create($loc, $v); $res['plural_samples']["$loc:$k:$n"] = $f ? $f->format([$n, $n, 'X', 'Y']) : 'INVALID ICU'; }
+}
+$res['singular_errors'] = array_keys(array_filter($res['plural_samples'], fn ($s, $k) => str_starts_with($k, 'it:') && str_ends_with($k, ':1') && preg_match('/\b1 (utenti|collegati|permessi|righe|voci|minuti|giorni|ore|anni|secondi|valori|ereditati)\b/u', $s), ARRAY_FILTER_USE_BOTH));
+$res['invalid_icu'] = array_keys(array_filter($res['plural_samples'], fn ($s) => $s === 'INVALID ICU'));
+echo json_encode($res,JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), "\n";

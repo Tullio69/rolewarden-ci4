@@ -23,7 +23,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 WORK = HERE / os.environ.get('RW_V7_WORKNAME', 'verify-v7.work')
 APP = WORK / 'app'
-NEW = os.environ.get('RW_V7_NEW', '2836697')
+NEW = os.environ.get('RW_V7_NEW', '2314cfb')
 MAILPIT = 'http://localhost:8026/api/v1/'
 ENV = os.environ.copy()
 for key in ('RW_DB_USERNAME', 'RW_DB_PASSWORD'):

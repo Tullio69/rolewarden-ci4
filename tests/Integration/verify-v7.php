@@ -262,6 +262,7 @@ $state = dbstate();
 $users = (int) q1('SELECT COUNT(*) FROM users');
 $h = G($anon, 'rolewarden/install', 'GET install after');
 check('B01', 'GET installer after installation: "Already installed", no form', str_contains(text_of($h), 'Already installed') && forms($h) === [], "status {$anon->status} " . text_of($h));
+check('B01c', 'The "Already installed" page shows no step counter (D6 recheck)', ! preg_match('/step \d+ of \d+/i', text_of($h)), text_of($h));
 info("installer after install answers HTTP {$anon->status}");
 check('B01b', 'Visiting the installed installer does not create a new setup code', ! file_exists("$A/writable/rolewarden/install-code.txt"));
 $attempts = [
@@ -463,6 +464,14 @@ $left = array_values(array_unique($left));
 check('E06', 'No English text left in the Italian panel (all screens, aria labels, titles, placeholders, Alpine texts)', $left === [], json_encode($left, JSON_UNESCAPED_UNICODE));
 if ($seeded) amb('A1', 'Database content seeded in English shows as is in the Italian panel', 'System role names and descriptions, permission descriptions and area headings (e.g. ' . json_encode(array_slice(array_keys($seeded), 0, 10), JSON_UNESCAPED_UNICODE) . ') are rows of acl_roles/acl_permissions, not language lines. The DoD says "every interface string exists in English and Italian"; SPEC does not say whether seeded records count as interface strings.');
 file_put_contents("$WORK/page-it-validation.html", $hv);
+$hp = G($adm, 'rolewarden/permissions', 'IT permissions D6');
+check('E12a', 'Permissions page notes say "permesso di sistema", not "ruolo di sistema" (D6 recheck)', str_contains(text_of($hp), 'permesso di sistema') && ! str_contains(text_of($hp), 'ruolo di sistema'), substr(text_of($hp), 0, 400));
+$hr = G($adm, 'rolewarden/roles', 'IT roles D6');
+check('E12b', 'Roles and Permissions overline reads "Autorizzazioni" (D6 recheck)', str_contains(text_of($hr), 'Autorizzazioni') && str_contains(text_of($hp), 'Autorizzazioni'), substr(text_of($hr), 0, 200));
+$hac = G($adm, 'rolewarden/activity', 'IT activity D6');
+check('E12c', 'Activity action list: "Browser non più ricordato" (D6 recheck)', str_contains(text_of($hac), 'Browser non più ricordato') && ! str_contains(text_of($hac), 'Browser ricordato dimenticato'));
+$hu1 = G($adm, "rolewarden/users/$eva", 'IT user page D4');
+check('E12d', 'Italian save bar and row labels come from the language files (no "unsaved", "Grant every action", "Granted by")', ! preg_match('/unsaved|Grant every action|Granted by|Not granted|overrides/', html_entity_decode($hu1)) && ! preg_match('/unsaved|Grant every action|Granted by|Not granted/', html_entity_decode(G($adm, "rolewarden/roles/$rid", 'IT role page D4'))), '');
 check('E06b', 'Italian validation summary has no English prefix ("Error:")', ! preg_match('/\bError:/', text_of($hv)), substr(text_of($hv), 0, 300));
 info('attribute values seen in Italian: ' . json_encode(array_keys($attrsSeen), JSON_UNESCAPED_UNICODE));
 // the panel's own JavaScript as the browser receives it, kept for the report (strings it renders)
@@ -508,6 +517,7 @@ $m2 = wait_mail(1);
 $s2 = array_map(fn ($m) => [$m['To'][0]['Address'] ?? '', $m['Subject']], $m2);
 check('E09b', 'Admin in English sets the password of an Italian user: the email is in Italian', count($m2) === 1 && ($s2[0][0] ?? '') === 'ugo7@example.test' && str_contains($s2[0][1], 'cambiata'), json_encode($s2, JSON_UNESCAPED_UNICODE));
 if ($m2) { $full = mailpit('GET', 'message/' . $m2[0]['ID']); info('Italian email text: ' . substr(preg_replace('/\s+/', ' ', (string) ($full['Text'] ?? '')), 0, 500)); }
+if ($m2) { $full = mailpit('GET', 'message/' . $m2[0]['ID']); $bodyIt = (string) ($full['Text'] ?? ''); check('E09d', 'Date in the Italian email is localised (no ISO yyyy-mm-dd) (D6 recheck)', ! preg_match('/\b\d{4}-\d{2}-\d{2}\b/', $bodyIt), substr(preg_replace('/\s+/', ' ', $bodyIt), 0, 400)); }
 if ($m2) { $full = mailpit('GET', 'message/' . $m2[0]['ID']); check('E09c', 'The Italian email body is Italian throughout (no English sentence of the English template)', ! preg_match('/\b(Hello|your password|If you did not|administrator set)\b/i', (string) ($full['Text'] ?? '') . (string) ($full['HTML'] ?? '')), substr((string) ($full['Text'] ?? ''), 0, 400)); }
 mailpit('DELETE', 'messages');
 // Application language: a user who has not chosen follows the application (Accept-Language)
@@ -648,19 +658,40 @@ check('C3a', 'Development .env before installation: home leads to the installer,
 $h = G($c, 'rolewarden/install', 'C3 install');
 file_put_contents("$WORK/page-c3-install.html", $h);
 check('C3b', 'Development .env before installation: the installer opens (code step), no SQL or driver detail on screen', $c->status === 200 && step_of($h) === 'code' && ! leaks_sql($h), "status {$c->status} " . substr(text_of($h), 0, 300));
+$dbg = fn (string $x) => (bool) preg_match('/id="debug-bar"|toolbarContainer|ci-debugbar|SYSTEMPATH|Backtrace|Displayed at/', $x);
+check('C3b2', 'Development before installation: no debug toolbar or debug detail on the installer', ! $dbg($h), substr(text_of($h), 0, 200));
+$as = asset_status($c, $h);
+check('C3b3', 'Development before installation: the installer stylesheet loads (200, text/css)', $as !== [] && ! array_filter($as, fn ($a) => str_contains($a, '.css') && ! preg_match('/ 200 text\/css/', $a)), json_encode($as));
+$x = new Client($c->base, 'C3-404'); $h404 = G($x, 'no/such/page-7', 'C3 404');
+check('C3b4', 'Development before installation: an unknown URL shows no debug detail (no backtrace, no paths)', ! $dbg($h404) && ! leaks_sql($h404) && ! str_contains($h404, 'verify-v7.work'), "status {$x->status} " . substr(text_of($h404), 0, 200));
+$h = inst_post($c, ['step' => 'admin', 'username' => 'early', 'email' => 'early@example.test', 'password' => PW, 'password_confirm' => PW], 'C3 admin without code');
+check('C3b5', 'Development: admin step posted without code shows no SQL and no debug detail', ! leaks_sql($h) && ! $dbg($h) && tables() === [], "status {$c->status} " . substr(text_of($h), 0, 200));
+$h = G($c, 'rolewarden/install', 'C3 install again');
 if (step_of($h) === 'code') {
     inst_post($c, ['step' => 'code', 'code' => code_of($C3)], 'C3 code');
+    foreach (['missing database' => ['database' => 'rw7_does_not_exist', 'password' => getenv('RW_DB_PASSWORD')], 'unknown host' => ['hostname' => 'db.invalid', 'password' => getenv('RW_DB_PASSWORD')]] as $k => $v) {
+        $h = inst_post($c, array_replace(['step' => 'database', 'baseURL' => 'http://127.0.0.1:8071/', 'hostname' => '127.0.0.1', 'port' => '3317', 'database' => 'rolewarden_test', 'username' => getenv('RW_DB_USERNAME')], $v), "C3 db $k");
+        check('C3c-' . substr(md5($k), 0, 3), "Development: failed connection ($k) shows no SQL or debug detail", ! leaks_sql($h) && ! $dbg($h) && str_contains(text_of($h), 'Could not connect'), substr(text_of($h), 0, 200));
+    }
     $h = inst_post($c, ['step' => 'database', 'baseURL' => 'http://127.0.0.1:8071/', 'hostname' => '127.0.0.1', 'port' => '3317', 'database' => 'rolewarden_test', 'username' => getenv('RW_DB_USERNAME'), 'password' => 'wrong-7'], 'C3 db wrong');
     check('C3c', 'Development: a failed connection still shows no SQL or driver detail', ! leaks_sql($h), substr(text_of($h), 0, 300));
     inst_post($c, ['step' => 'database', 'baseURL' => 'http://127.0.0.1:8071/', 'hostname' => '127.0.0.1', 'port' => '3317', 'database' => 'rolewarden_test', 'username' => getenv('RW_DB_USERNAME'), 'password' => getenv('RW_DB_PASSWORD')], 'C3 db');
     $e3 = env_map("$C3/.env");
     check('C3d', 'Existing CI_ENVIRONMENT (development) kept, a key generated', ($e3['CI_ENVIRONMENT'] ?? '') === 'development' && str_starts_with($e3['encryption.key'] ?? '', 'hex2bin:') && substr_count(file_get_contents("$C3/.env"), 'CI_ENVIRONMENT') === 1, json_encode([$e3['CI_ENVIRONMENT'] ?? null]));
     G($c, 'rolewarden/install', 'C3 migrate form');
+    $h = inst_post($c, ['step' => 'admin', 'username' => 'early', 'email' => 'early@example.test', 'password' => PW, 'password_confirm' => PW], 'C3 admin before tables');
+    check('C3d2', 'Development: admin step before the tables shows no SQL and no debug detail, creates nothing', ! leaks_sql($h) && ! $dbg($h) && tables() === [], substr(text_of($h), 0, 200));
+    G($c, 'rolewarden/install', 'C3 migrate form again');
     $h = inst_post($c, ['step' => 'migrate'], 'C3 migrate');
+    check('C3d3', 'Development: tables step shows no debug detail', ! leaks_sql($h) && ! $dbg($h) && in_array('acl_roles', tables(), true), substr(text_of($h), 0, 200));
     G($c, 'rolewarden/install', 'C3 admin form');
     $h = inst_post($c, ['step' => 'admin', 'username' => 'dev7', 'email' => 'dev7@example.test', 'password' => PW, 'password_confirm' => PW], 'C3 admin');
     $cl = new Client($c->base, 'C3-adm');
     check('C3e', 'Development: installation completes and the super admin signs in', uid('dev7@example.test') !== null && login($cl, 'dev7@example.test', PW), substr(text_of($h), 0, 300));
+    check('C3e2', 'Development: done page without debug detail; lock written', ! $dbg($h) && is_file("$C3/writable/rolewarden/installed.lock"), substr(text_of($h), 0, 200));
+    $sid3 = uid('dev7@example.test'); $rid3 = (int) q1("SELECT id FROM acl_roles WHERE slug='admin'"); $b3 = [];
+    foreach (screens($sid3, $rid3) as $sc) { $hh = G($cl, $sc, "C3 $sc"); if ($cl->status !== 200 || leaks_sql($hh)) $b3[] = "$sc {$cl->status}"; }
+    check('C3f', 'Development after installation: every screen answers 200, no SQL', $b3 === [], json_encode($b3));
 }
 server_stop();
 $LOGS['C3'] = logs_of($C3);
@@ -719,8 +750,8 @@ foreach ($LOGS as $k => $lines) {
     file_put_contents("$WORK/verify-v7.applog-$k.log", implode("\n", $lines) . "\n");
     info("log $k: " . count($lines) . ' lines, ' . count($bad) . ' at WARNING or above (' . count($pre) . ' about the database not configured / tables not created yet / the failed connections asked for)');
     check("F05$k", "Application log ($k) at threshold 9: no warning or error other than the expected database failures", $other === [], json_encode(array_slice(array_map(fn ($l) => substr($l, 0, 200), $other), 0, 8)));
-    $preNoAsk = array_filter($pre, fn ($l) => ! str_contains($l, 'installer: database connection failed') && ! preg_match("/Access denied for user 'root'|rw7_does_not_exist|db\.invalid|3399|Unknown database|getaddrinfo|actively refused|No such host|php_network/", $l) && ! preg_match('/^\s/', $l));
-    check("F06$k", "Application log ($k): no ERROR from a normal installation (before .env exists or before the tables are created)", $preNoAsk === [], count($preNoAsk) . ' lines, e.g. ' . json_encode(array_slice(array_map(fn ($l) => substr($l, 0, 160), array_values($preNoAsk)), 0, 3)));
+    $preNoAsk = array_filter($bad, fn ($l) => ! str_contains($l, 'installer: database connection failed') && ! preg_match("/Access denied for user '(root|u)|rw7_does_not_exist|db\.invalid|3399|Unknown database|getaddrinfo|actively refused|Rifiuto persistente|No such host|php_network/", $l) && ! preg_match('/^\s/', $l));
+    check("F06$k", "Application log ($k): no WARNING/ERROR/CRITICAL line apart from the failed connections the test asked for", $preNoAsk === [], count($preNoAsk) . ' lines, e.g. ' . json_encode(array_slice(array_map(fn ($l) => substr($l, 0, 160), array_values($preNoAsk)), 0, 3)));
 }
 
 $pass = count(array_filter($GLOBALS['results'], fn ($r) => $r[2]));

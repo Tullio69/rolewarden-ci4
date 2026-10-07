@@ -7,7 +7,7 @@ cd "$(dirname "$0")" || exit 1
 for envn in ${1:-development production}; do
   for mode in ${2:-v6 v5 v4 test extra adapt v3 edges arrays}; do
     echo "=== $mode $envn $(date +%H:%M:%S)"
-    python verify-v7.run.py "$mode" "$envn" > "verify-v7.regression.$mode.$envn.console.txt" 2>&1
+    python verify-v7.run.py "$mode" "$envn" > "verify-v7.regression.$mode.$envn.${RW_V7_NEW:-2836697}.console.txt" 2>&1
     echo "exit=$? $(date +%H:%M:%S)"
   done
 done

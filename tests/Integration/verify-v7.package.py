@@ -15,8 +15,10 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 WORK = HERE / 'verify-v7.package.work'
-APPZIP = ROOT / 'build' / 'rolewarden-app-1.0.0-rc.v7.zip'
-MODZIP = ROOT / 'build' / 'rolewarden-module-1.0.0-rc.v7.zip'
+NEW = os.environ.get('RW_V7_NEW', '2314cfb')
+TAG = os.environ.get('RW_V7_TAG', 'rc.v7c')
+APPZIP = ROOT / 'build' / ('rolewarden-app-1.0.0-' + TAG + '.zip')
+MODZIP = ROOT / 'build' / ('rolewarden-module-1.0.0-' + TAG + '.zip')
 res = []
 
 
@@ -38,7 +40,7 @@ def main():
             print('[INFO] %s %d bytes sha256 %s' % (z.name, z.stat().st_size, hashlib.sha256(z.read_bytes()).hexdigest()))
         zipfile.ZipFile(APPZIP).extractall(WORK / 'app')
         zipfile.ZipFile(MODZIP).extractall(WORK / 'mod')
-        app = WORK / 'app' / 'rolewarden-app-1.0.0-rc.v7'
+        app = WORK / 'app' / ('rolewarden-app-1.0.0-' + TAG)
         mod = WORK / 'mod' / 'rolewarden'
         fa, fm = files(app), files(mod)
         print('[INFO] application zip: %d files; module zip: %d files' % (len(fa), len(fm)))
@@ -66,9 +68,9 @@ def main():
         # 2. module zip contents
         top = sorted({f.split('/')[0] for f in fm})
         check('P04', 'Module zip without tests, internal docs and tooling (only README, composer.json, documentation/, src/)', top == ['README.md', 'composer.json', 'documentation', 'src'], top)
-        sp.run(['git', 'archive', '--format=zip', '-o', str(WORK / 'ref.zip'), '2836697'], cwd=ROOT, check=True)
+        sp.run(['git', 'archive', '--format=zip', '-o', str(WORK / 'ref.zip'), NEW], cwd=ROOT, check=True)
         zipfile.ZipFile(WORK / 'ref.zip').extractall(WORK / 'ref')
-        check('P05', 'Module zip identical to the module at commit 2836697 (git archive)', files(WORK / 'ref') == fm and all((WORK / 'ref' / f).read_bytes() == (mod / f).read_bytes() for f in fm), set(files(WORK / 'ref')) ^ set(fm))
+        check('P05', 'Module zip identical to the module at commit ' + NEW + ' (git archive)', files(WORK / 'ref') == fm and all((WORK / 'ref' / f).read_bytes() == (mod / f).read_bytes() for f in fm), set(files(WORK / 'ref')) ^ set(fm))
         appmod = app / 'modules' / 'rolewarden'
         check('P06', 'modules/rolewarden of the application identical to the module zip', files(appmod) == fm and all((appmod / f).read_bytes() == (mod / f).read_bytes() for f in fm))
         # 3. application zip: no Composer needed
@@ -93,6 +95,11 @@ def main():
         check('P13', 'README shipped to buyers carries no internal development notes (local stack, its password, the test app, build tooling, work log)', devsec == [], devsec)
         appreadme = (app / 'README.md').read_text(encoding='utf-8')
         print('[INFO] application README first line: ' + appreadme.splitlines()[0])
+        check('P14', 'README at the root of the complete application is RoleWarden\'s, without development notes (D5 recheck)', 'RoleWarden' in appreadme.splitlines()[0] and 'Application Starter' not in appreadme and not [s for s in devsec if s in appreadme], appreadme[:300])
+        appphp = re.findall(r'"php": "([^"]+)"', (app / 'composer.json').read_text(encoding='utf-8'))
+        check('P15', 'composer.json of the complete application requires PHP ^8.3 (D5 recheck)', appphp == ['^8.3'], appphp)
+        devapp = [s for s in ('## Local development', 'docker compose', 'password `rolewarden`', 'rolewarden-app-test', '_AI-LOG.md', 'Currently building the MVP', 'bin/build-css', 'bin/build-package', 'resources/css') if s in appreadme]
+        check('P16', 'Root README of the application without development notes', devapp == [], devapp)
         lic = [f for f in fa if re.search(r'(^|/)(LICENSE|COPYING)', f, re.I) and f.count('/') <= 3]
         print('[INFO] licence files in the application zip: ' + str(lic[:20]))
         plat = (app / 'vendor/composer/platform_check.php').read_text(encoding='utf-8')

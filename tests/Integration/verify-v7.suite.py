@@ -1,6 +1,6 @@
 """V7 main suite runner (Collaudatore ad Hoc). Only rolewarden_test, 127.0.0.1:3317.
 Usage: python tests/Integration/verify-v7.suite.py <label>
-Extracts the two zips of build/ and the module at 2836697 (git archive) into a throwaway work folder,
+Extracts the two zips of build/ and the module at RW_V7_NEW (default 2314cfb; first round 2836697) (git archive) into a throwaway work folder,
 runs verify-v7.php, then restores rolewarden_test exactly (hash of the canonical dump compared), empties
 Mailpit and deletes the work folder (junctions first). Credentials only from RW_DB_USERNAME/RW_DB_PASSWORD.
 """
@@ -19,7 +19,8 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 WORK = HERE / 'verify-v7.work'
-NEW = '2836697'
+NEW = os.environ.get('RW_V7_NEW', '2314cfb')
+TAG = os.environ.get('RW_V7_TAG', 'rc.v7c')
 ENV = os.environ.copy()
 for key in ('RW_DB_USERNAME', 'RW_DB_PASSWORD'):
     if not ENV.get(key):
@@ -49,13 +50,13 @@ def main():
     (WORK / 'snapshot.sql').write_bytes(before)
     code = 1
     try:
-        for name in ('rolewarden-app-1.0.0-rc.v7.zip', 'rolewarden-module-1.0.0-rc.v7.zip'):
+        for name in ('rolewarden-app-1.0.0-' + TAG + '.zip', 'rolewarden-module-1.0.0-' + TAG + '.zip'):
             with zipfile.ZipFile(ROOT / 'build' / name) as z:
                 z.extractall(WORK / ('zip-' + name.split('-')[1]))
         sp.run(['git', 'archive', '--format=tar', '-o', WORK / 'mod.tar', NEW], cwd=ROOT, check=True)
         with tarfile.open(WORK / 'mod.tar') as tf:
             tf.extractall(WORK / 'mod', filter='data')
-        appzip = WORK / 'zip-app' / 'rolewarden-app-1.0.0-rc.v7'
+        appzip = WORK / 'zip-app' / ('rolewarden-app-1.0.0-' + TAG)
         modzip = WORK / 'zip-module' / 'rolewarden'
         ENV.update(TEMP=str(WORK), TMP=str(WORK))
         out = HERE / ('verify-v7.' + label + '.output.txt')

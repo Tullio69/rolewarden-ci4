@@ -84,6 +84,58 @@ faster to rebuild than to repair.
 
 Credentials here are deliberately trivial: this stack is local only and never exposed.
 
+## Two ways to install
+
+RoleWarden ships as two zips.
+
+- **rolewarden-app-x.y.z.zip, a complete application.** For whoever starts from nothing or
+  has no Composer: CodeIgniter 4, Shield, CodeIgniter's translations and RoleWarden, with
+  `vendor/` included and everything below already wired. Upload it, point the web server's
+  document root at its `public/` folder, create an empty MySQL or MariaDB database, and open
+  the site: the home page leads to the installer. RoleWarden lives in `modules/rolewarden`
+  and is loaded from there (`app/Config/Autoload.php`), so an update replaces that folder and
+  nothing else.
+- **rolewarden-module-x.y.z.zip, the module alone.** For an existing CodeIgniter 4
+  application with Composer: add it as a Composer package, wire it as described under
+  [Wiring the admin panel](#wiring-the-admin-panel), then either open the installer or run
+  the commands under [Installing and rolling back the migrations](#installing-and-rolling-back-the-migrations).
+
+### The browser installer
+
+`/rolewarden/install` takes the application from an empty database to a first super admin:
+
+1. It checks the server: PHP 8.3 or later, the `intl`, `mbstring`, `json` and `mysqli`
+   extensions, a writable `writable/` folder, and whether `.env` can be written.
+2. It asks for the **setup code** saved in `writable/rolewarden/install-code.txt`, created on
+   the first visit. Only someone who can read the server's files can install: a stranger who
+   finds a fresh upload first cannot make themselves super admin.
+3. It asks for the application's address and the database settings, tests the connection,
+   and writes them to `.env` with a new encryption key (an existing key is kept, and so is an
+   existing `CI_ENVIRONMENT`; otherwise it is set to `production`). When `.env` cannot be
+   written, it shows what to save there by hand. A failed connection says so without any
+   detail from the database, which goes to `writable/logs/`.
+4. It creates the tables of Settings, Shield and RoleWarden, each in a batch of its own as
+   below, and the system roles.
+5. It creates the first super admin through Shield, active, then writes
+   `writable/rolewarden/installed.lock` and deletes the setup code.
+
+From then on it refuses to run. It also refuses on an application that already has an
+active super admin, lock file or not. It never sends anything outside the server.
+
+Security emails need a sender: set `email.fromEmail` (and the SMTP settings) in `.env`, or
+they are skipped with a line in the log.
+
+### Building the zips
+
+`bin/build-package 1.0.0` builds both into `build/` from the committed `HEAD`, never from
+uncommitted files: the module with `git archive` (without tests, docs and tooling, see
+`.gitattributes`), and the application from CodeIgniter's app starter with
+`composer create-project`, Shield's own `shield:setup`, the module copied into
+`modules/rolewarden` and the wiring of this README applied to the starter's configuration.
+It also enables CSRF globally, leaves Shield only its default `user` group (roles live in
+the panel), lets the browser choose between English and Italian, and opens the home page on
+the installer until RoleWarden is installed. It needs git, PHP 8.3 and Composer.
+
 ## Installing and rolling back the migrations
 
 Migrations are grouped in batches, and `migrate:rollback` undoes whole batches: it does

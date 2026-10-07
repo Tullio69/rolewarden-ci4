@@ -94,12 +94,12 @@ $describe = static function (?string $json): string {
     <?php foreach ($rows as $i => $row) : ?>
       <?php
       $type = (string) $row['subject_type'];
-        $id = $row['subject_id'] !== null ? (int) $row['subject_id'] : null;
-        $object = esc((string) $row['subject_label']);
-        if ($id !== null && isset($links[$type][$id])) {
-            $object = '<a href="' . esc(site_url('rolewarden/' . $type . 's/' . $id)) . '">' . $object . '</a>';
-        }
-        ?>
+      $id = $row['subject_id'] !== null ? (int) $row['subject_id'] : null;
+      $object = esc((string) $row['subject_label']);
+      if ($id !== null && isset($links[$type][$id])) {
+          $object = '<a href="' . esc(site_url('rolewarden/' . $type . 's/' . $id)) . '">' . $object . '</a>';
+      }
+      ?>
       <tr>
         <td class="rw-m-num"><?= str_pad((string) ($start + $i + 1), 2, '0', STR_PAD_LEFT) ?></td>
         <td style="white-space:nowrap"><?= esc(Time::parse((string) $row['at'])->toLocalizedString('d MMM y, HH:mm')) ?></td>

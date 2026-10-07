@@ -4,7 +4,7 @@ $pages = $pager->getPageCount();
 $current = $pager->getCurrentPage();
 ?>
 <?php if ($pages > 1) : ?>
-  <nav aria-label="Pagination">
+  <nav aria-label="<?= esc(lang('RoleWarden.panel.a11y.pagination'), 'attr') ?>">
     <ul class="rw-pager">
       <li>
         <?php if ($current > 1) : ?>
@@ -28,7 +28,7 @@ $current = $pager->getCurrentPage();
           <?php if ($page === $current) : ?>
             <span class="rw-page" aria-current="page"><?= $page ?></span>
           <?php else : ?>
-            <a class="rw-page" href="<?= esc($pager->getPageURI($page) ?? '#') ?>" aria-label="Page <?= $page ?>"><?= $page ?></a>
+            <a class="rw-page" href="<?= esc($pager->getPageURI($page) ?? '#') ?>" aria-label="<?= esc(lang('RoleWarden.panel.a11y.page', [$page]), 'attr') ?>"><?= $page ?></a>
           <?php endif ?>
         </li>
       <?php endfor ?>

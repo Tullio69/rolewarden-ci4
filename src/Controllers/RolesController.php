@@ -77,9 +77,9 @@ class RolesController extends BaseController
     public function store(): RedirectResponse
     {
         $rules = [
-            'slug' => 'required|regex_match[/^[a-z][a-z0-9-]*$/]|is_unique[' . config('RoleWarden')->table('roles') . '.slug]',
-            'name' => 'required|min_length[2]',
-            'parent_id' => 'permit_empty|is_natural_no_zero',
+            'slug' => ['label' => 'RoleWarden.panel.roles.slug', 'rules' => 'required|regex_match[/^[a-z][a-z0-9-]*$/]|is_unique[' . config('RoleWarden')->table('roles') . '.slug]'],
+            'name' => ['label' => 'RoleWarden.panel.roles.name', 'rules' => 'required|min_length[2]'],
+            'parent_id' => ['label' => 'RoleWarden.panel.roles.parent', 'rules' => 'permit_empty|is_natural_no_zero'],
         ];
 
         if (! $this->validateData($this->request->getPost() ?? [], $rules)) {
@@ -150,8 +150,8 @@ class RolesController extends BaseController
         }
 
         $rules = [
-            'name' => 'required|min_length[2]',
-            'parent_id' => 'permit_empty|is_natural_no_zero',
+            'name' => ['label' => 'RoleWarden.panel.roles.name', 'rules' => 'required|min_length[2]'],
+            'parent_id' => ['label' => 'RoleWarden.panel.roles.parent', 'rules' => 'permit_empty|is_natural_no_zero'],
         ];
 
         if (! $this->validateData($this->request->getPost() ?? [], $rules)) {

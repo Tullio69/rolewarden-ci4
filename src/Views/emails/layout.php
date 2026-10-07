@@ -12,7 +12,7 @@
  */
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="<?= esc(service('language')->getLocale(), 'attr') ?>">
 <head><meta charset="UTF-8"><title><?= esc($title) ?></title></head>
 <body style="margin:0;padding:24px;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:22px">
   <div style="max-width:520px">

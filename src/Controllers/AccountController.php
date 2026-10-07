@@ -12,6 +12,7 @@ use RoleWarden\Account\ActivityLog;
 use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Models\UserModel;
+use RoleWarden\Settings\UserLanguage;
 
 /**
  * The signed-in user's own account: profile with password change, and their
@@ -28,6 +29,8 @@ class AccountController extends BaseController
         return rw_panel('RoleWarden\Views\account\profile', [
             'user' => $user,
             'sessionCount' => count($sessions['sessions']),
+            'languages' => UserLanguage::available(),
+            'language' => UserLanguage::forUser((int) $user->id),
             'errors' => session()->getFlashdata('rw_errors') ?? [],
         ], 'profile', lang('RoleWarden.panel.account.profileTitle'));
     }
@@ -60,6 +63,22 @@ class AccountController extends BaseController
         SecurityMail::passwordChanged($user, false);
 
         return redirect()->to($back)->with('rw_success', lang('RoleWarden.panel.account.passwordChanged'));
+    }
+
+    public function language(): RedirectResponse
+    {
+        $choice = $this->request->getPost('language');
+        $back = redirect()->to(site_url('rolewarden/profile'));
+
+        // '' goes back to the application's language; anything unlisted is ignored.
+        if (! is_string($choice) || ($choice !== '' && ! isset(UserLanguage::available()[$choice]))) {
+            return $back;
+        }
+
+        UserLanguage::set((int) auth()->id(), $choice);
+        UserLanguage::use($choice !== '' ? $choice : config('App')->defaultLocale);
+
+        return $back->with('rw_success', lang('RoleWarden.panel.account.languageSaved'));
     }
 
     public function sessions(): string

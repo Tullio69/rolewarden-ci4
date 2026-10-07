@@ -50,6 +50,7 @@ class RouteRegistrar
                 // The signed-in user's own account: no permission beyond being signed in.
                 $routes->get('profile', 'AccountController::profile');
                 $routes->post('profile/password', 'AccountController::password');
+                $routes->post('profile/language', 'AccountController::language');
                 $routes->get('sessions', 'AccountController::sessions');
                 $routes->post('sessions/revoke-all', 'AccountController::revokeOwnAll');
                 $routes->post('sessions/(:num)/revoke', 'AccountController::revokeOwn/$1');

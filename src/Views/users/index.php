@@ -1,6 +1,6 @@
 <div class="rw-page-head">
   <div>
-    <div class="rw-header">Directory</div>
+    <div class="rw-header"><?= lang('RoleWarden.panel.users.directory') ?></div>
     <h1><?= lang('RoleWarden.panel.users.indexTitle') ?></h1>
     <p><?= lang('RoleWarden.panel.users.indexIntro') ?></p>
   </div>

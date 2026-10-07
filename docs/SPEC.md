@@ -363,6 +363,12 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 - **Due passi, nessuna scrittura parziale.** Il caricamento mostra un'anteprima riga per riga; se anche una sola riga è sbagliata il file è rifiutato per intero, con l'errore riportato sulla sua riga, e nulla viene scritto. Solo un file interamente valido si conferma, e la conferma crea tutti gli utenti in una transazione: o tutti o nessuno. La conferma ricontrolla l'unicità, perché tra anteprima e conferma qualcuno può aver creato un utente.
 - **Permesso e log.** Serve `users.import`, concesso ad `admin` con una migrazione di dati. Ogni utente creato compare nel log attività come `user.imported`.
 
+**Decisioni del 2026-10-07 (V7).**
+- **Pacchetto senza Composer.** Chiusa la decisione aperta del brief con due zip: un'applicazione completa (CodeIgniter 4, Shield e il modulo con le dipendenze già incluse, più l'installer) per chi parte da zero o non ha Composer, e il modulo da solo per chi lo aggiunge con Composer a un'applicazione esistente. Gli zip li costruisce uno script di rilascio (`bin/build-package`), che assembla file e non genera codice.
+- **Installer.** Guidato via browser, configura tutto: controlla i requisiti (versione di PHP, estensioni, cartelle scrivibili), chiede URL e dati del database e li scrive nel `.env` (se il file non è scrivibile ne mostra il contenuto da copiare), genera la chiave di cifratura, esegue le migrazioni di Settings, Shield e RoleWarden con i ruoli di sistema, crea il primo super admin. A installazione avvenuta si blocca con un file in `writable/` e rifiuta di ripartire; considera installata anche un'applicazione che ha già un super admin.
+- **Lingue.** Chiusa la decisione aperta del brief: inglese e italiano al lancio; un'altra lingua si aggiunge con un file di lingua nell'applicazione, ed è documentato.
+- **Scelta della lingua.** Ogni utente sceglie la lingua del pannello dal profilo, salvata come il chiaro/scuro; senza scelta vale la lingua dell'applicazione. Le email di sicurezza partono nella lingua del destinatario.
+
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 
 ## Design system

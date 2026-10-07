@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\UserAgent;
 use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\SignIn;
+use RoleWarden\Settings\UserLanguage;
 
 /**
  * Security emails (SPEC "Sistema di notifiche", v1.0): sign-in from a new
@@ -23,7 +24,7 @@ use RoleWarden\Settings\SignIn;
  */
 final class SecurityMail
 {
-    /** @var list<array{to: string, subject: string, view: string, data: array<string, mixed>}> */
+    /** @var list<array{to: string, locale: string, subject: string, view: string, data: array<string, mixed>}> */
     private static array $queue = [];
 
     /**
@@ -140,7 +141,11 @@ final class SecurityMail
             $email->setTo($message['to']);
             $email->setSubject($message['subject']);
             $email->setMailType('html');
+            $language = service('language');
+            $previous = $language->getLocale();
+            $language->setLocale($message['locale']);
             $html = view('RoleWarden\Views\emails\\' . $message['view'], $message['data']);
+            $language->setLocale($previous);
             $email->setMessage($html);
             $email->setAltMessage(self::text($html));
 
@@ -170,7 +175,9 @@ final class SecurityMail
         $app = (string) (parse_url(config('App')->baseURL, PHP_URL_HOST) ?: 'RoleWarden');
         self::$queue[] = [
             'to' => $to,
-            'subject' => lang('RoleWarden.mail.' . $subjectKey . '.subject', [$app]),
+            // In the recipient's language, not the one of whoever triggered the email.
+            'locale' => $locale = UserLanguage::forUser(isset($user->id) ? (int) $user->id : null) ?: service('language')->getLocale(),
+            'subject' => lang('RoleWarden.mail.' . $subjectKey . '.subject', [$app], $locale),
             'view' => $view,
             'data' => $data + ['app' => $app, 'name' => ActivityLog::userLabel($user)],
         ];

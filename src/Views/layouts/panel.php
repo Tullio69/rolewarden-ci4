@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" <?= rw_html_attributes() ?>>
+<html lang="<?= esc(service('language')->getLocale(), 'attr') ?>" <?= rw_html_attributes() ?>>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="rw rw-shell">
-  <aside class="rw-sidebar" aria-label="Main">
+  <aside class="rw-sidebar" aria-label="<?= esc(lang('RoleWarden.panel.a11y.main'), 'attr') ?>">
     <div class="rw-brand"><b>RoleWarden</b></div>
     <ul class="rw-nav">
       <?php if (can('users.view')) : ?>
@@ -37,7 +37,7 @@
 
   <div>
     <header class="rw-topbar">
-      <nav class="rw-crumbs" aria-label="Breadcrumb"><?= $crumbs !== '' ? $crumbs : '<span aria-current="page">' . esc(ucfirst($active)) . '</span>' ?></nav>
+      <nav class="rw-crumbs" aria-label="<?= esc(lang('RoleWarden.panel.a11y.breadcrumb'), 'attr') ?>"><?= $crumbs !== '' ? $crumbs : '<span aria-current="page">' . esc($title) . '</span>' ?></nav>
       <?php $me = auth()->user(); ?>
       <?php if ($me !== null) : ?>
         <?php $scheme = RoleWarden\Settings\ColorScheme::forUser((int) $me->id); ?>

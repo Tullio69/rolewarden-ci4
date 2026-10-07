@@ -95,7 +95,7 @@ $logNote = lang('RoleWarden.panel.settings.entries', [$logEntries]);
     <?php if (! $canUpdate) : ?><p class="rw-note"><?= lang('RoleWarden.panel.settings.readOnly') ?></p><?php endif ?>
   </div>
   <dl class="rw-facts">
-    <div><dt><?= lang('RoleWarden.panel.settings.lastChanged') ?></dt><dd><?= $changedAt ? esc(date('d M Y', strtotime((string) $changedAt))) : lang('RoleWarden.panel.settings.never') ?></dd></div>
+    <div><dt><?= lang('RoleWarden.panel.settings.lastChanged') ?></dt><dd><?= $changedAt ? esc(\CodeIgniter\I18n\Time::parse((string) $changedAt)->toLocalizedString('d MMM y')) : lang('RoleWarden.panel.settings.never') ?></dd></div>
     <div><dt><?= lang('RoleWarden.panel.settings.by') ?></dt><dd><?= $changedBy !== null ? esc($changedBy) : '&mdash;' ?></dd></div>
   </dl>
 </div>

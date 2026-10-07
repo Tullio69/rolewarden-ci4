@@ -55,6 +55,13 @@ return [
         'previous' => 'Previous',
         'next' => 'Next',
         'notes' => 'Notes',
+        'a11y' => [
+            'main' => 'Main',
+            'breadcrumb' => 'Breadcrumb',
+            'pagination' => 'Pagination',
+            'page' => 'Page {0}',
+            'legend' => 'Legend',
+        ],
         'nav' => [
             'users' => 'Users',
             'roles' => 'Roles',
@@ -79,6 +86,7 @@ return [
             'credit' => 'Access managed by RoleWarden',
         ],
         'users' => [
+            'directory' => 'Directory',
             'overline' => 'User',
             'indexTitle' => 'Users',
             'indexIntro' => 'Everyone who can sign in. Roles decide what they can do; per-user overrides are set on each user\'s page.',
@@ -300,6 +308,8 @@ return [
             ],
             'sampleIntro' => 'The panel components with the current choices. Switch light and dark from the top bar to check both.',
             'sample' => [
+                'role' => 'Editor',
+                'parentRole' => 'Author',
                 'primary' => 'Save changes',
                 'secondary' => 'Cancel',
                 'ghost' => 'Edit',
@@ -471,6 +481,11 @@ return [
             'rememberedRevoked' => 'Browser forgotten.',
             'allRevoked' => 'Every other session signed out.',
             'sessionGone' => 'That session has already ended. Reload the page to see the current list.',
+            'language' => 'Language',
+            'languageHelp' => 'The language of this panel and of the security emails you receive.',
+            'languageApp' => 'Same as the application',
+            'languageSave' => 'Save language',
+            'languageSaved' => 'Language saved.',
         ],
     ],
 ];

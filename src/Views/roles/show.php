@@ -38,7 +38,7 @@ $canEdit = can('roles.update');
   <?php if (can('roles.delete') && (int) $role['is_system'] !== 1) : ?>
     <button type="button" class="rw-btn rw-btn--danger" onclick="rwConfirm('confirm-delete-role')"><?= lang('RoleWarden.panel.delete') ?></button>
   <?php endif ?>
-  <ul class="rw-legend" aria-label="Legend">
+  <ul class="rw-legend" aria-label="<?= esc(lang('RoleWarden.panel.a11y.legend'), 'attr') ?>">
     <li><svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><?= lang('RoleWarden.panel.roles.legendRole') ?></li>
     <li><svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg><?= lang('RoleWarden.panel.roles.legendInherit') ?></li>
     <li><svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><?= lang('RoleWarden.panel.roles.legendGrant') ?></li>

@@ -1,5 +1,5 @@
 <!doctype html>
-<?php helper('rolewarden'); ?><html lang="en" <?= rw_html_attributes() ?>>
+<?php helper('rolewarden'); ?><html lang="<?= esc(service('language')->getLocale(), 'attr') ?>" <?= rw_html_attributes() ?>>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

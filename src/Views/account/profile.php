@@ -4,6 +4,8 @@
  *
  * @var \CodeIgniter\Shield\Entities\User $user
  * @var int                                $sessionCount
+ * @var array<string, string>              $languages locale => name
+ * @var string                             $language  the user's choice, '' = the application's
  * @var array<string, string>              $errors field => message
  */
 $field = static function (string $name, string $label, string $autocomplete) use ($errors): string {
@@ -54,3 +56,26 @@ $field = static function (string $name, string $label, string $autocomplete) use
     </tr>
   </tbody>
 </table>
+
+<div class="rw-section-title"><span class="rw-section-n">C</span><h2><?= lang('RoleWarden.panel.account.language') ?></h2></div>
+<form method="post" action="<?= esc(site_url('rolewarden/profile/language')) ?>">
+  <?= csrf_field() ?>
+  <table class="rw-ledger">
+    <tbody>
+      <tr>
+        <td class="rw-m-num">01</td>
+        <th class="rw-l-key" scope="row"><label for="rw-language"><?= lang('RoleWarden.panel.account.language') ?></label><small><?= lang('RoleWarden.panel.account.languageHelp') ?></small></th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-language" name="language">
+            <option value=""><?= lang('RoleWarden.panel.account.languageApp') ?></option>
+            <?php foreach ($languages as $locale => $name): ?>
+              <option value="<?= esc($locale, 'attr') ?>" lang="<?= esc($locale, 'attr') ?>"<?= $locale === $language ? ' selected' : '' ?>><?= esc($name) ?></option>
+            <?php endforeach ?>
+          </select>
+        </td>
+        <td class="rw-l-ctl"><button class="rw-btn rw-btn--secondary rw-btn--sm" type="submit"><?= lang('RoleWarden.panel.account.languageSave') ?></button></td>
+        <td class="rw-anno"></td>
+      </tr>
+    </tbody>
+  </table>
+</form>

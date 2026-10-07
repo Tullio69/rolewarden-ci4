@@ -80,7 +80,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
   <div x-data="rwUserMatrix(<?= esc(json_encode($matrixConfig, JSON_HEX_APOS | JSON_HEX_QUOT), 'attr') ?>)">
     <div class="rw-matrix-tools">
       <span class="rw-muted"><?= esc(sprintf(lang('RoleWarden.panel.users.matrixHint'), $displayName)) ?></span>
-      <ul class="rw-legend" aria-label="Legend">
+      <ul class="rw-legend" aria-label="<?= esc(lang('RoleWarden.panel.a11y.legend'), 'attr') ?>">
         <li><svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><?= lang('RoleWarden.panel.roles.legendRole') ?></li>
         <li><svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg><?= lang('RoleWarden.panel.roles.legendInherit') ?></li>
         <li><svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><?= lang('RoleWarden.panel.roles.legendGrant') ?></li>

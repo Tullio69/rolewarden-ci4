@@ -175,7 +175,7 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
     <input class="rw-input" type="text" value="dana@northwind-studio.test" aria-label="<?= esc(lang('RoleWarden.panel.users.email'), 'attr') ?>">
   </div>
   <div class="rw-appearance-row">
-    <span class="rw-role">Editor</span><span class="rw-role rw-role--parent">Author</span>
+    <span class="rw-role"><?= lang('RoleWarden.panel.appearance.sample.role') ?></span><span class="rw-role rw-role--parent"><?= lang('RoleWarden.panel.appearance.sample.parentRole') ?></span>
     <span class="rw-status"><?= lang('RoleWarden.panel.users.active') ?></span><span class="rw-status rw-status--disabled"><?= lang('RoleWarden.panel.users.inactive') ?></span>
     <code class="rw-mono">users.delete</code>
     <a href="#rw-appearance-sample"><?= lang('RoleWarden.panel.appearance.sample.link') ?></a>

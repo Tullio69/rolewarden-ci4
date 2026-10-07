@@ -117,9 +117,9 @@ class UsersController extends BaseController
     public function store(): RedirectResponse
     {
         $rules = [
-            'username' => 'required|min_length[3]|is_unique[' . config('Auth')->tables['users'] . '.username]',
-            'email' => 'required|valid_email|is_unique[' . config('Auth')->tables['identities'] . '.secret]',
-            'password' => 'required|strong_password',
+            'username' => ['label' => 'RoleWarden.panel.users.username', 'rules' => 'required|min_length[3]|is_unique[' . config('Auth')->tables['users'] . '.username]'],
+            'email' => ['label' => 'RoleWarden.panel.users.email', 'rules' => 'required|valid_email|is_unique[' . config('Auth')->tables['identities'] . '.secret]'],
+            'password' => ['label' => 'RoleWarden.panel.users.password', 'rules' => 'required|strong_password'],
         ];
 
         if (! $this->validateData($this->request->getPost() ?? [], $rules)) {
@@ -243,8 +243,8 @@ class UsersController extends BaseController
         }
 
         $rules = [
-            'username' => 'required|min_length[3]|is_unique[' . config('Auth')->tables['users'] . '.username,id,' . $id . ']',
-            'email' => 'required|valid_email|is_unique[' . config('Auth')->tables['identities'] . '.secret,user_id,' . $id . ']',
+            'username' => ['label' => 'RoleWarden.panel.users.username', 'rules' => 'required|min_length[3]|is_unique[' . config('Auth')->tables['users'] . '.username,id,' . $id . ']'],
+            'email' => ['label' => 'RoleWarden.panel.users.email', 'rules' => 'required|valid_email|is_unique[' . config('Auth')->tables['identities'] . '.secret,user_id,' . $id . ']'],
         ];
 
         if (! $this->validateData($this->request->getPost() ?? [], $rules)) {

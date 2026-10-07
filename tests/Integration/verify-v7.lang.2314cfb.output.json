@@ -1,0 +1,194 @@
+{
+    "en_keys": 499,
+    "it_keys": 499,
+    "missing_in_it": [],
+    "extra_in_it": [],
+    "placeholders": {
+        "signIn.locked": [
+            "Too many failed sign-ins for this email. Try again in {0, plural, one{# minute} other{# minutes}}.",
+            "Troppi accessi falliti per questa email. Riprova tra {0, plural, one{# minuto} other{# minuti}}."
+        ],
+        "mail.tooManyAttempts.owner": [
+            "Someone tried to sign in as {0} with a wrong password too many times. Sign-in for this email is locked for {1, plural, one{# minute} other{# minutes}}.",
+            "Qualcuno ha provato ad accedere come {0} con una password sbagliata troppe volte. L'accesso con questa email è bloccato per {1, plural, one{# minuto} other{# minuti}}."
+        ],
+        "mail.tooManyAttempts.admin": [
+            "The email {0} reached the limit of failed sign-ins and is locked for {1, plural, one{# minute} other{# minutes}}.",
+            "L'email {0} ha raggiunto il limite di accessi falliti ed è bloccata per {1, plural, one{# minuto} other{# minuti}}."
+        ],
+        "panel.tips.grantedDenied": [
+            "{0} · Granted by {1}, denied for {2, plural, one{# user} other{# users}}: {3}",
+            "{0} · Concesso da {1}, negato a {2, plural, one{# utente} other{# utenti}}: {3}"
+        ],
+        "panel.tips.overrideFor": [
+            "{0} · Override for {1, plural, one{# user} other{# users}}: {2}",
+            "{0} · Eccezione per {1, plural, one{# utente} other{# utenti}}: {2}"
+        ],
+        "panel.auth.rememberFor": [
+            "Remember me for {0, plural, one{# day} other{# days}}",
+            "Ricordami per {0, plural, one{# giorno} other{# giorni}}"
+        ],
+        "panel.users.permissionsSummary": [
+            "{0} own + {1} inherited permissions",
+            "{0, plural, one{# permesso proprio} other{# permessi propri}} + {1, plural, one{# ereditato} other{# ereditati}}"
+        ],
+        "panel.roles.confirmDeleteUsers": [
+            "{0, plural, one{# user} other{# users}} will lose this role: {1}",
+            "{0, plural, one{# utente perderà} other{# utenti perderanno}} questo ruolo: {1}"
+        ],
+        "panel.roles.confirmDeleteCount": [
+            "{0, plural, one{# user} other{# users}} will lose this role.",
+            "{0, plural, one{# utente perderà} other{# utenti perderanno}} questo ruolo."
+        ],
+        "panel.settings.seconds": [
+            "{0, plural, one{# second} other{# seconds}}",
+            "{0, plural, one{# secondo} other{# secondi}}"
+        ],
+        "panel.settings.minutes": [
+            "{0, plural, one{# minute} other{# minutes}}",
+            "{0, plural, one{# minuto} other{# minuti}}"
+        ],
+        "panel.settings.hours": [
+            "{0, plural, one{# hour} other{# hours}}",
+            "{0, plural, one{# ora} other{# ore}}"
+        ],
+        "panel.settings.days": [
+            "{0, plural, one{# day} other{# days}}",
+            "{0, plural, one{# giorno} other{# giorni}}"
+        ],
+        "panel.settings.years": [
+            "{0, plural, one{# year} other{# years}}",
+            "{0, plural, one{# anno} other{# anni}}"
+        ],
+        "panel.settings.entries": [
+            "{0, plural, one{# entry} other{# entries}}",
+            "{0, plural, one{# voce} other{# voci}}"
+        ],
+        "panel.import.rowsRefused": [
+            "{0, plural, one{# row} other{# rows}} of {1} cannot be imported, so nothing from {2} was created. Fix them and upload the file again.",
+            "{0, plural, one{# riga} other{# righe}} su {1} non si possono importare, quindi da {2} non è stato creato nulla. Correggile e carica di nuovo il file."
+        ],
+        "panel.import.ready": [
+            "{0, plural, one{# user is} other{# users are}} ready to import.",
+            "{0, plural, one{# utente è pronto} other{# utenti sono pronti}} per l'importazione."
+        ],
+        "panel.import.confirm": [
+            "Import {0, plural, one{# user} other{# users}}",
+            "Importa {0, plural, one{# utente} other{# utenti}}"
+        ],
+        "panel.import.extraFields": [
+            "This row has {0, plural, one{# value} other{# values}} more than the columns in the first row.",
+            "Questa riga ha {0, plural, one{# valore} other{# valori}} in più delle colonne della prima riga."
+        ],
+        "panel.import.done": [
+            "{0, plural, one{# user} other{# users}} imported.",
+            "{0, plural, one{# utente importato} other{# utenti importati}}."
+        ],
+        "panel.account.activeCount": [
+            "{0} signed in",
+            "{0, plural, one{# collegato} other{# collegati}}"
+        ]
+    },
+    "identical": {
+        "install.databaseTitle": "Database",
+        "install.envFile": ".env",
+        "install.adminEmail": "Email",
+        "install.adminPassword": "Password",
+        "panel.users.email": "Email",
+        "panel.users.password": "Password",
+        "panel.users.account": "Account",
+        "panel.roles.slug": "Slug",
+        "panel.roles.superAdmin": "Super admin",
+        "panel.roles.area": "Area",
+        "panel.permissions.slug": "Slug",
+        "panel.appearance.theme.console": "Console",
+        "panel.appearance.theme.clarity": "Clarity",
+        "panel.appearance.theme.contrast": "Contrast",
+        "panel.import.sectionUpload": "File"
+    },
+    "empty": [],
+    "plural_samples": {
+        "en:signIn.locked:1": "Too many failed sign-ins for this email. Try again in 1 minute.",
+        "en:signIn.locked:2": "Too many failed sign-ins for this email. Try again in 2 minutes.",
+        "en:mail.tooManyAttempts.owner:1": "Someone tried to sign in as 1 with a wrong password too many times. Sign-in for this email is locked for 1 minute.",
+        "en:mail.tooManyAttempts.owner:2": "Someone tried to sign in as 2 with a wrong password too many times. Sign-in for this email is locked for 2 minutes.",
+        "en:mail.tooManyAttempts.admin:1": "The email 1 reached the limit of failed sign-ins and is locked for 1 minute.",
+        "en:mail.tooManyAttempts.admin:2": "The email 2 reached the limit of failed sign-ins and is locked for 2 minutes.",
+        "en:panel.tips.grantedDenied:1": "1 · Granted by 1, denied for 0 users: Y",
+        "en:panel.tips.grantedDenied:2": "2 · Granted by 2, denied for 0 users: Y",
+        "en:panel.tips.overrideFor:1": "1 · Override for 1 user: X",
+        "en:panel.tips.overrideFor:2": "2 · Override for 2 users: X",
+        "en:panel.auth.rememberFor:1": "Remember me for 1 day",
+        "en:panel.auth.rememberFor:2": "Remember me for 2 days",
+        "en:panel.roles.confirmDeleteUsers:1": "1 user will lose this role: 1",
+        "en:panel.roles.confirmDeleteUsers:2": "2 users will lose this role: 2",
+        "en:panel.roles.confirmDeleteCount:1": "1 user will lose this role.",
+        "en:panel.roles.confirmDeleteCount:2": "2 users will lose this role.",
+        "en:panel.settings.seconds:1": "1 second",
+        "en:panel.settings.seconds:2": "2 seconds",
+        "en:panel.settings.minutes:1": "1 minute",
+        "en:panel.settings.minutes:2": "2 minutes",
+        "en:panel.settings.hours:1": "1 hour",
+        "en:panel.settings.hours:2": "2 hours",
+        "en:panel.settings.days:1": "1 day",
+        "en:panel.settings.days:2": "2 days",
+        "en:panel.settings.years:1": "1 year",
+        "en:panel.settings.years:2": "2 years",
+        "en:panel.settings.entries:1": "1 entry",
+        "en:panel.settings.entries:2": "2 entries",
+        "en:panel.import.rowsRefused:1": "1 row of 1 cannot be imported, so nothing from X was created. Fix them and upload the file again.",
+        "en:panel.import.rowsRefused:2": "2 rows of 2 cannot be imported, so nothing from X was created. Fix them and upload the file again.",
+        "en:panel.import.ready:1": "1 user is ready to import.",
+        "en:panel.import.ready:2": "2 users are ready to import.",
+        "en:panel.import.confirm:1": "Import 1 user",
+        "en:panel.import.confirm:2": "Import 2 users",
+        "en:panel.import.extraFields:1": "This row has 1 value more than the columns in the first row.",
+        "en:panel.import.extraFields:2": "This row has 2 values more than the columns in the first row.",
+        "en:panel.import.done:1": "1 user imported.",
+        "en:panel.import.done:2": "2 users imported.",
+        "it:signIn.locked:1": "Troppi accessi falliti per questa email. Riprova tra 1 minuto.",
+        "it:signIn.locked:2": "Troppi accessi falliti per questa email. Riprova tra 2 minuti.",
+        "it:mail.tooManyAttempts.owner:1": "Qualcuno ha provato ad accedere come 1 con una password sbagliata troppe volte. L'accesso con questa email è bloccato per 1 minuto.",
+        "it:mail.tooManyAttempts.owner:2": "Qualcuno ha provato ad accedere come 2 con una password sbagliata troppe volte. L'accesso con questa email è bloccato per 2 minuti.",
+        "it:mail.tooManyAttempts.admin:1": "L'email 1 ha raggiunto il limite di accessi falliti ed è bloccata per 1 minuto.",
+        "it:mail.tooManyAttempts.admin:2": "L'email 2 ha raggiunto il limite di accessi falliti ed è bloccata per 2 minuti.",
+        "it:panel.tips.grantedDenied:1": "1 · Concesso da 1, negato a 0 utenti: Y",
+        "it:panel.tips.grantedDenied:2": "2 · Concesso da 2, negato a 0 utenti: Y",
+        "it:panel.tips.overrideFor:1": "1 · Eccezione per 1 utente: X",
+        "it:panel.tips.overrideFor:2": "2 · Eccezione per 2 utenti: X",
+        "it:panel.auth.rememberFor:1": "Ricordami per 1 giorno",
+        "it:panel.auth.rememberFor:2": "Ricordami per 2 giorni",
+        "it:panel.users.permissionsSummary:1": "1 permesso proprio + 1 ereditato",
+        "it:panel.users.permissionsSummary:2": "2 permessi propri + 2 ereditati",
+        "it:panel.roles.confirmDeleteUsers:1": "1 utente perderà questo ruolo: 1",
+        "it:panel.roles.confirmDeleteUsers:2": "2 utenti perderanno questo ruolo: 2",
+        "it:panel.roles.confirmDeleteCount:1": "1 utente perderà questo ruolo.",
+        "it:panel.roles.confirmDeleteCount:2": "2 utenti perderanno questo ruolo.",
+        "it:panel.settings.seconds:1": "1 secondo",
+        "it:panel.settings.seconds:2": "2 secondi",
+        "it:panel.settings.minutes:1": "1 minuto",
+        "it:panel.settings.minutes:2": "2 minuti",
+        "it:panel.settings.hours:1": "1 ora",
+        "it:panel.settings.hours:2": "2 ore",
+        "it:panel.settings.days:1": "1 giorno",
+        "it:panel.settings.days:2": "2 giorni",
+        "it:panel.settings.years:1": "1 anno",
+        "it:panel.settings.years:2": "2 anni",
+        "it:panel.settings.entries:1": "1 voce",
+        "it:panel.settings.entries:2": "2 voci",
+        "it:panel.import.rowsRefused:1": "1 riga su 1 non si possono importare, quindi da X non è stato creato nulla. Correggile e carica di nuovo il file.",
+        "it:panel.import.rowsRefused:2": "2 righe su 2 non si possono importare, quindi da X non è stato creato nulla. Correggile e carica di nuovo il file.",
+        "it:panel.import.ready:1": "1 utente è pronto per l'importazione.",
+        "it:panel.import.ready:2": "2 utenti sono pronti per l'importazione.",
+        "it:panel.import.confirm:1": "Importa 1 utente",
+        "it:panel.import.confirm:2": "Importa 2 utenti",
+        "it:panel.import.extraFields:1": "Questa riga ha 1 valore in più delle colonne della prima riga.",
+        "it:panel.import.extraFields:2": "Questa riga ha 2 valori in più delle colonne della prima riga.",
+        "it:panel.import.done:1": "1 utente importato.",
+        "it:panel.import.done:2": "2 utenti importati.",
+        "it:panel.account.activeCount:1": "1 collegato",
+        "it:panel.account.activeCount:2": "2 collegati"
+    },
+    "singular_errors": [],
+    "invalid_icu": []
+}

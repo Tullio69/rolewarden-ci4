@@ -1,5 +1,82 @@
 # V7 — Confezione: collaudo indipendente
 
+## Riverifica — 2026-10-07, Collaudatore ad Hoc (Claude), commit `2314cfb`, zip `build/*-1.0.0-rc.v7c.zip`
+
+**Esito: PASS. V7 approvata per il collaudo.** Ho verificato una per una, contro il comportamento servito, le correzioni dichiarate dall'autore (D1-D6), non contro il diff.
+
+| Suite | Risultato |
+| --- | ---: |
+| Suite V7 | 181/181, più l'ambiguità A1 non contata |
+| Pacchetti | 16/16 |
+| Lingue | 499/499 chiavi, 0 mancanti, nessun plurale italiano sbagliato al singolare |
+
+La regressione V2-V6 non ha difetti nuovi: 989/1015 in development e 1012/1038 in production. I FAIL rimasti sono solo aspettative superate:
+- V2 G07, già superato da V5;
+- 25 controlli della riverifica V4 sulle email (`verify-v4.recheck.php`), superati dalla correzione D6 di V7.
+
+Le ambiguità A1 e A2 restano aperte e non decise.
+
+Mandato, perimetro e regole sono gli stessi del collaudo: nessuna implementazione e nessun diff aperti. Della correzione ho letto solo SPEC e README nella forma attuale. Il modulo viene da `git archive 2314cfb`; gli zip sono `rolewarden-app-1.0.0-rc.v7c.zip` (sha256 `045ab726…91e6`) e `rolewarden-module-1.0.0-rc.v7c.zip` (sha256 `73588ae8…1ca6`). Script, runner e regole sono quelli del collaudo, con queste aggiunte:
+- **Controlli nuovi.** Variante development estesa a tutto il percorso (C3b2-C3f). B01c, E12a-E12d, E09d per D6, P14-P16 per D5. Plurali ICU formattati con 1 e 2 in `verify-v7.lang.php`. `verify-v7.maildiff.php` per la regressione V4.
+- **F06 più severo.** Ora conta ogni riga WARNING, ERROR o CRITICAL del log, tranne quelle delle connessioni fallite che il collaudo chiede apposta.
+
+### Totali della riverifica
+
+| Suite | Risultato |
+| --- | ---: |
+| V7, `verify-v7.v7.2314cfb.output.txt` | 181/181, 1 AMB |
+| Pacchetti, `verify-v7.package.2314cfb.output.txt` | 16/16 |
+| Lingue, `verify-v7.lang.2314cfb.output.json` | 499/499 chiavi, segnaposto e indici ICU uguali, `singular_errors` vuoto |
+
+| Regressione su `2314cfb` | development | production |
+| --- | ---: | ---: |
+| V6 | 151/151 | 151/151 |
+| V5 | 177/177 | 177/177 |
+| V4 | 207/232 (25 superati da D6) | 207/232 (25 superati da D6) |
+| V2 `test` / `extra` / `adapt` | 142/143 + 33 + 16 | 156/157 + 42 + 16 |
+| V3 principale / supplementare / filtri array | 139 + 69 + 55 | 139 + 69 + 55 |
+| **Totale** | **989/1015** | **1012/1038** |
+
+**Aspettative superate da V7, segnalate e non modificate.** In entrambi gli ambienti falliscono gli stessi 25 controlli V4, cioè `R-TZ`, `R-CONTENT`, `R-BODY`, `R-D2-TEXT` e `R-D2-HTML` per le cinque email che contengono una data: `new-device`, `new-ip`, `markup`, `password-profile`, `password-admin`.
+- **Cosa cercano.** La data nel formato ISO `2026-10-07 18:52 UTC`, e un testo identico, a capo compresi, a quello catturato in V4.
+- **Cosa è cambiato.** Ora la data è localizzata nella lingua del destinatario («7 Oct 2026, 20:11 UTC», «7 ott 2026, 20:49 UTC»), come chiedeva D6. La data più lunga sposta anche gli a capo del testo semplice.
+- **Prova.** `verify-v7.maildiff.php` confronta le stesse sette email catturate su `2836697` e su `2314cfb` normalizzando solo data, spazi ed entità. Oggetto, mittente, destinatari, testo e HTML risultano identici in entrambi gli ambienti, 7/7 (`verify-v7.maildiff.{development,production}.2314cfb.output.txt`). Il fuso orario resta esplicito ("UTC").
+- **Cosa resta da fare.** Il formato della data delle email resta una decisione dell'autore. Le aspettative V4 vanno aggiornate da chi possiede quella suite.
+
+### Difetti del collaudo: stato
+
+| Difetto | Stato | Evidenza |
+| --- | --- | --- |
+| D1, CSS dell'installer 500 prima dell'installazione | **Corretto** | A03d e C2b, alla radice e in sottocartella: `panel.css` 200 `text/css` prima dell'installazione; C3b3 in development; A15c e A15d dopo |
+| D2, development: 500 con dettaglio del driver | **Corretto** | C3a-C3f. Con `CI_ENVIRONMENT = development` già nel `.env`, home e installer si aprono senza toolbar né dettagli di debug. Una URL inesistente non mostra backtrace né percorsi. Le connessioni fallite (password, database inesistente, host sconosciuto) danno il messaggio generico. Admin senza codice e admin prima delle tabelle: nessun SQL a schermo. L'ambiente `development` resta nel `.env`, senza duplicati. Installazione completa, accesso, 15 schermate a 200 |
+| D3, righe ERROR in un'installazione normale e connessione prima della configurazione | **Corretto** | F06 su tutte e cinque le applicazioni. In A, C1, C2 e B06 il log non ha nessuna riga WARNING, ERROR o CRITICAL oltre alle 5 connessioni fallite chieste dal collaudo, due righe ciascuna. In C3 (development) idem, 3 connessioni fallite chieste. Prima del `.env` nessun tentativo di connessione. Prima delle tabelle nessun «Table … doesn't exist» |
+| D4, inglese nel codice del pannello | **Corretto** | E06, E06b, E12d. Barra delle modifiche non salvate, aria-label della riga, letterali Alpine, tooltip delle matrici di ruolo e utente («… · Concesso da Admin») e prefisso degli errori («Errore:») vengono ora dai file di lingua. Nessun letterale inglese nelle 19 pagine italiane scansionate |
+| D5, README spedito con note di sviluppo e credenziale | **Corretto** | P03, P13-P16. README del modulo senza sezione di sviluppo, credenziale, `_AI-LOG`, app di prova o strumenti di build. README alla radice dell'applicazione è quello di RoleWarden. `composer.json` dell'app e `platform_check.php` richiedono PHP 8.3 |
+| D6, testo italiano | **Corretto** | Plurali ICU: «1 utente perderà», «1 collegato», «1 permesso proprio + 1 ereditato». «permesso di sistema» sulla pagina Permessi (E12a). Overline «Autorizzazioni» (E12b). «Browser non più ricordato» (E12c). Email: forma neutra «Se l'accesso era tuo…» e data localizzata «il 7 ott 2026, 20:49 UTC» (E09d). La pagina «già installato» non mostra più il contatore dei passi (B01c) |
+
+Tutti i controlli del primo giro passano ancora. In particolare: percorso principale e rifiuto di ripartire (A, B, B06), `.env` non scrivibile (C1), `.env` con altre chiavi e sottocartella con salti di passo e CSRF (C2), lingue ed email nella lingua del destinatario (E), assenza di risorse esterne e di testo d'errore PHP (F02-F04).
+
+**Correzione dello strumento, non del modulo.** Alla prima esecuzione della riverifica F06A ha dato 1 FAIL (`verify-v7.v7.2314cfb.first-run.output.txt`). La riga era quella della porta chiusa che il collaudo chiede apposta, con il messaggio di Windows in italiano («Rifiuto persistente del computer di destinazione»), che il mio filtro non riconosceva. Ho aggiunto quella frase al filtro e rieseguito: 181/181.
+
+### Ambiguità aperte (invariate, non decise)
+
+- **A1.** Ruoli e permessi di sistema, e intestazioni delle aree, sono seminati in inglese e restano inglesi nel pannello italiano.
+- **A2.** Senza file di blocco e con l'unico super admin inattivo, l'installer riparte.
+
+### Non verificato (invariato)
+
+- Ultima PHP 8.x e ultima CodeIgniter 4.x: qui ci sono solo 8.3.11 e 4.7.4.
+- Reverse proxy e Apache.
+- Valori con virgolette nel `.env`: servirebbe un secondo utente MySQL.
+- Il controllo visivo in un browser vero resta dovuto all'autore.
+
+### Pulizia
+
+- **Database e Mailpit.** Snapshot `f7f37c04…` identico dopo le 18 regressioni e le 2 esecuzioni della suite, e Mailpit vuoto a ogni fine.
+- **Processi e cartelle.** Nessun processo lasciato; cartelle di lavoro rimosse, junction per prime.
+- **Da rimuovere a mano.** I profili Chrome della regressione in `scratchpad/chrome7c`, oltre a quelli di `scratchpad/chrome7`: Windows nega l'accesso.
+- **Commit.** Nessun commit.
+
 ## Collaudo — 2026-10-07, Collaudatore ad Hoc (Claude), commit `2836697`, zip `build/*-1.0.0-rc.v7.zip`
 
 **Esito: FAIL. V7 non approvata.** Suite V7 151/162 (11 FAIL, 1 ambiguità non contata), ispezione dei pacchetti 11/13, completezza delle lingue 482/482 chiavi. La regressione è pulita: 1014/1015 in development e 1037/1038 in production, con il solo V2 G07 già superato da V5. Il percorso principale funziona da capo a fondo: si parte da un database vuoto e si arriva a un primo super admin funzionante, e dopo l'installazione l'installer si rifiuta di ripartire in ogni variante provata. Bloccano l'approvazione due difetti gravi, D1 e D2, e tre medi, D3-D5. I difetti di testo dell'italiano sono raccolti in D6.

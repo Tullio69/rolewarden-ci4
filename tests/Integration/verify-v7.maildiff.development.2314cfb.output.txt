@@ -1,0 +1,9 @@
+[PASS] new-device         same subject, sender, recipients, text and HTML apart from the date; new date: 7 Oct 2026, 20:11 UTC
+[PASS] new-ip             same subject, sender, recipients, text and HTML apart from the date; new date: 7 Oct 2026, 20:11 UTC
+[PASS] markup             same subject, sender, recipients, text and HTML apart from the date; new date: 7 Oct 2026, 20:11 UTC
+[PASS] password-profile   same subject, sender, recipients, text and HTML apart from the date; new date: 7 Oct 2026,
+20:12 UTC
+[PASS] password-admin     same subject, sender, recipients, text and HTML apart from the date; new date: 7 Oct 2026, 20:12
+UTC
+[PASS] lock-user          same subject, sender, recipients, text and HTML apart from the date; new date: (none)
+[PASS] lock-admin         same subject, sender, recipients, text and HTML apart from the date; new date: (none)

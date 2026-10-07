@@ -53,7 +53,7 @@ $canEdit = can('roles.update');
       <template x-if="changes().length">
         <div class="rw-bar-msg">
           <span class="rw-bar-dot" aria-hidden="true"></span>
-          <span x-text="(changes().length > 1 ? <?= esc(json_encode(sprintf(lang('RoleWarden.panel.roles.unsavedMany'), '%d', $role['name'])), 'attr') ?> : <?= esc(json_encode(sprintf(lang('RoleWarden.panel.roles.unsavedOne'), '%d', $role['name'])), 'attr') ?>).replace('%d', changes().length)"></span>
+          <span x-text="(changes().length > 1 ? <?= esc(json_encode(str_replace('%s', $role['name'], lang('RoleWarden.panel.roles.unsavedMany'))), 'attr') ?> : <?= esc(json_encode(str_replace('%s', $role['name'], lang('RoleWarden.panel.roles.unsavedOne'))), 'attr') ?>).replace('%d', changes().length)"></span>
           <span class="rw-bar-ids" x-text="changedLabels().join(', ')"></span>
         </div>
       </template>

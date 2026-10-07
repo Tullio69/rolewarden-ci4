@@ -96,6 +96,13 @@ edit("app/Config/Routes.php", "\$routes->get(\x27/\x27, \x27Home::index\x27);", 
 edit("app/Config/App.php", "public bool \$negotiateLocale = false;", "public bool \$negotiateLocale = true;");
 edit("app/Config/App.php", "public array \$supportedLocales = [\x27en\x27];", "public array \$supportedLocales = [\x27en\x27, \x27it\x27];");
 
+// Until RoleWarden is installed, development shows no debug detail: the debug toolbar would
+// look for a signed-in user in a database that does not exist yet, and nothing of the server
+// should reach the screen of whoever opens a fresh upload.
+edit("app/Config/Boot/development.php", "ini_set(\x27display_errors\x27, \x271\x27);", "\$rwInstalled = is_file(__DIR__ . \x27/../../../writable/rolewarden/installed.lock\x27);\nini_set(\x27display_errors\x27, \$rwInstalled ? \x271\x27 : \x270\x27);");
+edit("app/Config/Boot/development.php", "define(\x27SHOW_DEBUG_BACKTRACE\x27, true);", "define(\x27SHOW_DEBUG_BACKTRACE\x27, \$rwInstalled);");
+edit("app/Config/Boot/development.php", "define(\x27CI_DEBUG\x27, true);", "define(\x27CI_DEBUG\x27, \$rwInstalled);");
+
 // CSRF on every form, the sign-in form included.
 edit("app/Config/Filters.php", "// \x27csrf\x27,", "\x27csrf\x27,");
 

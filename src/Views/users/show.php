@@ -93,7 +93,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
       <template x-if="changes().length">
         <div class="rw-bar-msg">
           <span class="rw-bar-dot" aria-hidden="true"></span>
-          <span x-text="(changes().length > 1 ? <?= esc(json_encode(sprintf(lang('RoleWarden.panel.users.unsavedMany'), '%d', $displayName)), 'attr') ?> : <?= esc(json_encode(sprintf(lang('RoleWarden.panel.users.unsavedOne'), '%d', $displayName)), 'attr') ?>).replace('%d', changes().length)"></span>
+          <span x-text="(changes().length > 1 ? <?= esc(json_encode(str_replace('%s', $displayName, lang('RoleWarden.panel.users.unsavedMany'))), 'attr') ?> : <?= esc(json_encode(str_replace('%s', $displayName, lang('RoleWarden.panel.users.unsavedOne'))), 'attr') ?>).replace('%d', changes().length)"></span>
         </div>
       </template>
       <template x-if="!changes().length">

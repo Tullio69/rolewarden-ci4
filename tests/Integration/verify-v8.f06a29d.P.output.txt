@@ -1,0 +1,44 @@
+
+== P: the three zips opened as a buyer, licences, documentation files
+[PASS] P01    Module zip is exactly the module at f06a29d (git archive): same files, same bytes
+[PASS] P02    Demo zip is exactly demo/ at f06a29d
+[PASS] P03    Complete application: modules/rolewarden is the module zip, modules/rolewarden-demo is the demo zip
+[PASS] P04    Complete application wires the demo with the two lines of its README (psr4 RoleWardenDemo => modules/rolewarden-demo/src; DemoRoutes::register after the module line)
+[PASS] P05    Module zip: no file under src/ refers to the demo (namespace, table, commands, permissions, folder)
+[INFO] Mentions of the demo outside src/ (documentation of the demo zip, expected): CHANGELOG.md(3), README.md(7), documentation/api.html(2), documentation/index.html(1), documentation/installation.html(14)
+[PASS] P06C   CHANGELOG.md in the module zip and in the complete application (modules/rolewarden)
+[INFO] CHANGELOG.md in the demo zip: no; at the root of the complete application: no
+[PASS] P06T   THIRD-PARTY-LICENSES.md in the module zip and in the complete application (modules/rolewarden)
+[INFO] THIRD-PARTY-LICENSES.md in the demo zip: no; at the root of the complete application: no
+[FAIL] P06d   Complete application: the README at its root points only to files that exist from there (documentation, changelog, licences)
+         -> README at the root names ["documentation\/index.html","CHANGELOG.md","THIRD-PARTY-LICENSES.md"], which are only under modules/[omesso]/
+[FAIL] P07    THIRD-PARTY-LICENSES.md lists every package of vendor/ in the complete application with the version shipped
+         -> codeigniter4/framework shipped 4.7.5, listed 4.7.4
+[PASS] P07b   No package listed in THIRD-PARTY-LICENSES.md as included is missing from vendor/
+[PASS] P08    Every package in vendor/ carries its licence file
+[AMB]  P08c   Composer's runtime autoloader (vendor/composer/ClassLoader.php, InstalledVersions.php, MIT, licence in vendor/composer/LICENSE) is shipped in the complete application but not named in THIRD-PARTY-LICENSES.md
+         -> Whether the generated autoloader counts as a third-party dependency to list is not stated; its licence file is beside it.
+[PASS] P09a   Alpine.js shipped is 3.17.4 as listed, with its MIT licence beside it (LICENSE-alpine.md)
+[PASS] P09b   IBM Plex fonts with the SIL OFL 1.1 text beside them (src/Assets/fonts/LICENSE.txt)
+[PASS] P09c   Tailwind CSS notice kept in the compiled panel.css with the listed version 4.3.3
+[AMB]  P09d   THIRD-PARTY-LICENSES.md leaves the version of IBM Plex empty
+         -> Every other row gives a version; the brief asks for "versioni corrette". The fonts carry no version marker the buyer could check.
+[PASS] P10    No credential, key, .env, private key or personal path/URL in the three zips
+[INFO] composer.json homepage of the module: https://[omesso].com (product site, not personal)
+[PASS] P11m   Documentation in the module zip: 8 pages open offline, every local link, stylesheet and anchor resolves
+[PASS] P11c   Documentation in the complete application: 8 pages open offline, every local link, stylesheet and anchor resolves
+[PASS] P12    Documentation covers installation, configuration, API reference, view customisation, migration from Shield, troubleshooting
+[PASS] P13    Demo language files: same keys in en and it (32)
+[PASS] P13b   Demo language files: same placeholders in every line
+[INFO] Demo lines identical in en and it: ["overline"]
+
+== L: PHP errors and warnings, application logs at threshold 9, every response
+[PASS] L01    No HTTP 500 in the demo paths (apart from the induced database failure)
+[PASS] L02    No SQL or driver detail in any response (development pages after removal judged apart, A16d)
+[PASS] L03    No PHP warning, notice or deprecation in the server output (error_reporting=-1)
+[PASS] L05    Every message caught by Mailpit went to @example.com or *.test addresses (0 messages)
+
+TOTAL: 22 PASS, 2 FAIL, 2 AMB
+FAILED: P06d Complete application: the README at its root points only to files that exist from there (documentation, changelog, licences)
+FAILED: P07 THIRD-PARTY-LICENSES.md lists every package of vendor/ in the complete application with the version shipped
+Test process exit: 1

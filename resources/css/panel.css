@@ -268,6 +268,8 @@
   .rw-matrix .rw-m-all { width: 96px; text-align: center; border-left: var(--rule-width) solid var(--rule); }
   .rw-matrix .rw-m-anno { width: 264px; white-space: nowrap; text-align: left; padding-left: var(--space-6); }
   .rw-matrix .rw-m-anno--wide { width: 312px; border-left: var(--rule-width) solid var(--rule); }
+  /* Many actions squeeze the columns; the headers keep a gap between them. */
+  .rw-matrix thead .rw-m-act { padding-left: var(--space-1); padding-right: var(--space-1); }
   .rw-colhead { display: flex; flex-direction: column; align-items: center; gap: var(--space-2-5); }
   .rw-matrix tbody td, .rw-matrix tbody th { height: var(--size-row-md); border-bottom: var(--rule-width) solid var(--rule); }
   .rw-matrix tbody tr:hover > :not(.rw-m-num):not(.rw-m-anno) { background: var(--surface-sunk); }
@@ -318,7 +320,7 @@
   .rw-m-num { min-width: var(--gutter); }
   /* One table per area: a fixed notes column keeps the columns of every area in line. */
   .rw-t-permissions .rw-anno { width: 240px; white-space: normal; }
-  .rw-t-permissions .rw-c-roles { width: 240px; }
+  .rw-t-permissions .rw-c-roles { width: 240px; white-space: normal; }
   .rw-t-empty td { height: var(--size-empty); text-align: center; color: var(--ink-muted); }
   .rw-list-footer { display: flex; justify-content: space-between; align-items: center; margin: 0 0 0 var(--gutter); height: var(--size-row-lg); border-top: var(--rule-strong-width) solid var(--rule-strong); margin-top: calc(-1 * var(--rule-strong-width)); }
 

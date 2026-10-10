@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'brand' => 'RoleWarden demo',
+    'overline' => 'Demo',
+    'documents' => 'Documents',
+    'intro' => 'A small document register that shows permissions at work: readers only read, authors write and edit their own, approvers approve and delete.',
+    'hint' => 'Buttons appear only when your roles allow the action. Switch account to see them change.',
+    'yourPermissions' => 'Your document permissions',
+    'panel' => 'Admin panel',
+    'showcase' => 'Switch demo account',
+    'switched' => 'You are now {0}.',
+    'new' => 'New document',
+    'editTitle' => 'Edit document',
+    'backToDraft' => 'Saving puts this document back to draft: it has to be submitted and approved again.',
+    'fieldTitle' => 'Title',
+    'body' => 'Text',
+    'owner' => 'Owner',
+    'status' => 'Status',
+    'actions' => 'Actions',
+    'empty' => 'No documents yet.',
+    'statuses' => [
+        'draft' => 'Draft',
+        'submitted' => 'Submitted',
+        'approved' => 'Approved',
+    ],
+    'approvedBy' => 'by {0}',
+    'submit' => 'Submit',
+    'approve' => 'Approve',
+    'confirmDelete' => 'Delete "{0}"? This cannot be undone.',
+    'created' => 'Document created as a draft.',
+    'updated' => 'Document saved as a draft.',
+    'submitted' => 'Document submitted for approval.',
+    'approved' => 'Document approved.',
+    'deleted' => 'Document deleted.',
+    'notDraft' => 'Only a draft can be submitted.',
+    'notSubmitted' => 'Only a submitted document can be approved.',
+];

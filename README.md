@@ -36,7 +36,7 @@ documentation/     Design guide of the panel's tokens and themes
 
 ## Two ways to install
 
-RoleWarden ships as two zips.
+RoleWarden ships as two zips, plus a demo app.
 
 - **rolewarden-app-x.y.z.zip, a complete application.** For whoever starts from nothing or
   has no Composer: CodeIgniter 4, Shield, CodeIgniter's translations and RoleWarden, with
@@ -49,6 +49,12 @@ RoleWarden ships as two zips.
   application with Composer: add it as a Composer package, wire it as described under
   [Wiring the admin panel](#wiring-the-admin-panel), then either open the installer or run
   the commands under [Installing and rolling back the migrations](#installing-and-rolling-back-the-migrations).
+- **rolewarden-demo-x.y.z.zip, the demo app.** A small document register with three roles
+  (Reader, Author, Approver) that shows permissions at work, and the model to copy for your
+  own screens. The complete application already contains it in `modules/rolewarden-demo`,
+  not installed: `php spark demo:install` adds it, `php spark demo:uninstall` removes it
+  without leaving anything behind. Its own `README.md` explains the rest, including the
+  showcase mode for a public demo.
 
 ### The browser installer
 

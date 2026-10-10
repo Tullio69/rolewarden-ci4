@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds the two release zips (SPEC, V7 decisions) into build/:
+# Builds the three release zips (SPEC, V7 and V8 decisions) into build/:
 #
 #   rolewarden-module-<version>.zip  the module alone, for an application that adds it
 #                                    with Composer (what `git archive` exports: no tests,
@@ -8,7 +8,10 @@
 #                                    or has no Composer: CodeIgniter 4's app starter with
 #                                    Shield, CodeIgniter's translations and the module in
 #                                    modules/rolewarden, vendor/ included, wired as the
-#                                    README describes, opening on the browser installer
+#                                    README describes, opening on the browser installer,
+#                                    with the demo in modules/rolewarden-demo (installed
+#                                    only by `php spark demo:install`)
+#   rolewarden-demo-<version>.zip    the demo app alone, with its own README
 #
 # It assembles files and edits the starter's configuration; it generates no code.
 # Packages the committed HEAD, never the working tree. Needs git, PHP 8.3+ and Composer.
@@ -36,6 +39,8 @@ rm -rf "$OUT" && mkdir -p "$OUT"
 
 echo "Module zip..."
 git -C "$ROOT" archive --format=zip --prefix=rolewarden/ -o "$OUT/rolewarden-module-$VERSION.zip" HEAD
+echo "Demo zip..."
+git -C "$ROOT" archive --format=zip --prefix=rolewarden-demo/ -o "$OUT/rolewarden-demo-$VERSION.zip" HEAD:demo
 
 echo "Application: CodeIgniter app starter, Shield, translations..."
 composer create-project codeigniter4/appstarter "$APP" --no-dev --no-interaction --quiet
@@ -48,6 +53,7 @@ composer --working-dir="$APP" require php:^8.3 codeigniter4/shield:^1.4 codeigni
 echo "Application: the module in modules/rolewarden..."
 mkdir -p "$APP/modules"
 git -C "$ROOT" archive --format=tar --prefix=rolewarden/ HEAD | tar -x -C "$APP/modules"
+git -C "$ROOT" archive --format=tar --prefix=rolewarden-demo/ HEAD:demo | tar -x -C "$APP/modules"
 # The starter's README is about CodeIgniter; the buyer needs RoleWarden's.
 cp "$APP/modules/rolewarden/README.md" "$APP/README.md"
 
@@ -74,13 +80,13 @@ function replaceArray(string $file, string $property, string $replace): void {
 }
 
 // The module is loaded from its folder: an update replaces modules/rolewarden, nothing else.
-edit("app/Config/Autoload.php", "APP_NAMESPACE => APPPATH,", "APP_NAMESPACE => APPPATH,\n        \x27RoleWarden\x27  => ROOTPATH . \x27modules/rolewarden/src\x27,");
+edit("app/Config/Autoload.php", "APP_NAMESPACE => APPPATH,", "APP_NAMESPACE => APPPATH,\n        \x27RoleWarden\x27  => ROOTPATH . \x27modules/rolewarden/src\x27,\n        \x27RoleWardenDemo\x27 => ROOTPATH . \x27modules/rolewarden-demo/src\x27,");
 
 // README "Wiring the admin panel".
 edit("app/Config/Auth.php", "public string \$userProvider = UserModel::class;", "public string \$userProvider = \\RoleWarden\\Models\\UserModel::class;");
 edit("app/Config/Auth.php", "\x27login\x27                       => \x27\\CodeIgniter\\Shield\\Views\\login\x27,", "\x27login\x27                       => \x27\\RoleWarden\\Views\\auth\\login\x27,");
 edit("app/Config/Auth.php", "\x27login\x27             => \x27/\x27,", "\x27login\x27             => \x27rolewarden/users\x27,");
-edit("app/Config/Routes.php", "service(\x27auth\x27)->routes(\$routes);", "service(\x27auth\x27)->routes(\$routes);\n\\RoleWarden\\Config\\RouteRegistrar::register(\$routes);");
+edit("app/Config/Routes.php", "service(\x27auth\x27)->routes(\$routes);", "service(\x27auth\x27)->routes(\$routes);\n\\RoleWarden\\Config\\RouteRegistrar::register(\$routes);\n\\RoleWardenDemo\\Config\\DemoRoutes::register(\$routes);");
 
 // Roles live in the panel. Shield keeps only its default group, so the migration that
 // imports Shield groups finds nothing to turn into roles or permissions.

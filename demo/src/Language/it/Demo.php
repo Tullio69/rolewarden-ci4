@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'brand' => 'Demo RoleWarden',
+    'overline' => 'Demo',
+    'documents' => 'Documenti',
+    'intro' => 'Un piccolo archivio di documenti che mostra i permessi al lavoro: chi legge soltanto, chi scrive e modifica i propri, chi approva e cancella.',
+    'hint' => 'I pulsanti compaiono solo quando i tuoi ruoli consentono l\'azione. Cambia account per vederli cambiare.',
+    'yourPermissions' => 'I tuoi permessi sui documenti',
+    'panel' => 'Pannello di amministrazione',
+    'showcase' => 'Cambia account della demo',
+    'switched' => 'Ora sei {0}.',
+    'new' => 'Nuovo documento',
+    'editTitle' => 'Modifica documento',
+    'backToDraft' => 'Salvando, il documento torna in bozza: va inviato e approvato di nuovo.',
+    'fieldTitle' => 'Titolo',
+    'body' => 'Testo',
+    'owner' => 'Autore',
+    'status' => 'Stato',
+    'actions' => 'Azioni',
+    'empty' => 'Ancora nessun documento.',
+    'statuses' => [
+        'draft' => 'Bozza',
+        'submitted' => 'Inviato',
+        'approved' => 'Approvato',
+    ],
+    'approvedBy' => 'da {0}',
+    'submit' => 'Invia',
+    'approve' => 'Approva',
+    'confirmDelete' => 'Eliminare «{0}»? Non si può annullare.',
+    'created' => 'Documento creato in bozza.',
+    'updated' => 'Documento salvato in bozza.',
+    'submitted' => 'Documento inviato per l\'approvazione.',
+    'approved' => 'Documento approvato.',
+    'deleted' => 'Documento eliminato.',
+    'notDraft' => 'Si può inviare solo una bozza.',
+    'notSubmitted' => 'Si può approvare solo un documento inviato.',
+];

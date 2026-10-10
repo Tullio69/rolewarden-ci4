@@ -62,7 +62,8 @@ final class DemoInstaller
         $cfg = config('RoleWarden');
         $identities = config('Auth')->tables['identities'];
 
-        if (self::installed() || $db->tableExists(config('Demo')->table)) {
+        // The table alone may already be there: `php spark migrate --all` runs the demo's migration too.
+        if (self::installed()) {
             throw new RuntimeException('The demo is already installed.');
         }
 

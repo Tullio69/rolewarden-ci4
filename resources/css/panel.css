@@ -308,11 +308,14 @@
   .rw-t-users .rw-c-login { width: 172px; text-align: right; white-space: nowrap; }
   .rw-t-users .rw-c-login--never { color: var(--ink-faint); }
   .rw-anno { width: 200px; padding-left: var(--space-6); white-space: nowrap; }
-  /* The notes column takes the spare width, so the number column stays one gutter wide and
+  /* In the users and roles lists, where every other column has a width, the notes column takes
+     the spare width, so the number column stays one gutter wide and
      lines up with every other screen. */
-  .rw-t-users .rw-anno, .rw-t-roles .rw-anno { width: auto; min-width: 200px; }
+  .rw-t-users .rw-c-login + .rw-anno, .rw-t-roles .rw-anno { width: auto; min-width: 200px; }
   /* Narrow windows squeeze wide tables; the number column never gives up its gutter. */
   .rw-m-num { min-width: var(--gutter); }
+  /* One table per area: a fixed notes column keeps the columns of every area in line. */
+  .rw-t-permissions .rw-anno { width: 240px; white-space: normal; }
   .rw-t-empty td { height: var(--size-empty); text-align: center; color: var(--ink-muted); }
   .rw-list-footer { display: flex; justify-content: space-between; align-items: center; margin: 0 0 0 var(--gutter); height: var(--size-row-lg); border-top: var(--rule-strong-width) solid var(--rule-strong); margin-top: calc(-1 * var(--rule-strong-width)); }
 

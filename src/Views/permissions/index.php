@@ -9,7 +9,7 @@
 <?php $n = 0; ?>
 <?php foreach ($byArea as $area => $items) : ?>
   <div class="rw-section-title"><span class="rw-section-n"><?= str_pad((string) (++$n), 2, '0', STR_PAD_LEFT) ?></span><h2><?= esc(ucfirst($area)) ?></h2></div>
-  <table class="rw-t-users">
+  <table class="rw-t-users rw-t-permissions">
     <thead>
       <tr>
         <th class="rw-m-num" scope="col"></th>

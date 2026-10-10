@@ -42,6 +42,7 @@
       <?php if ($me !== null) : ?>
         <?php $scheme = RoleWarden\Settings\ColorScheme::forUser((int) $me->id); ?>
         <div class="rw-topbar-end">
+        <?= view('RoleWarden\Views\partials\language') ?>
         <form class="rw-mode" method="post" action="<?= esc(site_url('rolewarden/appearance/mode')) ?>" aria-label="<?= esc(lang('RoleWarden.panel.appearance.modeLabel'), 'attr') ?>">
           <?= csrf_field() ?>
           <?php foreach (RoleWarden\Settings\ColorScheme::CHOICES as $choice) : ?>

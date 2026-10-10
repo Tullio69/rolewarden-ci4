@@ -340,13 +340,13 @@ Events::on('rolewarden.activity', static function (array $entry): void {
 ### Languages
 
 The panel and the security emails come in English and Italian. Each user picks the language
-from their profile (`/rolewarden/profile`); until they do, the panel follows the application's
+from the top bar of every page or from their profile (`/rolewarden/profile`); until they do, the panel follows the application's
 own locale (`Config\App::$defaultLocale`, or the negotiated one). A security email goes out in
 the language of the person receiving it, not of whoever triggered it.
 
 - Another language is one file in your application: copy the module's
   `src/Language/en/RoleWarden.php` to `app/Language/{locale}/RoleWarden.php` (for example
-  `app/Language/fr/RoleWarden.php`) and translate the values. It shows up in the profile's
+  `app/Language/fr/RoleWarden.php`) and translate the values. It shows up in the top bar and the profile's
   list at once, named in its own language. Lines you leave out fall back to English.
 - To change a few lines of a shipped language, put just those lines in
   `app/Language/{locale}/RoleWarden.php`: CodeIgniter merges them over the module's.

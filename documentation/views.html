@@ -62,9 +62,9 @@ public ?string $themeStylesheet = '/css/rolewarden-theme.css';</code></pre>
     <p>The <a href="design-guide.html">design guide</a> lists every token with its value in each theme, and how a fourth theme is built.</p>
 
     <h2 id="languages">Languages</h2>
-    <p>The panel and the security emails come in English and Italian. Each user picks the language from their profile; until they do, the panel follows the application's locale (<code>Config\App::$defaultLocale</code>, or the negotiated one when <code>$negotiateLocale</code> is on).</p>
+    <p>The panel and the security emails come in English and Italian. Each user picks the language from the top bar of any page or from their profile; until they do, the panel follows the application's locale (<code>Config\App::$defaultLocale</code>, or the negotiated one when <code>$negotiateLocale</code> is on).</p>
     <h3>Another language</h3>
-    <p>Copy the module's <code>src/Language/en/RoleWarden.php</code> to <code>app/Language/{locale}/RoleWarden.php</code>, for example <code>app/Language/fr/RoleWarden.php</code>, and translate the values. It appears in the profile's list at once, named in its own language. Lines you leave out fall back to English. Keep the placeholders (<code>{0}</code>, <code>%s</code>, <code>{0, plural, ...}</code>) as they are.</p>
+    <p>Copy the module's <code>src/Language/en/RoleWarden.php</code> to <code>app/Language/{locale}/RoleWarden.php</code>, for example <code>app/Language/fr/RoleWarden.php</code>, and translate the values. It appears in the top bar and in the profile's list at once, named in its own language. Lines you leave out fall back to English. Keep the placeholders (<code>{0}</code>, <code>%s</code>, <code>{0, plural, ...}</code>) as they are.</p>
     <h3>Changing a few lines</h3>
     <p>Put only those lines in <code>app/Language/{locale}/RoleWarden.php</code>, nested as in the module's file: CodeIgniter merges them over the module's.</p>
 <pre><code>&lt;?php

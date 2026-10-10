@@ -33,6 +33,7 @@ $me = auth()->user();
     <header class="rw-topbar">
       <nav class="rw-crumbs" aria-label="<?= esc(lang('RoleWarden.panel.a11y.breadcrumb'), 'attr') ?>"><span aria-current="page"><?= lang('Demo.documents') ?></span></nav>
       <div class="rw-topbar-end">
+        <?= view('RoleWarden\Views\partials\language') ?>
         <?php if ($showcase !== []) : ?>
           <form class="rw-mode" method="post" aria-label="<?= esc(lang('Demo.showcase'), 'attr') ?>" action="">
             <?= csrf_field() ?>

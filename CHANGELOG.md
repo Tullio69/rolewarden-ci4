@@ -31,7 +31,7 @@ The first version for sale.
   theme file kept in your application; a design guide of every token.
 - **CSV import of users** (`/rolewarden/users/import`, `users.import`) with a row-by-row
   preview and nothing written unless every row is valid.
-- **Italian** translation, the language chosen by each user from the profile, security
+- **Italian** translation, the language chosen by each user from the top bar or the profile, security
   emails in the recipient's language.
 - **Browser installer** at `/rolewarden/install`, and the complete application zip with
   `vendor/` included, for installing without Composer.

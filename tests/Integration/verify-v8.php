@@ -259,7 +259,10 @@ foreach (['CHANGELOG.md', 'THIRD-PARTY-LICENSES.md'] as $f) {
 }
 $rootReadme = (string) @file_get_contents("$appRoot/README.md");
 $missingRefs = [];
-foreach (['documentation/index.html', 'CHANGELOG.md', 'THIRD-PARTY-LICENSES.md'] as $ref) if (str_contains($rootReadme, "`$ref`") && ! is_file("$appRoot/$ref")) $missingRefs[] = $ref;
+preg_match_all('/`([A-Za-z0-9_\/.-]+\.(?:md|html))`/', $rootReadme, $rr);
+foreach (array_unique($rr[1]) as $ref) if (! is_file("$appRoot/$ref")) $missingRefs[] = $ref;
+info('Files the root README names: ' . json_encode(array_values(array_unique($rr[1]))));
+check('P06e', 'Complete application: CHANGELOG.md and THIRD-PARTY-LICENSES.md at the root, identical to the module ones', is_file("$appRoot/CHANGELOG.md") && is_file("$appRoot/THIRD-PARTY-LICENSES.md") && md5_file("$appRoot/CHANGELOG.md") === md5_file("$ZMOD/rolewarden/CHANGELOG.md") && md5_file("$appRoot/THIRD-PARTY-LICENSES.md") === md5_file("$ZMOD/rolewarden/THIRD-PARTY-LICENSES.md"));
 check('P06d', 'Complete application: the README at its root points only to files that exist from there (documentation, changelog, licences)', $missingRefs === [], 'README at the root names ' . json_encode($missingRefs) . ', which are only under modules/rolewarden/');
 // licences against vendor/
 $lic = (string) file_get_contents("$ZMOD/rolewarden/THIRD-PARTY-LICENSES.md");
@@ -278,12 +281,15 @@ check('P07b', 'No package listed in THIRD-PARTY-LICENSES.md as included is missi
 $noLic = [];
 foreach (glob("$appRoot/vendor/*/*", GLOB_ONLYDIR) as $d) if (! glob("$d/{LICENSE,LICENSE.*,LICENCE*,COPYING*,license*}", GLOB_BRACE)) $noLic[] = basename(dirname($d)) . '/' . basename($d);
 check('P08', 'Every package in vendor/ carries its licence file', $noLic === [], json_encode($noLic));
-if (is_dir("$appRoot/vendor/composer")) amb('P08c', "Composer's runtime autoloader (vendor/composer/ClassLoader.php, InstalledVersions.php, MIT, licence in vendor/composer/LICENSE) is shipped in the complete application but not named in THIRD-PARTY-LICENSES.md", 'Whether the generated autoloader counts as a third-party dependency to list is not stated; its licence file is beside it.');
+check('P08b', 'Composer autoloader shipped in vendor/composer is named in THIRD-PARTY-LICENSES.md, with its MIT licence beside it', ! is_dir("$appRoot/vendor/composer") || (str_contains($lic, 'Composer') && is_file("$appRoot/vendor/composer/LICENSE")));
+if (is_dir("$appRoot/vendor/composer") && ! str_contains($lic, 'Composer')) amb('P08c', "Composer's runtime autoloader (vendor/composer/ClassLoader.php, InstalledVersions.php, MIT, licence in vendor/composer/LICENSE) is shipped in the complete application but not named in THIRD-PARTY-LICENSES.md", 'Whether the generated autoloader counts as a third-party dependency to list is not stated; its licence file is beside it.');
 $alp = (string) file_get_contents("$ZMOD/rolewarden/src/Assets/js/vendor/alpine.min.js");
 check('P09a', 'Alpine.js shipped is 3.17.4 as listed, with its MIT licence beside it (LICENSE-alpine.md)', str_contains($alp, 'version:"3.17.4"') && str_contains((string) @file_get_contents("$ZMOD/rolewarden/src/Assets/js/vendor/LICENSE-alpine.md"), 'MIT') && str_contains($lic, '3.17.4'));
 check('P09b', 'IBM Plex fonts with the SIL OFL 1.1 text beside them (src/Assets/fonts/LICENSE.txt)', (bool) glob("$ZMOD/rolewarden/src/Assets/fonts/*.woff2") && str_contains((string) @file_get_contents("$ZMOD/rolewarden/src/Assets/fonts/LICENSE.txt"), 'SIL Open Font License') && str_contains((string) file_get_contents("$ZMOD/rolewarden/src/Assets/fonts/LICENSE.txt"), 'IBM'));
 check('P09c', 'Tailwind CSS notice kept in the compiled panel.css with the listed version 4.3.3', str_starts_with((string) file_get_contents("$ZMOD/rolewarden/src/Assets/css/panel.css"), '/*! tailwindcss v4.3.3 | MIT License'));
-if (preg_match('/IBM Plex\]\([^)]*\) Sans, Serif, Mono \|\s*\|/', $lic)) amb('P09d', 'THIRD-PARTY-LICENSES.md leaves the version of IBM Plex empty', 'Every other row gives a version; the brief asks for "versioni corrette". The fonts carry no version marker the buyer could check.');
+preg_match('/IBM Plex\]\([^)]*\) Sans, Serif, Mono \|\s*([^|]*)\|/', $lic, $plex);
+info('IBM Plex row, version column: ' . json_encode(trim($plex[1] ?? '')));
+if (trim($plex[1] ?? '') === '') amb('P09d', 'THIRD-PARTY-LICENSES.md leaves the version of IBM Plex empty', 'Every other row gives a version; the brief asks for "versioni corrette". The fonts carry no version marker the buyer could check.');
 // secrets, personal data
 $hits = [];
 foreach (["$ZMOD", "$ZDEMO", "$ZAPP"] as $top) {
@@ -568,6 +574,17 @@ foreach ($conf as $k => $make) {
     q("DELETE FROM acl_roles WHERE slug IN ('demo-approver','readers') AND description='Real role of the application'");
     q("DELETE FROM acl_permissions WHERE slug='documents.view' AND description='Real permission of the application'");
 }
+// A failure in the middle of the installation, induced from the database (a trigger refuses the third account).
+$before = fullstate();
+q("CREATE TRIGGER v8_fail_mid BEFORE INSERT ON users FOR EACH ROW BEGIN IF NEW.username = 'demo-approver' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'v8 induced failure'; END IF; END");
+$logN = count(logs_of($A));
+$o = sp8($A, ['demo:install'], ['demo.password' => DPW]);
+q('DROP TRIGGER IF EXISTS v8_fail_mid');
+$newLog = array_slice(logs_of($A), $logN);
+info('demo:install with a failure induced at the third account: ' . short($o, 300));
+check('A22-mid', 'Installation failing halfway (third account refused by the database): exit non-zero, everything it created removed (database identical, counters apart)', rc($o) !== 0 && statediff($before, fullstate()) === [], short($o) . ' ' . json_encode(array_slice(statediff($before, fullstate()), 0, 8)));
+check('A22-mid-b', 'The reason goes only to the log: no SQL text on the console, the database message in writable/logs', ! preg_match('/v8 induced failure|SQLSTATE|Duplicate entry|mysqli/i', $o) && (bool) preg_grep('/v8 induced failure/', $newLog), json_encode(array_slice($newLog, -3)));
+$INDUCED_A = 'v8 induced failure';
 check('A23', 'After the conflict cases the database is back as before them (counters apart)', statediff($S4, fullstate()) === [], json_encode(array_slice(statediff($S4, fullstate()), 0, 8)));
 $LOGS_A = logs_of($A);
 }
@@ -803,6 +820,11 @@ check('C12', 'Production: the switch request is refused, the session stays the r
 server_stop();
 // environment "demo": Boot/demo.php copied from production.php, as the demo README says
 copy("$C/app/Config/Boot/production.php", "$C/app/Config/Boot/demo.php");
+$e404 = "$C/app/Views/errors/html/error_404.php";
+$v404 = (string) file_get_contents($e404);
+$n404 = substr_count($v404, "ENVIRONMENT !== 'production'");
+file_put_contents($e404, str_replace("ENVIRONMENT !== 'production'", "! in_array(ENVIRONMENT, ['production', 'demo'], true)", $v404));
+check('C13a', "Demo README instruction applied to the copy: in error_404.php ENVIRONMENT !== 'production' replaced (" . $n404 . ' occurrence)', $n404 >= 1);
 write_env($C, 'demo', "demo.showcase = true\n");
 $c = serve8($C, 'C-demoenv');
 $rd = c8('C-r4'); login8($rd, 'reader@example.com', DPW);
@@ -810,6 +832,8 @@ $v = view_demo($rd, 'demo env');
 check('C13', 'CI_ENVIRONMENT = demo (boot copied from production): the bar is there and no debug toolbar', $v['showcase'] === $want && ! preg_match('/debugbar|kint|DEBUG-VIEW/i', $v['html']), json_encode($v['showcase']));
 act($rd, 'demo/showcase/' . $ids['approver@example.com'], [], 'demo', 'demo env switch');
 check('C14', 'Environment demo: the switch works', view_demo($rd)['who'] === $uname($ids['approver@example.com']));
+$h = G($rd, 'demo/99999/edit', 'demo env 404 missing document');
+check('C15b', 'Environment demo: a missing document answers 404 without error detail', $rd->status === 404 && ! preg_match("/Can't find a route|SYSTEMPATH|APPPATH|ROOTPATH|\.php|Stack|trace|exception/i", text_of($h)), "{$rd->status} " . short(text_of($h), 200));
 $h = G($rd, 'demo/abc/edit', 'demo env 404');
 check('C15', "Environment demo: an unknown address shows no error detail (no route, path or trace)", $rd->status === 404 && ! preg_match("/Can't find a route|SYSTEMPATH|APPPATH|ROOTPATH|\.php|Stack|trace/i", text_of($h)), "{$rd->status} " . short(text_of($h), 200));
 q('RENAME TABLE demo_documents TO demo_documents_v8hidden');
@@ -1052,7 +1076,7 @@ class V8Docs extends BaseCommand
             try { $rolewarden->can($u1, $bad); $o['bad'][$bad] = 'accepted'; } catch (\Throwable $e) { $o['bad'][$bad] = get_class($e); }
         }
         $o['beforeAssign'] = $rolewarden->can($u2, 'invoices.view');
-        try { \RoleWarden\Models\UserRoles::assign($u2, $rid); $o['staticAssign'] = 'ok'; } catch (\Throwable $e) { $o['staticAssign'] = get_class($e) . ': ' . $e->getMessage(); }
+        try { (new \RoleWarden\Models\UserRoles())->assign($u2, $rid); $o['staticAssign'] = 'ok'; } catch (\Throwable $e) { $o['staticAssign'] = get_class($e) . ': ' . $e->getMessage(); }
         if ($o['staticAssign'] !== 'ok') { model(\RoleWarden\Models\UserRoles::class)->assign($u2, $rid); }
         $o['afterAssign'] = $rolewarden->can($u2, 'invoices.view');
         $rolewarden->forgetUser($u2);
@@ -1163,7 +1187,7 @@ check('F17', 'authorize() throws RoleWarden\Authorization\AuthorizationException
 check('F18', 'A slug not in area.action form throws InvalidArgumentException (no wildcards in checks)', ($j['bad']['invoices'] ?? '') === 'InvalidArgumentException' && ($j['bad']['invoices.*'] ?? '') === 'InvalidArgumentException', json_encode($j['bad'] ?? null));
 info('Upper-case slug Invoices.View: ' . ($j['bad']['Invoices.View'] ?? '?'));
 check('F19', 'UserRoles assign() (called on the model instance) takes effect at once; forgetUser() and forgetRole() exist', ($j['beforeAssign'] ?? null) === false && ($j['afterAssign'] ?? null) === true && ($j['forgetOk'] ?? false) === true, json_encode($j));
-check('F19b', 'api.html writes "RoleWarden\Models\UserRoles::assign($userId, $roleId)": copied as written, the call works', ($j['staticAssign'] ?? '') === 'ok', $j['staticAssign'] ?? 'no result');
+check('F19b', 'api.html writes "(new \RoleWarden\Models\UserRoles())->assign($userId, $roleId)": copied as written, the call works', ($j['staticAssign'] ?? '') === 'ok', $j['staticAssign'] ?? 'no result');
 // installation.html: first super admin by hand
 $p = proc_open(['php', 'spark', 'shield:user', 'create', '-n', 'admin', '-e', 'you@example.com'], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pp, $F, array_merge(array_diff_key(getenv(), ['RW_DB_USERNAME' => 1, 'RW_DB_PASSWORD' => 1]), $DBENV), ['bypass_shell' => true]);
 fwrite($pp[0], "Byhand-Lantern-4410\nByhand-Lantern-4410\n"); fclose($pp[0]);
@@ -1248,7 +1272,7 @@ foreach (['A' => $LOGS_A ?? null, 'B' => $LOGS_B ?? null, 'C' => $LOGS_C ?? null
     if ($lines === null) continue;
     file_put_contents("$WORK/verify-v8.applog-$k.log", implode("\n", $lines) . "\n");
     $bad = bad_log_lines($lines);
-    $ind = array_filter($bad, fn ($l) => str_contains($l, 'demo_documents') || preg_match('/Table .*doesn.t exist|demo_documents_v8hidden/', $l) || (in_array($k, ['B', 'C'], true) && (str_contains($l, 'SecurityException: The action you requested is not allowed') || str_contains($l, 'disallowed characters'))));
+    $ind = array_filter($bad, fn ($l) => str_contains($l, 'demo_documents') || str_contains($l, 'v8 induced failure') || preg_match('/Table .*doesn.t exist|demo_documents_v8hidden/', $l) || (in_array($k, ['B', 'C'], true) && (str_contains($l, 'SecurityException: The action you requested is not allowed') || str_contains($l, 'disallowed characters'))));
     $other = array_values(array_diff($bad, $ind));
     info("log $k: " . count($lines) . ' lines, ' . count($bad) . ' at WARNING or above, ' . count($ind) . ' from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)');
     check("L04$k", "Application log ($k) at threshold 9: no warning or error other than the induced ones", $other === [], json_encode(array_slice(array_map(fn ($l) => substr($l, 0, 220), $other), 0, 6)));

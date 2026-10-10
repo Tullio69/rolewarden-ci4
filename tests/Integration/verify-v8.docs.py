@@ -33,12 +33,12 @@ def main():
         raise SystemExit('ABORT: work folder exists')
     WORK.mkdir(parents=True)
     try:
-        with zipfile.ZipFile(ROOT / 'build' / 'rolewarden-module-1.0.0-rc.v8.zip') as z:
+        with zipfile.ZipFile(ROOT / 'build' / ('rolewarden-module-1.0.0-' + os.environ.get('RW_V8_TAG', 'rc.v8') + '.zip')) as z:
             z.extractall(WORK / 'zip')
         docs = WORK / 'zip' / 'rolewarden' / 'documentation'
         for page in sorted(docs.glob('*.html')):
             url = page.resolve().as_uri()
-            png = HERE / ('verify-v8.docs.' + page.stem + '.png')
+            png = HERE / ('verify-v8.docs.' + os.environ.get('RW_V8_LABEL', '') + page.stem + '.png')
             chrome(['--window-size=1280,1400', '--hide-scrollbars', '--screenshot=' + str(png), url])
             dom = chrome(['--dump-dom', url])
             ok = png.exists() and png.stat().st_size > 20000 and '</html>' in dom

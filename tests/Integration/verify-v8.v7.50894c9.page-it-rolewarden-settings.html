@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Impostazioni &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1791637669">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings" aria-current="page"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><span aria-current="page">Impostazioni</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="8c07e1d9c1d1e2f62446dd9b870e75da">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">RoleWarden</div>
+    <h1>Impostazioni</h1>
+    <p>Regole che valgono per tutti gli utenti di questa applicazione. Le modifiche valgono dalla richiesta successiva di ciascun utente.</p>
+      </div>
+  <dl class="rw-facts">
+    <div><dt>Ultima modifica</dt><dd>Mai</dd></div>
+    <div><dt>Da</dt><dd>&mdash;</dd></div>
+  </dl>
+</div>
+
+<form method="post" action="http://127.0.0.1:8071/index.php/rolewarden/settings" novalidate x-data="rwSettings(&#x7B;&quot;values&quot;&#x3A;&#x7B;&quot;default_role&quot;&#x3A;&quot;&quot;,&quot;activity_retention&quot;&#x3A;&quot;365&quot;,&quot;session_lifetime&quot;&#x3A;&quot;7200&quot;,&quot;remember_length&quot;&#x3A;&quot;2592000&quot;,&quot;lock_attempts&quot;&#x3A;&quot;5&quot;,&quot;lock_minutes&quot;&#x3A;&quot;15&quot;,&quot;sign_in_rate&quot;&#x3A;&quot;10&quot;&#x7D;,&quot;current&quot;&#x3A;&#x7B;&quot;default_role&quot;&#x3A;&quot;&quot;,&quot;activity_retention&quot;&#x3A;&quot;365&quot;,&quot;session_lifetime&quot;&#x3A;&quot;7200&quot;,&quot;remember_length&quot;&#x3A;&quot;2592000&quot;,&quot;lock_attempts&quot;&#x3A;&quot;5&quot;,&quot;lock_minutes&quot;&#x3A;&quot;15&quot;,&quot;sign_in_rate&quot;&#x3A;&quot;10&quot;&#x7D;,&quot;names&quot;&#x3A;&#x7B;&quot;session_lifetime&quot;&#x3A;&quot;Durata&#x20;della&#x20;sessione&quot;,&quot;remember_length&quot;&#x3A;&quot;Ricordami&quot;,&quot;lock_attempts&quot;&#x3A;&quot;Blocco&#x20;dopo&#x20;accessi&#x20;falliti&quot;,&quot;lock_minutes&quot;&#x3A;&quot;Durata&#x20;del&#x20;blocco&quot;,&quot;sign_in_rate&quot;&#x3A;&quot;Tentativi&#x20;di&#x20;accesso&#x20;per&#x20;indirizzo&quot;,&quot;default_role&quot;&#x3A;&quot;Ruolo&#x20;predefinito&#x20;dei&#x20;nuovi&#x20;utenti&quot;,&quot;activity_retention&quot;&#x3A;&quot;Conserva&#x20;il&#x20;log&#x20;attivit&#x5C;u00e0&#x20;per&quot;&#x7D;,&quot;labels&quot;&#x3A;&#x7B;&quot;one&quot;&#x3A;&quot;&#x25;d&#x20;modifica&#x20;non&#x20;salvata&quot;,&quot;many&quot;&#x3A;&quot;&#x25;d&#x20;modifiche&#x20;non&#x20;salvate&quot;&#x7D;&#x7D;)">
+  <input type="hidden" name="csrf_test_name" value="8c07e1d9c1d1e2f62446dd9b870e75da">
+      <div class="rw-bar rw-settings-bar" :class="{ 'rw-bar--dirty': changed().length }" role="status" aria-live="polite">
+      <template x-if="changed().length">
+        <div class="rw-bar-msg">
+          <span class="rw-bar-dot" aria-hidden="true"></span>
+          <b x-text="summary()"></b>
+          <span class="rw-muted" x-text="changedNames()"></span>
+        </div>
+      </template>
+      <div class="rw-bar-msg rw-muted" x-show="! changed().length">Tutte le modifiche sono salvate.</div>
+      <div class="rw-bar-actions">
+        <button type="button" class="rw-btn rw-btn--ghost" x-show="changed().length" x-cloak @click="discard()">Scarta</button>
+        <button type="submit" class="rw-btn rw-btn--primary" :disabled="! changed().length">Salva le impostazioni</button>
+      </div>
+    </div>
+  
+  <div class="rw-section-title"><span class="rw-section-n">A</span><h2>Accesso</h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+              <tr :class="{ 'rw-changed': isChanged('session_lifetime') }">
+          <td class="rw-m-num">01</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-session_lifetime">Durata della sessione</label>
+            <small>Per quanto tempo un utente resta collegato senza fare nulla.</small>
+          </th>
+          <td class="rw-l-value"><select class="rw-select" id="rw-session_lifetime" name="session_lifetime" x-model="cur.session_lifetime"><option value="1800">30 minuti</option><option value="7200" selected>2 ore</option><option value="28800">8 ore</option><option value="86400">1 giorno</option></select></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('session_lifetime') ? 'modificato' : ''"></span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('remember_length') }">
+          <td class="rw-m-num">02</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-remember_length">Ricordami</label>
+            <small>Per quanto tempo «Ricordami» tiene collegato un utente su un browser. Spento nasconde l'opzione.</small>
+          </th>
+          <td class="rw-l-value"><select class="rw-select" id="rw-remember_length" name="remember_length" x-model="cur.remember_length"><option value="0">Spento</option><option value="604800">7 giorni</option><option value="2592000" selected>30 giorni</option><option value="7776000">90 giorni</option></select></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('remember_length') ? 'modificato' : 'mostrato\x20nella\x20pagina\x20di\x20accesso'">mostrato nella pagina di accesso</span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('lock_attempts') }">
+          <td class="rw-m-num">03</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-lock_attempts">Blocco dopo accessi falliti</label>
+            <small>Tentativi falliti con la stessa email prima del blocco.</small>
+          </th>
+          <td class="rw-l-value"><span class="rw-unit"><input class="rw-input" type="number" id="rw-lock_attempts" name="lock_attempts" min="3" max="20" required value="5" x-model="cur.lock_attempts"><span class="rw-muted">tentativi</span></span></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('lock_attempts') ? 'modificato' : ''"></span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('lock_minutes') }">
+          <td class="rw-m-num">04</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-lock_minutes">Durata del blocco</label>
+            <small>Quanto deve aspettare un'email bloccata prima di riprovare.</small>
+          </th>
+          <td class="rw-l-value"><span class="rw-unit"><input class="rw-input" type="number" id="rw-lock_minutes" name="lock_minutes" min="1" max="1440" required value="15" x-model="cur.lock_minutes"><span class="rw-muted">minuti</span></span></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('lock_minutes') ? 'modificato' : ''"></span></td>
+        </tr>
+              <tr :class="{ 'rw-changed': isChanged('sign_in_rate') }">
+          <td class="rw-m-num">05</td>
+          <th class="rw-l-key" scope="row">
+            <label for="rw-sign_in_rate">Tentativi di accesso per indirizzo</label>
+            <small>Tentativi di accesso accettati da un indirizzo IP in un minuto, con qualunque email.</small>
+          </th>
+          <td class="rw-l-value"><span class="rw-unit"><input class="rw-input" type="number" id="rw-sign_in_rate" name="sign_in_rate" min="5" max="100" required value="10" x-model="cur.sign_in_rate"><span class="rw-muted">al minuto</span></span></td>
+          <td class="rw-anno"><span class="rw-note" x-text="isChanged('sign_in_rate') ? 'modificato' : ''"></span></td>
+        </tr>
+          </tbody>
+  </table>
+
+  <div class="rw-section-title"><span class="rw-section-n">B</span><h2>Ruoli</h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+      <tr :class="{ 'rw-changed': isChanged('default_role') }">
+        <td class="rw-m-num">06</td>
+        <th class="rw-l-key" scope="row">
+          <label for="rw-default-role">Ruolo predefinito dei nuovi utenti</label>
+          <small>Viene dato a chiunque si registri o venga creato da questo pannello. I ruoli super admin non sono proposti.</small>
+        </th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-default-role" name="default_role" x-model="cur.default_role">
+            <option value="" selected>Nessuno</option>
+                          <option value="admin">Admin</option>
+                          <option value="user">User</option>
+                      </select>
+        </td>
+        <td class="rw-anno"><span class="rw-note" x-text="isChanged('default_role') ? 'modificato' : ''"></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="rw-section-title"><span class="rw-section-n">C</span><h2>Log attività</h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+      <tr :class="{ 'rw-changed': isChanged('activity_retention') }">
+        <td class="rw-m-num">07</td>
+        <th class="rw-l-key" scope="row">
+          <label for="rw-activity_retention">Conserva il log attività per</label>
+          <small>Chi ha cambiato cosa, quando e da quale indirizzo. Le voci più vecchie si cancellano una volta al giorno. I tentativi di accesso li conserva Shield.</small>
+        </th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-activity_retention" name="activity_retention" x-model="cur.activity_retention">
+                          <option value="90">90 giorni</option>
+                          <option value="365" selected>1 anno</option>
+                          <option value="0">Per sempre</option>
+                      </select>
+                  </td>
+        <td class="rw-anno"><span class="rw-note" x-text="isChanged('activity_retention') ? 'modificato' : '33\x20voci'">33 voci</span></td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+    </main>
+  </div>
+</div>
+</body>
+</html>

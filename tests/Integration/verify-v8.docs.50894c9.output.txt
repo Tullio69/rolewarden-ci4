@@ -1,0 +1,9 @@
+[PASS] api.html               screenshot 121319 bytes, DOM 8714 chars
+[PASS] configuration.html     screenshot 149133 bytes, DOM 8202 chars
+[PASS] design-guide.html      screenshot 144259 bytes, DOM 19873 chars
+[PASS] index.html             screenshot 168626 bytes, DOM 4888 chars
+[PASS] installation.html      screenshot 181246 bytes, DOM 10554 chars
+[PASS] shield.html            screenshot 153188 bytes, DOM 4240 chars
+[PASS] troubleshooting.html   screenshot 171305 bytes, DOM 6693 chars
+[PASS] views.html             screenshot 157314 bytes, DOM 5927 chars
+[INFO] work folder could not be removed entirely: [WinError 5] Accesso negato: 'C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\76d069f5-945a-4655-83bc-614633267189\\scratchpad\\v8rv-docs\\profile\\Default\\Cache\\Cache_Data\\data_0'

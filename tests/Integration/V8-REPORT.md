@@ -1,5 +1,83 @@
 # V8 — Demo e documentazione: collaudo indipendente
 
+## Riverifica — 2026-10-10, Collaudatore ad Hoc (Claude), commit `50894c9`, zip `build/*-1.0.0-rc.v8b.zip`
+
+**Esito: PASS. D1-D5 corretti, regressione V2-V7 chiusa (aggiornamento 15:35: le due suite di development mancanti sono passate, vedi sotto).** Testo originale della riverifica: **PASS con riserva. D1-D5 corretti.** Li ho verificati sul comportamento servito, non sul diff.
+
+La riserva riguarda la regressione: tutta production e sette suite su nove di development sono pulite, ma **V5 e V4 in development non hanno ancora un'esecuzione pulita**. Al primo lancio erano state bloccate dallo strumento; la riesecuzione è stata fermata da Claude Code per memoria di sistema insufficiente e non l'ho rilanciata.
+
+Mandato, perimetro e regole sono quelli del collaudo. Dei file cambiati ho letto solo quelli del perimetro (demo/README.md, THIRD-PARTY-LICENSES.md, api.html), mai il codice né il diff.
+
+| Suite | Risultato |
+| --- | ---: |
+| Suite V8, `verify-v8.50894c9.output.txt` | 226/227, 2 AMB (l'unico FAIL è P06d, giudicato a mano qui sotto) |
+| Documentazione offline in Chrome, `verify-v8.docs.50894c9.output.txt` | 8/8 |
+| Suite V7 sugli zip rc.v8b, `verify-v8.v7.50894c9.output.txt` | 181/181, 1 AMB |
+| Pacchetti V7, `verify-v8.v7package.50894c9.output.txt` | 15/16 (P04 superato da V8, vedi sotto) |
+
+### Difetti: stato
+
+| Difetto | Stato | Evidenza |
+| --- | --- | --- |
+| D1, conflitto sullo username | **Corretto** | A22-username: uno username della demo già preso è rifiutato con un messaggio, senza testo SQL, con il database identico (contatori compresi). Ho anche indotto un guasto a metà installazione: un trigger del database rifiuta il terzo account (A22-mid, A22-mid-b). Il comando esce con codice diverso da zero, tutto ciò che aveva creato viene tolto e il database è identico. Sulla console non c'è testo SQL; il motivo («v8 induced failure») è solo in `writable/logs`. Il trigger è stato rimosso subito dopo |
+| D2, 404 con dettaglio in ambiente `demo` | **Corretto** | C13a: ho applicato alla copia l'istruzione del README della demo (`error_404.php`, 1 occorrenza). Con quella, in `CI_ENVIRONMENT = demo` né un indirizzo sconosciuto (C15) né un documento inesistente (C15b) mostrano rotta, percorsi o traccia. Il guasto del database dà la pagina generica (C16) |
+| D3, versione del framework | **Corretto** | P07: tutti i pacchetti di `vendor/` hanno la versione elencata, CodeIgniter 4.7.5 compreso |
+| A2, autoloader di Composer | Risolto dall'autore | P08b: l'autoloader è elencato (MIT), con `vendor/composer/LICENSE` accanto |
+| A3, versione di IBM Plex | Risolto dall'autore | Colonna «Latin subset» |
+| D4, `UserRoles::assign()` | **Corretto** | F19b: `(new \RoleWarden\Models\UserRoles())->assign($userId, $roleId)`, copiato come scritto, funziona e ha effetto subito |
+| D5, README alla radice dello zip completo | **Corretto** | P06e: CHANGELOG.md e THIRD-PARTY-LICENSES.md alla radice, identici a quelli del modulo; il README rimanda a `modules/rolewarden/documentation/index.html`, che esiste. P06d resta FAIL solo perché ora controlla ogni percorso tra apici inversi del README: uno è `documentation/design-guide.html`, ma la frase precisa «open it in a browser from the module folder». Lo giudico corretto e lo annoto come osservazione O7 |
+
+Tutti gli altri controlli del primo giro passano ancora: installazione e rimozione dopo un uso reale senza residui, conflitti, `migrate --all`, permessi, vetrina, indipendenza, zip completo, esempi della documentazione, traduzione, log.
+
+### Regressione V2-V7 su `50894c9`
+
+| Suite | development | production |
+| --- | ---: | ---: |
+| V6 | 151/151 | 151/151 |
+| V5 | 177/177 (chiusa alle 15:33) | 177/177 |
+| V4 | 207/232 (chiusa alle 15:23): i 25 FAIL sono quelli già noti della data ISO | 207/232: i 25 FAIL sono quelli già noti della data ISO |
+| V2 `test` / `extra` / `adapt` | 142/143 (G07, noto) + 33 + 16 | 156/157 (G07, noto) + 42 + 16 |
+| V3 principale / supplementare / filtri array | 139 + 69 + 55 | 139 + 69 + 55 |
+
+I numeri coincidono con quelli di V7 su `2314cfb`. Snapshot `f7f37c04…e21e64` identico in tutte le 20 esecuzioni.
+
+**Perché V5 e V4 in development non sono chiuse.** Le cartelle di lavoro della regressione stanno ora nello scratchpad, perché Windows non lascia cancellare i profili Chrome che la V6 crea dentro la cartella di lavoro. Due suite però cercano file nella cartella sopra quella di lavoro:
+- V5 cerca `../verify-v5.css.py` e si è fermata alla sezione 2, dopo 23 PASS (`verify-v8.regression.v5.development.50894c9.firstrun.console.txt`);
+- V4 cerca le catture di riferimento: per questo nel primo giro falliscono anche i 7 `R-D2-PREV` e 2 in più di `R-CONTENT` e `R-BODY`, oltre ai FAIL noti della data ISO (`verify-v8.v4.development.50894c9.firstrun.*`).
+
+Ho copiato quei file accanto alle cartelle di lavoro, e con quei file V5 e V4 in production sono passate pulite. La riesecuzione di V5 e V4 in development è stata poi fermata da Claude Code per memoria di sistema insufficiente. Le istruzioni dicono di non rilanciarla da solo. Ho fermato i processi per PID e ripristinato il database (hash identico). Per chiuderle basta, con le variabili di processo impostate e una suite alla volta:
+
+`bash verify-v8.regression-all.sh v5:development v4:development`
+
+**Chiusura, ore 15:35.** Su richiesta del coordinatore ho lanciato `bash verify-v8.regression-all.sh v5:development v4:development`, una suite alla volta.
+- **V4 development:** 207/232. I 25 FAIL sono esattamente quelli già noti della data ISO nelle email, superati da V7 (`R-TZ`, `R-CONTENT`, `R-BODY`, `R-D2-TEXT`, `R-D2-HTML`, 5 ciascuno). Non c'è nessun altro FAIL: gli errori di strumento del primo giro sono spariti.
+- **V5 development:** 177/177. Al primo tentativo si è fermata subito con «existing work directory»: era rimasta la cartella della riesecuzione interrotta, che conteneva profili Chrome bloccati. L'ho spostata in `scratchpad/v8reg2/locked-v5-development` e ho rilanciato.
+- **Snapshot e pulizia:** `f7f37c04…e21e64` identico in entrambe le esecuzioni, Mailpit vuoto, nessun processo rimasto.
+
+**Totale della regressione, esclusi i 25 FAIL noti della data ISO:**
+- development 989/990, con il solo G07 già superato da V5;
+- production 1012/1013, con il solo G07.
+
+**Totale grezzo:** development 989/1015 e production 1012/1038, uguali a V7 su `2314cfb`. In ciascun ambiente lo scarto è fatto dai 25 FAIL V4 già noti più G07.
+
+**P04 dei pacchetti V7 superato da V8.** Il controllo V7 voleva nel modulo solo README, composer.json, `documentation/` e `src/`. Ora ci sono anche CHANGELOG.md e THIRD-PARTY-LICENSES.md, che la SPEC V8 richiede. È un'aspettativa superata, non un difetto.
+
+**Ambiguità.** A1 (voci del log scritte da un admin vero sugli oggetti della demo) e A4 (dati seminati in inglese, cioè l'A1 di V7) restano aperte e non decise, come le ambiguità aperte di V7.
+
+**Osservazione nuova.** O7: il README alla radice dello zip completo nomina `documentation/design-guide.html`, con l'indicazione di aprirlo «from the module folder».
+
+**Pulizia.**
+- **Database e Mailpit:** database identico allo snapshot (hash identico), Mailpit vuoto.
+- **Processi:** nessun processo mio attivo, verificato per riga di comando.
+- **Cartelle:** junction rimosse per prime e `.env` cancellati. Restano da cancellare a mano solo file di profili Chrome che Windows rifiuta di cancellare:
+  - `scratchpad/v8reg2`
+  - `scratchpad/v8rv-docs`
+  - quelle del primo giro: `tests/Integration/verify-v8.regress.locked-chrome`, `scratchpad/v8reg`, `scratchpad/v8run-docs`
+
+Nessun commit.
+
+---
+
 ## Collaudo — 2026-10-10, Collaudatore ad Hoc (Claude), commit `f06a29d`, zip `build/*-1.0.0-rc.v8.zip`
 
 **Esito: FAIL. V8 non approvata.** Un difetto medio tocca direttamente la definizione di fatto: un conflitto sullo username non è rifiutato senza danni (D1). Ci sono poi quattro difetti minori (D2-D5). In più la regressione V2-V7 non è stata completata: il job è stato fermato da Claude Code per memoria di sistema insufficiente e, come da istruzioni, non l'ho rilanciato.

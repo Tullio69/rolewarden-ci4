@@ -1,0 +1,26 @@
+[INFO] rolewarden-app-1.0.0-rc.v8b.zip 5459980 bytes sha256 6402000446b874c2abcb182fcd2190a75e3ff359bafc254c763951e33ad837b1
+[INFO] rolewarden-module-1.0.0-rc.v8b.zip 350627 bytes sha256 687c52964b64cef2a9ce7d31fd63a3d10775d17659539e84f1934c90330f3d90
+[INFO] application zip: 2387 files; module zip: 127 files
+[PASS] P01   No .env, log, session, cache, lock, setup code, SQL dump or key file in either zip
+[PASS] P02   writable/ of the application holds only the starter placeholders
+[INFO] matches inside third-party vendor/ (documentation examples, reviewed by hand): {'vendor/codeigniter4/framework/system/Database/Postgre/Connection.php': ['557:e:/'], 'vendor/codeigniter4/shield/docs/references/authentication/hmac.md': ['218:hex2bin:923dfab5ddca0c7784c2c388a848a704f5e048736c1a852c862959da62ade8c7', '236:hex2bin:923dfab5ddca0c7784c2c388a848a704f5e048736c1a852c862959da62ade8c7', '239:hex2bin:451df599363b19be1434605fff8556a0bbfc50bede1bb33793dcde4d97fce4b0'], 'vendor/codeigniter4/shield/src/Authentication/Passwords/_dictionary.txt': ['312:fabio', '2404:3317', '8078:1026']}
+[PASS] P03   No credential, key, personal path, local port or development-only reference outside vendor/
+[FAIL] P04   Module zip without tests, internal docs and tooling (only README, composer.json, documentation/, src/)
+         -> ['CHANGELOG.md', 'README.md', 'THIRD-PARTY-LICENSES.md', 'composer.json', 'documentation', 'src']
+[PASS] P05   Module zip identical to the module at commit 50894c9 (git archive)
+[PASS] P06   modules/rolewarden of the application identical to the module zip
+[PASS] P07   Application zip includes vendor/ (CodeIgniter, Shield, Settings, translations): no Composer needed
+[INFO] bundled packages: {'codeigniter4/framework': 'v4.7.5', 'codeigniter4/settings': 'v2.4.0', 'codeigniter4/shield': 'v1.4.1', 'codeigniter4/translations': 'v4.7.4', 'laminas/laminas-escaper': '2.18.0', 'psr/log': '3.0.2'}
+[PASS] P08   No development package bundled in vendor/
+[PASS] P09   RoleWarden loaded from modules/rolewarden by app/Config/Autoload.php
+[PASS] P10   Shield keeps only its default 'user' group (no sample groups or permissions)
+[PASS] P11   Browser chooses between English and Italian (negotiateLocale, supportedLocales en/it)
+[PASS] P12   CSRF enabled globally
+[PASS] P13   README shipped to buyers carries no internal development notes (local stack, its password, the test app, build tooling, work log)
+[INFO] application README first line: # RoleWarden
+[PASS] P14   README at the root of the complete application is RoleWarden's, without development notes (D5 recheck)
+[PASS] P15   composer.json of the complete application requires PHP ^8.3 (D5 recheck)
+[PASS] P16   Root README of the application without development notes
+[INFO] licence files in the application zip: ['LICENSE', 'vendor/codeigniter4/framework/LICENSE', 'vendor/codeigniter4/settings/LICENSE', 'vendor/codeigniter4/shield/LICENSE', 'vendor/codeigniter4/translations/LICENSE', 'vendor/composer/LICENSE', 'vendor/laminas/laminas-escaper/LICENSE.md', 'vendor/psr/log/LICENSE']
+[INFO] vendor/composer/platform_check.php minimum: ['80300']; app composer.json php: ['^8.3']
+TOTAL: 15 PASS, 1 FAIL

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sessioni &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1791637669">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><span aria-current="page">Sessioni</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="8c07e1d9c1d1e2f62446dd9b870e75da">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile" aria-current="page">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head" style="grid-template-columns:1fr">
+  <div>
+    <div class="rw-header">Il tuo account</div>
+    <h1>Sessioni</h1>
+    <p>I browser collegati a questo account. Chiuderne uno vale dalla sua richiesta successiva.</p>
+  </div>
+</div>
+
+<table class="rw-ledger">
+  <tbody>
+          <tr>
+        <td class="rw-m-num">01</td>
+        <th class="rw-l-key" scope="row">
+          <b>Browser sconosciuto su sistema sconosciuto</b>
+          <small>127.0.0.1 &middot; collegato il 10 ott 2026, 13:08</small>
+        </th>
+        <td class="rw-l-value rw-muted">
+          Attivo Adesso                  </td>
+        <td class="rw-l-ctl">
+                  </td>
+        <td class="rw-anno"><span class="rw-note">questo browser</span></td>
+      </tr>
+          <tr>
+        <td class="rw-m-num">02</td>
+        <th class="rw-l-key" scope="row">
+          <b>Browser sconosciuto su sistema sconosciuto</b>
+          <small>127.0.0.1 &middot; collegato il 10 ott 2026, 13:08</small>
+        </th>
+        <td class="rw-l-value rw-muted">
+          Attivo Adesso                  </td>
+        <td class="rw-l-ctl">
+                      <form method="post" action="http://127.0.0.1:8071/index.php/rolewarden/sessions/1/revoke" style="display:inline">
+              <input type="hidden" name="csrf_test_name" value="8c07e1d9c1d1e2f62446dd9b870e75da">              <button class="rw-btn rw-btn--secondary rw-btn--sm" type="submit">Chiudi</button>
+            </form>
+                  </td>
+        <td class="rw-anno"></td>
+      </tr>
+                  <tr>
+        <td class="rw-m-num"></td>
+        <th class="rw-l-key" scope="row"><b>Tutti gli altri browser</b><small>Chiude tutte le sessioni e dimentica tutti i browser ricordati, tranne quello che stai usando.</small></th>
+        <td class="rw-l-value"></td>
+        <td class="rw-l-ctl">
+          <form method="post" action="http://127.0.0.1:8071/index.php/rolewarden/sessions/revoke-all" style="display:inline">
+            <input type="hidden" name="csrf_test_name" value="8c07e1d9c1d1e2f62446dd9b870e75da">            <button class="rw-btn rw-btn--danger rw-btn--sm" type="submit">Chiudi tutte le altre</button>
+          </form>
+        </td>
+        <td class="rw-anno"></td>
+      </tr>
+      </tbody>
+</table>
+    </main>
+  </div>
+</div>
+</body>
+</html>

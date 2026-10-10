@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude
-**Agente:** Claude Code (Opus)
-**Dalle:** 2026-10-10
-**Scope:** V8 Demo e documentazione: `demo/`, `documentation/`, `CHANGELOG.md`, licenze, `bin/build-package`, `docs/SPEC.md`, `README.md`, repo `../rolewarden-demo` in locale
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -735,3 +735,39 @@ Formato di ogni voce:
   - **Regressione V2-V7 non completata**: il job è stato fermato da Claude Code per memoria di sistema insufficiente e non l'ho rilanciato. Prima la V6 in development aveva dato 151/151 e adapt 16/16. I runner sono pronti: `verify-v8.regression.sh` con `RW_V8_SCRATCH`.
   - Pulizia: snapshot `f7f37c04…e21e64` identico, anche dopo le interruzioni ripristinate a mano; Mailpit vuoto; nessun processo mio; `.env` cancellati. Da cancellare a mano i profili Chrome bloccati da Windows in `tests/Integration/verify-v8.regress.locked-chrome`, `scratchpad/v8reg` e `scratchpad/v8run-docs`.
   - Controllo visivo in un browser vero dovuto all'autore. Nessun commit.
+
+### [2026-10-10 15:30] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v8.php` con i controlli di riverifica A22-mid, C13a, C15b, P06e, P08b; `verify-v8.docs.py` e `verify-v8.regression.sh` parametrizzati; `verify-v8.regression-all.sh` nuovo; output `verify-v8.*.50894c9.*`; sezione di riverifica in testa a `V8-REPORT.md`) e questa voce. Stato corrente non modificato
+- Cosa ho fatto: riverifica in nero di V8 su `50894c9` e sugli zip `rc.v8b`, stesso protocollo e stesse regole. Ho rieseguito la suite V8 completa e la documentazione in Chrome. Ho provocato un guasto a metà installazione con un trigger del database, rimosso subito dopo, e applicato l'istruzione del README per l'ambiente `demo`. Poi la regressione V2-V7, una suite alla volta, con un controllo per PID tra una suite e l'altra.
+- Stato: completato con riserva. **Esito PASS, D1-D5 corretti.** Suite V8 226/227, con l'unico FAIL (P06d, il `design-guide.html` nominato «from the module folder») giudicato a mano. Documentazione 8/8. V7 181/181. Pacchetti 15/16: P04 è superato dai file CHANGELOG e licenze che V8 richiede.
+  - D1: lo username già preso è rifiutato senza SQL; un guasto a metà installazione toglie tutto, con il motivo solo nel log.
+  - D2: in `demo` il 404 non mostra dettagli.
+  - D3, A2, A3: le licenze coincidono con lo zip.
+  - D4: l'esempio con `(new UserRoles())->assign()` funziona.
+  - D5: CHANGELOG e licenze sono alla radice, il link punta in `modules/rolewarden`.
+- Regressione: production completa e pulita.
+  - V6 151, V5 177, V4 207/232 (solo i 25 della data ISO, noti), V2 156/157 (G07, noto) + 42 + 16, V3 139 + 69 + 55.
+  - Development uguale, ma **V5 e V4 non sono chiuse**: bloccate dallo strumento al primo lancio (file cercati nella cartella superiore, ora copiati); la riesecuzione è stata fermata da Claude Code per memoria insufficiente e non l'ho rilanciata.
+- Note per il prossimo:
+  - Per chiudere la regressione: `bash verify-v8.regression-all.sh v5:development v4:development`, con le variabili di processo impostate.
+  - A1 e A4 restano aperte e non decise. Osservazione nuova: O7.
+  - Pulizia: snapshot `f7f37c04…e21e64` identico in 20 esecuzioni e dopo ogni ripristino manuale; Mailpit vuoto; nessun processo mio.
+  - Da cancellare a mano i profili Chrome bloccati da Windows in `scratchpad/v8reg2`, `scratchpad/v8rv-docs` e quelli del primo giro.
+  - Nessun commit.
+
+### [2026-10-10 15:35] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (output `verify-v8.{v5,v4}.development.50894c9.*`, chiusura nella sezione di riverifica di `V8-REPORT.md`) e questa voce
+- Cosa ho fatto: chiuse le due suite di regressione rimaste su `50894c9`, una alla volta, con lo stesso protocollo.
+- Stato: completato. **V8 approvata per il collaudo: PASS, regressione V2-V7 chiusa.**
+  - V5 development 177/177. V4 development 207/232: i 25 FAIL sono quelli già noti della data ISO nelle email, nessun altro.
+  - Totale della regressione esclusi i 25 noti: development 989/990 e production 1012/1013, con il solo G07 già superato da V5, come in V7.
+- Note per il prossimo: snapshot `f7f37c04…e21e64` identico; Mailpit vuoto; nessun processo mio. Restano da cancellare a mano i profili Chrome bloccati, ora anche `scratchpad/v8reg2/locked-v5-development`. Nessun commit.
+
+### [2026-10-10 23:59] - Claude
+- Tipo: feature
+- Scope: `demo/` (namespace `RoleWardenDemo`), `documentation/`, `CHANGELOG.md`, `THIRD-PARTY-LICENSES.md`, licenze in `src/Assets/`, `bin/build-package`, `.gitattributes`, `README.md`, `docs/SPEC.md`; repo `../rolewarden-demo` (branch staging, commit 09473ab e dd06df9, non pushati)
+- Cosa ho fatto: V8 Demo e documentazione. App demo dei documenti con tre ruoli in catena, `demo:install` e `demo:uninstall` senza residui, modalita' vetrina (mai in production, ambiente `demo` per il sito); documentazione HTML in sette pagine, changelog, licenze di terze parti; terzo zip e demo nell'applicazione completa. Sito demo preparato in locale (reset che installa la demo, ambiente demo, 404 senza dettagli). Collaudo del Collaudatore ad Hoc (Codex ancora fermo): primo giro FAIL D1-D5, corretti in 50894c9; riverifica PASS 226/227 (P06d giudicato corretto), regressione V2-V7 chiusa in entrambi gli ambienti con i soli fallimenti noti (G07, 25 date ISO in V4).
+- Stato: completato
+- Note per il prossimo: aperte all'autore A1 di V8 (voci di log di un admin vero sugli oggetti della demo dopo la rimozione), A1/A2 di V7, conferma delle scelte di Claude in V7 e della password pubblica `demo-docs-2026`. Messa online (push modulo e demo, tre righe nel .env del server, composer update, deploy staging poi demo) solo con autorizzazione esplicita. Suite V4 da aggiornare alla data localizzata. Controllo visivo in browser vero dovuto. Profili Chrome da cancellare a mano in scratchpad (v8reg, v8reg2, v8rv-docs, v8run-docs, chrome7, chrome7c) e `tests/Integration/verify-v8.regress.locked-chrome`, `verify-v5.work`. Niente push.

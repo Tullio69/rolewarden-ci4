@@ -37,6 +37,8 @@ The first version for sale.
   `vendor/` included, for installing without Composer.
 - **Demo app** (`demo:install`, `demo:uninstall`) with three roles and a showcase mode.
 - **HTML documentation** in `documentation/`.
+- The **Permissions** list shows the roles that grant each permission; the role matrix marks
+  every permission not yet granted and says how to grant it.
 
 ### Changed
 - The panel was redrawn on the "editorial ledger" design system, with the CSS compiled from

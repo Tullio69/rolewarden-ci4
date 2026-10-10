@@ -244,7 +244,8 @@
   .rw-toolbar .rw-grow { flex: 1; }
   .rw-legend { display: flex; gap: var(--space-5); margin: 0; padding: 0; list-style: none; }
   .rw-legend li { display: flex; align-items: center; gap: var(--space-1-5); font-size: var(--text-xs); line-height: var(--leading-xs); color: var(--ink-muted); }
-  .rw-legend .rw-mark-blank { width: 20px; height: 20px; border: var(--rule-strong-width) dashed var(--rule-strong); display: inline-block; }
+  /* Not granted: a dashed box, in the legend and in every cell that could be granted. */
+  .rw-mark-blank { width: 14px; height: 14px; margin: 3px; border: var(--rule-width) dashed var(--ink-faint); border-radius: var(--radius-sm); display: inline-block; vertical-align: middle; }
 
 
   /* ---------- Unsaved-changes bar (matrix + settings-style screens) ---------- */
@@ -282,6 +283,7 @@
   .rw-m-anno .rw-chg { color: var(--accent); font-weight: var(--weight-medium); }
   .rw-matrix tfoot td { height: var(--size-row); border-top: var(--rule-strong-width) solid var(--rule-strong); font-size: var(--text-xs); color: var(--ink-muted); }
   .rw-matrix tfoot .rw-m-act { font-size: var(--text-md); color: var(--ink); }
+  .rw-matrix-help { margin: var(--space-3) 0 0 calc(var(--gutter) + var(--space-3)); max-width: 80ch; }
   .rw-matrix-foot { margin: var(--space-4) 0 0 calc(var(--gutter) + var(--space-3)); display: flex; gap: var(--space-8); }
   .rw-matrix-tools { display: flex; justify-content: space-between; align-items: center; margin: 0 var(--gutter) var(--space-4) var(--gutter); }
 
@@ -316,6 +318,7 @@
   .rw-m-num { min-width: var(--gutter); }
   /* One table per area: a fixed notes column keeps the columns of every area in line. */
   .rw-t-permissions .rw-anno { width: 240px; white-space: normal; }
+  .rw-t-permissions .rw-c-roles { width: 240px; }
   .rw-t-empty td { height: var(--size-empty); text-align: center; color: var(--ink-muted); }
   .rw-list-footer { display: flex; justify-content: space-between; align-items: center; margin: 0 0 0 var(--gutter); height: var(--size-row-lg); border-top: var(--rule-strong-width) solid var(--rule-strong); margin-top: calc(-1 * var(--rule-strong-width)); }
 

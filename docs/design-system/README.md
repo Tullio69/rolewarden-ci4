@@ -47,7 +47,7 @@ Every cell of the permission matrix shows one of five states. They differ by **s
 | 〃 | Inherited from the parent role | ditto mark, cell locked, tooltip "from Author" | `ink-muted` |
 | (✓) | Granted by a per-user override | check inside a 1.5px circle | `granted` |
 | ~~✓~~ | Denied by a per-user override | check struck through by a horizontal rule | `denied` |
-| (empty) | Not granted | nothing | none |
+| ⬚ | Not granted | small dashed box, only where the permission exists; a cell with no permission stays empty | `ink-faint` |
 
 In a **role** matrix, override marks summarise the overrides held by users of that role; the tooltip names them ("Override for 2 users: Priya Nair, Jonas Lindqvist"). Overrides are edited on the user's page (UserDetail), where clicking a cell adds or removes one: a denial where a role grants, a grant where none does. A denial is only meaningful on top of a role grant. Every matrix screen shows the compact five-mark legend.
 

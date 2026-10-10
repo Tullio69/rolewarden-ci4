@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API reference · RoleWarden documentation</title>
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<div class="rw docs">
+  <nav class="docs-nav" aria-label="Documentation">
+    <div class="rw-header">RoleWarden</div>
+    <ul>
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+      <li><a href="api.html" aria-current="page">API reference</a></li>
+      <li><a href="views.html">Views, themes, languages</a></li>
+      <li><a href="shield.html">Migrating from Shield</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="design-guide.html">Design guide</a></li>
+    </ul>
+  </nav>
+
+  <main class="docs-main">
+    <div class="rw-header">Documentation</div>
+    <h1>API reference</h1>
+    <p>How your own code asks RoleWarden whether the signed-in user may do something, adds permissions of its own, and reacts to what happens in the panel. Every check takes a permission slug in <code>area.action</code> form, never a role.</p>
+
+    <h2 id="permissions">Adding your own permissions</h2>
+    <p>The panel lists permissions and assigns them to roles; it does not create them, because a permission only means something to the code that checks it. Your application adds its own with a migration, which also makes them arrive on every server with the code:</p>
+<pre><code>&lt;?php
+
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class AddInvoicePermissions extends Migration
+{
+    private const PERMISSIONS = [
+        'invoices.view' =&gt; 'See invoices',
+        'invoices.approve' =&gt; 'Approve invoices',
+    ];
+
+    public function up(): void
+    {
+        $table = config('RoleWarden')-&gt;table('permissions');
+        $now = date('Y-m-d H:i:s');
+
+        foreach (self::PERMISSIONS as $slug =&gt; $description) {
+            $this-&gt;db-&gt;table($table)-&gt;insert([
+                'slug' =&gt; $slug,
+                'area' =&gt; strstr($slug, '.', true),
+                'description' =&gt; $description,
+                'is_system' =&gt; 0,
+                'created_at' =&gt; $now,
+                'updated_at' =&gt; $now,
+            ]);
+        }
+    }
+
+    public function down(): void
+    {
+        $this-&gt;db-&gt;table(config('RoleWarden')-&gt;table('permissions'))
+            -&gt;whereIn('slug', array_keys(self::PERMISSIONS))-&gt;delete();
+    }
+}</code></pre>
+    <p>Run <code>php spark migrate</code>, then give the new permissions to roles from the panel. The demo app's installer (<code>DemoInstaller.php</code>) does the same, and also creates roles.</p>
+
+    <h2 id="routes">On routes: the <code>can</code> filter</h2>
+<pre><code>$routes-&gt;get('invoices', 'Invoices::index', ['filter' =&gt; 'can:invoices.view']);
+$routes-&gt;post('invoices/(:num)/approve', 'Invoices::approve/$1', ['filter' =&gt; 'can:invoices.approve']);
+
+// Several permissions: any one of them lets the request through.
+$routes-&gt;get('reports', 'Reports::index', ['filter' =&gt; 'can:reports.view,invoices.view']);</code></pre>
+    <p>Put Shield's <code>session</code> filter before it on the same routes (or in a group), so that a guest is sent to sign in. A signed-in user without the permission is sent to Shield's <code>permissionDeniedRedirect()</code> with an error message.</p>
+
+    <h2 id="helpers">In views and controllers: helpers</h2>
+    <p>Load them with <code>helper('rolewarden')</code>, or add <code>'rolewarden'</code> to <code>$helpers</code> in a controller or in <code>app/Config/Autoload.php</code>. A guest is denied everything.</p>
+    <div class="docs-scroll"><table>
+      <thead><tr><th>Function</th><th>Returns</th></tr></thead>
+      <tbody>
+        <tr><td><code>can(string $permission): bool</code></td><td>Whether the signed-in user holds the permission.</td></tr>
+        <tr><td><code>can_any(array $permissions): bool</code></td><td>Whether they hold at least one of them.</td></tr>
+        <tr><td><code>can_all(array $permissions): bool</code></td><td>Whether they hold every one of them.</td></tr>
+        <tr><td><code>permissions(): array</code></td><td>The slugs they hold, sorted. A super admin also passes checks on slugs not listed.</td></tr>
+      </tbody>
+    </table></div>
+<pre><code>&lt;?php if (can('invoices.approve')) : ?&gt;
+  &lt;button type="submit"&gt;Approve&lt;/button&gt;
+&lt;?php endif ?&gt;</code></pre>
+    <p>Show a button only to who may use it, and still check on the route or in the controller: hiding a button is not a protection.</p>
+
+    <h2 id="user">Shield's user entity</h2>
+    <p>With <code>$userProvider</code> pointing at <code>\RoleWarden\Models\UserModel</code>, Shield's own calls are answered by RoleWarden:</p>
+<pre><code>auth()-&gt;user()-&gt;can('invoices.view');                     // true if any one is granted
+auth()-&gt;user()-&gt;can('invoices.view', 'reports.view');
+auth()-&gt;user()-&gt;hasPermission('invoices.view');</code></pre>
+    <p><code>inGroup()</code> and <code>getGroups()</code> still work and read the user's roles, for code written for Shield's groups; new code should check permissions instead.</p>
+
+    <h2 id="service">Any user: the <code>rolewarden</code> service</h2>
+    <p>For a user other than the signed-in one, or outside a request (a command, a queue job):</p>
+<pre><code>$rolewarden = service('rolewarden');
+
+$rolewarden-&gt;can($userId, 'invoices.approve');                       // bool
+$rolewarden-&gt;canAny($userId, ['invoices.view', 'reports.view']);     // bool
+$rolewarden-&gt;canAll($userId, ['invoices.view', 'invoices.approve']); // bool
+$rolewarden-&gt;permissions($userId);                                  // list of slugs
+$rolewarden-&gt;authorize($userId, 'invoices.approve');                // throws if denied</code></pre>
+    <p><code>authorize()</code> throws <code>RoleWarden\Authorization\AuthorizationException</code>. A slug not in <code>area.action</code> form throws <code>InvalidArgumentException</code>: checks never accept wildcards.</p>
+    <h3>Cache</h3>
+    <p>Each user's permissions are cached and forgotten whenever the panel changes something that affects them. If your own code writes the module's tables directly (assigning a role in a migration, for example), tell the service:</p>
+<pre><code>service('rolewarden')-&gt;forgetUser($userId);       // after changing one user's roles or overrides
+service('rolewarden')-&gt;forgetRole($roleId);       // after changing a role, its permissions or its parent</code></pre>
+    <p>Assigning a role through <code>RoleWarden\Models\UserRoles::assign($userId, $roleId)</code> does it for you.</p>
+
+    <h2 id="events">Events</h2>
+    <h3><code>rolewarden.activity</code></h3>
+    <p>Fires for every entry written to the activity log, with the row:</p>
+<pre><code>use CodeIgniter\Events\Events;
+
+Events::on('rolewarden.activity', static function (array $entry): void {
+    // $entry['action'] is e.g. 'role.updated'; $entry['details'] is JSON.
+});</code></pre>
+    <h3><code>rolewarden.mail</code></h3>
+    <p>Fires before each security email with the message (<code>to</code>, <code>subject</code>, <code>view</code>, <code>data</code>, <code>locale</code>). A listener that returns <code>false</code> takes the message over, for example to put it on your own queue, and the module does not send it:</p>
+<pre><code>// With the official codeigniter4/queue package and a job class of yours named 'security-email'.
+Events::on('rolewarden.mail', static function (array $message) {
+    service('queue')-&gt;push('emails', 'security-email', $message);
+
+    return false;
+});</code></pre>
+    <p>The job then renders <code>view('RoleWarden\Views\emails\\' . $message['view'], $message['data'])</code> and sends it; set the language first with <code>service('language')-&gt;setLocale($message['locale'])</code>.</p>
+
+    <h2 id="protections">Protections</h2>
+    <p>Whatever the caller, the module refuses changes that would break the system, with a <code>RoleWarden\Authorization\ProtectionException</code>: leaving no active super admin, a role inheriting from itself or a descendant, deleting a system role or a role that still has child roles, an administrator removing the role that lets them manage roles.</p>
+  </main>
+</div>
+</body>
+</html>

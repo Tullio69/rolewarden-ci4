@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Views, themes, languages · RoleWarden documentation</title>
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<div class="rw docs">
+  <nav class="docs-nav" aria-label="Documentation">
+    <div class="rw-header">RoleWarden</div>
+    <ul>
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+      <li><a href="api.html">API reference</a></li>
+      <li><a href="views.html" aria-current="page">Views, themes, languages</a></li>
+      <li><a href="shield.html">Migrating from Shield</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="design-guide.html">Design guide</a></li>
+    </ul>
+  </nav>
+
+  <main class="docs-main">
+    <div class="rw-header">Documentation</div>
+    <h1>Views, themes, languages</h1>
+    <p>Everything you change about how the panel looks or speaks lives in your application. Updating the module replaces its folder and keeps your changes.</p>
+
+    <h2 id="views">Replacing a view</h2>
+    <p>Every view of the panel and every email template goes through CodeIgniter's view overrides. Copy the module's file to the same path under <code>app/Views/overrides/RoleWarden/</code> and edit the copy:</p>
+    <div class="docs-scroll"><table>
+      <thead><tr><th>Module file</th><th>Your copy</th></tr></thead>
+      <tbody>
+        <tr><td><code>src/Views/roles/show.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/roles/show.php</code></td></tr>
+        <tr><td><code>src/Views/layouts/panel.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/layouts/panel.php</code></td></tr>
+        <tr><td><code>src/Views/emails/new_sign_in.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/emails/new_sign_in.php</code></td></tr>
+        <tr><td><code>src/Views/auth/login.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/auth/login.php</code></td></tr>
+      </tbody>
+    </table></div>
+    <p>Keep the copy in step when you update: a new version may pass new variables to a view or need new markup. The <code>CHANGELOG.md</code> says when a view changes. Escape every value you print with <code>esc()</code>, and keep <code>csrf_field()</code> in every form.</p>
+    <p>Shield's other screens (registration, password recovery) stay Shield's; restyle them with Shield's own <code>$views</code> setting.</p>
+
+    <h2 id="themes">Themes</h2>
+    <p>Three themes ship with the panel: <strong>Console</strong> (dense, the default), <strong>Clarity</strong> (airy) and <strong>Contrast</strong> (high contrast), each in light and dark. Every signed-in user picks light, dark or "System" from the top bar.</p>
+    <h3>The theme for everyone</h3>
+    <p><code>/rolewarden/appearance</code> (permission <code>appearance.update</code>) sets the starting theme, background, text and accent colours for light and dark, corner radius and density, with a live preview and a warning on any text colour below WCAG AA. The result is saved in <code>writable/rolewarden/theme.json</code>, a file of your application, so the folder must be writable by the web server.</p>
+    <h3>A theme under version control</h3>
+    <p>Download the theme from the Appearance screen and save it as <code>app/Config/RoleWarden/theme.json</code>. When that file exists it wins over the one in <code>writable/</code>, and the panel shows it without letting anyone change it.</p>
+    <h3>A theme of your own</h3>
+    <p>Declare it in your config class and write its tokens in a stylesheet of your application:</p>
+<pre><code>// app/Config/RoleWarden.php
+public array $extraThemes = ['ocean' =&gt; 'Ocean'];
+public ?string $themeStylesheet = '/css/rolewarden-theme.css';</code></pre>
+<pre><code>/* public/css/rolewarden-theme.css */
+:root[data-rw-theme="ocean"] {
+  --l-accent: #0b6e8a;
+  --d-accent: #5cc3dd;
+  /* ...every --l-* and --d-* token, as the design guide lists them */
+}</code></pre>
+    <p>The <a href="design-guide.html">design guide</a> lists every token with its value in each theme, and how a fourth theme is built.</p>
+
+    <h2 id="languages">Languages</h2>
+    <p>The panel and the security emails come in English and Italian. Each user picks the language from their profile; until they do, the panel follows the application's locale (<code>Config\App::$defaultLocale</code>, or the negotiated one when <code>$negotiateLocale</code> is on).</p>
+    <h3>Another language</h3>
+    <p>Copy the module's <code>src/Language/en/RoleWarden.php</code> to <code>app/Language/{locale}/RoleWarden.php</code>, for example <code>app/Language/fr/RoleWarden.php</code>, and translate the values. It appears in the profile's list at once, named in its own language. Lines you leave out fall back to English. Keep the placeholders (<code>{0}</code>, <code>%s</code>, <code>{0, plural, ...}</code>) as they are.</p>
+    <h3>Changing a few lines</h3>
+    <p>Put only those lines in <code>app/Language/{locale}/RoleWarden.php</code>, nested as in the module's file: CodeIgniter merges them over the module's.</p>
+<pre><code>&lt;?php
+
+return [
+    'panel' =&gt; [
+        'nav' =&gt; [
+            'users' =&gt; 'People',
+        ],
+    ],
+];</code></pre>
+    <h3>CodeIgniter's own messages</h3>
+    <p>Validation errors and relative dates come from CodeIgniter itself. Their translations are in the official <code>codeigniter4/translations</code> package, already included in the complete application: <code>composer require codeigniter4/translations</code> elsewhere. Shield ships its own.</p>
+  </main>
+</div>
+</body>
+</html>

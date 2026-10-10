@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migrating from Shield · RoleWarden documentation</title>
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<div class="rw docs">
+  <nav class="docs-nav" aria-label="Documentation">
+    <div class="rw-header">RoleWarden</div>
+    <ul>
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+      <li><a href="api.html">API reference</a></li>
+      <li><a href="views.html">Views, themes, languages</a></li>
+      <li><a href="shield.html" aria-current="page">Migrating from Shield</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="design-guide.html">Design guide</a></li>
+    </ul>
+  </nav>
+
+  <main class="docs-main">
+    <div class="rw-header">Documentation</div>
+    <h1>Migrating from Shield's groups</h1>
+    <p>Shield keeps groups and permissions in <code>app/Config/AuthGroups.php</code>, a file that changes only with a deploy. RoleWarden moves them into the database. If your application already uses Shield's groups, the move is automatic and reversible.</p>
+
+    <h2>What the import does</h2>
+    <p>Among the module's migrations, one reads your <code>app/Config/AuthGroups.php</code> (its <code>$groups</code>, <code>$permissions</code> and <code>$matrix</code>) and the assignments in Shield's <code>auth_groups_users</code> table, and turns them into roles, permissions and role assignments. It runs with the others:</p>
+<pre><code>php spark migrate -n RoleWarden</code></pre>
+    <ul>
+      <li>Each group becomes a role with the same slug, name and description, holding the permissions <code>$matrix</code> gives it. Wildcards such as <code>users.*</code> are expanded to the matching permissions.</li>
+      <li>Each permission of <code>$permissions</code> becomes a permission.</li>
+      <li>Each user keeps the groups they had, now as roles.</li>
+    </ul>
+    <h3>Groups with the same name as a system role</h3>
+    <p>RoleWarden seeds three system roles: <code>super-admin</code>, <code>admin</code> and <code>user</code>. A group with one of those slugs (Shield's stock <code>admin</code> and <code>user</code>, most often) is <strong>skipped</strong>, with its assignments: the import never changes what an existing role can do. After the migration, give those users the matching role from the panel, or with the <code>super-admin</code> query in <a href="installation.html#migrations">Installation</a>.</p>
+
+    <h2>Your code</h2>
+    <p>Calls written for Shield keep working once <code>$userProvider</code> points at RoleWarden's model (see <a href="installation.html#wiring">Wiring</a>):</p>
+<pre><code>auth()-&gt;user()-&gt;can('posts.edit');       // now answered from the database
+auth()-&gt;user()-&gt;inGroup('editor');        // reads the user's roles</code></pre>
+    <p>Replace <code>inGroup()</code> with permission checks as you go: a role can be renamed or split from the panel, a permission check survives it. For pages, the <a href="api.html#routes"><code>can</code> filter</a> replaces Shield's <code>group</code> and <code>permission</code> filters.</p>
+    <p>From now on, change roles and their permissions in the panel, not in <code>AuthGroups.php</code>: the file is read once, by the import, and later edits to it are ignored. Keep Shield's <code>$defaultGroup</code> pointing at a group that exists in the file; the role new users receive is the panel's <strong>default role</strong> setting.</p>
+
+    <h2>Going back</h2>
+    <p>Rolling back RoleWarden's batch (see <a href="installation.html#migrations">Installation</a>) removes exactly what the import created, by slug, and never touches a role or permission it did not create. Shield's <code>auth_groups_users</code> table is only read, never changed, so Shield's groups work again as soon as <code>$userProvider</code> points back at Shield's model.</p>
+  </main>
+</div>
+</body>
+</html>

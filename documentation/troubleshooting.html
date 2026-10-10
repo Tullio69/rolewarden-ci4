@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Troubleshooting · RoleWarden documentation</title>
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<div class="rw docs">
+  <nav class="docs-nav" aria-label="Documentation">
+    <div class="rw-header">RoleWarden</div>
+    <ul>
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+      <li><a href="api.html">API reference</a></li>
+      <li><a href="views.html">Views, themes, languages</a></li>
+      <li><a href="shield.html">Migrating from Shield</a></li>
+      <li><a href="troubleshooting.html" aria-current="page">Troubleshooting</a></li>
+      <li><a href="design-guide.html">Design guide</a></li>
+    </ul>
+  </nav>
+
+  <main class="docs-main">
+    <div class="rw-header">Documentation</div>
+    <h1>Troubleshooting</h1>
+    <p>The problems people run into most, with what causes them. Database and PHP errors are never shown on screen: look in <code>writable/logs/</code> first.</p>
+
+    <h2>Installation</h2>
+    <h3>The installer says "Already installed"</h3>
+    <p>It found <code>writable/rolewarden/installed.lock</code>, or an active super admin in the database. That is on purpose: once installed, it never runs again. Sign in instead. Starting over on a test server means an empty database and deleting the lock file.</p>
+    <h3>The setup code is refused</h3>
+    <p>Copy it again from <code>writable/rolewarden/install-code.txt</code>, without spaces. The file is created on the first visit to the installer and deleted when the installation finishes.</p>
+    <h3>"Could not connect to the database"</h3>
+    <p>Check server, port, database name, user and password; the database must already exist. The exact reason from the database is in <code>writable/logs/</code>. On many hosts the server is <code>localhost</code>, on Docker it is the service name.</p>
+    <h3>The installer shows a text to save as <code>.env</code></h3>
+    <p>The web server cannot write in the application's root folder. Save the text as <code>.env</code> there yourself (over FTP, for example) and continue, or make the folder writable and submit the database step again.</p>
+    <h3>Pages other than the home page answer 404</h3>
+    <p>The document root must be the <code>public/</code> folder, and the web server must send every request to <code>public/index.php</code>: CodeIgniter's <code>public/.htaccess</code> does it on Apache with <code>mod_rewrite</code>. Without rewriting, add <code>index.php/</code> to the addresses, or set <code>app.indexPage</code> accordingly.</p>
+
+    <h2>Panel</h2>
+    <h3><code>/rolewarden/users</code> answers 404</h3>
+    <p>The routes line is missing from <code>app/Config/Routes.php</code>: <code>\RoleWarden\Config\RouteRegistrar::register($routes);</code>.</p>
+    <h3>The panel has no style</h3>
+    <p>The stylesheet is served by the module at <code>/rolewarden/assets/css/panel.css</code>. Check that address in the browser: a 404 means the routes line is missing; anything else is in the log.</p>
+    <h3>Signing in sends me to the home page</h3>
+    <p>Set the <code>login</code> entry of <code>$redirects</code> in <code>app/Config/Auth.php</code> to <code>'rolewarden/users'</code>. Shield still returns a user to the page they were trying to open, when there was one.</p>
+    <h3>I can sign in but every panel page turns me away</h3>
+    <p>Your account holds none of the panel's permissions. Give it a role that does, from another administrator's account or, for the first super admin, with the query in <a href="installation.html#migrations">Installation</a>.</p>
+    <h3>A permission I granted is not taken into account</h3>
+    <p>Changes made in the panel apply at the user's next request. A denial set on the user's own page beats every role, the super admin included. A deactivated user is denied everything. If your own code wrote the module's tables directly, call <code>service('rolewarden')-&gt;forgetUser($id)</code> (see <a href="api.html#service">API reference</a>).</p>
+    <h3>My view override is ignored</h3>
+    <p>The copy must sit at <code>app/Views/overrides/RoleWarden/Views/...</code> with exactly the module's path after <code>Views/</code>, and CodeIgniter must be 4.7 or later.</p>
+
+    <h2>Sign-in, sessions, email</h2>
+    <h3>The lock after failed sign-ins never triggers</h3>
+    <p>Shield must record failed attempts: keep <code>Config\Auth::$recordLoginAttempt</code> at its default. If you moved Shield's login route, put the <code>rw-signin</code> filter on the new path.</p>
+    <h3>More than 10 attempts a minute are refused although the setting is higher</h3>
+    <p>Shield's <code>auth-rates</code> filter caps every IP at 10 requests a minute. Remove it from <code>app/Config/Filters.php</code>.</p>
+    <h3>A signed-out session is still open in another tab</h3>
+    <p>It ends at that browser's next request, not before.</p>
+    <h3>No security email arrives</h3>
+    <p>Set <code>email.fromEmail</code> and the SMTP settings in <code>.env</code> (see <a href="installation.html#installer">Installation</a>). The log says when an email was skipped or the mail server refused it. A sign-in from a new device sends nothing on an account's very first sign-in.</p>
+
+    <h2>Themes and languages</h2>
+    <h3>"The theme could not be saved"</h3>
+    <p><code>writable/rolewarden/</code> must be writable by the web server. If <code>app/Config/RoleWarden/theme.json</code> exists, the theme is pinned by your application and cannot be changed from the panel.</p>
+    <h3>Some messages stay in English in the Italian panel</h3>
+    <p>Validation errors and relative dates come from CodeIgniter: install <code>codeigniter4/translations</code>. Names and descriptions of roles and permissions are data, written by whoever created them.</p>
+
+    <h2>Updates and removal</h2>
+    <h3>After an update a screen is missing or a permission is unknown</h3>
+    <p>Run <code>php spark migrate -n RoleWarden</code>: new screens arrive with the migration that creates their permissions.</p>
+    <h3>Rolling back removed Shield too</h3>
+    <p><code>migrate:rollback</code> undoes whole batches. Install RoleWarden's migrations in a batch of their own and roll back with <code>-b</code>, as in <a href="installation.html#migrations">Installation</a>.</p>
+  </main>
+</div>
+</body>
+</html>

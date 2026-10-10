@@ -1,0 +1,29 @@
+/* Layout of the documentation pages only. Colours, type and spacing come from the
+   panel's own tokens (../src/Assets/css/panel.css), so the docs follow the themes. */
+.docs { max-width: 1120px; margin: 0 auto; padding: var(--space-8) var(--space-6) var(--space-16); display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--space-10); }
+.docs-nav { position: sticky; top: var(--space-6); align-self: start; }
+.docs-nav ul { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.docs-nav a { display: block; padding: var(--space-1) 0; }
+.docs-nav a[aria-current="page"] { color: var(--ink); font-weight: var(--weight-strong); }
+.docs-main h1 { font: var(--weight-title) var(--text-2xl)/var(--leading-2xl) var(--font-title); margin: var(--space-1) 0 var(--space-3); }
+.docs-main h2 { font: var(--weight-title) var(--text-lg)/var(--leading-lg) var(--font-title); margin: var(--space-10) 0 var(--space-3); padding-top: var(--space-5); border-top: var(--rule-strong-width) solid var(--rule-strong); }
+.docs-main h3 { font: var(--weight-strong) var(--text-md)/var(--leading-md) var(--font-sans); margin: var(--space-6) 0 var(--space-2); }
+.docs-main p, .docs-main li { max-width: 74ch; color: var(--ink-muted); }
+.docs-main strong { color: var(--ink); }
+.docs-main code { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink); }
+.docs-main pre { background: var(--surface-sunk); border: var(--rule-width) solid var(--rule); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); overflow-x: auto; font: var(--weight-body) var(--text-xs)/1.6 var(--font-mono); color: var(--ink); }
+.docs-main pre code { font-size: inherit; }
+.docs-main table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); margin: var(--space-3) 0; }
+.docs-main th, .docs-main td { text-align: left; vertical-align: top; padding: var(--space-2); border-bottom: var(--rule-width) solid var(--rule); }
+.docs-main th { font: var(--weight-strong) var(--text-xs)/var(--leading-xs) var(--font-sans); text-transform: uppercase; letter-spacing: .04em; color: var(--ink-muted); }
+.docs-main td { color: var(--ink-muted); }
+.docs-scroll { overflow-x: auto; }
+.docs-note { border-left: var(--rule-strong-width) solid var(--accent); padding: var(--space-2) var(--space-4); margin: var(--space-4) 0; background: var(--accent-tint); }
+.docs-note p { margin: 0; color: var(--ink); }
+.docs-foot { margin-top: var(--space-12); padding-top: var(--space-4); border-top: var(--rule-width) solid var(--rule); }
+@media (max-width: 760px) {
+  .docs { grid-template-columns: 1fr; gap: var(--space-4); padding: var(--space-6) var(--space-4) var(--space-12); }
+  .docs-nav { position: static; }
+  .docs-nav ul { flex-direction: row; flex-wrap: wrap; gap: var(--space-3); }
+}
+.docs-main td:first-child code { white-space: nowrap; }

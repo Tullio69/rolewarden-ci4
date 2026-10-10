@@ -1,0 +1,66 @@
+# Changelog
+
+Every change that matters to whoever installs or updates RoleWarden. Versions follow
+[semantic versioning](https://semver.org): a minor version adds without breaking, a major
+version may require changes on your side, listed under "Upgrading". After any update, run
+`php spark migrate -n RoleWarden`.
+
+## [1.0.0] - unreleased
+
+The first version for sale.
+
+### Added
+- **Settings screen** (`/rolewarden/settings`): default role for new users, session lifetime,
+  "Remember me", the lock after failed sign-ins and its duration, sign-in attempts per IP
+  address, how long the activity log is kept. Permissions `settings.view` and
+  `settings.update`.
+- **Toasts** for the outcome of every action in the panel.
+- **Profile** with password change, and **sessions**: every browser signed in to an account,
+  signed out one by one or all at once, remembered browsers forgotten. Permissions
+  `sessions.view` and `sessions.revoke` for other users' sessions.
+- **Sign-in limits**: a lock per email after repeated failures and a rate per IP address,
+  on top of Shield's own sign-in.
+- **Activity log** (`/rolewarden/activity`): every change to users, roles, permissions and
+  settings, and every sign-in attempt read from Shield, filtered by user, action and period.
+  Permission `activity.view`; event `rolewarden.activity`.
+- **Security emails**: sign-in from a new device or address, password changed, too many
+  failed sign-ins (also to holders of `security.alerts`). Sent after the response; event
+  `rolewarden.mail` to take them over.
+- **Themes**: Console, Clarity and Contrast, light and dark, light or dark chosen by each
+  user; the Appearance screen (`appearance.update`) with live preview, contrast check and a
+  theme file kept in your application; a design guide of every token.
+- **CSV import of users** (`/rolewarden/users/import`, `users.import`) with a row-by-row
+  preview and nothing written unless every row is valid.
+- **Italian** translation, the language chosen by each user from the profile, security
+  emails in the recipient's language.
+- **Browser installer** at `/rolewarden/install`, and the complete application zip with
+  `vendor/` included, for installing without Composer.
+- **Demo app** (`demo:install`, `demo:uninstall`) with three roles and a showcase mode.
+- **HTML documentation** in `documentation/`.
+
+### Changed
+- The panel was redrawn on the "editorial ledger" design system, with the CSS compiled from
+  tokens.
+
+### Upgrading from 0.1
+- Run `php spark migrate -n RoleWarden`: the new tables (`acl_sessions`,
+  `acl_activity_log`) are created and the `admin` role receives the new permissions.
+- The panel routes now also apply the `rw-language` filter, registered by the module.
+- Views you overrode under `app/Views/overrides/RoleWarden/` predate the new design: compare
+  them with the module's and copy them again.
+
+## [0.1.0] - 2026-09-26
+
+The MVP, not sold.
+
+### Added
+- Roles and permissions in the database, with role inheritance and per-user overrides that
+  grant or deny a single permission.
+- Resolution order: a deactivated user is denied everything; then a user's denial, which
+  beats even a super admin; then a user's grant; then super admin; then the roles.
+- Integration with Shield: `$user->can()` answered from the database, the `can` route
+  filter, the `can()`, `can_any()`, `can_all()` and `permissions()` helpers.
+- Admin panel: users, roles, the permission matrix per role, overrides per user.
+- Protections: never without an active super admin, no inheritance cycles, system roles and
+  permissions cannot be deleted.
+- Import of Shield's groups from `app/Config/AuthGroups.php`, reversible.

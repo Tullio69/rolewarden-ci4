@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation · RoleWarden documentation</title>
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<div class="rw docs">
+  <nav class="docs-nav" aria-label="Documentation">
+    <div class="rw-header">RoleWarden</div>
+    <ul>
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html" aria-current="page">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+      <li><a href="api.html">API reference</a></li>
+      <li><a href="views.html">Views, themes, languages</a></li>
+      <li><a href="shield.html">Migrating from Shield</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="design-guide.html">Design guide</a></li>
+    </ul>
+  </nav>
+
+  <main class="docs-main">
+    <div class="rw-header">Documentation</div>
+    <h1>Installation</h1>
+    <p>RoleWarden comes as three zips. Pick the one that matches where you start.</p>
+    <div class="docs-scroll"><table>
+      <thead><tr><th>Zip</th><th>For</th></tr></thead>
+      <tbody>
+        <tr><td><code>rolewarden-app-x.y.z.zip</code></td><td>Starting from nothing, or without Composer: CodeIgniter 4, Shield, CodeIgniter's translations and RoleWarden, with <code>vendor/</code> included and everything wired.</td></tr>
+        <tr><td><code>rolewarden-module-x.y.z.zip</code></td><td>An existing CodeIgniter 4 application that uses Composer.</td></tr>
+        <tr><td><code>rolewarden-demo-x.y.z.zip</code></td><td>The demo app on its own (the complete application already contains it).</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="complete-application">The complete application</h2>
+    <ol>
+      <li>Upload the content of the zip to your server.</li>
+      <li>Point the web server's document root at the <code>public/</code> folder. Everything else must stay outside the document root.</li>
+      <li>Make <code>writable/</code> writable by the web server, and the application's root folder too if you want the installer to write <code>.env</code> for you.</li>
+      <li>Create an empty MySQL or MariaDB database and a user for it.</li>
+      <li>Open the site. The home page leads to the installer.</li>
+    </ol>
+
+    <h3 id="installer">The browser installer</h3>
+    <p><code>/rolewarden/install</code> takes the application from an empty database to a first super admin.</p>
+    <ol>
+      <li><strong>Requirements.</strong> PHP version, extensions, a writable <code>writable/</code>, and whether <code>.env</code> can be written.</li>
+      <li><strong>Setup code.</strong> The installer saves a one-time code in <code>writable/rolewarden/install-code.txt</code> on the first visit. Open that file on the server (over FTP, for example) and type the code. Only someone who can read the server's files can install, so a stranger who finds a fresh upload first cannot make themselves super admin.</li>
+      <li><strong>Database.</strong> The application's address, then server, port, database name, user and password. The connection is tested; the settings go to <code>.env</code> together with a new encryption key. An existing key is kept, and so is an existing <code>CI_ENVIRONMENT</code>; otherwise it is set to <code>production</code>. When <code>.env</code> cannot be written, the installer shows its content to save by hand. A failed connection never shows database details on screen: they go to <code>writable/logs/</code>.</li>
+      <li><strong>Tables.</strong> The tables of CodeIgniter's Settings library, Shield and RoleWarden, and the system roles.</li>
+      <li><strong>First super admin.</strong> Username, email and password, checked with Shield's password rules. The account is created through Shield and is active.</li>
+    </ol>
+    <p>Then the installer writes <code>writable/rolewarden/installed.lock</code>, deletes the setup code and refuses to run again. It also refuses on an application that already has an active super admin. It never contacts anything outside your server.</p>
+    <p>Last step: give the application a sender for its security emails, in <code>.env</code>:</p>
+<pre><code>email.fromEmail = 'noreply@example.com'
+email.fromName = 'Example'
+email.protocol = 'smtp'
+email.SMTPHost = 'smtp.example.com'
+email.SMTPUser = 'noreply@example.com'
+email.SMTPPass = 'your-smtp-password'
+email.SMTPPort = 587
+email.SMTPCrypto = 'tls'</code></pre>
+    <p>Without <code>email.fromEmail</code> the emails are skipped and a line is written to the log.</p>
+
+    <h3>Updating the complete application</h3>
+    <p>RoleWarden lives in <code>modules/rolewarden</code> and is loaded from there by <code>app/Config/Autoload.php</code>. To update, replace that folder with the one from the new module zip, then run:</p>
+<pre><code>php spark migrate -n RoleWarden</code></pre>
+
+    <h2 id="module">The module in an existing application</h2>
+    <p>Unzip the module zip into your application, for example as <code>modules/rolewarden</code>, and let Composer install it from there with a path repository in your <code>composer.json</code>:</p>
+<pre><code>"repositories": [
+    { "type": "path", "url": "modules/rolewarden", "options": { "symlink": false } }
+],</code></pre>
+<pre><code>composer require rolewarden/codeigniter4-rolewarden:@dev
+composer require codeigniter4/translations   # optional: CodeIgniter's own messages in Italian and other languages</code></pre>
+    <p>Shield must already be installed and set up (<code>php spark shield:setup</code>).</p>
+
+    <h3 id="wiring">Wiring</h3>
+    <p>In <code>app/Config/Auth.php</code>, let Shield ask RoleWarden for permissions:</p>
+<pre><code>public string $userProvider = \RoleWarden\Models\UserModel::class;</code></pre>
+    <p>In the same file, use RoleWarden's sign-in screen (the <code>$views</code> array) and, if most people who sign in are administrators, land them on the panel (the <code>$redirects</code> array):</p>
+<pre><code>'login' =&gt; '\RoleWarden\Views\auth\login',</code></pre>
+<pre><code>'login' =&gt; 'rolewarden/users',</code></pre>
+    <p>In <code>app/Config/Routes.php</code>, next to the line Shield already needs:</p>
+<pre><code>service('auth')-&gt;routes($routes);
+\RoleWarden\Config\RouteRegistrar::register($routes);</code></pre>
+    <p>That registers the panel, the installer, and a route serving the panel's CSS and JavaScript from the module: nothing is copied under <code>public/</code>. The module's events (session tracking, security emails, the registration hook) load by themselves as long as <code>app/Config/Modules.php</code> keeps module discovery on for <code>events</code>, the default.</p>
+    <p>Enable CSRF protection for every form in <code>app/Config/Filters.php</code> (the panel's own routes have it in any case):</p>
+<pre><code>public array $globals = [
+    'before' =&gt; [
+        'csrf',
+    ],
+    // ...
+];</code></pre>
+
+    <h3 id="migrations">Tables, with the installer or by hand</h3>
+    <p>Open <code>/rolewarden/install</code> and follow it (the database step is skipped when your application is already connected), or run the migrations yourself. Run them in separate steps, so that RoleWarden gets a batch of its own and can be rolled back without Shield:</p>
+<pre><code>php spark migrate -n 'CodeIgniter\Settings'
+php spark migrate -n 'CodeIgniter\Shield'
+php spark migrate -n RoleWarden
+php spark db:seed 'RoleWarden\Database\Seeds\RoleWardenSeeder'</code></pre>
+    <p>By hand, the first super admin is a Shield user given the <code>super-admin</code> role once:</p>
+<pre><code>php spark shield:user create -n admin -e you@example.com
+php spark shield:user activate -e you@example.com</code></pre>
+<pre><code>INSERT INTO acl_user_roles (user_id, role_id)
+SELECT i.user_id, r.id
+FROM auth_identities i
+JOIN acl_roles r ON r.slug = 'super-admin'
+WHERE i.type = 'email_password' AND i.secret = 'you@example.com';</code></pre>
+    <p>Replace <code>acl_</code> if you changed the table prefix (see <a href="configuration.html">Configuration</a>).</p>
+
+    <h3>Updating the module</h3>
+    <p>Replace the module's folder (or run <code>composer update rolewarden/codeigniter4-rolewarden</code>), then <code>php spark migrate -n RoleWarden</code>. A new version brings its changes to existing data as migrations: for example, a new screen comes with a migration that gives the <code>admin</code> role its new permissions.</p>
+
+    <h3>Removing the module</h3>
+    <p><code>migrate:rollback</code> undoes whole batches, whatever the namespace. Look up RoleWarden's batch in the <code>migrations</code> table and roll back to the batch before it:</p>
+<pre><code>php spark migrate:rollback -b &lt;previous batch&gt;</code></pre>
+    <p><code>-b 0</code> rolls back everything, Shield included. Then remove the wiring lines and the module.</p>
+
+    <h2 id="demo">The demo app</h2>
+    <p>A small document register with three roles in a chain of inheritance: a Reader only reads, an Author writes and edits their own documents, an Approver approves and deletes. It shows the permissions at work and is the model to copy for your own screens. The complete application contains it in <code>modules/rolewarden-demo</code>, not installed.</p>
+<pre><code>php spark demo:install     # table, permissions, roles, three accounts, sample documents
+php spark demo:uninstall   # removes all of it, and nothing else</code></pre>
+    <p>The accounts are <code>reader@example.com</code>, <code>author@example.com</code> and <code>approver@example.com</code>, with the password set in <code>.env</code> as <code>demo.password</code> (or generated and printed once). Open <code>/demo</code>. In your own application, copy the demo folder and add one line to <code>$psr4</code> in <code>app/Config/Autoload.php</code> and one to <code>app/Config/Routes.php</code>, as its <code>README.md</code> explains.</p>
+    <p><strong>Showcase mode</strong>, for a public demo or a product video, adds a bar that switches the session between the three demo accounts without a password: <code>demo.showcase = true</code> in <code>.env</code>. It only switches to the accounts the demo created, and it is ignored when <code>CI_ENVIRONMENT</code> is <code>production</code>.</p>
+  </main>
+</div>
+</body>
+</html>

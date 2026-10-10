@@ -2,6 +2,10 @@
 
 Roles & Permissions Panel for CodeIgniter 4, built on top of [Shield](https://github.com/codeigniter4/shield).
 
+The full documentation is in `documentation/index.html`: open it in a browser. This file is
+the short version. Changes between versions are in `CHANGELOG.md`, licences of third-party
+code in `THIRD-PARTY-LICENSES.md`.
+
 Shield owns identity and authentication. RoleWarden moves roles and permissions out of the
 config file and into the database, and adds an admin panel to manage them at runtime.
 
@@ -31,7 +35,7 @@ src/
   Settings/        Runtime settings (sign-in rules, theme, per-user choices)
   Views/           Admin panel views (overridable by the host application)
   Assets/          Compiled CSS and JS for the panel
-documentation/     Design guide of the panel's tokens and themes
+documentation/     The HTML documentation (open index.html) and the design guide
 ```
 
 ## Two ways to install
@@ -209,8 +213,7 @@ A user without `users.view` is turned away by the panel's permission check, as o
 panel URL, so set this only if most people who sign in are administrators.
 
 Registration and password recovery stay exactly Shield's own screens (this module does
-not touch identity or credentials); only the login screen has a matching design in
-`docs/design-system/` so far.
+not touch identity or credentials); only the login screen is restyled.
 
 ### Settings and the default role
 

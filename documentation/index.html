@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoleWarden documentation</title>
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<div class="rw docs">
+  <nav class="docs-nav" aria-label="Documentation">
+    <div class="rw-header">RoleWarden</div>
+    <ul>
+      <li><a href="index.html" aria-current="page">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+      <li><a href="api.html">API reference</a></li>
+      <li><a href="views.html">Views, themes, languages</a></li>
+      <li><a href="shield.html">Migrating from Shield</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="design-guide.html">Design guide</a></li>
+    </ul>
+  </nav>
+
+  <main class="docs-main">
+    <div class="rw-header">Documentation</div>
+    <h1>RoleWarden</h1>
+    <p>Roles and permissions in the database, with an admin panel, for CodeIgniter 4. RoleWarden extends <a href="https://github.com/codeigniter4/shield">CodeIgniter Shield</a>: Shield keeps users, passwords, sessions, sign-in, "remember me", tokens and the record of sign-in attempts; RoleWarden moves roles and permissions out of a config file and into tables you manage at runtime.</p>
+
+    <h2>What you get</h2>
+    <ul>
+      <li><strong>An admin panel</strong> at <code>/rolewarden</code>: users, roles with inheritance, a permission matrix per role, per-user overrides, settings, an activity log, themes, a profile and session list for every user, and a CSV import.</li>
+      <li><strong>Permission checks</strong> for your own code: <code>can('invoices.approve')</code> in views and controllers, <code>can:invoices.approve</code> on routes, and Shield's own <code>$user-&gt;can()</code>, all answered from the database.</li>
+      <li><strong>Security emails</strong> for sign-ins from a new device or address, password changes and repeated failed sign-ins.</li>
+      <li><strong>A browser installer</strong>, English and Italian, three themes in light and dark, and a demo app to copy from.</li>
+    </ul>
+
+    <h2>Requirements</h2>
+    <ul>
+      <li>PHP 8.3 or later, with the <code>intl</code>, <code>mbstring</code>, <code>json</code> and <code>mysqli</code> extensions</li>
+      <li>CodeIgniter 4.7.4 or later within 4.x</li>
+      <li>CodeIgniter Shield 1.4 or later within 1.x</li>
+      <li>MySQL or MariaDB with InnoDB</li>
+    </ul>
+    <div class="docs-note"><p>RoleWarden needs Shield. An application with its own authentication and no wish to use Shield cannot use RoleWarden.</p></div>
+
+    <h2>Three ideas to keep in mind</h2>
+    <h3>Code checks permissions, never roles</h3>
+    <p>Write <code>can('users.delete')</code>, never "is this user an admin". Roles are only bundles of permissions that administrators rearrange in the panel; code that names a role breaks the day someone renames or splits it.</p>
+    <h3>Permissions are named <code>area.action</code></h3>
+    <p>Lowercase, one dot: <code>users.view</code>, <code>invoices.approve</code>, <code>documents.delete</code>. Code refers to them by this name, never by id.</p>
+    <h3>How a check is decided</h3>
+    <ol>
+      <li>A deactivated user is denied everything.</li>
+      <li>A permission <strong>denied</strong> to that user by an override is denied, even to a super admin.</li>
+      <li>A permission <strong>granted</strong> to that user by an override is granted.</li>
+      <li>A super admin is granted everything else.</li>
+      <li>A permission held by one of the user's roles, directly or inherited from a parent role, is granted.</li>
+      <li>Anything else is denied.</li>
+    </ol>
+
+    <h2>Where to start</h2>
+    <ul>
+      <li>Starting from nothing, or no Composer: the complete application, then the browser installer. See <a href="installation.html#complete-application">Installation</a>.</li>
+      <li>Adding RoleWarden to an application you already have: the module with Composer. See <a href="installation.html#module">Installation</a>.</li>
+      <li>Already using Shield's groups in <code>app/Config/AuthGroups.php</code>: see <a href="shield.html">Migrating from Shield</a>.</li>
+      <li>Securing your own pages: see <a href="api.html">API reference</a>.</li>
+    </ul>
+
+    <p class="docs-foot rw-note">No file of the module is meant to be edited. Everything you customise lives in your application, so an update is a replacement of the module's folder. Changes between versions are listed in <code>CHANGELOG.md</code>; licences of third-party code in <code>THIRD-PARTY-LICENSES.md</code>.</p>
+  </main>
+</div>
+</body>
+</html>

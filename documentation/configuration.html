@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configuration · RoleWarden documentation</title>
+  <link rel="stylesheet" href="../src/Assets/css/panel.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<div class="rw docs">
+  <nav class="docs-nav" aria-label="Documentation">
+    <div class="rw-header">RoleWarden</div>
+    <ul>
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html" aria-current="page">Configuration</a></li>
+      <li><a href="api.html">API reference</a></li>
+      <li><a href="views.html">Views, themes, languages</a></li>
+      <li><a href="shield.html">Migrating from Shield</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="design-guide.html">Design guide</a></li>
+    </ul>
+  </nav>
+
+  <main class="docs-main">
+    <div class="rw-header">Documentation</div>
+    <h1>Configuration</h1>
+    <p>Most options change at runtime from the panel's <strong>Settings</strong> screen and need no file at all. The rest live in the config class <code>RoleWarden\Config\RoleWarden</code>, which you never edit: override a value in <code>.env</code>, or extend the class in your application.</p>
+
+    <h2>Overriding a value</h2>
+    <p>In <code>.env</code>, with the <code>rolewarden.</code> prefix:</p>
+<pre><code>rolewarden.tablePrefix = 'myapp_'
+rolewarden.lockAttempts = 8</code></pre>
+    <p>Or in <code>app/Config/RoleWarden.php</code>, for values that are not plain text or numbers:</p>
+<pre><code>&lt;?php
+
+namespace Config;
+
+class RoleWarden extends \RoleWarden\Config\RoleWarden
+{
+    public array $extraThemes = ['ocean' =&gt; 'Ocean'];
+    public ?string $themeStylesheet = '/css/rolewarden-theme.css';
+}</code></pre>
+
+    <h2>Options</h2>
+    <div class="docs-scroll"><table>
+      <thead><tr><th>Option</th><th>Default</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>tablePrefix</code></td><td><code>'acl_'</code></td><td>Prefix of every table the module creates. Set it before running the migrations.</td></tr>
+        <tr><td><code>defaultRole</code></td><td><code>null</code></td><td>Slug of the role given to every new user, registered through Shield or created from the panel. Starting value: the Settings screen changes it. A super admin role is refused.</td></tr>
+        <tr><td><code>sessionLifetime</code></td><td><code>7200</code></td><td>Seconds a signed-in session may stay idle. Starting value of the Settings screen.</td></tr>
+        <tr><td><code>lockAttempts</code></td><td><code>5</code></td><td>Failed sign-ins on one email, since its last successful one, that lock it.</td></tr>
+        <tr><td><code>lockMinutes</code></td><td><code>15</code></td><td>How long a locked email waits.</td></tr>
+        <tr><td><code>signInRate</code></td><td><code>10</code></td><td>Sign-in attempts accepted per minute from one IP address, whatever the email.</td></tr>
+        <tr><td><code>activityRetentionDays</code></td><td><code>365</code></td><td>Days the activity log keeps its entries; <code>0</code> keeps them forever. The Settings screen offers 90 days, 1 year or forever.</td></tr>
+        <tr><td><code>colorScheme</code></td><td><code>'system'</code></td><td>Light or dark for a user who has not chosen; <code>'system'</code> follows the browser.</td></tr>
+        <tr><td><code>extraThemes</code></td><td><code>[]</code></td><td>Themes of your application offered next to Console, Clarity and Contrast: <code>slug =&gt; label</code>. See <a href="views.html#themes">Themes</a>.</td></tr>
+        <tr><td><code>themeStylesheet</code></td><td><code>null</code></td><td>URL of a stylesheet of your application loaded after the panel's own.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>The Settings screen</h2>
+    <p><code>/rolewarden/settings</code> needs <code>settings.view</code> to open and <code>settings.update</code> to save. Values are stored with CodeIgniter's Settings library, in the <code>settings</code> table Shield already uses, and apply from each user's next request.</p>
+    <ul>
+      <li><strong>Default role for new users.</strong></li>
+      <li><strong>Session lifetime</strong> and <strong>Remember me</strong>. "Remember me" is Shield's own <code>Auth.sessionConfig</code>, stored through the same library, so Shield reads it unchanged. Off hides the option on the sign-in page.</li>
+      <li><strong>Lock after failed sign-ins</strong>, <strong>lock duration</strong> and <strong>sign-in attempts per address</strong>.</li>
+      <li><strong>How long the activity log is kept.</strong> Older entries are deleted once a day, on the first write of the day: no cron job.</li>
+    </ul>
+
+    <h3>Sign-in limits and Shield</h3>
+    <ul>
+      <li>The lock counts the failures Shield records in <code>auth_logins</code>. Keep <code>Config\Auth::$recordLoginAttempt</code> at its default, or at least recording failures.</li>
+      <li>The limits run in the <code>rw-signin</code> filter, which the module puts on the <code>login</code> route by itself. If you moved Shield's login route, add <code>rw-signin</code> to its path in <code>app/Config/Filters.php</code>.</li>
+      <li>Shield's <code>auth-rates</code> filter, if you use it, still caps every IP at 10 requests a minute: remove it to let the setting go higher.</li>
+    </ul>
+
+    <h2>Security emails</h2>
+    <p>The module emails a user when their account signs in from a device or address it has never used (not on the very first sign-in), when their password changes, from the profile or set by an administrator, and when their email reaches the sign-in lock. That last alert also goes to everyone holding <code>security.alerts</code>, once per lock.</p>
+    <ul>
+      <li>They use CodeIgniter's Email service and <code>app/Config/Email.php</code>, which needs a <code>fromEmail</code>; without one they are skipped and a warning is logged.</li>
+      <li>They are sent after the response has gone out, so no page waits for the mail server.</li>
+      <li>Each one goes out in the language of the person who receives it.</li>
+      <li>To put them on a queue of your own, see the <code>rolewarden.mail</code> event in the <a href="api.html#events">API reference</a>.</li>
+    </ul>
+
+    <h2>Permissions the panel uses</h2>
+    <div class="docs-scroll"><table>
+      <thead><tr><th>Permission</th><th>Allows</th></tr></thead>
+      <tbody>
+        <tr><td><code>users.view</code>, <code>users.create</code>, <code>users.update</code>, <code>users.delete</code>, <code>users.activate</code></td><td>The users list and detail, creating, editing, deleting, deactivating users</td></tr>
+        <tr><td><code>users.import</code></td><td>The CSV import</td></tr>
+        <tr><td><code>roles.view</code>, <code>roles.create</code>, <code>roles.update</code>, <code>roles.delete</code>, <code>roles.assign</code></td><td>Roles, their permission matrix, assigning roles to users</td></tr>
+        <tr><td><code>permissions.view</code>, <code>permissions.override</code></td><td>The permission list, per-user overrides</td></tr>
+        <tr><td><code>settings.view</code>, <code>settings.update</code></td><td>The Settings screen</td></tr>
+        <tr><td><code>sessions.view</code>, <code>sessions.revoke</code></td><td>Another user's sessions on their detail page</td></tr>
+        <tr><td><code>activity.view</code></td><td>The activity log</td></tr>
+        <tr><td><code>appearance.update</code></td><td>The theme for everyone</td></tr>
+        <tr><td><code>security.alerts</code></td><td>Receiving the "too many failed sign-ins" alerts about other accounts</td></tr>
+      </tbody>
+    </table></div>
+    <p>The system role <code>admin</code> holds them all; <code>super-admin</code> passes every check; <code>user</code> holds none. Profile, own sessions, language and light or dark need no permission, only being signed in.</p>
+  </main>
+</div>
+</body>
+</html>

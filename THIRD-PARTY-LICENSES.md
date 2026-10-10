@@ -10,19 +10,20 @@ address given.
 | Work | Version | Licence | Copyright | Where |
 | --- | --- | --- | --- | --- |
 | [Alpine.js](https://alpinejs.dev) | 3.17.4 | MIT | © 2019-2025 Caleb Porzio and contributors | `src/Assets/js/vendor/alpine.min.js`, licence in `LICENSE-alpine.md` beside it |
-| [IBM Plex](https://github.com/IBM/plex) Sans, Serif, Mono | | SIL Open Font License 1.1 | © 2017 IBM Corp., Reserved Font Name "Plex" | `src/Assets/fonts/`, licence in `LICENSE.txt` beside them |
+| [IBM Plex](https://github.com/IBM/plex) Sans, Serif, Mono | Latin subset | SIL Open Font License 1.1 | © 2017 IBM Corp., Reserved Font Name "Plex" | `src/Assets/fonts/`, licence in `LICENSE.txt` beside them |
 | [Tailwind CSS](https://tailwindcss.com) | 4.3.3 | MIT | © Tailwind Labs, Inc. | compiled into `src/Assets/css/panel.css` (build tool only; the header of that file keeps its notice) |
 
 ## Required by the module, included in the complete application
 
-| Package | Version tested | Licence | Copyright |
+| Package | Version in the complete application | Licence | Copyright |
 | --- | --- | --- | --- |
-| [codeigniter4/framework](https://github.com/codeigniter4/framework) | 4.7.4 | MIT | © 2014-2019 British Columbia Institute of Technology; © 2019-present CodeIgniter Foundation |
+| [codeigniter4/framework](https://github.com/codeigniter4/framework) | 4.7.5 | MIT | © 2014-2019 British Columbia Institute of Technology; © 2019-present CodeIgniter Foundation |
 | [codeigniter4/shield](https://github.com/codeigniter4/shield) | 1.4.1 | MIT | © 2020-2022 Lonnie Ezell; © 2022-present CodeIgniter Foundation |
 | [codeigniter4/settings](https://github.com/codeigniter4/settings) | 2.4.0 | MIT | © 2021 Lonnie Ezell; © 2021-present CodeIgniter Foundation |
 | [codeigniter4/translations](https://github.com/codeigniter4/translations) | 4.7.4 | MIT | © 2014-2019 British Columbia Institute of Technology; © 2019-present CodeIgniter Foundation |
 | [laminas/laminas-escaper](https://github.com/laminas/laminas-escaper) | 2.18.0 | BSD-3-Clause | © 2020 Laminas Project a Series of LF Projects, LLC |
 | [psr/log](https://github.com/php-fig/log) | 3.0.2 | MIT | © 2012 PHP Framework Interoperability Group |
+| [Composer](https://getcomposer.org) autoloader (`vendor/autoload.php`, `vendor/composer/`) | 2.x | MIT | © Nils Adermann, Jordi Boggiano |
 
 The complete application starts from CodeIgniter's
 [app starter](https://github.com/codeigniter4/appstarter) (MIT, © CodeIgniter Foundation).

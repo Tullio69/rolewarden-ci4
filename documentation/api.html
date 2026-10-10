@@ -113,7 +113,7 @@ $rolewarden-&gt;authorize($userId, 'invoices.approve');                // throws
     <p>Each user's permissions are cached and forgotten whenever the panel changes something that affects them. If your own code writes the module's tables directly (assigning a role in a migration, for example), tell the service:</p>
 <pre><code>service('rolewarden')-&gt;forgetUser($userId);       // after changing one user's roles or overrides
 service('rolewarden')-&gt;forgetRole($roleId);       // after changing a role, its permissions or its parent</code></pre>
-    <p>Assigning a role through <code>RoleWarden\Models\UserRoles::assign($userId, $roleId)</code> does it for you.</p>
+    <p>Assigning a role through <code>(new \RoleWarden\Models\UserRoles())-&gt;assign($userId, $roleId)</code> does it for you.</p>
 
     <h2 id="events">Events</h2>
     <h3><code>rolewarden.activity</code></h3>

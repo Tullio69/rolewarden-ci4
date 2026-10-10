@@ -8,6 +8,7 @@ use CodeIgniter\Database\Config as Database;
 use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Models\UserRoles;
 use RuntimeException;
+use Throwable;
 
 /**
  * Installs and removes the demo (SPEC, V8 decisions). Everything the demo
@@ -67,11 +68,27 @@ final class DemoInstaller
             throw new RuntimeException('The demo is already installed.');
         }
 
-        foreach ([[$identities, 'secret', array_keys(self::ACCOUNTS)], [$cfg->table('roles'), 'slug', array_keys(self::ROLES)], [$cfg->table('permissions'), 'slug', self::permissionSlugs()]] as [$table, $column, $values]) {
+        foreach ([[$identities, 'secret', array_keys(self::ACCOUNTS)], [config('Auth')->tables['users'], 'username', array_column(self::ACCOUNTS, 0)], [$cfg->table('roles'), 'slug', array_keys(self::ROLES)], [$cfg->table('permissions'), 'slug', self::permissionSlugs()]] as [$table, $column, $values]) {
             if ($db->table($table)->whereIn($column, $values)->countAllResults() > 0) {
                 throw new RuntimeException("Something named like the demo already exists in {$table}: remove it first.");
             }
         }
+
+        try {
+            self::create($password);
+        } catch (Throwable $e) {
+            // Whatever was created before the failure goes away again; the reason goes to the log.
+            log_message('error', 'RoleWarden demo: install failed: {message}', ['message' => $e->getMessage()]);
+            self::uninstall();
+
+            throw new RuntimeException('The demo could not be installed; nothing was left behind. The reason is in the application log.');
+        }
+    }
+
+    private static function create(string $password): void
+    {
+        $db = db_connect();
+        $cfg = config('RoleWarden');
 
         service('migrations', null, null, false)->setNamespace(self::NAMESPACE)->latest();
 

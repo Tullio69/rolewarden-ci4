@@ -51,7 +51,9 @@ demo.showcase = true
 It only ever switches to the accounts `demo:install` created, and it is ignored when
 `CI_ENVIRONMENT` is `production`. A public demo site runs in an environment of its own
 instead (for example `CI_ENVIRONMENT = demo`, with an `app/Config/Boot/demo.php` copied from
-`production.php`).
+`production.php`). CodeIgniter's 404 page shows its message in every environment but
+`production`: in `app/Views/errors/html/error_404.php`, change
+`ENVIRONMENT !== 'production'` to `! in_array(ENVIRONMENT, ['production', 'demo'], true)`.
 
 ## Remove
 

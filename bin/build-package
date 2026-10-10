@@ -55,7 +55,9 @@ mkdir -p "$APP/modules"
 git -C "$ROOT" archive --format=tar --prefix=rolewarden/ HEAD | tar -x -C "$APP/modules"
 git -C "$ROOT" archive --format=tar --prefix=rolewarden-demo/ HEAD:demo | tar -x -C "$APP/modules"
 # The starter's README is about CodeIgniter; the buyer needs RoleWarden's.
-cp "$APP/modules/rolewarden/README.md" "$APP/README.md"
+cp "$APP/modules/rolewarden/README.md" "$APP/modules/rolewarden/CHANGELOG.md" "$APP/modules/rolewarden/THIRD-PARTY-LICENSES.md" "$APP/"
+# At the root its links to the documentation point into the module folder.
+sed -i.bak 's#`documentation/index.html`#`modules/rolewarden/documentation/index.html`#' "$APP/README.md" && rm "$APP/README.md.bak"
 
 php -d error_reporting=-1 -r '
 $app = $argv[1];

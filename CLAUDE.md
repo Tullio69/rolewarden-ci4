@@ -57,52 +57,29 @@ restringono chi puo' installare il modulo.
 Prima di iniziare qualsiasi modifica, leggi _AI-LOG.md nella root del progetto.
 Se la sezione "Stato corrente" indica un altro agente al lavoro su file che si sovrappongono al tuo scope, fermati e avvisa l'utente invece di procedere.
 
-### Lancio di Codex per il collaudo di una tappa
+### Collaudo di una tappa
 
-Non usare l'agente `codex:codex-rescue` e non usare `task --background`: tornano subito e nessuno
-avvisa a fine lavoro, quindi l'utente dovrebbe chiedere ogni volta se Codex ha finito.
-Procedura obbligatoria:
+Dal 2026-10-14 il collaudo indipendente lo fa solo un subagente Claude fresco (tipo
+`general-purpose`), il "Collaudatore ad Hoc". Codex non si usa piu', nemmeno quando e'
+disponibile. Non si salta il collaudo e non si dichiara chiusa una tappa senza di esso.
 
-1. Scrivi il prompt di collaudo in un file nella cartella scratchpad (mai inline nel comando,
-   i virgolettati rompono la shell). Il prompt segue il protocollo del brief: Codex legge
-   solo specifica, definizione di fatto, `_AI-LOG.md` e i contratti pubblici, non
-   l'implementazione; scrive solo in `tests/Integration/` e nel log; nessun commit.
-2. Lancia con lo strumento Bash e `run_in_background: true`, senza `--background`, cosi' il
-   comando resta in primo piano nel proprio processo e il sistema ti risveglia quando termina:
-   `node "C:/Users/fabio/.claude/plugins/cache/openai-codex/codex/1.0.6/scripts/codex-companion.mjs" task --write "$(cat <file-prompt>)"`
-   (se la versione del plugin nel percorso non esiste piu', usa quella presente in
-   `~/.claude/plugins/cache/openai-codex/codex/`).
-3. Dillo all'utente in una riga e continua o fermati. Non fare polling e non chiedere
-   all'utente se ha finito.
-4. Alla notifica di fine, leggi l'output e `tests/Integration/M<n>-REPORT.md`, correggi i
-   difetti che sono tuoi, rilancia Codex per la riverifica e riporta l'esito all'utente
-   senza aspettare che lo chieda. Le ambiguita' di specifica non si decidono: si riportano.
-
-### Se Codex non e' disponibile
-
-Quota esaurita, ambiente che rifiuta l'avvio dei processi, o qualunque altro blocco che
-impedisce a Codex di collaudare: non si salta il collaudo e non si dichiara chiusa una
-tappa senza di esso. Si sostituisce Codex con un subagente Claude fresco (tipo
-`general-purpose`), il "Collaudatore ad Hoc", che segue lo stesso identico protocollo,
-in tutto e per tutto:
-
-1. Legge solo specifica, definizione di fatto, `_AI-LOG.md` e i contratti pubblici. Non
-   apre controller, model, view, adapter ne' i test unitari esistenti: se leggesse
-   l'implementazione certificherebbe il comportamento esistente, bug compresi, esattamente
-   il rischio che il protocollo con Codex esiste per evitare.
+1. Il collaudatore legge solo specifica, definizione di fatto, `_AI-LOG.md` e i contratti
+   pubblici. Non apre controller, model, view, adapter ne' i test unitari esistenti: se
+   leggesse l'implementazione certificherebbe il comportamento esistente, bug compresi.
 2. Collauda in nero (richieste HTTP, query dirette al database) contro un'app CI4 di prova
    isolata, usando solo `rolewarden_test`, mai `rolewarden`; snapshot e ripristino esatto
    dei dati a fine collaudo; nessuna credenziale nei file.
-3. Scrive solo in `tests/Integration/` (stesso schema di file di Codex: `verify-m<n>.*`,
-   `M<n>-REPORT.md`, output) e una voce in `_AI-LOG.md` nello stesso formato, con esito
-   PASS/FAIL, stato di approvazione e le ambiguita' di specifica separate dai difetti, mai
-   decise a naso. Nessun commit: lo fa chi lo lancia, dopo aver letto l'esito.
-4. Chi lo lancia non gli fornisce scorciatoie che Codex non avrebbe: stesso perimetro,
-   stessa cecita' sull'implementazione, stesso rigore. L'unica differenza accettabile e' il
-   nome nella voce di log.
+3. Scrive solo in `tests/Integration/` (`verify-<tappa>.*`, `<TAPPA>-REPORT.md`, output) e una
+   voce in `_AI-LOG.md` con esito PASS/FAIL, stato di approvazione e le ambiguita' di
+   specifica separate dai difetti, mai decise a naso. Nessun commit: lo fa chi lo lancia,
+   dopo aver letto l'esito.
+4. Chi lo lancia scrive il prompt in un file nella cartella scratchpad, non gli fornisce
+   scorciatoie sull'implementazione, lo avvia in background e lo dice all'utente in una
+   riga, senza polling. Alla notifica di fine legge il report, corregge i difetti suoi,
+   rilancia il collaudatore per la riverifica e riporta l'esito all'utente senza aspettare
+   che lo chieda. Le ambiguita' di specifica non si decidono: si riportano.
 
-Il collaudo del Collaudatore ad Hoc vale come chiusura della tappa alla pari di quello di
-Codex. Quando Codex torna disponibile, non serve ripetere una tappa gia' chiusa cosi'.
+Le tappe chiuse in passato da Codex restano valide e non vanno ripetute.
 
 Inizio sessione: aggiorna "In lavorazione" con nome, orario, scope previsto.
 Fine sessione: riporta "In lavorazione" a "nessuno" e aggiungi una voce nel log.

@@ -859,3 +859,14 @@ Formato di ogni voce:
   - D4: un `back` con caratteri di controllo è ignorato.
 - Stato: completato, V8b PASS alla terza riverifica (Collaudatore ad Hoc, Codex non disponibile per il modello configurato).
 - Note per il prossimo: aperte all'utente A1 (una sola lingua) e A3 (scorrimento a 1280/1366 px); dopo la messa online vanno ricostruiti gli zip e rifatte fase P/E di V8 e V7 sui pacchetti.
+
+### [2026-10-14 11:36] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v8b.run.py` con il modo `v8zip`, `verify-v8b.suite7.py`, `verify-v8b.v7adapted.php`; uscite `verify-v8b.v8zip.b1cca14.rc.v8c.*`, `verify-v8b.v7.b1cca14.rc.v8c*.*`, `verify-v8b.v7package.b1cca14.rc.v8c.output.txt`; sezione «Pacchetti rc.v8c» in `V8b-REPORT.md`) e questa voce
+- Cosa ho fatto: collaudo degli zip rc.v8c (commit `b1cca14`), una suite alla volta: fasi P ed E di V8, suite V7, controllo dei pacchetti V7.
+- Stato: completato. **Esito PASS, pacchetti rc.v8c approvati per il collaudo.**
+  - V8 P+E 35/36: P06d è la frase «from the module folder», già giudicata corretta in V8 (O7).
+  - V7 adattata 181/181, 1 AMB (l'A1 di V7). La versione originale dava 160/181: `set_lang()` di `verify-v7.php` prendeva il primo form verso `profile/language`, che da `6d21875` è il selettore EN/IT della barra in alto, senza select. È un'aspettativa superata, corretta in `verify-v8b.v7adapted.php` (una riga).
+  - Pacchetti V7 15/16: P04 è superato da V8 (CHANGELOG e licenze nel modulo).
+  - Moduli e demo degli zip identici a `git archive b1cca14`.
+- Note per il prossimo: aperte all'autore A1, A3, A15c, G03 e l'A1 di V7. Snapshot `f7f37c04…e21e64` identico in tutte le 61 esecuzioni registrate; Mailpit vuoto; nessun processo mio. Profili Chrome da cancellare a mano in `scratchpad/` (da `v8breg` a `v8breg4`). Controllo visivo in un browser vero ancora dovuto. Nessun commit, nessun push.

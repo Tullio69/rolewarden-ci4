@@ -75,13 +75,19 @@ def main():
             with tarfile.open(WORK / t) as tf:
                 tf.extractall(WORK / d, filter='data')
         ENV.update(TEMP=str(WORK), TMP=str(WORK))
+        if suite == 'v8zip':
+            # the three real zips of build/ (RW_V8_TAG), extracted as verify-v8.run.py does
+            for z in ('app', 'module', 'demo'):
+                with zipfile.ZipFile(ROOT / 'build' / ('rolewarden-%s-1.0.0-%s.zip' % (z, os.environ['RW_V8_TAG']))) as zf:
+                    zf.extractall(WORK / 'zips' / z)
         if suite == 'v8':
             for t, d in (('mod.tar', 'zips/module'), ('demo.tar', 'zips/demo')):
                 with tarfile.open(WORK / t) as tf:
                     tf.extractall(WORK / d, filter='data')
             with zipfile.ZipFile(ROOT / 'build' / 'rolewarden-app-1.0.0-rc.v8b.zip') as zf:
                 zf.extractall(WORK / 'zips' / 'app')
-            out = HERE / ('verify-v8b.v8.' + label + '.output.txt')
+        if suite in ('v8', 'v8zip'):
+            out = HERE / ('verify-v8b.' + suite + '.' + label + '.output.txt')
             args = ['php', '-d', 'error_reporting=-1', '-d', 'memory_limit=1G', str(HERE / 'verify-v8.php'), WORK.as_posix(), (WORK / 'mod').as_posix(), (WORK / 'modfull').as_posix(), (WORK / 'demo').as_posix(),
                     (WORK / 'zips/app').as_posix(), (WORK / 'zips/module').as_posix(), (WORK / 'zips/demo').as_posix(), (ROOT.parent / 'rolewarden-app-test').as_posix(), phases]
         else:
@@ -96,7 +102,7 @@ def main():
             code = p.wait()
             log.write('Test process exit: %d\n' % code)
     finally:
-        pre = 'verify-v8b.' + ('v8.' if suite == 'v8' else '') + label + '.'
+        pre = 'verify-v8b.' + (suite + '.' if suite in ('v8', 'v8zip') else '') + label + '.'
         for f in list(WORK.glob('verify-v8*.applog-*.log')) + list(WORK.glob('server-*.log')):
             shutil.copyfile(f, HERE / (pre + f.name.replace('verify-v8b.', '').replace('verify-v8.', '')))
         try:

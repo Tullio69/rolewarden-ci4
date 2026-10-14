@@ -1,5 +1,61 @@
 # V8b — Modifiche dopo la V8: collaudo indipendente
 
+## Pacchetti rc.v8c — 2026-10-14, Collaudatore ad Hoc (Claude), commit `b1cca14`, zip `build/*-1.0.0-rc.v8c.zip`
+
+**Esito: PASS. Pacchetti rc.v8c approvati per il collaudo.** Non ho trovato nessun difetto.
+
+- **Cosa ho eseguito.** Le suite che sugli zip non avevo potuto eseguire: le fasi P ed E di V8, la suite V7 e il controllo dei pacchetti V7, una alla volta.
+- **I FAIL che restano.** Il secondo e il terzo riquadro sotto: un controllo già giudicato corretto in V8 e un'aspettativa superata da V8.
+- **Il primo giro della suite V7 è falsato.** Dava 21 FAIL, ma la causa è un'aspettativa dello strumento superata dal selettore della lingua (vedi sotto), non il prodotto.
+
+| Suite sugli zip rc.v8c | Risultato |
+| --- | ---: |
+| V8, fasi P ed E (`verify-v8b.v8zip.b1cca14.rc.v8c.output.txt`) | 35/36 (P06d, già giudicato corretto in V8, osservazione O7) |
+| V7, adattata (`verify-v8b.v7.b1cca14.rc.v8c.adapted.output.txt`) | **181/181**, 1 AMB (l'A1 di V7, ancora aperta) |
+| V7, così com'era (`verify-v8b.v7.b1cca14.rc.v8c.output.txt`) | 160/181: tutti i 21 FAIL vengono dall'aspettativa superata descritta sotto |
+| Pacchetti V7 (`verify-v8b.v7package.b1cca14.rc.v8c.output.txt`) | 15/16 (P04, superato da V8 come prima) |
+
+### Dettaglio
+
+**Fase P di V8 (zip): 22 controlli, come in V8.**
+- Lo zip del modulo è identico a `git archive b1cca14` e lo zip della demo a `git archive b1cca14:demo`: stessi file, stessi byte (P01, P02). Il testo dei due controlli nomina ancora `f06a29d`, ma il confronto è fatto su `b1cca14`.
+- L'applicazione completa contiene il modulo in `modules/rolewarden`, identico allo zip, e la demo in `modules/rolewarden-demo`, con le righe di aggancio.
+- Ci sono CHANGELOG e THIRD-PARTY-LICENSES.
+- Ogni pacchetto di `vendor/` ha il suo file di licenza, con la versione elencata.
+- Nessuna credenziale, chiave, `.env` o percorso personale.
+- La documentazione si apre offline.
+- **P06d.** Fallisce come in V8 e per la stessa frase: il README alla radice nomina `documentation/design-guide.html` e dice di aprirlo «from the module folder». In V8 è stato giudicato corretto (osservazione O7) e non lo riconto.
+
+**Fase E di V8 (applicazione completa dallo zip): 9/9.**
+- `/demo` non risponde finché la demo non è installata.
+- L'installer va dal codice al primo super admin, con il file di blocco.
+- `demo:install`, l'uso e `demo:uninstall` sono puliti, con il `.env` scritto dall'installer.
+- Nessun 500.
+
+**Suite V7.**
+- **Così com'era.** Dà 21 FAIL, tutti nella sezione E (lingue), più le email che ne dipendono. La causa è nello strumento: `set_lang()` di `verify-v7.php` usa il **primo** form che invia a `rolewarden/profile/language`. Da `6d21875` quel form è il selettore EN/IT della barra in alto, che non ha la select, quindi la lingua non veniva mai inviata.
+- **Adattata.** `verify-v8b.v7adapted.php` è identico tranne che per quella riga, che ora prende il form del profilo con la select. Passa 181/181 su questi zip. La scelta della lingua dal profilo funziona: toast «Lingua salvata.», `lang="it"`, persistenza, valori non validi ignorati, email nella lingua del destinatario, terza lingua.
+- È un'aspettativa superata come G07 e G07v5, non un difetto.
+- L'ambiguità A1 di V7 (dati seminati in inglese) resta aperta.
+
+**Pacchetti V7: 15/16.** P04 vuole nel modulo solo README, composer.json, `documentation/` e `src/`. Ora ci sono anche CHANGELOG.md e THIRD-PARTY-LICENSES.md, che la SPEC V8 richiede: è un'aspettativa superata, come già in V8.
+
+### Fallimenti noti e ambiguità, non ricontati
+
+- G07 e i 25 controlli V4 sulla data ISO. Queste suite non le ho rieseguite qui: lo zip non le tocca, e sul codice `e99fe1b`, uguale a `b1cca14` fuori da test e log, erano già chiuse.
+- A1, A3, A15c, G03 e l'A1 di V7 restano aperte all'autore.
+
+### Pulizia
+
+- **Database e Mailpit.** `rolewarden_test` uguale allo snapshot `f7f37c04…e21e64` in tutte le 61 esecuzioni registrate in `verify-v8b.environment.txt`, senza nessuna differenza, e di nuovo a mano alla fine. Mailpit vuoto.
+- **Processi.** Nessun processo mio attivo.
+- **Cartelle e file.** Le cartelle di lavoro delle tre suite sono rimosse, con i `.env`.
+- **Da cancellare a mano.** Restano solo i profili Chrome già segnalati in `scratchpad/`: da `v8breg` a `v8breg4`.
+
+Nessun commit, nessun push.
+
+---
+
 ## Terza riverifica — 2026-10-14, Collaudatore ad Hoc (Claude), commit `e99fe1b` (locale)
 
 **Esito: PASS. V8b approvata per il collaudo.** D4 è corretto e non resta nessun difetto aperto. Le ambiguità A1 e A3 restano aperte all'autore.

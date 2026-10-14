@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Permessi &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1791970359">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions" aria-current="page"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><span aria-current="page">Permessi</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Lingua">
+  <input type="hidden" name="csrf_test_name" value="130f8b2f6fb9389f3f1b55ba1a288e5d">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;permissions">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="false">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="true">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="130f8b2f6fb9389f3f1b55ba1a288e5d">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head rw-page-head--single">
+  <div>
+    <div class="rw-header">Autorizzazioni</div>
+    <h1>Permessi</h1>
+    <p>Tutti i permessi del sistema, raggruppati per area, con i ruoli che li concedono, direttamente o tramite un ruolo padre. I ruoli super admin li hanno tutti. Per cambiare chi ha un permesso, apri il ruolo. Nel codice un permesso si controlla con il suo slug, per esempio can('users.delete').</p>
+  </div>
+</div>
+
+  <div class="rw-section-title"><span class="rw-section-n">01</span><h2>Activity</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">activity.view</code></td>
+          <td>Read the activity log</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+  <div class="rw-section-title"><span class="rw-section-n">02</span><h2>Appearance</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">appearance.update</code></td>
+          <td>Change the panel theme</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+  <div class="rw-section-title"><span class="rw-section-n">03</span><h2>Permissions</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">permissions.override</code></td>
+          <td>Grant or deny a permission to a single user</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">02</td>
+          <td class="rw-c-name"><code class="rw-mono">permissions.view</code></td>
+          <td>View permissions</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+  <div class="rw-section-title"><span class="rw-section-n">04</span><h2>Roles</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">roles.assign</code></td>
+          <td>Assign roles to users</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">02</td>
+          <td class="rw-c-name"><code class="rw-mono">roles.create</code></td>
+          <td>Create roles</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">03</td>
+          <td class="rw-c-name"><code class="rw-mono">roles.delete</code></td>
+          <td>Delete roles</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">04</td>
+          <td class="rw-c-name"><code class="rw-mono">roles.update</code></td>
+          <td>Edit roles</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">05</td>
+          <td class="rw-c-name"><code class="rw-mono">roles.view</code></td>
+          <td>View roles</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+  <div class="rw-section-title"><span class="rw-section-n">05</span><h2>Security</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">security.alerts</code></td>
+          <td>Receive security alert emails (too many failed sign-ins)</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+  <div class="rw-section-title"><span class="rw-section-n">06</span><h2>Sessions</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">sessions.revoke</code></td>
+          <td>Sign other users out of their sessions</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">02</td>
+          <td class="rw-c-name"><code class="rw-mono">sessions.view</code></td>
+          <td>See the signed-in sessions of other users</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+  <div class="rw-section-title"><span class="rw-section-n">07</span><h2>Settings</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">settings.update</code></td>
+          <td>Change module settings</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">02</td>
+          <td class="rw-c-name"><code class="rw-mono">settings.view</code></td>
+          <td>View module settings</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+  <div class="rw-section-title"><span class="rw-section-n">08</span><h2>Users</h2></div>
+  <table class="rw-t-users rw-t-permissions">
+    <thead>
+      <tr>
+        <th class="rw-m-num" scope="col"></th>
+        <th class="rw-c-name rw-c-slug rw-header" scope="col">Slug</th>
+        <th class="rw-header" scope="col">Descrizione</th>
+        <th class="rw-c-roles rw-header" scope="col">Concesso da</th>
+        <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <td class="rw-c-name"><code class="rw-mono">users.activate</code></td>
+          <td>Activate and deactivate users</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">02</td>
+          <td class="rw-c-name"><code class="rw-mono">users.create</code></td>
+          <td>Create users</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">03</td>
+          <td class="rw-c-name"><code class="rw-mono">users.delete</code></td>
+          <td>Delete users</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">04</td>
+          <td class="rw-c-name"><code class="rw-mono">users.import</code></td>
+          <td>Import users from a CSV file</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">05</td>
+          <td class="rw-c-name"><code class="rw-mono">users.update</code></td>
+          <td>Edit users</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">06</td>
+          <td class="rw-c-name"><code class="rw-mono">users.view</code></td>
+          <td>View users</td>
+          <td class="rw-c-roles">
+                        <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Admin</a>          </td>
+          <td class="rw-anno"><span class="rw-note">permesso di sistema · non si può eliminare</span></td>
+        </tr>
+          </tbody>
+  </table>
+    </main>
+  </div>
+</div>
+</body>
+</html>

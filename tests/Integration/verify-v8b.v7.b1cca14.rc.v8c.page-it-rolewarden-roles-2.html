@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1791970189">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Main">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Users</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles" aria-current="page"><span>02</span>Roles</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permissions</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Settings</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Activity</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Appearance</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Breadcrumb"><a href="http://127.0.0.1:8071/index.php/rolewarden/roles">Roles</a><span aria-hidden="true">/</span><span aria-current="page">Admin</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Language">
+  <input type="hidden" name="csrf_test_name" value="196c8ad2e9690c2afc2db9672f6d5a0d">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;roles&#x2F;2">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="true">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="false">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Light&#x20;or&#x20;dark">
+          <input type="hidden" name="csrf_test_name" value="196c8ad2e9690c2afc2db9672f6d5a0d">                      <button type="submit" name="mode" value="system" aria-pressed="true">System</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Light</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Dark</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Saved&quot;,&quot;warning&quot;&#x3A;&quot;Warning&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Error&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">Access</div>
+    <h1>Admin</h1>
+    <p>Manages users, roles and permissions.</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Parent role</dt><dd>none</dd></div>
+    <div><dt>Users with this role</dt><dd class="rw-fig">1</dd></div>
+    <div><dt>Last saved</dt><dd class="rw-muted">2026-10-14 09:30:02</dd></div>
+  </dl>
+</div>
+
+<div class="rw-toolbar">
+  <div class="rw-field">
+    <label class="rw-label" for="role-jump">Name</label>
+    <select class="rw-select" id="role-jump" onchange="if(this.value) window.location = this.value">
+              <option value="http://127.0.0.1:8071/index.php/rolewarden/roles/2" selected>Admin</option>
+              <option value="http://127.0.0.1:8071/index.php/rolewarden/roles/1">Super admin</option>
+              <option value="http://127.0.0.1:8071/index.php/rolewarden/roles/3">User</option>
+          </select>
+  </div>
+  <div class="rw-grow"></div>
+      <a class="rw-btn rw-btn--secondary" href="http://127.0.0.1:8071/index.php/rolewarden/roles/2/edit">Edit</a>
+      <ul class="rw-legend" aria-label="Legend">
+    <li><svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>Granted by role</li>
+    <li><svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>Inherited</li>
+    <li><svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>User override</li>
+    <li><svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg>Denied for user</li>
+    <li><span class="rw-mark-blank" aria-hidden="true"></span>Not granted</li>
+  </ul>
+</div>
+
+  <div x-data="rwMatrix(&#x7B;&quot;saveUrl&quot;&#x3A;&quot;http&#x3A;&#x5C;&#x2F;&#x5C;&#x2F;127.0.0.1&#x3A;8071&#x5C;&#x2F;index.php&#x5C;&#x2F;rolewarden&#x5C;&#x2F;roles&#x5C;&#x2F;2&#x5C;&#x2F;permissions&quot;,&quot;csrfName&quot;&#x3A;&quot;csrf_test_name&quot;,&quot;csrfHash&quot;&#x3A;&quot;196c8ad2e9690c2afc2db9672f6d5a0d&quot;,&quot;messages&quot;&#x3A;&#x7B;&quot;saved&quot;&#x3A;&quot;Changes&#x20;saved.&quot;,&quot;failed&quot;&#x3A;&quot;Could&#x20;not&#x20;save&#x20;this&#x20;change.&#x20;Reload&#x20;the&#x20;page&#x20;and&#x20;try&#x20;again.&quot;&#x7D;,&quot;roleName&quot;&#x3A;&quot;Admin&quot;,&quot;rows&quot;&#x3A;&#x5B;&#x7B;&quot;area&quot;&#x3A;&quot;activity&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;18,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;activity.view&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;appearance&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;20,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;appearance.update&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;permissions&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;12,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;permissions.view&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;13,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;permissions.override&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;roles&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;7,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.view&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;9,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.update&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;11,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.assign&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;8,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.create&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;10,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.delete&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;security&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;19,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;security.alerts&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;sessions&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;16,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;sessions.view&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;17,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;sessions.revoke&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;settings&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;14,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;settings.view&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;15,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;settings.update&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;users&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;1,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.view&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;3,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.update&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;2,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.create&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;4,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.delete&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;5,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.activate&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;6,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.import&#x20;&#x5C;u00b7&#x20;Granted&#x20;by&#x20;Admin&quot;&#x7D;&#x5D;&#x7D;&#x5D;&#x7D;)">
+    <div class="rw-bar" :class="{ 'rw-bar--dirty': changes().length }" role="status" aria-live="polite">
+      <template x-if="changes().length">
+        <div class="rw-bar-msg">
+          <span class="rw-bar-dot" aria-hidden="true"></span>
+          <span x-text="(changes().length > 1 ? &quot;&#x25;d&#x20;unsaved&#x20;changes&#x20;to&#x20;Admin&quot; : &quot;&#x25;d&#x20;unsaved&#x20;change&#x20;to&#x20;Admin&quot;).replace('%d', changes().length)"></span>
+          <span class="rw-bar-ids" x-text="changedLabels().join(', ')"></span>
+        </div>
+      </template>
+      <template x-if="!changes().length">
+        <div class="rw-bar-msg rw-muted">All changes saved.</div>
+      </template>
+      <div class="rw-bar-actions">
+        <button type="button" class="rw-btn rw-btn--ghost" @click="discard()" x-show="changes().length">Discard</button>
+        <button type="button" class="rw-btn rw-btn--primary" @click="save()" :disabled="!changes().length || saving">Save changes</button>
+      </div>
+    </div>
+
+    <p class="rw-matrix-help rw-note">Click a cell to grant or remove that permission, then save. The boxes at the head of a column and in the Row column act on the whole column or row.</p>
+
+    <table class="rw-matrix">
+      <thead>
+        <tr>
+          <th class="rw-m-num" scope="col"></th>
+          <th class="rw-m-area rw-header" scope="col">Area</th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">view</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'view'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'view'))).indeterminate" @change="toggleColumn('view', $event.target.checked)" aria-label="Grant view on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">update</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'update'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'update'))).indeterminate" @change="toggleColumn('update', $event.target.checked)" aria-label="Grant update on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">override</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'override'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'override'))).indeterminate" @change="toggleColumn('override', $event.target.checked)" aria-label="Grant override on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">assign</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'assign'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'assign'))).indeterminate" @change="toggleColumn('assign', $event.target.checked)" aria-label="Grant assign on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">create</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'create'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'create'))).indeterminate" @change="toggleColumn('create', $event.target.checked)" aria-label="Grant create on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">delete</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'delete'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'delete'))).indeterminate" @change="toggleColumn('delete', $event.target.checked)" aria-label="Grant delete on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">alerts</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'alerts'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'alerts'))).indeterminate" @change="toggleColumn('alerts', $event.target.checked)" aria-label="Grant alerts on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">revoke</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'revoke'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'revoke'))).indeterminate" @change="toggleColumn('revoke', $event.target.checked)" aria-label="Grant revoke on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">activate</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'activate'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'activate'))).indeterminate" @change="toggleColumn('activate', $event.target.checked)" aria-label="Grant activate on every area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">import</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'import'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'import'))).indeterminate" @change="toggleColumn('import', $event.target.checked)" aria-label="Grant import on every area">
+              </div>
+            </th>
+                    <th class="rw-m-all" scope="col"><span class="rw-header">Row</span></th>
+          <th class="rw-m-anno" scope="col"><span class="rw-header" style="color:var(--ink-faint)">Notes</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="(row, i) in rows" :key="row.area">
+          <tr>
+            <td class="rw-m-num" x-text="String(i + 1).padStart(2, '0')"></td>
+            <th class="rw-m-area" scope="row"><b x-text="row.area"></b><code x-text="row.area + '.*'"></code></th>
+            <template x-for="cell in row.cells" :key="cell.action">
+              <td class="rw-m-act">
+                <template x-if="cell.permissionId !== null">
+                  <button type="button" class="rw-cell" :class="{ 'rw-cell--changed': saved[key(row.area, cell.action)] !== cur[key(row.area, cell.action)] }" :aria-pressed="editable(row.area, cell.action) ? (state(row.area, cell.action) === 'role') : null" :aria-disabled="!editable(row.area, cell.action)" :title="tooltip(row.area, cell.action)" @click="toggleCell(row.area, cell.action)" x-html="mark(row.area, cell.action)"></button>
+                </template>
+              </td>
+            </template>
+            <td class="rw-m-all">
+              <input type="checkbox" class="rw-check" :checked="triState(rowKeys(row.area)).checked" :indeterminate.prop="triState(rowKeys(row.area)).indeterminate" @change="toggleRow(row.area, $event.target.checked)" :aria-label="&quot;Grant&#x20;every&#x20;action&#x20;on&#x20;&#x25;s&quot;.replace('%s', row.area)">
+            </td>
+            <td class="rw-m-anno">
+              <span class="rw-note" x-show="row.cells.some(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)])">
+                <span class="rw-chg" x-text="row.cells.filter(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)]).length + &quot;&#x20;changed&quot;"></span>
+              </span>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="rw-m-num"></td>
+          <td class="rw-header rw-c-label">Effective</td>
+                      <td class="rw-m-act">6<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">4<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">2<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">2<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                    <td class="rw-m-all" style="text-align:center;color:var(--ink)">20</td>
+          <td class="rw-m-anno"><span class="rw-note">granted by Admin, of 20</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+<p class="rw-matrix-foot rw-note">
+  <span>Inherited cells are locked. Change them on the parent role.</span>
+  <span>Overrides are edited on each user's page.</span>
+  <span>Identifiers follow <code class="rw-mono">area.action</code></span>
+</p>
+
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+=== v6 development 6d21875 07:10:39
+exit=0 v6 development 07:20:58
+=== v6 production 6d21875 07:21:00
+exit=0 v6 production 07:27:59
+=== v5 development 6d21875 07:28:01
+exit=1 v5 development 07:38:22
+=== v5 production 6d21875 07:38:24
+exit=1 v5 production 07:45:50
+=== v4 development 6d21875 07:45:52
+exit=1 v4 development 07:51:01
+=== v4 production 6d21875 07:51:02
+exit=1 v4 production 07:55:42
+=== test development 6d21875 07:55:44
+exit=1 test development 07:58:19
+=== test production 6d21875 07:58:21
+exit=1 test production 08:00:30
+=== extra development 6d21875 08:00:32
+exit=0 extra development 08:01:18
+=== extra production 6d21875 08:01:20
+exit=0 extra production 08:02:02
+=== adapt development 6d21875 08:02:04
+exit=0 adapt development 08:02:46
+=== adapt production 6d21875 08:02:48
+exit=0 adapt production 08:03:25
+=== v3 development 6d21875 08:03:27
+exit=0 v3 development 08:05:18
+=== v3 production 6d21875 08:05:20
+exit=0 v3 production 08:06:49
+=== edges development 6d21875 08:06:51
+exit=0 edges development 08:07:52
+=== edges production 6d21875 08:07:54
+exit=0 edges production 08:08:47
+=== arrays development 6d21875 08:08:49
+exit=0 arrays development 08:09:32
+=== arrays production 6d21875 08:09:34
+exit=0 arrays production 08:10:11
+ALL DONE 08:10:11
+--- recheck on 57f6f09
+=== v6 development 57f6f09 09:23:29
+exit=0 v6 development 09:30:56
+=== v6 production 57f6f09 09:30:58
+exit=0 v6 production 09:36:48
+=== v5 development 57f6f09 09:36:50
+exit=1 v5 development 09:38:55
+=== v5 production 57f6f09 09:38:58
+exit=1 v5 production 09:39:00
+=== v4 development 57f6f09 09:39:02
+exit=1 v4 development 09:39:06
+=== v4 production 57f6f09 09:39:08
+exit=1 v4 production 09:39:11
+--- stopped by Claude Code (low memory) during v5 development; tree killed by PID
+--- second recheck on 0943a60, one suite per call
+=== v5 development 0943a60 09:52:10
+exit=1 v5 development 10:01:16
+ALL DONE 10:01:16
+=== v5 production 0943a60 10:01:25
+exit=1 v5 production 10:08:17
+ALL DONE 10:08:17
+=== v4 development 0943a60 10:08:26
+exit=1 v4 development 10:13:26
+ALL DONE 10:13:26
+=== v4 production 0943a60 10:13:36
+exit=1 v4 production 10:18:15
+ALL DONE 10:18:15
+=== test development 0943a60 10:18:23
+exit=1 test development 10:20:55
+ALL DONE 10:20:55
+=== test production 0943a60 10:21:03
+exit=1 test production 10:23:00
+ALL DONE 10:23:00
+=== extra development 0943a60 10:23:08
+exit=0 extra development 10:23:53
+ALL DONE 10:23:53
+=== extra production 0943a60 10:24:00
+exit=0 extra production 10:24:41
+ALL DONE 10:24:41
+=== adapt development 0943a60 10:24:48
+exit=0 adapt development 10:25:30
+ALL DONE 10:25:31
+=== adapt production 0943a60 10:25:38
+exit=0 adapt production 10:26:14
+ALL DONE 10:26:14
+=== v3 development 0943a60 10:26:21
+exit=0 v3 development 10:28:14
+ALL DONE 10:28:14
+=== v3 production 0943a60 10:28:21
+exit=0 v3 production 10:29:48
+ALL DONE 10:29:48
+=== edges development 0943a60 10:29:55
+exit=0 edges development 10:30:48
+ALL DONE 10:30:48
+=== edges production 0943a60 10:30:55
+exit=0 edges production 10:31:42
+ALL DONE 10:31:42
+=== arrays development 0943a60 10:31:49
+exit=0 arrays development 10:32:28
+ALL DONE 10:32:28
+=== arrays production 0943a60 10:32:36
+exit=0 arrays production 10:33:06
+ALL DONE 10:33:06
+=== v6 development 0943a60 10:37:45
+exit=0 v6 development 10:45:15
+ALL DONE 10:45:15
+=== v6 production 0943a60 10:45:24
+exit=0 v6 production 10:51:16
+ALL DONE 10:51:16
+--- third recheck on e99fe1b
+=== v5 development e99fe1b 11:08:28
+exit=1 v5 development 11:17:33
+ALL DONE 11:17:33
+=== v5 production e99fe1b 11:17:43
+exit=1 v5 production 11:24:33
+ALL DONE 11:24:33

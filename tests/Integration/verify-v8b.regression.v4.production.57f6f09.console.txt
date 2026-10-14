@@ -1,0 +1,17 @@
+Verification: 57f6f09 v4.production.57f6f09 baseline 3805640
+Traceback (most recent call last):
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v8b.regress.py", line 267, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v8b.regress.py", line 103, in main
+    before = dump()
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v8b.regress.py", line 63, in dump
+    return run(['php', HERE / 'verify-v4.snapshot.php'], stdout=sp.PIPE, stderr=sp.PIPE).stdout
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v8b.regress.py", line 59, in run
+    return sp.run([str(a) for a in args], env=ENV, check=True, **kw)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['php', 'E:\\progetti_lavoro\\ASP\\rolewarden-ci4\\tests\\Integration\\verify-v4.snapshot.php']' returned non-zero exit status 4.

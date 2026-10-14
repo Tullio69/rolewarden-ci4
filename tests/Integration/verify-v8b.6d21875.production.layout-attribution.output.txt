@@ -1,0 +1,30 @@
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+
+===== phase Y =====
+[INFO] server pid=35652 on 127.0.0.1:8071 prefix=''
+[INFO] browser layout: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\v8bwork\chrome-v8b-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\v8bwork\chrome-v8b-1'
+[PASS] Y00    Chrome headless ran every layout step without driver errors or page exceptions
+[PASS] Y01-1280 1280 px: every numbered table's row-number column is exactly one gutter wide (29 tables on 12 screens)
+[PASS] Y02-1280 1280 px: no row number clipped
+[FAIL] Y03-1280 1280 px: no horizontal page scroll on any screen
+         -> [omesso]/users/3 +64px (div. 1344, header.rw-topbar 1344, div.rw-topbar-end 1304, a.rw-who 1304 | leaves in main: span.rw-status w52 r1296 "Active", dd. w34 r1296 "Never", dd. w73 r1296 "14 Oct 2026", dd.rw-fig-sm w11 r1296 "0", a. w67 r1296 "See activity", td.rw-anno w161 r1296 ""; overflow without the language switch 64px, without the top-bar controls 64px, without main 0px) | [omesso]/roles/9 +200px (div. 1480, header.rw-topbar 1480, div.rw-topbar-end 1440, form.rw-mode 1294 | leaves in main: a. w40 r1432 "Author", dd.rw-fig w16 r1432 "1", dd.rw-muted w130 r1432 "2026-10-14 06:56:52", li. w108 r1282 "Denied for user", span.rw-mark-blank w14 r1319 "", div.rw-bar-msg.rw-muted w1021 r1293 "All changes saved."; overflow without the language switch 200px, without the top-bar controls 200px, without main 0px) | [omesso]/roles/2 +186px (div. 1466, header.rw-topbar 1466, div.rw-topbar-end 1426, a.rw-who 1426 | leaves in main: dd. w29 r1418 "none", dd.rw-fig w16 r1418 "1", dd.rw-muted w130 r1418 "2026-10-14 06:56:51", span.rw-mark-blank w14 r1306 "", button.rw-btn.rw-btn--primary w115 r1410 "Save changes", span.rw-header w41 r1330 "Notes"; overflow without the language switch 186px, without the top-bar controls 186px, without main 0px)
+[PASS] Y04-1280 1280 px: Permissions, the columns of every area table start at the same x (11 tables)
+[PASS] Y05-1280 1280 px: role matrix, every column header label and box stays inside its own column
+[PASS] Y01-1366 1366 px: every numbered table's row-number column is exactly one gutter wide (29 tables on 12 screens)
+[PASS] Y02-1366 1366 px: no row number clipped
+[FAIL] Y03-1366 1366 px: no horizontal page scroll on any screen
+         -> [omesso]/roles/9 +114px (div. 1480, header.rw-topbar 1480, div.rw-topbar-end 1440, a.rw-who 1440 | leaves in main: a. w40 r1432 "Author", dd.rw-fig w16 r1432 "1", dd.rw-muted w130 r1432 "2026-10-14 06:56:52", li. w90 r1392 "Not granted", button.rw-btn.rw-btn--primary w115 r1424 "Save changes", th.rw-m-anno w166 r1432 "Notes"; overflow without the language switch 114px, without the top-bar controls 114px, without main 0px) | [omesso]/roles/2 +100px (div. 1466, header.rw-topbar 1466, div.rw-topbar-end 1426, a.rw-who 1426 | leaves in main: dd. w29 r1418 "none", dd.rw-fig w16 r1418 "1", dd.rw-muted w130 r1418 "2026-10-14 06:56:51", li. w90 r1378 "Not granted", button.rw-btn.rw-btn--primary w115 r1410 "Save changes", th.rw-m-anno w153 r1418 "Notes"; overflow without the language switch 100px, without the top-bar controls 100px, without main 0px)
+[PASS] Y04-1366 1366 px: Permissions, the columns of every area table start at the same x (11 tables)
+[PASS] Y05-1366 1366 px: role matrix, every column header label and box stays inside its own column
+[PASS] Y01-1920 1920 px: every numbered table's row-number column is exactly one gutter wide (29 tables on 12 screens)
+[PASS] Y02-1920 1920 px: no row number clipped
+[PASS] Y03-1920 1920 px: no horizontal page scroll on any screen
+[PASS] Y04-1920 1920 px: Permissions, the columns of every area table start at the same x (11 tables)
+[PASS] Y05-1920 1920 px: role matrix, every column header label and box stays inside its own column
+
+TOTAL: 16 PASS, 2 FAIL, 0 AMB
+FAIL Y03-1280 1280 px: no horizontal page scroll on any screen
+FAIL Y03-1366 1366 px: no horizontal page scroll on any screen
+Test process exit: 1

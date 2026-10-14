@@ -820,3 +820,42 @@ Formato di ogni voce:
   - **Ambiguità aperte all'autore:** A1 e A3.
   - **Da cancellare a mano:** i profili Chrome bloccati in `scratchpad/` (`v8breg`, `v8breg2`, `v8b-locked-development`, `v8b-locked-production`).
   - Nessun commit, nessun push.
+
+### [2026-10-14 10:52] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v8b.phase-l.php` con il nuovo L20d; uscite `verify-v8b.0943a60.*`, `verify-v8b.v8.0943a60.*`, `verify-v8b.regression.*.0943a60.*`; sezione «Seconda riverifica» in `V8b-REPORT.md`) e questa voce
+- Cosa ho fatto: seconda riverifica V8b su `0943a60`.
+  - Fasi V8b complete in development e production, con L08 e tutti i controlli di redirect (L11-L11c, L19-L20c) più L20d: `back` interno con query costruite a mano.
+  - Regressione chiusa, una suite e un ambiente alla volta senza job paralleli: V6, V5, V4, V2, V3 e la suite V8 (fasi A-D, F, G).
+- Stato: completato. **Esito FAIL, V8b non approvata.**
+  - **Corretto:** D3. L08 torna con la query string; il redirect resta sull'applicazione per tutti i valori esterni e per le query con `//evil`, `http://evil` e `%0d%0a`.
+  - **D4, minore e nuovo:** un CR/LF grezzo nella query del campo `back` dà un 500 (`InvalidArgumentException` RFC 7230, riga CRITICAL nel log). Nessun header iniettato e nessun redirect esterno. Pesa su L20d, P12, G01 e G03.
+  - **Totali:** V8b 124/130 in entrambi gli ambienti, 1 AMB. Suite V8 195/195.
+  - **Regressione:** development 1016/1043 e production 1047/1074, solo i noti G07 e le 25 date ISO di V4, più G07v5 già superato.
+- Note per il prossimo: aperte all'autore A1 e A3. Snapshot `f7f37c04…e21e64` identico in tutte le 53 esecuzioni registrate; Mailpit vuoto; nessun processo mio. Profili Chrome da cancellare a mano in `scratchpad/` (`v8breg`, `v8breg2`, `v8breg3`). Nessun commit, nessun push.
+
+### [2026-10-14 11:25] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v8b.phase-l.php` con i nuovi L20e e L20f; uscite `verify-v8b.e99fe1b.*`, `verify-v8b.v8.e99fe1b.*`, `verify-v8b.regression.v5.*.e99fe1b.*`; sezione «Terza riverifica» in `V8b-REPORT.md`) e questa voce
+- Cosa ho fatto: terza riverifica V8b su `e99fe1b`.
+  - Fasi V8b complete in development e production, con L20e e L20f: CR, LF, CRLF, NUL, TAB e DEL grezzi nel campo `back`, nella query, nel percorso e in fondo.
+  - Poi, una suite alla volta: la suite V8 (fasi A-D, F, G) e V5 nei due ambienti. Le altre suite restano ai risultati di `0943a60`.
+- Stato: completato. **Esito PASS, V8b approvata per il collaudo.**
+  - **Corretto:** D4. In tutti i 18 casi il campo è ignorato e si torna alla pagina di partenza: nessun 500, nessun carattere di controllo nel Location, nessun header iniettato, lingua salvata. L20d, P12, G01 e G03 passano.
+  - **Totali:** V8b 130/132 in entrambi gli ambienti; i due FAIL sono Y03, cioè l'ambiguità A3, non contata come difetto. Suite V8 195/195. V5 176/177 nei due ambienti, solo G07v5 già superato.
+- Note per il prossimo:
+  - **Aperte all'autore:** A1 (come avere una sola lingua) e A3 (scorrimento orizzontale a 1280/1366 px), più A15c e G03 da V8/V7.
+  - **Dovuti:** controllo visivo in un browser vero; fase P e fase E di V8, suite V7 e pacchetti, dopo aver ricostruito gli zip.
+  - **Pulizia:** snapshot `f7f37c04…e21e64` identico in tutte le 58 esecuzioni registrate; Mailpit vuoto; nessun processo mio. Profili Chrome da cancellare a mano in `scratchpad/` (`v8breg`, `v8breg2`, `v8breg3`, `v8breg4`).
+  - Nessun commit, nessun push.
+
+### [2026-10-14 11:20] - Claude
+- File toccati: `src/Views/partials/language.php`, `src/Controllers/AccountController.php`, `src/Views/roles/show.php`, `src/Views/users/show.php` (commit `57f6f09`, `0943a60`, `e99fe1b`)
+- Cosa ho fatto: correzioni dei difetti del collaudo V8b.
+  - D1: il selettore della lingua dice da quale pagina è stato usato (campo `back`), accettato solo se sull'applicazione.
+  - D2: un override concesso conserva il suo marchio nelle matrici di sola lettura.
+  - A2: la matrice utente in sola lettura segna anche i permessi non concessi.
+  - D3: il campo `back` porta anche la query string.
+  - D4: un `back` con caratteri di controllo è ignorato.
+- Stato: completato, V8b PASS alla terza riverifica (Collaudatore ad Hoc, Codex non disponibile per il modello configurato).
+- Note per il prossimo: aperte all'utente A1 (una sola lingua) e A3 (scorrimento a 1280/1366 px); dopo la messa online vanno ricostruiti gli zip e rifatte fase P/E di V8 e V7 sui pacchetti.

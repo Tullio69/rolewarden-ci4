@@ -1,0 +1,303 @@
+
+== A: demo:install and demo:uninstall on a copy of the test application (module + demo, development)
+[PASS] A00    Fixture: Settings, Shield, RoleWarden migrated in separate batches and seeded (README commands)
+[INFO] demo:uninstall before any install: rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:04:25 UTC+00:00 Demo removed: its table, roles, permissions, accounts and settings are gone. Now delete the demo folder and its two lines in app/Config (see the demo README).
+[PASS] A01    Removal without installation: harmless (no PHP error) and the database stays identical, counters included
+[INFO] demo:install output: rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:04:26 UTC+00:00 Demo installed. Open /demo and sign in as one of: reader@example.com author@example.com approver@example.com Password: the one in demo.password. Remove it all with: php spark demo:uninstall
+[PASS] A02    demo:install is one command and succeeds (exit code 0, no PHP error)
+[PASS] A02b   With demo.password set, the password is not printed
+[PASS] A03    Schema approved: one table demo_documents (id, title varchar(160), body text, status varchar(16), owner_id FK users CASCADE, approved_by FK users SET NULL, approved_at, created_at, updated_at; indexes on status and owner_id), no other table
+[PASS] A04    Five permissions in area documents: view, create, update, approve, delete (not system)
+[PASS] A05    Three roles in a chain: demo-reader (Reader: view) <- demo-author (Author: + create, update) <- demo-approver (Approver: + approve, delete)
+[PASS] A06    Accounts reader@, author@, approver@example.com, active, each holding exactly its role
+[PASS] A07    Sample documents from the seed (owned by demo accounts, statuses draft/submitted/approved)
+[PASS] A08    Settings Demo.showcaseUsers lists exactly the three demo accounts
+[PASS] A08b   Migration row of the demo in its own namespace RoleWardenDemo
+[INFO] Second demo:install: rc=1 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:04:27 UTC+00:00 The demo is already installed.
+[PASS] A09    Repeated installation refused without damage: database identical (counters included), no password printed
+[PASS] A09b   Repeated installation exits with a non-zero code or says it is already installed
+[INFO] server pid=16736 on 127.0.0.1:8071 prefix=''
+[PASS] A10-re Demo account reader@example.com signs in with demo.password
+[PASS] A10-au Demo account author@example.com signs in with demo.password
+[PASS] A10-ap Demo account approver@example.com signs in with demo.password
+[PASS] A10w   A wrong password is refused for a demo account
+[PASS] A11    Owner (real super admin) signs in
+[PASS] A12    Panel roles list shows the chain: Author inherits from Reader, Approver from Author
+[PASS] A12b   Approver role page: parent Author, its own two permissions plus three inherited
+
+-- A: real use (sign-ins, remember-me, documents, language, theme mode, showcase, panel changes, sign-outs, failed sign-ins)
+[PASS] A13a   Author signed in with "remember me": a remember token exists
+[PASS] A13b   Documents created, edited, submitted, approved and deleted during the use
+[PASS] A13c   Author chose Italian and the dark mode (per-user settings exist)
+[PASS] A13f   Panel changes on demo objects saved (override on the approver, demo role and documents.view given to real accounts)
+[PASS] A13d   A real user given the Author role writes a document
+[INFO] server pid=34836 on 127.0.0.1:8071 prefix=''
+[PASS] A13e   Showcase on: the reader switched to the approver
+[INFO] Used state: 9 activity rows, 11 sign-in rows, 6 sessions, 1 remember tokens, 4 settings rows, 6 documents
+[INFO] Activity rows about the demo before removal: [["v8owner","role.permission_granted","role","Reader"],["v8owner","role.permission_revoked","role","Reader"],["v8owner","user.override_denied","user","demo-approver"],["v8owner","user.role_assigned","user","v8real"],["v8owner","user.override_granted","user","v8real"],["v8owner","role.permission_granted","role","User"],["demo-reader","auth.logout","user","demo-reader"],["v8owner","session.revoked","user","demo-approver"],["demo-approver","auth.logout","user","demo-approver"]]
+[INFO] demo:uninstall output: rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:04:50 UTC+00:00 Demo removed: its table, roles, permissions, accounts and settings are gone. Now delete the demo folder and its two lines in app/Config (see the demo README).
+[PASS] A14    demo:uninstall is one command and succeeds (exit code 0, no PHP error)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of acl_activity_log  -> 10 (counter only)
+[INFO] Left by real accounts (not the demo): acl_activity_log: {"id":4,"actor_id":1,"actor_label":"v8owner","action":"user.role_assigned","subject_type":"user","subject_id":3,"subject_label":"v8real","details":"{\"role\":\"Author\"}","ip_address":"127.0.0.1","created_at":"2026-10-14 09:04:44"} (real account, nothing about the demo)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of acl_permissions 26 -> 31 (counter only)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of acl_roles 7 -> 10 (counter only)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of acl_sessions  -> 10 (counter only)
+[INFO] Left by real accounts (not the demo): acl_sessions: {"id":4,"user_id":1,"token_hash":"d89eab2faf1f4044accbb23287217a8d42d2fd1fe708e40c8f8b56e6a4e37b61","remember_selector":null,"ip_address":"127.0.0.1","user_agent":"","created_at":"2026-10-14 09:04:32","last_seen_at":"2026-10-14 09:04:32"} (real account activity)
+[INFO] Left by real accounts (not the demo): acl_sessions: {"id":8,"user_id":3,"token_hash":"0f93c1cbbf0c95bc319ba61b6f7fa7744a2065ad1a7d60cd689b3970569321e8","remember_selector":null,"ip_address":"127.0.0.1","user_agent":"","created_at":"2026-10-14 09:04:46","last_seen_at":"2026-10-14 09:04:46"} (real account activity)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of auth_identities 5 -> 8 (counter only)
+[INFO] Left by real accounts (not the demo): auth_identities id 1: only secret2/last_used_at/updated_at changed (real account activity)
+[INFO] Left by real accounts (not the demo): auth_identities id 3: only secret2/last_used_at/updated_at changed (real account activity)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of auth_logins  -> 12 (counter only)
+[INFO] Left by real accounts (not the demo): auth_logins: {"id":5,"ip_address":"127.0.0.1","user_agent":"","id_type":"email_password","identifier":"owner@v8.test","user_id":1,"date":"2026-10-14 09:04:32","success":1} (real account activity)
+[INFO] Left by real accounts (not the demo): auth_logins: {"id":11,"ip_address":"127.0.0.1","user_agent":"","id_type":"email_password","identifier":"realuser@v8.test","user_id":3,"date":"2026-10-14 09:04:46","success":1} (real account activity)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of auth_remember_tokens  -> 2 (counter only)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of migrations 19 -> 20 (counter only)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of settings  -> 5 (counter only)
+[INFO] Left by real accounts (not the demo): settings: {"id":4,"class":"RoleWarden\\Config\\RoleWarden","key":"activityPrunedOn","value":"2026-10-14","type":"string","context":null,"created_at":"2026-10-14 09:04:42","updated_at":"2026-10-14 09:04:42"} (module housekeeping of the activity log)
+[INFO] Left by real accounts (not the demo): AUTO_INCREMENT of users 5 -> 8 (counter only)
+[INFO] Left by real accounts (not the demo): users id 1: only last_active changed (real account activity)
+[INFO] Left by real accounts (not the demo): users id 3: only last_active changed (real account activity)
+[PASS] A15    After a real use, removal leaves no residue of the demo in any table (tables, structure, rows)
+[PASS] A15b   Removal took away nothing that existed before the installation (real accounts, roles, permissions, settings intact)
+[AMB]  A15c   Activity-log rows written by the real owner about demo objects survive the removal (4)
+         -> SPEC: removal takes away "account con le loro sessioni, i loro accessi e le loro voci di log ... nient'altro". Entries whose actor is a real administrator but whose subject or details are demo roles, permissions or accounts are neither clearly "their" entries nor clearly "nient'altro". Rows: ["acl_activity_log: {\"id\":1,\"actor_id\":1,\"actor_label\":\"v8owner\",\"action\":\"role.permission_granted\",\"subject_type\":\"role\",\"subject_id\":7,\"subject_label\":\"Reader\",\"details\":\"{\\\"permission\\\":\\\"documents.create\\\"}\",\"ip_address\":\"127.0.0.1\",\"created_at\":\"2026-10-14 09:04:42\"}","acl_activity_log: {\"id\":2,\"actor_id\":1,\"actor_label\":\"v8owner\",\"action\":\"role.permission_revoked\",\"subject_type\":\"role\",\"subject_id\":7,\"subject_label\":\"Reader\",\"details\":\"{\\\"permission\\\":\\\"documents.create\\\"}\",\"ip_address\":\"127.0.0.1\",\"created_at\":\"2026-10-14 09:04:43\"}","acl_activity_log: {\"id\":5,\"actor_id\":1,\"actor_label\":\"v8owner\",\"action\":\"user.override_granted\",\"subject_type\":\"user\",\"subject_id\":3,\"subject_label\":\"v8real\",\"details\":\"{\\\"permission\\\":\\\"documents.view\\\"}\",\"ip_address\":\"127.0.0.1\",\"created_at\":\"2026-10-14 09:04:45\"}","acl_activity_log: {\"id\":6,\"actor_id\":1,\"actor_label\":\"v8owner\",\"action\":\"role.permission_granted\",\"subject_type\":\"role\",\"subject_id\":3,\"subject_label\":\"User\",\"details\":\"{\\\"permission\\\":\\\"documents.view\\\"}\",\"ip_address\":\"127.0.0.1\",\"created_at\":\"2026-10-14 09:04:45\"}"]
+[PASS] A15d   The real user who was given the Author role still exists, with its own role, no longer the demo one
+[PASS] A15e   No session file, remember token or sign-in record of a demo account left in the database
+[INFO] server pid=5720 on 127.0.0.1:8071 prefix=''
+[INFO] GET /demo after removal, wiring lines still present, development: 404 404 Can't find a route for 'GET: demo'.
+[INFO] server pid=10956 on 127.0.0.1:8071 prefix=''
+[PASS] A16    After removal with the two wiring lines still in place (production): /demo shows no SQL or driver detail
+[PASS] A17    Installation again after a removal works (exit 0, accounts and documents back)
+[PASS] A17b   And the removal again leaves no residue and takes nothing (compared with the state after the first removal)
+
+-- A: php spark migrate --all, then demo:install / demo:uninstall
+[INFO] migrate --all: rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:04:56 UTC+00:00 Running all new migrations... Running: (RoleWardenDemo) 2026-10-10-100001_RoleWardenDemo\Database\Migrations\CreateDocuments Migrations complete.
+[INFO] After migrate --all the demo table exists: yes; demo migration rows: 1
+[PASS] A18    Removal right after migrate --all (demo never installed) brings the database back as before migrate --all
+[PASS] A19    demo:install after migrate --all succeeds: accounts, roles, permissions and documents created
+[INFO] server pid=29776 on 127.0.0.1:8071 prefix=''
+[PASS] A19b   After migrate --all + demo:install the author signs in and sees the documents
+[PASS] A19c   And demo:uninstall leaves the database as before
+[PASS] A20    Without demo.password a password is generated and printed once
+[INFO] Generated password: 18 characters, hexadecimal
+[INFO] server pid=12848 on 127.0.0.1:8071 prefix=''
+[PASS] A20b   The generated password signs in the three demo accounts
+[PASS] A20c   A second installation does not print a password again
+[INFO] server pid=8940 on 127.0.0.1:8071 prefix=''
+[PASS] A21    demo.password written in .env (not a process variable) is the accounts' password
+[PASS] A21b   Back to the state before the demo (counters apart)
+
+-- A: conflicts with existing accounts, roles, permissions
+[INFO] conflict email: demo:install rc=1 rc=1 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:05:10 UTC+00:00 Something named like the demo already exists in auth_identities: remove it first.
+[PASS] A22-email Conflict (email): installation refused without damage (database identical, counters included) and with a message
+[PASS] A22-email-b The real account with the demo e-mail was not taken over (password, roles, showcase list untouched)
+[INFO] conflict username: demo:install rc=1 rc=1 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:05:11 UTC+00:00 Something named like the demo already exists in users: remove it first.
+[PASS] A22-username Conflict (username): installation refused without damage (database identical, counters included) and with a message
+[INFO] After the refused installation with the username taken: 0 differences, e.g. []
+[INFO] demo:install again, username still taken: rc=1 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:05:11 UTC+00:00 Something named like the demo already exists in users: remove it first.
+[PASS] A22-username-b demo:uninstall after that failed installation does not delete the real account that owns the username demo-author
+[PASS] A22-username-c And it removes what the failed installation left
+[INFO] conflict role-slug: demo:install rc=1 rc=1 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:05:12 UTC+00:00 Something named like the demo already exists in acl_roles: remove it first.
+[PASS] A22-role-slug Conflict (role-slug): installation refused without damage (database identical, counters included) and with a message
+[INFO] conflict role-name: demo:install rc=0 rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:05:12 UTC+00:00 Demo installed. Open /demo and sign in as one of: reader@example.com author@example.com approver@example.com Password: the one in demo.password. Remove it all with...
+[PASS] A22-role-name Existing role-name of the application: the demo installed, and its removal did not take the application's own record
+[INFO] conflict permission: demo:install rc=1 rc=1 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:05:15 UTC+00:00 Something named like the demo already exists in acl_permissions: remove it first.
+[PASS] A22-permission Existing permission of the application: installation refused without damage
+[INFO] demo:install with a failure induced at the third account: rc=1 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:05:15 UTC+00:00 The demo could not be installed; nothing was left behind. The reason is in the application log.
+[PASS] A22-mid Installation failing halfway (third account refused by the database): exit non-zero, everything it created removed (database identical, counters apart)
+[PASS] A22-mid-b The reason goes only to the log: no SQL text on the console, the database message in writable/logs
+[PASS] A23    After the conflict cases the database is back as before them (counters apart)
+
+== B: permissions at work in the demo (development)
+[INFO] server pid=34772 on 127.0.0.1:8071 prefix=''
+[PASS] B01    Reader: every document listed, no button at all (no New, Edit, Submit, Approve, Delete); 1 permission
+[PASS] B02    Author: New; Edit only on own documents; Submit only on own drafts; no Approve, no Delete; 3 permissions
+[PASS] B03    Approver: New; Approve only on submitted; Delete on every document; Edit only on own; 5 permissions
+[INFO] Super admin (holds no demo role): New=true edit=[] approve=[2] delete=[1,2,3,4] permissions figure=0
+[PASS] B04    Fixture: an approver draft, an author draft, an author submitted document, an approved document
+[PASS] B05    Reader: GET demo/create refused (no form)
+[PASS] B06    Reader: hand-made POST demo (create) with a valid CSRF token refused, nothing written
+[PASS] B07    Author: hand-made update of the approver's document refused
+[PASS] B07b   Author: GET the edit form of the approver's document refused
+[PASS] B08    Author: submit of the approver's draft refused
+[PASS] B09    Author: approve without documents.approve refused
+[PASS] B10    Author: delete without documents.delete refused
+[PASS] B11    Approver: approve of a draft refused
+[INFO] Message: R...["Only a submitted document can be approved."]
+[PASS] B12    Author: submit of a document that is not a draft (own submitted) refused
+[PASS] B12b   Author: submit of an approved document refused
+[PASS] B13    Approver: approve of an already approved document refused
+[PASS] B14    Approver: update of the author's document refused (documents.update covers only one's own)
+[PASS] B15    Reader: submit, approve and delete forged by hand refused
+[PASS] B15b   Reader: approve forged by hand refused
+[PASS] B15c   Reader: delete forged by hand refused
+[INFO] Super admin editing an author's document: HTTP 404; changed=false
+[PASS] B17-submit Guest: POST submit refused (sent to sign in), nothing changed
+[PASS] B17-approve Guest: POST approve refused (sent to sign in), nothing changed
+[PASS] B17-delete Guest: POST delete refused (sent to sign in), nothing changed
+[PASS] B17b   Guest: /demo sends to the sign-in page
+[PASS] B18-cf04 Nonexistent document (GET demo/99999/edit): no 500, no SQL
+[PASS] B18-887a Nonexistent document (POST demo/99999): no 500, no SQL
+[PASS] B18-184d Nonexistent document (POST demo/99999/submit): no 500, no SQL
+[PASS] B18-6dda Nonexistent document (POST demo/99999/approve): no 500, no SQL
+[PASS] B18-75fb Nonexistent document (POST demo/99999/delete): no 500, no SQL
+[PASS] B18-49bc Nonexistent document (POST demo/0/delete): no 500, no SQL
+[PASS] B18-b23a Malformed id (demo/abc/edit): no 500, no SQL
+[PASS] B18-330e Malformed id (demo/1.5/edit): no 500, no SQL
+[PASS] B18-a89f Malformed id (demo/1'/edit): no 500, no SQL
+[PASS] B18-d039 Malformed id (demo/-1/edit): no 500, no SQL
+
+-- B: the normal path
+[PASS] B19    Author creates a document: a draft owned by the author
+[PASS] B20    Author edits the own draft
+[PASS] B21    Author submits the own draft: status submitted
+[PASS] B22    Approver approves: status approved, approved_by the approver, approved_at set
+[PASS] B23a   Editing an approved document warns that it goes back to draft
+[PASS] B23    Saving an approved document puts it back to draft, as the form says
+[INFO] After going back to draft: approved_by=null approved_at=null
+[PASS] B24    Approver deletes any document
+
+-- B: CSRF, escaping, validation
+[PASS] B25    Create without CSRF token refused, nothing written
+[PASS] B25b   Create with a wrong CSRF token refused
+[PASS] B25c   Delete without CSRF token refused, document still there
+[PASS] B25d   Submit with a wrong CSRF token refused
+[PASS] B26    Every form of the demo page carries a CSRF field
+[PASS] B27    Markup in title and text stored as typed
+[PASS] B28    Title and text escaped on the list (reader, approver) and in the edit form
+[PASS] B29    Delete confirmation: the title reaches the JavaScript as one string literal (no break-out)
+[PASS] B30-ce1 Create with empty title: no 500, no SQL detail, nothing written
+[PASS] B30-a2a Create with blank title: no 500, no SQL detail, nothing written
+[PASS] B30-4d4 Create with 161 characters: no 500, no SQL detail, nothing written
+[PASS] B30-a80 Create with body of 70000 characters: no 500, no SQL detail
+[PASS] B30-abd Create with missing fields: no 500, no SQL detail, nothing written
+[PASS] B31    A title of exactly 160 characters (accented) and an emoji in the text are kept whole
+
+-- B: a role or an override changed in the panel applies at the next request
+[PASS] B32a   Panel: documents.create granted to the Reader role
+[PASS] B32    The reader's next request shows New document and the creation succeeds, without signing in again
+[PASS] B33    Revoked in the panel: the next request hides New document and refuses the creation
+[PASS] B33b   Inheritance: the approver (Reader <- Author <- Approver) still has its five permissions
+[PASS] B34    Per-user denial of documents.delete: no Delete button for the approver and the forged delete refused
+[PASS] B34b   Override cleared: Delete back at the next request
+[PASS] B35    Per-user grant of documents.approve: the author sees Approve on submitted documents and approves
+[PASS] B36a   Fixture: the author deactivated from the panel
+[PASS] B36    A demo account deactivated in the panel is refused at its next request
+
+== C: showcase mode
+[INFO] server pid=32960 on 127.0.0.1:8071 prefix=''
+[PASS] C01    Showcase off by default: no account bar
+[PASS] C02    Showcase off: a hand-made switch request with a valid CSRF token is refused, the session stays the reader
+[INFO] server pid=24128 on 127.0.0.1:8071 prefix=''
+[PASS] C03    demo.showcase = true: the bar lists exactly the three demo accounts
+[PASS] C04    One click: the session becomes the approver, without any password
+[PASS] C04b   And again to the author
+[PASS] C05    No role, permission, assignment or showcase list changed by the switches
+[PASS] C06-7bd Switch to the real super admin refused: the session stays the demo author
+[PASS] C06-bc2 Switch to the real user refused: the session stays the demo author
+[PASS] C06-17f Switch to the deactivated real user refused: the session stays the demo author
+[PASS] C06-9f7 Switch to the nonexistent id 99999 refused: the session stays the demo author
+[PASS] C06-7c6 Switch to the id 0 refused: the session stays the demo author
+[PASS] C06-abc Malformed target (abc): no 500, session unchanged
+[PASS] C06--1 Malformed target (-1): no 500, session unchanged
+[PASS] C06-1.5 Malformed target (1.5): no 500, session unchanged
+[PASS] C07    Switch to a deactivated demo account refused
+[PASS] C08    Switch without CSRF token refused
+[PASS] C08b   Switch with a wrong CSRF token refused
+[PASS] C08c   Switch by GET does nothing
+[PASS] C09    Guest: switch refused, still not signed in
+[INFO] Showcase bar for a signed-in real super admin: [5,6,7]
+[PASS] C10    No role changed after all the attempts
+[INFO] Activity log after the switches: [{"actor_label":"demo-reader","action":"auth.logout","subject_label":"demo-reader"},{"actor_label":"demo-approver","action":"auth.logout","subject_label":"demo-approver"}]
+[INFO] server pid=4212 on 127.0.0.1:8071 prefix=''
+[PASS] C11    CI_ENVIRONMENT = production with demo.showcase = true: no bar
+[PASS] C12    Production: the switch request is refused, the session stays the reader
+[PASS] C13a   Demo README instruction applied to the copy: in error_404.php ENVIRONMENT !== 'production' replaced (1 occurrence)
+[INFO] server pid=33920 on 127.0.0.1:8071 prefix=''
+[PASS] C13    CI_ENVIRONMENT = demo (boot copied from production): the bar is there and no debug toolbar
+[PASS] C14    Environment demo: the switch works
+[PASS] C15b   Environment demo: a missing document answers 404 without error detail
+[PASS] C15    Environment demo: an unknown address shows no error detail (no route, path or trace)
+[PASS] C16    Environment demo: a database failure shows a generic error page, no SQL, no trace
+
+== D: the module without the demo, and the demo wired into a clean application
+[INFO] server pid=32804 on 127.0.0.1:8071 prefix=''
+[PASS] D01    Module alone (no demo folder, no demo lines): owner signs in and the panel answers
+[PASS] D02    Module alone: /demo does not exist (404), no error
+[PASS] D03    Module alone: every panel screen answers 200
+[PASS] D04    Clean application: demo copied to modules/rolewarden-demo and the two README lines added
+[PASS] D05    demo:install in the clean application succeeds
+[INFO] server pid=35524 on 127.0.0.1:8071 prefix=''
+[PASS] D06    The author signs in and /demo lists the documents with New document
+[PASS] D07    demo:uninstall in the clean application: no residue, nothing lost
+
+== F: every example of documentation/ tried on a copy of the test application (module alone)
+[PASS] F01    api.html migration "AddInvoicePermissions" copied as is: php spark migrate creates invoices.view and invoices.approve
+[PASS] F01b   Its down() removes them (migrate:rollback of that batch)
+[INFO] server pid=7688 on 127.0.0.1:8071 prefix=''
+[PASS] F02    Route filter can:invoices.view: a user holding it gets the page
+[PASS] F03    Route filter: a signed-in user without it is redirected (Shield's permissionDeniedRedirect) with an error message
+[INFO] Denied message shown after the redirect: ☰ Home Docs Community Contribute Welcome to CodeIgniter 4.7.4 The small framework with powerful features About this page The page you are looking at is being ...
+[PASS] F03b   Route filter alone (no session filter): a guest does not get the page
+[INFO] Guest on a can-only route: 302 -> http://127.0.0.1:8071/index.php/login (documentation: put Shield's session filter before it)
+[PASS] F04    can:reports.view,invoices.view: any one of the permissions lets the request through, none refuses
+[PASS] F05    POST route with can:invoices.approve: refused without, accepted with
+[PASS] F06    View helper example: the Approve button only for who holds invoices.approve
+[PASS] F06b   can_any(), can_all(), permissions() (sorted) answer as documented
+[PASS] F06c   Helpers for a guest: everything denied, no permission
+[PASS] F07    Shield's entity: can('invoices.view'), can(a, b), hasPermission() answered from the database
+[PASS] F07b   inGroup() and getGroups() read the user's roles
+[PASS] F07c   can('invoices.view', 'reports.view') is true when any one is granted
+[PASS] F08    View override of layouts/panel.php under app/Views/overrides/RoleWarden/Views/ is used
+[PASS] F08b   View override of auth/login.php is used for the sign-in page
+[PASS] F09    Language line override (app/Language/en/RoleWarden.php, panel.nav.users => 'People') replaces that line only
+[PASS] F10    A language added as app/Language/fr/RoleWarden.php appears at once in the profile, named in its own language
+[PASS] F10b   Chosen: the panel uses the French file (lang="fr", Utilisateurs) and lines left out fall back to English (Roles)
+[PASS] F11    extraThemes ['ocean' => 'Ocean'] is offered on the Appearance screen
+[PASS] F11b   themeStylesheet is loaded by the panel after its own stylesheet
+[PASS] F12    Troubleshooting: the panel stylesheet is served at /rolewarden/assets/css/panel.css (200, text/css)
+[INFO] Settings selects: {"session_lifetime":"7200","remember_length":"2592000","default_role":"","activity_retention":"365"}
+[PASS] F13    configuration.html: rolewarden.lockAttempts = 8 in .env is the value the Settings screen starts from
+[PASS] F14    rolewarden.mail fires with the message keys the documentation lists (to, subject, view, data, locale)
+[INFO] [omesso].activity entries whose details are null (no JSON): ["user.password_set"]
+[PASS] F15    rolewarden.activity fires with the row: 'action' like role.updated / user.updated, 'details' as JSON
+[INFO] service('[omesso]') outside a request: {"can":[false,true],"canAny":true,"canAll":[false,true],"permissions":["invoices.approve","invoices.view"],"authorizeDenied":"RoleWarden\\Authorization\\AuthorizationException","authorizeGranted":"ok","bad":{"invoices":"InvalidArgumentException","invoices.*":"InvalidArgumentException","Invoices.View":"InvalidArgumentException"},"beforeAssign":false,"staticAssign":"ok","afterAssign":true,"forgetOk":true}
+[PASS] F16    service('rolewarden'): can(), canAny(), canAll(), permissions() for any user, outside a request
+[PASS] F17    authorize() throws RoleWarden\Authorization\AuthorizationException when denied and passes when granted
+[PASS] F18    A slug not in area.action form throws InvalidArgumentException (no wildcards in checks)
+[INFO] Upper-case slug Invoices.View: InvalidArgumentException
+[PASS] F19    UserRoles assign() (called on the model instance) takes effect at once; forgetUser() and forgetRole() exist
+[PASS] F19b   api.html writes "(new \RoleWarden\Models\UserRoles())->assign($userId, $roleId)": copied as written, the call works
+[INFO] shield:user activate asks for a confirmation, answered y: CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-14 09:07:35 UTC+00:00 Activate the user admin ? [y, n]: User "admin" activated
+[INFO] server pid=14512 on 127.0.0.1:8071 prefix=''
+[PASS] F20    installation.html, super admin by hand: shield:user create + activate + the INSERT given, then the panel opens
+[PASS] F21    rolewarden.tablePrefix = 'myapp_' in .env: the module's tables are created with that prefix
+
+== G: the demo in Italian
+[INFO] server pid=31676 on 127.0.0.1:8071 prefix=''
+[PASS] G01    Demo in Italian (author and approver who chose Italian): no English interface text left on list, create, edit pages, attributes included
+[PASS] G02    Toast after the creation in Italian
+[INFO] Italian demo list text: Demo RoleWarden 01Documenti Documenti EN IT Reader Author Approver demo-approver DE × Demo Documenti Un piccolo archivio di documenti che mostra i permessi al lavoro: chi legge soltanto, chi scrive e modifica i propri, chi approva e cancella. Documenti5 I tuoi permessi sui documenti5 I pulsanti compaiono solo quando i tuoi ruoli consentono l'azione. Cambia account per vederli cambiare. Nuovo documento Titolo Autore Stato Azioni 01 Bozza di provaTesto demo-author Bozza Elimina 02 Travel policy 2026Economy class for flights under six hours. Receipts within thirty days. demo-author Approvato da ...
+[AMB]  G03    Seeded data stay in English in the Italian demo: role names (Reader, Author, Approver, also on the showcase buttons), permission descriptions and the four sample documents
+         -> Same question as V7 A1 (seeded names and descriptions of roles and permissions), still open; the sample documents of the demo seed are the same kind of data. Not counted as defects.
+
+== L: PHP errors and warnings, application logs at threshold 9, every response
+[PASS] L01    No HTTP 500 in the demo paths (apart from the induced database failure)
+[PASS] L02    No SQL or driver detail in any response (development pages after removal judged apart, A16d)
+[PASS] L03    No PHP warning, notice or deprecation in the server output (error_reporting=-1)
+[INFO] log A: 117 lines, 2 at WARNING or above, 2 from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)
+[PASS] L04A   Application log (A) at threshold 9: no warning or error other than the induced ones
+[INFO] log B: 256 lines, 6 at WARNING or above, 6 from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)
+[PASS] L04B   Application log (B) at threshold 9: no warning or error other than the induced ones
+[INFO] log C: 219 lines, 6 at WARNING or above, 6 from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)
+[PASS] L04C   Application log (C) at threshold 9: no warning or error other than the induced ones
+[INFO] log D: 13 lines, 0 at WARNING or above, 0 from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)
+[PASS] L04D   Application log (D) at threshold 9: no warning or error other than the induced ones
+[INFO] log F: 48 lines, 0 at WARNING or above, 0 from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)
+[PASS] L04F   Application log (F) at threshold 9: no warning or error other than the induced ones
+[INFO] log G: 17 lines, 0 at WARNING or above, 0 from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)
+[PASS] L04G   Application log (G) at threshold 9: no warning or error other than the induced ones
+[PASS] L05    Every message caught by Mailpit went to @example.com or *.test addresses (1 messages)
+
+TOTAL: 195 PASS, 0 FAIL, 2 AMB
+Test process exit: 0

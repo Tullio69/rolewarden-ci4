@@ -6,7 +6,7 @@ $current = service('language')->getLocale();
 <?php if (count($languages) > 1) : ?>
 <form class="rw-mode" method="post" action="<?= esc(site_url('rolewarden/profile/language')) ?>" aria-label="<?= esc(lang('RoleWarden.panel.account.language'), 'attr') ?>">
   <?= csrf_field() ?>
-  <input type="hidden" name="back" value="<?= esc(current_url(), 'attr') ?>">
+  <input type="hidden" name="back" value="<?= esc(current_url() . (($query = service('request')->getUri()->getQuery()) !== '' ? '?' . $query : ''), 'attr') ?>">
   <?php foreach ($languages as $locale => $name) : ?>
     <button type="submit" name="language" value="<?= esc($locale, 'attr') ?>" lang="<?= esc($locale, 'attr') ?>" title="<?= esc($name, 'attr') ?>" aria-label="<?= esc($name, 'attr') ?>" aria-pressed="<?= $locale === $current ? 'true' : 'false' ?>"><?= esc(strtoupper($locale)) ?></button>
   <?php endforeach ?>

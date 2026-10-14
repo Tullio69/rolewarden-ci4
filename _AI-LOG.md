@@ -785,3 +785,38 @@ Formato di ogni voce:
 - Cosa ho fatto: dopo il deploy delle 20:52, dal controllo visivo dell'autore: colonna dei numeri larga un gutter in ogni schermata (07af67a, f8b2f57); SPEC con la decisione A2 di V7, installer che riparte senza super admin attivo (96b551c); selettore EN/IT nella barra in alto di pannello e demo (0e9687b, 771e7fe); matrice dei permessi con il quadratino tratteggiato "non concesso" nelle celle esistenti e una riga di istruzioni, pagina Permissions con la colonna "Concesso da" (ruoli diretti ed ereditati) e intro riscritta (949f056, 11da43e; demo deployata a 3af4489). Ogni passo verificato su staging e poi messo sulla demo; unit 72/72.
 - Stato: completato
 - Note per il prossimo: selettore lingua, matrice e colonna "Concesso da" sono funzioni nuove senza collaudo indipendente. Il numero di riga tagliato visto dall'autore nella matrice non si riproduce a 1050/1280/1600 px. Restano: traduzione di ruoli e permessi di sistema (sessione separata), suite V4 sulla data localizzata, zip da ricostruire (build/ ha rc.v8b), cartelle Chrome in scratchpad (chrome-ux compresa) e `tests/Integration/verify-v5.work`, `verify-v8.regress.locked-chrome` da cancellare a mano.
+
+### [2026-10-14 09:10] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v8b.php`, `verify-v8b.phase-{l,m,p,y,i,g}.php`, `verify-v8b.run.py`, `verify-v8b.browser.mjs`, `verify-v8b.regress.py`, `verify-v8b.regression-all.sh`, uscite `verify-v8b.*`, `V8b-REPORT.md`) e questa voce
+- Cosa ho fatto: collaudo V8b in nero delle modifiche dopo la V8 (`be64b53`..`6d21875`), al posto di Codex (modello non supportato con l'account), con lo stesso protocollo. Le cinque modifiche le ho provate via HTTP, con query su `rolewarden_test` e in Chrome headless: selettore lingua, marchio «Not granted» e righe di istruzioni nelle matrici, colonna «Granted by», installer che riparte senza super admin attivo, layout a 1280/1366/1920. Poi la regressione V2-V6 e la suite V8 (fasi A-D, F, G) su `6d21875`, in development e production.
+- Stato: completato. **Esito FAIL, V8b non approvata** (due difetti minori).
+  - Suite V8b 119/124 in entrambi gli ambienti, 2 AMB.
+  - Suite V8 195/195.
+  - Regressione: development 1016/1043, production 1047/1074. Restano solo i fallimenti noti (G07, 25 date ISO di V4) più G07v5, superato: i submit in più sono il nuovo selettore EN/IT, come prova L17.
+  - D1: con due schede il selettore torna all'ultima pagina caricata, non a quella da cui è usato.
+  - D2, già presente in `be64b53`: nelle matrici in sola lettura un override di concessione ha il marchio ✓ del ruolo invece di (✓).
+- Note per il prossimo: ambiguità non decise, da portare all'autore:
+  - A1: nessuna istruzione documentata per avere una sola lingua; `supportedLocales=['en']` non nasconde il selettore.
+  - A2: la pagina utente in sola lettura non mostra il quadratino «Not granted».
+  - A3: scorrimento orizzontale a 1280/1366 px sulla pagina ruolo (peggiorato rispetto a `be64b53`: 200 contro 82 px a 1280, e nuovo a 1366), sulla pagina utente e sull'elenco utenti con più dati. La causa sta nel contenuto di `main`, non nella barra in alto.
+  - Non provati: zip (fasi P/E di V8, V7, pacchetti; `build/` ancora a `rc.v8b`), controllo visivo in browser vero, 1440 px.
+  - Pulizia: snapshot `f7f37c04…e21e64` identico in tutte le 28 esecuzioni; Mailpit vuoto; nessun processo mio. Docker Desktop avviato, con accesi solo `rolewarden-db` e `rolewarden-mail`. Da cancellare a mano `scratchpad/v8breg` (profili Chrome bloccati).
+  - Nessun commit, nessun push.
+
+### [2026-10-14 09:41] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-v8b.phase-{l,m}.php` aggiornati con L19b, L20-L20c e M19f; uscite `verify-v8b.57f6f09.*` e `verify-v8b.regression.v6.*.57f6f09.*`; sezione «Riverifica» in `V8b-REPORT.md`) e questa voce
+- Cosa ho fatto: riverifica V8b su `57f6f09` con lo stesso protocollo. Rieseguite le fasi V8b complete in development e production e la V6 nei due ambienti. Prove nuove:
+  - campo nascosto `back` del selettore riempito a mano con 19 valori (altro host, `//host`, stesso prefisso con un altro host o un'altra porta, `javascript:`, `data:`, varianti codificate);
+  - due schede in entrambi gli ordini;
+  - quadratino «Not granted» nella pagina utente in sola lettura.
+- Stato: completato. **Esito FAIL, V8b non approvata.**
+  - **Corretti:** D1 (L19, L19b), D2 (M19, M19e) e A2 (M19f). Il redirect non lascia mai l'applicazione (L11-L11c, L20-L20c).
+  - **D3, minore e nuovo:** tornando alla pagina, il selettore perde la query string. Da `/rolewarden/users?q=v8b&page=1` si torna a `/rolewarden/users`; su `6d21875` L08 passava.
+  - **Totali:** V8b 126/129 in entrambi gli ambienti (FAIL: L08, cioè D3, e Y03 ×2, cioè l'ambiguità A3), 1 AMB (A1). V6 151/151 nei due ambienti.
+- Note per il prossimo:
+  - **Regressione da chiudere.** Il job V5 → V4 → V2 → V3 → V8 è stato fermato da Claude Code per memoria di sistema insufficiente durante V5 development. Il driver era rimasto vivo: l'ho fermato per PID, ho ripristinato il database (hash `f7f37c04…e21e64` identico) e svuotato Mailpit. Non l'ho rilanciato; il comando per chiuderla è nel report.
+  - **Ambiguità aperte all'autore:** A1 e A3.
+  - **Da cancellare a mano:** i profili Chrome bloccati in `scratchpad/` (`v8breg`, `v8breg2`, `v8b-locked-development`, `v8b-locked-production`).
+  - Nessun commit, nessun push.

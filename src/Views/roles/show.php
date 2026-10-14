@@ -137,7 +137,8 @@ $canEdit = can('roles.update');
           <th class="rw-m-area" scope="row"><b><?= esc($row['area']) ?></b><code><?= esc($row['area']) ?>.*</code></th>
           <?php foreach ($row['cells'] as $cell) : ?>
             <td class="rw-m-act"><?php if ($cell['permissionId'] !== null) : ?><span class="rw-cell" title="<?= esc($cell['tooltip']) ?>"><?= match ($cell['state']) {
-                'role', 'grant' => '<svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+                'role' => '<svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+                'grant' => '<svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
                 'inherit' => '<svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
                 'deny' => '<svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg>',
                 default => '<span class="rw-mark-blank" aria-hidden="true"></span>',

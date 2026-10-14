@@ -68,9 +68,10 @@ class AccountController extends BaseController
     public function language(): RedirectResponse
     {
         $choice = $this->request->getPost('language');
-        // Back to the page it was chosen from, as long as that page is on this site.
+        // Back to the page it was chosen from, as long as that page is on this site and fits in a header.
         $from = $this->request->getPost('back');
-        $back = is_string($from) && str_starts_with($from, rtrim(site_url(), '/') . '/') ? redirect()->to($from) : redirect()->back();
+        $back = is_string($from) && str_starts_with($from, rtrim(site_url(), '/') . '/') && preg_match('/[\x00-\x1F\x7F]/', $from) === 0
+            ? redirect()->to($from) : redirect()->back();
 
         // '' goes back to the application's language; anything unlisted is ignored.
         if (! is_string($choice) || ($choice !== '' && ! isset(UserLanguage::available()[$choice]))) {

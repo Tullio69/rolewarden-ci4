@@ -9,6 +9,7 @@ return [
         'demo-author' => ['name' => 'Author', 'description' => 'Writes demo documents and edits their own.'],
         'demo-approver' => ['name' => 'Approver', 'description' => 'Approves and deletes demo documents.'],
     ],
+    'areas' => ['documents' => 'Documents'],
     'permissions' => [
         'documents' => [
             'view' => 'See the demo documents',

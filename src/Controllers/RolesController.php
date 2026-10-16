@@ -12,6 +12,7 @@ use RoleWarden\Authorization\ProtectionException;
 use RoleWarden\Models\PermissionModel;
 use RoleWarden\Models\RoleModel;
 use RoleWarden\Models\RolePermissions;
+use RoleWarden\Models\SeededText;
 use Throwable;
 
 class RolesController extends BaseController
@@ -325,7 +326,7 @@ class RolesController extends BaseController
                 ];
             }
 
-            $rows[] = ['area' => $area, 'cells' => $cells];
+            $rows[] = ['area' => $area, 'name' => SeededText::area($area), 'cells' => $cells];
         }
 
         return [

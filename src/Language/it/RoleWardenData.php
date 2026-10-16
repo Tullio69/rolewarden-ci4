@@ -8,6 +8,16 @@ return [
         'admin' => ['name' => 'Amministratore', 'description' => 'Gestisce utenti, ruoli e permessi.'],
         'user' => ['name' => 'Utente', 'description' => 'Ruolo predefinito, senza permessi di amministrazione.'],
     ],
+    'areas' => [
+        'users' => 'Utenti',
+        'roles' => 'Ruoli',
+        'permissions' => 'Permessi',
+        'settings' => 'Impostazioni',
+        'sessions' => 'Sessioni',
+        'activity' => 'Attività',
+        'security' => 'Sicurezza',
+        'appearance' => 'Aspetto',
+    ],
     'permissions' => [
         'users' => [
             'view' => 'Vedere gli utenti',

@@ -549,7 +549,7 @@ class UsersController extends BaseController
                 $cells[] = ['action' => $action, 'permissionId' => $permissionId, 'state' => $state, 'tooltip' => $tooltip];
             }
 
-            $rows[] = ['area' => $area, 'cells' => $cells];
+            $rows[] = ['area' => $area, 'name' => SeededText::area($area), 'cells' => $cells];
         }
 
         return ['areas' => $areas, 'actions' => $actions, 'rows' => $rows];

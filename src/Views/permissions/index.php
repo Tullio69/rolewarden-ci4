@@ -8,7 +8,7 @@
 
 <?php $n = 0; $canSeeRoles = can('roles.view'); ?>
 <?php foreach ($byArea as $area => $items) : ?>
-  <div class="rw-section-title"><span class="rw-section-n"><?= str_pad((string) (++$n), 2, '0', STR_PAD_LEFT) ?></span><h2><?= esc(ucfirst($area)) ?></h2></div>
+  <div class="rw-section-title"><span class="rw-section-n"><?= str_pad((string) (++$n), 2, '0', STR_PAD_LEFT) ?></span><h2><?= esc(RoleWarden\Models\SeededText::area($area)) ?></h2></div>
   <table class="rw-t-users rw-t-permissions">
     <thead>
       <tr>

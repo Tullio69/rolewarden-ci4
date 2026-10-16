@@ -10,6 +10,16 @@ return [
         'admin' => ['name' => 'Admin', 'description' => 'Manages users, roles and permissions.'],
         'user' => ['name' => 'User', 'description' => 'Default role with no administrative permissions.'],
     ],
+    'areas' => [
+        'users' => 'Users',
+        'roles' => 'Roles',
+        'permissions' => 'Permissions',
+        'settings' => 'Settings',
+        'sessions' => 'Sessions',
+        'activity' => 'Activity',
+        'security' => 'Security',
+        'appearance' => 'Appearance',
+    ],
     'permissions' => [
         'users' => [
             'view' => 'View users',

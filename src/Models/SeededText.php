@@ -24,6 +24,17 @@ final class SeededText
     }
 
     /**
+     * The name of a permission area: its translation under areas.{area}, else the slug capitalised.
+     */
+    public static function area(string $area): string
+    {
+        $line = 'RoleWardenData.areas.' . $area;
+        $name = lang($line);
+
+        return $name !== $line ? $name : ucfirst($area);
+    }
+
+    /**
      * Applies show() to a role row, when it carries its slug.
      *
      * @param array<string, mixed> $row

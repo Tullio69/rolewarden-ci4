@@ -89,7 +89,7 @@ $canEdit = can('roles.update');
         <template x-for="(row, i) in rows" :key="row.area">
           <tr>
             <td class="rw-m-num" x-text="String(i + 1).padStart(2, '0')"></td>
-            <th class="rw-m-area" scope="row"><b x-text="row.area"></b><code x-text="row.area + '.*'"></code></th>
+            <th class="rw-m-area" scope="row"><b x-text="row.name"></b><code x-text="row.area + '.*'"></code></th>
             <template x-for="cell in row.cells" :key="cell.action">
               <td class="rw-m-act">
                 <template x-if="cell.permissionId !== null">
@@ -98,7 +98,7 @@ $canEdit = can('roles.update');
               </td>
             </template>
             <td class="rw-m-all">
-              <input type="checkbox" class="rw-check" :checked="triState(rowKeys(row.area)).checked" :indeterminate.prop="triState(rowKeys(row.area)).indeterminate" @change="toggleRow(row.area, $event.target.checked)" :aria-label="<?= esc(json_encode(lang('RoleWarden.panel.roles.grantRow')), 'attr') ?>.replace('%s', row.area)">
+              <input type="checkbox" class="rw-check" :checked="triState(rowKeys(row.area)).checked" :indeterminate.prop="triState(rowKeys(row.area)).indeterminate" @change="toggleRow(row.area, $event.target.checked)" :aria-label="<?= esc(json_encode(lang('RoleWarden.panel.roles.grantRow')), 'attr') ?>.replace('%s', row.name)">
             </td>
             <td class="rw-m-anno">
               <span class="rw-note" x-show="row.cells.some(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)])">
@@ -134,7 +134,7 @@ $canEdit = can('roles.update');
       <?php foreach ($rows as $i => $row) : ?>
         <tr>
           <td class="rw-m-num"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></td>
-          <th class="rw-m-area" scope="row"><b><?= esc($row['area']) ?></b><code><?= esc($row['area']) ?>.*</code></th>
+          <th class="rw-m-area" scope="row"><b><?= esc($row['name']) ?></b><code><?= esc($row['area']) ?>.*</code></th>
           <?php foreach ($row['cells'] as $cell) : ?>
             <td class="rw-m-act"><?php if ($cell['permissionId'] !== null) : ?><span class="rw-cell" title="<?= esc($cell['tooltip']) ?>"><?= match ($cell['state']) {
                 'role' => '<svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',

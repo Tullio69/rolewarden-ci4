@@ -8,6 +8,7 @@ return [
         'demo-author' => ['name' => 'Autore', 'description' => 'Scrive documenti della demo e modifica i propri.'],
         'demo-approver' => ['name' => 'Approvatore', 'description' => 'Approva ed elimina i documenti della demo.'],
     ],
+    'areas' => ['documents' => 'Documenti'],
     'permissions' => [
         'documents' => [
             'view' => 'Vedere i documenti della demo',

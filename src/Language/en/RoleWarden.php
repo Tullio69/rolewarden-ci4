@@ -110,6 +110,7 @@ return [
         'previous' => 'Previous',
         'next' => 'Next',
         'notes' => 'Notes',
+        'signOut' => 'Sign out',
         'a11y' => [
             'main' => 'Main',
             'breadcrumb' => 'Breadcrumb',

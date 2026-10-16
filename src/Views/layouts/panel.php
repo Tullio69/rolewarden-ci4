@@ -53,6 +53,7 @@
           <span><?= esc($me->username ?? $me->email) ?><small><?= esc(($me->getGroups()[0] ?? '') !== '' ? ucfirst($me->getGroups()[0]) : '') ?></small></span>
           <i aria-hidden="true"><?= esc(strtoupper(substr((string) ($me->username ?? $me->email), 0, 2))) ?></i>
         </a>
+        <a class="rw-signout" href="<?= esc(url_to('logout')) ?>"><?= lang('RoleWarden.panel.signOut') ?></a>
         </div>
       <?php endif ?>
     </header>

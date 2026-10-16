@@ -110,6 +110,7 @@ return [
         'previous' => 'Precedente',
         'next' => 'Successiva',
         'notes' => 'Note',
+        'signOut' => 'Esci',
         'a11y' => [
             'main' => 'Principale',
             'breadcrumb' => 'Percorso',

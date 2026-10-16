@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude (passo 1 della roadmap di pubblicazione)
+**Agente:** Claude Code
+**Dalle:** 2026-10-16 14:20
+**Scope:** una sola lingua (`$languages`), layout sotto i 1440 px, traduzione di ruoli e permessi seminati, decisione A1 di V8; poi collaudo
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 

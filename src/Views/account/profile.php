@@ -57,6 +57,7 @@ $field = static function (string $name, string $label, string $autocomplete) use
   </tbody>
 </table>
 
+<?php if (count($languages) > 1) : ?>
 <div class="rw-section-title"><span class="rw-section-n">C</span><h2><?= lang('RoleWarden.panel.account.language') ?></h2></div>
 <form method="post" action="<?= esc(site_url('rolewarden/profile/language')) ?>">
   <?= csrf_field() ?>
@@ -79,3 +80,4 @@ $field = static function (string $name, string $label, string $autocomplete) use
     </tbody>
   </table>
 </form>
+<?php endif ?>

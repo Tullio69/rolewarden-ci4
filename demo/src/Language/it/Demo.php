@@ -17,7 +17,7 @@ return [
     'backToDraft' => 'Salvando, il documento torna in bozza: va inviato e approvato di nuovo.',
     'fieldTitle' => 'Titolo',
     'body' => 'Testo',
-    'owner' => 'Autore',
+    'owner' => 'Proprietario',
     'status' => 'Stato',
     'actions' => 'Azioni',
     'empty' => 'Ancora nessun documento.',

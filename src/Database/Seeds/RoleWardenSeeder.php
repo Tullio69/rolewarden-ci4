@@ -12,52 +12,8 @@ use CodeIgniter\Database\Seeder;
  */
 class RoleWardenSeeder extends Seeder
 {
-    /** slug => [name, description, is_super_admin] */
-    private const ROLES = [
-        'super-admin' => ['Super admin', 'Bypasses role checks; still subject to user-level denials.', 1],
-        'admin' => ['Admin', 'Manages users, roles and permissions.', 0],
-        'user' => ['User', 'Default role with no administrative permissions.', 0],
-    ];
-
-    /** area => [action => description] */
-    private const PERMISSIONS = [
-        'users' => [
-            'view' => 'View users',
-            'create' => 'Create users',
-            'update' => 'Edit users',
-            'delete' => 'Delete users',
-            'activate' => 'Activate and deactivate users',
-            'import' => 'Import users from a CSV file',
-        ],
-        'roles' => [
-            'view' => 'View roles',
-            'create' => 'Create roles',
-            'update' => 'Edit roles',
-            'delete' => 'Delete roles',
-            'assign' => 'Assign roles to users',
-        ],
-        'permissions' => [
-            'view' => 'View permissions',
-            'override' => 'Grant or deny a permission to a single user',
-        ],
-        'settings' => [
-            'view' => 'View module settings',
-            'update' => 'Change module settings',
-        ],
-        'sessions' => [
-            'view' => 'See the signed-in sessions of other users',
-            'revoke' => 'Sign other users out of their sessions',
-        ],
-        'activity' => [
-            'view' => 'Read the activity log',
-        ],
-        'security' => [
-            'alerts' => 'Receive security alert emails (too many failed sign-ins)',
-        ],
-        'appearance' => [
-            'update' => 'Change the panel theme',
-        ],
-    ];
+    /** slug => is_super_admin; names and descriptions in Language/en/RoleWardenData.php */
+    private const ROLES = ['super-admin' => 1, 'admin' => 0, 'user' => 0];
 
     /** Roles that receive every seeded permission. */
     private const ALL_PERMISSIONS_ROLES = ['admin'];
@@ -67,10 +23,10 @@ class RoleWardenSeeder extends Seeder
         $cfg = config('RoleWarden');
         $now = date('Y-m-d H:i:s');
 
-        foreach (self::ROLES as $slug => [$name, $description, $isSuper]) {
+        foreach (self::ROLES as $slug => $isSuper) {
             $this->insertMissing($cfg->table('roles'), $slug, [
-                'name' => $name,
-                'description' => $description,
+                'name' => self::texts()['roles'][$slug]['name'],
+                'description' => self::texts()['roles'][$slug]['description'],
                 'is_system' => 1,
                 'is_super_admin' => $isSuper,
                 'created_at' => $now,
@@ -78,7 +34,7 @@ class RoleWardenSeeder extends Seeder
             ]);
         }
 
-        foreach (self::PERMISSIONS as $area => $actions) {
+        foreach (self::permissions() as $area => $actions) {
             foreach ($actions as $action => $description) {
                 $this->insertMissing($cfg->table('permissions'), "{$area}.{$action}", [
                     'area' => $area,
@@ -94,7 +50,7 @@ class RoleWardenSeeder extends Seeder
         // runs (the AuthGroups import adds its own), and those are not ours to grant.
         $ownSlugs = [];
 
-        foreach (self::PERMISSIONS as $area => $actions) {
+        foreach (self::permissions() as $area => $actions) {
             foreach (array_keys($actions) as $action) {
                 $ownSlugs[] = "{$area}.{$action}";
             }
@@ -116,6 +72,27 @@ class RoleWardenSeeder extends Seeder
                 }
             }
         }
+    }
+
+    /**
+     * area => [action => description], in English as stored.
+     *
+     * @return array<string, array<string, string>>
+     */
+    private static function permissions(): array
+    {
+        return self::texts()['permissions'];
+    }
+
+    /**
+     * The module's own file, read directly: lines an application adds to its
+     * copy translate its own roles and permissions and must not be seeded.
+     *
+     * @return array<string, mixed>
+     */
+    private static function texts(): array
+    {
+        return require __DIR__ . '/../../Language/en/RoleWardenData.php';
     }
 
     private function insertMissing(string $table, string $slug, array $data): void

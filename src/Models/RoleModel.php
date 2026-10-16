@@ -18,10 +18,11 @@ class RoleModel extends Model
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $beforeInsert = ['guardParent'];
-    protected $beforeUpdate = ['guardUpdate'];
+    protected $beforeUpdate = ['guardUpdate', 'keepSeeded'];
     protected $beforeDelete = ['guardDelete'];
     protected $afterUpdate = ['forgetRoles'];
     protected $afterDelete = ['forgetRoles'];
+    protected $afterFind = ['showSeeded'];
 
     public function __construct()
     {
@@ -57,6 +58,45 @@ class RoleModel extends Model
 
             if (array_key_exists('is_super_admin', $data['data'])) {
                 service('rolewardenGuard')->assertSuperAdminFlag($id, (bool) $data['data']['is_super_admin']);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Seeded names and descriptions come back in the reader's language.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    protected function showSeeded(array $data): array
+    {
+        if (is_array($data['data'] ?? null)) {
+            $data['data'] = ($data['singleton'] ?? false) ? SeededText::role($data['data']) : array_map(SeededText::role(...), $data['data']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * A form saved with the translated text unchanged keeps the stored one, so
+     * the role is not renamed into the language of whoever saved it.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    protected function keepSeeded(array $data): array
+    {
+        foreach ($this->ids($data) as $id) {
+            $stored = $this->db->table($this->table)->select('slug, name, description')->where('id', $id)->get()->getRowArray();
+
+            foreach ($stored === null ? [] : ['name', 'description'] as $field) {
+                if (isset($data['data'][$field]) && $data['data'][$field] === SeededText::show("roles.{$stored['slug']}.{$field}", $stored[$field])) {
+                    $data['data'][$field] = $stored[$field];
+                }
             }
         }
 

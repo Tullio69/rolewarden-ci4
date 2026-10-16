@@ -21,6 +21,7 @@ class PermissionModel extends Model
     protected $beforeDelete = ['guardDelete'];
     protected $afterUpdate = ['forgetHolders'];
     protected $afterDelete = ['forgetHolders'];
+    protected $afterFind = ['showSeeded'];
 
     /** @var list<int> */
     private array $holders = [];
@@ -32,6 +33,22 @@ class PermissionModel extends Model
     {
         $this->table = config('RoleWarden')->table('permissions');
         parent::__construct();
+    }
+
+    /**
+     * Seeded descriptions come back in the reader's language.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    protected function showSeeded(array $data): array
+    {
+        if (is_array($data['data'] ?? null)) {
+            $data['data'] = ($data['singleton'] ?? false) ? SeededText::permission($data['data']) : array_map(SeededText::permission(...), $data['data']);
+        }
+
+        return $data;
     }
 
     /**

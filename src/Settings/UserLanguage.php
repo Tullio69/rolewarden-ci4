@@ -31,20 +31,29 @@ final class UserLanguage
         }
 
         ksort($names);
+        $only = config('RoleWarden')->languages;
 
-        return $names;
+        return $only === [] ? $names : array_intersect_key($names, array_flip($only));
     }
 
+    /**
+     * The user's choice; else '' to follow the application's locale, or the
+     * first language offered when the panel does not offer that locale.
+     */
     public static function forUser(?int $userId): string
     {
-        if ($userId === null) {
-            return '';
+        $available = self::available();
+
+        if ($userId !== null) {
+            helper('setting');
+            $value = setting()->get(self::KEY, 'user:' . $userId);
+
+            if (is_string($value) && isset($available[$value])) {
+                return $value;
+            }
         }
 
-        helper('setting');
-        $value = setting()->get(self::KEY, 'user:' . $userId);
-
-        return is_string($value) && isset(self::available()[$value]) ? $value : '';
+        return isset($available[service('language')->getLocale()]) ? '' : (string) array_key_first($available);
     }
 
     public static function set(int $userId, string $locale): void

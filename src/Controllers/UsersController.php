@@ -16,6 +16,7 @@ use RoleWarden\Authorization\ProtectionException;
 use RoleWarden\Entities\User;
 use RoleWarden\Models\PermissionModel;
 use RoleWarden\Models\RoleModel;
+use RoleWarden\Models\SeededText;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Models\UserPermissions;
 use RoleWarden\Models\UserRoles;
@@ -71,12 +72,12 @@ class UsersController extends BaseController
         $roleNames = [];
 
         foreach ($userIds === [] ? [] : db_connect()->table(config('RoleWarden')->table('user_roles') . ' ur')
-            ->select('ur.user_id, r.name')
+            ->select('ur.user_id, r.slug, r.name')
             ->join(config('RoleWarden')->table('roles') . ' r', 'r.id = ur.role_id')
             ->whereIn('ur.user_id', $userIds)
             ->orderBy('r.name')
             ->get()->getResultArray() as $row) {
-            $roleNames[(int) $row['user_id']][] = (string) $row['name'];
+            $roleNames[(int) $row['user_id']][] = (string) SeededText::role($row)['name'];
         }
 
         $overrideCounts = [];

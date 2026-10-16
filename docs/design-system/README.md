@@ -23,7 +23,7 @@ RoleWarden is an admin panel for roles and permissions in CodeIgniter 4 apps. It
 - `mono` (IBM Plex Mono) only for permission identifiers: `code`, `code-sm`.
 - All figures use tabular numerals (`font-variant-numeric: tabular-nums`) so columns align.
 
-**Grid and spacing.** Desktop is designed at 1440px: sidebar `size-sidebar`, top bar `size-topbar`, content with `space-12` side margins. Every table carries a left gutter `space-12` wide for row numbers (01, 02…) set in `note`. Rows are `size-row` tall; controls are `size-control` tall. Spacing steps are 4px based: `space-1` to `space-16`.
+**Grid and spacing.** Desktop is designed at 1440px: sidebar `size-sidebar`, top bar `size-topbar`, content with `space-12` side margins. Every table carries a left gutter `space-12` wide for row numbers (01, 02…) set in `note`. Rows are `size-row` tall; controls are `size-control` tall. Spacing steps are 4px based: `space-1` to `space-16`. Below 1440px the page never scrolls sideways: the content column stops at the window and anything wider scrolls inside it, and the permission matrix tightens to 80px action columns and a 200px marginal column.
 
 **Rules, not boxes.** Group content with hairlines and white space. No cards, no card grids, no KPI tiles. Tables have no outer border and no zebra stripes: a `rule` under each row, a `rule-strong` under the header row and above the footer.
 

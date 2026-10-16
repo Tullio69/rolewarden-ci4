@@ -32,7 +32,7 @@ final class Showcase
 
         $cfg = config('RoleWarden');
         $rows = db_connect()->table(config('Auth')->tables['users'] . ' u')
-            ->select('u.id, u.username, r.name AS role')
+            ->select('u.id, u.username, r.slug, r.name')
             ->join($cfg->table('user_roles') . ' ur', 'ur.user_id = u.id', 'left')
             ->join($cfg->table('roles') . ' r', 'r.id = ur.role_id', 'left')
             ->whereIn('u.id', $ids)->where('u.active', 1)->where('u.deleted_at', null)
@@ -41,7 +41,7 @@ final class Showcase
         $accounts = [];
 
         foreach ($rows as $row) {
-            $accounts[(int) $row['id']] ??= ['id' => (int) $row['id'], 'username' => (string) $row['username'], 'role' => (string) ($row['role'] ?? '')];
+            $accounts[(int) $row['id']] ??= ['id' => (int) $row['id'], 'username' => (string) $row['username'], 'role' => (string) (\RoleWarden\Models\SeededText::role($row)['name'] ?? '')];
         }
 
         return array_values($accounts);

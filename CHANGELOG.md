@@ -39,6 +39,11 @@ The first version for sale.
 - **HTML documentation** in `documentation/`.
 - The **Permissions** list shows the roles that grant each permission; the role matrix marks
   every permission not yet granted and says how to grant it.
+- **One language only:** `$languages` in `app/Config/RoleWarden.php` lists the languages the
+  panel offers; with one, the language switch disappears.
+- The seeded roles and permissions are shown in the reader's language until an admin
+  changes their text; your own can be translated the same way.
+- Below 1440px the role matrix tightens, and nothing makes the page scroll sideways.
 
 ### Changed
 - The panel was redrawn on the "editorial ledger" design system, with the CSS compiled from

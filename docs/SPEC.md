@@ -530,6 +530,12 @@ Un piccolo gestionale documenti, deliberatamente banale nel dominio, che esiste 
 - **Ambiente della demo online.** demo.rolewarden.com e lo staging girano con `CI_ENVIRONMENT = demo`: un ambiente di CodeIgniter con un file di boot che si comporta come production (niente errori a schermo, niente toolbar) ma non e' `production`, cosi' la vetrina si puo' accendere. Lo staging lo prova per primo.
 - **Documentazione.** In inglese, HTML statico scritto a mano in `documentation/`, nello stile della design guide, senza generatori: installazione, configurazione, riferimento API, personalizzazione delle view, migrazione da Shield, risoluzione problemi. Inclusa negli zip e pubblicata su rolewarden.com. In piu' `CHANGELOG.md` dall'MVP e un file con licenze e attribuzioni delle dipendenze di terze parti.
 
+**Decisioni del 2026-10-16 (dopo V8b).**
+- **Una sola lingua.** `Config\RoleWarden::$languages` elenca le lingue offerte (vuoto: tutte quelle con un file di lingua). Con una sola il selettore sparisce dalla barra in alto e dal profilo, e pannello ed email usano quella lingua qualunque sia il locale dell'applicazione. Documentato in configurazione e in "Views, themes, languages".
+- **Finestre sotto i 1440 px.** La pagina non scorre mai in orizzontale: la colonna del contenuto non supera la finestra e cio' che e' piu' largo scorre dentro di essa. Sotto i 1440 px le colonne della matrice si stringono (azioni 80 px, note 200 px).
+- **Ruoli e permessi seminati tradotti.** Il testo salvato resta quello inglese del seed; nome e descrizione si mostrano nella lingua di chi legge da `Language/{locale}/RoleWardenData.php`, per slug, finche' il testo salvato e' quello del seed. Un testo cambiato da un admin si mostra com'e' scritto in ogni lingua. Un modulo di modifica salvato con il testo tradotto invariato non rinomina il ruolo. Vale anche per i ruoli e i permessi della demo; i documenti di esempio sono contenuto e restano come seminati. Il registro attivita' conserva le etichette com'erano al momento dell'azione.
+- **Voci di log dopo la rimozione della demo** (A1 di V8). Le voci con un account della demo come autore o come soggetto si tolgono; quelle scritte da un utente vero restano, anche se riguardano ruoli o permessi della demo: il registro e' la traccia di cio' che un utente vero ha fatto e non si riscrive.
+
 ## Requisiti di pubblicazione
 
 La review di CodeCanyon boccia piu' spesso per confezionamento che per codice. Queste voci vanno trattate come parte del prodotto, non come lavoro finale.

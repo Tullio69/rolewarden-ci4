@@ -55,6 +55,15 @@ class RoleWarden extends BaseConfig
     public string $colorScheme = 'system';
 
     /**
+     * Languages the panel offers, e.g. ['en']; empty offers every locale with
+     * a RoleWarden language file. With one, the language switch disappears and
+     * everyone sees that language, whatever the application's locale.
+     *
+     * @var list<string>
+     */
+    public array $languages = [];
+
+    /**
      * Themes of the host application, offered by the Appearance screen next to
      * Console, Clarity and Contrast: slug => label, e.g. ['ocean' => 'Ocean'].
      * Each one needs a :root[data-rw-theme="ocean"] block in $themeStylesheet

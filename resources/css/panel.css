@@ -203,7 +203,8 @@
   /* ---------- Shell: sidebar, top bar, page frame (shared by every screen) ---------- */
 
   html, body { margin: 0; background: var(--surface); color: var(--ink); }
-  .rw-shell { display: grid; grid-template-columns: var(--size-sidebar) 1fr; min-height: 100vh; }
+  /* The content column never grows past the window: whatever is wider scrolls inside it, not the page. */
+  .rw-shell { display: grid; grid-template-columns: var(--size-sidebar) minmax(0, 1fr); min-height: 100vh; }
 
   .rw-sidebar { background: var(--surface-sunk); border-right: var(--rule-strong-width) solid var(--rule-strong); display: flex; flex-direction: column; }
   .rw-brand { height: var(--size-topbar); display: flex; align-items: center; padding: 0 var(--space-6); border-bottom: var(--rule-width) solid var(--rule); }
@@ -224,7 +225,7 @@
   .rw-who small { display: block; font-size: var(--text-xs); line-height: var(--leading-xs); color: var(--ink-muted); }
   .rw-who i { width: 32px; height: var(--size-square); display: grid; place-items: center; border: var(--rule-strong-width) solid var(--rule-strong); border-radius: var(--radius-sm); font: var(--weight-medium) var(--text-xs)/1 var(--font-sans); font-style: normal; color: var(--ink-muted); }
 
-  .rw-content { padding: var(--space-12) var(--space-12) var(--space-16) 0; }
+  .rw-content { padding: var(--space-12) var(--space-12) var(--space-16) 0; overflow-x: auto; }
   .rw-page-head { display: grid; grid-template-columns: 1fr 296px; gap: var(--gutter); margin-left: var(--gutter); padding-bottom: var(--space-6); border-bottom: var(--rule-strong-width) solid var(--rule-strong); }
   .rw-page-head h1 { margin: var(--space-1) 0 var(--space-2); font: var(--weight-title) var(--text-2xl)/var(--leading-2xl) var(--font-title); letter-spacing: -.01em; }
   .rw-page-head p { margin: 0; max-width: 560px; color: var(--ink-muted); }
@@ -270,6 +271,14 @@
   .rw-matrix .rw-m-anno--wide { width: 312px; border-left: var(--rule-width) solid var(--rule); }
   /* Many actions squeeze the columns; the headers keep a gap between them. */
   .rw-matrix thead .rw-m-act { padding-left: var(--space-1); padding-right: var(--space-1); }
+  /* Under the 1440px grid the matrix tightens before anything has to scroll. */
+  @media (max-width: 1439px) {
+    .rw-matrix .rw-m-area { width: 200px; }
+    .rw-matrix .rw-m-act { width: 80px; }
+    .rw-matrix .rw-m-anno { width: 200px; padding-left: var(--space-4); }
+    .rw-matrix .rw-m-anno--wide { width: 240px; }
+    .rw-anno { width: 160px; padding-left: var(--space-4); }
+  }
   .rw-colhead { display: flex; flex-direction: column; align-items: center; gap: var(--space-2-5); }
   .rw-matrix tbody td, .rw-matrix tbody th { height: var(--size-row-md); border-bottom: var(--rule-width) solid var(--rule); }
   .rw-matrix tbody tr:hover > :not(.rw-m-num):not(.rw-m-anno) { background: var(--surface-sunk); }

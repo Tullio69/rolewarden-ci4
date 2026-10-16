@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Utenti &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792154674">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users" aria-current="page"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><span aria-current="page">Utenti</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Lingua">
+  <input type="hidden" name="csrf_test_name" value="513257c4d18153c310f388a6c585f833">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;users&#x3F;page&#x3D;2">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="false">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="true">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="513257c4d18153c310f388a6c585f833">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">Elenco</div>
+    <h1>Utenti</h1>
+    <p>Tutti quelli che possono accedere. I ruoli decidono cosa possono fare; le eccezioni per singolo utente si impostano nella pagina di ciascuno.</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Utenti</dt><dd class="rw-fig">33</dd></div>
+    <div><dt>Attivo</dt><dd class="rw-fig-sm">33</dd></div>
+    <div><dt>Disattivato</dt><dd class="rw-fig-sm">0</dd></div>
+  </dl>
+</div>
+
+<form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/rolewarden/users">
+  <div class="rw-field rw-search">
+    <label class="rw-label" for="q">Cerca</label>
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    <input class="rw-input" id="q" name="q" type="search" placeholder="Nome o email" value="" autocomplete="off">
+  </div>
+  <div class="rw-field">
+    <label class="rw-label" for="role">Ruoli</label>
+    <select class="rw-select" id="role" name="role">
+      <option value="">Qualsiasi ruolo</option>
+              <option value="2">Amministratore</option>
+              <option value="1">Super admin</option>
+              <option value="3">Utente</option>
+          </select>
+  </div>
+  <div class="rw-field">
+    <label class="rw-label" for="status">Stato</label>
+    <select class="rw-select" id="status" name="status">
+      <option value="">Qualsiasi stato</option>
+      <option value="active">Attivo</option>
+      <option value="inactive">Disattivato</option>
+    </select>
+  </div>
+  <input type="hidden" name="sort" value="desc">
+    <button class="rw-btn rw-btn--secondary" type="submit">Filtra</button>
+  <div class="rw-grow"></div>
+      <a class="rw-btn rw-btn--primary" href="http://127.0.0.1:8071/index.php/rolewarden/users/create">Nuovo utente</a>
+        <a class="rw-btn rw-btn--secondary" href="http://127.0.0.1:8071/index.php/rolewarden/users/import">Importa utenti</a>
+  </form>
+
+<table class="rw-t-users">
+  <thead>
+    <tr>
+      <th class="rw-m-num" scope="col"></th>
+      <th class="rw-c-name rw-header" scope="col">Nome utente</th>
+      <th class="rw-c-email rw-header" scope="col">Email</th>
+      <th class="rw-c-roles rw-header" scope="col">Ruoli</th>
+      <th class="rw-c-status rw-header" scope="col">Stato</th>
+      <th class="rw-c-login rw-header" scope="col" aria-sort="descending">
+        <a class="rw-sort" href="http://127.0.0.1:8071/index.php/rolewarden/users?sort=asc">Ultima attività          <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
+      </th>
+      <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+    </tr>
+  </thead>
+  <tbody>
+                    <tr>
+        <td class="rw-m-num">21</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/16">pag13</a></td>
+        <td class="rw-c-email">p13@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">22</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/15">pag12</a></td>
+        <td class="rw-c-email">p12@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">23</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/14">pag11</a></td>
+        <td class="rw-c-email">p11@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">24</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/13">pag10</a></td>
+        <td class="rw-c-email">p10@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">25</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/12">pag9</a></td>
+        <td class="rw-c-email">p9@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">26</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/11">pag8</a></td>
+        <td class="rw-c-email">p8@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">27</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/10">pag7</a></td>
+        <td class="rw-c-email">p7@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">28</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/9">pag6</a></td>
+        <td class="rw-c-email">p6@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">29</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/8">pag5</a></td>
+        <td class="rw-c-email">p5@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">30</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/7">pag4</a></td>
+        <td class="rw-c-email">p4@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">31</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/6">pag3</a></td>
+        <td class="rw-c-email">p3@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">32</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/5">pag2</a></td>
+        <td class="rw-c-email">p2@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">33</td>
+        <td class="rw-c-name"><a href="http://127.0.0.1:8071/index.php/rolewarden/users/4">pag1</a></td>
+        <td class="rw-c-email">p1@example.test</td>
+        <td class="rw-c-roles"></td>
+        <td class="rw-c-status">
+                      <span class="rw-status">Attivo</span>
+                  </td>
+        <td class="rw-c-login rw-c-login--never">Mai</td>
+        <td class="rw-anno"><span class="rw-note"></span></td>
+      </tr>
+      </tbody>
+</table>
+
+<div class="rw-list-footer">
+  <span class="rw-muted" role="status">Utenti da 21 a 33 di 33</span>
+    <nav aria-label="Paginazione">
+    <ul class="rw-pager">
+      <li>
+                  <a class="rw-page" href="http://127.0.0.1:8071/index.php/rolewarden/users?page=1">Precedente</a>
+              </li>
+                            <li>
+                      <a class="rw-page" href="http://127.0.0.1:8071/index.php/rolewarden/users?page=1" aria-label="Pagina&#x20;1">1</a>
+                  </li>
+                      <li>
+                      <span class="rw-page" aria-current="page">2</span>
+                  </li>
+            <li>
+                  <span class="rw-page" aria-disabled="true">Successiva</span>
+              </li>
+    </ul>
+  </nav>
+</div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

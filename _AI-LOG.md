@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude (passo 1 della roadmap di pubblicazione)
-**Agente:** Claude Code
-**Dalle:** 2026-10-16 14:20
-**Scope:** una sola lingua (`$languages`), layout sotto i 1440 px, traduzione di ruoli e permessi seminati, decisione A1 di V8; poi collaudo
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -870,3 +870,31 @@ Formato di ogni voce:
   - Pacchetti V7 15/16: P04 è superato da V8 (CHANGELOG e licenze nel modulo).
   - Moduli e demo degli zip identici a `git archive b1cca14`.
 - Note per il prossimo: aperte all'autore A1, A3, A15c, G03 e l'A1 di V7. Snapshot `f7f37c04…e21e64` identico in tutte le 61 esecuzioni registrate; Mailpit vuoto; nessun processo mio. Profili Chrome da cancellare a mano in `scratchpad/` (da `v8breg` a `v8breg4`). Controllo visivo in un browser vero ancora dovuto. Nessun commit, nessun push.
+
+### [2026-10-16 17:40] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: collaudo S1 (passo 1 della roadmap di pubblicazione), commit `30de388` contro `b1cca14`; scritti solo `tests/Integration/verify-s1.*` e `tests/Integration/S1-REPORT.md`
+- Cosa ho fatto: collaudo in nero (HTTP, Chrome headless, query su `rolewarden_test`) di una sola lingua, layout sotto i 1440 px, traduzione di ruoli e permessi seminati, voci di log dopo `demo:uninstall`; regressione completa una suite alla volta (fasi V8b, V8 A-D/F/G, V7 adattata su zip sostitutivi a `30de388`, V6, V5, V4, V2, V3) in development e production
+- Stato: completato. **Esito FAIL, S1 non approvata.** S1 104/113 in entrambi gli ambienti; regressione con i soli fallimenti noti (G07, G07v5, 25 date ISO di V4)
+- Note per il prossimo: **D1 (medio, gia' presente in b1cca14)**: creare `app/Config/RoleWarden.php`, come la documentazione chiede per `$languages` (o `$extraThemes`), fa ignorare lingua e chiaro/scuro salvati prima dagli utenti (righe `settings` con classe `RoleWarden\Config\RoleWarden`, lette poi come `Config\RoleWarden`); con `[]` le scelte esistenti non tengono. **D2 (minore)**: colonne della matrice a misura di contenuto (azioni 44-71 px, note 145-167 px) e non 80/200 px sotto i 1440 ne' 104 px a 1440, identiche a b1cca14. Ambiguita' non decise: **A1** titoli delle aree nella pagina Permissions italiana (slug in inglese, resto della A1 di V7); **A2** salvataggio senza modifiche aggiorna `updated_at`. A15c e G03 di V8 ora decise e verificate (D04, T01). Controllo visivo in browser vero dovuto all'autore; pacchetti veri non collaudati (`build/` fermo a rc.v8c). DB uguale allo snapshot `f7f37c04...e21e64` in 42 esecuzioni, Mailpit vuoto, nessun processo attivo; restano solo profili Chrome non cancellabili in scratchpad (`s1w-*`, `reg-v5-*`, `reg-v6-*`). Nessun commit.
+
+### [2026-10-16 18:55] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: riverifica S1 sul commit `79a0cda`; scritti solo `tests/Integration/verify-s1.*` (fase Q estesa, Y07 riscritto, fase N con un utente di prova in piu') e la sezione «Riverifica 79a0cda» di `tests/Integration/S1-REPORT.md`
+- Cosa ho fatto: S1 completa in development e production; regressione ridotta: fasi V8b L,M,P,I,G (dev e prod), suite V8 A-D/F/G, V6 (dev e prod)
+- Stato: completato. **Esito FAIL, S1 non approvata.** S1 121/125 in entrambi gli ambienti; V8b 116/116, V8 195/195, V6 151/151 x2
+- Note per il prossimo: **D1 corretto**: N10/N10b/N12, Q01/Q02, caso inverso (classe tolta), stessa chiave sotto le due classi (vince la corrente, poi resta), `lockAttempts` salvato dalla schermata che sopravvive all'aggiunta della classe e batte il default della classe (9) al login: tutto PASS. **D2 corretto per la matrice** (colonne al contenuto, mai piu' strette dell'intestazione, scorrono dentro il riquadro). **D2b (minore, nuovo per la regola nuova)**: sotto i 1440 px nessuna colonna `.rw-anno` e' a 160 px (200 in elenchi utenti/ruoli/Activity, 240 in Permissions, 140-196 altrove, come a 1440): le regole per pagina sembrano prevalere su quella di 160 px. A1 e A2 restano all'utente, non contate. DB uguale allo snapshot `f7f37c04...e21e64` nelle 12 esecuzioni su 79a0cda, Mailpit vuoto, nessun processo; profili Chrome non cancellabili in scratchpad (`s1r-*`). Nessun commit.
+
+### [2026-10-16 19:55] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: seconda riverifica S1 sul commit `f40170e` (con `a396354`); scritti solo `tests/Integration/verify-s1.*` (Y07 riscritto, nuova fase O per il link di uscita) e la sezione «Riverifica f40170e» di `tests/Integration/S1-REPORT.md`
+- Cosa ho fatto: S1 completa (fasi N, Q, Y, T, D, O, W, B, G) e fasi V8b L, M, P, I, G in development e production
+- Stato: completato. **Esito PASS, S1 approvata per il collaudo.** S1 134/134 in entrambi gli ambienti; V8b 116/116 in development, 115/116 in production per M11 una volta, non riprodotto in 2 nuovi giri (O3)
+- Note per il prossimo: D2b chiuso (Y07 PASS a 1280/1366/1440/1920, en e it). Link «Sign out»/«Esci» su tutte le 15 pagine, verso il logout di Shield, focus visibile, sessione chiusa dopo il clic, nessuno scorrimento a 1280 px, log puliti. O3: M11 (salvataggio della matrice subito dopo una casella di colonna, `users.delete` mancante) visto una volta e non riprodotto: da provare a mano in un browser vero. A1 e A2 restano all'utente. Controllo visivo in browser vero dovuto all'autore. DB uguale allo snapshot `f7f37c04...e21e64` nelle 7 esecuzioni, Mailpit vuoto, nessun processo; profili Chrome non cancellabili in scratchpad (`s1f-*`). Nessun commit.
+
+### [2026-10-16 20:05] - Claude
+- Tipo: feature + fix
+- Scope: passo 1 della roadmap di pubblicazione (`30de388`), correzioni S1 D1/D2 (`79a0cda`), link di uscita (`a396354`), D2b (`f40170e`)
+- Cosa ho fatto: opzione `$languages`; nessuno scorrimento laterale sotto i 1440 px; ruoli e permessi seminati tradotti (`RoleWardenData`); A15c decisa nella SPEC. D1: i valori in `settings` seguono la classe di `config('RoleWarden')` quando l'app aggiunge o toglie `app/Config/RoleWarden.php` (`Settings\SavedValues`, in `pre_system`). D2/D2b: tolte le larghezze sotto i 1440 px che non avevano effetto. Nuovo link «Sign out»/«Esci» nella barra in alto (mancava). Tutto pushato e online su staging; demo pubblica ferma a `b1cca14`.
+- Stato: completato. **S1 PASS** dopo due riverifiche (134/134 in development e production).
+- Note per il prossimo: aperte all'utente A1 di S1 (titoli delle aree in inglese) e A2 (`updated_at` toccato da un salvataggio senza modifiche); O3 (M11 una volta in production, non riprodotto) da guardare nel controllo visivo; O4 logout via GET come Shield. Controllo visivo in browser vero dovuto all'utente. Prossimo: passo 2 (verifiche tecniche).

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Install RoleWarden &middot; RoleWarden</title>
+  <link rel="stylesheet" href="assets/css/panel.css">
+</head>
+<body>
+<div class="rw rw-auth-screen">
+  <div class="rw-auth-sheet">
+    <div class="rw-auth-row rw-auth-head">
+      <span class="rw-m-num"></span>
+      <div>
+        <div class="rw-header">Installation · step 1 of 4</div>        <h1>Install RoleWarden</h1>
+        <p>The server meets the requirements. To prove you manage it, enter the setup code saved in a file on the server.</p>
+      </div>
+    </div>
+
+          <div class="rw-auth-row rw-install-block">
+        <span class="rw-m-num">01</span>
+        <ul class="rw-install-checks" aria-label="Requirements">
+                      <li>
+              <span>PHP 8.3.0 or later (this server: 8.3.11)</span>
+              <b>ok</b>
+            </li>
+                      <li>
+              <span>PHP extension intl</span>
+              <b>ok</b>
+            </li>
+                      <li>
+              <span>PHP extension mbstring</span>
+              <b>ok</b>
+            </li>
+                      <li>
+              <span>PHP extension json</span>
+              <b>ok</b>
+            </li>
+                      <li>
+              <span>PHP extension mysqli</span>
+              <b>ok</b>
+            </li>
+                      <li>
+              <span>Folder writable/ writable by the web server</span>
+              <b>ok</b>
+            </li>
+                      <li>
+              <span>File .env writable by the web server</span>
+              <b>ok</b>
+            </li>
+                  </ul>
+      </div>
+    
+          <form class="rw-auth-form" method="post" action="">
+        <input type="hidden" name="csrf_test_name" value="6f3cd6a8b6b39af6a7ca7457ae3c1828">        <input type="hidden" name="step" value="code">
+        <div class="rw-auth-row">
+          <span class="rw-m-num">02</span>
+          <div class="rw-field">
+            <label class="rw-label" for="rw-install-code">Setup code</label>
+            <input class="rw-input rw-mono" id="rw-install-code" name="code" autocomplete="off" spellcheck="false" required>
+                        <p class="rw-field-hint">Open this file on the server, for example over FTP, and copy the code it contains: <code class="rw-mono">writable/rolewarden/install-code.txt</code></p>
+          </div>
+        </div>
+        <div class="rw-auth-row rw-auth-submit">
+          <span class="rw-m-num"></span>
+          <div><button class="rw-btn rw-btn--primary" type="submit">Continue</button></div>
+        </div>
+      </form>
+
+      </div>
+  <span class="rw-auth-corner rw-note">RoleWarden</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,203 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+
+===== phase N =====
+[INFO] writable carried to appN: [omesso]/demo-installed
+[INFO] h1 reference: [{"[omesso]\/users":"Users","[omesso]\/permissions":"Permissions"},{"[omesso]\/users":"Utenti","[omesso]\/permissions":"Permessi"}]
+[INFO] server pid=33628 on 127.0.0.1:8071 prefix=''
+[PASS] N00    Owner signs in (application copy with Config\App::$defaultLocale = it)
+[PASS] N01    Sensitivity, no $languages class: owner (no choice) follows the app locale it on every page; switch on every page; the two users chose it and en
+[PASS] N01b   Owner's choice "it" is saved in the user settings
+[INFO] language settings at // ---- 2.: owner ["RoleWarden\\Config\\RoleWarden.locale=it"], itu ["RoleWarden\\Config\\RoleWarden.locale=it"], enu ["RoleWarden\\Config\\RoleWarden.locale=en"], nou []
+[INFO] app/Config/RoleWarden.php written: <?php namespace Config; class RoleWarden extends \RoleWarden\Config\RoleWarden { public array $languages = ['en']; }
+[INFO] server pid=46816 on 127.0.0.1:8071 prefix=''
+[PASS] N02    ['en'], app locale it, owner who chose Italian: every page (17, panel and demo) in English, html lang="en"
+[PASS] N03    ['en']: no language switch in the top bar and no language list in the profile, on any page
+[PASS] N03b   ['en']: the profile still opens (200) and keeps its other forms (password, mode)
+[INFO] nou survey (no permission: 302 on panel pages expected): {"lang":{"en":2},"bad":15}
+[PASS] N04    ['en']: a user who never chose a language sees the profile in English with the app locale it, no language control
+[PASS] N04b   ['en']: the user who chose it sees their profile and sessions in English
+[PASS] N05    ['en']: POST language=it is ignored without errors (no 4xx/5xx other than a redirect, no PHP or SQL text), the page stays English
+[PASS] N05b   ['en']: the ignored POST stores nothing for the user
+[PASS] N05c   ['en']: the same POST from the owner (with back field) gives no error and the panel stays English
+[INFO] N2 emails: [["admin@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["owner@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Your 127.0.0.1 password was changed","en"]]
+[PASS] N06    ['en'], app locale it: every security email to the user who chose Italian is in English (password changed, sign-in, too many failures: 2)
+[PASS] N06b   ['en']: every other email of the round (alert holders) is in English too
+[INFO] language settings at // ---- 3.: owner ["RoleWarden\\Config\\RoleWarden.locale=it"], itu ["RoleWarden\\Config\\RoleWarden.locale=it"], enu ["RoleWarden\\Config\\RoleWarden.locale=en"], nou []
+[INFO] server pid=41340 on 127.0.0.1:8071 prefix=''
+[PASS] N07    ['it'], app locale en: the user who chose English sees profile and sessions in Italian, no language control
+[PASS] N07b   ['it']: POST language=en ignored without errors, page stays Italian
+[PASS] N08    ['it']: every page (17, panel and demo) in Italian for the owner, no language control anywhere
+[PASS] N08b   ['it']: a user who never chose sees Italian with the app locale en
+[INFO] N3 emails: [["admin@v8b.test","Troppi accessi falliti su 127.0.0.1","it"],["owner@v8b.test","Troppi accessi falliti su 127.0.0.1","it"],["enu@s1.test","Troppi accessi falliti su 127.0.0.1","it"],["enu@s1.test","La tua password di 127.0.0.1 è stata cambiata","it"]]
+[PASS] N09    ['it'], app locale en: every security email to the user who chose English is in Italian (2)
+[PASS] N09b   ['it']: every other email of the round is in Italian too
+[INFO] language settings at // ---- 4.: owner ["RoleWarden\\Config\\RoleWarden.locale=it"], itu ["RoleWarden\\Config\\RoleWarden.locale=it"], enu ["RoleWarden\\Config\\RoleWarden.locale=en"], nou []
+[INFO] server pid=17060 on 127.0.0.1:8071 prefix=''
+[FAIL] N10    []: owner (chose it) sees every page in Italian, the EN/IT switch on every page, the profile list offers same-as-app, en, it
+         -> [{"en":17},17,["","en","it"]]
+[FAIL] N10b   []: the user who chose en sees English, the user who never chose follows the app locale (en)
+         -> 
+[PASS] N11    []: POST language=it from the user who never chose is saved and the profile turns Italian
+[INFO] N4 emails: [["admin@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["owner@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Your 127.0.0.1 password was changed","en"]]
+[FAIL] N12    []: security emails in the recipient's language again (the user who chose it gets Italian)
+         -> [["admin@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["owner@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Your 127.0.0.1 password was changed","en"]]
+[INFO] language settings at set_language: owner ["RoleWarden\\Config\\RoleWarden.locale=it"], itu ["RoleWarden\\Config\\RoleWarden.locale=it"], enu ["RoleWarden\\Config\\RoleWarden.locale=en"], nou ["Config\\RoleWarden.locale=it"]
+
+===== phase Q =====
+[INFO] server pid=31968 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=43124 on 127.0.0.1:8071 prefix=''
+[INFO] Q 30de388: before the class ["it",true,["RoleWarden\\Config\\RoleWarden.locale=it"],["RoleWarden\\Config\\RoleWarden.colorScheme=dark"]]; after adding app/Config/RoleWarden.php (extraThemes only) ["en",false,["RoleWarden\\Config\\RoleWarden.locale=it"],["RoleWarden\\Config\\RoleWarden.colorScheme=dark"]]
+[INFO] server pid=46316 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=16352 on 127.0.0.1:8071 prefix=''
+[INFO] Q b1cca14: before the class ["it",true,["RoleWarden\\Config\\RoleWarden.locale=it"],["RoleWarden\\Config\\RoleWarden.colorScheme=dark"]]; after adding app/Config/RoleWarden.php (extraThemes only) ["en",false,["RoleWarden\\Config\\RoleWarden.locale=it"],["RoleWarden\\Config\\RoleWarden.colorScheme=dark"]]
+[FAIL] Q01    30de388: a user who chose Italian keeps Italian after the application adds app/Config/RoleWarden.php for another option (extraThemes), as configuration.html shows
+         -> [["it",true,["RoleWarden\\Config\\RoleWarden.locale=it"],["RoleWarden\\Config\\RoleWarden.colorScheme=dark"]],["en",false,["RoleWarden\\Config\\RoleWarden.locale=it"],["RoleWarden\\Config\\RoleWarden.colorScheme=dark"]]]
+[FAIL] Q02    30de388: the light/dark choice survives the same change
+         -> [true,false]
+[INFO] Q baseline b1cca14: language it -> en, dark true -> false
+
+===== phase Y =====
+[INFO] server pid=27544 on 127.0.0.1:8071 prefix=''
+[INFO] browser matrix widths, module data: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s1w-dev\chrome-v8b-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s1w-dev\chrome-v8b-1'
+[FAIL] Y07-1280 1280 px, module data only (15 action columns): matrix action columns 80px, marginal column 200px
+         -> {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[158.5],"area":[105.6],"tableW":1208,"boxW":1016,"boxScrollW":1208,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[145],"area":[105.6],"tableW":1194,"boxW":1016,"boxScrollW":1194,"overflowX":0}}
+[FAIL] Y07-1366 1366 px, module data only (15 action columns): matrix action columns 80px, marginal column 200px
+         -> {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[158.5],"area":[105.6],"tableW":1208,"boxW":1102,"boxScrollW":1208,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[145],"area":[105.6],"tableW":1194,"boxW":1102,"boxScrollW":1194,"overflowX":0}}
+[FAIL] Y07-1440 1440 px, module data only (15 action columns): matrix action columns 104px, marginal column 200px
+         -> {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[166.5],"area":[105.6],"tableW":1216,"boxW":1176,"boxScrollW":1216,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[153],"area":[105.6],"tableW":1202,"boxW":1176,"boxScrollW":1202,"overflowX":0}}
+[FAIL] Y07-1920 1920 px, module data only (15 action columns): matrix action columns 104px, marginal column 200px
+         -> {"demo-approver":{"act":[71,77.4,85.3,77.8,83,77.2,76.5,86.1,77.5,76.7,78.3,84.1,71,78,83.4],"anno":[210.5],"area":[162.6],"tableW":1656,"boxW":1656,"boxScrollW":1656,"overflowX":0},"admin":{"act":[71.5,77.8,85.6,78.1,83.3,77.6,76.9,86.3,77.8,77,78.7,84.4,71.5,78.3,83.7],"anno":[204],"area":[163.5],"tableW":1656,"boxW":1656,"boxScrollW":1656,"overflowX":0}}
+[INFO] server pid=46472 on 127.0.0.1:8071 prefix=''
+[INFO] browser layout en: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s1w-dev\chrome-v8b-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s1w-dev\chrome-v8b-2'
+[INFO] browser layout it: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s1w-dev\chrome-v8b-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s1w-dev\chrome-v8b-3'
+[INFO] h1 of the users page in the Italian run: Utenti
+[PASS] Y00-en [en] Chrome headless ran every layout step without driver errors or page exceptions
+[PASS] Y01-en-1280 [en] 1280 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-en-1280 [en] 1280 px: no row number clipped
+[PASS] Y03-en-1280 [en] 1280 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1280 [en] 1280 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-en-1280 [en] 1280 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1280 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[158.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[462.9],"n":27}}
+[PASS] Y01-en-1366 [en] 1366 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-en-1366 [en] 1366 px: no row number clipped
+[PASS] Y03-en-1366 [en] 1366 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1366 [en] 1366 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-en-1366 [en] 1366 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1366 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[158.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[462.9],"n":27}}
+[PASS] Y01-en-1440 [en] 1440 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-en-1440 [en] 1440 px: no row number clipped
+[PASS] Y03-en-1440 [en] 1440 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1440 [en] 1440 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-en-1440 [en] 1440 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1440 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[166.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.9],"n":27}}
+[PASS] Y01-en-1920 [en] 1920 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-en-1920 [en] 1920 px: no row number clipped
+[PASS] Y03-en-1920 [en] 1920 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1920 [en] 1920 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (4 scrolling boxes)
+[PASS] Y05-en-1920 [en] 1920 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1920 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[166.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.9],"n":27}}
+[PASS] Y00-it [it] Chrome headless ran every layout step without driver errors or page exceptions
+[PASS] Y01-it-1280 [it] 1280 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-it-1280 [it] 1280 px: no row number clipped
+[PASS] Y03-it-1280 [it] 1280 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1280 [it] 1280 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-it-1280 [it] 1280 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1280 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[184.1],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.6],"n":27}}
+[PASS] Y01-it-1366 [it] 1366 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-it-1366 [it] 1366 px: no row number clipped
+[PASS] Y03-it-1366 [it] 1366 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1366 [it] 1366 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-it-1366 [it] 1366 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1366 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[184.1],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.6],"n":27}}
+[PASS] Y01-it-1440 [it] 1440 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-it-1440 [it] 1440 px: no row number clipped
+[PASS] Y03-it-1440 [it] 1440 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1440 [it] 1440 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-it-1440 [it] 1440 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1440 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[192.1],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[478.6],"n":27}}
+[PASS] Y01-it-1920 [it] 1920 px: every numbered table's row-number column is one gutter wide (33 tables, 20 screens, all 200)
+[PASS] Y02-it-1920 [it] 1920 px: no row number clipped
+[PASS] Y03-it-1920 [it] 1920 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1920 [it] 1920 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (4 scrolling boxes)
+[PASS] Y05-it-1920 [it] 1920 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1920 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[192.1],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[478.6],"n":27}}
+
+===== phase T =====
+[PASS] T00    Language data files: every English key has an Italian translation, and only those keys (37 keys, module and demo)
+[PASS] T00b   The database holds exactly the English text of the data files for every seeded role and permission (module and demo)
+[INFO] server pid=41148 on 127.0.0.1:8071 prefix=''
+[PASS] T01a   Owner signs in and chooses Italian from the profile
+[PASS] T01    Italian reader: seeded role names/descriptions and permission descriptions in Italian on roles list, role pages, Permissions (with Granted by), users list, user pages, Settings default role, role edit and create forms, Activity, demo showcase bar; no English seed text left
+[INFO] Area titles on the Italian Permissions page: ["Activity","Admin","Appearance","Beta","Documents","Permissions","Roles","Security","Sessions","Settings","Users","Warehouse-operations"]
+[PASS] T01b   Italian Permissions page: the "Concesso da" column names Amministratore, never Admin
+[PASS] T01c   Italian role edit form: name and description fields hold the Italian text
+[PASS] T01d   Italian demo list: column "Proprietario" (was Owner)
+[PASS] T02    English reader: the same pages show the English seed text as before
+[PASS] T03-admin Italian: saving the edit form of admin untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[PASS] T03-user Italian: saving the edit form of user untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[PASS] T03-demo-reader Italian: saving the edit form of demo-reader untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[INFO] updated_at changed by an untouched save: {"admin":true,"user":true,"demo-reader":true,"admin (English form)":true}
+[PASS] T04    Italian: description changed, name untouched: the new description is saved as written and the name stays the stored English "Admin"
+[PASS] T05    Changed description shown as written in both languages; the untouched name still translated (Amministratore / Admin)
+[PASS] T06    A name changed by an admin ("Member S1") is shown as written to the Italian reader (roles list, users list, Settings); its untouched description stays translated
+[PASS] T07    Italian: a name typed by the admin (Lettori scelti) is saved as written and shown as written in English too
+[PASS] T08    Name set back to the seed text ("User"): the Italian reader sees "Utente" again
+[INFO] Activity rows on the role user: [{"action":"role.updated","subject_label":"Member S1"},{"action":"role.updated","subject_label":"User"}]
+[PASS] T09    Activity log keeps the labels of the moment: the rename rows of the role user still carry their own labels after the role was renamed again
+[PASS] T10    Application role and permission translated as views.html says (app/Language/{en,it}/RoleWardenData.php): Redattore, its description, Pubblicare articoli, on roles list, Permissions, users list and user page
+[PASS] T10b   The same application role in English: Editor, Edits the articles.
+[PASS] T11    Markup in an admin-typed role name and description, and in an application translation, is escaped on every page in both languages (and the escaped text is shown)
+
+===== phase D =====
+[PASS] D00    demo:uninstall of the demo installed at the start (after the other phases) succeeds
+[PASS] D01    demo:install again (exit 0)
+[PASS] D01b   The reinstalled demo stores its English seed text (Reader, Author, Approver)
+[INFO] server pid=14520 on 127.0.0.1:8071 prefix=''
+[INFO] activity rows written by real users about demo objects: [["v8bowner","role.updated","role","Reader"],["v8bowner","user.role_assigned","user","v8bplain"]]
+[INFO] activity rows with a demo account as actor or subject: [["v8bowner","user.deactivated","user","demo-approver"],["v8bowner","user.activated","user","demo-approver"]]
+[PASS] D02    Before the removal there are rows of both kinds: real owner about demo roles/accounts, and demo accounts as actor or subject
+[PASS] D03    demo:uninstall after the real use (exit 0, no PHP error)
+[PASS] D04    Rows written by the real owner about demo roles and the demo role assignment stay after the removal, unchanged (decision of 2026-10-16)
+[PASS] D05    Rows with a demo account as actor or as subject are gone (deactivation and activation of the approver, the author's own actions)
+[INFO] Differences left by real accounts (allowed): 8
+[PASS] D06    Apart from what real accounts did (their log rows, sign-ins and password rehash, sessions, last activity, the daily pruning date), the database is as before the installation: no demo table, role, permission, account, assignment, setting or migration left
+[PASS] D06b   The plain user lost only the demo role given to it, its own roles are as before
+[PASS] D06c   Real accounts: every users row as before the installation, apart from last activity
+[PASS] D07    The demo installs again after the removal (exit 0)
+
+===== phase W =====
+[INFO] server pid=41532 on 127.0.0.1:8071 prefix=''
+[INFO] baseline b1cca14, admin role matrix at 1280 px: {"act":[44,55.6,70,56.2,62.6,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66,80.7,63.5,51.3,55.6,75.2,61.6,76.7,76.7,54.2,66.9,83.4,63.9],"anno":[153],"area":[105.6],"tableW":2074,"boxW":2074,"overflowX":1058}
+[INFO] baseline b1cca14, admin role matrix at 1366 px: {"act":[44,55.6,70,56.2,62.6,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66,80.7,63.5,51.3,55.6,75.2,61.6,76.7,76.7,54.2,66.9,83.4,63.9],"anno":[153],"area":[105.6],"tableW":2074,"boxW":2074,"overflowX":972}
+[INFO] baseline b1cca14, admin role matrix at 1440 px: {"act":[44,55.6,70,56.2,62.6,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66,80.7,63.5,51.3,55.6,75.2,61.6,76.7,76.7,54.2,66.9,83.4,63.9],"anno":[153],"area":[105.6],"tableW":2074,"boxW":2074,"overflowX":898}
+[INFO] baseline b1cca14, admin role matrix at 1920 px: {"act":[44,55.6,70,56.2,62.6,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66,80.7,63.5,51.3,55.6,75.2,61.6,76.7,76.7,54.2,66.9,83.4,63.9],"anno":[153],"area":[105.6],"tableW":2074,"boxW":2074,"overflowX":418}
+
+===== phase B =====
+[INFO] seed b1cca14: install true, demo 0, 9 roles, 30 permissions, 38 grants, 1 settings, 4 documents
+[INFO] seed 30de388: install true, demo 0, 9 roles, 30 permissions, 38 grants, 1 settings, 4 documents
+[PASS] B01-roles Clean installation (module seed and demo:install): roles identical to b1cca14 (9 rows)
+[PASS] B01-perms Clean installation (module seed and demo:install): perms identical to b1cca14 (30 rows)
+[PASS] B01-grants Clean installation (module seed and demo:install): grants identical to b1cca14 (38 rows)
+[PASS] B01-settings Clean installation (module seed and demo:install): settings identical to b1cca14 (1 rows)
+[PASS] B01-docs Clean installation (module seed and demo:install): docs identical to b1cca14 (4 rows)
+[PASS] B01-users Clean installation (module seed and demo:install): users identical to b1cca14 (3 rows)
+
+===== phase G =====
+[INFO] log lines at WARNING or above caused on purpose (CSRF refusals): 0
+[PASS] G01    Application logs (threshold 9): no WARNING, ERROR or CRITICAL line besides the CSRF refusals the suite caused
+[PASS] G02    PHP built-in server output: no PHP warning, notice, deprecation or fatal error
+[PASS] G03    No response of the run had a 500, SQL text or PHP error on screen (308 responses)
+
+TOTAL: 104 PASS, 9 FAIL, 0 AMB
+FAIL N10 []: owner (chose it) sees every page in Italian, the EN/IT switch on every page, the profile list offers same-as-app, en, it
+FAIL N10b []: the user who chose en sees English, the user who never chose follows the app locale (en)
+FAIL N12 []: security emails in the recipient's language again (the user who chose it gets Italian)
+FAIL Q01 30de388: a user who chose Italian keeps Italian after the application adds app/Config/RoleWarden.php for another option (extraThemes), as configuration.html shows
+FAIL Q02 30de388: the light/dark choice survives the same change
+FAIL Y07-1280 1280 px, module data only (15 action columns): matrix action columns 80px, marginal column 200px
+FAIL Y07-1366 1366 px, module data only (15 action columns): matrix action columns 80px, marginal column 200px
+FAIL Y07-1440 1440 px, module data only (15 action columns): matrix action columns 104px, marginal column 200px
+FAIL Y07-1920 1920 px, module data only (15 action columns): matrix action columns 104px, marginal column 200px
+Test process exit: 1

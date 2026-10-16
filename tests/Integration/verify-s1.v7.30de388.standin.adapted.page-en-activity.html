@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792154674">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Main">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Users</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Roles</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permissions</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Settings</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity" aria-current="page"><span>05</span>Activity</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Appearance</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Breadcrumb"><span aria-current="page">Activity</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Language">
+  <input type="hidden" name="csrf_test_name" value="6a04416bdb374f0906272994be5c5535">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;activity">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="true">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="false">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Light&#x20;or&#x20;dark">
+          <input type="hidden" name="csrf_test_name" value="6a04416bdb374f0906272994be5c5535">                      <button type="submit" name="mode" value="system" aria-pressed="true">System</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Light</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Dark</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>eva7<small>Admin</small></span>
+          <i aria-hidden="true">EV</i>
+        </a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Saved&quot;,&quot;warning&quot;&#x3A;&quot;Warning&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Error&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">RoleWarden</div>
+    <h1>Activity</h1>
+    <p>Every change to users, roles, permissions and settings, and every sign-in attempt, newest first.</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Entries</dt><dd class="rw-fig-sm">38</dd></div>
+  </dl>
+</div>
+
+<form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/rolewarden/activity">
+  <div class="rw-field">
+    <label class="rw-label" for="rw-activity-user">User</label>
+    <input class="rw-input" id="rw-activity-user" name="user" type="search" value="" placeholder="Name&#x20;or&#x20;email" autocomplete="off">
+  </div>
+  <div class="rw-field">
+    <label class="rw-label" for="rw-activity-action">Action</label>
+    <select class="rw-select" id="rw-activity-action" name="action">
+      <option value="">Any action</option>
+              <option value="auth.login">Signed in</option>
+              <option value="auth.failed">Failed sign-in</option>
+              <option value="user.created">User created</option>
+              <option value="user.imported">User imported</option>
+              <option value="user.registered">User registered</option>
+              <option value="user.updated">User edited</option>
+              <option value="user.password_set">Password set by an admin</option>
+              <option value="user.activated">User activated</option>
+              <option value="user.deactivated">User deactivated</option>
+              <option value="user.deleted">User deleted</option>
+              <option value="user.role_assigned">Role assigned</option>
+              <option value="user.role_revoked">Role revoked</option>
+              <option value="user.override_granted">Permission granted to user</option>
+              <option value="user.override_denied">Permission denied to user</option>
+              <option value="user.override_cleared">User override removed</option>
+              <option value="role.created">Role created</option>
+              <option value="role.updated">Role edited</option>
+              <option value="role.deleted">Role deleted</option>
+              <option value="role.permission_granted">Permission added to role</option>
+              <option value="role.permission_revoked">Permission removed from role</option>
+              <option value="settings.updated">Settings changed</option>
+              <option value="account.password_changed">Password changed</option>
+              <option value="session.revoked">Session signed out</option>
+              <option value="session.remembered_forgotten">Remembered browser forgotten</option>
+              <option value="session.all_revoked">All other sessions signed out</option>
+              <option value="appearance.updated">Appearance changed</option>
+              <option value="auth.logout">Signed out</option>
+          </select>
+  </div>
+  <div class="rw-field">
+    <label class="rw-label" for="rw-activity-from">From</label>
+    <input class="rw-input" id="rw-activity-from" name="from" type="date" value="">
+  </div>
+  <div class="rw-field">
+    <label class="rw-label" for="rw-activity-to">To</label>
+    <input class="rw-input" id="rw-activity-to" name="to" type="date" value="">
+  </div>
+    <button class="rw-btn rw-btn--secondary" type="submit">Filter</button>
+</form>
+
+<table class="rw-t-users rw-t-activity">
+  <thead>
+    <tr>
+      <th class="rw-m-num" scope="col"></th>
+      <th class="rw-header" scope="col">When</th>
+      <th class="rw-header" scope="col">Who</th>
+      <th class="rw-header" scope="col">Action</th>
+      <th class="rw-header" scope="col">Object</th>
+      <th class="rw-header" scope="col">Details</th>
+      <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Address</th>
+    </tr>
+  </thead>
+  <tbody>
+                    <tr>
+        <td class="rw-m-num">01</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/33">pag30</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">02</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/32">pag29</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">03</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/31">pag28</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">04</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/30">pag27</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">05</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/29">pag26</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">06</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/28">pag25</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">07</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/27">pag24</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">08</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/26">pag23</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">09</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/25">pag22</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">10</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/24">pag21</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">11</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/23">pag20</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">12</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/22">pag19</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">13</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/21">pag18</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">14</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/20">pag17</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">15</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/19">pag16</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">16</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/18">pag15</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">17</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/17">pag14</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">18</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/16">pag13</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">19</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/15">pag12</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">20</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/14">pag11</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">21</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/13">pag10</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">22</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/12">pag9</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">23</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/11">pag8</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">24</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/10">pag7</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">25</td>
+        <td style="white-space:nowrap">16 Oct 2026, 14:13</td>
+        <td>boss7</td>
+        <td><span>User imported</span></td>
+        <td><a href="http://127.0.0.1:8071/index.php/rolewarden/users/9">pag6</a></td>
+        <td class="rw-muted"></td>
+        <td class="rw-anno"><span class="rw-note">127.0.0.1</span></td>
+      </tr>
+      </tbody>
+</table>
+
+  <nav aria-label="Pagination">
+    <ul class="rw-pager">
+      <li>
+                  <span class="rw-page" aria-disabled="true">Previous</span>
+              </li>
+                            <li>
+                      <span class="rw-page" aria-current="page">1</span>
+                  </li>
+                      <li>
+                      <a class="rw-page" href="http://127.0.0.1:8071/index.php/rolewarden/activity?page=2" aria-label="Page&#x20;2">2</a>
+                  </li>
+            <li>
+                  <a class="rw-page" href="http://127.0.0.1:8071/index.php/rolewarden/activity?page=2">Next</a>
+              </li>
+    </ul>
+  </nav>
+    </main>
+  </div>
+</div>
+</body>
+</html>

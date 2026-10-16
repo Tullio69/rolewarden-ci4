@@ -10,6 +10,7 @@ use RoleWarden\Account\ActivityLog;
 use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Settings\DefaultRole;
+use RoleWarden\Settings\SavedValues;
 
 // CodeIgniter includes Config/Events.php from every module namespace (Config\Modules
 // discovers 'events' by default), so the host app has nothing to wire.
@@ -24,6 +25,7 @@ Events::on('register', static function (User $user): void {
 // Signed-in sessions (RoleWarden\Account\Sessions): pre_system runs before routing and
 // filters, so a revoked or idle session is signed out before anything checks it.
 Events::on('pre_system', static function (): void {
+    SavedValues::follow();
     Sessions::track();
 });
 

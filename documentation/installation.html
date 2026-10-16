@@ -121,6 +121,17 @@ WHERE i.type = 'email_password' AND i.secret = 'you@example.com';</code></pre>
 <pre><code>php spark migrate:rollback -b &lt;previous batch&gt;</code></pre>
     <p><code>-b 0</code> rolls back everything, Shield included. Then remove the wiring lines and the module.</p>
 
+    <h2 id="subfolder-proxy">In a subfolder or behind a proxy</h2>
+    <h3 id="subfolder">In a subfolder</h3>
+    <p>The application can live at an address such as <code>https://example.com/admin/</code>. Point that address at the <code>public/</code> folder (an alias or a symbolic link) and set <code>app.baseURL</code> in <code>.env</code> to the full address with the subfolder and a final slash. The installer writes it from the address it was opened at. Every link, form and email of the panel is built from <code>app.baseURL</code>.</p>
+    <h3 id="proxy">Behind a reverse proxy or a load balancer</h3>
+    <p>Behind a proxy every request comes from the proxy's own address unless CodeIgniter is told to trust it. The sign-in limit per IP address would then count everyone together and lock everyone out at once, and the activity log, the sessions list and the security emails would show the proxy's address. List your proxies in <code>app/Config/App.php</code>, with the header that carries the visitor's address:</p>
+<pre><code>public array $proxyIPs = [
+    '10.0.0.5'     =&gt; 'X-Forwarded-For',
+    '172.16.0.0/12' =&gt; 'X-Forwarded-For',
+];</code></pre>
+    <p>When the proxy handles HTTPS and talks to the application over plain HTTP, it must also send <code>X-Forwarded-Proto: https</code>. CodeIgniter reads that header only from the proxies in <code>$proxyIPs</code>. Keep <code>app.baseURL</code> on <code>https://</code>.</p>
+
     <h2 id="demo">The demo app</h2>
     <p>A small document register with three roles in a chain of inheritance: a Reader only reads, an Author writes and edits their own documents, an Approver approves and deletes. It shows the permissions at work and is the model to copy for your own screens. The complete application contains it in <code>modules/rolewarden-demo</code>, not installed.</p>
 <pre><code>php spark demo:install     # table, permissions, roles, three accounts, sample documents

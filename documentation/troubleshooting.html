@@ -59,6 +59,8 @@
     <p>Shield must record failed attempts: keep <code>Config\Auth::$recordLoginAttempt</code> at its default. If you moved Shield's login route, put the <code>rw-signin</code> filter on the new path.</p>
     <h3>More than 10 attempts a minute are refused although the setting is higher</h3>
     <p>Shield's <code>auth-rates</code> filter caps every IP at 10 requests a minute. Remove it from <code>app/Config/Filters.php</code>.</p>
+    <h3>Everyone is locked out at once, or the log shows the same address for everyone</h3>
+    <p>The application is behind a proxy that CodeIgniter does not trust, so every request seems to come from the proxy. List it in <code>Config\App::$proxyIPs</code>: see <a href="installation.html#proxy">Behind a reverse proxy</a>.</p>
     <h3>A signed-out session is still open in another tab</h3>
     <p>It ends at that browser's next request, not before.</p>
     <h3>No security email arrives</h3>

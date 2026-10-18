@@ -99,7 +99,7 @@ In a **role** matrix, override marks summarise the overrides held by users of th
 
 ## Screens
 
-Eight screens are drawn here, all on the same shell (sidebar `size-sidebar`, top bar, 48px row-number gutter, 200px marginal notes column): Dashboard, PermissionMatrix (Permissions), UsersList and UserDetail (Users), RolesList (Roles), Settings, Login, and the CommandSearch overlay. The panel's other screens (Sessions, Activity log, Appearance, Profile, Check a permission, Import users, the installer) follow the same rules without a drawing of their own. Toasts give immediate feedback on any screen. Every editable screen uses the same unsaved-changes bar: `accent-tint`, a count, the changed items, Discard and one primary Save. Sections within a page are lettered A, B, C in the gutter and titled in `title-section`.
+Eight screens are drawn here, all on the same shell (sidebar `size-sidebar`, top bar, 48px row-number gutter, 200px marginal notes column): Dashboard, PermissionMatrix (Permissions), UsersList and UserDetail (Users), RolesList (Roles), Settings, Login, and the CommandSearch overlay. The panel's other screens (Sessions, Activity log, Appearance, Profile, Import users, the installer, and from 1.1 Check a permission) follow the same rules without a drawing of their own. Toasts give immediate feedback on any screen. Every editable screen uses the same unsaved-changes bar: `accent-tint`, a count, the changed items, Discard and one primary Save. Sections within a page are lettered A, B, C in the gutter and titled in `title-section`.
 
 ## Iconography
 

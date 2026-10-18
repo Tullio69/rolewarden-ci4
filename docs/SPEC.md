@@ -205,55 +205,60 @@ La stessa logica e' esposta come filtro di rotta e come helper nelle view, ma di
 
 ## Matrice funzionalita' per versione
 
-Quattro tappe. L'MVP serve a validare l'architettura su un progetto reale, la v1.0 e' la prima versione pubblicabile su CodeCanyon, le successive sono aggiornamenti che giustificano il prezzo e alimentano le recensioni.
+Cinque tappe. L'MVP serve a validare l'architettura su un progetto reale, la v1.0 e' la prima versione pubblicabile su CodeCanyon, le successive sono aggiornamenti che giustificano il prezzo e alimentano le recensioni. La v1.1 (decisa il 2026-10-18, dopo la pubblicazione della 1.0.0) porta la dashboard e la nuova navigazione: e' il primo aggiornamento, e non tocca autorizzazione ne' schema.
 
 Le voci marcate Shield non sono da scrivere: il lavoro e' integrarle, vestirle con il design system ed esporle nel pannello. Restano in tabella perche' l'acquirente le trova nel prodotto finito e vanno collaudate a ogni rilascio.
 
-| Funzionalita' | MVP | v1.0 | v1.5 | v2.0 |
-| --- | --- | --- | --- | --- |
-| Login, logout, sessione (Shield, viste nostre) | si |  |  |  |
-| Registrazione e verifica email (Shield, viste nostre) | si |  |  |  |
-| Recupero password (Shield, viste nostre) | si |  |  |  |
-| Ruoli, permessi, assegnazioni | si |  |  |  |
-| Override permesso per utente | si |  |  |  |
-| Gerarchia ruoli | si |  |  |  |
-| Filtro di rotta e helper nelle view | si |  |  |  |
-| Pannello: utenti, ruoli, permessi | si |  |  |  |
-| Migrazioni e seed | si |  |  |  |
-| Ricordami (Shield, esposto nel pannello) |  | si |  |  |
-| Throttling (Shield, configurabile da pannello) |  | si |  |  |
-| Sessioni e remember token, con revoca |  | si |  |  |
-| Log attivita' con filtri |  | si |  |  |
-| Profilo utente e cambio password |  | si |  |  |
-| Toast e riscontri nel pannello |  | si |  |  |
-| Notifiche email sugli eventi di sicurezza |  | si |  |  |
-| Importazione utenti da CSV |  | si |  |  |
-| Installer guidato |  | si |  |  |
-| App demo |  | si |  |  |
-| Design guide con token documentati |  | si |  |  |
-| Tre temi preimpostati, chiaro e scuro |  | si |  |  |
-| Personalizzatore tema con anteprima |  | si |  |  |
-| Documentazione completa |  | si |  |  |
-| 2FA TOTP con codici di recupero |  |  | si |  |
-| 2FA via email (action Shield) |  |  | si |  |
-| Login social Google e Facebook |  |  | si |  |
-| Provider OAuth aggiuntivi da configurazione |  |  | si |  |
-| Collegamento e scollegamento account social |  |  | si |  |
-| Centro notifiche con storico e contatore |  |  | si |  |
-| Preferenze di notifica per utente |  |  | si |  |
-| API token (Shield, gestiti dal pannello) |  |  | si |  |
-| Inviti utente via email |  |  | si |  |
-| Policy password configurabili |  |  | si |  |
-| Impersonazione utente per supporto |  |  | si |  |
-| Esportazione e importazione del tema |  |  | si |  |
-| Tipografia personalizzata nel personalizzatore |  |  | si |  |
-| Passkey WebAuthn |  |  |  | si |
-| Notifiche push web |  |  |  | si |
-| Canali di notifica esterni pronti (Slack, Telegram) |  |  |  | si |
-| Permessi a livello di campo |  |  |  | si |
-| Multi-tenant con scoping per organizzazione |  |  |  | si |
-| Webhook sugli eventi di autenticazione |  |  |  | si |
-| Esportazione dati utente per GDPR |  |  |  | si |
+| Funzionalita' | MVP | v1.0 | v1.1 | v1.5 | v2.0 |
+| --- | --- | --- | --- | --- | --- |
+| Login, logout, sessione (Shield, viste nostre) | si |  |  |  |  |
+| Registrazione e verifica email (Shield, viste nostre) | si |  |  |  |  |
+| Recupero password (Shield, viste nostre) | si |  |  |  |  |
+| Ruoli, permessi, assegnazioni | si |  |  |  |  |
+| Override permesso per utente | si |  |  |  |  |
+| Gerarchia ruoli | si |  |  |  |  |
+| Filtro di rotta e helper nelle view | si |  |  |  |  |
+| Pannello: utenti, ruoli, permessi | si |  |  |  |  |
+| Migrazioni e seed | si |  |  |  |  |
+| Ricordami (Shield, esposto nel pannello) |  | si |  |  |  |
+| Throttling (Shield, configurabile da pannello) |  | si |  |  |  |
+| Sessioni e remember token, con revoca |  | si |  |  |  |
+| Log attivita' con filtri |  | si |  |  |  |
+| Profilo utente e cambio password |  | si |  |  |  |
+| Toast e riscontri nel pannello |  | si |  |  |  |
+| Notifiche email sugli eventi di sicurezza |  | si |  |  |  |
+| Importazione utenti da CSV |  | si |  |  |  |
+| Installer guidato |  | si |  |  |  |
+| App demo |  | si |  |  |  |
+| Design guide con token documentati |  | si |  |  |  |
+| Tre temi preimpostati, chiaro e scuro |  | si |  |  |  |
+| Personalizzatore tema con anteprima |  | si |  |  |  |
+| Documentazione completa |  | si |  |  |  |
+| Dashboard con blocchi per permesso |  |  | si |  |  |
+| Barra laterale a gruppi, con contatori, tre stili e compressione |  |  | si |  |  |
+| Ricerca comandi (Ctrl K) |  |  | si |  |  |
+| Verifica di un permesso: chi lo ha e perche' |  |  | si |  |  |
+| Blocchi della dashboard aggiunti dall'applicazione |  |  | si |  |  |
+| 2FA TOTP con codici di recupero |  |  |  | si |  |
+| 2FA via email (action Shield) |  |  |  | si |  |
+| Login social Google e Facebook |  |  |  | si |  |
+| Provider OAuth aggiuntivi da configurazione |  |  |  | si |  |
+| Collegamento e scollegamento account social |  |  |  | si |  |
+| Centro notifiche con storico e contatore |  |  |  | si |  |
+| Preferenze di notifica per utente |  |  |  | si |  |
+| API token (Shield, gestiti dal pannello) |  |  |  | si |  |
+| Inviti utente via email |  |  |  | si |  |
+| Policy password configurabili |  |  |  | si |  |
+| Impersonazione utente per supporto |  |  |  | si |  |
+| Esportazione e importazione del tema |  |  |  | si |  |
+| Tipografia personalizzata nel personalizzatore |  |  |  | si |  |
+| Passkey WebAuthn |  |  |  |  | si |
+| Notifiche push web |  |  |  |  | si |
+| Canali di notifica esterni pronti (Slack, Telegram) |  |  |  |  | si |
+| Permessi a livello di campo |  |  |  |  | si |
+| Multi-tenant con scoping per organizzazione |  |  |  |  | si |
+| Webhook sugli eventi di autenticazione |  |  |  |  | si |
+| Esportazione dati utente per GDPR |  |  |  |  | si |
 
 **Perche' questi tagli.**
 
@@ -312,6 +317,9 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 | Centro notifiche | Contatore, tendina con le ultime voci, storico filtrabile | v1.5 |
 | Provider social | Stato dei provider, attivazione, ruolo predefinito, domini ammessi | v1.5 |
 | Aspetto | Scelta del tema e personalizzatore con anteprima dal vivo | v1.0 |
+| Dashboard | Cifre chiave, accessi nel tempo e per giorno e ora, utenti per ruolo, ultime modifiche ai permessi | v1.1 |
+| Verifica di un permesso | Chi ha un permesso e perche'; l'esito per un utente con la regola che lo decide | v1.1 |
+| Ricerca comandi | Sovrapposizione Ctrl K: schermate, azioni e permessi raggiungibili | v1.1 |
 
 **Matrice permessi.** E' la schermata che vende il prodotto e merita il tempo che costa. Righe le aree, colonne le azioni, caselle per intersezione, selezione per riga e per colonna, salvataggio parziale senza ricaricare la pagina. Le caselle ereditate dal ruolo padre appaiono selezionate ma bloccate, con l'origine indicata.
 
@@ -371,6 +379,20 @@ View CI4 server-side, Alpine.js per l'interattivita' locale. **Deciso il 2026-09
 - **Codice di installazione.** L'installer chiede un codice monouso salvato in `writable/rolewarden/install-code.txt` alla prima visita: installa solo chi può leggere i file del server, così chi trova per primo un upload appena fatto non può nominarsi super admin. Il codice si cancella a installazione finita.
 - **Traduzioni di CodeIgniter.** I messaggi propri di CodeIgniter (validazione, date relative) vengono dal pacchetto ufficiale `codeigniter4/translations`: incluso nell'applicazione completa, suggerito (`suggest`) per chi installa il modulo con Composer.
 - **Applicazione completa.** Il modulo sta in `modules/rolewarden` ed è caricato da `app/Config/Autoload.php`, così un aggiornamento sostituisce quella cartella. CSRF attivo su tutte le richieste; Shield tiene solo il gruppo `user`, perché i ruoli vivono nel pannello e la migrazione che importa i gruppi di Shield non crei ruoli di esempio; il browser sceglie tra inglese e italiano; la home apre l'installer finché RoleWarden non è installato.
+
+**Decisioni del 2026-10-18 (v1.1, dashboard e navigazione).** Il disegno e' la direzione B del canvas "RoleWarden - Dashboard e barra laterale", riportata nel design system (componenti Dashboard, Sidebar, CommandSearch). Le scelte segnate "utente" le ha prese l'utente il 2026-10-18.
+- **Dashboard.** E' la prima schermata dopo l'accesso e la pagina di `/rolewarden`. Cinque blocchi, ognuno col suo permesso: cifre chiave (`dashboard.figures`), accessi nel tempo e per giorno e ora (`dashboard.signins`), avviso di sicurezza (`dashboard.security`), utenti per ruolo (`dashboard.roles`), ultime modifiche ai permessi (`dashboard.changes`). Un blocco senza permesso non si rende e la pagina si richiude; chi non ne ha nessuno arriva alla prima schermata del menu che puo' vedere. Periodo di 7, 30 o 90 giorni.
+- **Dati.** Solo tabelle che esistono gia': accessi riusciti e falliti da `auth_logins` di Shield, utenti attivi dal flag di Shield, modifiche da `acl_activity_log`. Nessuna tabella nuova. Le quattro cifre chiave: utenti attivi sul totale, accessi nel periodo, accessi falliti nel periodo, modifiche ai permessi nel periodo; ognuna con la variazione sul periodo precedente e una nota.
+- **Avviso di sicurezza.** Compare quando nel periodo un indirizzo ha raggiunto in un giorno la soglia di blocco delle Impostazioni, o un'email e' bloccata adesso. Una frase e un'azione: il log attivita' filtrato su quegli accessi. Informa, non allarma: niente `denied`.
+- **Grafici.** SVG generati lato server dai token, nessuna libreria JavaScript, cosi' seguono tema, chiaro/scuro e personalizzatore. Ogni grafico ha `role="img"` con un'etichetta che ne dice il senso, e i suoi numeri anche come tabella.
+- **Personalizzazione.** Un predefinito globale (blocchi, ordine, periodo) lo sceglie chi ha `settings.update`; ogni utente nasconde e riordina i blocchi che vede e sceglie il periodo. Tutto con la libreria Settings, globale e nel contesto dell'utente: nessuna tabella nuova. Predefiniti per ruolo non previsti (utente).
+- **Permessi sulle installazioni esistenti.** I cinque `dashboard.*` entrano nel seeder, concessi ad `admin`; una migrazione di dati li crea sulle installazioni 1.0 e li concede a ogni ruolo che ha gia' `activity.view` (utente).
+- **Blocchi dell'applicazione.** L'applicazione aggiunge blocchi propri (utente: nella 1.1): una classe con chiave, titolo, permesso richiesto e view, registrata nella config `RoleWarden` dell'applicazione. I blocchi registrati entrano nella stessa personalizzazione e seguono il design system. E' API pubblica: documentata e stabile per tutte le 1.x.
+- **Barra laterale.** Voci a gruppi (Panoramica, Accesso, Sicurezza, Sistema), ognuna resa solo se l'utente ha il suo permesso. Contatori dove il numero aiuta ad agire: utenti, ruoli, permessi, sessioni attive; il log attivita' conta le voci nuove dall'ultima visita dell'utente, salvata con Settings. Il pannello "Oggi" (accessi di oggi, falliti, andamento orario) si spegne con un interruttore nelle Impostazioni. La barra si comprime a una colonna di icone, scelta che resta per utente.
+- **Stili della barra.** Paper (predefinito, l'aspetto della 1.0), Ink e Charcoal, scelti nel personalizzatore e salvati nel file di tema. Un file di tema senza stile vale Paper, cosi' un aggiornamento dalla 1.0 non cambia aspetto; la demo usa Ink. I token degli stili hanno valori per tutti e tre i temi, e la voce attiva si distingue dalla barra almeno a 3:1.
+- **Ricerca comandi.** Ctrl K (Cmd K su macOS), o il campo nella barra, apre la ricerca su schermate, azioni e identificatori di permesso. Le azioni aprono la loro schermata, non agiscono da sole. Mostra solo cio' che l'utente puo' fare, filtrato lato server; un identificatore digitato porta alla verifica di quel permesso.
+- **Verifica di un permesso.** Schermata nuova, in sola lettura, con `permissions.view`: dato un permesso, chi lo ha e perche' (ruolo, ereditarieta', override, super admin); dato anche un utente, l'esito con la regola di precedenza che lo decide. Legge il resolver, non ne duplica la logica.
+- **Fuori dalla 1.1.** Predefiniti della dashboard per ruolo, fonti di dati oltre a quelle elencate.
 
 **Elementi condizionati dai permessi.** Un pulsante che l'utente non puo' usare non viene reso, non viene disabilitato. Il controllo lato server resta comunque, perche' nascondere non e' proteggere.
 

@@ -48,7 +48,29 @@ The panel ships three themes, each in light and dark, and a customizer that over
 | Clarity | Airy, one indigo accent | 15px body, 40px controls, 52px rows, 8px radius, sidebar 248px |
 | Contrast | Black on white or white on black, bold type | 15px body at weight 500, sans titles at 700, 2px section rules, 3px focus ring, 2px radius, sidebar 232px; yellow accent in dark |
 
-- Every color token in this book has a value in each of the six theme and mode pairs. A token added here (the `side-*`, `charcoal-*` and `heat-*` families) gets its Clarity and Contrast values when it is built, by the same rules: Clarity derives from its indigo and slate, Contrast from black, white and its accent, and every text pair keeps 4.5:1.
+- Every color token in this book has a value in each of the six theme and mode pairs. A token added here (the `side-*`, `charcoal-*` and `heat-*` families) takes its Clarity and Contrast values by the same rules: Clarity derives from its indigo and slate, Contrast from black, white and its accent, every text pair keeps 4.5:1 and every active item 3:1.
+
+Values of the 1.1 tokens in Clarity and Contrast (approved 18 Oct 2026; Console is in `tokens.json`). Ink takes the theme's own hue, Charcoal the theme's dark surfaces in both modes, `side-accent` the theme's dark accent; heat maps run from the sunk (light) or raised (dark) surface to the accent in equal steps.
+
+| Token | Clarity light | Clarity dark | Contrast light | Contrast dark |
+| --- | --- | --- | --- | --- |
+| `side-surface` | `#1a1b4b` | `#14153a` | `#072a66` | `#051d47` |
+| `side-raised` | `#262a52` | `#1f2247` | `#0b3d91` | `#072a66` |
+| `side-rule` | `#3a3f75` | `#33376a` | `#dde7f7` | `#dde7f7` |
+| `side-ink` | `#eef0f5` | `#eef0f5` | `#ffffff` | `#ffffff` |
+| `side-muted` | `#b4bad8` | `#b4bad8` | `#dde7f7` | `#dde7f7` |
+| `side-accent` | `#a5b4fc` | `#a5b4fc` | `#facc15` | `#facc15` |
+| `on-side-accent` | `#1a1b4b` | `#1a1b4b` | `#0a0a0b` | `#0a0a0b` |
+| `charcoal-surface` | `#14161c` | `#14161c` | `#0a0a0b` | `#0a0a0b` |
+| `charcoal-raised` | `#1b1e26` | `#1b1e26` | `#161618` | `#161618` |
+| `charcoal-rule` | `#3a3f4c` | `#3a3f4c` | `#a1a1aa` | `#a1a1aa` |
+| `charcoal-ink` | `#eef0f5` | `#eef0f5` | `#ffffff` | `#ffffff` |
+| `charcoal-muted` | `#b4bac6` | `#b4bac6` | `#e4e4e7` | `#e4e4e7` |
+| `heat-0` | `#f5f6f8` | `#1b1e26` | `#f0f0f0` | `#161618` |
+| `heat-1` | `#b8c0ef` | `#3c4359` | `#a9bad6` | `#4d4327` |
+| `heat-2` | `#8691e4` | `#5c648a` | `#6f8dbe` | `#7e6a2c` |
+| `heat-3` | `#6066d7` | `#7e89be` | `#3e65a8` | `#b6972b` |
+| `heat-4` | `#4338ca` | `#a5b4fc` | `#0b3d91` | `#facc15` |
 
 ## Sidebar
 

@@ -1,0 +1,81 @@
+<!-- @dsCard group="Navigation" height=880 width=860 subtitle="Paper, Ink, Charcoal" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sidebar styles</title>
+<style>
+  html, body { margin: 0; background: var(--surface); }
+  .wrap { display: flex; gap: 24px; padding: 24px; align-items: stretch; }
+  .col { display: flex; flex-direction: column; gap: 8px; }
+  .cap { font: 600 12px/16px var(--font-sans); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-muted); }
+  .sb { --sb: var(--side-surface); --sb2: var(--side-raised); --sbr: var(--side-rule); --sbi: var(--side-ink); --sbm: var(--side-muted); --sba: var(--side-accent); --sbo: var(--on-side-accent); --act-bg: var(--side-accent); --act-fg: var(--on-side-accent);
+        width: 248px; height: 800px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px; padding: 22px 14px 16px; background: var(--sb); color: var(--sbi); border: 1px solid var(--sbr); font: 400 14px/20px var(--font-sans); font-variant-numeric: tabular-nums; }
+  .sb[data-sidebar="paper"] { --sb: var(--surface-sunk); --sb2: var(--surface-raised); --sbr: var(--rule-strong); --sbi: var(--ink); --sbm: var(--ink-muted); --sba: var(--accent); --sbo: var(--on-accent); --act-bg: var(--accent-tint); --act-fg: var(--accent); }
+  .sb[data-sidebar="charcoal"] { --sb: var(--charcoal-surface); --sb2: var(--charcoal-raised); --sbr: var(--charcoal-rule); --sbi: var(--charcoal-ink); --sbm: var(--charcoal-muted); }
+  .brand { display: flex; align-items: center; gap: 10px; padding: 0 8px; }
+  .mark { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--sba); border-radius: 4px; color: var(--sba); }
+  .brand b { display: block; font: 400 20px/24px var(--font-serif); }
+  .brand small { display: block; font-size: 12px; line-height: 16px; color: var(--sbm); }
+  .search { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 8px 0 10px; border: 1px solid var(--sbr); border-radius: 4px; background: var(--sb2); color: var(--sbm); font: 400 13px/16px var(--font-sans); cursor: pointer; text-align: left; }
+  .search span { flex: 1; }
+  kbd { font: 400 11px/14px var(--font-mono); padding: 1px 5px; border: 1px solid var(--sbr); border-radius: 2px; color: var(--sbm); }
+  .grp { display: flex; flex-direction: column; gap: 2px; }
+  .grp > span { padding: 0 10px 6px; font: 600 12px/16px var(--font-sans); letter-spacing: .04em; color: var(--sbm); }
+  .grp a { display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 4px; color: var(--sbi); text-decoration: none; font: 500 13px/16px var(--font-sans); }
+  .grp a:hover { background: var(--sb2); }
+  .grp a[aria-current="page"] { background: var(--act-bg); color: var(--act-fg); font-weight: 600; }
+  .grp a > span:first-of-type { flex: 1; }
+  .cnt { min-width: 28px; height: 20px; padding: 0 6px; box-sizing: border-box; display: inline-grid; place-items: center; border-radius: 2px; background: var(--sb2); color: var(--sbi); font-size: 12px; }
+  .cnt.hot { background: var(--sba); color: var(--sbo); font-weight: 600; }
+  .today { margin-top: auto; display: flex; flex-direction: column; gap: 6px; padding: 14px 12px; border: 1px solid var(--sbr); border-radius: 4px; background: var(--sb2); }
+  .today > span { font: 600 12px/16px var(--font-sans); letter-spacing: .04em; color: var(--sbm); }
+  .today b { font: 400 28px/32px var(--font-serif); }
+  .today small { font-size: 12px; color: var(--sbm); margin-left: 8px; }
+  .user { display: flex; align-items: center; gap: 10px; padding: 0 6px; }
+  .av { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--sba); color: var(--sbo); font: 600 12px/1 var(--font-sans); }
+  .user div { flex: 1; }
+  .user b { display: block; font: 600 13px/18px var(--font-sans); }
+  .user small { display: block; font-size: 12px; line-height: 16px; color: var(--sbm); }
+  .ib { width: 32px; height: 32px; display: grid; place-items: center; border: 0; border-radius: 4px; background: transparent; color: var(--sbm); cursor: pointer; }
+  .sb :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap"></div>
+<script>
+  var I = {
+    dash: '<path d="M2.5 2.5h4.5v6h-4.5zM9 2.5h4.5v3.5h-4.5zM9 8h4.5v5.5h-4.5zM2.5 10.5h4.5v3h-4.5z"/>',
+    users: '<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/>',
+    roles: '<path d="M8 2.5l5.5 3-5.5 3-5.5-3z"/><path d="M2.5 8.5l5.5 3 5.5-3"/><path d="M2.5 11.5l5.5 3 5.5-3"/>',
+    perms: '<path d="M2.5 2.5h11v11h-11z"/><path d="M2.5 6.5h11M2.5 10h11M6.5 2.5v11"/>',
+    sess: '<path d="M2 3h12v8h-12z"/><path d="M5.5 14h5M8 11v3"/>',
+    log: '<path d="M5.5 4h8M5.5 8h8M5.5 12h8M2.5 4h.5M2.5 8h.5M2.5 12h.5"/>',
+    check: '<circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5l3 3"/><path d="M5 7l1.5 1.5 2.5-2.5"/>',
+    set: '<path d="M2.5 4.5h7M12 4.5h1.5M2.5 11.5h2M7 11.5h6.5"/><circle cx="10.5" cy="4.5" r="1.5"/><circle cx="5.5" cy="11.5" r="1.5"/>',
+    look: '<circle cx="8" cy="8" r="5.5"/><path d="M8 2.5v11"/>',
+    search: '<circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5l3 3"/>',
+    shield: '<path d="M8 1.8l5.2 2v4.1c0 3-2.2 5.3-5.2 6.3-3-1-5.2-3.3-5.2-6.3V3.8z"/><path d="M5.6 8l1.7 1.7 3.2-3.2"/>',
+    theme: '<path d="M13 9.5A5.5 5.5 0 1 1 6.5 3a4.5 4.5 0 0 0 6.5 6.5z"/>',
+    out: '<path d="M9.5 2.5h4v11h-4"/><path d="M6 5l-3 3 3 3M3 8h7.5"/>'
+  };
+  function ic(k, s) { return '<svg width="' + (s || 16) + '" height="' + (s || 16) + '" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">' + I[k] + '</svg>'; }
+  function item(k, label, cnt, cur, hot) { return '<a href="#"' + (cur ? ' aria-current="page"' : '') + '>' + ic(k) + '<span>' + label + '</span>' + (cnt ? '<span class="cnt' + (hot ? ' hot' : '') + '">' + cnt + '</span>' : '') + '</a>'; }
+  var hours = [0,0,0,0,1,2,5,9,12,10,9,8,6,9,10,9,8,7,5,4,3,2,1,0];
+  var pts = hours.map(function (v, i) { return (i * 196 / 23).toFixed(1) + ',' + (30 - v * 2.2).toFixed(1); }).join(' ');
+  function bar(style, name) {
+    return '<div class="col"><span class="cap">' + name + '</span><nav class="sb" data-sidebar="' + style + '" aria-label="Main (' + name + ')">' +
+      '<div class="brand"><span class="mark">' + ic('shield', 18) + '</span><div><b>Northwind</b><small>Admin panel</small></div></div>' +
+      '<button class="search" type="button">' + ic('search') + '<span>Search or run a command</span><kbd>Ctrl K</kbd></button>' +
+      '<div class="grp"><span>OVERVIEW</span>' + item('dash', 'Dashboard', '', true) + '</div>' +
+      '<div class="grp"><span>ACCESS</span>' + item('users', 'Users', '248') + item('roles', 'Roles', '9') + item('perms', 'Permissions', '64') + '</div>' +
+      '<div class="grp"><span>SECURITY</span>' + item('sess', 'Sessions', '31') + item('log', 'Activity log', '5 new', false, true) + item('check', 'Check a permission') + '</div>' +
+      '<div class="grp"><span>SYSTEM</span>' + item('set', 'Settings') + item('look', 'Appearance') + '</div>' +
+      '<div class="today"><span>TODAY</span><div><b>87</b><small>sign-ins, 3 failed</small></div><svg width="196" height="32" viewBox="0 0 196 32" fill="none" aria-hidden="true"><polyline points="' + pts + '" stroke="var(--sba)" stroke-width="1.5"/></svg></div>' +
+      '<div class="user"><span class="av">DW</span><div><b>Dana Whitfield</b><small>Super admin</small></div><button class="ib" type="button" aria-label="Switch theme">' + ic('theme') + '</button><button class="ib" type="button" aria-label="Sign out">' + ic('out') + '</button></div>' +
+      '</nav></div>';
+  }
+  document.getElementById('wrap').innerHTML = bar('paper', 'Paper (default)') + bar('ink', 'Ink') + bar('charcoal', 'Charcoal');
+</script>
+</body>
+</html>

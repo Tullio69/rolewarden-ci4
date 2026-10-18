@@ -1,0 +1,138 @@
+<!-- @dsCard group="Screens" height=1420 width=1440 page subtitle="Screen 0 · Dashboard" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard</title>
+<style>
+  html, body { margin: 0; background: var(--surface); }
+  .app { display: grid; grid-template-columns: 248px 1fr; min-height: 1420px; width: 1440px; font: 400 14px/20px var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .sb { display: flex; flex-direction: column; gap: 22px; padding: 22px 14px 16px; background: var(--side-surface); color: var(--side-ink); }
+  .brand { display: flex; align-items: center; gap: 10px; padding: 0 8px; }
+  .mark { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--side-accent); border-radius: 4px; color: var(--side-accent); }
+  .brand b { display: block; font: 400 20px/24px var(--font-serif); }
+  .brand small, .grp > span, .today > span, .user small { color: var(--side-muted); }
+  .brand small { display: block; font-size: 12px; line-height: 16px; }
+  .search { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 8px 0 10px; border: 1px solid var(--side-rule); border-radius: 4px; background: var(--side-raised); color: var(--side-muted); font: 400 13px/16px var(--font-sans); text-align: left; }
+  .search span { flex: 1; }
+  kbd { font: 400 11px/14px var(--font-mono); padding: 1px 5px; border: 1px solid var(--side-rule); border-radius: 2px; }
+  .grp { display: flex; flex-direction: column; gap: 2px; }
+  .grp > span { padding: 0 10px 6px; font: 600 12px/16px var(--font-sans); letter-spacing: .04em; }
+  .grp a { display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 4px; color: var(--side-ink); text-decoration: none; font: 500 13px/16px var(--font-sans); }
+  .grp a[aria-current="page"] { background: var(--side-accent); color: var(--on-side-accent); font-weight: 600; }
+  .grp a > span:first-of-type { flex: 1; }
+  .cnt { min-width: 28px; height: 20px; padding: 0 6px; box-sizing: border-box; display: inline-grid; place-items: center; border-radius: 2px; background: var(--side-raised); font-size: 12px; }
+  .cnt.hot { background: var(--side-accent); color: var(--on-side-accent); font-weight: 600; }
+  .today { margin-top: auto; display: flex; flex-direction: column; gap: 6px; padding: 14px 12px; border: 1px solid var(--side-rule); border-radius: 4px; background: var(--side-raised); }
+  .today > span { font: 600 12px/16px var(--font-sans); letter-spacing: .04em; }
+  .today b { font: 400 28px/32px var(--font-serif); }
+  .today small { font-size: 12px; color: var(--side-muted); margin-left: 8px; }
+  .user { display: flex; align-items: center; gap: 10px; padding: 0 6px; }
+  .av { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--side-accent); color: var(--on-side-accent); font: 600 12px/1 var(--font-sans); }
+  .user b { display: block; font: 600 13px/18px var(--font-sans); }
+  .user small { display: block; font-size: 12px; line-height: 16px; }
+  .top { height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; border-bottom: 1px solid var(--rule-strong); }
+  .crumbs { font-size: 13px; color: var(--ink-muted); } .crumbs b { color: var(--ink); font-weight: 500; }
+  .tools { display: flex; gap: 8px; align-items: center; }
+  .seg { display: flex; border: 1px solid var(--control-border); border-radius: 4px; overflow: hidden; }
+  .seg button { height: 34px; padding: 0 12px; border: 0; background: var(--surface-raised); color: var(--ink); font: 500 13px/16px var(--font-sans); }
+  .seg button + button { border-left: 1px solid var(--control-border); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .btn2 { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border: 1px solid var(--control-border); border-radius: 4px; background: var(--surface-raised); color: var(--ink); font: 500 13px/16px var(--font-sans); }
+  .page { display: flex; flex-direction: column; gap: 36px; padding: 40px 48px 64px; }
+  .hello { font-size: 13px; color: var(--ink-muted); }
+  h1 { margin: 4px 0 0; font: 400 40px/48px var(--font-serif); letter-spacing: -.015em; }
+  .headrow { display: flex; align-items: flex-end; justify-content: space-between; }
+  .notice { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 12px 8px 16px; margin-top: 16px; background: var(--accent-tint); }
+  .notice span { flex: 1; }
+  .btn1 { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 4px; background: var(--accent); color: var(--on-accent); text-decoration: none; font: 500 13px/16px var(--font-sans); }
+  .strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule-strong); }
+  .fig { display: flex; flex-direction: column; gap: 8px; padding: 20px 20px 20px 0; border-right: 1px solid var(--rule); }
+  .fig:last-child { border-right: 0; }
+  .lab { font: 600 12px/16px var(--font-sans); letter-spacing: .04em; color: var(--ink-muted); }
+  .val { display: flex; align-items: baseline; gap: 10px; }
+  .val b { font: 400 56px/56px var(--font-serif); }
+  .chip { display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 2px; background: var(--surface-sunk); color: var(--ink-muted); font: 600 12px/16px var(--font-sans); }
+  .note { font-size: 12px; line-height: 16px; color: var(--ink-faint); }
+  h2 { margin: 0; font: 400 24px/32px var(--font-serif); }
+  .bh { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-muted); }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .hm { display: flex; flex-direction: column; gap: 3px; }
+  .hr { display: grid; grid-template-columns: 32px repeat(24, minmax(0, 1fr)); gap: 3px; align-items: center; }
+  .hr i { height: 18px; }
+  .split { display: flex; height: 28px; gap: 2px; margin-bottom: 14px; }
+  .ll { border-top: 1px solid var(--rule-strong); }
+  .ll div { display: flex; align-items: center; gap: 10px; height: 40px; border-bottom: 1px solid var(--rule); }
+  .ll b { flex: 1; font-weight: 600; }
+  .chg { border-top: 2px solid var(--ink); }
+  .chg div { display: flex; align-items: center; gap: 16px; min-height: 52px; border-bottom: 1px solid var(--rule); }
+  .chg .n { width: 28px; font-size: 12px; color: var(--ink-faint); }
+  .chg .m { width: 24px; display: flex; justify-content: center; }
+  .chg .t { flex: 1; }
+  code { font: 400 13px/20px var(--font-mono); padding: 1px 6px; background: var(--surface-sunk); border-radius: 2px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="sb" aria-label="Main" id="sb"></nav>
+  <div>
+    <header class="top"><span class="crumbs">Northwind Studio / <b>Dashboard</b></span><div class="tools"><div class="seg" role="group" aria-label="Period"><button type="button" aria-pressed="false">7 days</button><button type="button" aria-pressed="true">30 days</button><button type="button" aria-pressed="false">90 days</button></div><button class="btn2" type="button">Customize</button></div></header>
+    <main class="page">
+      <header>
+        <div class="headrow"><div><span class="hello">Good evening, Dana</span><h1>Your access, at a glance</h1></div><span class="hello">19 Sep to 18 Oct 2026</span></div>
+        <div class="notice" role="status"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M8 1.8l5.2 2v4.1c0 3-2.2 5.3-5.2 6.3-3-1-5.2-3.3-5.2-6.3V3.8z"/><path d="M8 5.5v3M8 10.5v.5"/></svg><span><b>14 failed sign-ins</b> from 203.0.113.42 on 16 Oct. The address is now throttled.</span><a class="btn1" href="#">Review attempts</a></div>
+      </header>
+      <section class="strip" aria-label="Key figures">
+        <div class="fig"><span class="lab">ACTIVE USERS</span><div class="val"><b style="color: var(--accent)">231</b><span class="chip">+12</span></div><span class="note">of 248 accounts, 93%</span></div>
+        <div class="fig"><span class="lab">SIGN-INS, 30 DAYS</span><div class="val"><b>1,739</b><span class="chip">+8%</span></div><span class="note">peak 88 on 16 Oct</span></div>
+        <div class="fig"><span class="lab">FAILED, 7 DAYS</span><div class="val"><b>27</b><span class="chip">14 on one day</span></div><span class="note">one address, now throttled</span></div>
+        <div class="fig"><span class="lab">PERMISSION CHANGES</span><div class="val"><b>23</b><span class="chip">6 roles</span></div><span class="note">4 user overrides among them</span></div>
+      </section>
+      <section aria-labelledby="h-sign">
+        <div class="bh"><h2 id="h-sign">Sign-ins over 30 days</h2><div class="legend"><span><i style="width:14px;height:10px;background:var(--accent-tint);border-top:2px solid var(--accent)"></i>Successful 1,739</span><span><i style="width:8px;height:10px;background:var(--ink)"></i>Failed 92</span></div></div>
+        <div style="display:flex;gap:12px"><div class="note" style="display:flex;flex-direction:column;justify-content:space-between;height:240px;text-align:right;min-width:24px"><span>100</span><span>50</span><span>0</span></div><div style="flex:1;display:flex;flex-direction:column;gap:6px"><svg id="chart" role="img" aria-label="Sign-ins run near 80 a weekday and drop at weekends; failures spike to 14 on 16 Oct" width="100%" height="240" viewBox="0 0 1000 200" preserveAspectRatio="none" style="display:block"></svg><div class="note" style="display:flex;justify-content:space-between"><span>19 Sep</span><span>26 Sep</span><span>3 Oct</span><span>10 Oct</span><span>18 Oct</span></div></div></div>
+      </section>
+      <div class="two">
+        <section aria-labelledby="h-heat"><div class="bh"><h2 id="h-heat">When people sign in</h2><span class="note">busiest: Tue 9:00</span></div><div class="hm" id="heat" role="img" aria-label="Sign-ins by weekday and hour, busiest on weekday mornings"></div></section>
+        <section aria-labelledby="h-roles"><div class="bh"><h2 id="h-roles">Who holds which role</h2><span class="note">248 users, 9 roles</span></div><div class="split" id="split" role="img" aria-label="Viewer 111, Author 88, Editor 41, Admin 6, Super admin 2"></div><div class="ll" id="ll"></div></section>
+      </div>
+      <section aria-labelledby="h-chg"><div class="bh"><h2 id="h-chg">Latest permission changes</h2><a href="#">View all 23</a></div><div class="chg" id="chg"></div></section>
+    </main>
+  </div>
+</div>
+<script>
+  var I = { dash: '<path d="M2.5 2.5h4.5v6h-4.5zM9 2.5h4.5v3.5h-4.5zM9 8h4.5v5.5h-4.5zM2.5 10.5h4.5v3h-4.5z"/>', users: '<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/>', roles: '<path d="M8 2.5l5.5 3-5.5 3-5.5-3z"/><path d="M2.5 8.5l5.5 3 5.5-3"/><path d="M2.5 11.5l5.5 3 5.5-3"/>', perms: '<path d="M2.5 2.5h11v11h-11z"/><path d="M2.5 6.5h11M2.5 10h11M6.5 2.5v11"/>', sess: '<path d="M2 3h12v8h-12z"/><path d="M5.5 14h5M8 11v3"/>', log: '<path d="M5.5 4h8M5.5 8h8M5.5 12h8M2.5 4h.5M2.5 8h.5M2.5 12h.5"/>', check: '<circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5l3 3"/><path d="M5 7l1.5 1.5 2.5-2.5"/>', set: '<path d="M2.5 4.5h7M12 4.5h1.5M2.5 11.5h2M7 11.5h6.5"/><circle cx="10.5" cy="4.5" r="1.5"/><circle cx="5.5" cy="11.5" r="1.5"/>', look: '<circle cx="8" cy="8" r="5.5"/><path d="M8 2.5v11"/>', search: '<circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5l3 3"/>', shield: '<path d="M8 1.8l5.2 2v4.1c0 3-2.2 5.3-5.2 6.3-3-1-5.2-3.3-5.2-6.3V3.8z"/><path d="M5.6 8l1.7 1.7 3.2-3.2"/>' };
+  function ic(k, s) { s = s || 16; return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">' + I[k] + '</svg>'; }
+  function item(k, l, c, cur, hot) { return '<a href="#"' + (cur ? ' aria-current="page"' : '') + '>' + ic(k) + '<span>' + l + '</span>' + (c ? '<span class="cnt' + (hot ? ' hot' : '') + '">' + c + '</span>' : '') + '</a>'; }
+  var hours = [0,0,0,0,1,2,5,9,12,10,9,8,6,9,10,9,8,7,5,4,3,2,1,0];
+  var tp = hours.map(function (v, i) { return (i * 196 / 23).toFixed(1) + ',' + (30 - v * 2.2).toFixed(1); }).join(' ');
+  document.getElementById('sb').innerHTML = '<div class="brand"><span class="mark">' + ic('shield', 18) + '</span><div><b>Northwind</b><small>Admin panel</small></div></div><div class="search">' + ic('search') + '<span>Search or run a command</span><kbd>Ctrl K</kbd></div>' +
+    '<div class="grp"><span>OVERVIEW</span>' + item('dash', 'Dashboard', '', true) + '</div><div class="grp"><span>ACCESS</span>' + item('users', 'Users', '248') + item('roles', 'Roles', '9') + item('perms', 'Permissions', '64') + '</div>' +
+    '<div class="grp"><span>SECURITY</span>' + item('sess', 'Sessions', '31') + item('log', 'Activity log', '5 new', false, true) + item('check', 'Check a permission') + '</div><div class="grp"><span>SYSTEM</span>' + item('set', 'Settings') + item('look', 'Appearance') + '</div>' +
+    '<div class="today"><span>TODAY</span><div><b>87</b><small>sign-ins, 3 failed</small></div><svg width="196" height="32" viewBox="0 0 196 32" fill="none" aria-hidden="true"><polyline points="' + tp + '" stroke="var(--side-accent)" stroke-width="1.5"/></svg></div>' +
+    '<div class="user"><span class="av">DW</span><div style="flex:1"><b>Dana Whitfield</b><small>Super admin</small></div></div>';
+  var ok = [64,71,58,22,18,69,74,77,70,66,25,20,72,79,81,76,73,28,24,78,83,85,80,77,30,26,82,88,86,87];
+  var fail = [3,5,2,1,0,4,6,3,2,9,1,0,4,3,5,2,3,1,1,4,2,6,3,2,0,1,3,14,4,3];
+  var line = ok.map(function (v, i) { return (i * 1000 / 29).toFixed(1) + ',' + (200 - v * 2).toFixed(1); }).join(' ');
+  var svg = '<polygon points="0,200 ' + line + ' 1000,200" fill="var(--accent-tint)"/><line x1="0" y1="100" x2="1000" y2="100" stroke="var(--rule-strong)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/><line x1="0" y1="199.5" x2="1000" y2="199.5" stroke="var(--ink)" vector-effect="non-scaling-stroke"/><polyline points="' + line + '" fill="none" stroke="var(--accent)" stroke-width="2.5" vector-effect="non-scaling-stroke"/>';
+  fail.forEach(function (v, i) { svg += '<rect x="' + (i * 1000 / 29 - 5).toFixed(1) + '" y="' + (200 - v * 4) + '" width="10" height="' + v * 4 + '" fill="var(--ink)"/>'; });
+  document.getElementById('chart').innerHTML = svg;
+  var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], w = [0.95,1,0.9,0.92,0.75,0.25,0.2];
+  var curve = [0,0,0,0,0,0.05,0.15,0.5,0.9,1,0.85,0.75,0.45,0.7,0.8,0.75,0.65,0.5,0.3,0.15,0.1,0.05,0.02,0];
+  var h = '';
+  days.forEach(function (d, di) { h += '<div class="hr"><span class="note">' + d + '</span>'; curve.forEach(function (c) { var v = c * w[di]; var l = v > 0.8 ? 4 : v > 0.55 ? 3 : v > 0.3 ? 2 : v > 0.08 ? 1 : 0; h += '<i title="' + Math.round(v * 40) + ' sign-ins" style="background:var(--heat-' + l + ')"></i>'; }); h += '</div>'; });
+  h += '<div class="hr note" style="grid-template-columns:32px repeat(4,minmax(0,1fr));margin-top:4px"><span></span><span>00</span><span>06</span><span>12</span><span>18</span></div>';
+  h += '<div class="note" style="display:flex;align-items:center;gap:6px;margin-top:6px">Fewer' + [0,1,2,3,4].map(function (l) { return '<i style="width:18px;height:10px;background:var(--heat-' + l + ')"></i>'; }).join('') + 'More</div>';
+  document.getElementById('heat').innerHTML = h;
+  var roles = [['Viewer',111,'var(--heat-4)'],['Author',88,'var(--heat-3)'],['Editor',41,'var(--heat-2)'],['Admin',6,'var(--ink-muted)'],['Super admin',2,'var(--ink)']];
+  document.getElementById('split').innerHTML = roles.map(function (r) { return '<i style="flex:' + r[1] + ' 1 0;min-width:4px;background:' + r[2] + '"></i>'; }).join('');
+  document.getElementById('ll').innerHTML = roles.map(function (r) { return '<div><i style="width:10px;height:10px;background:' + r[2] + '"></i><b>' + r[0] + '</b><span class="note">' + Math.round(r[1] / 248 * 100) + '%</span><span style="width:36px;text-align:right">' + r[1] + '</span></div>'; }).join('');
+  var M = { role: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--granted)" stroke-width="2" stroke-linecap="square" role="img" aria-label="Granted by the role"><path d="M3 8.5l3 3 7-7"/></svg>', ok: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--granted)" stroke-width="1.5" stroke-linecap="square" role="img" aria-label="Granted by a user override"><circle cx="8" cy="8" r="6.5"/><path d="M5 8.2l2 2 4-4"/></svg>', no: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--denied)" stroke-width="1.5" stroke-linecap="square" role="img" aria-label="Denied by a user override"><path d="M3 8.5l3 3 7-7"/><path d="M1.5 8h13"/></svg>', inh: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--ink-muted)" stroke-width="2" stroke-linecap="square" role="img" aria-label="Inherited from the parent role"><path d="M6 4l-1 5M11 4l-1 5"/></svg>' };
+  var ch = [['01','role','Dana Whitfield','granted Editor','invoices.export','Today 10:42'],['02','no','Priya Nair','denied Jonas Lindqvist','users.delete','Today 09:15'],['03','ok','Dana Whitfield','granted Marta Ruiz','reports.view','Yesterday 17:03'],['04','inh','Dana Whitfield','made Auditor inherit from Viewer, including','articles.view','Yesterday 11:20']];
+  document.getElementById('chg').innerHTML = ch.map(function (c) { return '<div><span class="n">' + c[0] + '</span><span class="m">' + M[c[1]] + '</span><span class="t"><b>' + c[2] + '</b> ' + c[3] + ' <code>' + c[4] + '</code></span><span class="note">' + c[5] + '</span></div>'; }).join('');
+</script>
+</body>
+</html>

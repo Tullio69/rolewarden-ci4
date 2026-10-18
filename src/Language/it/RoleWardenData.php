@@ -18,6 +18,18 @@ return [
         'security' => 'Sicurezza',
         'appearance' => 'Aspetto',
     ],
+    'actions' => [
+        'view' => 'vedere',
+        'create' => 'creare',
+        'update' => 'modificare',
+        'delete' => 'eliminare',
+        'activate' => 'attivare',
+        'import' => 'importare',
+        'assign' => 'assegnare',
+        'override' => 'eccezioni',
+        'revoke' => 'revocare',
+        'alerts' => 'avvisi',
+    ],
     'permissions' => [
         'users' => [
             'view' => 'Vedere gli utenti',

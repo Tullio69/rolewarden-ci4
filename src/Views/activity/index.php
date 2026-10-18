@@ -17,7 +17,20 @@ use CodeIgniter\I18n\Time;
 $actionLabel = static fn (string $action): string => lang('RoleWarden.panel.activity.actions.' . str_replace('.', '_', $action));
 $filtered = array_filter($filters, static fn (string $v): bool => $v !== '') !== [];
 
-$describe = static function (?string $json): string {
+// A field is named in the reader's language when the module knows it; a theme colour is "Light · accent".
+$fieldLabel = static function (string $field): string {
+    $name = static function (string $key): string {
+        $line = 'RoleWarden.panel.activity.fields.' . $key;
+        $label = lang($line);
+
+        return $label !== $line ? $label : $key;
+    };
+    $parts = explode('.', $field, 2);
+
+    return count($parts) === 2 ? $name($parts[0]) . ' · ' . $parts[1] : $name($field);
+};
+
+$describe = static function (?string $json) use ($fieldLabel): string {
     $details = $json !== null ? json_decode($json, true) : null;
 
     if (! is_array($details)) {
@@ -29,8 +42,8 @@ $describe = static function (?string $json): string {
     foreach ($details as $field => $value) {
         $show = static fn ($v): string => $v === null || $v === '' ? '—' : (string) $v;
         $parts[] = is_array($value) && count($value) === 2
-            ? esc($field) . ': ' . esc($show($value[0])) . ' &rarr; ' . esc($show($value[1]))
-            : esc($field) . ': ' . esc($show(is_array($value) ? json_encode($value) : $value));
+            ? esc($fieldLabel((string) $field)) . ': ' . esc($show($value[0])) . ' &rarr; ' . esc($show($value[1]))
+            : esc($fieldLabel((string) $field)) . ': ' . esc($show(is_array($value) ? json_encode($value) : $value));
     }
 
     return implode('<br>', $parts);

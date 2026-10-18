@@ -76,8 +76,8 @@ $canEdit = can('roles.update');
           <?php foreach ($actions as $action) : ?>
             <th class="rw-m-act" scope="col">
               <div class="rw-colhead">
-                <span class="rw-header"><?= esc($action) ?></span>
-                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, '<?= esc($action, 'js') ?>'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, '<?= esc($action, 'js') ?>'))).indeterminate" @change="toggleColumn('<?= esc($action, 'js') ?>', $event.target.checked)" aria-label="<?= esc(sprintf(lang('RoleWarden.panel.roles.grantColumn'), $action)) ?>">
+                <span class="rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, '<?= esc($action, 'js') ?>'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, '<?= esc($action, 'js') ?>'))).indeterminate" @change="toggleColumn('<?= esc($action, 'js') ?>', $event.target.checked)" aria-label="<?= esc(sprintf(lang('RoleWarden.panel.roles.grantColumn'), RoleWarden\Models\SeededText::action($action))) ?>">
               </div>
             </th>
           <?php endforeach ?>
@@ -127,7 +127,7 @@ $canEdit = can('roles.update');
       <tr>
         <th class="rw-m-num" scope="col"></th>
         <th class="rw-m-area rw-header" scope="col"><?= lang('RoleWarden.panel.roles.area') ?></th>
-        <?php foreach ($actions as $action) : ?><th class="rw-m-act rw-header"><?= esc($action) ?></th><?php endforeach ?>
+        <?php foreach ($actions as $action) : ?><th class="rw-m-act rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></th><?php endforeach ?>
       </tr>
     </thead>
     <tbody>

@@ -9,6 +9,7 @@ return [
         'demo-approver' => ['name' => 'Approvatore', 'description' => 'Approva ed elimina i documenti della demo.'],
     ],
     'areas' => ['documents' => 'Documenti'],
+    'actions' => ['approve' => 'approvare'],
     'permissions' => [
         'documents' => [
             'view' => 'Vedere i documenti della demo',

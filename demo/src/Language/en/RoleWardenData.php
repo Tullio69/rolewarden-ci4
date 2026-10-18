@@ -10,6 +10,7 @@ return [
         'demo-approver' => ['name' => 'Approver', 'description' => 'Approves and deletes demo documents.'],
     ],
     'areas' => ['documents' => 'Documents'],
+    'actions' => ['approve' => 'approve'],
     'permissions' => [
         'documents' => [
             'view' => 'See the demo documents',

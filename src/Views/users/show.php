@@ -110,7 +110,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
         <tr>
           <th class="rw-m-num" scope="col"></th>
           <th class="rw-m-area rw-header" scope="col"><?= lang('RoleWarden.panel.roles.area') ?></th>
-          <?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act rw-header"><?= esc($action) ?></th><?php endforeach ?>
+          <?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></th><?php endforeach ?>
           <th class="rw-m-anno rw-m-anno--wide" scope="col" style="color:var(--ink-faint)"><?= lang('RoleWarden.panel.notes') ?></th>
         </tr>
       </thead>
@@ -134,7 +134,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
   </div>
 <?php else : ?>
   <table class="rw-matrix">
-    <thead><tr><th class="rw-m-num"></th><th class="rw-m-area rw-header"><?= lang('RoleWarden.panel.roles.area') ?></th><?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act rw-header"><?= esc($action) ?></th><?php endforeach ?></tr></thead>
+    <thead><tr><th class="rw-m-num"></th><th class="rw-m-area rw-header"><?= lang('RoleWarden.panel.roles.area') ?></th><?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></th><?php endforeach ?></tr></thead>
     <tbody>
       <?php foreach ($matrix['rows'] as $i => $row) : ?>
         <tr>

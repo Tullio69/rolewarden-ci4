@@ -35,6 +35,17 @@ final class SeededText
     }
 
     /**
+     * The name of a permission action (a matrix column): its translation under actions.{action}, else the slug part.
+     */
+    public static function action(string $action): string
+    {
+        $line = 'RoleWardenData.actions.' . $action;
+        $name = lang($line);
+
+        return $name !== $line ? $name : $action;
+    }
+
+    /**
      * Applies show() to a role row, when it carries its slug.
      *
      * @param array<string, mixed> $row

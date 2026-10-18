@@ -20,6 +20,18 @@ return [
         'security' => 'Security',
         'appearance' => 'Appearance',
     ],
+    'actions' => [
+        'view' => 'view',
+        'create' => 'create',
+        'update' => 'update',
+        'delete' => 'delete',
+        'activate' => 'activate',
+        'import' => 'import',
+        'assign' => 'assign',
+        'override' => 'override',
+        'revoke' => 'revoke',
+        'alerts' => 'alerts',
+    ],
     'permissions' => [
         'users' => [
             'view' => 'View users',

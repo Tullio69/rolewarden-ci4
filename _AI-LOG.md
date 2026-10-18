@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude (passo 2 della roadmap: verifiche tecniche)
+**In lavorazione:** Claude (passo 3 della roadmap: versione 1.0.0 definitiva)
 **Agente:** Claude Code
-**Dalle:** 2026-10-16 20:30
-**Scope:** documentazione (proxy, sottocartella, versioni PHP), prove PHP 8.3-8.5 / CI 4.7.4-4.7.5, sottocartella, reverse proxy, controllo pacchetti; poi collaudo S2. In parallelo: Collaudatore ad Hoc sulla riverifica S1 `d665818` (solo tests/Integration)
+**Dalle:** 2026-10-18 20:35
+**Scope:** CHANGELOG e numero di versione, zip `1.0.0`, collaudo S3 sui pacchetti definitivi; tag, documentazione online e demo pubblica solo con il via dell'utente. In parallelo una chat commerciale scrive solo in `docs/COMMERCIALE*`
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -959,3 +959,10 @@ Formato di ogni voce:
   - Controllo visivo in browser vero dovuto all'autore.
   - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in 19 esecuzioni, Mailpit vuoto, immagini, rete e container `s2-*` rimossi, nessun processo mio. Profili Chrome non cancellabili in `scratchpad/s2reg`. `docs/COMMERCIALE.md`, non tracciato, non è mio.
   - Nessun commit, nessun push.
+
+### [2026-10-18 20:35] - Claude
+- Tipo: verifiche + fix
+- Scope: passo 2 della roadmap (verifiche tecniche); commit da `7560117` a `5974036`
+- Cosa ho fatto: documentazione di sottocartella, proxy (`$proxyIPs`, `X-Forwarded-For` sovrascritto dal proxy esterno), `cookie.secure`, indirizzi senza `index.php`, 500 in development prima delle tabelle. Prove mie su PHP 8.3-8.5, sottocartella e nginx HTTPS. S2 D1 corretto (`Sessions::device`: niente "Unknown Platform" di CI). Decisioni dell'utente: A1 e A2 di S2 tradotte (colonne della matrice `actions.{action}`, campi del log attivita'), A3 accettata (pagina di debug in development, divieto in production), A4 documentata; `"version": "1.0.0"` in composer.json e `composer require ...:^1.0` nella documentazione. Brief commerciale in `docs/COMMERCIALE.md` per una chat separata.
+- Stato: completato. **S2 PASS** dopo due riverifiche; S1 PASS su `7560117`. Controllo visivo dell'utente sullo staging fatto, M11 (O3) provato a mano dall'utente: non si riproduce. Pushato, staging a `5974036`; demo pubblica ferma a `b1cca14`.
+- Note per il prossimo: O7 di S2 (email di nuovo dispositivo con riga "Dispositivo:" vuota se lo User-Agent e' vuoto) non corretta, minore. CLAUDE.md dice ancora "mai errori SQL a schermo in nessun ambiente": proposta di testo all'utente, file suo. Da cancellare a mano: profili Chrome in scratchpad, `tests/Integration/verify-v5.work`, `verify-v8.regress.locked-chrome`.

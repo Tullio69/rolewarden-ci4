@@ -5,7 +5,7 @@ Every change that matters to whoever installs or updates RoleWarden. Versions fo
 version may require changes on your side, listed under "Upgrading". After any update, run
 `php spark migrate -n RoleWarden`.
 
-## [1.0.0] - unreleased
+## [1.0.0] - 2026-10-18
 
 The first version for sale.
 

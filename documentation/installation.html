@@ -135,7 +135,8 @@ WHERE i.type = 'email_password' AND i.secret = 'you@example.com';</code></pre>
 ];</code></pre>
     <p>When the proxy handles HTTPS and talks to the application over plain HTTP, it must also send <code>X-Forwarded-Proto: https</code>. CodeIgniter reads that header only from the proxies in <code>$proxyIPs</code>. Keep <code>app.baseURL</code> on <code>https://</code>.</p>
     <p>The proxy visitors connect to must replace <code>X-Forwarded-For</code> with the visitor's address, not add to what the visitor sent: otherwise anyone can write an address of their choice in the header and get round the sign-in limit per IP address. On nginx:</p>
-<pre><code>proxy_set_header X-Forwarded-For $remote_addr;
+<pre><code>proxy_set_header Host $host;
+proxy_set_header X-Forwarded-For $remote_addr;
 proxy_set_header X-Forwarded-Proto $scheme;</code></pre>
     <p>On any site served over HTTPS, with a proxy or without, add <code>cookie.secure = true</code> to <code>.env</code> so that the session and "Remember me" cookies are never sent over plain HTTP.</p>
 

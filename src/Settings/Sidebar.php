@@ -73,7 +73,7 @@ final class Sidebar
             'overview' => [],
             'access' => [
                 ['users', 'users.view', static fn (): string => (string) model(\RoleWarden\Models\UserModel::class)->countAllResults()],
-                ['roles', 'roles.view', static fn (): string => $count($cfg->table('roles'))],
+                ['roles', 'roles.view', static fn (): string => (string) model(\RoleWarden\Models\RoleModel::class)->countAllResults()],
                 ['permissions', 'permissions.view', static fn (): string => $count($cfg->table('permissions'))],
             ],
             'security' => [

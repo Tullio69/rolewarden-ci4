@@ -1,0 +1,17 @@
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+
+===== phase N =====
+[INFO] writable carried to appN: [omesso]/demo-installed
+[INFO] h1 reference: [{"[omesso]\/users":"Users","[omesso]\/permissions":"Permissions"},{"[omesso]\/users":"Utenti","[omesso]\/permissions":"Permessi"}]
+[INFO] server pid=35600 on 127.0.0.1:8071 prefix=''
+[PASS] N00    Owner signs in (application copy with Config\App::$defaultLocale = it)
+[PASS] N01    Sensitivity, no $languages class: owner (no choice) follows the app locale it on every page; switch on every page; the two users chose it and en
+[PASS] N01b   Owner's choice "it" is saved in the user settings
+[INFO] language settings at // ---- 2.: owner ["RoleWarden\\Config\\RoleWarden.locale=it"], itu ["RoleWarden\\Config\\RoleWarden.locale=it"], enu ["RoleWarden\\Config\\RoleWarden.locale=en"], nou []
+[INFO] app/Config/RoleWarden.php written: <?php namespace Config; class RoleWarden extends \RoleWarden\Config\RoleWarden { public array $languages = ['en']; }
+[INFO] server pid=19288 on 127.0.0.1:8071 prefix=''
+[PASS] N02    ['en'], app locale it, owner who chose Italian: every page (17, panel and demo) in English, html lang="en"
+[PASS] N03    ['en']: no language switch in the top bar and no language list in the profile, on any page
+[PASS] N03b   ['en']: the profile still opens (200) and keeps its other forms (password, mode)

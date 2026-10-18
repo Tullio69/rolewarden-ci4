@@ -14,7 +14,7 @@ check('T00', 'Language data files: every English key has an Italian translation,
 $stored = [];
 foreach (q('SELECT slug, name, description FROM acl_roles WHERE deleted_at IS NULL') as $r) { $stored["roles.{$r['slug']}.name"] = $r['name']; $stored["roles.{$r['slug']}.description"] = (string) $r['description']; }
 foreach (q('SELECT slug, description FROM acl_permissions') as $r) $stored['permissions.' . $r['slug']] = (string) $r['description'];
-$mism = []; foreach ($DEN as $k => $v) if (($stored[$k] ?? null) !== $v) $mism[] = "$k: stored " . json_encode($stored[$k] ?? null) . ' vs file ' . json_encode($v);
+$mism = []; foreach ($DEN as $k => $v) if (! str_starts_with($k, 'areas.') && ($stored[$k] ?? null) !== $v) $mism[] = "$k: stored " . json_encode($stored[$k] ?? null) . ' vs file ' . json_encode($v);
 check('T00b', 'The database holds exactly the English text of the data files for every seeded role and permission (module and demo)', $mism === [], implode(' | ', $mism));
 $ENONLY = array_filter($DEN, fn ($v, $k) => $DIT[$k] !== $v, ARRAY_FILTER_USE_BOTH);
 
@@ -36,7 +36,7 @@ function english_left(string $h, array $enonly): array
     $lv = leaves($h); $all = ' ' . implode(' | ', $lv) . ' ';
     $f = [];
     foreach ($enonly as $k => $v) {
-        $isName = str_ends_with($k, '.name');
+        $isName = str_ends_with($k, '.name') || str_starts_with($k, 'areas.'); // area names (d665818): short labels, matched as whole strings
         if ($isName ? in_array($v, $lv, true) : str_contains($all, $v)) $f[] = "$k=" . $v;
         // data the page script renders (x-data, JSON): descriptions only, they are long enough to be unambiguous
         elseif (! $isName && strlen($v) > 12 && (str_contains(html_entity_decode($h, ENT_QUOTES | ENT_HTML5), $v) || str_contains($h, substr(json_encode($v), 1, -1)))) $f[] = "$k (in page data)=" . $v;

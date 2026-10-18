@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude (passo 2 della roadmap: verifiche tecniche)
+**Agente:** Claude Code
+**Dalle:** 2026-10-16 20:30
+**Scope:** documentazione (proxy, sottocartella, versioni PHP), prove PHP 8.3-8.5 / CI 4.7.4-4.7.5, sottocartella, reverse proxy, controllo pacchetti; poi collaudo S2. In parallelo: Collaudatore ad Hoc sulla riverifica S1 `d665818` (solo tests/Integration)
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -898,3 +898,10 @@ Formato di ogni voce:
 - Cosa ho fatto: opzione `$languages`; nessuno scorrimento laterale sotto i 1440 px; ruoli e permessi seminati tradotti (`RoleWardenData`); A15c decisa nella SPEC. D1: i valori in `settings` seguono la classe di `config('RoleWarden')` quando l'app aggiunge o toglie `app/Config/RoleWarden.php` (`Settings\SavedValues`, in `pre_system`). D2/D2b: tolte le larghezze sotto i 1440 px che non avevano effetto. Nuovo link «Sign out»/«Esci» nella barra in alto (mancava). Tutto pushato e online su staging; demo pubblica ferma a `b1cca14`.
 - Stato: completato. **S1 PASS** dopo due riverifiche (134/134 in development e production).
 - Note per il prossimo: aperte all'utente A1 di S1 (titoli delle aree in inglese) e A2 (`updated_at` toccato da un salvataggio senza modifiche); O3 (M11 una volta in production, non riprodotto) da guardare nel controllo visivo; O4 logout via GET come Shield. Controllo visivo in browser vero dovuto all'utente. Prossimo: passo 2 (verifiche tecniche).
+
+### [2026-10-18 13:30] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: terza riverifica S1 sul commit `7560117` (con `d665818`, nomi delle aree tradotti; il resto e' documentazione); scritti solo `tests/Integration/verify-s1.*` (nuova fase A, copia adattata `verify-s1.phase-m.php`, fase T allineata alla decisione A1) e la sezione «Riverifica 7560117» di `tests/Integration/S1-REPORT.md`
+- Cosa ho fatto: ripreso il giro d665818 interrotto (Docker spento): `rolewarden_test` ripristinato allo snapshot, `.env` cancellati, uscite parziali rinominate `*.interrupted.*`. Poi S1 completa e fasi V8b L, M, P, I, G in development e production, piu' M ripetuta 3 volte per ambiente
+- Stato: completato. **Esito PASS, S1 approvata per il collaudo.** S1 141/141 in entrambi gli ambienti; V8b 116/116 x2; M11 8/8
+- Note per il prossimo: aree tradotte nella pagina Permissions e nelle righe delle quattro matrici (ruolo e utente, modificabili e in sola lettura), aria-label compreso; in inglese come prima; area dell'app tradotta da `app/Language`, area senza traduzione con lo slug maiuscolo (anche Admin e Beta di Shield); markup escapato; B01 identico. Adattamenti dello strumento: la fase M di V8b ora legge l'area dallo slug (prima 18 FAIL per l'aspettativa superata, conservati come `*.unadapted-M.*`); in T le aree non si cercano nel database. A1 e A2 decise dall'utente. Primo giro S1 dev con 2 FAIL d'ambiente dopo il riavvio (timeout del login in Chrome, gutter letto 0), non ripetuti. DB uguale allo snapshot `f7f37c04...e21e64` nelle 15 esecuzioni, Mailpit vuoto, nessun processo; profili Chrome non cancellabili in scratchpad (`s1d-development`, `s1g-*`, `s1h-*`). Nessun commit.

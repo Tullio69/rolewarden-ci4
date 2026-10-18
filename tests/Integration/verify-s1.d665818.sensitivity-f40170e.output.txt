@@ -1,0 +1,31 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+
+===== phase A =====
+[FAIL] A00    Data files: areas.{area} in English and Italian for the same areas (module and demo: 0)
+         -> [[],[]]
+[INFO] expected Italian area names: {"activity":"Activity","admin":"Admin","appearance":"Appearance","articles":"Articoli","beta":"Beta","documents":"Documents","marked":"<i>Marcata<\/i> & \"q\" <script>alert(71)<\/script>","permissions":"Permissions","roles":"Roles","security":"Security","sessions":"Sessions","settings":"Settings","users":"Users","warehouse":"Warehouse"}
+[INFO] server pid=34664 on 127.0.0.1:8071 prefix=''
+[FAIL] A01-it [it] Permissions page: every area title is the area name in that language (14 areas, module, demo, application; untranslated ones capitalised)
+         -> {"got":["Activity","Admin","Appearance","Articles","Beta","Documents","Marked","Permissions","Roles","Security","Sessions","Settings","Users","Warehouse"],"expected":["Activity","Admin","Appearance","Articoli","Beta","Documents","<i>Marcata<\/i> & \"q\" <script>alert(71)<\/script>","Permissions","Roles","Security","Sessions","Settings","Users","Warehouse"]}
+[FAIL] A04    Italian area name with markup (application translation) is escaped in the Permissions title
+         -> ["Activity","Admin","Appearance","Articles","Beta","Documents","Marked","Permissions","Roles","Security","Sessions","Settings","Users","Warehouse"]
+[PASS] A02    Italian Permissions page: no English area name of the data files among the titles
+[PASS] A01-en [en] Permissions page: every area title is the area name in that language (14 areas, module, demo, application; untranslated ones capitalised)
+[INFO] server pid=6380 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=17688 on 127.0.0.1:8071 prefix=''
+[INFO] [it] matrix rows read: 56; sample aria-labels ["Concedi ogni azione in activity","Concedi ogni azione in admin","Concedi ogni azione in appearance","Concedi ogni azione in articles"]; read-only matrices with a row box: 0
+[FAIL] A03-it [it] Matrix rows (role and user, editable by the owner and read-only for a viewer): area name in that language, untranslated ones capitalised, the slug area.* unchanged, row-box aria-label with the same name, markup escaped
+         -> owner role activity: name "activity" expected "Activity" | owner role activity: aria-label "Concedi ogni azione in activity" | owner role admin: name "admin" expected "Admin" | owner role admin: aria-label "Concedi ogni azione in admin" | owner role appearance: name "appearance" expected "Appearance" | owner role appearance: aria-label "Concedi ogni azione in appearance" | owner role articles: name "articles" expected "Articoli" | owner role articles: aria-label "Concedi ogni azione in articles" | owner role beta: name "beta" expected "Beta" | owner role beta: aria-label "Concedi ogni azione in beta" | owner role documents: name "documents" expected "Documents" | owner role documents: aria-label "Concedi ogni azione in documents"
+[INFO] [en] matrix rows read: 56; sample aria-labels ["Grant every action on activity","Grant every action on admin","Grant every action on appearance","Grant every action on articles"]; read-only matrices with a row box: 0
+[FAIL] A03-en [en] Matrix rows (role and user, editable by the owner and read-only for a viewer): area name in that language, untranslated ones capitalised, the slug area.* unchanged, row-box aria-label with the same name, markup escaped
+         -> owner role activity: name "activity" expected "Activity" | owner role activity: aria-label "Grant every action on activity" | owner role admin: name "admin" expected "Admin" | owner role admin: aria-label "Grant every action on admin" | owner role appearance: name "appearance" expected "Appearance" | owner role appearance: aria-label "Grant every action on appearance" | owner role articles: name "articles" expected "Articles" | owner role articles: aria-label "Grant every action on articles" | owner role beta: name "beta" expected "Beta" | owner role beta: aria-label "Grant every action on beta" | owner role documents: name "documents" expected "Documents" | owner role documents: aria-label "Grant every action on documents"
+
+TOTAL: 4 PASS, 5 FAIL, 0 AMB
+FAIL A00 Data files: areas.{area} in English and Italian for the same areas (module and demo: 0)
+FAIL A01-it [it] Permissions page: every area title is the area name in that language (14 areas, module, demo, application; untranslated ones capitalised)
+FAIL A04 Italian area name with markup (application translation) is escaped in the Permissions title
+FAIL A03-it [it] Matrix rows (role and user, editable by the owner and read-only for a viewer): area name in that language, untranslated ones capitalised, the slug area.* unchanged, row-box aria-label with the same name, markup escaped
+FAIL A03-en [en] Matrix rows (role and user, editable by the owner and read-only for a viewer): area name in that language, untranslated ones capitalised, the slug area.* unchanged, row-box aria-label with the same name, markup escaped
+Test process exit: 1

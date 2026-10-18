@@ -1,5 +1,92 @@
 # S1 — Passo 1 della roadmap di pubblicazione: collaudo indipendente
 
+## Riverifica 7560117 — 2026-10-18, Collaudatore ad Hoc (Claude), commit `7560117` (main, locale; comprende `d665818`)
+
+**Esito: PASS. S1 approvata per il collaudo.**
+- I nomi delle aree sono tradotti come decide la SPEC («Esiti di S1»): pagina Permissions e colonna Area delle matrici, aria-label della riga compreso.
+- La regressione ridotta è pulita.
+- M11 (osservazione O3) passa in tutti gli 8 giri.
+
+Non ho trovato nessun difetto. Le due ambiguità A1 e A2 sono decise dall'utente e la SPEC le riporta:
+- **A1 (aree).** Il comportamento deciso è verificato dalla fase A.
+- **A2 (`updated_at`).** Resta così, non è un difetto: T03 continua a ignorare `updated_at` e lo registra a parte.
+
+Ho visto solo i nomi dei file e il diff di SPEC e `views.html`. Leggo i file di lingua solo per i testi attesi.
+
+| Suite su `7560117` | development | production |
+| --- | ---: | ---: |
+| S1 (`verify-s1.php`, fasi N, Q, Y, **A**, T, D, O, W, B, G; 141 controlli) | **141/141** | **141/141** |
+| V8b, fasi L, M, P, I, G (M nella copia adattata, vedi sotto) | 116/116, 1 AMB (LA1, superata) | 116/116, 1 AMB |
+| M ripetuta da sola (O3) | 3 giri, 35/35 ciascuno | 3 giri, 35/35 ciascuno |
+
+Uscite:
+- `verify-s1.7560117.{development,production}.output.txt`;
+- `verify-s1.v8b.7560117.{development,production}.output.txt`;
+- `verify-s1.v8b.7560117.*.M-rerun*.output.txt`;
+- prova di sensibilità della fase A su `f40170e`: `verify-s1.d665818.sensitivity-f40170e.output.txt`.
+
+### Nomi delle aree (fase A, nuova)
+
+Dati di prova:
+- un'area dell'applicazione tradotta come dice `views.html` (`articles`: «Articles» / «Articoli», in `app/Language/{en,it}/RoleWardenData.php`);
+- un'area con markup nella traduzione italiana (`marked`);
+- un'area senza nessuna traduzione (`warehouse`);
+- un visualizzatore con `roles.view`, `users.view` e `permissions.view`, per le matrici in sola lettura.
+
+| Controllo | Esito |
+| --- | --- |
+| A00: `areas.{area}` presenti in inglese e in italiano per le stesse 9 aree (modulo e demo) | PASS |
+| A01-it, A02: pagina Permissions in italiano, ogni titolo è il nome italiano (14 aree); nessun nome inglese dei file di dati. «Admin» e «Beta», aree di Shield dell'app di prova senza traduzione, e «Warehouse» sono lo slug con l'iniziale maiuscola, come vuole la SPEC | PASS |
+| A01-en: in inglese i titoli sono come prima (Users, Roles…; Articles; Warehouse) | PASS |
+| A03-it, A03-en: righe di quattro matrici in Chrome (ruolo e utente, modificabili per il proprietario e in sola lettura per il visualizzatore), 60 righe per lingua | PASS |
+| A04: markup nel nome dell'area (traduzione dell'applicazione) escapato nel titolo e nella matrice | PASS |
+| B01: installazione pulita identica a `b1cca14` | PASS |
+| T00, T00b, T01: chiavi en/it allineate, testo salvato uguale al seed, nessun testo seminato inglese nelle pagine italiane | PASS |
+
+Dettagli di A03:
+- Il nome dell'area è nella lingua di chi legge, e quelle senza traduzione mostrano lo slug con l'iniziale maiuscola.
+- Lo slug `area.*` resta invariato.
+- L'aria-label della casella di riga usa lo stesso nome: «Concedi ogni azione in Attività» / «Grant every action on Activity».
+- Le matrici in sola lettura non hanno la casella di riga, quindi l'aria-label c'è solo in quelle modificabili.
+
+**Sensibilità.** La fase A su `f40170e` (aree non tradotte) fallisce come atteso: A00, A01-it, A03-it, A03-en e A04.
+
+### Strumenti adattati alla decisione A1 (aspettative superate, non difetti)
+
+- **Fase M di V8b.** Leggeva l'area di una riga dal nome mostrato. Con i nomi tradotti, anche in inglese («Users»), non trovava più le celle: sul primo giro 18 FAIL in ciascun ambiente, conservati come `verify-s1.v8b.7560117.unadapted-M.*`. La copia `verify-s1.phase-m.php` legge l'area dallo slug (`users.*`) e non cambia nient'altro.
+- **Fase T.**
+  - T00b non cerca più nel database i nomi delle aree: sono solo etichette e non vengono salvati.
+  - In T01 i nomi delle aree si confrontano come stringhe intere e non come sottostringhe: «Security» compariva come sottostringa nel testo della demo.
+  - Prima di questa correzione T00b e T01 fallivano sul giro d665818 interrotto.
+
+### O3 — M11
+
+M11 passa in 8 giri su 8 con la fase M adattata: 4 in development e 4 in production, cioè quello della suite V8b più 3 ripetizioni per ambiente. Su `f40170e` era fallito una volta su 4 giri. Non si è più ripetuto: resta un'osservazione da provare a mano in un browser vero, come già detto.
+
+### Note sull'esecuzione
+
+- **Giro d665818 interrotto.** Si è interrotto con la fine della sessione precedente: Docker spento e l'esecuzione di production a metà.
+  - Ho ripristinato `rolewarden_test` dallo snapshot salvato in quel giro (hash `f7f37c04…e21e64`, registrato in `verify-s1.environment.txt`) e svuotato Mailpit.
+  - Ho cancellato i `.env` della cartella di lavoro, togliendo prima le junction.
+  - Le uscite parziali sono rinominate `verify-s1.d665818.*.interrupted.*`.
+- **Docker.** Ho riavviato Docker Desktop. `rolewarden-db` e `rolewarden-mail` sono ripartiti da soli; anche `scolibro_*` e `qrart-mysql` ripartono per la loro politica di riavvio, e non li ho toccati.
+- **Primo giro S1 in development.** Ha dato due FAIL dell'ambiente, a macchina appena riavviata:
+  - Y00-it: il caricamento del login di Chrome è andato in timeout;
+  - Y01-en-1280: sulla pagina demo la misura del gutter ha letto 0 px.
+
+  Il secondo giro è 141/141. Il primo è conservato come `verify-s1.7560117.development.round1.*`.
+
+### Pulizia
+
+- **Database e Mailpit.** `rolewarden_test` uguale allo snapshot `f7f37c04…e21e64` in tutte le 15 esecuzioni su `7560117` e a mano alla fine. Mailpit vuoto.
+- **Processi.** Nessun processo mio attivo.
+- **File.** Nessun `.env` rimasto.
+- **Da cancellare a mano.** In `scratchpad/` restano altri profili Chrome non cancellabili: `s1d-development`, `s1g-*` e `s1h-*`.
+
+Nessun commit, nessun push.
+
+---
+
 ## Riverifica f40170e — 2026-10-16, Collaudatore ad Hoc (Claude), commit `f40170e` (main, locale; comprende `a396354`)
 
 **Esito: PASS. S1 approvata per il collaudo.**

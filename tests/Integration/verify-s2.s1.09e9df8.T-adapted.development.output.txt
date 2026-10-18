@@ -1,0 +1,32 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+
+===== phase T =====
+[PASS] T00    Language data files: every English key has an Italian translation, and only those keys (57 keys, module and demo)
+[PASS] T00b   The database holds exactly the English text of the data files for every seeded role and permission (module and demo)
+[INFO] server pid=20868 on 127.0.0.1:8071 prefix=''
+[PASS] T01a   Owner signs in and chooses Italian from the profile
+[PASS] T01    Italian reader: seeded role names/descriptions and permission descriptions in Italian on roles list, role pages, Permissions (with Granted by), users list, user pages, Settings default role, role edit and create forms, Activity, demo showcase bar; no English seed text left
+[INFO] Area titles on the Italian Permissions page: ["Attivit\u00e0","Admin","Aspetto","Beta","Documenti","Permessi","Ruoli","Sicurezza","Sessioni","Impostazioni","Utenti"]
+[PASS] T01b   Italian Permissions page: the "Concesso da" column names Amministratore, never Admin
+[PASS] T01c   Italian role edit form: name and description fields hold the Italian text
+[PASS] T01d   Italian demo list: column "Proprietario" (was Owner)
+[PASS] T02    English reader: the same pages show the English seed text as before
+[PASS] T03-admin Italian: saving the edit form of admin untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[PASS] T03-user Italian: saving the edit form of user untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[PASS] T03-demo-reader Italian: saving the edit form of demo-reader untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[INFO] updated_at changed by an untouched save: {"admin":true,"user":true,"demo-reader":true,"admin (English form)":true}
+[PASS] T04    Italian: description changed, name untouched: the new description is saved as written and the name stays the stored English "Admin"
+[PASS] T05    Changed description shown as written in both languages; the untouched name still translated (Amministratore / Admin)
+[PASS] T06    A name changed by an admin ("Member S1") is shown as written to the Italian reader (roles list, users list, Settings); its untouched description stays translated
+[PASS] T07    Italian: a name typed by the admin (Lettori scelti) is saved as written and shown as written in English too
+[PASS] T08    Name set back to the seed text ("User"): the Italian reader sees "Utente" again
+[INFO] Activity rows on the role user: [{"action":"role.updated","subject_label":"Member S1"},{"action":"role.updated","subject_label":"User"}]
+[PASS] T09    Activity log keeps the labels of the moment: the rename rows of the role user still carry their own labels after the role was renamed again
+[PASS] T10    Application role and permission translated as views.html says (app/Language/{en,it}/RoleWardenData.php): Redattore, its description, Pubblicare articoli, on roles list, Permissions, users list and user page
+[PASS] T10b   The same application role in English: Editor, Edits the articles.
+[PASS] T11    Markup in an admin-typed role name and description, and in an application translation, is escaped on every page in both languages (and the escaped text is shown)
+
+TOTAL: 22 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

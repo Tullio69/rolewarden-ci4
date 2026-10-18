@@ -1,0 +1,35 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+
+===== phase C =====
+[FAIL] C00    Data files: actions.{action} in English and Italian for the same actions (module and demo: 0)
+         -> [[],[]]
+[INFO] expected Italian column names: {"access":"access","activate":"activate","alerts":"alerts","approve":"approve","assign":"assign","create":"create","delete":"delete","edit":"edit","import":"import","manage-admins":"manage-admins","override":"override","publish":"<i>Pubblica<\/i> & \"q\" <script>alert(72)<\/script>","recount":"recount","revoke":"revoke","settings":"settings","update":"update","view":"view"}
+[INFO] server pid=33512 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=4976 on 127.0.0.1:8071 prefix=''
+[INFO] [it] column heads read: 68; aria-labels ["Concedi view in ogni area","Concedi access in ogni area","Concedi settings in ogni area","Concedi update in ogni area","Concedi publish in ogni area"]
+[FAIL] C01-it [it] Column heads of the four matrices (role and user, editable and read-only): action name in that language, the application's translation, the slug without one; column box aria-label with the same name; markup escaped
+         -> owner role: columns ["view","access","settings","update","publish","approve","create","delete","override","assign","alerts","revoke","activate","edit","import","manage-admins","recount"] | owner user: columns ["view","access","settings","update","publish","approve","create","delete","override","assign","alerts","revoke","activate","edit","import","manage-admins","recount"] | viewer role: columns ["view","access","settings","update","publish","approve","create","delete","override","assign","alerts","revoke","activate","edit","import","manage-admins","recount"] | viewer user: columns ["view","access","settings","update","publish","approve","create","delete","override","assign","alerts","revoke","activate","edit","import","manage-admins","recount"]
+[INFO] [en] column heads read: 68; aria-labels ["Grant view on every area","Grant access on every area","Grant settings on every area","Grant update on every area","Grant publish on every area"]
+[PASS] C01-en [en] Column heads of the four matrices (role and user, editable and read-only): action name in that language, the application's translation, the slug without one; column box aria-label with the same name; markup escaped
+[PASS] C02    Italian page source: the application translation with markup is escaped (no raw <script> or <i>)
+[PASS] C03    The matrices carry the same slugs and values in Italian and English: every attribute of cells and boxes (labels aside) and every row slug identical
+[INFO] server pid=32280 on 127.0.0.1:8071 prefix=''
+PHP Warning:  Undefined array key "delete" in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php on line 81
+
+Warning: Undefined array key "delete" in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php on line 81
+PHP Fatal error:  Uncaught TypeError: {closure}(): Argument #2 ($col) must be of type string, null given, called in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php on line 81 and defined in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php:76
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php(81): {closure}('users', NULL, 'click role 2')
+#1 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-s2.s1.php(165): require('C:\\Users\\fabio\\...')
+#2 {main}
+  thrown in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php on line 76
+
+Fatal error: Uncaught TypeError: {closure}(): Argument #2 ($col) must be of type string, null given, called in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php on line 81 and defined in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php:76
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php(81): {closure}('users', NULL, 'click role 2')
+#1 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-s2.s1.php(165): require('C:\\Users\\fabio\\...')
+#2 {main}
+  thrown in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\cr-sens\verify-s2.phase-c.php on line 76
+Test process exit: 255

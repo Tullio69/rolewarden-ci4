@@ -940,3 +940,22 @@ Formato di ogni voce:
   - Controllo visivo in browser vero dovuto all'autore.
   - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in 19 esecuzioni, Mailpit vuoto, immagini, rete e container `s2-*` rimossi, nessun processo mio. Profili Chrome non cancellabili in `scratchpad/s2reg`.
   - Nessun commit, nessun push.
+
+### [2026-10-18 20:50] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: seconda riverifica S2 su `09e9df8` (A1 e A2 decise dall'utente) e sugli zip `1.0.0-rc.s2c`. Scritti solo `tests/Integration/verify-s2.*` (nuove fasi `verify-s2.phase-c.php` e `verify-s2.phase-r.php`, copia adattata `verify-s2.phase-t.adapted.php`, `verify-s2.recheck2-suites.sh`, uscite `*.09e9df8.*`) e la sezione «Riverifica 09e9df8» in cima a `S2-REPORT.md`
+- Cosa ho fatto:
+  - A1, fase C: colonne delle quattro matrici e aria-label in italiano e in inglese, azione dell'applicazione tradotta (markup escapato) e senza traduzione, slug invariati, salvataggio di matrice e override in italiano.
+  - A2, fase R: nomi dei campi nei dettagli del registro per utente, ruolo, impostazioni, aspetto, permessi e ruoli assegnati; campo sconosciuto; escape.
+  - Regressione: S1 A, M e T; V8b L, M, P, I e G; V3; V8 P/E sugli zip; pacchetti; T01 su PHP 8.3 e 8.5 dagli zip.
+- Stato: completato. **Esito PASS, S2 approvata per il collaudo.**
+  - Fase C 6/6 e fase R 7/7 in development e in production; sensibilità su `449e259` confermata.
+  - S1 A+M 40/40 e T adattata 20/20 per ambiente; V8b 116/116 ×2; V8 P/E 36/36; V3 139+81+55 ×2.
+  - Pacchetti 30/30; app completa 53/53 su PHP 8.3 e 8.5, con T01 senza ambiguità.
+  - **Adattamento:** fase T di S1. T00b e T01 trattavano `actions.*` come testo seminato: è un'etichetta, mai salvata, e in inglese coincide con lo slug. È lo stesso trattamento dato ai nomi delle aree in S1.
+- Note per il prossimo:
+  - **Difetti:** nessuno.
+  - **Ambiguità ancora aperte:** A3 e A4.
+  - Controllo visivo in browser vero dovuto all'autore.
+  - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in 19 esecuzioni, Mailpit vuoto, immagini, rete e container `s2-*` rimossi, nessun processo mio. Profili Chrome non cancellabili in `scratchpad/s2reg`. `docs/COMMERCIALE.md`, non tracciato, non è mio.
+  - Nessun commit, nessun push.

@@ -1,0 +1,36 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+
+===== phase R =====
+[FAIL] R00    Language files: panel.activity.fields in English and Italian for the same 0 fields
+         -> []
+[INFO] server pid=37092 on 127.0.0.1:8071 prefix=''
+[INFO] appearance form fields: {"csrf_test_name":"hidden","base":"radio","colors[light][surface]":"hidden","colors[dark][surface]":"hidden","colors[light][ink]":"hidden","colors[dark][ink]":"hidden","colors[light][accent]":"hidden","colors[dark][accent]":"hidden","colors[light][accent-hover]":"hidden","colors[light][accent-tint]":"hidden","colors[light][on-accent]":"hidden","colors[dark][accent-hover]":"hidden","colors[dark][accent-tint]":"hidden","colors[dark][on-accent]":"hidden","radius":"select","density":"select"}
+[INFO] changes made: {"user":[303,["username"]],"role":[303,["name","description"]],"settings":[303,["lock_minutes","sign_in_rate","session_lifetime"]],"appearance":[303,["colors[light][accent]","radius","density"]]}
+[INFO] activity rows written: 7 [{"action":"user.updated","details":"{\"username\":[\"s2ruser\",\"s2ruser2\"]}"},{"action":"role.updated","details":"{\"name\":[\"Team R\",\"Team R2\"],\"description\":[\"First\",\"Second <b>bold<\\\/b>\"]}"},{"action":"settings.updated","details":"{\"session_lifetime\":[7200,1800],\"lock_minutes\":[15,17],\"sign_in_rate\":[1000,100]}"},{"action":"appearance.updated","details":"{\"radius\":[null,0],\"density\":[null,\"compact\"],\"light.accent\":[null,\"#12ab34\"]}"},{"action":"role.permission_granted","details":"{\"permission\":\"activity.view\"}"},{"action":"user.role_assigned","details":"{\"role\":\"Team R2\"}"},{"action":"user.override_denied","details":"{\"permission\":\"users.delete\"}"}]
+[INFO] unknown-field row copied from a module row: {"mystery_field":["<b>old<\/b>","<script>alert(73)<\/script>"]}
+[INFO] server pid=5804 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=24328 on 127.0.0.1:8071 prefix=''
+[INFO] details in Italian: ["permission: users.delete","role: Team R2","permission: activity.view","radius: — → 0density: — → compactlight.accent: — → #12ab34","session_lifetime: 7200 → 1800lock_minutes: 15 → 17sign_in_rate: 1000 → 100","name: Team R → Team R2description: First → Second <b>bold<\/b>","mystery_field: <b>old<\/b> → <script>alert(73)<\/script>","username: s2ruser → s2ruser2"]
+[INFO] details in English: ["permission: users.delete","role: Team R2","permission: activity.view","radius: — → 0density: — → compactlight.accent: — → #12ab34","session_lifetime: 7200 → 1800lock_minutes: 15 → 17sign_in_rate: 1000 → 100","name: Team R → Team R2description: First → Second <b>bold<\/b>","mystery_field: <b>old<\/b> → <script>alert(73)<\/script>","username: s2ruser → s2ruser2"]
+[INFO] field keys in the new rows: ["username","name","description","session_lifetime","lock_minutes","sign_in_rate","radius","density","light.accent","permission","role"]
+[FAIL] R01-it Italian log: the field names of the details written by the module (user, role, settings, appearance, permission, role assigned, override) are the Italian names
+         -> {"0":["username: not in the language files","name: not in the language files","description: not in the language files","session_lifetime: not in the language files","lock_minutes: not in the language files","sign_in_rate: not in the language files","radius: not in the language files","density: not in the language files","light.accent: not in the language files","permission: not in the language files","role: not in the language files"],"not written":[]}
+[FAIL] R01-en English log: the same entries show the English names
+         -> [["username: not in the language files","name: not in the language files","description: not in the language files","session_lifetime: not in the language files","lock_minutes: not in the language files","sign_in_rate: not in the language files","radius: not in the language files","density: not in the language files","light.accent: not in the language files","permission: not in the language files","role: not in the language files"]]
+[INFO] appearance keys written: ["radius","density","light.accent"]; Italian: []
+PHP Warning:  Undefined array key "light" in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\r-sens\verify-s2.phase-r.php on line 110
+
+Warning: Undefined array key "light" in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\s2reg\r-sens\verify-s2.phase-r.php on line 110
+[FAIL] R02    A theme colour reads «Chiaro · accent» (Italian) / «Light · accent» (English)
+         -> [["light.accent"],["permission: users.delete","role: Team R2","permission: activity.view","radius: — → 0density: — → compactlight.accent: — → #12ab34","session_lifetime: 7200 → 1800lock_minutes: 15 → 17sign_in_rate: 1000 → 100","name: Team R → Team R2description: First → Second <b>bold<\/b>","mystery_field: <b>old<\/b> → <script>alert(73)<\/script>","username: s2ruser → s2ruser2"],["permission: users.delete","role: Team R2","permission: activity.view","radius: — → 0density: — → compactlight.accent: — → #12ab34","session_lifetime: 7200 → 1800lock_minutes: 15 → 17sign_in_rate: 1000 → 100","name: Team R → Team R2description: First → Second <b>bold<\/b>","mystery_field: <b>old<\/b> → <script>alert(73)<\/script>","username: s2ruser → s2ruser2"]]
+[PASS] R03    An unknown field keeps its name in both languages (mystery_field)
+[PASS] R04    Escape intact: markup in the values (role description, the unknown field) is shown as text in both languages
+
+TOTAL: 4 PASS, 4 FAIL, 0 AMB
+FAIL R00 Language files: panel.activity.fields in English and Italian for the same 0 fields
+FAIL R01-it Italian log: the field names of the details written by the module (user, role, settings, appearance, permission, role assigned, override) are the Italian names
+FAIL R01-en English log: the same entries show the English names
+FAIL R02 A theme colour reads «Chiaro · accent» (Italian) / «Light · accent» (English)
+Test process exit: 1

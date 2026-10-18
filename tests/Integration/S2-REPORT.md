@@ -1,5 +1,87 @@
 # S2 — Passo 2 della roadmap di pubblicazione (verifiche tecniche): collaudo indipendente
 
+## Riverifica 09e9df8 — 2026-10-18, Collaudatore ad Hoc (Claude), commit `09e9df8` (main) e zip `build/*-1.0.0-rc.s2c.zip`
+
+**Esito: PASS. S2 approvata per il collaudo.**
+- A1 e A2, decise dall'utente (SPEC, «Esiti di S2, decisi dall'utente»; `documentation/views.html`, chiavi `actions.{action}`), sono implementate come la SPEC le descrive.
+- La regressione richiesta è a zero fallimenti, con un adattamento motivato (fase T di S1).
+- Restano aperte A3 e A4.
+
+Stesso protocollo e perimetro di lettura. I file cambiati li conosco solo dall'elenco dell'autore. I file di lingua li ho letti per i testi attesi: `actions.*` in `RoleWardenData` e `panel.activity.fields` in `RoleWarden`.
+
+| Suite su `09e9df8` / rc.s2c | development | production |
+| --- | ---: | ---: |
+| **Fase C** (colonne della matrice, nuova, nel banco S1) | **6/6** (C00-C05) | **6/6** |
+| **Fase R** (dettagli del registro, nuova, nel banco S1) | **7/7** (R00-R04) | **7/7** |
+| S1 fasi A, M | 40/40 | 40/40 |
+| S1 fase T, nella copia adattata `verify-s2.phase-t.adapted.php` | **20/20** (22/22 con S01-S02 del banco; originale 18/20, vedi sotto) | **20/20** |
+| V8b fasi L, M, P, I, G | 116/116, 1 AMB (LA1, superata) | 116/116, 1 AMB |
+| V8 P/E sugli zip rc.s2c (`verify-s2.v8adapted.php`) | 36/36 | |
+| V3 principale / supplementare / filtri array | 139 + 81 + 55 | 139 + 81 + 55 |
+| Pacchetti rc.s2c (`verify-s2.package.py 09e9df8 rc.s2c`) | **30/30** | |
+| T01 sull'app completa da zip rc.s2c (fasi I, U, E, T, K, L) | PHP 8.3 **53/53**, PHP 8.5 **53/53**, 0 AMB | |
+
+**Sensibilità.** Sul commit precedente `449e259`, le fasi nuove falliscono dove la decisione si applica:
+- **C:** C00 e C01-it falliscono, e la fase si interrompe al salvataggio perché manca la colonna tradotta da cliccare.
+- **R:** R00, R01-it, R01-en e R02 falliscono; R03 e R04 passano.
+
+Il database è stato ripristinato anche dopo l'interruzione.
+
+### A1: colonne della matrice (fase C)
+
+Dati di prova:
+- un'azione dell'applicazione tradotta da `app/Language/{en,it}/RoleWardenData.php`: `publish`, con markup nella traduzione italiana;
+- un'azione senza traduzione: `recount`;
+- un ruolo e un utente con le matrici modificabili, più un visualizzatore con `roles.view`, `users.view` e `permissions.view` per quelle in sola lettura.
+
+Lettura in Chrome. Risultati:
+- **C00.** `actions.*` presenti in inglese e in italiano per le stesse 11 azioni (modulo e demo).
+- **C01-it.** Le 17 colonne delle quattro matrici portano il nome italiano («vedere», «modificare», «eccezioni», «approvare»…), quello dell'applicazione o lo slug (`recount`, `access`, `edit`, `settings`, `manage-admins`). L'aria-label della casella di colonna, che c'è solo nella matrice di ruolo modificabile, usa lo stesso nome: «Concedi «vedere» in ogni area».
+- **C01-en.** In inglese le colonne sono come prima, cioè gli slug delle azioni: «Grant view on every area».
+- **C02.** Il markup della traduzione dell'applicazione è escapato nel sorgente e nel DOM.
+- **C03.** Gli attributi di celle e caselle (etichette escluse) e gli slug di riga sono identici in italiano e in inglese: la matrice invia gli stessi slug in tutte e due le lingue.
+- **C04, C05.** Con il pannello in italiano, un clic nelle colonne «Pubblica» (dell'applicazione) ed «eliminare» e il salvataggio danno `articles.publish` e `users.delete` sul ruolo. Un clic in «recount» sulla pagina utente e il salvataggio danno l'eccezione `warehouse.recount`.
+
+### A2: dettagli del registro attività (fase R)
+
+Modifiche fatte con i form del pannello in italiano, una per tipo:
+- utente (`username`);
+- ruolo (`name`, `description` con markup);
+- Settings (`lock_minutes`, `session_lifetime`, `sign_in_rate`);
+- aspetto (`radius`, `density`, `colors[light][accent]`);
+- permesso concesso al ruolo, ruolo assegnato, eccezione negata (`permission`, `role`).
+
+In più una voce copiata da una riga reale del modulo, con il solo campo sconosciuto `mystery_field` e markup nei valori.
+
+Risultati:
+- **R01-it.** In italiano compaiono «Nome utente», «Nome», «Descrizione», «Durata della sessione», «Durata del blocco», «Tentativi di accesso per indirizzo», «Raggio degli angoli», «Densità», «Permesso» e «Ruolo». Nessuna chiave grezza, nessun nome inglese.
+- **R01-en.** Le stesse voci in inglese hanno i nomi inglesi.
+- **R02.** Il colore del tema si legge «Chiaro · accent» / «Light · accent», come dice la SPEC.
+- **R03.** Il campo sconosciuto resta `mystery_field` in tutte e due le lingue.
+- **R04.** Il markup dei valori è mostrato come testo.
+
+### Adattamento: fase T di S1 (`verify-s2.phase-t.adapted.php`)
+
+L'originale dà 18/20 in tutti e due gli ambienti. Le uscite sono conservate come `verify-s2.s1.09e9df8.ACRMT.unadapted-T.*`.
+- **T00b** cercava nel database ogni chiave dei file di dati: ora c'è `actions.*`, che è un'etichetta e non viene salvata.
+- **T01** trovava le parole «view», «import», «approve»… come «testo seminato inglese» nelle pagine italiane. In inglese il nome di un'azione coincide con la parte azione dello slug, che le pagine mostrano come slug (ammesso dalla SPEC).
+
+È lo stesso adattamento che S1 fece per i nomi delle aree. La copia salta solo le chiavi `actions.*`; le colonne tradotte le verifica la fase C. Nient'altro è cambiato. Le fasi A e M di S1 e la M di V8b non hanno avuto bisogno di adattamenti: in inglese le colonne sono rimaste gli slug.
+
+### Pulizia
+
+- **Database.** `rolewarden_test` uguale allo snapshot `f7f37c04…e21e64` nelle 19 esecuzioni registrate su `09e9df8` e `449e259`.
+- **Mailpit** vuoto.
+- **Docker.** Immagini `s2-col-php:8.3/8.5` ricostruite per la riverifica e poi rimosse, con la rete `s2-net` e i container `s2-*`.
+- **Processi.** Nessun processo mio attivo.
+- **Giri di messa a punto.** Le uscite delle fasi C ed R (`CR.try1`, `CR.try2`) sono spostate nello scratchpad; le loro righe restano in `verify-s2.environment.txt`.
+- **Da cancellare a mano.** Profili Chrome non cancellabili in `scratchpad/s2reg/`.
+- `docs/COMMERCIALE.md`, non tracciato, non è mio.
+
+Nessun commit, nessun push.
+
+---
+
 ## Riverifica f5027a3 — 2026-10-18, Collaudatore ad Hoc (Claude), commit `f5027a3` (main; correzione di D1 in `c60264b`) e zip `build/*-1.0.0-rc.s2b.zip`
 
 **Esito: PASS. S2 approvata per il collaudo.**

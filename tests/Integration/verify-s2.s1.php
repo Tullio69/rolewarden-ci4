@@ -149,7 +149,9 @@ check('S02', 'demo:install for the demo pages (exit 0)', rc($o) === 0, short($o)
 foreach ($PHASES as $ph) {
     // S2: the S1 phase file of the letter, else the V8b one; every file it writes under tests/Integration is renamed
     // verify-s2.s1.* / verify-s2.v8b.* (S2 writes nothing else), the copy runs from the work folder.
-    $src = __DIR__ . '/verify-s1.phase-' . strtolower($ph) . '.php';
+    $src = __DIR__ . '/verify-s2.phase-' . strtolower($ph) . '.adapted.php';   // S2 adapted copies first (T, 09e9df8)
+    if (! is_file($src)) $src = __DIR__ . '/verify-s2.phase-' . strtolower($ph) . '.php';   // S2 phases (C, R)
+    if (! is_file($src)) $src = __DIR__ . '/verify-s1.phase-' . strtolower($ph) . '.php';
     if (! is_file($src)) $src = __DIR__ . '/verify-v8b.phase-' . strtolower($ph) . '.php';
     if (! is_file($src)) { info("phase $ph: no file"); continue; }
     $here = var_export(__DIR__, true);

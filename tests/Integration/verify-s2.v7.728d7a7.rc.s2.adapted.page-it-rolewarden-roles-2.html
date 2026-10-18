@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amministratore &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792327009">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles" aria-current="page"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><a href="http://127.0.0.1:8071/index.php/rolewarden/roles">Ruoli</a><span aria-hidden="true">/</span><span aria-current="page">Amministratore</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Lingua">
+  <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;roles&#x2F;2">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="false">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="true">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        <a class="rw-signout" href="http://127.0.0.1:8071/index.php/logout">Esci</a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">Autorizzazioni</div>
+    <h1>Amministratore</h1>
+    <p>Gestisce utenti, ruoli e permessi.</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Ruolo padre</dt><dd>nessuno</dd></div>
+    <div><dt>Utenti con questo ruolo</dt><dd class="rw-fig">1</dd></div>
+    <div><dt>Ultimo salvataggio</dt><dd class="rw-muted">2026-10-18 12:37:03</dd></div>
+  </dl>
+</div>
+
+<div class="rw-toolbar">
+  <div class="rw-field">
+    <label class="rw-label" for="role-jump">Nome</label>
+    <select class="rw-select" id="role-jump" onchange="if(this.value) window.location = this.value">
+              <option value="http://127.0.0.1:8071/index.php/rolewarden/roles/2" selected>Amministratore</option>
+              <option value="http://127.0.0.1:8071/index.php/rolewarden/roles/1">Super admin</option>
+              <option value="http://127.0.0.1:8071/index.php/rolewarden/roles/3">Utente</option>
+          </select>
+  </div>
+  <div class="rw-grow"></div>
+      <a class="rw-btn rw-btn--secondary" href="http://127.0.0.1:8071/index.php/rolewarden/roles/2/edit">Modifica</a>
+      <ul class="rw-legend" aria-label="Legenda">
+    <li><svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>Concesso dal ruolo</li>
+    <li><svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>Ereditato</li>
+    <li><svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Eccezione dell'utente</li>
+    <li><svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg>Negato all'utente</li>
+    <li><span class="rw-mark-blank" aria-hidden="true"></span>Non concesso</li>
+  </ul>
+</div>
+
+  <div x-data="rwMatrix(&#x7B;&quot;saveUrl&quot;&#x3A;&quot;http&#x3A;&#x5C;&#x2F;&#x5C;&#x2F;127.0.0.1&#x3A;8071&#x5C;&#x2F;index.php&#x5C;&#x2F;rolewarden&#x5C;&#x2F;roles&#x5C;&#x2F;2&#x5C;&#x2F;permissions&quot;,&quot;csrfName&quot;&#x3A;&quot;csrf_test_name&quot;,&quot;csrfHash&quot;&#x3A;&quot;1f28a93a04ff46e3c33dd517d62a5d1a&quot;,&quot;messages&quot;&#x3A;&#x7B;&quot;saved&quot;&#x3A;&quot;Modifiche&#x20;salvate.&quot;,&quot;failed&quot;&#x3A;&quot;Impossibile&#x20;salvare&#x20;questa&#x20;modifica.&#x20;Ricarica&#x20;la&#x20;pagina&#x20;e&#x20;riprova.&quot;&#x7D;,&quot;roleName&quot;&#x3A;&quot;Amministratore&quot;,&quot;rows&quot;&#x3A;&#x5B;&#x7B;&quot;area&quot;&#x3A;&quot;activity&quot;,&quot;name&quot;&#x3A;&quot;Attivit&#x5C;u00e0&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;18,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;activity.view&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;appearance&quot;,&quot;name&quot;&#x3A;&quot;Aspetto&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;20,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;appearance.update&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;permissions&quot;,&quot;name&quot;&#x3A;&quot;Permessi&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;12,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;permissions.view&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;13,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;permissions.override&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;roles&quot;,&quot;name&quot;&#x3A;&quot;Ruoli&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;7,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.view&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;9,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.update&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;11,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.assign&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;8,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.create&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;10,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;roles.delete&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;security&quot;,&quot;name&quot;&#x3A;&quot;Sicurezza&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;19,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;security.alerts&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;sessions&quot;,&quot;name&quot;&#x3A;&quot;Sessioni&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;16,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;sessions.view&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;17,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;sessions.revoke&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;settings&quot;,&quot;name&quot;&#x3A;&quot;Impostazioni&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;14,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;settings.view&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;15,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;settings.update&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;&#x5D;&#x7D;,&#x7B;&quot;area&quot;&#x3A;&quot;users&quot;,&quot;name&quot;&#x3A;&quot;Utenti&quot;,&quot;cells&quot;&#x3A;&#x5B;&#x7B;&quot;action&quot;&#x3A;&quot;view&quot;,&quot;permissionId&quot;&#x3A;1,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.view&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;update&quot;,&quot;permissionId&quot;&#x3A;3,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.update&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;override&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;assign&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;create&quot;,&quot;permissionId&quot;&#x3A;2,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.create&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;delete&quot;,&quot;permissionId&quot;&#x3A;4,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.delete&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;alerts&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;revoke&quot;,&quot;permissionId&quot;&#x3A;null,&quot;state&quot;&#x3A;&quot;none&quot;,&quot;editable&quot;&#x3A;false,&quot;tooltip&quot;&#x3A;&quot;&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;activate&quot;,&quot;permissionId&quot;&#x3A;5,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.activate&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;,&#x7B;&quot;action&quot;&#x3A;&quot;import&quot;,&quot;permissionId&quot;&#x3A;6,&quot;state&quot;&#x3A;&quot;role&quot;,&quot;editable&quot;&#x3A;true,&quot;tooltip&quot;&#x3A;&quot;users.import&#x20;&#x5C;u00b7&#x20;Concesso&#x20;da&#x20;Amministratore&quot;&#x7D;&#x5D;&#x7D;&#x5D;&#x7D;)">
+    <div class="rw-bar" :class="{ 'rw-bar--dirty': changes().length }" role="status" aria-live="polite">
+      <template x-if="changes().length">
+        <div class="rw-bar-msg">
+          <span class="rw-bar-dot" aria-hidden="true"></span>
+          <span x-text="(changes().length > 1 ? &quot;&#x25;d&#x20;modifiche&#x20;non&#x20;salvate&#x20;in&#x20;Amministratore&quot; : &quot;&#x25;d&#x20;modifica&#x20;non&#x20;salvata&#x20;in&#x20;Amministratore&quot;).replace('%d', changes().length)"></span>
+          <span class="rw-bar-ids" x-text="changedLabels().join(', ')"></span>
+        </div>
+      </template>
+      <template x-if="!changes().length">
+        <div class="rw-bar-msg rw-muted">Tutte le modifiche sono salvate.</div>
+      </template>
+      <div class="rw-bar-actions">
+        <button type="button" class="rw-btn rw-btn--ghost" @click="discard()" x-show="changes().length">Scarta</button>
+        <button type="button" class="rw-btn rw-btn--primary" @click="save()" :disabled="!changes().length || saving">Salva le modifiche</button>
+      </div>
+    </div>
+
+    <p class="rw-matrix-help rw-note">Fai clic su una casella per concedere o togliere quel permesso, poi salva. Le caselle in testa a una colonna e nella colonna Riga agiscono su tutta la colonna o la riga.</p>
+
+    <table class="rw-matrix">
+      <thead>
+        <tr>
+          <th class="rw-m-num" scope="col"></th>
+          <th class="rw-m-area rw-header" scope="col">Area</th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">view</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'view'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'view'))).indeterminate" @change="toggleColumn('view', $event.target.checked)" aria-label="Concedi view in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">update</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'update'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'update'))).indeterminate" @change="toggleColumn('update', $event.target.checked)" aria-label="Concedi update in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">override</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'override'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'override'))).indeterminate" @change="toggleColumn('override', $event.target.checked)" aria-label="Concedi override in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">assign</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'assign'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'assign'))).indeterminate" @change="toggleColumn('assign', $event.target.checked)" aria-label="Concedi assign in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">create</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'create'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'create'))).indeterminate" @change="toggleColumn('create', $event.target.checked)" aria-label="Concedi create in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">delete</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'delete'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'delete'))).indeterminate" @change="toggleColumn('delete', $event.target.checked)" aria-label="Concedi delete in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">alerts</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'alerts'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'alerts'))).indeterminate" @change="toggleColumn('alerts', $event.target.checked)" aria-label="Concedi alerts in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">revoke</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'revoke'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'revoke'))).indeterminate" @change="toggleColumn('revoke', $event.target.checked)" aria-label="Concedi revoke in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">activate</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'activate'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'activate'))).indeterminate" @change="toggleColumn('activate', $event.target.checked)" aria-label="Concedi activate in ogni area">
+              </div>
+            </th>
+                      <th class="rw-m-act" scope="col">
+              <div class="rw-colhead">
+                <span class="rw-header">import</span>
+                <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, 'import'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, 'import'))).indeterminate" @change="toggleColumn('import', $event.target.checked)" aria-label="Concedi import in ogni area">
+              </div>
+            </th>
+                    <th class="rw-m-all" scope="col"><span class="rw-header">Riga</span></th>
+          <th class="rw-m-anno" scope="col"><span class="rw-header" style="color:var(--ink-faint)">Note</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="(row, i) in rows" :key="row.area">
+          <tr>
+            <td class="rw-m-num" x-text="String(i + 1).padStart(2, '0')"></td>
+            <th class="rw-m-area" scope="row"><b x-text="row.name"></b><code x-text="row.area + '.*'"></code></th>
+            <template x-for="cell in row.cells" :key="cell.action">
+              <td class="rw-m-act">
+                <template x-if="cell.permissionId !== null">
+                  <button type="button" class="rw-cell" :class="{ 'rw-cell--changed': saved[key(row.area, cell.action)] !== cur[key(row.area, cell.action)] }" :aria-pressed="editable(row.area, cell.action) ? (state(row.area, cell.action) === 'role') : null" :aria-disabled="!editable(row.area, cell.action)" :title="tooltip(row.area, cell.action)" @click="toggleCell(row.area, cell.action)" x-html="mark(row.area, cell.action)"></button>
+                </template>
+              </td>
+            </template>
+            <td class="rw-m-all">
+              <input type="checkbox" class="rw-check" :checked="triState(rowKeys(row.area)).checked" :indeterminate.prop="triState(rowKeys(row.area)).indeterminate" @change="toggleRow(row.area, $event.target.checked)" :aria-label="&quot;Concedi&#x20;ogni&#x20;azione&#x20;in&#x20;&#x25;s&quot;.replace('%s', row.name)">
+            </td>
+            <td class="rw-m-anno">
+              <span class="rw-note" x-show="row.cells.some(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)])">
+                <span class="rw-chg" x-text="row.cells.filter(c => c.permissionId !== null && saved[key(row.area, c.action)] !== cur[key(row.area, c.action)]).length + &quot;&#x20;modificate&quot;"></span>
+              </span>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="rw-m-num"></td>
+          <td class="rw-header rw-c-label">Effettivi</td>
+                      <td class="rw-m-act">6<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">4<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">2<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">2<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                      <td class="rw-m-act">1<span class="rw-muted rw-unit-sm"> / 8</span></td>
+                    <td class="rw-m-all" style="text-align:center;color:var(--ink)">20</td>
+          <td class="rw-m-anno"><span class="rw-note">concessi da Amministratore, su 20</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+<p class="rw-matrix-foot rw-note">
+  <span>Le caselle ereditate sono bloccate. Cambiale nel ruolo padre.</span>
+  <span>Le eccezioni si modificano nella pagina di ciascun utente.</span>
+  <span>Gli identificativi seguono <code class="rw-mono">area.action</code></span>
+</p>
+
+    </main>
+  </div>
+</div>
+</body>
+</html>

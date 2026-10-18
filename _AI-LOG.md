@@ -905,3 +905,21 @@ Formato di ogni voce:
 - Cosa ho fatto: ripreso il giro d665818 interrotto (Docker spento): `rolewarden_test` ripristinato allo snapshot, `.env` cancellati, uscite parziali rinominate `*.interrupted.*`. Poi S1 completa e fasi V8b L, M, P, I, G in development e production, piu' M ripetuta 3 volte per ambiente
 - Stato: completato. **Esito PASS, S1 approvata per il collaudo.** S1 141/141 in entrambi gli ambienti; V8b 116/116 x2; M11 8/8
 - Note per il prossimo: aree tradotte nella pagina Permissions e nelle righe delle quattro matrici (ruolo e utente, modificabili e in sola lettura), aria-label compreso; in inglese come prima; area dell'app tradotta da `app/Language`, area senza traduzione con lo slug maiuscolo (anche Admin e Beta di Shield); markup escapato; B01 identico. Adattamenti dello strumento: la fase M di V8b ora legge l'area dallo slug (prima 18 FAIL per l'aspettativa superata, conservati come `*.unadapted-M.*`); in T le aree non si cercano nel database. A1 e A2 decise dall'utente. Primo giro S1 dev con 2 FAIL d'ambiente dopo il riavvio (timeout del login in Chrome, gutter letto 0), non ripetuti. DB uguale allo snapshot `f7f37c04...e21e64` nelle 15 esecuzioni, Mailpit vuoto, nessun processo; profili Chrome non cancellabili in scratchpad (`s1d-development`, `s1g-*`, `s1h-*`). Nessun commit.
+
+### [2026-10-18 15:50] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: collaudo S2 (passo 2 della roadmap, verifiche tecniche) su `728d7a7` e sugli zip `1.0.0-rc.s2`; scritti solo `tests/Integration/verify-s2.*` (con `verify-s2.docker/`) e `tests/Integration/S2-REPORT.md`
+- Cosa ho fatto: collaudo in nero in Docker (php:8.3/8.4/8.5-apache ufficiali, nginx HTTPS, MariaDB mio per il database spento) e regressione completa sull'host, una suite alla volta
+- Stato: completato. **Esito FAIL, S2 non approvata** per un difetto minore.
+  - Versioni: app completa 48/49 su PHP 8.3, 8.4 e 8.5 (il FAIL è D1), 45/45 in production; modulo da solo in app CI4 nuova, 4.7.4 e 4.7.5 su PHP 8.3 e 8.5: 24/24, 31/31, 31/31, 24/24. Log puliti con error_reporting -1.
+  - Sottocartella `/shop/admin/` (link simbolico 40/40, Alias 30/30), proxy nginx HTTPS senza `$proxyIPs` 19/19 (conseguenze documentate) e con `$proxyIPs` 43/43, pacchetti 30/30 (zip = `git archive`, licenze complete).
+  - CSRF su 28 form, escape, hash di Shield, nessun SQL a schermo anche col database spento in production.
+  - Regressione: S1 141/141 ×2, V8b 116/116 ×2, V8 195/195, V8 P/E 35/36 (P06d, nota O7, non adattata), V7 181/181, V6 151 ×2, V5 177 ×2, V4 232 ×2, V2/V3 a zero fallimenti. Adattati in file nuovi i 25 controlli V4 sulla data (decisione V7), G07 di V2 e G07v5 di V5 (selettore lingua V8b).
+- Note per il prossimo:
+  - **D1 (minore):** «Browser sconosciuto su Unknown Platform» nel pannello italiano, perché la piattaforma di riserva di CodeIgniter non passa dai file di lingua.
+  - **Ambiguità all'autore:** A1, intestazioni delle colonne della matrice con la parte azione dello slug in inglese; A2, chiavi dei campi nei dettagli del registro (`lock_minutes:`, `permission:`); A3, pagina di debug di CI con `DatabaseException` in development a database spento; A4, `X-Forwarded-For` scelto dal visitatore con l'inoltro standard di nginx, che aggira il limite per indirizzo e la documentazione non ne parla.
+  - **O1:** in development, prima delle migrazioni, il collector toolbar di Shield fa rispondere 500 a ogni pagina, installer compreso.
+  - **P06d:** da confermare (O7 di V8) per aggiungerlo agli adattamenti.
+  - Controllo visivo in browser vero dovuto all'autore.
+  - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in tutte le esecuzioni, Mailpit vuoto, container, immagini e rete `s2-*` miei rimossi, nessun processo mio. Restano profili Chrome non cancellabili in `scratchpad/s2reg`.
+  - Nessun commit, nessun push.

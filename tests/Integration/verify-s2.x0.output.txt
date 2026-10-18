@@ -1,0 +1,39 @@
+S2 scenario x0: {'php': '8.5', 'conf': 'root', 'base': 'https://localhost:8443/', 'env': 'production', 'phases': 'I,X0,L', 'proxy': True, 'rate': '100', 'expectbase': 'http://localhost:8443/', 'submitbase': 'https://localhost:8443/'}
+[INFO] S2 x0: base=https://localhost:8443/ container=s2-web phases=I,X0,L env=production mode=app
+
+== I: installer (https://localhost:8443/)
+[PASS] I01    Home before installation leads to the installer, inside the address of the application
+[PASS] I02    Installer answers 200 with the requirements all met on this server
+[INFO] requirements: PHP 8.3.0 or later (this server: 8.5.11) ok | PHP extension intl ok | PHP extension mbstring ok | PHP extension json ok | PHP extension mysqli ok | Folder writable/ writable by the web server ok | File .env writable by the web server ok
+[PASS] I03    Installer stylesheet loads from inside the application address
+[PASS] I04    Setup code written in writable/rolewarden/install-code.txt
+[PASS] I05    Right code opens the database step; the proposed address is the one the installer was opened at
+[PASS] I06    .env written by the installer with app.baseURL = proposed address and the database settings
+[PASS] I06b   CI_ENVIRONMENT after the installer is the expected one (production)
+[PASS] I06c   Database step page without SQL or driver detail
+[PASS] I07    Tables step: Settings, Shield and RoleWarden tables and the system roles
+[PASS] I08    First super admin created; lock written; setup code deleted
+[PASS] I09    Installer pages: no link, form or redirect outside https://localhost:8443/
+[PASS] I10    Installer refuses to run again (Already installed, no form)
+
+== X0: behind nginx (HTTPS terminated, X-Forwarded-For / X-Forwarded-Proto), $proxyIPs not set
+[INFO] X0 Set-Cookie headers: ["ci_session=deleted; expires=Thu, 01 Jan 1970 00:00:01 GMT; Max-Age=0; path=\/; HttpOnly","ci_session=b3164369ccbc8b1355e61ae35fc038be; expires=Sun, 18 Oct 2026 13:32:45 GMT; Max-Age=7200; path=\/; HttpOnly; SameSite=Lax","remember=88fa8459e0e3f30faee6d87b%3A028f0519ffc9133a31fa91f8093116237ecc180a; expires=Tue, 17 Nov 2026 11:32:45 GMT; Max-Age=2592000; path=\/; HttpOnly; SameSite=Lax"]
+[INFO] X0 baseURL proposed by the installer behind the proxy (no $proxyIPs): http://localhost:8443/ / written: https://localhost:8443/
+[INFO] X0 redirect after sign-in: https://localhost:8443/index.php/[omesso]/users; cookies Secure: no
+[INFO] X0 IP seen: auth_logins=172.30.5.10 acl_sessions=172.30.5.10 activity=; sessions page shows 203.0.113.10: no
+[INFO] X0 settings fields: {"csrf_test_name":"hidden","lock_attempts":"number","lock_minutes":"number","sign_in_rate":"number","session_lifetime":"select","remember_length":"select","default_role":"select","activity_retention":"select"} -> per-address field: sign_in_rate
+[INFO] X0 sign-in rate setting: [{"key":"signInRate","value":"5"}]
+[INFO] X0 visitor A (198.51.100.21) attempts: ["303","303","303","303","303","303L","right-password:refused"]; visitor B (198.51.100.22) signs in: no 303 
+[INFO] X0 addresses in auth_logins: ["172.30.5.10"]
+[PASS] X001   Without $proxyIPs (documented consequence): every visitor has the proxy's address
+[PASS] X002   Without $proxyIPs (documented consequence): the per-IP limit counts everyone together, visitor B is stopped too
+
+== L: logs (error_reporting -1)
+[PASS] L01    Application log (threshold 9): no WARNING, NOTICE, DEPRECATED, ERROR or CRITICAL line beyond the refusals the suite provoked
+[PASS] L02    PHP error log of the server (error_reporting = -1, log_errors = On): empty
+[PASS] L03    Apache error log and container output: no PHP warning, notice, deprecation or fatal error
+[PASS] L04    No 500 answer and no SQL or PHP error text in any of the 39 answers of the run
+[PASS] L05    Every redirect of the run stays inside https://localhost:8443/ (11 redirects)
+
+TOTAL: 19 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

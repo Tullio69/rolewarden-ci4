@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aspetto &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792327009">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance" aria-current="page"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><span aria-current="page">Aspetto</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Lingua">
+  <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;appearance">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="false">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="true">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        <a class="rw-signout" href="http://127.0.0.1:8071/index.php/logout">Esci</a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">RoleWarden</div>
+    <h1>Aspetto</h1>
+    <p>L'aspetto di questo pannello per tutti. Ogni modifica si vede su questa pagina mentre la fai; non resta nulla finché non salvi.</p>
+      </div>
+  <dl class="rw-facts">
+    <div><dt>Salvato in</dt><dd><code class="rw-mono">writable/rolewarden/theme.json</code></dd></div>
+    <div><dt>File di tema</dt><dd><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance/download">Scarica</a></dd></div>
+  </dl>
+</div>
+
+<form method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance" novalidate x-data="rwAppearance(&#x7B;&quot;base&quot;&#x3A;&quot;console&quot;,&quot;radius&quot;&#x3A;&quot;&quot;,&quot;density&quot;&#x3A;&quot;&quot;,&quot;colors&quot;&#x3A;&#x7B;&quot;light&quot;&#x3A;&#x5B;&#x5D;,&quot;dark&quot;&#x3A;&#x5B;&#x5D;&#x7D;,&quot;densities&quot;&#x3A;&#x7B;&quot;compact&quot;&#x3A;&#x7B;&quot;row&quot;&#x3A;36,&quot;row-md&quot;&#x3A;40,&quot;row-lg&quot;&#x3A;48,&quot;row-xl&quot;&#x3A;52,&quot;control&quot;&#x3A;32,&quot;control-sm&quot;&#x3A;26,&quot;square&quot;&#x3A;30&#x7D;,&quot;regular&quot;&#x3A;&#x7B;&quot;row&quot;&#x3A;46,&quot;row-md&quot;&#x3A;50,&quot;row-lg&quot;&#x3A;56,&quot;row-xl&quot;&#x3A;64,&quot;control&quot;&#x3A;40,&quot;control-sm&quot;&#x3A;32,&quot;square&quot;&#x3A;36&#x7D;,&quot;comfortable&quot;&#x3A;&#x7B;&quot;row&quot;&#x3A;52,&quot;row-md&quot;&#x3A;56,&quot;row-lg&quot;&#x3A;64,&quot;row-xl&quot;&#x3A;72,&quot;control&quot;&#x3A;40,&quot;control-sm&quot;&#x3A;32,&quot;square&quot;&#x3A;36&#x7D;&#x7D;,&quot;labels&quot;&#x3A;&#x7B;&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;allClear&quot;&#x3A;&quot;Ogni&#x20;colore&#x20;del&#x20;testo&#x20;si&#x20;legge&#x20;bene&#x20;sul&#x20;suo&#x20;sfondo&#x20;&#x28;WCAG&#x20;AA&#x29;.&quot;,&quot;below&quot;&#x3A;&quot;sotto&#x20;4,5&#x3A;1&quot;,&quot;pairs&quot;&#x3A;&#x7B;&quot;ink&quot;&#x3A;&quot;Testo&quot;,&quot;ink-muted&quot;&#x3A;&quot;Testo&#x20;secondario&quot;,&quot;ink-faint&quot;&#x3A;&quot;Note&quot;,&quot;accent&quot;&#x3A;&quot;Accento&quot;,&quot;on-accent&quot;&#x3A;&quot;Testo&#x20;sull&#x5C;u0027accento&quot;,&quot;granted&quot;&#x3A;&quot;Concesso&quot;,&quot;denied&quot;&#x3A;&quot;Negato&quot;&#x7D;,&quot;modes&quot;&#x3A;&#x7B;&quot;light&quot;&#x3A;&quot;Chiaro&quot;,&quot;dark&quot;&#x3A;&quot;Scuro&quot;&#x7D;&#x7D;&#x7D;)">
+  <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">
+  <div class="rw-bar rw-settings-bar" role="status" aria-live="polite">
+    <div class="rw-bar-msg">
+      <template x-if="warnings().length">
+        <span><b class="rw-appearance-warn" x-text="labels.warning"></b> <span x-text="warnings().join(' · ')"></span></span>
+      </template>
+      <span class="rw-muted" x-show="! warnings().length" x-text="labels.allClear"></span>
+    </div>
+          <div class="rw-bar-actions">
+        <button type="submit" class="rw-btn rw-btn--primary">Salva il tema</button>
+      </div>
+      </div>
+
+  <div class="rw-section-title"><span class="rw-section-n">A</span><h2>Tema di partenza</h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <th class="rw-l-key" scope="row">
+            <label class="rw-check-row"><input class="rw-radio" type="radio" name="base" value="console" x-model="base" checked> Console</label>
+            <small>Denso e neutro, tabelle compatte, poco colore. Per back office con molti dati.</small>
+          </th>
+          <td class="rw-l-value"></td>
+          <td class="rw-anno"></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">02</td>
+          <th class="rw-l-key" scope="row">
+            <label class="rw-check-row"><input class="rw-radio" type="radio" name="base" value="clarity" x-model="base"> Clarity</label>
+            <small>Arioso, molto spazio bianco, un accento deciso. Per pannelli usati dai clienti.</small>
+          </th>
+          <td class="rw-l-value"></td>
+          <td class="rw-anno"></td>
+        </tr>
+              <tr>
+          <td class="rw-m-num">03</td>
+          <th class="rw-l-key" scope="row">
+            <label class="rw-check-row"><input class="rw-radio" type="radio" name="base" value="contrast" x-model="base"> Contrast</label>
+            <small>Alto contrasto con linee forti e testo marcato. Per sessioni di lavoro lunghe.</small>
+          </th>
+          <td class="rw-l-value"></td>
+          <td class="rw-anno"></td>
+        </tr>
+          </tbody>
+  </table>
+  
+  <div class="rw-section-title"><span class="rw-section-n">B</span><h2>Colori</h2></div>
+  <table class="rw-ledger rw-settings rw-appearance-colors">
+    <thead>
+      <tr><th class="rw-m-num"></th><th class="rw-l-key"></th><th class="rw-header">Chiaro</th><th class="rw-header">Scuro</th></tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="rw-m-num">01</td>
+          <th class="rw-l-key" scope="row"><b>Sfondo</b><small>Il foglio dietro a tutto.</small></th>
+                      <td class="rw-appearance-color">
+              <input type="color" id="rw-light-surface" :value="effective('light', 'surface')" @input="setColor('light', 'surface', $event.target.value)" aria-label="Sfondo,&#x20;Chiaro">
+              <code class="rw-mono" x-text="effective('light', 'surface')"></code>
+              <input type="hidden" name="colors[light][surface]" :value="colors.light['surface'] || ''">
+                              <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" x-show="colors.light['surface']" x-cloak @click="clearColor('light', 'surface')">Usa il valore del tema</button>
+                                        </td>
+                      <td class="rw-appearance-color">
+              <input type="color" id="rw-dark-surface" :value="effective('dark', 'surface')" @input="setColor('dark', 'surface', $event.target.value)" aria-label="Sfondo,&#x20;Scuro">
+              <code class="rw-mono" x-text="effective('dark', 'surface')"></code>
+              <input type="hidden" name="colors[dark][surface]" :value="colors.dark['surface'] || ''">
+                              <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" x-show="colors.dark['surface']" x-cloak @click="clearColor('dark', 'surface')">Usa il valore del tema</button>
+                                        </td>
+                  </tr>
+              <tr>
+          <td class="rw-m-num">02</td>
+          <th class="rw-l-key" scope="row"><b>Testo</b><small>Testo e titoli.</small></th>
+                      <td class="rw-appearance-color">
+              <input type="color" id="rw-light-ink" :value="effective('light', 'ink')" @input="setColor('light', 'ink', $event.target.value)" aria-label="Testo,&#x20;Chiaro">
+              <code class="rw-mono" x-text="effective('light', 'ink')"></code>
+              <input type="hidden" name="colors[light][ink]" :value="colors.light['ink'] || ''">
+                              <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" x-show="colors.light['ink']" x-cloak @click="clearColor('light', 'ink')">Usa il valore del tema</button>
+                                        </td>
+                      <td class="rw-appearance-color">
+              <input type="color" id="rw-dark-ink" :value="effective('dark', 'ink')" @input="setColor('dark', 'ink', $event.target.value)" aria-label="Testo,&#x20;Scuro">
+              <code class="rw-mono" x-text="effective('dark', 'ink')"></code>
+              <input type="hidden" name="colors[dark][ink]" :value="colors.dark['ink'] || ''">
+                              <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" x-show="colors.dark['ink']" x-cloak @click="clearColor('dark', 'ink')">Usa il valore del tema</button>
+                                        </td>
+                  </tr>
+              <tr>
+          <td class="rw-m-num">03</td>
+          <th class="rw-l-key" scope="row"><b>Accento</b><small>Pulsanti principali, link, focus e selezione.</small></th>
+                      <td class="rw-appearance-color">
+              <input type="color" id="rw-light-accent" :value="effective('light', 'accent')" @input="setColor('light', 'accent', $event.target.value)" aria-label="Accento,&#x20;Chiaro">
+              <code class="rw-mono" x-text="effective('light', 'accent')"></code>
+              <input type="hidden" name="colors[light][accent]" :value="colors.light['accent'] || ''">
+                              <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" x-show="colors.light['accent']" x-cloak @click="clearColor('light', 'accent')">Usa il valore del tema</button>
+                                        </td>
+                      <td class="rw-appearance-color">
+              <input type="color" id="rw-dark-accent" :value="effective('dark', 'accent')" @input="setColor('dark', 'accent', $event.target.value)" aria-label="Accento,&#x20;Scuro">
+              <code class="rw-mono" x-text="effective('dark', 'accent')"></code>
+              <input type="hidden" name="colors[dark][accent]" :value="colors.dark['accent'] || ''">
+                              <button type="button" class="rw-btn rw-btn--ghost rw-btn--sm" x-show="colors.dark['accent']" x-cloak @click="clearColor('dark', 'accent')">Usa il valore del tema</button>
+                                        </td>
+                  </tr>
+          </tbody>
+  </table>
+            <input type="hidden" name="colors[light][accent-hover]" :value="colors.light['accent-hover'] || ''">
+          <input type="hidden" name="colors[light][accent-tint]" :value="colors.light['accent-tint'] || ''">
+          <input type="hidden" name="colors[light][on-accent]" :value="colors.light['on-accent'] || ''">
+                <input type="hidden" name="colors[dark][accent-hover]" :value="colors.dark['accent-hover'] || ''">
+          <input type="hidden" name="colors[dark][accent-tint]" :value="colors.dark['accent-tint'] || ''">
+          <input type="hidden" name="colors[dark][on-accent]" :value="colors.dark['on-accent'] || ''">
+        <p class="rw-hint rw-note">Il colore al passaggio del mouse, la tinta e il testo sull'accento seguono l'accento che scegli.</p>
+
+  <div class="rw-section-title"><span class="rw-section-n">C</span><h2>Forma</h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+      <tr>
+        <td class="rw-m-num">01</td>
+        <th class="rw-l-key" scope="row"><label for="rw-radius">Raggio degli angoli</label><small>Pulsanti e campi; le etichette ne prendono la metà.</small></th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-radius" name="radius" x-model="radius">
+            <option value="">Dal tema</option>
+                          <option value="0">0 px</option>
+                          <option value="2">2 px</option>
+                          <option value="4">4 px</option>
+                          <option value="8">8 px</option>
+                      </select>
+                  </td>
+        <td class="rw-anno"></td>
+      </tr>
+      <tr>
+        <td class="rw-m-num">02</td>
+        <th class="rw-l-key" scope="row"><label for="rw-density">Densità</label><small>Altezza delle righe delle tabelle e dei controlli.</small></th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-density" name="density" x-model="density">
+            <option value="">Dal tema</option>
+                          <option value="compact">Compatta</option>
+                          <option value="regular">Normale</option>
+                          <option value="comfortable">Ariosa</option>
+                      </select>
+                  </td>
+        <td class="rw-anno"></td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+
+<div class="rw-section-title"><span class="rw-section-n">D</span><h2>Esempio</h2></div>
+<div class="rw-appearance-sample">
+  <p class="rw-muted">I componenti del pannello con le scelte attuali. Passa da chiaro a scuro dalla barra in alto per controllarli entrambi.</p>
+  <div class="rw-appearance-row">
+    <button type="button" class="rw-btn rw-btn--primary">Salva le modifiche</button>
+    <button type="button" class="rw-btn rw-btn--secondary">Annulla</button>
+    <button type="button" class="rw-btn rw-btn--ghost">Modifica</button>
+    <button type="button" class="rw-btn rw-btn--danger">Elimina utente</button>
+    <input class="rw-input" type="text" value="dana@northwind-studio.test" aria-label="Email">
+  </div>
+  <div class="rw-appearance-row">
+    <span class="rw-role">Redattore</span><span class="rw-role rw-role--parent">Autore</span>
+    <span class="rw-status">Attivo</span><span class="rw-status rw-status--disabled">Disattivato</span>
+    <code class="rw-mono">users.delete</code>
+    <a href="#rw-appearance-sample">Un link</a>
+  </div>
+  <div class="rw-toast rw-toast--error rw-appearance-toast"><p><span class="rw-toast__kind">Errore:</span> Non puoi togliere l'ultimo super admin.</p></div>
+</div>
+
+  <div class="rw-section-title"><span class="rw-section-n">E</span><h2>Ripristino</h2></div>
+  <table class="rw-ledger">
+    <tbody>
+      <tr>
+        <td class="rw-m-num"></td>
+        <th class="rw-l-key" scope="row"><b>Ripristina il tema</b><small>Torna a Console senza personalizzazioni. Il file di tema viene cancellato.</small></th>
+        <td class="rw-l-value"></td>
+        <td class="rw-l-ctl"><button class="rw-btn rw-btn--danger rw-btn--sm" type="button" onclick="rwConfirm('confirm-reset-theme')">Ripristina il tema</button></td>
+        <td class="rw-anno"><span class="rw-note">chiede conferma</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <dialog id="confirm-reset-theme" class="rw-confirm">
+    <h2>Ripristinare il tema?</h2>
+    <p>Tutte le modifiche a colori, raggio e densità vengono tolte e il pannello torna a Console per tutti.</p>
+    <div class="rw-confirm-actions">
+      <button type="button" class="rw-btn rw-btn--ghost" onclick="rwCancelConfirm('confirm-reset-theme')">Annulla</button>
+      <form method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/reset">
+        <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">        <button type="submit" class="rw-btn rw-btn--danger">Ripristina il tema</button>
+      </form>
+    </div>
+  </dialog>
+    </main>
+  </div>
+</div>
+</body>
+</html>

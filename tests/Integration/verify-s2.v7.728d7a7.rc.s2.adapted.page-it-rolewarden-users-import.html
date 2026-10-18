@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Importa utenti &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792327009">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users" aria-current="page"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><a href="http://127.0.0.1:8071/index.php/rolewarden/users">Utenti</a><span aria-hidden="true">/</span><span aria-current="page">Importa utenti</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Lingua">
+  <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;users&#x2F;import">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="false">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="true">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        <a class="rw-signout" href="http://127.0.0.1:8071/index.php/logout">Esci</a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">Utenti</div>
+    <h1>Importa utenti</h1>
+    <p>Crea molti utenti in una volta da un file CSV. Vedi ogni riga prima che venga creato qualcosa; una riga sbagliata fa rifiutare l'intero file.</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Limite</dt><dd>1000 righe (50 con password), 1024 KB</dd></div>
+    <div><dt>Esempio</dt><dd><a href="http://127.0.0.1:8071/index.php/rolewarden/users/import/sample">Scarica un file di esempio</a></dd></div>
+  </dl>
+</div>
+
+<div class="rw-section-title"><span class="rw-section-n">A</span><h2>Colonne</h2></div>
+<table class="rw-ledger">
+  <tbody>
+          <tr>
+        <td class="rw-m-num">01</td>
+        <th class="rw-l-key" scope="row"><code class="rw-mono">email</code><small>obbligatoria</small></th>
+        <td class="rw-l-value rw-muted">Indirizzo email. Unico tra gli utenti e dentro il file.</td>
+        <td class="rw-l-ctl"></td>
+        <td class="rw-anno"></td>
+      </tr>
+          <tr>
+        <td class="rw-m-num">02</td>
+        <th class="rw-l-key" scope="row"><code class="rw-mono">username</code><small>obbligatoria</small></th>
+        <td class="rw-l-value rw-muted">Da 3 a 30 lettere, cifre o punti. Unico tra gli utenti e dentro il file.</td>
+        <td class="rw-l-ctl"></td>
+        <td class="rw-anno"></td>
+      </tr>
+          <tr>
+        <td class="rw-m-num">03</td>
+        <th class="rw-l-key" scope="row"><code class="rw-mono">role</code><small>facoltativa</small></th>
+        <td class="rw-l-value rw-muted">Slug di un ruolo esistente, come admin. Vuoto dà il ruolo predefinito delle Impostazioni. I ruoli super admin sono rifiutati.</td>
+        <td class="rw-l-ctl"></td>
+        <td class="rw-anno"></td>
+      </tr>
+          <tr>
+        <td class="rw-m-num">04</td>
+        <th class="rw-l-key" scope="row"><code class="rw-mono">password</code><small>facoltativa</small></th>
+        <td class="rw-l-value rw-muted">Deve rispettare le regole delle password. Vuota: l'utente accede con il recupero della password o riceve una password da un amministratore.</td>
+        <td class="rw-l-ctl"></td>
+        <td class="rw-anno"></td>
+      </tr>
+      </tbody>
+</table>
+
+<div class="rw-section-title"><span class="rw-section-n">B</span><h2>File</h2></div>
+<form class="rw-form" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/users/import/preview" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_test_name" value="1f28a93a04ff46e3c33dd517d62a5d1a">  <div class="rw-field">
+    <label class="rw-label" for="rw-csv">File CSV</label>
+    <input class="rw-input rw-file" type="file" id="rw-csv" name="csv" accept=".csv,text/csv" required>
+        <p class="rw-field-hint">UTF-8, separato da virgole o punti e virgola, con i nomi delle colonne nella prima riga.</p>
+  </div>
+  <div class="rw-form-actions">
+    <button class="rw-btn rw-btn--secondary" type="submit">Controlla il file</button>
+  </div>
+</form>
+
+    </main>
+  </div>
+</div>
+</body>
+</html>

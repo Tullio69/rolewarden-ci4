@@ -1,0 +1,94 @@
+wiring: userProvider=1 loginView=1 loginRedirect=1 routes=1 csrf=1
+Auth.php: 'login'                       => '\RoleWarden\Views\auth\login' | login' => '[omesso]/users'
+
+CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-18 11:52:17 UTC+00:00
+
+Running all new migrations...
+PCNTL extension not available. Signal handling disabled.
+	Running: (CodeIgniter\Settings) 2021-07-04-041948_CodeIgniter\Settings\Database\Migrations\CreateSettingsTable
+	Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn
+	Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn
+Migrations complete.
+
+CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-18 11:52:17 UTC+00:00
+
+Running all new migrations...
+PCNTL extension not available. Signal handling disabled.
+	Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables
+Migrations complete.
+
+CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-18 11:52:17 UTC+00:00
+
+Running all new migrations...
+PCNTL extension not available. Signal handling disabled.
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+	Running: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles
+	Running: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions
+	Running: (RoleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions
+	Running: (RoleWarden) 2026-09-20-100004_RoleWarden\Database\Migrations\CreateUserRoles
+	Running: (RoleWarden) 2026-09-20-100005_RoleWarden\Database\Migrations\CreateUserPermissions
+	Running: (RoleWarden) 2026-09-22-090001_RoleWarden\Database\Migrations\ImportAuthGroups
+	Running: (RoleWarden) 2026-09-27-100001_RoleWarden\Database\Migrations\AddSettingsPermissions
+	Running: (RoleWarden) 2026-09-27-200001_RoleWarden\Database\Migrations\CreateSessions
+	Running: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions
+	Running: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog
+	Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions
+	Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions
+	Running: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions
+	Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions
+Migrations complete.
+
+CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-18 11:52:18 UTC+00:00
+
+Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+
+CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-18 11:52:18 UTC+00:00
+
+Password : Quartz-Lantern-9183
+Password confirmation : Quartz-Lantern-9183
+User "s2owner" created
+The user is added to the default group.
+
+CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-18 11:52:19 UTC+00:00
+
+Activate the user s2owner ? [y, n]: y
+User "s2owner" activated
+framework: 4.7.4 php: 8.3.35
+codeigniter4/framework             4.7.4            The CodeIgniter framewo...
+codeigniter4/settings              2.4.0            Settings library for Co...
+codeigniter4/shield                1.4.1            Authentication and Auth...
+codeigniter4/translations          4.7.4            Translations for CodeIg...
+[omesso]/codeigniter4-[omesso] dev-main 83b2b21 Database-driven roles a...
+
+--- composer log tail
+Writing lock file
+Installing dependencies from lock file
+Package operations: 1 install, 0 updates, 0 removals
+  - Installing rolewarden/codeigniter4-rolewarden (dev-main 83b2b21): Mirroring from modules/rolewarden
+1 package suggestions were added by new dependencies, use `composer suggest` to see details.
+Generating optimized autoload files
+1 package you are using is looking for funding.
+Use the `composer fund` command to find out more!
+No security vulnerability advisories found.
+./composer.json has been updated
+Running composer update codeigniter4/translations
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 1 install, 0 updates, 0 removals
+  - Locking codeigniter4/translations (v4.7.4)
+Writing lock file
+Installing dependencies from lock file
+Package operations: 1 install, 0 updates, 0 removals
+  - Downloading codeigniter4/translations (v4.7.4)
+  - Installing codeigniter4/translations (v4.7.4): Extracting archive
+Generating optimized autoload files
+1 package you are using is looking for funding.
+Use the `composer fund` command to find out more!
+No security vulnerability advisories found.
+Using version ^4.7 for codeigniter4/translations

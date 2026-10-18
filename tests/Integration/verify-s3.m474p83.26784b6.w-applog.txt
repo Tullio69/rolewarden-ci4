@@ -1,0 +1,260 @@
+DEBUG - 2026-10-18 18:44:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-18 18:44:25 --> Table 'rolewarden_test.settings' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 300.
+ 1 SYSTEMPATH/Database/MySQLi/Connection.php(300): mysqli->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', 0)
+ 2 SYSTEMPATH/Database/BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 3 SYSTEMPATH/Database/BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 4 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 5 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 6 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 7 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 8 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+10 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+11 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+12 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+13 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+14 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+15 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+16 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+17 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349065.653998, 0.0315, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+18 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+19 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+20 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+21 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+22 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+23 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+24 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+25 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-10-18 18:44:25 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'rolewarden_test.settings' doesn't exist
+[Method: GET, Route: rolewarden/install]
+in SYSTEMPATH/Database/BaseConnection.php on line 863.
+ 1 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 2 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 3 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 4 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 5 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 6 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+ 7 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+ 8 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+10 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+11 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+12 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+13 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+14 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349065.653998, 0.0315, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+15 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+16 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+17 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+18 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+19 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+20 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+21 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+22 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-10-18 18:44:25 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'rolewarden_test.settings' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 310.
+ 1 SYSTEMPATH/Database/BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 2 SYSTEMPATH/Database/BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 3 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 4 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 5 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 6 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 7 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 8 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+10 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+11 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+12 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+13 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+14 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+15 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+16 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349065.653998, 0.0315, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+17 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+18 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+19 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+20 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+21 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+22 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+23 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+24 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-10-18 18:44:25 --> [Caused by] mysqli_sql_exception: Table 'rolewarden_test.settings' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 300.
+ 1 SYSTEMPATH/Database/MySQLi/Connection.php(300): mysqli->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', 0)
+ 2 SYSTEMPATH/Database/BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 3 SYSTEMPATH/Database/BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 4 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 5 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 6 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 7 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 8 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+10 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+11 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+12 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+13 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+14 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+15 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+16 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+17 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349065.653998, 0.0315, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+18 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+19 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+20 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+21 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+22 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+23 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+24 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+25 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-10-18 18:44:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-18 18:44:26 --> Table 'rolewarden_test.settings' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 300.
+ 1 SYSTEMPATH/Database/MySQLi/Connection.php(300): mysqli->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', 0)
+ 2 SYSTEMPATH/Database/BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 3 SYSTEMPATH/Database/BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 4 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 5 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 6 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 7 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 8 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+10 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+11 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+12 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+13 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+14 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+15 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+16 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+17 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349066.004401, 0.0204, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+18 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+19 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+20 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+21 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+22 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+23 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+24 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+25 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-10-18 18:44:26 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'rolewarden_test.settings' doesn't exist
+[Method: GET, Route: /]
+in SYSTEMPATH/Database/BaseConnection.php on line 863.
+ 1 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 2 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 3 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 4 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 5 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 6 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+ 7 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+ 8 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+10 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+11 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+12 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+13 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+14 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349066.004401, 0.0204, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+15 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+16 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+17 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+18 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+19 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+20 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+21 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+22 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-10-18 18:44:26 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'rolewarden_test.settings' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 310.
+ 1 SYSTEMPATH/Database/BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 2 SYSTEMPATH/Database/BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 3 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 4 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 5 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 6 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 7 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 8 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+10 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+11 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+12 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+13 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+14 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+15 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+16 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349066.004401, 0.0204, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+17 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+18 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+19 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+20 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+21 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+22 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+23 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+24 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-10-18 18:44:26 --> [Caused by] mysqli_sql_exception: Table 'rolewarden_test.settings' doesn't exist
+in SYSTEMPATH/Database/MySQLi/Connection.php on line 300.
+ 1 SYSTEMPATH/Database/MySQLi/Connection.php(300): mysqli->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', 0)
+ 2 SYSTEMPATH/Database/BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 3 SYSTEMPATH/Database/BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `settings`
+WHERE `context` IS NULL')
+ 4 SYSTEMPATH/Database/BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 5 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 6 VENDORPATH/codeigniter4/settings/src/Handlers/DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 7 VENDORPATH/codeigniter4/settings/src/Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 8 VENDORPATH/codeigniter4/settings/src/Helpers/setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 9 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(742): setting('Auth.sessionConfig')
+10 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+11 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+12 VENDORPATH/codeigniter4/shield/src/Authentication/Authenticators/Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+13 VENDORPATH/codeigniter4/shield/src/Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+14 VENDORPATH/codeigniter4/shield/src/Collectors/Auth.php(76): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+15 SYSTEMPATH/Debug/Toolbar/Collectors/BaseCollector.php(228): CodeIgniter\Shield\Collectors\Auth->display()
+16 SYSTEMPATH/Debug/Toolbar.php(95): CodeIgniter\Debug\Toolbar\Collectors\BaseCollector->getAsArray()
+17 SYSTEMPATH/Debug/Toolbar.php(390): CodeIgniter\Debug\Toolbar->run(1792349066.004401, 0.0204, Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+18 SYSTEMPATH/Filters/DebugToolbar.php(44): CodeIgniter\Debug\Toolbar->prepare(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response))
+19 SYSTEMPATH/Filters/Filters.php(278): CodeIgniter\Filters\DebugToolbar->after(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), null)
+20 SYSTEMPATH/Filters/Filters.php(364): CodeIgniter\Filters\Filters->runAfter([...])
+21 SYSTEMPATH/CodeIgniter.php(416): CodeIgniter\Filters\Filters->runRequired('after')
+22 SYSTEMPATH/CodeIgniter.php(377): CodeIgniter\CodeIgniter->runRequiredAfterFilters(Object(CodeIgniter\Filters\Filters))
+23 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+24 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+25 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

@@ -1,0 +1,54 @@
+[INFO] module zip 132 files, demo zip 18, app zip 2394; git archive 26784b6: 132 (module), 18 (demo)
+[PASS] P01   Module zip == git archive 26784b6 (one top folder rolewarden/)
+[PASS] P02   Demo zip == git archive 26784b6:demo (top folder rolewarden-demo/)
+[PASS] P03a  Application zip has a single top folder rolewarden-app-1.0.0/
+[PASS] P03b  Application zip: modules/rolewarden == git archive 26784b6
+[PASS] P03c  Application zip: modules/rolewarden-demo == git archive 26784b6:demo
+[PASS] P03d-CHANGELOG.md Application zip: CHANGELOG.md equal to the module's
+[PASS] P03d-THIRD-PARTY-LICENSES.md Application zip: THIRD-PARTY-LICENSES.md equal to the module's
+[PASS] P03d-README Application zip: README.md is the module's, only the documentation path adapted to modules/rolewarden/
+[PASS] P04a  No .env, log, dump, AI/agent notes, internal docs, build tools or IDE files outside vendor/
+[INFO] matches inside vendor/ (third-party, informative): 1 ['codeigniter4/settings/.php-cs-fixer.dist.php']
+[PASS] P04b  No tests/ folder outside vendor/
+[PASS] P04c  writable/ holds only the starter placeholders (no session, log, cache, debugbar dump, install code or lock)
+[PASS] P04d  The `env` template keeps every setting commented out (no live value)
+[PASS] P04e  vendor/ without development packages (installed.json dev=false, no dev-package-names)
+[PASS] P04f  vendor/ folders are exactly the installed packages
+[PASS] P05a  No private key, encryption key value or cloud token anywhere (vendor/ included)
+[PASS] P05b  The database password of this machine appears in no file as a password value
+[PASS] P05c  No personal path, name, local port, git remote or local tool of the author outside vendor/
+[INFO] vendor/ matches (third-party, informative): {"personal names": ["codeigniter4/shield/src/Authentication/Passwords/_dictionary.txt"]}
+[INFO] URL hosts in the rest of the application (CodeIgniter app starter and composer.lock metadata, informative): accounts.example.com, api.github.com, developer.mozilla.org, discourse.laminas.dev, docs.laminas.dev, frankkleine.de, funding.communitybridge.org, httpd.apache.org, join.slack.com, kint-php.github.io, laminas.dev, liberapay.com, localhost, media.example.com, packagist.org, php.net, phpunit.de, symfony.com, thanks.dev, tidelift.com, tldp.org, tools.ietf.org, vfs.bovigo.org, www.duckduckgo.com, www.example.com, www.github.com, www.gnu.org, www.gsp.com, www.html5rocks.com, www.php-fig.org, www.php.net, www.w3.org
+[INFO] URL hosts in RoleWarden files (module, demo, README and wiring of the application): {"alpinejs.dev": ["module:THIRD-PARTY-LICENSES.md", "module:src/Assets/js/vendor/NOTICE.md", "module:src/Assets/js/vendor/alpine.min.js"], "codeigniter.com": ["app:app/Config/Filters.php", "app:composer.json"], "codeigniter4.github.io": ["app:app/Config/Auth.php"], "codeigniterchat.slack.com": ["app:composer.json"], "example.com": ["app:app/Config/Auth.php", "module:documentation/installation.html"], "example.test": ["module:documentation/design-guide.html"], "forum.codeigniter.com": ["app:composer.json"], "getcomposer.org": ["module:THIRD-PARTY-LICENSES.md"], "github.com": ["app:README.md", "app:composer.json", "module:README.md", "module:THIRD-PARTY-LICENSES.md", "...6"], "openfontlicense.org": ["module:src/Assets/fonts/NOTICE.md"], "rolewarden.com": ["module:composer.json"], "scripts.sil.org": ["module:src/Assets/fonts/LICENSE.txt"], "semver.org": ["module:CHANGELOG.md"], "tailwindcss.com": ["module:THIRD-PARTY-LICENSES.md", "module:src/Assets/css/panel.css"]}
+[PASS] P05d  Every URL host in RoleWarden files is the product site, an example/test domain or a public reference
+[PASS] P06a  THIRD-PARTY-LICENSES lists every package of vendor/ with its exact version and licence, and each has its LICENSE file
+[PASS] P06b  Every package listed as "included in the complete application" is really in vendor/
+[INFO] src/Assets: css/.gitkeep, css/panel.css, fonts/LICENSE.txt, fonts/NOTICE.md, fonts/ibm-plex-mono-400.woff2, fonts/ibm-plex-sans-400.woff2, fonts/ibm-plex-sans-500.woff2, fonts/ibm-plex-sans-600.woff2, fonts/ibm-plex-sans-700.woff2, fonts/ibm-plex-serif-400.woff2, js/.gitkeep, js/panel.js, js/vendor/LICENSE-alpine.md, js/vendor/NOTICE.md, js/vendor/alpine.min.js
+[PASS] P06c  Alpine.js: file, MIT text beside it, version in the file = listed 3.17.4
+[PASS] P06d  IBM Plex fonts: SIL OFL 1.1 full text beside them, with the IBM copyright
+[PASS] P06e  panel.css keeps the Tailwind CSS notice (v4.3.3, MIT)
+[PASS] P06f  No other third-party asset in src/Assets beyond those listed
+[PASS] P06g  The MIT text is in the file (shared terms, each row with its own copyright line)
+[PASS] P06h  laminas-escaper BSD-3-Clause text present where the file says
+[PASS] P06i  App starter (MIT): LICENSE at the root of the complete application
+[INFO] public/favicon.ico present=True sha1=4ea4c55c982e08bda104d2e8e981594c067cef24 (the app starter's icon)
+[PASS] P06j  Demo zip ships no third-party asset (only PHP and its README)
+[PASS] P07   CHANGELOG.md starts from the MVP and names the version being shipped
+[PASS] P08   Declared requirements: php ^8.3, framework ^4.7.4 (module); application locked on what THIRD-PARTY-LICENSES says
+[INFO] zips in build/: rolewarden-app-1.0.0.zip, rolewarden-demo-1.0.0.zip, rolewarden-module-1.0.0.zip
+[PASS] V01   The three final zips are named rolewarden-{app,module,demo}-1.0.0.zip
+[PASS] V02   Top folders: rolewarden/, rolewarden-demo/, rolewarden-app-1.0.0/ (no rc in any name)
+[INFO] CHANGELOG versions: [["1.0.0", "2026-10-18\r"], ["0.1.0", "2026-09-26\r"]]
+[PASS] V03   CHANGELOG: the first entry is [1.0.0] with a date (YYYY-MM-DD), no longer "unreleased"
+[INFO] CHANGELOG 1.0.0 date: 2026-10-18
+[PASS] V04   CHANGELOG of the module, of the application root and of modules/rolewarden identical
+[PASS] V05   composer.json of the module (zip and complete application) declares "version": "1.0.0"
+[INFO] composer.json of the complete application: name=codeigniter4/appstarter version=None
+[PASS] V06   installation.html#module gives the Composer command for the 1.0 series (^1.0), no @dev left
+[PASS] V07   No rc / pre-release residue (1.0.0-rc, rc.sN, rc.vN, "unreleased") in any file or name of the three zips, outside vendor/
+[INFO] zip comments: {"app": "", "module": "26784b6101be72f20c7f74f2b71b539c33208a06", "demo": ""}
+[PASS] V08   Module zip built from 26784b6 (its zip comment, when present, is that commit)
+[INFO] rolewarden-app-1.0.0.zip 5431894 bytes sha256 db5cadd477fe4e1bcbaa2d19c335dacae1fd92b7c2715d9598669731aee87c21
+[INFO] rolewarden-module-1.0.0.zip 359548 bytes sha256 0af9e3228a776828cb1c37f72c1a5c3c4534c1a42525555a252dcadbb15a0229
+[INFO] rolewarden-demo-1.0.0.zip 20237 bytes sha256 fae0fdd7e4703e973eaa14291eda75046a09635e6875d421c3b915f960f463a3
+TOTAL 38/38

@@ -1,0 +1,14 @@
+ CHANGELOG.md                       |   2 +-
+ _AI-LOG.md                         |  32 ++++++++++--
+ composer.json                      |   1 +
+ docs/COMMERCIALE.md                | 102 +++++++++++++++++++++++++++++++++++++
+ docs/SPEC.md                       |   2 +-
+ documentation/installation.html    |   8 ++-
+ documentation/troubleshooting.html |   2 +
+ 7 files changed, 143 insertions(+), 6 deletions(-)
+
+ 55 files changed, 77818 insertions(+), 1 deletion(-)
+
+26784b6 release: 1.0.0 dated in the changelog; AI log (step 2 closed, step 3 open)
+5974036 docs: S2 A3/A4 and O1 decided; addresses without index.php; Composer version 1.0.0; commercial brief
+5465c64 test: S2 second re-verification on 09e9df8 (A1/A2), PASS; AI log

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modifica utente &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792349525">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users" aria-current="page"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><span aria-current="page">Modifica utente</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Lingua">
+  <input type="hidden" name="csrf_test_name" value="1c8c03e2c32e7d40ce5700e888c92178">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;users&#x2F;1&#x2F;edit">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="false">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="true">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="1c8c03e2c32e7d40ce5700e888c92178">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        <a class="rw-signout" href="http://127.0.0.1:8071/index.php/logout">Esci</a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head" style="grid-template-columns:1fr">
+  <div>
+    <div class="rw-header">Utenti</div>
+    <h1>Modifica utente</h1>
+  </div>
+</div>
+
+
+<form class="rw-form" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/users/1">
+  <input type="hidden" name="csrf_test_name" value="1c8c03e2c32e7d40ce5700e888c92178">
+  <div class="rw-field">
+    <label class="rw-label" for="username">Nome utente</label>
+    <input class="rw-input" type="text" id="username" name="username" value="boss7" required minlength="3">
+  </div>
+
+  <div class="rw-field">
+    <label class="rw-label" for="email">Email</label>
+    <input class="rw-input" type="email" id="email" name="email" value="boss7@example.test" required>
+  </div>
+
+  <div class="rw-field" style="border-bottom:0">
+    <label class="rw-label" for="password">Nuova password</label>
+    <input class="rw-input" type="password" id="password" name="password" autocomplete="new-password" >
+          <p class="rw-field-hint">Lascia vuoto per mantenere la password attuale.</p>
+      </div>
+
+  <div class="rw-form-actions">
+    <button class="rw-btn rw-btn--primary" type="submit">Salva</button>
+    <a class="rw-btn rw-btn--secondary" href="http://127.0.0.1:8071/index.php/rolewarden/users/1">Annulla</a>
+  </div>
+</form>
+    </main>
+  </div>
+</div>
+</body>
+</html>

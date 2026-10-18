@@ -966,3 +966,19 @@ Formato di ogni voce:
 - Cosa ho fatto: documentazione di sottocartella, proxy (`$proxyIPs`, `X-Forwarded-For` sovrascritto dal proxy esterno), `cookie.secure`, indirizzi senza `index.php`, 500 in development prima delle tabelle. Prove mie su PHP 8.3-8.5, sottocartella e nginx HTTPS. S2 D1 corretto (`Sessions::device`: niente "Unknown Platform" di CI). Decisioni dell'utente: A1 e A2 di S2 tradotte (colonne della matrice `actions.{action}`, campi del log attivita'), A3 accettata (pagina di debug in development, divieto in production), A4 documentata; `"version": "1.0.0"` in composer.json e `composer require ...:^1.0` nella documentazione. Brief commerciale in `docs/COMMERCIALE.md` per una chat separata.
 - Stato: completato. **S2 PASS** dopo due riverifiche; S1 PASS su `7560117`. Controllo visivo dell'utente sullo staging fatto, M11 (O3) provato a mano dall'utente: non si riproduce. Pushato, staging a `5974036`; demo pubblica ferma a `b1cca14`.
 - Note per il prossimo: O7 di S2 (email di nuovo dispositivo con riga "Dispositivo:" vuota se lo User-Agent e' vuoto) non corretta, minore. CLAUDE.md dice ancora "mai errori SQL a schermo in nessun ambiente": proposta di testo all'utente, file suo. Da cancellare a mano: profili Chrome in scratchpad, `tests/Integration/verify-v5.work`, `verify-v8.regress.locked-chrome`.
+
+### [2026-10-18 21:00] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: collaudo S3 (passo 3 della roadmap, versione 1.0.0 definitiva) su `26784b6` e sugli zip `build/*-1.0.0.zip`. Scritti solo `tests/Integration/verify-s3.*` (con `verify-s3.docker/`), `tests/Integration/S3-REPORT.md` e questa voce
+- Cosa ho fatto: versione e residui rc; elenco dei file cambiati da `09e9df8`; pacchetti come in S2 e pacchetti V7; V8 P/E e V7 sugli zip; in Docker l'app completa con l'installer su PHP 8.3 e 8.5, il modulo da zip in un'app CI 4.7.4 nuova su PHP 8.3 con `composer require ...:^1.0`, `app.indexPage = ''` con Apache e rewrite, le righe nginx di `#proxy` con `$proxyIPs`, e la voce di troubleshooting sul 500 in development.
+- Stato: completato. **Esito PASS, S3 approvata per il collaudo.**
+  - Versione V01-V08 8/8: CHANGELOG `[1.0.0] - 2026-10-18`, `"version": "1.0.0"`, zip e cartelle senza rc, modulo dal commit `26784b6`.
+  - Diff: fuori da `tests/Integration` solo CHANGELOG, composer.json, installation/troubleshooting, SPEC, `docs/COMMERCIALE.md`, log; nessun file di `src/`.
+  - Pacchetti 30/30 (zip = `git archive 26784b6`, licenze complete); pacchetti V7 15/16 (P04 superato da V8, noto).
+  - V8 P/E 36/36; V7 181/181 (1 AMB già decisa); app 63/63 su PHP 8.3 e 8.5; modulo 33/33 (Composer risolve 1.0.0 dal path repository; W01/W02: 500 in development prima delle tabelle, installer in production); `indexPage` 45/45 (nessun `index.php`, 42 indirizzi senza 4xx/5xx, link delle email funzionanti); proxy 43/43 (`X-Forwarded-For` falso non registrato e non aggira il limite per IP). Sensibilità: con l'inoltro di S2 X204-X207 falliscono.
+- Note per il prossimo:
+  - **Difetti:** nessuno. **Ambiguità nuove:** nessuna.
+  - **Osservazioni:** O1, `composer validate` avvisa del campo `version` (rilevante solo per Packagist); O2, l'esempio nginx di `#proxy` non nomina `Host` (provato con `Host $http_host`).
+  - Controllo visivo in browser vero dovuto all'autore.
+  - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in 10 esecuzioni, Mailpit vuoto, container, immagini e rete `s3-*` rimossi, nessun processo mio. Due giri di messa a punto (`ip83`, `x2`) spostati in `scratchpad/s3tries`.
+  - Nessun commit, nessun push.

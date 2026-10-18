@@ -1,5 +1,81 @@
 # S2 — Passo 2 della roadmap di pubblicazione (verifiche tecniche): collaudo indipendente
 
+## Riverifica f5027a3 — 2026-10-18, Collaudatore ad Hoc (Claude), commit `f5027a3` (main; correzione di D1 in `c60264b`) e zip `build/*-1.0.0-rc.s2b.zip`
+
+**Esito: PASS. S2 approvata per il collaudo.**
+- D1 è corretto.
+- La regressione richiesta è a zero fallimenti, con un adattamento in più autorizzato dall'autore (P06d) e uno reso necessario dalla correzione stessa (V4, vedi sotto).
+- Le ambiguità A1-A4 restano aperte e non decise: le porta l'autore all'utente. Le osservazioni non cambiano.
+
+Stesso protocollo e stesso perimetro di lettura del primo giro. Dei file cambiati ho solo l'elenco dato dall'autore (`src/Account/Sessions.php`, `src/Account/SecurityMail.php` e un test unitario), senza averli aperti.
+
+| Suite su `f5027a3` / rc.s2b | development | production |
+| --- | ---: | ---: |
+| Pacchetti (`verify-s2.package.py f5027a3 rc.s2b`) | **30/30** | |
+| App completa da zip, fasi I, U, E, T, **K** (nuova), L: PHP 8.3 / 8.4 / 8.5 | **53/53** ×3, 2 AMB (A1, A2) | |
+| V8 P/E sugli zip, `verify-s2.v8adapted.php` (P06d adattato) | **36/36** | |
+| V7 adattata (`verify-v8b.v7adapted.php`) sugli zip | 181/181, 1 AMB (A1 di V7, già decisa) | |
+| S1 fasi N, Q, Y | **85/85** | **85/85** |
+| V2 principale / extra / adapt | 151/151 + 41 + 16 | 169/169 + 54 + 16 |
+| V4 adattata, con `verify-s2.v4adapted-d1.recheck.php` | **232/232** | **232/232** |
+
+Uscite:
+- `verify-s2.k{83,84,85}.f5027a3.*`, `verify-s2.package.f5027a3.rc.s2b.output.txt`;
+- `verify-s2.v8zip.f5027a3.rc.s2b.adapted.*`, `verify-s2.v7.f5027a3.rc.s2b.adapted.*`, `verify-s2.s1.f5027a3.NQY.*`;
+- `verify-s2.{test,extra,adapt,v4}.{development,production}.f5027a3.*`;
+- il primo giro di V4 con il vecchio adattamento: `verify-s2.v4.*.f5027a3.adapted-728d7a7.*`.
+
+V2, V4 e S1 girano sul modulo `git archive f5027a3`, identico allo zip per P01.
+
+### D1 (T01 e fase K)
+
+**T01** passa su PHP 8.3, 8.4 e 8.5. «Unknown Platform» non compare più.
+
+**Fase K, nuova.** Due account, uno in inglese e uno in italiano. Ognuno entra prima da un browser normale, poi con lo User-Agent `S2-Agent-A` (nessun sistema riconoscibile) e infine con uno User-Agent vuoto. I testi di riserva di CodeIgniter (`Unknown Platform`, `Unknown Browser`, `Unknown Mobile`, `Unknown Robot`, `Unidentified User Agent`) si cercano con le maiuscole esatte del framework.
+
+| Controllo | Esito ×3 versioni |
+| --- | --- |
+| K01: email «nuovo dispositivo» (en e it, User-Agent senza sistema e vuoto), nessun testo di riserva di CodeIgniter | PASS |
+| K02: pagina delle proprie sessioni dell'utente, en e it | PASS |
+| K03: pagina utente vista dall'admin in inglese e in italiano, per i due account | PASS |
+| K04: elenco sessioni ed email italiane senza parole che esistono solo nei file inglesi | PASS |
+
+Cosa si vede ora:
+- **Pannello.** «Browser sconosciuto su sistema sconosciuto» in italiano, «Unknown browser on unknown system» in inglese (testo del modulo). Lo stesso testo compare sia con lo User-Agent senza sistema sia con quello vuoto.
+- **Email con User-Agent senza sistema.** «Device: S2-Agent-A» / «Dispositivo: S2-Agent-A», cioè lo User-Agent così com'è.
+- **Email con User-Agent vuoto.** La riga è vuota: «Device:» / «Dispositivo:». È l'osservazione O7 qui sotto.
+
+### Adattamenti di questa riverifica
+
+- **P06d di V8**, in `verify-s2.v8adapted.php` (copia di `verify-v8.php`; cambia solo P06d).
+  - L'autore conferma che l'aspettativa è superata dalla decisione O7 di V8: la frase «open it in a browser from the module folder» del README alla radice dell'app completa è corretta.
+  - Un file nominato in quella frase è accettato solo se esiste in `modules/rolewarden/`, e `documentation/design-guide.html` c'è.
+  - Ora la P/E è 36/36.
+- **I 4 controlli V4 sull'email «markup»** (R-CONTENT, R-BODY, R-D2-TEXT, R-D2-HTML), in `verify-s2.v4adapted-d1.recheck.php`, copia dell'adattamento del primo giro.
+  - Con il vecchio adattamento davano 228/232 nei due ambienti.
+  - L'unica differenza dalla cattura di riferimento è la riga del dispositivo: era «Device: Opera / Unknown Platform», ora è «Device: Opera». È proprio la correzione di D1: la cattura conteneva il difetto.
+  - La copia toglie solo « / Unknown Platform» da entrambi i lati; ogni altra parola resta confrontata.
+  - Ora la V4 è 232/232.
+
+### Osservazione nuova (non contata)
+
+- **O7.** Con uno User-Agent vuoto, l'email «nuovo dispositivo» ha la riga del dispositivo vuota («Device:» / «Dispositivo:»), mentre il pannello mostra «sistema sconosciuto». Non contiene testo inglese di CodeIgniter. La SPEC non dice cosa debba mostrare l'email in questo caso.
+
+### Pulizia
+
+- **Database.** `rolewarden_test` uguale allo snapshot `f7f37c04…e21e64` nelle 19 esecuzioni su `f5027a3`, registrate in `verify-s2.environment.txt`.
+- **Mailpit** vuoto.
+- **Docker.** Immagini `s2-col-php:*` ricostruite per la riverifica e poi rimosse, con la rete `s2-net` e i container `s2-*`.
+- **Processi.** Nessun processo mio attivo.
+- **File.** Cancellati gli zip estratti e il tar.
+- **Da cancellare a mano.** Restano profili Chrome non cancellabili in `scratchpad/s2reg/` (`reg-v5-*`, `reg-v6-*`, `s1-*`, `s1f-*`, `v8b-*`).
+
+Nessun commit, nessun push.
+
+---
+
+## Primo giro — 728d7a7
+
 **Collaudatore ad Hoc (Claude), 2026-10-18, commit `728d7a7` (main) e zip `build/rolewarden-{app,module,demo}-1.0.0-rc.s2.zip`.**
 
 ## Esito

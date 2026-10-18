@@ -1,0 +1,57 @@
+
+== P: the three zips opened as a buyer, licences, documentation files
+[PASS] P01    Module zip is exactly the module at f06a29d (git archive): same files, same bytes
+[PASS] P02    Demo zip is exactly demo/ at f06a29d
+[PASS] P03    Complete application: modules/rolewarden is the module zip, modules/rolewarden-demo is the demo zip
+[PASS] P04    Complete application wires the demo with the two lines of its README (psr4 RoleWardenDemo => modules/rolewarden-demo/src; DemoRoutes::register after the module line)
+[PASS] P05    Module zip: no file under src/ refers to the demo (namespace, table, commands, permissions, folder)
+[INFO] Mentions of the demo outside src/ (documentation of the demo zip, expected): CHANGELOG.md(3), README.md(7), documentation/api.html(2), documentation/index.html(1), documentation/installation.html(14)
+[PASS] P06C   CHANGELOG.md in the module zip and in the complete application (modules/rolewarden)
+[INFO] CHANGELOG.md in the demo zip: no; at the root of the complete application: yes
+[PASS] P06T   THIRD-PARTY-LICENSES.md in the module zip and in the complete application (modules/rolewarden)
+[INFO] THIRD-PARTY-LICENSES.md in the demo zip: no; at the root of the complete application: yes
+[INFO] P06d (S2 adapted): documentation/design-guide.html is named with "from the module folder" and exists in modules/[omesso]/
+[INFO] Files the root README names: ["modules\/[omesso]\/documentation\/index.html","CHANGELOG.md","THIRD-PARTY-LICENSES.md","README.md","documentation\/design-guide.html"]
+[PASS] P06e   Complete application: CHANGELOG.md and THIRD-PARTY-LICENSES.md at the root, identical to the module ones
+[PASS] P06d   Complete application: the README at its root points only to files that exist from there (documentation, changelog, licences)
+[PASS] P07    THIRD-PARTY-LICENSES.md lists every package of vendor/ in the complete application with the version shipped
+[PASS] P07b   No package listed in THIRD-PARTY-LICENSES.md as included is missing from vendor/
+[PASS] P08    Every package in vendor/ carries its licence file
+[PASS] P08b   Composer autoloader shipped in vendor/composer is named in THIRD-PARTY-LICENSES.md, with its MIT licence beside it
+[PASS] P09a   Alpine.js shipped is 3.17.4 as listed, with its MIT licence beside it (LICENSE-alpine.md)
+[PASS] P09b   IBM Plex fonts with the SIL OFL 1.1 text beside them (src/Assets/fonts/LICENSE.txt)
+[PASS] P09c   Tailwind CSS notice kept in the compiled panel.css with the listed version 4.3.3
+[INFO] IBM Plex row, version column: "Latin subset"
+[PASS] P10    No credential, key, .env, private key or personal path/URL in the three zips
+[INFO] composer.json homepage of the module: https://[omesso].com (product site, not personal)
+[PASS] P11m   Documentation in the module zip: 8 pages open offline, every local link, stylesheet and anchor resolves
+[PASS] P11c   Documentation in the complete application: 8 pages open offline, every local link, stylesheet and anchor resolves
+[PASS] P12    Documentation covers installation, configuration, API reference, view customisation, migration from Shield, troubleshooting
+[PASS] P13    Demo language files: same keys in en and it (32)
+[PASS] P13b   Demo language files: same placeholders in every line
+[INFO] Demo lines identical in en and it: ["overline"]
+
+== E: complete application (zip), served with CodeIgniter's rewrite.php, document root public/
+[INFO] zip server pid=25888
+[PASS] E01    Complete application before the installer: /demo does not answer (not 200), no 500, no SQL
+[PASS] E01b   Home still leads to the installer
+[PASS] E02    Installer V7 unchanged on the v8 zip: from zero to a first super admin, lock file written
+[INFO] zip server pid=980
+[PASS] E03    The first super admin signs in
+[PASS] E04    After the installer, before demo:install: /demo does not answer (not 200), no 500
+[PASS] E05    demo:install in the complete application (database settings from the installer's .env)
+[INFO] zip server pid=21656
+[PASS] E06    The author signs in and /demo answers with the documents
+[PASS] E06b   The author creates a document in the complete application
+[PASS] E07    demo:uninstall in the complete application: no residue, nothing lost
+
+== L: PHP errors and warnings, application logs at threshold 9, every response
+[PASS] L01    No HTTP 500 in the demo paths (apart from the induced database failure)
+[PASS] L02    No SQL or driver detail in any response (development pages after removal judged apart, A16d)
+[PASS] L03    No PHP warning, notice or deprecation in the server output (error_reporting=-1)
+[INFO] log E: 25 lines, 0 at WARNING or above, 0 from the failures the suite caused (table renamed, CSRF refusals asked for in B and C)
+[PASS] L04E   Application log (E) at threshold 9: no warning or error other than the induced ones
+[PASS] L05    Every message caught by Mailpit went to @example.com or *.test addresses (0 messages)
+
+TOTAL: 36 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

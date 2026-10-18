@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="it" data-rw-theme="console">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruoli &middot; RoleWarden</title>
+  <link rel="stylesheet" href="http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792331400">    <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js"></script>
+  <script defer src="http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js"></script>
+</head>
+<body>
+<div class="rw rw-shell">
+  <aside class="rw-sidebar" aria-label="Principale">
+    <div class="rw-brand"><b>RoleWarden</b></div>
+    <ul class="rw-nav">
+              <li><a href="http://127.0.0.1:8071/index.php/rolewarden/users"><span>01</span>Utenti</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/roles" aria-current="page"><span>02</span>Ruoli</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/permissions"><span>03</span>Permessi</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/settings"><span>04</span>Impostazioni</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/activity"><span>05</span>Attività</a></li>
+                    <li><a href="http://127.0.0.1:8071/index.php/rolewarden/appearance"><span>06</span>Aspetto</a></li>
+          </ul>
+  </aside>
+
+  <div>
+    <header class="rw-topbar">
+      <nav class="rw-crumbs" aria-label="Percorso"><span aria-current="page">Ruoli</span></nav>
+                            <div class="rw-topbar-end">
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/profile/language" aria-label="Lingua">
+  <input type="hidden" name="csrf_test_name" value="0bb2ae51a38deca987418d14c0999e44">  <input type="hidden" name="back" value="http&#x3A;&#x2F;&#x2F;127.0.0.1&#x3A;8071&#x2F;index.php&#x2F;rolewarden&#x2F;roles">
+      <button type="submit" name="language" value="en" lang="en" title="English" aria-label="English" aria-pressed="false">EN</button>
+      <button type="submit" name="language" value="it" lang="it" title="Italiano" aria-label="Italiano" aria-pressed="true">IT</button>
+  </form>
+        <form class="rw-mode" method="post" action="http://127.0.0.1:8071/index.php/rolewarden/appearance/mode" aria-label="Chiaro&#x20;o&#x20;scuro">
+          <input type="hidden" name="csrf_test_name" value="0bb2ae51a38deca987418d14c0999e44">                      <button type="submit" name="mode" value="system" aria-pressed="true">Sistema</button>
+                      <button type="submit" name="mode" value="light" aria-pressed="false">Chiaro</button>
+                      <button type="submit" name="mode" value="dark" aria-pressed="false">Scuro</button>
+                  </form>
+        <a class="rw-who" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+          <span>boss7<small>Super-admin</small></span>
+          <i aria-hidden="true">BO</i>
+        </a>
+        <a class="rw-signout" href="http://127.0.0.1:8071/index.php/logout">Esci</a>
+        </div>
+          </header>
+
+    <main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data="rwToasts(&#x7B;&quot;messages&quot;&#x3A;&#x5B;&#x5D;,&quot;kinds&quot;&#x3A;&#x7B;&quot;success&quot;&#x3A;&quot;Salvato&quot;,&quot;warning&quot;&#x3A;&quot;Attenzione&#x3A;&quot;,&quot;error&quot;&#x3A;&quot;Errore&#x3A;&quot;&#x7D;&#x7D;)"
+     @rw-toast.window="push($event.detail)" @mouseenter="paused = true" @mouseleave="paused = false"
+     @focusin="paused = true" @focusout="paused = false">
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Chiudi" @click="close(toast.id)">&times;</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head">
+  <div>
+    <div class="rw-header">Autorizzazioni</div>
+    <h1>Ruoli</h1>
+    <p>Un ruolo raggruppa dei permessi. Un ruolo che eredita da un padre riceve tutto quello che ha il padre, e aggiunge i suoi.</p>
+  </div>
+  <dl class="rw-facts">
+    <div><dt>Ruoli</dt><dd class="rw-fig">3</dd></div>
+    <div><dt>Assegnazioni di ruoli</dt><dd class="rw-fig-sm">2</dd></div>
+    <div><dt>Permessi definiti</dt><dd class="rw-fig-sm">20</dd></div>
+  </dl>
+</div>
+
+<div class="rw-toolbar">
+  <span class="rw-muted">I ruoli rientrati ereditano dal ruolo sopra di loro.</span>
+  <div class="rw-grow"></div>
+      <a class="rw-btn rw-btn--primary" href="http://127.0.0.1:8071/index.php/rolewarden/roles/create">Nuovo ruolo</a>
+  </div>
+
+<table class="rw-t-roles">
+  <thead>
+    <tr>
+      <th class="rw-m-num" scope="col"></th>
+      <th class="rw-c-role rw-header" scope="col">Nome</th>
+      <th class="rw-c-parent rw-header" scope="col">Eredita da</th>
+      <th class="rw-c-n rw-header" scope="col">Utenti</th>
+      <th class="rw-c-perm rw-header" scope="col">Permessi</th>
+      <th class="rw-c-act" scope="col"><span hidden>Azioni</span></th>
+      <th class="rw-anno rw-header" scope="col" style="color:var(--ink-faint)">Note</th>
+    </tr>
+  </thead>
+  <tbody>
+                    <tr>
+        <td class="rw-m-num">01</td>
+        <td class="rw-c-role">
+          <div class="rw-tree">
+                        <div>
+              <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Amministratore</a>
+              <small>Gestisce utenti, ruoli e permessi.</small>            </div>
+          </div>
+        </td>
+        <td class="rw-c-parent"><span class="rw-note">nessuno</span></td>
+        <td class="rw-c-n">1</td>
+        <td class="rw-c-perm">
+                      20 <span>di 20</span>
+                  </td>
+        <td class="rw-c-act">
+          <a class="rw-btn rw-btn--ghost rw-btn--sm" href="http://127.0.0.1:8071/index.php/rolewarden/roles/2">Permessi</a>
+                  </td>
+        <td class="rw-anno"><span class="rw-note">ruolo di sistema · non si può eliminare</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">02</td>
+        <td class="rw-c-role">
+          <div class="rw-tree">
+                        <div>
+              <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/1">Super admin</a>
+              <small>Salta i controlli dei ruoli; restano valide le negazioni sul singolo utente.</small>            </div>
+          </div>
+        </td>
+        <td class="rw-c-parent"><span class="rw-note">nessuno</span></td>
+        <td class="rw-c-n">1</td>
+        <td class="rw-c-perm">
+                      0 <span>di 20</span>
+                  </td>
+        <td class="rw-c-act">
+          <a class="rw-btn rw-btn--ghost rw-btn--sm" href="http://127.0.0.1:8071/index.php/rolewarden/roles/1">Permessi</a>
+                  </td>
+        <td class="rw-anno"><span class="rw-note">ruolo di sistema · non si può eliminare</span></td>
+      </tr>
+                <tr>
+        <td class="rw-m-num">03</td>
+        <td class="rw-c-role">
+          <div class="rw-tree">
+                        <div>
+              <a href="http://127.0.0.1:8071/index.php/rolewarden/roles/3">Utente</a>
+              <small>Ruolo predefinito, senza permessi di amministrazione.</small>            </div>
+          </div>
+        </td>
+        <td class="rw-c-parent"><span class="rw-note">nessuno</span></td>
+        <td class="rw-c-n">0</td>
+        <td class="rw-c-perm">
+                      0 <span>di 20</span>
+                  </td>
+        <td class="rw-c-act">
+          <a class="rw-btn rw-btn--ghost rw-btn--sm" href="http://127.0.0.1:8071/index.php/rolewarden/roles/3">Permessi</a>
+                  </td>
+        <td class="rw-anno"><span class="rw-note">ruolo di sistema · non si può eliminare</span></td>
+      </tr>
+      </tbody>
+  <tfoot>
+    <tr>
+      <td class="rw-m-num"></td>
+      <td class="rw-header rw-c-label">Totale</td>
+      <td></td>
+      <td class="rw-c-n">2</td>
+      <td class="rw-c-perm">20 <span>definiti</span></td>
+      <td></td>
+      <td class="rw-anno"></td>
+    </tr>
+  </tfoot>
+</table>
+
+          </main>
+  </div>
+</div>
+</body>
+</html>

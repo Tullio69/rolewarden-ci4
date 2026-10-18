@@ -198,7 +198,7 @@ logger.threshold = 9
             if 'verify-v4.regression.v4.server.log' not in v4:
                 raise RuntimeError('V4 server-log name not found')
             script.write_text(v4.replace('verify-v4.regression.v4.server.log', 'verify-v5.regression.v4.server.log'), encoding='utf-8')
-            shutil.copyfile(HERE / 'verify-s2.v4adapted.recheck.php', WORK / 'verify-v4.recheck.php')
+            shutil.copyfile(HERE / os.environ.get('RW_S2_V4RECHECK', 'verify-s2.v4adapted.recheck.php'), WORK / 'verify-v4.recheck.php')
         elif mode == 'v5':
             script = WORK / 'verify-v5.php'
             shutil.copyfile(HERE / 'verify-s2.v5adapted.php', script)

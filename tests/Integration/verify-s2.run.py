@@ -22,7 +22,7 @@ ENV = os.environ.copy()
 for key in ('RW_DB_USERNAME', 'RW_DB_PASSWORD'):
     if not ENV.get(key):
         raise SystemExit('Missing ' + key)
-TAG = 'rc.s2'
+TAG = os.environ.get('RW_S2_TAG', 'rc.s2')
 NET = 's2-net'
 PROXY_IP = '172.30.5.10'
 
@@ -32,6 +32,10 @@ HTTPSB = 'https://localhost:8443/'
 SCEN = {
     # PHP versions, complete application at the document root, CI_ENVIRONMENT development (error_reporting -1 in Boot)
     'v83': dict(php='8.3', conf='root', base=ROOTB, env='development', phases='I,U,E,D,S,T,L'),
+    # D1 recheck (f5027a3): phase T, then K (sessions and emails with a User-Agent CodeIgniter cannot recognise)
+    'k83': dict(php='8.3', conf='root', base=ROOTB, env='development', phases='I,U,E,T,K,L'),
+    'k84': dict(php='8.4', conf='root', base=ROOTB, env='development', phases='I,U,E,T,K,L'),
+    'k85': dict(php='8.5', conf='root', base=ROOTB, env='development', phases='I,U,E,T,K,L'),
     'v84': dict(php='8.4', conf='root', base=ROOTB, env='development', phases='I,U,E,D,S,T,L'),
     'v85': dict(php='8.5', conf='root', base=ROOTB, env='development', phases='I,U,E,D,S,T,L'),
     # production as the installer leaves it (no CI_ENVIRONMENT before)
@@ -104,7 +108,7 @@ def main():
         img = 's2-col-php:' + sc['php']
         mine.append('s2-web')
         run(['docker', 'run', '-d', '--name', 's2-web', '--network', NET, '-p', '127.0.0.1:8091:80', img])
-        app_tar = WORK / 'app.tar'
+        app_tar = WORK / ('app-%s.tar' % TAG)
         if sc.get('module'):
             run(['docker', 'cp', (ROOT / 'build' / ('rolewarden-module-1.0.0-%s.zip' % TAG)).as_posix(), 's2-web:/tmp/module.zip'])
             for f in ('module-app.sh', 'module-wire.php'):
@@ -120,7 +124,11 @@ def main():
                 raise SystemExit('module application setup failed')
             run(['docker', 'exec', 's2-web', 'sh', '-c', 'chown -R www-data:www-data /var/www/app && apache2ctl -k graceful'])
         elif not app_tar.exists():
-            run(['tar', '-cf', app_tar.as_posix(), '-C', (WORK / 'zips/app/rolewarden-app-1.0.0-%s' % TAG).as_posix(), '.'])
+            import zipfile
+            if not (WORK / ('zips/app/rolewarden-app-1.0.0-%s' % TAG)).exists():
+                with zipfile.ZipFile(ROOT / 'build' / ('rolewarden-app-1.0.0-%s.zip' % TAG)) as zf:
+                    zf.extractall(WORK / 'zips' / 'app')
+            run(['tar', '-cf', app_tar.as_posix(), '-C', (WORK / ('zips/app/rolewarden-app-1.0.0-%s' % TAG)).as_posix(), '.'])
         if not sc.get('module'):
             run(['docker', 'cp', app_tar.as_posix(), 's2-web:/tmp/app.tar'])
             run(['docker', 'cp', (DOCK / (sc['conf'] + '.conf')).as_posix(), 's2-web:/etc/apache2/sites-available/000-default.conf'])
@@ -201,7 +209,7 @@ def main():
             print('Mailpit clear failed:', e)
         sp.run(['php', HERE / 'verify-v4.snapshot.php', 'restore', WORK / ('snapshot-%s.sql' % label)], env=ENV, check=True)
         after = dump()
-        ev = '728d7a7 %s.%s: before=%s after=%s identical=%s mailpit_empty=%s containers_removed=%s' % (
+        ev = os.environ.get('RW_S2_COMMIT', '728d7a7') + ' %s.%s: before=%s after=%s identical=%s mailpit_empty=%s containers_removed=%s' % (
             name, label, hashlib.sha256(before).hexdigest(), hashlib.sha256(after).hexdigest(), before == after, '"messages_count":0' in mailpit('GET'),
             not run(['docker', 'ps', '-a', '--filter', 'name=^s2-', '--format', '{{.Names}}'], quiet=True).stdout.strip())
         print(ev, flush=True)

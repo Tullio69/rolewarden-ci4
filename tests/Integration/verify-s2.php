@@ -634,6 +634,71 @@ if (in_array('T', $PHASES, true)) {
     spark2(['demo:uninstall']);
 }
 
+/* ================================================================== K: devices CodeIgniter cannot recognise (D1 recheck) */
+if (in_array('K', $PHASES, true)) {
+    echo "\n== K: sessions and security emails with a User-Agent without a recognisable system, and an empty one (en, it)\n";
+    // CodeIgniter's own fallbacks of its UserAgent class (framework, English), never to be shown as such
+    $ciWords = ['Unknown Platform', 'Unknown Browser', 'Unknown Mobile', 'Unknown Robot', 'Unidentified User Agent'];
+    $own = c('owner-k'); login2($own, OWNER, OPW);
+    $users = [];
+    foreach (['en' => 'k-en@s2.test', 'it' => 'k-it@s2.test'] as $lang => $mail) {
+        $hc = G($own, 'rolewarden/users/create', "create k $lang"); $fc = form_with($hc, 'email');
+        $v = array_replace($fc['fields'] ?? [], ['username' => 's2k' . $lang, 'email' => $mail, 'password' => UPW]);
+        foreach ($fc['types'] ?? [] as $k => $t) if (str_contains($k, 'confirm')) $v[$k] = UPW;
+        P($own, resolve($own->url, $fc['action'] ?? ''), $v, "create k $lang");
+        $users[$lang] = uid($mail);
+        // the account's language, then a first sign-in from a normal browser (no email on the very first one)
+        $u = c("k-$lang-first"); login2($u, $mail, UPW, false, ['User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36']);
+        $hp = G($u, 'rolewarden/profile', "k $lang profile"); $lf = null; foreach (forms($hp) as $f) if (str_contains($f['action'], 'profile/language')) $lf = $f;
+        if ($lf) P($u, resolve($u->url, $lf['action']), array_replace($lf['fields'], ['language' => $lang]), "k $lang language");
+    }
+    check('K00', 'Two accounts, English and Italian, signed in once from a normal browser', ! in_array(0, $users, true) && count($users) === 2, json_encode($users));
+    $agents = ['no system' => 'User-Agent: S2-Agent-A', 'empty' => 'User-Agent;'];
+    $seenTxt = [];
+    foreach (['en', 'it'] as $lang) {
+        $mail = "k-$lang@s2.test";
+        foreach ($agents as $name => $hdr) {
+            mailpit('DELETE', 'messages');
+            $u = c("k-$lang-$name");
+            $okl = login2($u, $mail, UPW, false, [$hdr]);
+            wait_mail(1);
+            $m = mail_to($mail);
+            $txt = implode("\n", array_map(fn ($f) => ($f['Subject'] ?? '') . "\n" . ($f['Text'] ?? '') . "\n" . html_entity_decode(strip_tags($f['HTML'] ?? ''), ENT_QUOTES | ENT_HTML5), $m));
+            preg_match('/^\h*(Device|Dispositivo)\h*:\h*(.*)$/mi', $txt, $dm);
+            info("K $lang, User-Agent $name: email " . json_encode(array_column($m, 'Subject'), JSON_UNESCAPED_UNICODE) . ' device line: ' . json_encode($dm[0] ?? '(none)', JSON_UNESCAPED_UNICODE));
+            $ci = array_values(array_filter($ciWords, fn ($w) => str_contains($txt, $w)));
+            check("K01-$lang-" . str_replace(' ', '', $name), "New-device email ($lang) for a User-Agent with $name: sent, device line present, no CodeIgniter fallback text", $okl && $m !== [] && $ci === [] && isset($dm[2]), json_encode([$okl, $ci, $dm[0] ?? null], JSON_UNESCAPED_UNICODE));
+            $seenTxt["mail $lang $name"] = $dm[2] ?? '';
+            // the user's own sessions page, in the user's language
+            $hs = G($u, 'rolewarden/sessions', "k $lang own sessions $name");
+            $t = text_of($hs);
+            $ci = array_values(array_filter($ciWords, fn ($w) => str_contains($t, $w)));
+            check("K02-$lang-" . str_replace(' ', '', $name), "Own sessions page ($lang) after a sign-in with $name User-Agent: no CodeIgniter fallback text", $u->status === 200 && $ci === [], json_encode([$u->status, $ci]));
+        }
+    }
+    // the administrator's view of each user's sessions, in English and in Italian
+    foreach (['en', 'it'] as $plang) {
+        $hp = G($own, 'rolewarden/profile', "owner k $plang"); $lf = null; foreach (forms($hp) as $f) if (str_contains($f['action'], 'profile/language')) $lf = $f;
+        if ($lf) P($own, resolve($own->url, $lf['action']), array_replace($lf['fields'], ['language' => $plang]), "owner $plang");
+        foreach ($users as $ul => $id) {
+            $h = G($own, "rolewarden/users/$id", "k admin $plang user $ul");
+            $xp = dom($h); $rows = [];
+            foreach ($xp->query('//table//tbody/tr') as $tr) $rows[] = trim(preg_replace('/\s+/u', ' ', $tr->textContent));
+            $t = text_of($h);
+            $ci = array_values(array_filter($ciWords, fn ($w) => str_contains($t, $w)));
+            info("K panel $plang, sessions of the $ul user: " . json_encode(array_slice($rows, 0, 6), JSON_UNESCAPED_UNICODE));
+            $seenTxt["panel $plang $ul"] = implode(' | ', $rows);
+            check("K03-$plang-$ul", "User page ($plang) of the $ul account: sessions listed, no CodeIgniter fallback text", $own->status === 200 && $ci === [] && count($rows) >= 3, json_encode([$own->status, $ci, count($rows)]));
+        }
+    }
+    // Italian page and Italian email: no word found only in the English language files (dictionary of phase T)
+    if (isset($only)) {
+        $bad = [];
+        foreach ($seenTxt as $k => $v) if (preg_match('/^(mail|panel) it/', $k)) foreach ($words(preg_replace('/\b[a-z0-9-]+\.[a-z0-9.-]+\b|\S+@\S+|\d+(\.\d+)*/u', ' ', $v)) as $w) if (isset($only[$w]) && ! isset($dataWords[$w])) $bad[$k][] = $w;
+        check('K04', 'Italian sessions lists and Italian emails: no word that exists only in the English language files', $bad === [], json_encode($bad, JSON_UNESCAPED_UNICODE));
+    }
+}
+
 /* ================================================================== X0 / X1: behind the reverse proxy */
 function xff_client(string $name, string $ip): Client { $c = c($name); $c->extra = ["X-Forwarded-For: $ip"]; return $c; }
 if (in_array('X0', $PHASES, true) || in_array('X1', $PHASES, true)) {

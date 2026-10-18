@@ -1,0 +1,90 @@
+S2 scenario k84: {'php': '8.4', 'conf': 'root', 'base': 'http://localhost:8091/', 'env': 'development', 'phases': 'I,U,E,T,K,L'}
+[INFO] S2 k84.f5027a3: base=http://localhost:8091/ container=s2-web phases=I,U,E,T,K,L env=development mode=app
+
+== I: installer (http://localhost:8091/)
+[PASS] I01    Home before installation leads to the installer, inside the address of the application
+[PASS] I02    Installer answers 200 with the requirements all met on this server
+[INFO] requirements: PHP 8.3.0 or later (this server: 8.4.26) ok | PHP extension intl ok | PHP extension mbstring ok | PHP extension json ok | PHP extension mysqli ok | Folder writable/ writable by the web server ok | File .env writable by the web server ok
+[PASS] I03    Installer stylesheet loads from inside the application address
+[PASS] I04    Setup code written in writable/rolewarden/install-code.txt
+[PASS] I05    Right code opens the database step; the proposed address is the one the installer was opened at
+[PASS] I06    .env written by the installer with app.baseURL = proposed address and the database settings
+[PASS] I06b   CI_ENVIRONMENT after the installer is the expected one (development)
+[PASS] I06c   Database step page without SQL or driver detail
+[PASS] I07    Tables step: Settings, Shield and RoleWarden tables and the system roles
+[PASS] I08    First super admin created; lock written; setup code deleted
+[PASS] I09    Installer pages: no link, form or redirect outside http://localhost:8091/
+[PASS] I10    Installer refuses to run again (Already installed, no form)
+
+== U: panel in use
+[PASS] U01    The super admin signs in; Shield redirects inside the application
+[PASS] U02    Every panel screen answers 200 with no SQL, PHP error or warning on screen
+[PASS] U03    No link, asset, form or script URL of the 15 screens points outside http://localhost:8091/
+[PASS] U04    Panel CSS, JS and the fonts referenced by the CSS load (200) from inside the address
+[PASS] U05    Users: a user created from the panel (Shield user, active)
+[INFO] role form fields: ["csrf_test_name","slug","name","is_super_admin","parent_id","description"]
+[PASS] U06    Roles: a role created from the panel
+[PASS] U07    Matrix: granting a permission to the role from its page is saved
+[PASS] U08    Users: the role is assigned to the user from the user page
+[PASS] U09    Override: the role grants the screen (200), a negative override denies it, clearing it restores it
+[INFO] deactivated user: [omesso]/users 302, own profile 200
+[PASS] U10    Users: deactivating denies the user a screen the role grants, at the next request; reactivating restores it
+[INFO] settings fields: {"csrf_test_name":"hidden","lock_attempts":"number","lock_minutes":"number","sign_in_rate":"number","session_lifetime":"select","remember_length":"select","default_role":"select","activity_retention":"select"}
+[INFO] settings after save: {"messages":[{"type":"success","message":"Settings saved."}],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}}
+[PASS] U11    Settings: a value changed with the Settings form is stored; redirect inside the application
+[PASS] U12    Activity: the log lists what was just done (role created, role assigned)
+[PASS] U13    Language switch: back to the same page inside the application, now in Italian
+
+== E: security emails
+[PASS] E01    Password changed from the profile: an email to the user
+[PASS] E02    Sign-in from a device never used: an email to the user
+[PASS] E03    Lock after failed sign-ins: an email to the user and an alert to a holder of security.alerts
+[INFO] links in the emails: ["http:\/\/localhost:8091\/index.php\/[omesso]\/activity?user=lock%40s2.test","http:\/\/localhost:8091\/index.php\/[omesso]\/sessions"]
+[PASS] E04    Every link in the security emails points inside http://localhost:8091/
+[PASS] E05    No SQL or PHP error text in any email
+
+== T: Italian panel, every string from the language files
+[INFO] language files: 581 English and 581 Italian strings; 510 words used only in English
+[INFO] newest entries of the Italian owner: ["01 18 ott 2026, 13:47 s2owner Impostazioni cambiate Impostazioni lock_minutes: 15 → 16 172.30.5.1","03 18 ott 2026, 13:47 s2owner Permesso aggiunto al ruolo S2 Editors permission: activity.view 172.30.5.1"] raw first row: "<tbody>\r\n                    <tr>\r\n        <td class=\"rw-m-num\">01<\/td>\r\n        <td style=\"white-space:nowrap\">18 ott 2026, 13:47<\/td>\r\n        <td>s2owner<\/td>\r\n        <td><span>Impostazioni cambiate<\/span><\/td>\r\n        <td>Impostazioni<\/td>\r\n        <td class=\"rw-muted\">lock_minutes: 15 &rarr; 16<\/td>\r\n        <td class=\"rw-anno\"><span class=\"rw-note\">172.30.5.1<\/span><\/td>\r\n      <\/tr>\r\n                <tr>\r\n        <td class=\"rw-m-num\">02<\/td>\r\n        <td style=\"white-space:nowrap\">18 ott 2026, 13:47<\/td>\r\n        <td>reader@example.com<\/td>\r\n        <td><span>Accesso<\/span><\/td>\r\n        <td><a href=\"http:\/\/localhost:8091\/index.php\/[omesso]\/users\/4\">reader@example.com<\/a><\/td>\r\n        <td class=\"rw-muted\"><\/td>\r\n        <td class=\"rw-anno\"><span class=\"rw-note\">172.30.5.1<\/span><\/td>\r\n      <\/tr>\r\n                <tr>\r\n        <td class=\"rw-m-num\">03<\/td>\r\n        <td style=\"white-space:nowrap\">18 ott 2026, 13:47<\/td>\r\n        <td>s2owner<\/td>\r\n        <td><span>Permesso aggiunto al ruolo<\/span><\/td>\r\n        <td><a href=\"http:\/\/localhost:8091\/index.php\/[omesso]\/roles\/4\">S2 Editors<\/a><\/td>\r\n        <td class=\"rw-muted\">permission: activity.view<\/td>\r\n        <td class=\"rw-anno\"><span class=\"rw-note\">172.30.5.1<\/span><\/td>\r\n      <\/tr>\r\n                <tr>\r\n        <td class=\"rw-m-num\">04<\/td>\r\n        <td style=\"white-space:nowrap\">18 ott 2026, 13:47<\/td>\r\n        <td>owner@s2.test<\/td>\r\n        <td><span>Accesso<\/span><\/td>\r\n        <td><a href=\"http:\/\/localh"
+[AMB]  TA2    Italian activity log, details column: the field keys of an entry stay as written in the code (key: old → new), in English
+         -> lock_minutes, permission
+[PASS] T04    Activity log entries written while the panel is in Italian (role permission, Settings, user): no English-only word outside the field keys
+[AMB]  TA1    Italian permission matrix: the action columns are headed by the action part of the slug, in English
+         -> view, approve, create, override, assign, activate, import
+[PASS] T01    Italian panel, demo and sign-in pages: no word that exists only in the English language files (text and title/aria-label/placeholder/alt)
+[PASS] T02    Italian pages: none of 40 common English interface words appears
+[PASS] T03    Security email to an Italian reader: in Italian, no English-only word
+
+== K: sessions and security emails with a User-Agent without a recognisable system, and an empty one (en, it)
+[PASS] K00    Two accounts, English and Italian, signed in once from a normal browser
+[INFO] K en, User-Agent no system: email ["New sign-in to your localhost account"] device line: "Device: S2-Agent-A\r"
+[PASS] K01-en-nosystem New-device email (en) for a User-Agent with no system: sent, device line present, no CodeIgniter fallback text
+[PASS] K02-en-nosystem Own sessions page (en) after a sign-in with no system User-Agent: no CodeIgniter fallback text
+[INFO] K en, User-Agent empty: email ["New sign-in to your localhost account"] device line: "Device:\r"
+[PASS] K01-en-empty New-device email (en) for a User-Agent with empty: sent, device line present, no CodeIgniter fallback text
+[PASS] K02-en-empty Own sessions page (en) after a sign-in with empty User-Agent: no CodeIgniter fallback text
+[INFO] K it, User-Agent no system: email ["Nuovo accesso al tuo account localhost"] device line: "Dispositivo: S2-Agent-A\r"
+[PASS] K01-it-nosystem New-device email (it) for a User-Agent with no system: sent, device line present, no CodeIgniter fallback text
+[PASS] K02-it-nosystem Own sessions page (it) after a sign-in with no system User-Agent: no CodeIgniter fallback text
+[INFO] K it, User-Agent empty: email ["Nuovo accesso al tuo account localhost"] device line: "Dispositivo:\r"
+[PASS] K01-it-empty New-device email (it) for a User-Agent with empty: sent, device line present, no CodeIgniter fallback text
+[PASS] K02-it-empty Own sessions page (it) after a sign-in with empty User-Agent: no CodeIgniter fallback text
+[INFO] K panel en, sessions of the en user: ["Add a role Admin S2 Editors Super admin User Add","01 Password Set a new password for this user. Change password","02 Status Disabling blocks sign-in and keeps roles and history. Deactivate reversible","03 Delete Permanently removes this user. Delete","01 Unknown browser on unknown system 172.30.5.1 · signed in 18 Oct 2026, 13:47 Active Just now Sign out","02 Unknown browser on unknown system 172.30.5.1 · signed in 18 Oct 2026, 13:47 Active Just now Sign out"]
+[PASS] K03-en-en User page (en) of the en account: sessions listed, no CodeIgniter fallback text
+[INFO] K panel en, sessions of the it user: ["Add a role Admin S2 Editors Super admin User Add","01 Password Set a new password for this user. Change password","02 Status Disabling blocks sign-in and keeps roles and history. Deactivate reversible","03 Delete Permanently removes this user. Delete","01 Unknown browser on unknown system 172.30.5.1 · signed in 18 Oct 2026, 13:47 Active Just now Sign out","02 Unknown browser on unknown system 172.30.5.1 · signed in 18 Oct 2026, 13:47 Active Just now Sign out"]
+[PASS] K03-en-it User page (en) of the it account: sessions listed, no CodeIgniter fallback text
+[INFO] K panel it, sessions of the en user: ["Aggiungi un ruolo Amministratore S2 Editors Super admin Utente Aggiungi","01 Password Imposta una nuova password per questo utente. Cambia password","02 Stato Disattivare blocca l'accesso e conserva ruoli e storico. Disattiva reversibile","03 Elimina Elimina definitivamente questo utente. Elimina","01 Browser sconosciuto su sistema sconosciuto 172.30.5.1 · collegato il 18 ott 2026, 13:47 Attivo Adesso Chiudi","02 Browser sconosciuto su sistema sconosciuto 172.30.5.1 · collegato il 18 ott 2026, 13:47 Attivo Adesso Chiudi"]
+[PASS] K03-it-en User page (it) of the en account: sessions listed, no CodeIgniter fallback text
+[INFO] K panel it, sessions of the it user: ["Aggiungi un ruolo Amministratore S2 Editors Super admin Utente Aggiungi","01 Password Imposta una nuova password per questo utente. Cambia password","02 Stato Disattivare blocca l'accesso e conserva ruoli e storico. Disattiva reversibile","03 Elimina Elimina definitivamente questo utente. Elimina","01 Browser sconosciuto su sistema sconosciuto 172.30.5.1 · collegato il 18 ott 2026, 13:47 Attivo Adesso Chiudi","02 Browser sconosciuto su sistema sconosciuto 172.30.5.1 · collegato il 18 ott 2026, 13:47 Attivo Adesso Chiudi"]
+[PASS] K03-it-it User page (it) of the it account: sessions listed, no CodeIgniter fallback text
+[PASS] K04    Italian sessions lists and Italian emails: no word that exists only in the English language files
+
+== L: logs (error_reporting -1)
+[PASS] L01    Application log (threshold 9): no WARNING, NOTICE, DEPRECATED, ERROR or CRITICAL line beyond the refusals the suite provoked
+[PASS] L02    PHP error log of the server (error_reporting = -1, log_errors = On): empty
+[PASS] L03    Apache error log and container output: no PHP warning, notice, deprecation or fatal error
+[PASS] L04    No 500 answer and no SQL or PHP error text in any of the 170 answers of the run
+[PASS] L05    Every redirect of the run stays inside http://localhost:8091/ (45 redirects)
+
+TOTAL: 53 PASS, 0 FAIL, 2 AMB
+Test process exit: 0

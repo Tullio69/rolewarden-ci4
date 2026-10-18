@@ -923,3 +923,20 @@ Formato di ogni voce:
   - Controllo visivo in browser vero dovuto all'autore.
   - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in tutte le esecuzioni, Mailpit vuoto, container, immagini e rete `s2-*` miei rimossi, nessun processo mio. Restano profili Chrome non cancellabili in `scratchpad/s2reg`.
   - Nessun commit, nessun push.
+
+### [2026-10-18 16:45] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: riverifica S2 su `f5027a3` (correzione di D1 in `c60264b`) e sugli zip `1.0.0-rc.s2b`. Scritti solo `tests/Integration/verify-s2.*` (nuova fase K, `verify-s2.v8adapted.php`, `verify-s2.v4adapted-d1.recheck.php`, `verify-s2.recheck-suites.sh`, uscite `*.f5027a3.*`) e la sezione «Riverifica f5027a3» in cima a `S2-REPORT.md`
+- Cosa ho fatto:
+  - D1: T01 e una nuova fase K (sessioni ed email con User-Agent senza sistema e vuoto, in inglese e in italiano) su PHP 8.3, 8.4 e 8.5, con l'app completa da zip.
+  - Pacchetti, V8 P/E e V7 sugli zip; S1 fasi N, Q e Y; V2 e V4 adattata, in development e in production.
+- Stato: completato. **Esito PASS, S2 approvata per il collaudo.**
+  - **D1 corretto:** app completa 53/53 ×3, nessun testo di riserva di CodeIgniter nel pannello né nelle email.
+  - Pacchetti 30/30; V8 P/E 36/36; V7 181/181; S1 N/Q/Y 85/85 ×2; V2 151+41+16 in development e 169+54+16 in production; V4 232/232 ×2.
+  - **Adattamenti nuovi:** P06d di V8 (O7 confermata dall'autore). I 4 controlli V4 sull'email «markup»: la cattura di riferimento conteneva «Opera / Unknown Platform», cioè il difetto D1.
+- Note per il prossimo:
+  - **Ambiguità aperte:** A1-A4, le porta l'autore all'utente.
+  - **O7 (nuova):** con User-Agent vuoto la riga del dispositivo nell'email è vuota.
+  - Controllo visivo in browser vero dovuto all'autore.
+  - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in 19 esecuzioni, Mailpit vuoto, immagini, rete e container `s2-*` rimossi, nessun processo mio. Profili Chrome non cancellabili in `scratchpad/s2reg`.
+  - Nessun commit, nessun push.

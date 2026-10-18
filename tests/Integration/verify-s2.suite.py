@@ -98,7 +98,7 @@ def main():
                 zf.extractall(WORK / 'zips' / 'app')
         if suite in ('v8', 'v8zip'):
             out = HERE / ('verify-s2.' + suite + '.' + label + '.output.txt')
-            args = ['php', '-d', 'error_reporting=-1', '-d', 'memory_limit=1G', str(HERE / 'verify-v8.php'), WORK.as_posix(), (WORK / 'mod').as_posix(), (WORK / 'modfull').as_posix(), (WORK / 'demo').as_posix(),
+            args = ['php', '-d', 'error_reporting=-1', '-d', 'memory_limit=1G', str(HERE / os.environ.get('RW_S2_V8SCRIPT', 'verify-v8.php')), WORK.as_posix(), (WORK / 'mod').as_posix(), (WORK / 'modfull').as_posix(), (WORK / 'demo').as_posix(),
                     (WORK / 'zips/app').as_posix(), (WORK / 'zips/module').as_posix(), (WORK / 'zips/demo').as_posix(), (ROOT.parent / 'rolewarden-app-test').as_posix(), phases]
         else:
             out = HERE / ('verify-s2.' + suite + '.' + label + '.output.txt')

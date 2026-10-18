@@ -50,3 +50,34 @@ exit=0 arrays development 15:33:05
 exit=0 arrays production 15:33:36
 ALL DONE 15:33:36
 SUITES DONE 15:33:36
+=== v8zip.f5027a3 15:49:31
+exit=0 v8zip.f5027a3 15:49:57
+=== v7.f5027a3 15:49:57
+exit=0 v7.f5027a3 15:52:14
+=== s1.f5027a3.development 15:52:14
+exit=0 s1.f5027a3.development 16:03:32
+=== s1.f5027a3.production 16:03:32
+exit=0 s1.f5027a3.production 16:12:01
+=== test development f5027a3 16:12:02
+exit=0 test development 16:14:37
+=== test production f5027a3 16:14:38
+exit=0 test production 16:16:41
+=== extra development f5027a3 16:16:42
+exit=0 extra development 16:17:23
+=== extra production f5027a3 16:17:24
+exit=0 extra production 16:18:02
+=== adapt development f5027a3 16:18:03
+exit=0 adapt development 16:18:40
+=== adapt production f5027a3 16:18:41
+exit=0 adapt production 16:19:14
+=== v4 development f5027a3 16:19:15
+exit=1 v4 development 16:24:12
+=== v4 production f5027a3 16:24:12
+exit=1 v4 production 16:28:44
+ALL DONE 16:28:44
+RECHECK DONE 16:28:44
+=== v4 development f5027a3 16:29:55
+exit=0 v4 development 16:34:54
+=== v4 production f5027a3 16:34:54
+exit=0 v4 production 16:39:26
+ALL DONE 16:39:26

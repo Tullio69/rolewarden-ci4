@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace RoleWarden\Account;
 
 use CodeIgniter\Events\Events;
-use CodeIgniter\HTTP\UserAgent;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Models\UserModel;
@@ -228,11 +227,8 @@ final class SecurityMail
     /** Browser and system, without versions: what a person calls "my device". */
     private static function device(string $userAgent): string
     {
-        $agent = new UserAgent();
-        $agent->parse($userAgent);
-        $browser = $agent->getBrowser();
-        $platform = $agent->getPlatform();
+        [$browser, $platform] = Sessions::device($userAgent);
 
-        return $browser === '' && $platform === '' ? $userAgent : trim($browser . ' / ' . $platform);
+        return $browser === '' && $platform === '' ? $userAgent : implode(' / ', array_filter([$browser, $platform]));
     }
 }

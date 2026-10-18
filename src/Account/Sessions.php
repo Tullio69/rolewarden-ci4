@@ -141,17 +141,15 @@ final class Sessions
         }
 
         $sessions = [];
-        $agent = new UserAgent();
-
         foreach (self::table()->where('user_id', $userId)->orderBy('last_seen_at', 'desc')->get()->getResultArray() as $row) {
-            $agent->parse($row['user_agent']);
+            [$browser, $platform] = self::device($row['user_agent']);
             $token = $row['remember_selector'] !== null ? ($tokens[$row['remember_selector']] ?? null) : null;
             unset($tokens[$row['remember_selector'] ?? '']);
 
             $sessions[] = [
                 'id' => (int) $row['id'],
-                'browser' => $agent->getBrowser(),
-                'platform' => $agent->getPlatform(),
+                'browser' => $browser,
+                'platform' => $platform,
                 'ip' => $row['ip_address'],
                 'createdAt' => $row['created_at'],
                 'lastSeenAt' => $row['last_seen_at'],
@@ -329,5 +327,20 @@ final class Sessions
     private static function rememberTable(): BaseBuilder
     {
         return db_connect()->table(config('Auth')->tables['remember_tokens']);
+    }
+
+    /**
+     * Browser and system read from a user agent, '' for what is not recognised
+     * (CodeIgniter's own "Unknown Platform" is English and not translatable).
+     *
+     * @return array{0: string, 1: string}
+     */
+    public static function device(string $userAgent): array
+    {
+        $agent = new UserAgent();
+        $agent->parse($userAgent);
+        $platform = $agent->getPlatform();
+
+        return [$agent->getBrowser(), $platform === 'Unknown Platform' ? '' : $platform];
     }
 }

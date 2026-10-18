@@ -5,6 +5,31 @@ Every change that matters to whoever installs or updates RoleWarden. Versions fo
 version may require changes on your side, listed under "Upgrading". After any update, run
 `php spark migrate -n RoleWarden`.
 
+## [Unreleased]
+
+### Added
+- **Sidebar** in groups (Access, Security, System), each item shown only to those who hold
+  its permission, with counters: users, roles, permissions, and the activity log's new
+  entries since your last visit. A **Today** panel with the day's sign-ins and failures for
+  those who can see the activity log, switched on and off from the Settings screen. Each
+  user can collapse the sidebar to a rail of icons.
+- **Three sidebar styles** in the Appearance screen: Paper (the light sidebar of 1.0), Ink
+  and Charcoal (dark in light and dark mode alike), saved in the theme file.
+
+### Changed
+- The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.
+
+### Fixed
+- The counts at the top of the Users screen no longer include deleted users.
+
+### Upgrading
+- Run `php spark migrate -n RoleWarden`. An updated installation keeps the Paper sidebar and
+  starts with Today switched off; a new one starts with it on.
+- If you copied `layouts/panel.php` into `app/Views/overrides/`, your copy keeps the 1.0
+  sidebar and still works. To get the new one, replace its `<aside>` with
+  `<?= view('RoleWarden\Views\partials\sidebar', ['active' => $active, 'collapsed' => $collapsed]) ?>`
+  as in the module's layout, which also sets `$collapsed` and the `rw-shell--rail` class.
+
 ## [1.0.0] - 2026-10-18
 
 The first version for sale.

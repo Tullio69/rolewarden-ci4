@@ -54,6 +54,7 @@ class RoleWarden extends \RoleWarden\Config\RoleWarden
         <tr><td><code>lockMinutes</code></td><td><code>15</code></td><td>How long a locked email waits.</td></tr>
         <tr><td><code>signInRate</code></td><td><code>10</code></td><td>Sign-in attempts accepted per minute from one IP address, whatever the email.</td></tr>
         <tr><td><code>activityRetentionDays</code></td><td><code>365</code></td><td>Days the activity log keeps its entries; <code>0</code> keeps them forever. The Settings screen offers 90 days, 1 year or forever.</td></tr>
+        <tr><td><code>sidebarToday</code></td><td><code>true</code></td><td>Whether the sidebar shows today's sign-ins to those who can see the activity log. Starting value of the Settings screen; an installation updated from 1.0 starts with it off.</td></tr>
         <tr><td><code>colorScheme</code></td><td><code>'system'</code></td><td>Light or dark for a user who has not chosen; <code>'system'</code> follows the browser.</td></tr>
         <tr><td><code>languages</code></td><td><code>[]</code></td><td>Languages the panel offers, for example <code>['en']</code>; empty offers every language it has a file for. See <a href="views.html#languages">Languages</a>.</td></tr>
         <tr><td><code>extraThemes</code></td><td><code>[]</code></td><td>Themes of your application offered next to Console, Clarity and Contrast: <code>slug =&gt; label</code>. See <a href="views.html#themes">Themes</a>.</td></tr>
@@ -68,6 +69,7 @@ class RoleWarden extends \RoleWarden\Config\RoleWarden
       <li><strong>Session lifetime</strong> and <strong>Remember me</strong>. "Remember me" is Shield's own <code>Auth.sessionConfig</code>, stored through the same library, so Shield reads it unchanged. Off hides the option on the sign-in page.</li>
       <li><strong>Lock after failed sign-ins</strong>, <strong>lock duration</strong> and <strong>sign-in attempts per address</strong>.</li>
       <li><strong>How long the activity log is kept.</strong> Older entries are deleted once a day, on the first write of the day: no cron job.</li>
+      <li><strong>Today in the sidebar.</strong> The day's sign-ins and failures, read from Shield's <code>auth_logins</code>, shown to those who hold <code>activity.view</code>.</li>
     </ul>
 
     <h3>Sign-in limits and Shield</h3>

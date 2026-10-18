@@ -37,11 +37,10 @@ La v1.1 è il primo aggiornamento: dà al pannello una pagina d'ingresso e una n
 
 | Decisione | Opzioni sul tavolo | Blocca |
 | --- | --- | --- |
-| Pannello "Oggi" | Acceso o spento sulle installazioni nuove e su quelle aggiornate dalla 1.0 | U1 |
 | Forma della API dei blocchi | Interfaccia o classe astratta del modulo; come si registra (array nella config `RoleWarden` dell'applicazione o evento); cosa riceve la view (periodo, utente) | U5 |
 | Dati della demo | La demo azzera i dati ogni ora: per avere grafici pieni serve uno storico di accessi finto nel seeder della demo, marcato come esempio | U6 |
 
-**Già chiuse il 2026-10-18.** Migrazione che concede `dashboard.*` ai ruoli con `activity.view`; personalizzazione con Settings, senza predefiniti per ruolo; API dei blocchi nella 1.1; barra Paper predefinita, demo in Ink; mappa di calore di Console invariata.
+**Già chiuse il 2026-10-18 e 2026-10-19.** Pannello "Oggi" acceso sulle installazioni nuove, spento su quelle aggiornate; barra in una view propria, un layout 1.0 sovrascritto continua a funzionare. Migrazione che concede `dashboard.*` ai ruoli con `activity.view`; personalizzazione con Settings, senza predefiniti per ruolo; API dei blocchi nella 1.1; barra Paper predefinita, demo in Ink; mappa di calore di Console invariata.
 
 ## Ordine di lavoro
 

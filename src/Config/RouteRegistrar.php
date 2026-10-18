@@ -74,6 +74,7 @@ class RouteRegistrar
 
                 $routes->get('activity', 'ActivityController::index', ['filter' => 'can:activity.view']);
 
+                $routes->post('sidebar', 'AppearanceController::sidebar');
                 $routes->get('appearance', 'AppearanceController::index', ['filter' => 'can:appearance.update']);
                 $routes->post('appearance', 'AppearanceController::update', ['filter' => 'can:appearance.update']);
                 $routes->post('appearance/reset', 'AppearanceController::reset', ['filter' => 'can:appearance.update']);

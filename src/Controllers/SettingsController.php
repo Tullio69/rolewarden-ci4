@@ -9,6 +9,7 @@ use RoleWarden\Account\ActivityLog;
 use RoleWarden\Models\RoleModel;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\DefaultRole;
+use RoleWarden\Settings\Sidebar;
 use RoleWarden\Settings\SignIn;
 
 /**
@@ -35,6 +36,7 @@ class SettingsController extends BaseController
             'defaultRole' => $defaultRole['slug'] ?? '',
             'signIn' => SignIn::values(),
             'retention' => (int) setting(self::RETENTION),
+            'today' => Sidebar::showsToday(),
             'logEntries' => ActivityLog::count(),
             'errors' => session()->getFlashdata('rw_errors') ?? [],
             'changedAt' => setting(self::CHANGED_AT),
@@ -51,7 +53,10 @@ class SettingsController extends BaseController
         $post = $this->request->getPost() ?? [];
 
         // Field errors stay under their control (V1 decision), not in a toast.
-        $rules = SignIn::rules() + ['activity_retention' => 'required|in_list[' . implode(',', SignIn::choices(ActivityLog::RETENTIONS, (int) setting(self::RETENTION))) . ']'];
+        $rules = SignIn::rules() + [
+            'activity_retention' => 'required|in_list[' . implode(',', SignIn::choices(ActivityLog::RETENTIONS, (int) setting(self::RETENTION))) . ']',
+            'sidebar_today' => 'required|in_list[0,1]',
+        ];
 
         if (! $this->validateData($post, $rules, $this->messages())) {
             return redirect()->to($back)->withInput()->with('rw_errors', $this->validator->getErrors());
@@ -67,15 +72,16 @@ class SettingsController extends BaseController
             }
         }
 
-        $before = ['default_role' => DefaultRole::role()['slug'] ?? '', 'activity_retention' => (int) setting(self::RETENTION)] + SignIn::values();
+        $before = ['default_role' => DefaultRole::role()['slug'] ?? '', 'activity_retention' => (int) setting(self::RETENTION), 'sidebar_today' => Sidebar::showsToday()] + SignIn::values();
 
         setting(DefaultRole::KEY, $slug);
         SignIn::save($post);
         setting(self::RETENTION, (int) $post['activity_retention']);
+        setting(Sidebar::TODAY, $post['sidebar_today'] === '1');
         setting(self::CHANGED_AT, date('Y-m-d H:i:s'));
         setting(self::CHANGED_BY, (int) auth()->id());
 
-        $changes = ActivityLog::diff($before, ['default_role' => $slug, 'activity_retention' => (int) $post['activity_retention']] + SignIn::values());
+        $changes = ActivityLog::diff($before, ['default_role' => $slug, 'activity_retention' => (int) $post['activity_retention'], 'sidebar_today' => $post['sidebar_today'] === '1'] + SignIn::values());
 
         if ($changes !== []) {
             ActivityLog::record('settings.updated', 'settings', null, lang('RoleWarden.panel.settings.title'), $changes);
@@ -93,7 +99,7 @@ class SettingsController extends BaseController
     {
         $messages = [];
 
-        foreach (['session_lifetime', 'remember_length', 'activity_retention'] as $field) {
+        foreach (['session_lifetime', 'remember_length', 'activity_retention', 'sidebar_today'] as $field) {
             $messages[$field] = ['required' => lang('RoleWarden.panel.settings.choose'), 'in_list' => lang('RoleWarden.panel.settings.choose')];
         }
 

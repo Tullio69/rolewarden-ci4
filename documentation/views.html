@@ -35,6 +35,7 @@
       <tbody>
         <tr><td><code>src/Views/roles/show.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/roles/show.php</code></td></tr>
         <tr><td><code>src/Views/layouts/panel.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/layouts/panel.php</code></td></tr>
+        <tr><td><code>src/Views/partials/sidebar.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/partials/sidebar.php</code></td></tr>
         <tr><td><code>src/Views/emails/new_sign_in.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/emails/new_sign_in.php</code></td></tr>
         <tr><td><code>src/Views/auth/login.php</code></td><td><code>app/Views/overrides/RoleWarden/Views/auth/login.php</code></td></tr>
       </tbody>
@@ -45,7 +46,7 @@
     <h2 id="themes">Themes</h2>
     <p>Three themes ship with the panel: <strong>Console</strong> (dense, the default), <strong>Clarity</strong> (airy) and <strong>Contrast</strong> (high contrast), each in light and dark. Every signed-in user picks light, dark or "System" from the top bar.</p>
     <h3>The theme for everyone</h3>
-    <p><code>/rolewarden/appearance</code> (permission <code>appearance.update</code>) sets the starting theme, background, text and accent colours for light and dark, corner radius and density, with a live preview and a warning on any text colour below WCAG AA. The result is saved in <code>writable/rolewarden/theme.json</code>, a file of your application, so the folder must be writable by the web server.</p>
+    <p><code>/rolewarden/appearance</code> (permission <code>appearance.update</code>) sets the starting theme, background, text and accent colours for light and dark, corner radius, density and the sidebar style (Paper, the light sidebar; Ink and Charcoal, dark in both modes), with a live preview and a warning on any text colour below WCAG AA. The result is saved in <code>writable/rolewarden/theme.json</code>, a file of your application, so the folder must be writable by the web server.</p>
     <h3>A theme under version control</h3>
     <p>Download the theme from the Appearance screen and save it as <code>app/Config/RoleWarden/theme.json</code>. When that file exists it wins over the one in <code>writable/</code>, and the panel shows it without letting anyone change it.</p>
     <h3>A theme of your own</h3>

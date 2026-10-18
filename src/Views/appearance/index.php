@@ -4,7 +4,7 @@
  * to this very page as it is made, sidebar and top bar included; saving writes the
  * theme file of the host application.
  *
- * @var array{base: string, radius: int|null, density: string|null, colors: array{light: array<string, string>, dark: array<string, string>}} $theme
+ * @var array{base: string, radius: int|null, density: string|null, sidebar: string|null, colors: array{light: array<string, string>, dark: array<string, string>}} $theme
  * @var bool                  $pinned the host keeps app/Config/RoleWarden/theme.json, which wins
  * @var array<string, string> $errors field => message
  */
@@ -22,6 +22,7 @@ $config = [
     'base' => (string) $old('base', $theme['base']),
     'radius' => (string) $old('radius', $theme['radius'] === null ? '' : (string) $theme['radius']),
     'density' => (string) $old('density', $theme['density'] ?? ''),
+    'sidebar' => (string) $old('sidebar', $theme['sidebar'] ?? ''),
     'colors' => [
         'light' => $colorsFor('light'),
         'dark' => $colorsFor('dark'),
@@ -157,6 +158,19 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
             <?php endforeach ?>
           </select>
           <?= $error('density') ?>
+        </td>
+        <td class="rw-anno"></td>
+      </tr>
+      <tr>
+        <td class="rw-m-num">03</td>
+        <th class="rw-l-key" scope="row"><label for="rw-sidebar"><?= lang('RoleWarden.panel.appearance.sidebar') ?></label><small><?= lang('RoleWarden.panel.appearance.sidebarHelp') ?></small></th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-sidebar" name="sidebar" x-model="sidebar"<?= $disabled ?>>
+            <?php foreach (RoleWarden\Settings\Sidebar::STYLES as $style) : ?>
+              <option value="<?= $style === 'paper' ? '' : $style ?>"<?= $config['sidebar'] === ($style === 'paper' ? '' : $style) ? ' selected' : '' ?>><?= lang('RoleWarden.panel.appearance.sidebars.' . $style) ?></option>
+            <?php endforeach ?>
+          </select>
+          <?= $error('sidebar') ?>
         </td>
         <td class="rw-anno"></td>
       </tr>

@@ -18,7 +18,7 @@ use RuntimeException;
  * which the panel writes. Missing or unreadable: Console, no overrides.
  *
  * The file is JSON:
- *   {"base": "clarity", "radius": 4, "density": "regular",
+ *   {"base": "clarity", "radius": 4, "density": "regular", "sidebar": "ink",
  *    "colors": {"light": {"accent": "#4338ca", ...}, "dark": {...}}}
  */
 final class Theme
@@ -85,7 +85,7 @@ final class Theme
     /**
      * The current theme, normalised.
      *
-     * @return array{base: string, radius: int|null, density: string|null, colors: array{light: array<string, string>, dark: array<string, string>}}
+     * @return array{base: string, radius: int|null, density: string|null, sidebar: string|null, colors: array{light: array<string, string>, dark: array<string, string>}}
      */
     public static function current(): array
     {
@@ -93,7 +93,7 @@ final class Theme
     }
 
     /**
-     * @return array{base: string, radius: int|null, density: string|null, colors: array{light: array<string, string>, dark: array<string, string>}}
+     * @return array{base: string, radius: int|null, density: string|null, sidebar: string|null, colors: array{light: array<string, string>, dark: array<string, string>}}
      */
     private static function read(): array
     {
@@ -120,7 +120,7 @@ final class Theme
      *
      * @param array<string, mixed> $data
      *
-     * @return array{base: string, radius: int|null, density: string|null, colors: array{light: array<string, string>, dark: array<string, string>}}
+     * @return array{base: string, radius: int|null, density: string|null, sidebar: string|null, colors: array{light: array<string, string>, dark: array<string, string>}}
      */
     public static function normalise(array $data): array
     {
@@ -138,11 +138,14 @@ final class Theme
 
         $radius = $data['radius'] ?? null;
         $density = $data['density'] ?? null;
+        $sidebar = $data['sidebar'] ?? null;
 
         return [
             'base' => is_string($data['base'] ?? null) && isset(self::bases()[$data['base']]) ? $data['base'] : 'console',
             'radius' => is_int($radius) && in_array($radius, self::RADII, true) ? $radius : null,
             'density' => is_string($density) && isset(self::DENSITIES[$density]) ? $density : null,
+            // No style is Paper, the 1.0 sidebar: a theme file written before 1.1 looks the same.
+            'sidebar' => is_string($sidebar) && in_array($sidebar, Sidebar::STYLES, true) ? $sidebar : null,
             'colors' => $colors,
         ];
     }
@@ -187,7 +190,7 @@ final class Theme
      * The overrides as CSS, loaded after panel.css; '' when there are none.
      * Values come from normalise(), so they are known keys and plain hex/px.
      *
-     * @param array{base: string, radius: int|null, density: string|null, colors: array{light: array<string, string>, dark: array<string, string>}} $theme
+     * @param array{base: string, radius: int|null, density: string|null, sidebar: string|null, colors: array{light: array<string, string>, dark: array<string, string>}} $theme
      */
     public static function css(array $theme): string
     {

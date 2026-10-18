@@ -55,6 +55,13 @@ class RoleWarden extends BaseConfig
     public string $colorScheme = 'system';
 
     /**
+     * Whether the sidebar shows today's sign-ins (to those who can see the
+     * activity log). Starting value of the Settings screen; an installation
+     * updated from 1.0 starts with it off, so its sidebar looks the same.
+     */
+    public bool $sidebarToday = true;
+
+    /**
      * Languages the panel offers, e.g. ['en']; empty offers every locale with
      * a RoleWarden language file. With one, the language switch disappears and
      * everyone sees that language, whatever the application's locale.

@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use RoleWarden\Account\ActivityLog;
 use RoleWarden\Settings\ColorScheme;
+use RoleWarden\Settings\Sidebar;
 use RoleWarden\Settings\Theme;
 use Throwable;
 
@@ -62,6 +63,12 @@ class AppearanceController extends BaseController
             $errors['density'] = lang('RoleWarden.panel.appearance.chooseListed');
         }
 
+        $sidebar = is_string($post['sidebar'] ?? null) && $post['sidebar'] !== '' ? $post['sidebar'] : null;
+
+        if ($sidebar !== null && ! in_array($sidebar, Sidebar::STYLES, true)) {
+            $errors['sidebar'] = lang('RoleWarden.panel.appearance.chooseListed');
+        }
+
         $colors = ['light' => [], 'dark' => []];
 
         foreach (['light', 'dark'] as $mode) {
@@ -87,7 +94,7 @@ class AppearanceController extends BaseController
         }
 
         $before = Theme::current();
-        $after = Theme::normalise(['base' => $base, 'radius' => $radius, 'density' => $density, 'colors' => $colors]);
+        $after = Theme::normalise(['base' => $base, 'radius' => $radius, 'density' => $density, 'sidebar' => $sidebar, 'colors' => $colors]);
 
         try {
             Theme::save($after);
@@ -158,13 +165,23 @@ class AppearanceController extends BaseController
     }
 
     /**
-     * @param array{base: string, radius: int|null, density: string|null, colors: array{light: array<string, string>, dark: array<string, string>}} $theme
+     * The signed-in user's choice of the full sidebar or the rail of icons.
+     */
+    public function sidebar(): RedirectResponse
+    {
+        Sidebar::setCollapsed((int) auth()->id(), $this->request->getPost('collapsed') === '1');
+
+        return redirect()->back();
+    }
+
+    /**
+     * @param array{base: string, radius: int|null, density: string|null, sidebar: string|null, colors: array{light: array<string, string>, dark: array<string, string>}} $theme
      *
      * @return array<string, mixed>
      */
     private static function flat(array $theme): array
     {
-        $flat = ['base' => $theme['base'], 'radius' => $theme['radius'], 'density' => $theme['density']];
+        $flat = ['base' => $theme['base'], 'radius' => $theme['radius'], 'density' => $theme['density'], 'sidebar' => $theme['sidebar']];
 
         foreach ($theme['colors'] as $mode => $colors) {
             foreach (Theme::COLORS as $key) {

@@ -18,6 +18,8 @@ class ActivityController extends BaseController
 
     public function index(): string
     {
+        \RoleWarden\Settings\Sidebar::markActivitySeen((int) auth()->id());
+
         $filters = [
             'user' => rw_query('user'),
             'action' => rw_query('action'),

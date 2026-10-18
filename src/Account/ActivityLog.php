@@ -240,7 +240,7 @@ final class ActivityLog
      * Whether the log table exists: between replacing the module's folder and
      * running its migrations it does not, and nothing is written.
      */
-    private static function ready(): bool
+    public static function ready(): bool
     {
         return self::$ready ??= db_connect()->tableExists(config('RoleWarden')->table('activity_log'));
     }

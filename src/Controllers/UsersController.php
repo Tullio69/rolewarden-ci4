@@ -88,9 +88,9 @@ class UsersController extends BaseController
         }
 
         $counts = [
-            'total' => db_connect()->table(config('Auth')->tables['users'])->countAllResults(),
-            'active' => db_connect()->table(config('Auth')->tables['users'])->where('active', 1)->countAllResults(),
-            'inactive' => db_connect()->table(config('Auth')->tables['users'])->where('active', 0)->countAllResults(),
+            'total' => db_connect()->table(config('Auth')->tables['users'])->where('deleted_at', null)->countAllResults(),
+            'active' => db_connect()->table(config('Auth')->tables['users'])->where('deleted_at', null)->where('active', 1)->countAllResults(),
+            'inactive' => db_connect()->table(config('Auth')->tables['users'])->where('deleted_at', null)->where('active', 0)->countAllResults(),
         ];
 
         return rw_panel('RoleWarden\Views\users\index', [

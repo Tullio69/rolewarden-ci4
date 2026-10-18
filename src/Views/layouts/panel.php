@@ -10,30 +10,9 @@
   <script defer src="<?= esc(site_url('rolewarden/assets/js/vendor/alpine.min.js')) ?>"></script>
 </head>
 <body>
-<div class="rw rw-shell">
-  <aside class="rw-sidebar" aria-label="<?= esc(lang('RoleWarden.panel.a11y.main'), 'attr') ?>">
-    <div class="rw-brand"><b>RoleWarden</b></div>
-    <ul class="rw-nav">
-      <?php if (can('users.view')) : ?>
-        <li><a href="<?= esc(site_url('rolewarden/users')) ?>"<?= $active === 'users' ? ' aria-current="page"' : '' ?>><span>01</span><?= lang('RoleWarden.panel.nav.users') ?></a></li>
-      <?php endif ?>
-      <?php if (can('roles.view')) : ?>
-        <li><a href="<?= esc(site_url('rolewarden/roles')) ?>"<?= $active === 'roles' ? ' aria-current="page"' : '' ?>><span>02</span><?= lang('RoleWarden.panel.nav.roles') ?></a></li>
-      <?php endif ?>
-      <?php if (can('permissions.view')) : ?>
-        <li><a href="<?= esc(site_url('rolewarden/permissions')) ?>"<?= $active === 'permissions' ? ' aria-current="page"' : '' ?>><span>03</span><?= lang('RoleWarden.panel.nav.permissions') ?></a></li>
-      <?php endif ?>
-      <?php if (can('settings.view')) : ?>
-        <li><a href="<?= esc(site_url('rolewarden/settings')) ?>"<?= $active === 'settings' ? ' aria-current="page"' : '' ?>><span>04</span><?= lang('RoleWarden.panel.nav.settings') ?></a></li>
-      <?php endif ?>
-      <?php if (can('activity.view')) : ?>
-        <li><a href="<?= esc(site_url('rolewarden/activity')) ?>"<?= $active === 'activity' ? ' aria-current="page"' : '' ?>><span>05</span><?= lang('RoleWarden.panel.nav.activity') ?></a></li>
-      <?php endif ?>
-      <?php if (can('appearance.update')) : ?>
-        <li><a href="<?= esc(site_url('rolewarden/appearance')) ?>"<?= $active === 'appearance' ? ' aria-current="page"' : '' ?>><span>06</span><?= lang('RoleWarden.panel.nav.appearance') ?></a></li>
-      <?php endif ?>
-    </ul>
-  </aside>
+<?php $collapsed = RoleWarden\Settings\Sidebar::collapsed(auth()->loggedIn() ? (int) auth()->id() : null); ?>
+<div class="rw rw-shell<?= $collapsed ? ' rw-shell--rail' : '' ?>">
+  <?= view('RoleWarden\Views\partials\sidebar', ['active' => $active, 'collapsed' => $collapsed]) ?>
 
   <div>
     <header class="rw-topbar">

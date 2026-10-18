@@ -8,6 +8,7 @@
  * @var array<string, int>         $signIn      RoleWarden\Settings\SignIn::values()
  * @var int                        $retention   activity log retention in days, 0 = forever
  * @var int                        $logEntries
+ * @var bool                       $today       the sidebar's "Today" panel is shown
  * @var array<string, string>      $errors      field => message
  * @var string|null                $changedAt
  * @var string|null                $changedBy
@@ -17,7 +18,7 @@
 use RoleWarden\Account\ActivityLog;
 use RoleWarden\Settings\SignIn;
 
-$saved = ['default_role' => $defaultRole, 'activity_retention' => (string) $retention] + array_map('strval', $signIn);
+$saved = ['default_role' => $defaultRole, 'activity_retention' => (string) $retention, 'sidebar_today' => $today ? '1' : '0'] + array_map('strval', $signIn);
 // After a rejected save the controls show what was posted, marked as changed.
 $shown = [];
 foreach ($saved as $key => $value) {
@@ -34,6 +35,7 @@ $settingsConfig = [
         'sign_in_rate' => lang('RoleWarden.panel.settings.signInRate'),
         'default_role' => lang('RoleWarden.panel.settings.defaultRole'),
         'activity_retention' => lang('RoleWarden.panel.settings.retention'),
+        'sidebar_today' => lang('RoleWarden.panel.settings.today'),
     ],
     'labels' => ['one' => lang('RoleWarden.panel.settings.unsavedOne'), 'many' => lang('RoleWarden.panel.settings.unsavedMany')],
 ];
@@ -177,6 +179,27 @@ $logNote = lang('RoleWarden.panel.settings.entries', [$logEntries]);
           <?= $error('activity_retention') ?>
         </td>
         <td class="rw-anno"><span class="rw-note" x-text="isChanged('activity_retention') ? '<?= $changedNote ?>' : '<?= esc($logNote, 'js') ?>'"><?= esc($logNote) ?></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="rw-section-title"><span class="rw-section-n">D</span><h2><?= lang('RoleWarden.panel.settings.sectionPanel') ?></h2></div>
+  <table class="rw-ledger rw-settings">
+    <tbody>
+      <tr :class="{ 'rw-changed': isChanged('sidebar_today') }">
+        <td class="rw-m-num"><?= str_pad((string) (count($rows) + 3), 2, '0', STR_PAD_LEFT) ?></td>
+        <th class="rw-l-key" scope="row">
+          <label for="rw-sidebar_today"><?= lang('RoleWarden.panel.settings.today') ?></label>
+          <small><?= lang('RoleWarden.panel.settings.todayHelp') ?></small>
+        </th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-sidebar_today" name="sidebar_today" x-model="cur.sidebar_today"<?= $disabled ?><?= $invalid('sidebar_today') ?>>
+            <option value="1"<?= $shown['sidebar_today'] === '1' ? ' selected' : '' ?>><?= lang('RoleWarden.panel.settings.shown') ?></option>
+            <option value="0"<?= $shown['sidebar_today'] === '0' ? ' selected' : '' ?>><?= lang('RoleWarden.panel.settings.hidden') ?></option>
+          </select>
+          <?= $error('sidebar_today') ?>
+        </td>
+        <td class="rw-anno"><span class="rw-note" x-text="isChanged('sidebar_today') ? '<?= $changedNote ?>' : ''"></span></td>
       </tr>
     </tbody>
   </table>

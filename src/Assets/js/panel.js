@@ -412,6 +412,7 @@ function rwAppearanceController(config) {
     base: config.base,
     radius: config.radius,
     density: config.density,
+    sidebar: config.sidebar,
     colors: { light: { ...config.colors.light }, dark: { ...config.colors.dark } },
     labels: config.labels,
     defaults: { light: {}, dark: {} },
@@ -426,6 +427,7 @@ function rwAppearanceController(config) {
       this.$watch('base', () => { this.readDefaults(); this.apply(); });
       this.$watch('radius', () => this.apply());
       this.$watch('density', () => this.apply());
+      this.$watch('sidebar', () => this.apply());
     },
 
     readDefaults() {
@@ -485,6 +487,8 @@ function rwAppearanceController(config) {
         root.style.removeProperty('--radius-md');
         root.style.removeProperty('--radius-sm');
       }
+      const side = document.querySelector('.rw-side');
+      if (side) side.dataset.sidebar = this.sidebar || 'paper';
       const sizes = config.densities[this.density] || null;
       for (const key of Object.keys(config.densities.compact)) {
         if (sizes) root.style.setProperty('--size-' + key, sizes[key] + 'px');

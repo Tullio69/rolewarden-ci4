@@ -30,14 +30,14 @@ pubblicazione") e `docs/BRIEF-v1.0.md`.
   viewer@example.com / demo-viewer-2026; reader@, author@, approver@example.com /
   demo-docs-2026.
 - Staging (versioni nuove prima della demo): https://staging.rolewarden.com/
-- Sito: https://www.rolewarden.com/ (oggi una pagina statica). La documentazione andra'
-  su https://www.rolewarden.com/docs/ (deciso il 2026-10-18).
+- Sito: https://www.rolewarden.com/ (oggi una pagina statica). Documentazione online:
+  https://www.rolewarden.com/docs/ (versione 1.0.0).
 
 ## Stato della roadmap di pubblicazione (2026-10-18)
 
 1. Decisioni del prodotto: fatto.
-2. Verifiche tecniche: collaudo S2 in chiusura.
-3. Versione 1.0.0 definitiva: in preparazione (chat tecnica).
+2. Verifiche tecniche: fatto.
+3. Versione 1.0.0 definitiva: fatto (tag `v1.0.0`, demo e documentazione online alla 1.0.0).
 4. **Vetrina: compito di questa chat.**
 5. Invio a CodeCanyon e post-lancio.
 

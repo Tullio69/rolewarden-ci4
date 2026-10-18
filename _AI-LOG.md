@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude (passo 3 della roadmap: versione 1.0.0 definitiva)
-**Agente:** Claude Code
-**Dalle:** 2026-10-18 20:35
-**Scope:** CHANGELOG e numero di versione, zip `1.0.0`, collaudo S3 sui pacchetti definitivi; tag, documentazione online e demo pubblica solo con il via dell'utente. In parallelo una chat commerciale scrive solo in `docs/COMMERCIALE*`
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -982,3 +982,10 @@ Formato di ogni voce:
   - Controllo visivo in browser vero dovuto all'autore.
   - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` in 10 esecuzioni, Mailpit vuoto, container, immagini e rete `s3-*` rimossi, nessun processo mio. Due giri di messa a punto (`ip83`, `x2`) spostati in `scratchpad/s3tries`.
   - Nessun commit, nessun push.
+
+### [2026-10-18 22:10] - Claude
+- Tipo: setup
+- Scope: passo 3 della roadmap (versione 1.0.0 definitiva); commit `089bd3e`, tag `v1.0.0`; repo demo `9f9d0bc`; `www.rolewarden.com/docs/`
+- Cosa ho fatto: S3 PASS letto. O2 di S3 applicata con il via dell'utente: `proxy_set_header Host $host;` nell'esempio nginx (`089bd3e`); zip `1.0.0` ricostruiti, differenza dai collaudati solo quella riga e il riferimento al commit in `installed.php`. Push di `main`, tag annotato `v1.0.0` su `089bd3e` pushato. Staging e demo pubblica a `9f9d0bc` (modulo `089bd3e`): `main` del repo demo avanzato in fast-forward da `staging`, login e matrice in italiano provati sulla demo. Documentazione online su `https://www.rolewarden.com/docs/` dal tag: `panel.css` e font in `docs/assets/`, unico cambiamento il link del foglio di stile; la pagina statica di `www` non toccata.
+- Stato: completato. **Passo 3 chiuso.**
+- Note per il prossimo: la documentazione online si aggiorna a mano a ogni release (stessa copia dal tag). Restano O7 di S2 e O1 di S3 (avviso di `composer validate`, solo Packagist). Proposta su CLAUDE.md (errori SQL) in attesa dell'utente. Passo 4 nella chat commerciale.

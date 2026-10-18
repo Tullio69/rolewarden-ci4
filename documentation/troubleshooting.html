@@ -37,6 +37,8 @@
     <p>Check server, port, database name, user and password; the database must already exist. The exact reason from the database is in <code>writable/logs/</code>. On many hosts the server is <code>localhost</code>, on Docker it is the service name.</p>
     <h3>The installer shows a text to save as <code>.env</code></h3>
     <p>The web server cannot write in the application's root folder. Save the text as <code>.env</code> there yourself (over FTP, for example) and continue, or make the folder writable and submit the database step again.</p>
+    <h3>In development every page answers 500 before the tables exist</h3>
+    <p>In an existing application with <code>CI_ENVIRONMENT = development</code>, Shield's debug toolbar reads its own tables on every page, the installer's included. Run the migrations first (see <a href="installation.html#migrations">Tables, with the installer or by hand</a>), or open the installer in <code>production</code> and switch back afterwards.</p>
     <h3>Pages other than the home page answer 404</h3>
     <p>The document root must be the <code>public/</code> folder, and the web server must send every request to <code>public/index.php</code>: CodeIgniter's <code>public/.htaccess</code> does it on Apache with <code>mod_rewrite</code>. Without rewriting, add <code>index.php/</code> to the addresses, or set <code>app.indexPage</code> accordingly.</p>
 

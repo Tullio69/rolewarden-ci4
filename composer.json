@@ -2,6 +2,7 @@
     "name": "rolewarden/codeigniter4-rolewarden",
     "description": "Database-driven roles and permissions with an admin panel for CodeIgniter 4, built on Shield",
     "type": "library",
+    "version": "1.0.0",
     "license": "proprietary",
     "keywords": [
         "codeigniter",

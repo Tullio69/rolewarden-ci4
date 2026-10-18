@@ -66,6 +66,9 @@ email.SMTPPort = 587
 email.SMTPCrypto = 'tls'</code></pre>
     <p>Without <code>email.fromEmail</code> the emails are skipped and a line is written to the log.</p>
 
+    <h3 id="index-page">Addresses without <code>index.php</code></h3>
+    <p>CodeIgniter puts <code>index.php/</code> in the addresses it builds, such as <code>/index.php/rolewarden/users</code>. When the web server sends every request to <code>public/index.php</code> (Apache with <code>mod_rewrite</code> and CodeIgniter's <code>public/.htaccess</code>, or nginx with <code>try_files $uri $uri/ /index.php?$query_string;</code>), add <code>app.indexPage = ''</code> to <code>.env</code> for shorter addresses. Without rewriting, leave it as it is.</p>
+
     <h3>Updating the complete application</h3>
     <p>RoleWarden lives in <code>modules/rolewarden</code> and is loaded from there by <code>app/Config/Autoload.php</code>. To update, replace that folder with the one from the new module zip, then run:</p>
 <pre><code>php spark migrate -n RoleWarden</code></pre>
@@ -75,7 +78,7 @@ email.SMTPCrypto = 'tls'</code></pre>
 <pre><code>"repositories": [
     { "type": "path", "url": "modules/rolewarden", "options": { "symlink": false } }
 ],</code></pre>
-<pre><code>composer require rolewarden/codeigniter4-rolewarden:@dev
+<pre><code>composer require rolewarden/codeigniter4-rolewarden:^1.0
 composer require codeigniter4/translations   # optional: CodeIgniter's own messages in Italian and other languages</code></pre>
     <p>Shield must already be installed and set up (<code>php spark shield:setup</code>).</p>
 
@@ -131,6 +134,9 @@ WHERE i.type = 'email_password' AND i.secret = 'you@example.com';</code></pre>
     '172.16.0.0/12' =&gt; 'X-Forwarded-For',
 ];</code></pre>
     <p>When the proxy handles HTTPS and talks to the application over plain HTTP, it must also send <code>X-Forwarded-Proto: https</code>. CodeIgniter reads that header only from the proxies in <code>$proxyIPs</code>. Keep <code>app.baseURL</code> on <code>https://</code>.</p>
+    <p>The proxy visitors connect to must replace <code>X-Forwarded-For</code> with the visitor's address, not add to what the visitor sent: otherwise anyone can write an address of their choice in the header and get round the sign-in limit per IP address. On nginx:</p>
+<pre><code>proxy_set_header X-Forwarded-For $remote_addr;
+proxy_set_header X-Forwarded-Proto $scheme;</code></pre>
     <p>On any site served over HTTPS, with a proxy or without, add <code>cookie.secure = true</code> to <code>.env</code> so that the session and "Remember me" cookies are never sent over plain HTTP.</p>
 
     <h2 id="demo">The demo app</h2>

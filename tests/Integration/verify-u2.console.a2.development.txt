@@ -1,0 +1,28 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase A2 from verify-u1.phase-a2.php
+
+===== phase A2 =====
+
+== A2: sidebar token names
+[INFO] server pid=45168 on 127.0.0.1:8071 prefix=''
+[PASS] A2-def-console-light console/light, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
+[PASS] A2-def-console-dark console/dark, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
+[PASS] A2-def-clarity-light clarity/light, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
+[PASS] A2-def-clarity-dark clarity/dark, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
+[PASS] A2-def-contrast-light contrast/light, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
+[PASS] A2-def-contrast-dark contrast/dark, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
+[INFO] application stylesheet served: HTTP 200
+[PASS] A2-ov-ink-light console/ink/light: an application stylesheet setting --side-accent, --on-side-accent changes the rendered active item
+[PASS] A2-ov-ink-dark console/ink/dark: an application stylesheet setting --side-accent, --on-side-accent changes the rendered active item
+[PASS] A2-ov-charcoal-light console/charcoal/light: an application stylesheet setting --side-accent, --on-side-accent and --charcoal-surface changes the rendered active item and the Charcoal rail
+[PASS] A2-ov-charcoal-dark console/charcoal/dark: an application stylesheet setting --side-accent, --on-side-accent and --charcoal-surface changes the rendered active item and the Charcoal rail
+[PASS] A2-back-light console/charcoal/light, stylesheet removed: active item and rail back to the design system's values
+[PASS] A2-back-dark console/charcoal/dark, stylesheet removed: active item and rail back to the design system's values
+[PASS] A2-clean A2 pages: no 5xx, no SQL or PHP error text
+
+TOTAL: 15 PASS, 0 FAIL, 0 AMB
+b921f97 s1.a2.b921f97.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=False (1 .env files deleted first)

@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude (1.1, tappa U2 Verifica di un permesso)
+**Agente:** Claude Code
+**Dalle:** 2026-10-19 15:15
+**Scope:** controller, view e rotta della verifica di un permesso, voce della barra, lingue, test
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1051,3 +1051,18 @@ Formato di ogni voce:
 - Cosa ho fatto: decisioni dell'utente sulle ambiguità del collaudo. A1: in Paper il 3:1 della voce attiva lo portano testo `accent` e peso 600, la velatura è un segnale (regola nel design system, copia e originale). A2: token `--side-accent`, `--on-side-accent`, `--charcoal-*` nel CSS, letti da Ink e Charcoal, impostabili da un file di tema. D2 della riverifica (gap e line-height grezzi nella barra) su `--space-0-5` e `--space-5`. A3: `--side-ink` e `--side-muted` passano per le coppie `--l-*`/`--d-*`. Valori resi invariati.
 - Stato: completato. **U1 approvata dal collaudo** su `b1df3cc`: V5 177/177, U1 226/226, A2 15/15, S1 fase Y 52/52 in development e production; S1, V8, V2 PASS su `d73ce80`.
 - Note per il prossimo: controllo visivo in browser vero dovuto all'utente. Nessun `--leading-*` vale 20px in tutti i temi, per questo il contatore usa un token di spaziatura. In scratchpad restano profili Chrome bloccati (`u1rc*`) e in `tests/Integration/verify-v5.work/`, da cancellare a mano. Prossima tappa: U2 Verifica di un permesso.
+
+### [2026-10-19 23:20] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `U2-REPORT.md`, `verify-u2.*` (fasi CHK e ST, sonda X, runner, harness, driver `verify-u2.all.sh`, copie adattate `verify-u2.u1lib.adapted.php`, `verify-u2.phase-nav.adapted.php`, `verify-u2.phase-rail.adapted.php`, uscite)
+- Cosa ho fatto: collaudo in nero di U2 (Verifica di un permesso) sul commit `b921f97`, solo `rolewarden_test`, una suite alla volta, development e production. Esito di riferimento dalla precedenza della SPEC calcolata dalle tabelle, confrontato con `can()`/`explain()` (comando spark di prova nella copia usa e getta) e con la schermata.
+  - **CHK:** 82/83 ×2. Accesso con `permissions.view` (12 account), esito e regola per 120 coppie con tutte le sei regole, chi lo ha (7 permessi, paginazione), 26 ingressi ostili, sola lettura, inglese e italiano: PASS. FAIL O-6 (D1).
+  - **ST (stato utente, `6f3922a`):** 38/44 ×2. Colori, alone, durata e contrasto (≥ 5:1 sullo sfondo) PASS. FAIL riduzione del movimento (D2).
+  - **Regressione:** U1 226/226 (NAV e RAIL adattate: voce in più), A2 15/15, V8b 116/116, S1 Y 52/52, V2 151/169 PASS. V5 176/177: FAIL T05 (D3).
+- Stato: completato. **Esito FAIL; U2 non approvata.**
+- Note per il prossimo:
+  - **D1:** `explain()['via']` è vuoto per un account disattivato. `api.html` dice che `via` c'è «even when another rule decides».
+  - **D2:** con `prefers-reduced-motion` il puntino attivo si anima lo stesso. La regola `.rw-status:not(.rw-status--disabled)::before` (0,2,1) batte `.rw-status::before { animation: none }` (0,1,1) nella media query. Lo stesso errore è in `bundle.css` del design system.
+  - **D3:** `1.6s` ed `ease-in-out` grezzi nell'animazione dello stato (V5 T05). Token o eccezione dichiarata, lo decide l'autore.
+  - **Ambiguità A1 (all'utente, non decisa):** «Access» è «Accesso» nella barra e «Autorizzazioni» nell'occhiello delle schermate di Access (1.0 e U2).
+  - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` dopo tutte le 18 esecuzioni, Mailpit vuoto, nessun processo residuo. In scratchpad restano `u2w-dev2/` e `u2r-*` (profili Chrome bloccati, nessuna credenziale). Nessun commit.

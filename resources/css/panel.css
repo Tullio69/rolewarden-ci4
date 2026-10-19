@@ -89,7 +89,7 @@
   --weight-body: 400; --weight-medium: 500; --weight-strong: 600; --weight-title: 400; --font-title: var(--font-serif);
   --l-side-surface: var(--p-inkblue-920); --l-side-raised: var(--p-inkblue-880); --l-side-rule: var(--p-inkblue-840);
   --d-side-surface: var(--p-inkblue-940); --d-side-raised: var(--p-inkblue-885); --d-side-rule: var(--p-inkblue-850);
-  --side-ink: var(--p-inkblue-25); --side-muted: var(--p-inkblue-300);
+  --l-side-ink: var(--p-inkblue-25); --d-side-ink: var(--p-inkblue-25); --l-side-muted: var(--p-inkblue-300); --d-side-muted: var(--p-inkblue-300);
   --gutter: 40px; --size-sidebar: 216px; --size-topbar: 52px;
   --size-control: 32px; --size-control-sm: 26px; --size-square: 30px;
   --size-row: 36px; --size-row-md: 40px; --size-row-lg: 48px; --size-row-xl: 52px; --size-head: 64px; --size-empty: 100px;
@@ -108,7 +108,7 @@
   --weight-body: 400; --weight-medium: 500; --weight-strong: 600; --weight-title: 400; --font-title: var(--font-serif);
   --l-side-surface: var(--p-indigo-875); --l-side-raised: var(--p-indigo-825); --l-side-rule: var(--p-indigo-775);
   --d-side-surface: var(--p-indigo-925); --d-side-raised: var(--p-indigo-860); --d-side-rule: var(--p-indigo-790);
-  --side-ink: var(--p-slate-50); --side-muted: var(--p-indigo-300);
+  --l-side-ink: var(--p-slate-50); --d-side-ink: var(--p-slate-50); --l-side-muted: var(--p-indigo-300); --d-side-muted: var(--p-indigo-300);
   --gutter: 56px; --size-sidebar: 248px; --size-topbar: 64px;
   --size-control: 40px; --size-control-sm: 32px; --size-square: 36px;
   --size-row: 52px; --size-row-md: 56px; --size-row-lg: 64px; --size-row-xl: 72px; --size-head: 80px; --size-empty: 140px;
@@ -127,7 +127,7 @@
   --weight-body: 500; --weight-medium: 600; --weight-strong: 700; --weight-title: 700; --font-title: var(--font-sans);
   --l-side-surface: var(--p-navy-825); --l-side-raised: var(--p-navy-725); --l-side-rule: var(--p-navy-75);
   --d-side-surface: var(--p-navy-900); --d-side-raised: var(--p-navy-825); --d-side-rule: var(--p-navy-75);
-  --side-ink: var(--p-white); --side-muted: var(--p-navy-75);
+  --l-side-ink: var(--p-white); --d-side-ink: var(--p-white); --l-side-muted: var(--p-navy-75); --d-side-muted: var(--p-navy-75);
   --gutter: 48px; --size-sidebar: 232px; --size-topbar: 56px;
   --size-control: 40px; --size-control-sm: 32px; --size-square: 36px;
   --size-row: 46px; --size-row-md: 50px; --size-row-lg: 56px; --size-row-xl: 64px; --size-head: 72px; --size-empty: 120px;
@@ -136,10 +136,10 @@
 }
 
 /* Light or dark: the user's choice wins, otherwise the system preference. */
-:root { --surface: var(--l-surface); --surface-sunk: var(--l-surface-sunk); --surface-raised: var(--l-surface-raised); --ink: var(--l-ink); --ink-muted: var(--l-ink-muted); --ink-faint: var(--l-ink-faint); --rule: var(--l-rule); --rule-strong: var(--l-rule-strong); --control-border: var(--l-control-border); --accent: var(--l-accent); --accent-hover: var(--l-accent-hover); --on-accent: var(--l-on-accent); --accent-tint: var(--l-accent-tint); --granted: var(--l-granted); --granted-tint: var(--l-granted-tint); --denied: var(--l-denied); --denied-tint: var(--l-denied-tint); --on-denied: var(--l-on-denied); --shadow-float: var(--l-shadow-float); --backdrop: var(--l-backdrop); --side-surface: var(--l-side-surface); --side-raised: var(--l-side-raised); --side-rule: var(--l-side-rule); --focus: var(--accent); color-scheme: light; }
-:root[data-rw-mode="dark"] { --surface: var(--d-surface); --surface-sunk: var(--d-surface-sunk); --surface-raised: var(--d-surface-raised); --ink: var(--d-ink); --ink-muted: var(--d-ink-muted); --ink-faint: var(--d-ink-faint); --rule: var(--d-rule); --rule-strong: var(--d-rule-strong); --control-border: var(--d-control-border); --accent: var(--d-accent); --accent-hover: var(--d-accent-hover); --on-accent: var(--d-on-accent); --accent-tint: var(--d-accent-tint); --granted: var(--d-granted); --granted-tint: var(--d-granted-tint); --denied: var(--d-denied); --denied-tint: var(--d-denied-tint); --on-denied: var(--d-on-denied); --shadow-float: var(--d-shadow-float); --backdrop: var(--d-backdrop); --side-surface: var(--d-side-surface); --side-raised: var(--d-side-raised); --side-rule: var(--d-side-rule); color-scheme: dark; }
+:root { --surface: var(--l-surface); --surface-sunk: var(--l-surface-sunk); --surface-raised: var(--l-surface-raised); --ink: var(--l-ink); --ink-muted: var(--l-ink-muted); --ink-faint: var(--l-ink-faint); --rule: var(--l-rule); --rule-strong: var(--l-rule-strong); --control-border: var(--l-control-border); --accent: var(--l-accent); --accent-hover: var(--l-accent-hover); --on-accent: var(--l-on-accent); --accent-tint: var(--l-accent-tint); --granted: var(--l-granted); --granted-tint: var(--l-granted-tint); --denied: var(--l-denied); --denied-tint: var(--l-denied-tint); --on-denied: var(--l-on-denied); --shadow-float: var(--l-shadow-float); --backdrop: var(--l-backdrop); --side-surface: var(--l-side-surface); --side-raised: var(--l-side-raised); --side-rule: var(--l-side-rule); --side-ink: var(--l-side-ink); --side-muted: var(--l-side-muted); --focus: var(--accent); color-scheme: light; }
+:root[data-rw-mode="dark"] { --surface: var(--d-surface); --surface-sunk: var(--d-surface-sunk); --surface-raised: var(--d-surface-raised); --ink: var(--d-ink); --ink-muted: var(--d-ink-muted); --ink-faint: var(--d-ink-faint); --rule: var(--d-rule); --rule-strong: var(--d-rule-strong); --control-border: var(--d-control-border); --accent: var(--d-accent); --accent-hover: var(--d-accent-hover); --on-accent: var(--d-on-accent); --accent-tint: var(--d-accent-tint); --granted: var(--d-granted); --granted-tint: var(--d-granted-tint); --denied: var(--d-denied); --denied-tint: var(--d-denied-tint); --on-denied: var(--d-on-denied); --shadow-float: var(--d-shadow-float); --backdrop: var(--d-backdrop); --side-surface: var(--d-side-surface); --side-raised: var(--d-side-raised); --side-rule: var(--d-side-rule); --side-ink: var(--d-side-ink); --side-muted: var(--d-side-muted); color-scheme: dark; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-rw-mode="light"]) { --surface: var(--d-surface); --surface-sunk: var(--d-surface-sunk); --surface-raised: var(--d-surface-raised); --ink: var(--d-ink); --ink-muted: var(--d-ink-muted); --ink-faint: var(--d-ink-faint); --rule: var(--d-rule); --rule-strong: var(--d-rule-strong); --control-border: var(--d-control-border); --accent: var(--d-accent); --accent-hover: var(--d-accent-hover); --on-accent: var(--d-on-accent); --accent-tint: var(--d-accent-tint); --granted: var(--d-granted); --granted-tint: var(--d-granted-tint); --denied: var(--d-denied); --denied-tint: var(--d-denied-tint); --on-denied: var(--d-on-denied); --shadow-float: var(--d-shadow-float); --backdrop: var(--d-backdrop); --side-surface: var(--d-side-surface); --side-raised: var(--d-side-raised); --side-rule: var(--d-side-rule); color-scheme: dark; }
+  :root:not([data-rw-mode="light"]) { --surface: var(--d-surface); --surface-sunk: var(--d-surface-sunk); --surface-raised: var(--d-surface-raised); --ink: var(--d-ink); --ink-muted: var(--d-ink-muted); --ink-faint: var(--d-ink-faint); --rule: var(--d-rule); --rule-strong: var(--d-rule-strong); --control-border: var(--d-control-border); --accent: var(--d-accent); --accent-hover: var(--d-accent-hover); --on-accent: var(--d-on-accent); --accent-tint: var(--d-accent-tint); --granted: var(--d-granted); --granted-tint: var(--d-granted-tint); --denied: var(--d-denied); --denied-tint: var(--d-denied-tint); --on-denied: var(--d-on-denied); --shadow-float: var(--d-shadow-float); --backdrop: var(--d-backdrop); --side-surface: var(--d-side-surface); --side-raised: var(--d-side-raised); --side-rule: var(--d-side-rule); --side-ink: var(--d-side-ink); --side-muted: var(--d-side-muted); color-scheme: dark; }
 }
 /* Dark rails (Ink, Charcoal): the theme's dark accent and dark surfaces in both modes. A theme file may set these directly. */
 :root { --side-accent: var(--d-accent); --on-side-accent: var(--d-on-accent); --charcoal-surface: var(--d-surface); --charcoal-raised: var(--d-surface-raised); --charcoal-rule: var(--d-rule-strong); --charcoal-ink: var(--d-ink); --charcoal-muted: var(--d-ink-muted); }
@@ -243,13 +243,13 @@
   .rw-side :focus-visible { outline-color: var(--sb-focus); }
   .rw-side-group { display: flex; flex-direction: column; gap: var(--space-1); padding: 0 var(--space-3); }
   .rw-side-label { padding: 0 var(--space-3); font-size: var(--text-xs); line-height: var(--leading-xs); font-weight: var(--weight-strong); letter-spacing: .04em; text-transform: uppercase; color: var(--sb-muted); }
-  .rw-side-nav { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .rw-side-nav { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-0-5); }
   .rw .rw-side-nav a { display: flex; align-items: center; gap: var(--space-2-5); height: var(--size-control); padding: 0 var(--space-3); border-radius: var(--radius-md); color: var(--sb-ink); font: var(--weight-medium) var(--text-md)/var(--leading-md) var(--font-sans); text-decoration: none; transition: background-color var(--motion-fast) var(--ease-out); }
   .rw .rw-side-nav a:hover { background: var(--sb-hover); color: var(--sb-ink); text-decoration: none; }
   .rw .rw-side-nav a[aria-current="page"] { background: var(--sb-act-bg); color: var(--sb-act-fg); font-weight: var(--weight-strong); }
   .rw-side-icon { flex: none; }
   .rw-side-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .rw-side-count { min-width: 24px; padding: 0 var(--space-1-5); border-radius: var(--radius-sm); background: var(--sb-raised); color: var(--sb-ink); font-size: var(--text-xs); line-height: 20px; font-weight: var(--weight-body); text-align: center; }
+  .rw-side-count { min-width: 24px; padding: 0 var(--space-1-5); border-radius: var(--radius-sm); background: var(--sb-raised); color: var(--sb-ink); font-size: var(--text-xs); line-height: var(--space-5); font-weight: var(--weight-body); text-align: center; }
   .rw-side-count--hot { background: var(--sb-hot-bg); color: var(--sb-hot-fg); font-weight: var(--weight-strong); }
   [aria-current="page"] > .rw-side-count--hot { background: var(--sb-bg); color: var(--sb-ink); }
   .rw-side-foot { margin-top: auto; display: flex; flex-direction: column; gap: var(--space-3); padding: 0 var(--space-3); }

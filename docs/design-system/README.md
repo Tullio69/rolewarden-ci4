@@ -14,8 +14,8 @@ RoleWarden is an admin panel for roles and permissions in CodeIgniter 4 apps. It
 
 **Color.** The sheet is `surface`, near-neutral, never beige. Text is `ink`; secondary text is `ink-muted`; row numbers and notes are `ink-faint`. Rows are separated by `rule` hairlines; sections by `rule-strong`.
 - `accent` (ink blue) is the only accent: primary buttons, links, focus, selection, unsaved-change markers, the active navigation item and the main series of a chart. Selected and changed things sit on `accent-tint`.
-- `granted` means granted. `denied` means denied or destructive. Never use either for decoration, status of a user, success toasts or charts.
-- A user's status (active / disabled) is neutral: `ink` and `ink-muted`, told apart by a word and a filled or hollow dot.
+- `granted` means granted. `denied` means denied or destructive. Never use either for decoration, success toasts or charts. The one exception is the filled dot of an active account (see the next point).
+- A user's status (active / disabled) is told apart by a word and a filled or hollow dot. The active dot is `granted` with a 3px `granted-tint` halo, its word `ink`; disabled is a hollow `ink-muted` ring, never `denied`. A dot cannot be read as a permission mark, because those differ by shape (decided 19 Oct 2026).
 - Dark theme is the same ledger inverted: charcoal `surface`, not black; rules stay subtle.
 
 **Type.** Three IBM Plex families. The panel ships them as woff2 files and loads nothing from a CDN at runtime; the previews of this system load them from Google Fonts.
@@ -36,7 +36,7 @@ RoleWarden is an admin panel for roles and permissions in CodeIgniter 4 apps. It
 - Disabled: 50% opacity text, `cursor: not-allowed`, still readable.
 - Unsaved: a changed cell carries a small `accent` corner dot and an `accent-tint` wash; the row's right margin notes "changed"; an `accent-tint` bar above the table counts the changes and holds Discard and Save changes.
 
-**Motion.** 120ms ease-out on color and background only. Nothing slides, bounces or scales. The one exception is a toast, which fades and rises 8px (see Toast), and not at all under `prefers-reduced-motion`.
+**Motion.** 120ms ease-out on color and background only. Nothing slides, bounces or scales. Two exceptions, neither under `prefers-reduced-motion`: a toast, which fades and rises 8px (see Toast), and the active dot of a user's status, whose halo breathes three times on load (1.6s each, under 5s in all) and then rests.
 
 ## Themes
 

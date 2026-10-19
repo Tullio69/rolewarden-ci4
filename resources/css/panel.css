@@ -203,9 +203,13 @@
   .rw-tip { position: absolute; z-index: 5; padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm); background: var(--surface-raised); color: var(--ink); border: var(--rule-strong-width) solid var(--rule-strong); box-shadow: var(--shadow-float); font: var(--weight-body) var(--text-xs)/var(--leading-xs) var(--font-sans); white-space: nowrap; pointer-events: none; }
 
   .rw-status { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--ink); }
-  .rw-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); border: 1.5px solid var(--ink); box-sizing: border-box; }
+  .rw-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--granted); border: 1.5px solid var(--granted); box-shadow: 0 0 0 3px var(--granted-tint); box-sizing: border-box; }
   .rw-status--disabled { color: var(--ink-muted); }
-  .rw-status--disabled::before { background: transparent; border-color: var(--ink-muted); }
+  .rw-status--disabled::before { background: transparent; border-color: var(--ink-muted); box-shadow: none; }
+  /* The active dot breathes three times on load, under 5s (WCAG 2.2.2), then rests with its halo. */
+  .rw-status:not(.rw-status--disabled)::before { animation: rw-alive 1.6s ease-in-out 3; }
+  @keyframes rw-alive { 50% { box-shadow: 0 0 0 0 var(--granted-tint); } }
+  @media (prefers-reduced-motion: reduce) { .rw-status::before { animation: none; } }
 
   .rw-pager { display: flex; align-items: center; gap: var(--space-1); list-style: none; margin: 0; padding: 0; }
   .rw-page { min-width: var(--size-square); height: var(--size-square); padding: 0 var(--space-2); display: inline-grid; place-items: center; border: var(--rule-width) solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--ink); font: var(--weight-medium) var(--text-sm)/var(--leading-xs) var(--font-sans); font-variant-numeric: tabular-nums; cursor: pointer; text-decoration: none; }

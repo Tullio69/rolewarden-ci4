@@ -62,9 +62,13 @@
 
 /* User status: neutral, told apart by word and dot shape (never green/red) */
 .rw-status { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); }
-.rw-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); border: 1.5px solid var(--ink); box-sizing: border-box; }
+.rw-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--granted); border: 1.5px solid var(--granted); box-shadow: 0 0 0 3px var(--granted-tint); box-sizing: border-box; }
 .rw-status--disabled { color: var(--ink-muted); }
-.rw-status--disabled::before { background: transparent; border-color: var(--ink-muted); }
+.rw-status--disabled::before { background: transparent; border-color: var(--ink-muted); box-shadow: none; }
+/* The active dot breathes three times on load, under 5s (WCAG 2.2.2), then rests with its halo. */
+.rw-status:not(.rw-status--disabled)::before { animation: rw-alive 1.6s ease-in-out 3; }
+@keyframes rw-alive { 50% { box-shadow: 0 0 0 0 var(--granted-tint); } }
+@media (prefers-reduced-motion: reduce) { .rw-status::before { animation: none; } }
 
 /* Pagination */
 .rw-pager { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }

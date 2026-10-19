@@ -185,6 +185,10 @@
   .rw-check:checked::before { display: block; }
   .rw-check:indeterminate::before { display: block; width: 8px; height: 0; border-left: 0; border-bottom: 2px solid var(--on-accent); transform: none; }
   .rw-check-row { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+  /* Check a permission: its loose blocks sit on the content gutter like the tables do. */
+  .rw-check-block { margin: 0 var(--gutter) var(--space-3) var(--gutter); }
+  .rw-check-rules { margin-bottom: var(--space-6); padding-left: var(--space-6); display: flex; flex-direction: column; gap: var(--space-1); color: var(--ink-muted); }
+  .rw-check-rules [aria-current] { color: var(--ink); }
 
   .rw-role { display: inline-flex; align-items: center; height: 20px; padding: 0 var(--space-1-5); border: var(--rule-strong-width) solid var(--rule-strong); border-radius: var(--radius-sm); font: var(--weight-medium) var(--text-xs)/var(--leading-xs) var(--font-sans); color: var(--ink); background: transparent; white-space: nowrap; }
   .rw-role--parent { border-style: dashed; color: var(--ink-muted); }

@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace RoleWarden\Controllers;
 
+use RoleWarden\Authorization\Resolver;
+use RoleWarden\Entities\User;
 use RoleWarden\Models\PermissionModel;
 use RoleWarden\Models\RoleModel;
+use RoleWarden\Models\UserModel;
 
 class PermissionsController extends BaseController
 {
+    private const PER_PAGE = 25;
+
     public function index(): string
     {
         $permissions = model(PermissionModel::class)->orderBy('area')->orderBy('slug')->findAll();
@@ -25,6 +30,90 @@ class PermissionsController extends BaseController
         return rw_panel('RoleWarden\Views\permissions\index', [
             'byArea' => $byArea,
         ], 'permissions', lang('RoleWarden.panel.permissions.indexTitle'));
+    }
+
+    /**
+     * Check a permission (SPEC, v1.1 decisions): who holds it and why, and for
+     * one user the outcome with the rule that decides it. Every answer comes
+     * from the resolver; nothing here re-applies the precedence.
+     */
+    public function check(): string
+    {
+        $permissions = model(PermissionModel::class)->orderBy('area')->orderBy('slug')->findAll();
+        $slug = rw_query('permission');
+        $known = in_array($slug, array_column($permissions, 'slug'), true);
+        $who = rw_query('user');
+        $user = $who !== '' ? $this->findUser($who) : null;
+        $resolver = service('rolewarden');
+        $page = max(1, (int) rw_query('page'));
+        $holders = [];
+        $total = 0;
+
+        if ($known) {
+            // ponytail: asks the resolver about every user with a role or an override (cached per user); an index of grants if very large user bases make this slow.
+            $ids = array_values(array_filter($this->candidates($slug), static fn (int $id): bool => $resolver->can($id, $slug)));
+            $total = count($ids);
+            $pageIds = array_slice($ids, ($page - 1) * self::PER_PAGE, self::PER_PAGE);
+            $users = $pageIds === [] ? [] : array_column(model(UserModel::class)->whereIn('id', $pageIds)->findAll(), null, 'id');
+
+            foreach ($pageIds as $id) {
+                if (isset($users[$id])) {
+                    $holders[] = ['user' => $users[$id], 'why' => $resolver->explain($id, $slug)];
+                }
+            }
+        }
+
+        $pager = service('pager');
+        $pager->store('default', $page, self::PER_PAGE, $total);
+        $pager->only(['permission', 'user']);
+
+        return rw_panel('RoleWarden\Views\permissions\check', [
+            'permissions' => $permissions,
+            'slug' => $known ? $slug : '',
+            'unknown' => $slug !== '' && ! $known,
+            'who' => $who,
+            'user' => $user,
+            'verdict' => $known && $user !== null ? $resolver->explain((int) $user->id, $slug) : null,
+            'rules' => [Resolver::RULE_INACTIVE, Resolver::RULE_OVERRIDE_DENIED, Resolver::RULE_OVERRIDE_GRANTED, Resolver::RULE_SUPER_ADMIN, Resolver::RULE_ROLE, Resolver::RULE_NONE],
+            'holders' => $holders,
+            'total' => $total,
+            'roleNames' => array_column(model(RoleModel::class)->findAll(), 'name', 'id'),
+            'pager' => $pager,
+            'start' => ($page - 1) * self::PER_PAGE,
+        ], 'check', lang('RoleWarden.panel.check.title'));
+    }
+
+    /**
+     * A user by id, username or email; null when none matches.
+     */
+    private function findUser(string $who): ?User
+    {
+        $users = model(UserModel::class);
+        $user = ctype_digit($who) ? $users->find((int) $who) : $users->where('username', $who)->first();
+
+        return $user ?? $users->findByCredentials(['email' => $who]);
+    }
+
+    /**
+     * Users who might hold the permission: anyone with a role (a grant, an
+     * inherited grant or a super admin role) or a positive override for it.
+     * The model leaves deleted users out.
+     *
+     * @return list<int>
+     */
+    private function candidates(string $slug): array
+    {
+        $db = db_connect();
+        $cfg = config('RoleWarden');
+        $withRole = $db->table($cfg->table('user_roles'))->distinct()->select('user_id')->get()->getResultArray();
+        $withOverride = $db->table($cfg->table('user_permissions') . ' up')
+            ->select('up.user_id')
+            ->join($cfg->table('permissions') . ' p', 'p.id = up.permission_id')
+            ->where('p.slug', $slug)->where('up.granted', 1)
+            ->get()->getResultArray();
+        $ids = array_values(array_unique(array_map('intval', array_column([...$withRole, ...$withOverride], 'user_id'))));
+
+        return $ids === [] ? [] : array_map('intval', model(UserModel::class)->whereIn('id', $ids)->orderBy('id')->findColumn('id') ?? []);
     }
 
     /**

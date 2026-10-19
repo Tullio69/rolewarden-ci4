@@ -107,8 +107,10 @@ $rolewarden-&gt;can($userId, 'invoices.approve');                       // bool
 $rolewarden-&gt;canAny($userId, ['invoices.view', 'reports.view']);     // bool
 $rolewarden-&gt;canAll($userId, ['invoices.view', 'invoices.approve']); // bool
 $rolewarden-&gt;permissions($userId);                                  // list of slugs
-$rolewarden-&gt;authorize($userId, 'invoices.approve');                // throws if denied</code></pre>
+$rolewarden-&gt;authorize($userId, 'invoices.approve');                // throws if denied
+$rolewarden-&gt;explain($userId, 'invoices.approve');                  // why: see below</code></pre>
     <p><code>authorize()</code> throws <code>RoleWarden\Authorization\AuthorizationException</code>. A slug not in <code>area.action</code> form throws <code>InvalidArgumentException</code>: checks never accept wildcards.</p>
+    <p><code>explain()</code> (since 1.1) answers why, with the same precedence as <code>can()</code>: <code>['allowed' =&gt; bool, 'rule' =&gt; string, 'via' =&gt; [[roleId, ...], ...]]</code>. <code>rule</code> is the first that applies, one of the <code>Resolver::RULE_*</code> constants: <code>inactive</code>, <code>override_denied</code>, <code>override_granted</code>, <code>super_admin</code>, <code>role</code>, <code>none</code>. <code>via</code> lists the role chains that hold the permission, each from the assigned role up to the role it is granted to directly, even when another rule decides. The panel's Check a permission screen shows the same answer.</p>
     <h3>Cache</h3>
     <p>Each user's permissions are cached and forgotten whenever the panel changes something that affects them. If your own code writes the module's tables directly (assigning a role in a migration, for example), tell the service:</p>
 <pre><code>service('rolewarden')-&gt;forgetUser($userId);       // after changing one user's roles or overrides

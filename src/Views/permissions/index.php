@@ -23,7 +23,7 @@
       <?php foreach ($items as $i => $permission) : ?>
         <tr>
           <td class="rw-m-num"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></td>
-          <td class="rw-c-name"><code class="rw-mono"><?= esc($permission['slug']) ?></code></td>
+          <td class="rw-c-name"><a href="<?= esc(site_url('rolewarden/permissions/check') . '?permission=' . rawurlencode((string) $permission['slug'])) ?>"><code class="rw-mono"><?= esc($permission['slug']) ?></code></a></td>
           <td><?= esc($permission['description'] ?? '') ?></td>
           <td class="rw-c-roles">
             <?php if ($permission['roles'] === []) : ?><span class="rw-muted"><?= lang('RoleWarden.panel.permissions.noRole') ?></span><?php endif ?>

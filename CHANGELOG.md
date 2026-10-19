@@ -15,6 +15,11 @@ version may require changes on your side, listed under "Upgrading". After any up
   user can collapse the sidebar to a rail of icons.
 - **Three sidebar styles** in the Appearance screen: Paper (the light sidebar of 1.0), Ink
   and Charcoal (dark in light and dark mode alike), saved in the theme file.
+- **Check a permission**, a read-only screen for those with `permissions.view`: who holds a
+  permission and why (role and its parents, override, super admin), and for one user the
+  outcome with the rule that decides it. Each permission in the Permissions screen links to it.
+- `service('rolewarden')->explain($userId, $slug)`: the rule that decides a check and the
+  role chains that hold the permission.
 
 ### Changed
 - The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.
@@ -23,6 +28,8 @@ version may require changes on your side, listed under "Upgrading". After any up
 - The counts at the top of the Users screen no longer include deleted users.
 
 ### Upgrading
+- If you extend `RoleWarden\Authorization\Resolver` with a method of your own named
+  `explain()`, rename it: the class now has one.
 - Run `php spark migrate -n RoleWarden`. An updated installation keeps the Paper sidebar and
   starts with Today switched off; a new one starts with it on.
 - If you copied `layouts/panel.php` into `app/Views/overrides/`, your copy keeps the 1.0

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RoleWarden\Authorization;
 
+use Generator;
 use InvalidArgumentException;
 use RoleWarden\Authorization\Contracts\AuthorizationStore;
 use RoleWarden\Authorization\Contracts\Cache;
@@ -17,6 +18,14 @@ use RoleWarden\Authorization\Contracts\Cache;
  */
 class Resolver
 {
+    public const RULE_INACTIVE = 'inactive';
+    public const RULE_OVERRIDE_DENIED = 'override_denied';
+    public const RULE_OVERRIDE_GRANTED = 'override_granted';
+    public const RULE_SUPER_ADMIN = 'super_admin';
+    public const RULE_ROLE = 'role';
+    public const RULE_NONE = 'none';
+    private const GRANTING = [self::RULE_OVERRIDE_GRANTED, self::RULE_SUPER_ADMIN, self::RULE_ROLE];
+
     // \z, not $: $ also matches before a trailing newline, which would slip past a stored slug.
     private const SLUG = '/^[a-z][a-z0-9_-]*\.[a-z][a-z0-9_-]*\z/';
 
@@ -29,15 +38,40 @@ class Resolver
     public function can(int $userId, string $permission): bool
     {
         $this->assertSlug($permission);
-        $s = $this->snapshot($userId);
 
-        if (! $s['active'] || in_array($permission, $s['denied'], true)) {
-            return false;
+        return in_array($this->rule($this->snapshot($userId), $permission), self::GRANTING, true);
+    }
+
+    /**
+     * Why can() answers as it does: the rule that decides (one of the RULE_*
+     * constants) and the role chains that hold the permission, each from the
+     * assigned role up to the role it is granted to directly. The chains are
+     * listed even when another rule decides, so a denial can name what it beats.
+     *
+     * @return array{allowed: bool, rule: string, via: list<list<int>>}
+     */
+    public function explain(int $userId, string $permission): array
+    {
+        $this->assertSlug($permission);
+        $rule = $this->rule($this->snapshot($userId), $permission);
+        $via = [];
+
+        if ($rule !== self::RULE_INACTIVE) {
+            foreach ($this->store->userRoleIds($userId) as $roleId) {
+                $chain = [];
+
+                foreach ($this->ancestors($roleId) as $id => $role) {
+                    $chain[] = $id;
+
+                    if (in_array($permission, $role['permissions'], true)) {
+                        $via[] = $chain;
+                        break;
+                    }
+                }
+            }
         }
 
-        return in_array($permission, $s['granted'], true)
-            || $s['superAdmin']
-            || in_array($permission, $s['rolePermissions'], true);
+        return ['allowed' => in_array($rule, self::GRANTING, true), 'rule' => $rule, 'via' => $via];
     }
 
     /**
@@ -149,6 +183,45 @@ class Resolver
         }
     }
 
+    /**
+     * The precedence of the class comment, in one place for can() and explain().
+     *
+     * @param array{active: bool, superAdmin: bool, denied: list<string>, granted: list<string>, rolePermissions: list<string>} $s
+     */
+    private function rule(array $s, string $permission): string
+    {
+        return match (true) {
+            ! $s['active'] => self::RULE_INACTIVE,
+            in_array($permission, $s['denied'], true) => self::RULE_OVERRIDE_DENIED,
+            in_array($permission, $s['granted'], true) => self::RULE_OVERRIDE_GRANTED,
+            $s['superAdmin'] => self::RULE_SUPER_ADMIN,
+            in_array($permission, $s['rolePermissions'], true) => self::RULE_ROLE,
+            default => self::RULE_NONE,
+        };
+    }
+
+    /**
+     * The role and its parents, nearest first; a deleted role ends the walk,
+     * and a cycle already in the data stops at the first repeat.
+     *
+     * @return Generator<int, array{parentId: ?int, isSuperAdmin: bool, permissions: list<string>}>
+     */
+    private function ancestors(int $roleId): Generator
+    {
+        $seen = [];
+
+        for ($id = $roleId; $id !== null && ! isset($seen[$id]); $id = $role['parentId']) {
+            $role = $this->store->role($id);
+
+            if ($role === null) {
+                return;
+            }
+            $seen[$id] = true;
+
+            yield $id => $role;
+        }
+    }
+
     private function key(int $userId): string
     {
         return 'rolewarden.user.' . $userId;
@@ -187,20 +260,10 @@ class Resolver
             $snapshot[$granted ? 'granted' : 'denied'][] = $slug;
         }
 
-        $seen = [];
-
         foreach ($this->store->userRoleIds($userId) as $roleId) {
-            // Super admin is a flag on the assigned role, not inherited by its children.
-            $snapshot['superAdmin'] = $snapshot['superAdmin'] || ($this->store->role($roleId)['isSuperAdmin'] ?? false);
-
-            // Walk up the parents; a cycle already in the data stops at the first repeat.
-            for ($id = $roleId; $id !== null && ! isset($seen[$id]); $id = $role['parentId']) {
-                $role = $this->store->role($id);
-
-                if ($role === null) {
-                    break;
-                }
-                $seen[$id] = true;
+            foreach ($this->ancestors($roleId) as $id => $role) {
+                // Super admin is a flag on the assigned role, not inherited by its children.
+                $snapshot['superAdmin'] = $snapshot['superAdmin'] || ($id === $roleId && $role['isSuperAdmin']);
                 array_push($snapshot['rolePermissions'], ...$role['permissions']);
             }
         }

@@ -216,4 +216,45 @@ final class ResolverTest extends TestCase
         $this->user(1, [1], ['b.two' => false, 'c.three' => true]);
         $this->assertSame(['a.one', 'c.three'], $this->resolver->permissions(1));
     }
+
+    public function testExplainNamesTheDecidingRuleAndAgreesWithCan(): void
+    {
+        $this->role(1, ['a.one']);
+        $this->role(2, [], 1);
+        $this->role(3, [], null, true);
+        $this->user(1, [2], [], false);
+        $this->user(2, [2], ['a.one' => false]);
+        $this->user(3, [], ['a.one' => true]);
+        $this->user(4, [3]);
+        $this->user(5, [2]);
+        $this->user(6);
+
+        $expected = [1 => Resolver::RULE_INACTIVE, 2 => Resolver::RULE_OVERRIDE_DENIED, 3 => Resolver::RULE_OVERRIDE_GRANTED,
+            4 => Resolver::RULE_SUPER_ADMIN, 5 => Resolver::RULE_ROLE, 6 => Resolver::RULE_NONE];
+
+        foreach ($expected as $userId => $rule) {
+            $explained = $this->resolver->explain($userId, 'a.one');
+            $this->assertSame($rule, $explained['rule'], "user {$userId}");
+            $this->assertSame($this->resolver->can($userId, 'a.one'), $explained['allowed'], "user {$userId}");
+        }
+    }
+
+    public function testExplainListsRoleChainsEvenWhenAnotherRuleDecides(): void
+    {
+        $this->role(1, ['a.one']);
+        $this->role(2, [], 1);
+        $this->role(3, ['a.one']);
+        $this->role(4, ['b.two']);
+        $this->user(1, [2, 3, 4], ['a.one' => false]);
+        $this->user(2, [2], [], false);
+
+        $this->assertSame(['allowed' => false, 'rule' => Resolver::RULE_OVERRIDE_DENIED, 'via' => [[2, 1], [3]]], $this->resolver->explain(1, 'a.one'));
+        $this->assertSame([], $this->resolver->explain(2, 'a.one')['via']);
+    }
+
+    public function testExplainValidatesTheSlug(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->resolver->explain(1, 'users.*');
+    }
 }

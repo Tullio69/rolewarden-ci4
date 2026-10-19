@@ -75,6 +75,7 @@ final class Sidebar
                 ['users', 'users.view', static fn (): string => (string) model(\RoleWarden\Models\UserModel::class)->countAllResults()],
                 ['roles', 'roles.view', static fn (): string => (string) model(\RoleWarden\Models\RoleModel::class)->countAllResults()],
                 ['permissions', 'permissions.view', static fn (): string => $count($cfg->table('permissions'))],
+                ['check', 'permissions.view', null, 'permissions/check'],
             ],
             'security' => [
                 ['activity', 'activity.view', static fn (): ?string => self::newActivity($userId)],
@@ -90,7 +91,9 @@ final class Sidebar
         foreach ($groups as $group => $items) {
             $shown = [];
 
-            foreach ($items as [$key, $permission, $counter]) {
+            foreach ($items as $item) {
+                [$key, $permission, $counter] = $item;
+
                 if (! can($permission)) {
                     continue;
                 }
@@ -98,7 +101,7 @@ final class Sidebar
                 $value = $counter !== null ? $counter() : null;
                 $shown[] = [
                     'key' => $key,
-                    'url' => site_url('rolewarden/' . $key),
+                    'url' => site_url('rolewarden/' . ($item[3] ?? $key)),
                     'icon' => $key,
                     'count' => $value,
                     'hot' => $key === 'activity' && $value !== null,

@@ -110,5 +110,10 @@ info('contrast of the active dot (dot/ground, dot/halo, halo/ground): ' . json_e
 $lowHalo = array_filter($res, fn ($x) => $x['dotHalo'] !== null && $x['dotHalo'] < 3);
 if ($lowHalo) info('dot against its own halo under 3:1 in: ' . json_encode(array_keys($lowHalo)) . ' (the README asks 3:1 on the ground; the halo is the dot\'s own ring)');
 theme_save($adm, ['base' => 'console', 'sidebar' => ''], 'st theme back');
-check('ST-css', 'Served CSS: keyframes of the status animate only box-shadow, and a prefers-reduced-motion block switches the status animation off', (bool) array_filter($keyframes, fn ($k) => str_contains($k, 'box-shadow') && ! preg_match('/transform|scale|translate|opacity|width|height/', $k)) && (bool) array_filter($rm[1], fn ($b) => str_contains($b, 'rw-status') && preg_match('/animation\s*:\s*none|animation-name\s*:\s*none/', $b)), json_encode(['kf' => $keyframes, 'rm' => $rm[1]]));
+// Re-check on 982c1c3: the README only asks that the status never animates under reduced motion; either form is accepted:
+// a reduce block switching it off, or the status animation declared only inside a no-preference block (nowhere else).
+$noPref = preg_replace('/@media[^{]*prefers-reduced-motion\s*:\s*no-preference[^{]*\{((?:[^{}]*\{[^{}]*\})*)\s*\}/', '', $css);
+$offInReduce = (bool) array_filter($rm[1], fn ($b) => str_contains($b, 'rw-status') && preg_match('/animation\s*:\s*none|animation-name\s*:\s*none/', $b));
+$onlyNoPref = (bool) array_filter($rm[1], fn ($b) => str_contains($b, 'rw-status') && str_contains($b, 'rw-alive')) && ! preg_match('/animation(-name)?\s*:[^;}]*rw-alive/', $noPref);
+check('ST-css', 'Served CSS: keyframes of the status animate only box-shadow, and the status animation is off under prefers-reduced-motion (reduce block with none, or declared only inside no-preference)', (bool) array_filter($keyframes, fn ($k) => str_contains($k, 'box-shadow') && ! preg_match('/transform|scale|translate|opacity|width|height/', $k)) && ($offInReduce || $onlyNoPref), json_encode(['kf' => $keyframes, 'rm' => $rm[1], 'offInReduce' => $offInReduce, 'onlyNoPref' => $onlyNoPref]));
 check('ST-clean', 'ST pages: no 5xx, no SQL or PHP error', seen_clean($S0) === [], json_encode(seen_clean($S0)));

@@ -5,7 +5,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] phase L from verify-u1.phase-l.adapted.php
 
 ===== phase L =====
-[INFO] server pid=42244 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=22800 on 127.0.0.1:8071 prefix=''
 [PASS] L00    Owner signs in
 [PASS] L01    Every panel page (15) carries the EN/IT switch, a POST form to rolewarden/profile/language with CSRF; EN pressed on an English page
 [PASS] L01b   Switch buttons named in their own language (English, Italiano), lang attribute on each
@@ -63,8 +63,8 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] phase M from verify-s1.phase-m.php
 
 ===== phase M =====
-[INFO] server pid=36596 on 127.0.0.1:8071 prefix=''
-[INFO] browser matrix-owner: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u2r-v8b-development\chrome-v8b-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u2r-v8b-development\chrome-v8b-1'
+[INFO] server pid=28396 on 127.0.0.1:8071 prefix=''
+[INFO] browser matrix-owner: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\rc\u2r-v8b-development\chrome-v8b-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\rc\u2r-v8b-development\chrome-v8b-1'
 [PASS] M00    Chrome ran the owner's matrix steps without driver errors or page exceptions
 [PASS] M01    Role matrix: every existing area.action has a cell, every combination that does not exist stays empty (no mark)
 [PASS] M02    Role matrix marks: own grant ✓, inherited 〃 (both levels), override grant (✓), override denial on a role grant, every other existing cell the dashed "Not granted" box
@@ -106,7 +106,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] phase P from verify-v8b.phase-p.php
 
 ===== phase P =====
-[INFO] server pid=42532 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=25556 on 127.0.0.1:8071 prefix=''
 [PASS] P00    Permissions list answers 200 without SQL or PHP error
 [PASS] P01    "Granted by" equals the database for every permission (31): own grants and inherited ones through every level, "no role" when none
 [PASS] P02    Four-level chain: users.manage-admins (granted at the bottom) not listed for the three upper levels; permissions.override (granted at the top) listed for all four
@@ -127,7 +127,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] phase I from verify-v8b.phase-i.php
 
 ===== phase I =====
-[INFO] server pid=15760 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=32824 on 127.0.0.1:8071 prefix=''
 [PASS] I00    Fixture: no lock file, one active super admin (owner), demo installed
 [PASS] I01    No lock, active super admin: installer refuses ("Already installed", no form), no setup code created
 [PASS] I01-m  No lock, active super admin: hand-made POST of step migrate (valid CSRF) changes nothing
@@ -158,5 +158,5 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] G03    No response of the run had a 500, SQL text or PHP error on screen (290 responses)
 
 TOTAL: 116 PASS, 0 FAIL, 1 AMB
-b921f97 s1.v8b.b921f97.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+982c1c3 s1.v8b.982c1c3.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=False (2 .env files deleted first)

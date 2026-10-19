@@ -1,0 +1,159 @@
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase L from verify-u1.phase-l.adapted.php
+
+===== phase L =====
+[INFO] server pid=6256 on 127.0.0.1:8071 prefix=''
+[PASS] L00    Owner signs in
+[PASS] L01    Every panel page (15) carries the EN/IT switch, a POST form to rolewarden/profile/language with CSRF; EN pressed on an English page
+[PASS] L01b   Switch buttons named in their own language (English, Italiano), lang attribute on each
+[PASS] L02a   Plain user (role user, no permission) signs in
+[PASS] L02    A user with no permission sees the switch on the pages open to them (profile, own sessions)
+[PASS] L03a   Demo author signs in
+[PASS] L03    Demo pages (list, new document) carry the same switch for a demo user
+[PASS] L03b   Demo list carries the switch for the super admin too
+[PASS] L04    POST it from the Permissions page redirects back to that page
+[PASS] L04b   Back on the page: h1 translated (Permessi), lang="it", IT pressed and EN not
+[PASS] L04c   Italian page: intro and "Granted by" column in Italian (Concesso da)
+[PASS] L04d   Italian page: the switch form itself is labelled in Italian (aria-label not "Language")
+[PASS] L05    The choice is saved in the profile (Settings, user context): it
+[PASS] L06    The profile's language list shows the same choice (Italiano selected)
+[PASS] L06b   Other pages follow: the role page in Italian with the Italian matrix instruction
+[PASS] L07    New sign-in (fresh browser): panel in Italian, IT pressed
+[PASS] L08    POST en from the users list (with a query string) returns to exactly that address
+[PASS] L08b   Back in English: h1 Users, lang="en", EN pressed
+[PASS] L08c   Profile list follows (English selected)
+[PASS] L09    Invalid values (xx, EN, it;, ../en, it_IT, 300 chars, markup) are ignored: no 500, no SQL, choice unchanged, page still English
+[PASS] L09b   An array as value is ignored without error
+[PASS] L10    POST without CSRF token refused: choice unchanged
+[PASS] L10b   POST with a wrong CSRF token refused: choice unchanged
+[PASS] L10c   GET with ?language=it changes nothing
+[PASS] L11    No open redirect: a Referer on another host, port, scheme-relative or javascript: never becomes the redirect target
+[INFO] GET with Host: evil.example.com answered 302
+[PASS] L11b   A page fetched with a forged Host header just before the switch does not make the redirect leave the application
+[PASS] L11c   Same with X-Forwarded-Host
+[INFO] hidden fields of the switch form on Permissions: {"back":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions"}
+[INFO] two tabs: switch used on Permissions (tab A, Referer sent) after Activity loaded in tab B -> http://127.0.0.1:8071/index.php/[omesso]/permissions
+[PASS] L19    Two tabs: the switch used on the page of tab A returns to that page (the browser sends it as Referer), not to the page last opened in tab B
+[PASS] L19b   Two tabs, reverse order: the switch on the users list (loaded first) returns to the users list although Settings was loaded later
+[PASS] L20    Hand-made values in the switch form's own field(s) ["back"] (19 tries: other host, //host, same prefix with another host or port, other scheme, javascript:, encoded tricks): the redirect never leaves the application, no 500
+[INFO] L20b local target in the field -> 303 http://127.0.0.1:8071/index.php/[omesso]/roles
+[PASS] L20b   A local address of the application in the same field is followed (the field is used, not ignored)
+[PASS] L20c   External value in the field and external Referer together: redirect inside the application, the language is still saved
+[INFO] L20d targets: "?x=\/\/evil.example.com" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users?x=\/\/evil.example.com" | "?next=http:\/\/evil.example.com\/&q=a" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users?next=http:\/\/evil.example.com\/&q=a" | "?x=%0d%0aX-Injected:%201" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users?x=%0d%0aX-Injected:%201" | "?x=\r\nX-Injected: 1" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | "?x=%0d%0aLocation:%20http:\/\/evil.example.com\/" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users?x=%0d%0aLocation:%20http:\/\/evil.example.com\/" | "#\/\/evil.example.com" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users#\/\/evil.example.com" | "?q=%22%3E%3Cscript%3Ealert(1)%3C\/script%3E" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users?q=%22%3E%3Cscript%3Ealert(1)%3C\/script%3E" | "?q=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users?q=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+[PASS] L20d   Internal back address with hand-made query strings (?x=//evil, ?next=http://evil, CR/LF raw and %0d%0a, #//evil, markup, 3000 chars): redirect stays on the application, no injected header, no 500
+[INFO] L20e targets: CR/query -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | CR/path -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | CR/end -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | LF/query -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | LF/path -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | LF/end -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | CRLF/query -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | CRLF/path -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | CRLF/end -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | NUL/query -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | NUL/path -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | NUL/end -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | TAB/query -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | TAB/path -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | TAB/end -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | DEL/query -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | DEL/path -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions" | DEL/end -> 303 "http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions"
+[PASS] L20e   back with raw CR, LF, CRLF, NUL, TAB or DEL in query, path or at the end (18 cases): no 500, redirect inside the application with no control character, no injected header, language saved
+[PASS] L20f   In those 18 cases the field is ignored and the switch returns to the page it was used on (Permissions, the last page loaded)
+[PASS] L12    Without Referer the switch still answers with a redirect inside the application
+[PASS] L13    Guest POST: sent to sign in, nothing saved for anybody
+[PASS] L14    Empty value (the profile's "Same as the application") goes back to the application language (English): page English, EN pressed
+[PASS] L15    Demo: switching to it from the demo list returns to the demo list, now Italian (lang="it", h1 changed, IT pressed)
+[INFO] demo h1 in Italian: Documenti
+[PASS] L15b   Demo: back to en, list in English
+[PASS] L16    Plain user: switch to it from the profile, back on the profile in Italian; the owner stays English
+[PASS] L17    View-only Settings (settings.view only): the only submit buttons are the top-bar language and light/dark switches and, from v1.1, the sidebar collapse toggle (explains G07/G07v5 of the regression)
+[PASS] L18    A third language added as documented (app/Language/fr/RoleWarden.php) appears in the top-bar switch
+[PASS] L18b   Switching to fr shows the French line and marks FR pressed
+[INFO] Config\App of the test application: supportedLocales = ['en'], negotiateLocale = false
+[AMB]  LA1    How a single available language is configured
+         -> README and documentation/views.html say languages are English and Italian, a third is added with a file in app/Language; nothing says how to have only one, so "with one language the switch does not appear" cannot be set up as documented. Tried Config\App::$supportedLocales = ['en'] in the host application: switch still shown with ["en","it"]. Removing src/Language/it from the module would mean editing the module (not allowed to the buyer).
+[INFO] phase M from verify-s1.phase-m.php
+
+===== phase M =====
+[INFO] server pid=41004 on 127.0.0.1:8071 prefix=''
+[PASS] M00    Chrome ran the owner's matrix steps without driver errors or page exceptions
+[PASS] M01    Role matrix: every existing area.action has a cell, every combination that does not exist stays empty (no mark)
+[PASS] M02    Role matrix marks: own grant ✓, inherited 〃 (both levels), override grant (✓), override denial on a role grant, every other existing cell the dashed "Not granted" box
+[PASS] M03    Every "Not granted" box is drawn dashed and visible, with the tooltip "<slug> · Not granted" (25 cells)
+[PASS] M03b   Not-granted cells are editable buttons: aria-pressed="false", not aria-disabled
+[PASS] M04    Inherited cells locked (aria-disabled) and say where they come from (users.view from Grandparent M, users.update from Parent M)
+[PASS] M04b   Denied override tooltip names the role grant and the user ("Granted by Kid M, denied for 1 user: v8bkid2")
+[PASS] M05    Instruction line above the editable matrix, from the language file
+[PASS] M05b   Legend shows the five marks, "Not granted" included
+[PASS] M06    Clicking an inherited cell changes nothing (mark, pressed state, no unsaved change)
+[PASS] M07    Clicking a "Not granted" cell turns it into a role grant, pressed, marked as changed
+[PASS] M07b   Save answered (save button clicked)
+[PASS] M08    After saving and reloading, roles.view is a role grant in the matrix
+[PASS] M09    A granted cell clicked off and then Discard: back to the saved state, nothing changed
+[PASS] M10    Row box of an area and head box of a column grant every editable cell of that row/column; locked cells untouched
+[INFO] save2: "ok"
+[PASS] M11    Database after saving: Kid M has exactly its own grants + roles.view + every sessions.* and *.delete (inherited ones not copied)
+[PASS] M11b   Parents untouched: Grandparent M {users.view}, Parent M {users.update}
+[PASS] M12    Grandparent matrix: its own grant ✓ and every other existing cell "Not granted"
+[PASS] M13    User matrix: existing cells only, non-existent combinations empty
+[INFO] user matrix marks (selection): {"activity.view":"grant","roles.view":"role","users.view":"inherit","users.update":"inherit","users.create":"role","roles.create":"blank","settings.view":"blank"} / users.view title users.view · from Grandparent M, via Kid M
+[PASS] M14    User matrix: override grant (✓) on activity.view, not-granted cells show the dashed box with "· Not granted"
+[PASS] M14b   User matrix: what the user's roles grant (own role or through parents) is shown as granted, not as "Not granted"
+[PASS] M15    User matrix: instruction line for the editable matrix, from the language file (names the user)
+[INFO] user matrix after click on roles.create: {"mark":"grant","dashed":null,"tag":"button","title":"roles.create \u00b7 Not granted","pressed":null,"disabled":null,"changed":true} save="ok"
+[PASS] M16    Clicking a "Not granted" cell on the user page adds a grant override that persists (database and reloaded page)
+[PASS] M17    User matrix: a denial override on a role grant shows the struck mark
+[PASS] M18    Italian: role matrix instruction and user matrix hint come in Italian; legend "Non concesso" style label translated
+[PASS] M18b   Italian: the "Not granted" tooltip is translated in the matrix data (Non concesso)
+[INFO] owner editable role matrix at the end of the owner steps: activity.view grant, roles.create grant
+[PASS] M19    Read-only role matrix (roles.view without roles.update) draws every cell with the same mark as the editable one, "Not granted" boxes included
+[PASS] M19a   Read-only role matrix: "Not granted" boxes present and dashed on existing cells, empty where no permission exists
+[PASS] M19b   Read-only role matrix: no cell is a button (nothing to click), no instruction line to click and save, no Save
+[PASS] M19c   Read-only user page (users.view only): no hint to click, no clickable cell, no mark on combinations that do not exist
+[PASS] M19e   Read-only user page: granted cells carry the same mark as on the editable page (override grants as (✓), inherited as 〃)
+[INFO] read-only user page: 19 "Not granted" boxes; the editable page of the same user has 19
+[PASS] M19f   Read-only user page: the dashed "Not granted" box on every existing permission the user does not have (as on the editable page), nothing where the permission does not exist (V8b A2 recheck)
+[PASS] M19d   Read-only: clicks and Save attempts change nothing in the database
+[INFO] phase P from verify-v8b.phase-p.php
+
+===== phase P =====
+[INFO] server pid=11652 on 127.0.0.1:8071 prefix=''
+[PASS] P00    Permissions list answers 200 without SQL or PHP error
+[PASS] P01    "Granted by" equals the database for every permission (31): own grants and inherited ones through every level, "no role" when none
+[PASS] P02    Four-level chain: users.manage-admins (granted at the bottom) not listed for the three upper levels; permissions.override (granted at the top) listed for all four
+[PASS] P03    Three-level chain of phase M: users.view from Grandparent M, Parent M, Kid M
+[PASS] P04    A soft-deleted role is never listed (Gone Role granted users.edit and beta.access)
+[PASS] P04b   A permission no role grants shows "no role" (lonely.view)
+[PASS] P05    The super admin role (no rows of its own) is not listed per permission; the intro says super admin roles have them all
+[PASS] P06    Every role name links to that role's page (rolewarden/roles/{id})
+[PASS] P07    Markup in a role name is escaped in "Granted by" (no raw <b> or <script>, escaped text present)
+[PASS] P08    A role renamed from its edit form appears with the new name at once (permissions.override: Level Uno, no "Level One")
+[PASS] P09    After removing the grant from the top of the chain, permissions.override is no longer listed on any of the four levels
+[INFO] chain with Level Two soft-deleted: permissions.override granted by ["Admin","Level Uno"]
+[PASS] P10    Italian: column "Concesso da", intro in Italian, "nessun ruolo" where no role grants
+[INFO] permissions.view only: list status 200, links 0, a role page answers 302
+[PASS] P11    A user with permissions.view but not roles.view: the list opens, names shown, and no link to a role page he cannot open
+[INFO] roles.view + users.view (no permissions.view): permissions list answers 302
+[PASS] P12    No 500, SQL or PHP error on any request of this phase
+[INFO] phase I from verify-v8b.phase-i.php
+
+===== phase I =====
+[INFO] server pid=31668 on 127.0.0.1:8071 prefix=''
+[PASS] I00    Fixture: no lock file, one active super admin (owner), demo installed
+[PASS] I01    No lock, active super admin: installer refuses ("Already installed", no form), no setup code created
+[PASS] I01-m  No lock, active super admin: hand-made POST of step migrate (valid CSRF) changes nothing
+[PASS] I01-a  No lock, active super admin: hand-made POST of step admin (valid CSRF) changes nothing
+[PASS] I02f   Fixture: owner deactivated; admin and plain user still active; no active super admin
+[PASS] I02    No lock, super admin present but deactivated: the installer starts again at the setup-code step
+[PASS] I02b   Setup code saved in writable/rolewarden/install-code.txt and not printed in the page
+[PASS] I03-m  Restarted installer, step migrate posted before the code: nothing written (database, .env), no SQL
+[PASS] I03-a  Restarted installer, step admin posted before the code: nothing written (database, .env), no SQL
+[PASS] I03-d  Restarted installer, step database posted before the code: nothing written (database, .env), no SQL
+[PASS] I04    Restarted installer: wrong code refused, still at the code step
+[PASS] I04b   Restarted installer: right code without CSRF refused
+[INFO] restarted installer steps: admin > admin-posted / Installation · step 4 of 4 Installed RoleWarden is ready. The installer is now locked and will not run again. Sign in as rescue8b@v8b.test. Sign in RoleWarden
+[PASS] I05    Restarted installer, right code: it goes on and creates a new active super admin (recovery)
+[PASS] I05b   Recovery keeps the existing data: owner, admin, plain user, demo roles still there; no SQL on screen
+[PASS] I05c   After the recovery: lock file written, setup code deleted
+[PASS] I05d   The rescue super admin signs in and opens the panel
+[PASS] I06    After the recovery the installer refuses again
+[PASS] I07    Lock file present and no active super admin: installer refuses, no code
+[PASS] I08    No lock and no user holding a super admin role: the installer starts at the code step
+[PASS] I09    No lock, an active user on a custom role flagged super admin: installer refuses (the flag counts, not the slug)
+[INFO] phase G from verify-v8b.phase-g.php
+
+===== phase G =====
+[INFO] log lines at WARNING or above caused on purpose (CSRF refusals): 0
+[PASS] G01    Application logs (threshold 9): no WARNING, ERROR or CRITICAL line besides the CSRF refusals the suite caused
+[PASS] G02    PHP built-in server output: no PHP warning, notice, deprecation or fatal error
+[PASS] G03    No response of the run had a 500, SQL text or PHP error on screen (290 responses)
+
+TOTAL: 116 PASS, 0 FAIL, 1 AMB
+Test process exit: 0

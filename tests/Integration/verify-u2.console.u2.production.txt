@@ -7,11 +7,11 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase CHK =====
 
 == CHK: Check a permission (U2)
-[INFO] server pid=28192 on 127.0.0.1:8071 prefix=''
-[INFO] delete u2-doomed through the panel: 303; deleted_at="2026-10-19 20:11:41"; assignments left=1
+[INFO] server pid=28020 on 127.0.0.1:8071 prefix=''
+[INFO] delete u2-doomed through the panel: 303; deleted_at="2026-10-19 21:31:09"; assignments left=1
 [INFO] delete u2-dpar (parent of u2-dkid) through the panel: 303; deleted=false; u2-dkid parent_id now 15
 [INFO] u2-dpar marked deleted by hand (deleted_at), parent_id of u2-dkid kept
-[INFO] delete user through the panel: 303; users.deleted_at="2026-10-19 20:11:43"
+[INFO] delete user through the panel: 303; users.deleted_at="2026-10-19 21:31:11"
 
 -- ACC
 [PASS] A-0    Access accounts: permissions.view by the SPEC precedence equals service can() for every account (12)
@@ -39,8 +39,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] O-3    The screen gives, for every pair, the outcome of can() and marks exactly one rule, the one explain() names, among six rules listed in order; the subject is the user asked
 [PASS] O-4    Every rule of the precedence was exercised at least once
 [PASS] O-5    The roles the screen names as holding it are the chains of explain()["via"] for every pair
-[FAIL] O-6    explain()["via"]: each chain from the assigned role up to the role granted directly, also when another rule decides (inactive, denied, granted override, super admin with a role)
-         -> ["off\/u2zone.read explain [] model [\"10\"]"]
+[PASS] O-6    explain()["via"]: each chain from the assigned role up to the role granted directly, also when another rule decides (inactive, denied, granted override, super admin with a role)
 [PASS] O-gp   Inherited from the grandparent: rule role, chain u2-child ← u2-parent ← u2-grand
 [PASS] O-p    Inherited from the parent: rule role, chain u2-parent ← u2-grand
 [PASS] O-sd   A denial on a super admin decides: does not hold, rule override_denied
@@ -134,68 +133,55 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase ST =====
 
 == ST: user status dot
-[INFO] server pid=40680 on 127.0.0.1:8071 prefix=''
-[INFO] served .rw-status rules: .rw-status{align-items:center;gap:var(--space-2);color:var(--ink);display:inline-flex} || .rw-status:before{content:"";background:var(--granted);border:1.5px solid var(--granted);width:8px;height:8px;box-shadow:0 0 0 3px var(--granted-tint);box-sizing:border-box;border-radius:50%} || .rw-status--disabled{color:var(--ink-muted)} || .rw-status--disabled:before{border-color:var(--ink-muted);box-shadow:none;background:0 0} || .rw-status:not(.rw-status--disabled):before{animation:1.6s ease-in-out 3 rw-alive} || .rw-status:before{animation:none}
-[INFO] reduced-motion blocks: .rw-status:before{animation:none} || .rw-toast{animation:none}.rw-toast.is-leaving{transition:none}
+[INFO] server pid=39716 on 127.0.0.1:8071 prefix=''
+[INFO] served .rw-status rules: .rw-status{align-items:center;gap:var(--space-2);color:var(--ink);display:inline-flex} || .rw-status:before{content:"";background:var(--granted);border:1.5px solid var(--granted);width:8px;height:8px;box-shadow:0 0 0 3px var(--granted-tint);box-sizing:border-box;border-radius:50%} || .rw-status--disabled{color:var(--ink-muted)} || .rw-status--disabled:before{border-color:var(--ink-muted);box-shadow:none;background:0 0} || .rw-status:not(.rw-status--disabled):before{animation:rw-alive var(--motion-breath) var(--ease-in-out) 3}
+[INFO] reduced-motion blocks: .rw-status:not(.rw-status--disabled):before{animation:rw-alive var(--motion-breath) var(--ease-in-out) 3} || .rw-toast{animation:none}.rw-toast.is-leaving{transition:none}
 [PASS] ST-console-light-1 console/light: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
 [PASS] ST-console-light-2 console/light: the active dot keeps 3:1 or more on its ground (dot 6.26:1 on rgb(250, 250, 249))
 [PASS] ST-console-light-3 console/light: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
 [PASS] ST-console-light-4 console/light: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
 [PASS] ST-console-light-5 console/light: the animation moves only the halo (box-shadow): nothing slides or scales
 [PASS] ST-console-light-6 console/light: after 5.6s the animation has finished and the dot rests with its halo
-[FAIL] ST-console-light-7 console/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-         -> {"reducedMatches":true,"anim":{"name":"rw-alive","dur":"1.6s","count":"3","delay":"0s","fill":"none"},"running":[{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]}],"shadow":"rgb(229, 241, 233) 0px 0px 0px 2.97724px"}
+[PASS] ST-console-light-7 console/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
 [PASS] ST-console-dark-1 console/dark: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
 [PASS] ST-console-dark-2 console/dark: the active dot keeps 3:1 or more on its ground (dot 8.2:1 on rgb(28, 29, 32))
 [PASS] ST-console-dark-3 console/dark: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
 [PASS] ST-console-dark-4 console/dark: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
 [PASS] ST-console-dark-5 console/dark: the animation moves only the halo (box-shadow): nothing slides or scales
 [PASS] ST-console-dark-6 console/dark: after 5.6s the animation has finished and the dot rests with its halo
-[FAIL] ST-console-dark-7 console/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-         -> {"reducedMatches":true,"anim":{"name":"rw-alive","dur":"1.6s","count":"3","delay":"0s","fill":"none"},"running":[{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]}],"shadow":"rgb(31, 51, 39) 0px 0px 0px 2.78577px"}
+[PASS] ST-console-dark-7 console/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
 [PASS] ST-clarity-light-1 clarity/light: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
 [PASS] ST-clarity-light-2 clarity/light: the active dot keeps 3:1 or more on its ground (dot 5.02:1 on rgb(255, 255, 255))
 [PASS] ST-clarity-light-3 clarity/light: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
 [PASS] ST-clarity-light-4 clarity/light: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
 [PASS] ST-clarity-light-5 clarity/light: the animation moves only the halo (box-shadow): nothing slides or scales
 [PASS] ST-clarity-light-6 clarity/light: after 5.6s the animation has finished and the dot rests with its halo
-[FAIL] ST-clarity-light-7 clarity/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-         -> {"reducedMatches":true,"anim":{"name":"rw-alive","dur":"1.6s","count":"3","delay":"0s","fill":"none"},"running":[{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]}],"shadow":"rgb(232, 246, 238) 0px 0px 0px 2.90685px"}
+[PASS] ST-clarity-light-7 clarity/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
 [PASS] ST-clarity-dark-1 clarity/dark: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
 [PASS] ST-clarity-dark-2 clarity/dark: the active dot keeps 3:1 or more on its ground (dot 9.87:1 on rgb(20, 22, 28))
 [PASS] ST-clarity-dark-3 clarity/dark: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
 [PASS] ST-clarity-dark-4 clarity/dark: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
 [PASS] ST-clarity-dark-5 clarity/dark: the animation moves only the halo (box-shadow): nothing slides or scales
 [PASS] ST-clarity-dark-6 clarity/dark: after 5.6s the animation has finished and the dot rests with its halo
-[FAIL] ST-clarity-dark-7 clarity/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-         -> {"reducedMatches":true,"anim":{"name":"rw-alive","dur":"1.6s","count":"3","delay":"0s","fill":"none"},"running":[{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]}],"shadow":"rgb(23, 51, 38) 0px 0px 0px 2.83169px"}
+[PASS] ST-clarity-dark-7 clarity/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
 [PASS] ST-contrast-light-1 contrast/light: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
 [PASS] ST-contrast-light-2 contrast/light: the active dot keeps 3:1 or more on its ground (dot 8.06:1 on rgb(255, 255, 255))
 [PASS] ST-contrast-light-3 contrast/light: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
 [PASS] ST-contrast-light-4 contrast/light: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
 [PASS] ST-contrast-light-5 contrast/light: the animation moves only the halo (box-shadow): nothing slides or scales
 [PASS] ST-contrast-light-6 contrast/light: after 5.6s the animation has finished and the dot rests with its halo
-[FAIL] ST-contrast-light-7 contrast/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-         -> {"reducedMatches":true,"anim":{"name":"rw-alive","dur":"1.6s","count":"3","delay":"0s","fill":"none"},"running":[{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]}],"shadow":"rgb(220, 239, 226) 0px 0px 0px 2.61291px"}
+[PASS] ST-contrast-light-7 contrast/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
 [PASS] ST-contrast-dark-1 contrast/dark: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
 [PASS] ST-contrast-dark-2 contrast/dark: the active dot keeps 3:1 or more on its ground (dot 11.36:1 on rgb(10, 10, 11))
 [PASS] ST-contrast-dark-3 contrast/dark: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
 [PASS] ST-contrast-dark-4 contrast/dark: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
 [PASS] ST-contrast-dark-5 contrast/dark: the animation moves only the halo (box-shadow): nothing slides or scales
 [PASS] ST-contrast-dark-6 contrast/dark: after 5.6s the animation has finished and the dot rests with its halo
-[FAIL] ST-contrast-dark-7 contrast/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-         -> {"reducedMatches":true,"anim":{"name":"rw-alive","dur":"1.6s","count":"3","delay":"0s","fill":"none"},"running":[{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]},{"name":"rw-alive","state":"running","kf":[["boxShadow"],["boxShadow"],["boxShadow"]]}],"shadow":"rgb(16, 48, 28) 0px 0px 0px 1.92311px"}
+[PASS] ST-contrast-dark-7 contrast/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
 [INFO] contrast of the active dot (dot/ground, dot/halo, halo/ground): {"console\/light":[6.26,5.63,1.11,"rgb(250, 250, 249)"],"console\/dark":[8.2,6.55,1.25,"rgb(28, 29, 32)"],"clarity\/light":[5.02,4.5,1.11,"rgb(255, 255, 255)"],"clarity\/dark":[9.87,7.45,1.32,"rgb(20, 22, 28)"],"contrast\/light":[8.06,6.72,1.2,"rgb(255, 255, 255)"],"contrast\/dark":[11.36,8.25,1.38,"rgb(10, 10, 11)"]}
-[PASS] ST-css Served CSS: keyframes of the status animate only box-shadow, and a prefers-reduced-motion block switches the status animation off
+[PASS] ST-css Served CSS: keyframes of the status animate only box-shadow, and the status animation is off under prefers-reduced-motion (reduce block with none, or declared only inside no-preference)
 [PASS] ST-clean ST pages: no 5xx, no SQL or PHP error
 
-TOTAL: 122 PASS, 7 FAIL, 0 AMB
-FAIL O-6 explain()["via"]: each chain from the assigned role up to the role granted directly, also when another rule decides (inactive, denied, granted override, super admin with a role)
-FAIL ST-console-light-7 console/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-FAIL ST-console-dark-7 console/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-FAIL ST-clarity-light-7 clarity/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-FAIL ST-clarity-dark-7 clarity/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-FAIL ST-contrast-light-7 contrast/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-FAIL ST-contrast-dark-7 contrast/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
-b921f97 s1.u2.b921f97.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+TOTAL: 129 PASS, 0 FAIL, 0 AMB
+982c1c3 s1.u2.982c1c3.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=False (1 .env files deleted first)

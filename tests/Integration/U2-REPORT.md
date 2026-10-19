@@ -1,5 +1,38 @@
 # U2 — Verifica di un permesso (v1.1): collaudo indipendente
 
+## Riverifica su `982c1c3` (2026-10-20)
+
+**PASS. U2 è approvata.** I tre difetti D1-D3 del collaudo su `b921f97` sono corretti; nessun difetto nuovo, nessuna regressione.
+
+Stesse regole del collaudo precedente: letti solo specifica, design system, `_AI-LOG.md`, `documentation/`, script e report di `tests/Integration/`, HTML e CSS serviti; del commit solo il `--stat` (resolver, `panel.css` sorgente e compilato, `bundle.css`, un test unitario). App di prova usa e getta da `git archive 982c1c3` sulla porta 8071, solo `rolewarden_test`, una suite alla volta.
+
+| Suite | development | production |
+| --- | --- | --- |
+| U2, fasi CHK + ST | **129/129** (CHK 85, ST 44), 0 AMB | **129/129**, uguale |
+| U1 (NAV e RAIL adattate) | **226/226** | **226/226** |
+| A2 | **15/15** | **15/15** |
+| V8b (L, M, P, I, G) | **116/116**, 1 AMB già nota (LA1) | **116/116**, uguale |
+| S1, fase Y | **52/52** | **52/52** |
+| V5 adattata | **177/177**, 1 AMB già nota (T06) | **177/177**, uguale |
+| V2 principale | **151/151** | **169/169** |
+
+**Difetti, esito della riverifica:**
+- **D1 corretto.** O-6 PASS: per l'account disattivato con ruolo `u2-grand`, `explain()['via']` riporta la catena anche quando decide `inactive`, come dice `documentation/api.html`; O-1/O-5 (126 coppie) e WHO restano verdi.
+- **D2 corretto.** ST-*-7 PASS in tutti i 3 temi × chiaro/scuro: con `prefers-reduced-motion: reduce` nessuna animazione gira e l'alone `granted-tint` resta. Nel CSS servito l'animazione è dichiarata solo dentro `@media (prefers-reduced-motion:no-preference)`; lo stesso schema è nel riferimento `docs/design-system/components/bundle.css`. ST-4/5/6 (respiro 1.6s × 3, solo `box-shadow`, fermo dopo 5.6s) restano verdi.
+- **D3 corretto.** V5 T05 PASS: la regola usa `var(--motion-breath)` (1.6s) e `var(--ease-in-out)`, token dichiarati nel CSS servito.
+
+**Adattamento di un controllo (non un difetto).** Al primo giro ST-css falliva: il controllo statico cercava un blocco `reduce` con `animation: none`, cioè la forma di una sola implementazione. Il README chiede solo che lo stato non si animi mai sotto `prefers-reduced-motion`, e la prova in Chrome (ST-*-7) lo conferma. Ho quindi adattato ST-css in `verify-u2.phase-st.php` per accettare anche l'animazione dichiarata solo dentro `no-preference` e in nessun altro punto; il CSS di `b921f97` lo supererebbe comunque solo staticamente, mentre ST-*-7 lo boccerebbe come prima. Uscite del primo giro: `verify-u2.console.u2.*.try1.txt`, `verify-u2.s1.u2.982c1c3.*.output.try1.txt`.
+
+**Nota sul riferimento.** `bundle.css` scrive `1.6s cubic-bezier(0.4, 0, 0.2, 1)` grezzi, come fa per tutte le sue altre animazioni (bottone, toast): il design system non ha token di movimento in `tokens.css`. T05 riguarda il CSS servito dal modulo, che è conforme. Non è un difetto.
+
+**Ambiguità ancora aperta (non decisa):** A1, «Access» tradotto «Accesso» nella barra e «Autorizzazioni» nell'occhiello delle schermate di Access. Già riportata all'utente.
+
+**Pulizia:** `rolewarden_test` identico allo snapshot `f7f37c04…e21e64` dopo tutte le 16 esecuzioni su `982c1c3` (`verify-u2.environment.txt`), Mailpit vuoto, nessun processo php/python/node/chrome mio residuo, nessun `.env` rimasto nello scratchpad. Restano nello scratchpad cartelle `rc/u2r-*` con soli profili Chrome che Windows non lascia cancellare: vanno rimosse a mano. Nessun commit.
+
+---
+
+## Collaudo su `b921f97` (2026-10-19)
+
 **Collaudatore ad Hoc (Claude), 2026-10-19, commit `b921f97` (main).**
 
 ## Esito

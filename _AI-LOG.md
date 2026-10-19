@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude (1.1, tappa U2 Verifica di un permesso)
-**Agente:** Claude Code
-**Dalle:** 2026-10-19 15:15
-**Scope:** controller, view e rotta della verifica di un permesso, voce della barra, lingue, test
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1066,3 +1066,21 @@ Formato di ogni voce:
   - **D3:** `1.6s` ed `ease-in-out` grezzi nell'animazione dello stato (V5 T05). Token o eccezione dichiarata, lo decide l'autore.
   - **Ambiguità A1 (all'utente, non decisa):** «Access» è «Accesso» nella barra e «Autorizzazioni» nell'occhiello delle schermate di Access (1.0 e U2).
   - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` dopo tutte le 18 esecuzioni, Mailpit vuoto, nessun processo residuo. In scratchpad restano `u2w-dev2/` e `u2r-*` (profili Chrome bloccati, nessuna credenziale). Nessun commit.
+
+### [2026-10-20 00:35] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `U2-REPORT.md` (sezione di riverifica), `verify-u2.phase-st.php` (ST-css adattato), uscite `verify-u2.*` su `982c1c3`
+- Cosa ho fatto: riverifica in nero di U2 sul commit `982c1c3`, solo `rolewarden_test`, una suite alla volta, development e production. U2 CHK+ST 129/129, U1 226/226, A2 15/15, V8b 116/116 (AMB LA1 nota), S1 Y 52/52, V5 adattata 177/177 (AMB T06 nota), V2 151/151 e 169/169.
+- Stato: completato. **Esito PASS; U2 approvata.**
+- Note per il prossimo:
+  - D1 (`explain()['via']` vuoto per un disattivato), D2 (alone animato sotto `prefers-reduced-motion`) e D3 (V5 T05, valori di movimento grezzi) corretti.
+  - ST-css adattato: il controllo statico accettava solo un blocco `reduce` con `animation: none`; ora accetta anche l'animazione dichiarata solo dentro `no-preference`. La prova di comportamento resta ST-*-7.
+  - **Ambiguità A1 ancora aperta (all'utente, non decisa):** «Accesso» nella barra contro «Autorizzazioni» nell'occhiello delle schermate di Access.
+  - Database identico allo snapshot `f7f37c04…e21e64` dopo ogni esecuzione, Mailpit vuoto, nessun processo residuo. Restano profili Chrome bloccati nello scratchpad (`rc/u2r-*`), da cancellare a mano. Nessun commit.
+
+### [2026-10-20 00:30] - Claude (Claude Code)
+- Tipo: feature
+- Scope: `src/Authorization/Resolver.php` (`explain()`), `src/Controllers/PermissionsController.php`, `src/Views/permissions/check.php` e `index.php`, `src/Config/RouteRegistrar.php`, `src/Settings/Sidebar.php`, `src/Views/partials/sidebar.php`, lingue en/it, `resources/css/panel.css` e CSS compilato, `docs/design-system/` (README, UserStatus, bundle.css), `CHANGELOG.md`, `documentation/api.html`, test unitari del resolver
+- Cosa ho fatto: tappa U2 Verifica di un permesso (`b921f97`): schermata in sola lettura sotto Accesso con `permissions.view`, chi ha un permesso e perche', esito per un utente con la regola che decide, tutto da `Resolver::explain()`. Stato utente attivo come puntino `granted` con alone che respira tre volte (`6f3922a`), deciso con l'utente il 2026-10-19; design system originale su Claude aggiornato prima della copia. Corretti i difetti del collaudo D1-D3 (`982c1c3`): `via` anche per account disattivato, animazione solo sotto `prefers-reduced-motion: no-preference`, token `--motion-breath` ed `--ease-in-out`.
+- Stato: completato. **U2 approvata** dalla riverifica su `982c1c3` (PASS, vedi `tests/Integration/U2-REPORT.md`).
+- Note per il prossimo: ambiguita' A1 aperta, da decidere con l'utente: il gruppo della barra e' "Accesso", l'occhiello delle schermate di Access e' "Autorizzazioni". La voce Verifica resta in Accesso per scelta dell'utente, anche se il design system la disegna in Sicurezza. Da rimuovere a mano: `tests/Integration/verify-v5.work/` e i profili Chrome nella scratchpad della sessione. Nessun push.

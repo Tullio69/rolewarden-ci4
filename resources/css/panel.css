@@ -71,6 +71,7 @@
   --space-12: 48px; --space-16: 64px;
   --size-cell: 96px;
   --motion-fast: 120ms; --motion-base: 160ms; --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --motion-breath: 1.6s; --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
   --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -211,9 +212,8 @@
   .rw-status--disabled { color: var(--ink-muted); }
   .rw-status--disabled::before { background: transparent; border-color: var(--ink-muted); box-shadow: none; }
   /* The active dot breathes three times on load, under 5s (WCAG 2.2.2), then rests with its halo. */
-  .rw-status:not(.rw-status--disabled)::before { animation: rw-alive 1.6s ease-in-out 3; }
+  @media (prefers-reduced-motion: no-preference) { .rw-status:not(.rw-status--disabled)::before { animation: rw-alive var(--motion-breath) var(--ease-in-out) 3; } }
   @keyframes rw-alive { 50% { box-shadow: 0 0 0 0 var(--granted-tint); } }
-  @media (prefers-reduced-motion: reduce) { .rw-status::before { animation: none; } }
 
   .rw-pager { display: flex; align-items: center; gap: var(--space-1); list-style: none; margin: 0; padding: 0; }
   .rw-page { min-width: var(--size-square); height: var(--size-square); padding: 0 var(--space-2); display: inline-grid; place-items: center; border: var(--rule-width) solid transparent; border-radius: var(--radius-md); background: transparent; color: var(--ink); font: var(--weight-medium) var(--text-sm)/var(--leading-xs) var(--font-sans); font-variant-numeric: tabular-nums; cursor: pointer; text-decoration: none; }

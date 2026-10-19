@@ -249,7 +249,7 @@ final class ResolverTest extends TestCase
         $this->user(2, [2], [], false);
 
         $this->assertSame(['allowed' => false, 'rule' => Resolver::RULE_OVERRIDE_DENIED, 'via' => [[2, 1], [3]]], $this->resolver->explain(1, 'a.one'));
-        $this->assertSame([], $this->resolver->explain(2, 'a.one')['via']);
+        $this->assertSame(['allowed' => false, 'rule' => Resolver::RULE_INACTIVE, 'via' => [[2, 1]]], $this->resolver->explain(2, 'a.one'));
     }
 
     public function testExplainValidatesTheSlug(): void

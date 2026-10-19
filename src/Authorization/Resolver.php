@@ -56,17 +56,15 @@ class Resolver
         $rule = $this->rule($this->snapshot($userId), $permission);
         $via = [];
 
-        if ($rule !== self::RULE_INACTIVE) {
-            foreach ($this->store->userRoleIds($userId) as $roleId) {
-                $chain = [];
+        foreach ($this->store->userRoleIds($userId) as $roleId) {
+            $chain = [];
 
-                foreach ($this->ancestors($roleId) as $id => $role) {
-                    $chain[] = $id;
+            foreach ($this->ancestors($roleId) as $id => $role) {
+                $chain[] = $id;
 
-                    if (in_array($permission, $role['permissions'], true)) {
-                        $via[] = $chain;
-                        break;
-                    }
+                if (in_array($permission, $role['permissions'], true)) {
+                    $via[] = $chain;
+                    break;
                 }
             }
         }

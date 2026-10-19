@@ -2,7 +2,7 @@
 // U1 phase STYLE (point 5): Paper, Ink and Charcoal from the customizer (appearance.update), saved in the theme file;
 // wrong value refused; a theme file without a style is Paper; app/Config/RoleWarden/theme.json wins; the three styles in
 // the three themes, light and dark, measured on the colours Chrome computes: only token values, active item at least
-// 3:1 on the sidebar, texts at least 4.5:1. Token values against docs/design-system (tokens.css for Console, the table
+// 3:1 on the sidebar (on Paper by text and weight, A1), texts at least 4.5:1; side-*/charcoal-* tokens defined by name (A2). Token values against docs/design-system (tokens.css for Console, the table
 // of README.md for Clarity and Contrast).
 require_once __DIR__ . '/verify-u1.lib.php';
 $GLOBALS['U1DIR'] = dirname(__DIR__ . '/verify-u1.lib.php');
@@ -157,13 +157,14 @@ foreach (['console', 'clarity', 'contrast'] as $theme) foreach (['paper', 'ink',
         $GLOBALS['UNDEF'][implode(',', $undef)][] = "$theme/$mode";
         check("$id-1", "$theme/$st/$mode: Chrome renders " . ($mode === 'dark' ? 'dark' : 'light') . " with data-sidebar=$st", $m['style'] === $st && $m['dark'] === ($mode === 'dark'), json_encode([$m['style'], $m['dark']]));
         ksort($exp); ksort($got);
-        check("$id-2", "$theme/$st/$mode: ground, items, labels, counter chips and active item have the values the design system gives for $st in $theme $mode (weight 600 or more)", $exp == $got && (int) ($m['active']['weight'] ?? 0) >= 600, json_encode(['exp' => $exp, 'got' => $got, 'weight' => $m['active']['weight'] ?? null]));
+        // A2 (decided 19 Oct 2026): the served CSS defines --side-*, --on-side-accent and --charcoal-* by name in every theme and mode
+        check("$id-2", "$theme/$st/$mode: ground, items, labels, counter chips and active item have the values the design system gives for $st in $theme $mode (weight 600 or more), and every side-*/charcoal-* token is defined by name", $exp == $got && (int) ($m['active']['weight'] ?? 0) >= 600 && $undef === [], json_encode(['exp' => $exp, 'got' => $got, 'weight' => $m['active']['weight'] ?? null, 'undefined' => $undef]));
         check("$id-3", "$theme/$st/$mode: every colour in the sidebar is a token value (" . $m['usedCount'] . ' measured)', $m['outsideCount'] === 0, json_encode($m['outside']));
         check("$id-4", "$theme/$st/$mode: every text of the sidebar at least 4.5:1 (min " . $m['minText'] . ", {$m['texts']} texts)", $m['low'] === [] && $m['texts'] > 5, json_encode($m['low']));
         $a = $m['active'];
-        if ($st === 'paper' && ($a['bgVsGround'] ?? 0) < 3 && ($a['fgVsGround'] ?? 0) >= 3) {
-            $GLOBALS['PAPER31'][] = "$theme/$mode: wash {$a['bgVsGround']}:1, accent text {$a['fgVsGround']}:1";
-            check("$id-5", "$theme/$st/$mode: the active item stands out from the sidebar at 3:1 or more by its accent text ({$a['fgVsGround']}:1; wash {$a['bgVsGround']}:1, see AMB S-31)", true);
+        if ($st === 'paper') {
+            // A1 (decided 19 Oct 2026, design system README): on Paper the 3:1 is carried by the accent text and weight 600; the accent-tint wash is a soft cue; the text keeps 4.5:1 on it
+            check("$id-5", "$theme/$st/$mode: the active item stands out from the sidebar at 3:1 or more by its accent text and weight 600 (text {$a['fgVsGround']}:1 on the sidebar, {$a['fgVsBg']}:1 on the wash; wash {$a['bgVsGround']}:1, a cue)", ($a['fgVsGround'] ?? 0) >= 3 && (int) ($a['weight'] ?? 0) >= 600 && ($a['fgVsBg'] ?? 0) >= 4.5, json_encode($a));
         } else {
             check("$id-5", "$theme/$st/$mode: the active item stands out from the sidebar at 3:1 or more (fill {$a['bgVsGround']}:1, text on fill {$a['fgVsBg']}:1)", ($a['bgVsGround'] ?? 0) >= 3 && ($a['fgVsBg'] ?? 0) >= 4.5, json_encode($a));
         }
@@ -171,8 +172,6 @@ foreach (['console', 'clarity', 'contrast'] as $theme) foreach (['paper', 'ink',
         info("$theme/$st/$mode: " . json_encode(['ground' => $m['ground'], 'active' => $a, 'chip' => $m['chip'], 'hot' => $m['hot'], 'label' => $m['label'], 'min' => $m['minText']]));
     }
 }
-if (! empty($GLOBALS['PAPER31'])) amb('S-31', 'How the 3:1 of the active item applies to Paper', 'BRIEF/SPEC: "la voce attiva si distingue dalla barra almeno a 3:1". The Paper active item is an accent-tint wash with accent text (design system README), so its fill differs from the surface-sunk ground by about 1.1:1 and only its text reaches 3:1: ' . implode('; ', $GLOBALS['PAPER31']) . '. Whether 3:1 is meant for the fill (as on the dark rails) or for the item as a whole is not stated.');
-foreach ($GLOBALS['UNDEF'] ?? [] as $names => $where) if ($names !== '') amb('S-tok', 'Token names of the 1.1 sidebar families not defined in the panel CSS', "The design system names the tokens " . $names . " (values per theme in tokens.css and the README table); the served CSS defines none of these names in " . implode(', ', $where) . ": Ink and Charcoal read the dark-mode tokens (--d-accent, --d-on-accent, --d-surface, --d-surface-raised, --d-ink, --d-ink-muted, --d-rule-strong) in both modes. The values Chrome renders are the design system's (checks -2), but a buyer cannot set these tokens by name, and a dark accent or dark surface chosen in the customizer also changes Ink/Charcoal in light mode. Whether the families must exist as named tokens is not stated.");
 info('screenshots: ' . implode(', ', $shots));
 @unlink(theme_file_u1());
 settings_save($adm, ['activity_retention' => '365'], 'style restore retention');

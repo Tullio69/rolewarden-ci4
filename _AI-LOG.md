@@ -9,7 +9,7 @@
 
 **In lavorazione:** Claude (1.1, tappa U1 Navigazione)
 **Agente:** Claude Code
-**Dalle:** 2026-10-18 23:00
+**Dalle:** 2026-10-19 07:10 (A1, A2 e regressione di U1)
 **Scope:** layout del pannello, barra laterale, CSS, personalizzatore (stile della barra), Impostazioni (pannello Oggi), lingue, una migrazione di dati
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
@@ -1010,3 +1010,18 @@ Formato di ogni voce:
   - Da completare: S1 W, B, G e production, V8, V5 e V2, una suite alla volta in primo piano (comandi in `U1-REPORT.md`).
   - Controllo visivo in browser vero dovuto all'autore e all'utente; screenshot `verify-u1.style-*.png`.
   - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` (due ripristini fatti a mano dopo processi fermati per memoria), Mailpit vuoto, immagine `u1-col-php:8.3`, rete `u1-net` e container rimossi. Restano in scratchpad `u1r-run2` e `u1r-v8b-development` (profili Chrome bloccati). Nessun commit.
+
+### [2026-10-19 08:55] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/` (`U1-REPORT.md` con sezione di riverifica in cima, `verify-u1.phase-a2.php` nuovo, `verify-u1.phase-style.php`, `verify-u1.v5adapted.php`, `verify-u1.v2adapted.php`, `verify-u1.all.sh`, uscite `verify-u1.*`)
+- Cosa ho fatto: riverifica di U1 sul commit `d73ce80`, in nero, solo `rolewarden_test`, una suite alla volta.
+  - **U1:** 226/226 in development e production, 0 AMB. A1 e A2 chiuse secondo le decisioni dell'utente (controlli `-5` e `-2` di STYLE aggiornati).
+  - **A2 in nero (fase A2):** 15/15 per ambiente. I 12 token `--side-*`/`--on-side-accent`/`--charcoal-*` esistono con i valori approvati in 3 temi × chiaro/scuro; un foglio dell'applicazione (`themeStylesheet`) cambia la voce attiva di Ink e Charcoal e la barra Charcoal; tolto, tornano i valori della tabella.
+  - **Punto 8:** S1 completa 154/154 ×2; V8 195/195 (2 AMB già decise); V2 151 + 41 + 16 / 169 + 54 + 16; V5 adattata 175 PASS e **2 FAIL (T02, T05)** in entrambi gli ambienti, 1 AMB già nota (T06).
+  - Adattati nelle copie U1: G07/G07v5 (submit della compressione della barra), V5 R-*/X08 (variabili di componente `--sb-*` solo su `.rw-side`), percorso di `verify-v5.css.py`. Uscite non adattate conservate.
+- Stato: completato. **Esito FAIL; U1 non approvata.**
+- Note per il prossimo:
+  - **Difetto D2:** valori grezzi `.rw-side-nav { gap: 2px }` e `.rw-side-count { line-height: 20px }` nel CSS servito (V5 T05). Non c'è un `--space-*` da 2px: token o eccezione dichiarata lo sceglie l'autore.
+  - **Ambiguità A3 (all'utente, non decisa):** `--side-ink` e `--side-muted` mappati direttamente sui primitivi per tema, non tramite `--l-*`/`--d-*` (V5 T02).
+  - Non ripetute su `d73ce80`: V8b e il giro Docker S3 (commit solo CSS e README).
+  - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` dopo tutte le 21 esecuzioni, Mailpit vuoto, nessun processo residuo, nessun container. Restano in scratchpad `u1rc/` e `u1rc2/` (solo profili Chrome bloccati dal sandbox, nessuna credenziale), da cancellare a mano. Nessun commit.

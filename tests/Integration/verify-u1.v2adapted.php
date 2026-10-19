@@ -523,8 +523,8 @@ foreach(['session_lifetime'=>['1799','bad'],'remember_length'=>['1','-1'],'lock_
 }
 add_role('v2-settings-view',['settings.view']);add_user('v2settings','settings@v2.test','v2-settings-view',$pw);
 $sv=login2('settings-view','settings@v2.test',$pw);$h=page($sv,'rolewarden/settings');
-$sub=0;foreach(forms($h) as $f) if(!str_contains($f['action'],'appearance/mode')&&!str_contains($f['action'],'profile/language')) $sub+=substr_count($f['html'],'type="submit"');
-check('G07','View-only settings has no save button (S2 adapted: the top-bar mode and language switches are left out, V5 and V8b decisions)', $sv->status===200&&$sub===0);
+$sub=0;$acts=[];foreach(forms($h) as $f){$n=substr_count($f['html'],'type="submit"');if($n)$acts[]=$f['action'];if(!str_contains($f['action'],'appearance/mode')&&!str_contains($f['action'],'profile/language')&&!preg_match('#rolewarden/sidebar$#',$f['action'])) $sub+=$n;}
+check('G07','View-only settings has no save button (S2 adapted: the top-bar mode and language switches are left out, V5 and V8b decisions; U1: the sidebar collapse toggle too, as V8b L17)', $sv->status===200&&$sub===0, 'submits='.$sub.' forms with submit: '.json_encode($acts));
 $prior=stored();$f=matching(forms(page($adm,'rolewarden/settings')),'Save settings');$f['fields']['csrf_test_name']=csrf_of(page($sv,'rolewarden/profile'));submit($sv,$f,['sign_in_rate'=>'99']);
 check('G08','Only settings.update saves via direct POST',stored()===$prior&&!csrf_refused($sv));
 

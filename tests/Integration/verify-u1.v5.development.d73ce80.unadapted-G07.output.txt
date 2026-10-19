@@ -1,0 +1,74 @@
+== 1 Upgrade from bd7488e by replacing the folder, rollback, fresh install, no build ==
+module: bd7488e
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-19 05:59:15 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-19 05:59:16 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U01    Baseline bd7488e has no appearance.update permission
+[INFO] Baseline: nav has Appearance=false html theme attr=null
+[INFO] stopping server pid=12724
+[INFO] termination requested=true
+[INFO] server closed
+module: d73ce80
+[PASS] U02    Folder replaced, before migrate: the signed-in panel still answers 200 without SQL text
+[PASS] U02b   Before migrate: admin has no Appearance menu entry (permission not yet granted)
+[PASS] U02c   Before migrate: /rolewarden/appearance is refused cleanly (not 200, not 500)
+[PASS] U02d   Before migrate: the login page answers 200
+   spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
+[PASS] U03    Upgrade grants appearance.update to admin
+[PASS] U03b   Only admin receives appearance.update from the data migration
+[PASS] U03c   Upgrade adds no table (theme in a file, mode in Settings)
+[PASS] U04    After migrate: admin sees the Appearance menu entry
+[PASS] U04b   Super admin sees the Appearance menu entry
+[PASS] U05    users.view-only user: no Appearance menu entry
+[PASS] U05b   users.view-only user: /rolewarden/appearance refused (not 200, not 500)
+[PASS] U05c   User without permissions: no Appearance entry on the profile page
+[PASS] U06    After migrate: admin opens the customiser (200, Save theme form)
+[INFO] stopping server pid=34388
+[INFO] termination requested=true
+[INFO] server closed
+   spark migrate:rollback -b 3 -f (rc=0): -10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Rolling back: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Rolling back: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Done rolling back migrations.
+[PASS] U07    Rollback restores ACL rows, migrations and tables exactly
+[PASS] U08    Rolled back, d3c7dbb folder still in place: panel 200, no Appearance entry, customiser refused
+[INFO] stopping server pid=48216
+[INFO] termination requested=true
+[INFO] server closed
+module: bd7488e
+[PASS] U09    Restored bd7488e folder works after the rollback
+[INFO] stopping server pid=36312
+[INFO] termination requested=true
+[INFO] server closed
+module: d73ce80
+   spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
+[PASS] U10    Upgrade applies again after the rollback
+   spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-19 05:59:33 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-19 05:59:35 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U11    Fresh install grants appearance.update to admin
+   spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
+[PASS] U12    Fresh install rolls back cleanly (no acl_ table left)
+   spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-19 05:59:37 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+[PASS] U13    The package (git archive of d3c7dbb) contains the compiled panel stylesheet
+== Fixtures ==
+[PASS] U14    Served panel.css is byte-identical to the compiled file in the package (installer builds nothing)
+[FAIL] G07v5  View-only settings: no submit button outside the top-bar mode switch (V2 G07 adapted to V5)
+         -> HTTP 200 submits=1
+== 2 Tokens in the served stylesheet ==
+[INFO] stopping server pid=2700
+[INFO] termination requested=true
+[INFO] server closed
+PHP Fatal error:  Uncaught RuntimeException: css audit failed: python: can't open file 'C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u1rc\\u1r-v5-development/../verify-v5.css.py': [Errno 2] No such file or directory
+ in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u1rc\u1r-v5-development\verify-v5.php:208
+Stack trace:
+#0 {main}
+  thrown in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u1rc\u1r-v5-development\verify-v5.php on line 208
+
+Fatal error: Uncaught RuntimeException: css audit failed: python: can't open file 'C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u1rc\\u1r-v5-development/../verify-v5.css.py': [Errno 2] No such file or directory
+ in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u1rc\u1r-v5-development\verify-v5.php:208
+Stack trace:
+#0 {main}
+  thrown in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u1rc\u1r-v5-development\verify-v5.php on line 208
+[MAIL] captured=4 non-test=[]
+[WRITABLE] entries created during the run (logs/sessions/cache/theme): 61

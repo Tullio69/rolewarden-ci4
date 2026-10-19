@@ -198,12 +198,13 @@ try {
     // top-bar mode buttons; its intent is rechecked here on the settings form alone.
     add_role('v5-settings-view', ['settings.view']); add_user('v5settings', 'settings@v5.test', 'v5-settings-view', $pw);
     $sv = login2('settings-view', 'settings@v5.test', $pw); $hs = page($sv, 'rolewarden/settings');
-    $sub = 0; foreach (forms($hs) as $f) if (! str_contains($f['action'], 'appearance/mode') && ! str_contains($f['action'], 'profile/language')) $sub += substr_count($f['html'], 'type="submit"'); // S2: V8b language selector left out
-    check('G07v5', 'View-only settings: no submit button outside the top-bar mode switch (V2 G07 adapted to V5)', $sv->status === 200 && $sub === 0 && mode_form($hs) !== null, "HTTP {$sv->status} submits=$sub");
+    // U1: from v1.1 every page carries the sidebar collapse form (POST rolewarden/sidebar), left out like the top-bar switches (as V8b L17 adapted)
+    $sub = 0; $acts = []; foreach (forms($hs) as $f) { $n = substr_count($f['html'], 'type="submit"'); if ($n) $acts[] = $f['action']; if (! str_contains($f['action'], 'appearance/mode') && ! str_contains($f['action'], 'profile/language') && ! preg_match('#rolewarden/sidebar$#', $f['action'])) $sub += $n; } // S2: V8b language selector left out
+    check('G07v5', 'View-only settings: no submit button outside the top-bar mode/language switches and the sidebar collapse toggle (V2 G07 adapted to V5, U1)', $sv->status === 200 && $sub === 0 && mode_form($hs) !== null, "HTTP {$sv->status} submits=$sub forms with submit: " . json_encode($acts));
 
     // =====================================================================================
     echo "== 2 Tokens in the served stylesheet ==\n";
-    $p = proc_open(['python', __DIR__ . '/../verify-v5.css.py', "$WORKDIR/verify-v5.served-panel.css"], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, null, ['bypass_shell' => true]);
+    $p = proc_open(['python', (getenv('RW_U1_V5CSS') ?: __DIR__ . '/../verify-v5.css.py'), "$WORKDIR/verify-v5.served-panel.css"], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, null, ['bypass_shell' => true]);
     $A = json_decode(stream_get_contents($pipes[1]), true); $err = stream_get_contents($pipes[2]); proc_close($p);
     if (! is_array($A)) throw new RuntimeException('css audit failed: ' . $err);
     file_put_contents("$WORKDIR/verify-v5.css-audit.json", json_encode($A, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
@@ -591,7 +592,10 @@ try {
         'sessions' => 'rolewarden/sessions', 'appearance' => 'rolewarden/appearance'];
     foreach ($screens as $k => $u) { page($adm, $u); if ($adm->status !== 200) { info("Screen $k ($u) answers HTTP {$adm->status}: left out"); unset($screens[$k]); } }
     info('Screens rendered: ' . implode(', ', array_keys($screens)) . ' + login');
-    $tokens = array_values(array_filter($used, fn ($u) => ! str_starts_with($u, '--tw-'))); // --tw-* are 'initial' by design (see T04)
+    // --tw-* are 'initial' by design (see T04). U1: --sb-* are the sidebar's component variables, declared only on .rw-side
+    // (and its data-sidebar styles), derived from the semantic tokens (design system README, "component exceptions"); they
+    // do not exist on :root, so they are left out here; their rendered values are checked by U1 phase STYLE (-2, -3).
+    $tokens = array_values(array_filter($used, fn ($u) => ! str_starts_with($u, '--tw-') && ! str_starts_with($u, '--sb-')));
     $RENDER = [];
     foreach (THEMES as $theme) {
         save_theme($adm, ['base' => $theme]);

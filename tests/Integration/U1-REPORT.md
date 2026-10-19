@@ -1,5 +1,55 @@
 # U1 — Navigazione (v1.1): collaudo indipendente
 
+## Riverifica su `d73ce80` (2026-10-19, Collaudatore ad Hoc)
+
+**Esito: FAIL sul punto 8 (regressione V5). U1 non è approvata.** Punti 1-7 PASS; A1 e A2 chiuse secondo le decisioni dell'utente; un difetto nuovo (D2) e un'ambiguità nuova (A3) dalla V5.
+
+Del commit conosco solo il `--stat`: `docs/design-system/README.md`, `resources/css/panel.css`, `src/Assets/css/panel.css`.
+
+| Suite | development | production |
+| --- | --- | --- |
+| U1 (NAV, CNT, TODAY, RAIL, STYLE, LANG, ESC) | **226/226**, 0 AMB | **226/226**, 0 AMB |
+| A2, fase nuova `verify-u1.phase-a2.php` | **15/15** | **15/15** |
+| S1 (N, Q, Y, A, C, R, T, D, O, W, B, G), completa | **154/154** | **154/154** |
+| V8 (A-D, F, G; l'ambiente lo sceglie la suite) | **195/195**, 2 AMB già decise (A15c, G03) | |
+| V5 adattata | **175 PASS, 2 FAIL (T02, T05)**, 1 AMB già nota (T06) | uguale |
+| V2 adattata / extra / adapt | **151/151** + 41/41 + 16/16 | **169/169** + 54/54 + 16/16 |
+
+Non ripetute su `d73ce80`: V8b (116/116 su `f4115c5`) e il giro Docker S3/aggiornamento (su `6c636d4`); il commit tocca solo CSS e README.
+
+### A1 e A2 chiuse
+
+- **A1 (decisa):** in `verify-u1.phase-style.php` il controllo `-5` di Paper ora chiede testo `accent` ≥ 3:1 sulla barra, peso ≥ 600 e testo ≥ 4.5:1 sulla velatura; la velatura non è più misurata contro 3:1. Nessuna AMB S-31. PASS in 6 combinazioni × 2 ambienti.
+- **A2 (decisa):** il controllo `-2` delle 18 combinazioni chiede anche che i 12 token `--side-*`, `--on-side-accent`, `--charcoal-*` siano definiti per nome. Nessuna AMB S-tok. Fase A2:
+  - senza foglio dell'applicazione, in 3 temi × chiaro/scuro, i 12 token hanno esattamente i valori di `tokens.css` (Console) e della tabella del README (Clarity, Contrast);
+  - un foglio dell'applicazione (`themeStylesheet`, come in `documentation/configuration.html`) con `:root { --side-accent; --on-side-accent; --charcoal-surface }` cambia in Chrome fondo e testo della voce attiva di Ink e Charcoal e il fondo della barra Charcoal, in chiaro e in scuro;
+  - tolto il foglio, i valori tornano quelli della tabella.
+
+### Adattamenti delle suite di regressione (nessuna aspettativa cambiata nella sostanza)
+
+- **G07 (V2) e G07v5 (V5):** dalla 1.1 ogni pagina porta il form di compressione della barra (POST `rolewarden/sidebar`), un submit che non è un salvataggio delle Impostazioni. Escluso come i selettori della barra in alto, come L17 della V8b. Senza adattamento: 1 FAIL ciascuna (uscite `*.unadapted-G07.*`).
+- **V5, R-* e X08:** le variabili `--sb-*` sono variabili di componente dichiarate solo su `.rw-side` (CSS servito), derivate dai token semantici; la suite le cercava su `:root`, dove non esistono, e falliva sul login (senza barra). Escluse come già `--tw-*`; i loro valori resi sono coperti da STYLE `-2`/`-3`. Senza adattamento: 9 FAIL (uscite `*.unadapted-sb.*`).
+- **V5, percorso di `verify-v5.css.py`:** lo script cercava il file nella cartella sopra la copia di lavoro; ora lo riceve da `RW_U1_V5CSS` (impostata in `verify-u1.all.sh`). Prima la fase 2 si fermava con un errore fatale.
+
+### Difetti
+
+- **D2 — valori grezzi nel CSS della barra (V5 T05).** Il CSS servito ha `.rw-side-nav { gap: 2px }` e `.rw-side-count { line-height: 20px }`, fuori dalle eccezioni dichiarate. Il README del design system vuole che i componenti leggano solo token semantici; la V5 si era chiusa senza valori grezzi. Nota: non esiste un `--space-*` da 2px (il minimo è 4px) e l'anteprima `components/Sidebar/preview.html` usa `gap: 2px`; se la correzione sia un token o un'eccezione dichiarata lo decide l'autore.
+  - Riproduzione: `verify-u1.all.sh v5.development`, controllo T05.
+
+### Ambiguità di specifica (all'utente, non decise)
+
+- **A3 — `--side-ink` e `--side-muted` mappati direttamente sui primitivi (V5 T02).** Nel CSS servito `--side-ink` e `--side-muted` valgono `var(--p-…)` per tema (es. `--p-inkblue-25`, `--p-slate-50`, `--p-white`), non tramite le coppie `--l-*`/`--d-*` come gli altri token semantici. La regola V5 chiede le coppie; il README dice solo che «un tema mappa il livello semantico sui primitivi», e per la tabella questi due token hanno lo stesso valore in chiaro e in scuro. Non è detto se le famiglie 1.1 indipendenti dal modo debbano passare dalle coppie (e quindi seguire il personalizzatore) o no.
+
+### Pulizia
+
+- Database `rolewarden_test` uguale allo snapshot `f7f37c04…e21e64` dopo ognuna delle 21 esecuzioni (verificato per hash, `verify-u1.environment.txt`). Mailpit vuoto. Nessun processo php/python/node/chrome residuo; nessun container, immagine o rete creati.
+- Restano in scratchpad `u1rc/` e `u1rc2/`: solo profili Chrome con file che il sandbox non lascia cancellare (nessun `.env`, nessuna credenziale), da cancellare a mano.
+- Nessun commit.
+
+---
+
+## Giri precedenti
+
 **Collaudatore ad Hoc (Claude), 2026-10-19.** Primo giro sul commit `6c636d4`, riverifica sul commit `f4115c5` (main), che corregge D1.
 
 ## Esito

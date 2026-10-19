@@ -141,6 +141,8 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-rw-mode="light"]) { --surface: var(--d-surface); --surface-sunk: var(--d-surface-sunk); --surface-raised: var(--d-surface-raised); --ink: var(--d-ink); --ink-muted: var(--d-ink-muted); --ink-faint: var(--d-ink-faint); --rule: var(--d-rule); --rule-strong: var(--d-rule-strong); --control-border: var(--d-control-border); --accent: var(--d-accent); --accent-hover: var(--d-accent-hover); --on-accent: var(--d-on-accent); --accent-tint: var(--d-accent-tint); --granted: var(--d-granted); --granted-tint: var(--d-granted-tint); --denied: var(--d-denied); --denied-tint: var(--d-denied-tint); --on-denied: var(--d-on-denied); --shadow-float: var(--d-shadow-float); --backdrop: var(--d-backdrop); --side-surface: var(--d-side-surface); --side-raised: var(--d-side-raised); --side-rule: var(--d-side-rule); color-scheme: dark; }
 }
+/* Dark rails (Ink, Charcoal): the theme's dark accent and dark surfaces in both modes. A theme file may set these directly. */
+:root { --side-accent: var(--d-accent); --on-side-accent: var(--d-on-accent); --charcoal-surface: var(--d-surface); --charcoal-raised: var(--d-surface-raised); --charcoal-rule: var(--d-rule-strong); --charcoal-ink: var(--d-ink); --charcoal-muted: var(--d-ink-muted); }
 
 /* ---------- Components ---------- */
 
@@ -234,8 +236,8 @@
   .rw-side { --sb-bg: var(--surface-sunk); --sb-raised: var(--surface-raised); --sb-rule: var(--rule-strong); --sb-ink: var(--ink); --sb-muted: var(--ink-muted); --sb-hover: var(--surface); --sb-act-bg: var(--accent-tint); --sb-act-fg: var(--accent); --sb-hot-bg: var(--accent); --sb-hot-fg: var(--on-accent); --sb-focus: var(--focus);
     background: var(--sb-bg); color: var(--sb-ink); border-right-color: var(--sb-rule); gap: var(--space-4); padding-bottom: var(--space-3); }
   .rw-side[data-sidebar="ink"] { --sb-bg: var(--side-surface); --sb-raised: var(--side-raised); --sb-rule: var(--side-rule); --sb-ink: var(--side-ink); --sb-muted: var(--side-muted); --sb-hover: var(--side-raised); }
-  .rw-side[data-sidebar="charcoal"] { --sb-bg: var(--d-surface); --sb-raised: var(--d-surface-raised); --sb-rule: var(--d-rule-strong); --sb-ink: var(--d-ink); --sb-muted: var(--d-ink-muted); --sb-hover: var(--d-surface-raised); }
-  .rw-side[data-sidebar="ink"], .rw-side[data-sidebar="charcoal"] { --sb-act-bg: var(--d-accent); --sb-act-fg: var(--d-on-accent); --sb-hot-bg: var(--d-accent); --sb-hot-fg: var(--d-on-accent); --sb-focus: var(--d-accent); }
+  .rw-side[data-sidebar="charcoal"] { --sb-bg: var(--charcoal-surface); --sb-raised: var(--charcoal-raised); --sb-rule: var(--charcoal-rule); --sb-ink: var(--charcoal-ink); --sb-muted: var(--charcoal-muted); --sb-hover: var(--charcoal-raised); }
+  .rw-side[data-sidebar="ink"], .rw-side[data-sidebar="charcoal"] { --sb-act-bg: var(--side-accent); --sb-act-fg: var(--on-side-accent); --sb-hot-bg: var(--side-accent); --sb-hot-fg: var(--on-side-accent); --sb-focus: var(--side-accent); }
   .rw-side .rw-brand { border-bottom-color: var(--sb-rule); }
   .rw-side .rw-brand b { color: var(--sb-ink); }
   .rw-side :focus-visible { outline-color: var(--sb-focus); }

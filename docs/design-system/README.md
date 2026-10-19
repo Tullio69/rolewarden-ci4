@@ -83,6 +83,7 @@ The sidebar has three styles, a choice in the theme customizer stored in the buy
 | Charcoal | `charcoal-surface`, text `charcoal-ink`, labels `charcoal-muted` | `side-accent` fill, `on-side-accent` text, weight 600 | Buyers who want a dark rail without blue |
 
 - The active item must differ from the rail by 3:1 or more, so on the dark rails it takes `side-accent` (7.8:1 on `side-surface`), never `accent`, which reads at 2.1:1 there.
+- On Paper the 3:1 is carried by the `accent` text and weight 600, not by the wash: `accent-tint` is a soft cue at about 1.1-1.6:1 against `surface-sunk`, and the text keeps 4.5:1 or more on it (decided 19 Oct 2026, U1 A1).
 - Counters are `note` figures on a `side-raised` chip; a count that needs attention ("5 new") takes `side-accent` with `on-side-accent` text.
 - The Today panel shows sign-ins today as `figure-lg`, a one-line note and an hourly sparkline in `side-accent`. It hides with one switch.
 - Every item renders only if the user holds its permission; never a disabled item.

@@ -1,0 +1,304 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase N from verify-s1.phase-n.php
+
+===== phase N =====
+[INFO] writable carried to appN: [omesso]/demo-installed
+[INFO] h1 reference: [{"[omesso]\/users":"Users","[omesso]\/permissions":"Permissions"},{"[omesso]\/users":"Utenti","[omesso]\/permissions":"Permessi"}]
+[INFO] server pid=20556 on 127.0.0.1:8071 prefix=''
+[PASS] N00    Owner signs in (application copy with Config\App::$defaultLocale = it)
+[PASS] N01    Sensitivity, no $languages class: owner (no choice) follows the app locale it on every page; switch on every page; the two users chose it and en
+[PASS] N01b   Owner's choice "it" is saved in the user settings
+[INFO] language settings at // ---- 2.: owner ["RoleWarden\\Config\\RoleWarden.locale=it"], itu ["RoleWarden\\Config\\RoleWarden.locale=it"], enu ["RoleWarden\\Config\\RoleWarden.locale=en"], nou []
+[INFO] app/Config/RoleWarden.php written: <?php namespace Config; class RoleWarden extends \RoleWarden\Config\RoleWarden { public array $languages = ['en']; }
+[INFO] server pid=41336 on 127.0.0.1:8071 prefix=''
+[PASS] N02    ['en'], app locale it, owner who chose Italian: every page (17, panel and demo) in English, html lang="en"
+[PASS] N03    ['en']: no language switch in the top bar and no language list in the profile, on any page
+[PASS] N03b   ['en']: the profile still opens (200) and keeps its other forms (password, mode)
+[INFO] nou survey (no permission: 302 on panel pages expected): {"lang":{"en":2},"bad":15}
+[PASS] N04    ['en']: a user who never chose a language sees the profile in English with the app locale it, no language control
+[PASS] N04b   ['en']: the user who chose it sees their profile and sessions in English
+[PASS] N05    ['en']: POST language=it is ignored without errors (no 4xx/5xx other than a redirect, no PHP or SQL text), the page stays English
+[PASS] N05b   ['en']: the ignored POST stores nothing for the user
+[PASS] N05c   ['en']: the same POST from the owner (with back field) gives no error and the panel stays English
+[INFO] N2 emails: [["admin@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["owner@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Too many failed sign-ins on 127.0.0.1","en"],["itu@s1.test","Your 127.0.0.1 password was changed","en"]]
+[PASS] N06    ['en'], app locale it: every security email to the user who chose Italian is in English (password changed, sign-in, too many failures: 2)
+[PASS] N06b   ['en']: every other email of the round (alert holders) is in English too
+[INFO] language settings at // ---- 3.: owner ["Config\\RoleWarden.locale=it"], itu ["Config\\RoleWarden.locale=it"], enu ["Config\\RoleWarden.locale=en"], nou []
+[INFO] server pid=8032 on 127.0.0.1:8071 prefix=''
+[PASS] N07    ['it'], app locale en: the user who chose English sees profile and sessions in Italian, no language control
+[PASS] N07b   ['it']: POST language=en ignored without errors, page stays Italian
+[PASS] N08    ['it']: every page (17, panel and demo) in Italian for the owner, no language control anywhere
+[PASS] N08b   ['it']: a user who never chose sees Italian with the app locale en
+[INFO] N3 emails: [["admin@v8b.test","Troppi accessi falliti su 127.0.0.1","it"],["owner@v8b.test","Troppi accessi falliti su 127.0.0.1","it"],["enm@s1.test","Troppi accessi falliti su 127.0.0.1","it"],["enm@s1.test","La tua password di 127.0.0.1 è stata cambiata","it"]]
+[PASS] N09    ['it'], app locale en: every security email to the user who chose English is in Italian (2)
+[PASS] N09b   ['it']: every other email of the round is in Italian too
+[INFO] language settings at // ---- 4.: owner ["Config\\RoleWarden.locale=it"], itu ["Config\\RoleWarden.locale=it"], enu ["Config\\RoleWarden.locale=en"], nou []
+[INFO] server pid=23528 on 127.0.0.1:8071 prefix=''
+[PASS] N10    []: owner (chose it) sees every page in Italian, the EN/IT switch on every page, the profile list offers same-as-app, en, it
+[PASS] N10b   []: the user who chose en sees English, the user who never chose follows the app locale (en)
+[PASS] N11    []: POST language=it from the user who never chose is saved and the profile turns Italian
+[INFO] N4 emails: [["admin@v8b.test","Too many failed sign-ins on 127.0.0.1","en"],["owner@v8b.test","Troppi accessi falliti su 127.0.0.1","it"],["itu@s1.test","Troppi accessi falliti su 127.0.0.1","it"],["itu@s1.test","La tua password di 127.0.0.1 è stata cambiata","it"]]
+[PASS] N12    []: security emails in the recipient's language again (the user who chose it gets Italian)
+[INFO] language settings at set_language: owner ["Config\\RoleWarden.locale=it"], itu ["Config\\RoleWarden.locale=it"], enu ["Config\\RoleWarden.locale=en"], nou ["Config\\RoleWarden.locale=it"]
+[INFO] phase Q from verify-s1.phase-q.php
+
+===== phase Q =====
+[INFO] server pid=13008 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=34228 on 127.0.0.1:8071 prefix=''
+[INFO] Q new: before the class ["it",true]; after adding app/Config/RoleWarden.php (extraThemes only) ["it",true] rows ["Config\\RoleWarden.locale=it","Config\\RoleWarden.colorScheme=dark"]
+[PASS] Q01    A user who chose Italian keeps Italian after the application adds app/Config/RoleWarden.php for another option (extraThemes), as configuration.html shows
+[PASS] Q02    The light/dark choice survives the same change
+[INFO] server pid=11272 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=42872 on 127.0.0.1:8071 prefix=''
+[INFO] Q inverse: chosen with the class ["it",true] rows ["Config\\RoleWarden.locale=it","Config\\RoleWarden.colorScheme=dark"]; after removing the class ["it",true] rows ["RoleWarden\\Config\\RoleWarden.locale=it","RoleWarden\\Config\\RoleWarden.colorScheme=dark"]
+[PASS] Q04    Inverse: language and light/dark chosen while app/Config/RoleWarden.php exists survive its removal
+[PASS] Q04b   The user of Q01 (chosen before the class, kept with it) still has Italian and dark after the class is removed again
+[INFO] Q both classes, rows written: ["RoleWarden\\Config\\RoleWarden.locale=en","Config\\RoleWarden.locale=it","RoleWarden\\Config\\RoleWarden.colorScheme=light","Config\\RoleWarden.colorScheme=dark"]
+[INFO] server pid=50160 on 127.0.0.1:8071 prefix=''
+[INFO] Q both classes, class present: seen ["it",true], rows now ["Config\\RoleWarden.locale=it","Config\\RoleWarden.colorScheme=dark"]
+[PASS] Q05    Same key under both classes, application class present: the value of the current class (Config\RoleWarden: it, dark) is the one used, without errors
+[INFO] server pid=5328 on 127.0.0.1:8071 prefix=''
+[INFO] Q both classes, class removed afterwards: seen ["it",true], rows ["RoleWarden\\Config\\RoleWarden.locale=it","RoleWarden\\Config\\RoleWarden.colorScheme=dark"]
+[PASS] Q05b   Then the class is removed: the user keeps the value that was current (it, dark), the stale one of the module class does not come back
+[INFO] server pid=3456 on 127.0.0.1:8071 prefix=''
+[PASS] Q06a   Sensitivity, default lock (5 failures): 2 failures do not lock
+[INFO] Settings lock field: ["lock_attempts","5",[],"number"]
+[INFO] lock input: <input class="rw-input" type="number" id="rw-lock_attempts" name="lock_attempts" min="3" max="20" required value="5" x-model="cur.lock_attempts">
+[INFO] sign_in_rate sent: {"sign_in_rate":"100"}
+[INFO] save: status 303 location http://127.0.0.1:8071/index.php/[omesso]/settings fields ["csrf_test_name","lock_attempts","lock_minutes","sign_in_rate","session_lifetime","remember_length","default_role","activity_retention","sidebar_today"] fields sent {"csrf_test_name":"72a716ed50e86ba809d96b8e0e769c91","lock_attempts":"3","lock_minutes":"15","sign_in_rate":"100","session_lifetime":"7200","remember_length":"2592000","default_role":"","activity_retention":"365","sidebar_today":"1"} page after RoleWarden Access Users 16 Roles 9 Permissions 30 Security Activity 2 new System Settings Appearance Today 19 sign-ins, 7 failed Settings EN IT System Light Dark v8bownerSuper-admin V8 Sign out × RoleWarden Settings Rules that apply to every user of this application. Changes take effect at each user's next request. Last changed19 Oct 2026 Byv8bowner All changes saved. Discard Save settings ASign-in 01 Session lifetime How long a signed-in user stays signed in without doing anything. 30 minutes2 hours8 hours1 day 02 Remember me How long "Remember me" keeps a user signed in on one browser. Off hides the option. Off7 days30 days90 days shown on the sign-in page 03 Lock after failed sign-ins Failed attempts on one email before it is locked. attempts 04 Lock duration How long a locked email has to wait before trying again. minutes 05 Sign-in attempts per address Sign-in attempts accepted fro...
+[INFO] messages: ["Settings&#x20;saved."]
+[INFO] lockAttempts saved from the screen: 3, rows [{"class":"RoleWarden\\Config\\RoleWarden","value":"3"}]
+[INFO] all settings rows after the save: ["RoleWardenDemo\\Config\\Demo.showcaseUsers=a:3:{i:0;i:4;i:1;i:5;i:2;i:6;}","RoleWarden\\Config\\RoleWarden.locale=it @user:7","RoleWarden\\Config\\RoleWarden.locale=en @user:8","RoleWarden\\Config\\RoleWarden.locale=en @user:10","RoleWarden\\Config\\RoleWarden.activitySeenAt=2026-10-19 00:02:27 @user:1","RoleWarden\\Config\\RoleWarden.activityPrunedOn=2026-10-19","RoleWarden\\Config\\RoleWarden.locale=it @user:9","RoleWarden\\Config\\RoleWarden.locale=it @user:11","RoleWarden\\Config\\RoleWarden.colorScheme=dark @user:11","RoleWarden\\Config\\RoleWarden.locale=it @user:12","RoleWarden\\Config\\RoleWarden.colorScheme=dark @user:12","RoleWarden\\Config\\RoleWarden.locale=it @user:13","RoleWarden\\Config\\RoleWarden.colorScheme=dark @user:13","RoleWarden\\Config\\RoleWarden.defaultRole=","RoleWarden\\Config\\RoleWarden.sessionLifetime=7200","Config\\Auth.sessionConfig=a:4:{s:5:\"field\";s:4:\"user\";s:16:\"allowRemembering\";b:1;s:18:\"rememberCookieName\";s:8:\"remember\";s:14:\"rememberLength\";i:2592000;}","RoleWarden\\Config\\RoleWarden.lockAttempts=3","RoleWarden\\Config\\RoleWarden.lockMinutes=15","RoleWarden\\Config\\RoleWarden.signInRate=100","RoleWarden\\Config\\RoleWarden.activityRetentionDays=365","RoleWarden\\Config\\RoleWarden.sidebarToday=1","RoleWarden\\Config\\RoleWarden.settingsChangedAt=2026-10-19 00:03:14","RoleWarden\\Config\\RoleWarden.settingsChangedBy=1"]
+[PASS] Q06b   lockAttempts set to 3 from the Settings screen is applied: 3 failures lock the email
+[INFO] class written: <?php namespace Config; class RoleWarden extends \RoleWarden\Config\RoleWarden { public array $extraThemes = ['ocean' => 'Ocean']; public int $lockAttempts = 9; }
+[INFO] server pid=30084 on 127.0.0.1:8071 prefix=''
+[INFO] after adding the class with lockAttempts = 9: Settings shows "3", rows [{"class":"Config\\RoleWarden","value":"3"}]
+[PASS] Q07    After the class is added (overriding the default with 9), the Settings screen still shows the admin's 3
+[PASS] Q07b   and the admin's 3 is still applied at sign-in (3 failures lock), not the class default 9
+[INFO] settings rows at the end of Q: 13
+[INFO] phase Y from verify-s1.phase-y.php
+
+===== phase Y =====
+[INFO] server pid=41632 on 127.0.0.1:8071 prefix=''
+[INFO] browser matrix widths, module data: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\chrome-v8b-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\chrome-v8b-1'
+[INFO] 1280 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[166.5],"area":[105.6],"tableW":1216,"boxW":1016,"boxScrollW":1216,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[153],"area":[105.6],"tableW":1202,"boxW":1016,"boxScrollW":1202,"overflowX":0}}
+[INFO] 1366 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[166.5],"area":[105.6],"tableW":1216,"boxW":1102,"boxScrollW":1216,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[153],"area":[105.6],"tableW":1202,"boxW":1102,"boxScrollW":1202,"overflowX":0}}
+[INFO] 1440 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[166.5],"area":[105.6],"tableW":1216,"boxW":1176,"boxScrollW":1216,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[153],"area":[105.6],"tableW":1202,"boxW":1176,"boxScrollW":1202,"overflowX":0}}
+[INFO] 1920 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[71,77.4,85.3,77.8,83,77.2,76.5,86.1,77.5,76.7,78.3,84.1,71,78,83.4],"anno":[210.5],"area":[162.6],"tableW":1656,"boxW":1656,"boxScrollW":1656,"overflowX":0},"admin":{"act":[71.5,77.8,85.6,78.1,83.3,77.6,76.9,86.3,77.8,77,78.7,84.4,71.5,78.3,83.7],"anno":[204],"area":[163.5],"tableW":1656,"boxW":1656,"boxScrollW":1656,"overflowX":0}}
+[INFO] server pid=7500 on 127.0.0.1:8071 prefix=''
+[INFO] browser layout en: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\chrome-v8b-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\chrome-v8b-2'
+[INFO] browser layout it: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\chrome-v8b-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\chrome-v8b-3'
+[INFO] h1 of the users page in the Italian run: Utenti
+[PASS] Y00-en [en] Chrome headless ran every layout step without driver errors or page exceptions
+[PASS] Y01-en-1280 [en] 1280 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-en-1280 [en] 1280 px: no row number clipped
+[PASS] Y03-en-1280 [en] 1280 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1280 [en] 1280 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-en-1280 [en] 1280 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1280 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[200],"[omesso]\/users?page=2 rw-t-users":[200],"[omesso]\/users\/17 rw-ledger":[140,172],"[omesso]\/users\/import rw-ledger":[189],"[omesso]\/roles rw-t-roles":[200],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[170],"[omesso]\/settings rw-ledger rw-settings":[196,179,185,179],"[omesso]\/profile rw-ledger":[166,162],"[omesso]\/appearance rw-ledger rw-settings":[184,179],"[omesso]\/appearance rw-ledger":[183]}
+[PASS] Y07-en-1280 [en] 1280 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [en] 1280 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[166.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.9],"n":27}}
+[PASS] Y01-en-1366 [en] 1366 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-en-1366 [en] 1366 px: no row number clipped
+[PASS] Y03-en-1366 [en] 1366 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1366 [en] 1366 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-en-1366 [en] 1366 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1366 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[200],"[omesso]\/users?page=2 rw-t-users":[200],"[omesso]\/users\/17 rw-ledger":[165,187],"[omesso]\/users\/import rw-ledger":[200],"[omesso]\/roles rw-t-roles":[200],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[182],"[omesso]\/settings rw-ledger rw-settings":[200,200,200,200],"[omesso]\/profile rw-ledger":[184,184],"[omesso]\/appearance rw-ledger rw-settings":[200,200],"[omesso]\/appearance rw-ledger":[194]}
+[PASS] Y07-en-1366 [en] 1366 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [en] 1366 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[166.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.9],"n":27}}
+[PASS] Y01-en-1440 [en] 1440 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-en-1440 [en] 1440 px: no row number clipped
+[PASS] Y03-en-1440 [en] 1440 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1440 [en] 1440 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-en-1440 [en] 1440 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1440 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[200],"[omesso]\/users?page=2 rw-t-users":[200],"[omesso]\/users\/17 rw-ledger":[187,199],"[omesso]\/users\/import rw-ledger":[200],"[omesso]\/roles rw-t-roles":[204],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[193],"[omesso]\/settings rw-ledger rw-settings":[200,200,200,200],"[omesso]\/profile rw-ledger":[199,200],"[omesso]\/appearance rw-ledger rw-settings":[200,200],"[omesso]\/appearance rw-ledger":[200]}
+[PASS] Y07-en-1440 [en] 1440 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [en] 1440 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[166.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.9],"n":27}}
+[PASS] Y01-en-1920 [en] 1920 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-en-1920 [en] 1920 px: no row number clipped
+[PASS] Y03-en-1920 [en] 1920 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-en-1920 [en] 1920 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (4 scrolling boxes)
+[PASS] Y05-en-1920 [en] 1920 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [en] 1920 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[449],"[omesso]\/users?page=2 rw-t-users":[239],"[omesso]\/users\/17 rw-ledger":[200,200],"[omesso]\/users\/import rw-ledger":[200],"[omesso]\/roles rw-t-roles":[684],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[200],"[omesso]\/settings rw-ledger rw-settings":[200,200,200,200],"[omesso]\/profile rw-ledger":[200,200],"[omesso]\/appearance rw-ledger rw-settings":[200,200],"[omesso]\/appearance rw-ledger":[200]}
+[PASS] Y07-en-1920 [en] 1920 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [en] 1920 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[166.5],"n":27},"[omesso]\/roles\/10":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,56.6,66,80.7,63.5,51.3,75.2,61.6,76.7,66.9,83.4,63.9],"anno":[470.9],"n":27}}
+[PASS] Y00-it [it] Chrome headless ran every layout step without driver errors or page exceptions
+[PASS] Y01-it-1280 [it] 1280 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-it-1280 [it] 1280 px: no row number clipped
+[PASS] Y03-it-1280 [it] 1280 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1280 [it] 1280 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-it-1280 [it] 1280 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1280 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[200],"[omesso]\/users?page=2 rw-t-users":[200],"[omesso]\/users\/17 rw-ledger":[146,172],"[omesso]\/users\/import rw-ledger":[189],"[omesso]\/roles rw-t-roles":[228],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[178],"[omesso]\/settings rw-ledger rw-settings":[212,179,183,179],"[omesso]\/profile rw-ledger":[163,163],"[omesso]\/appearance rw-ledger rw-settings":[184,179],"[omesso]\/appearance rw-ledger":[181]}
+[PASS] Y07-it-1280 [it] 1280 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [it] 1280 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[192.1],"n":27},"[omesso]\/roles\/10":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[478.6],"n":27}}
+[PASS] Y01-it-1366 [it] 1366 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-it-1366 [it] 1366 px: no row number clipped
+[PASS] Y03-it-1366 [it] 1366 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1366 [it] 1366 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-it-1366 [it] 1366 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1366 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[200],"[omesso]\/users?page=2 rw-t-users":[200],"[omesso]\/users\/17 rw-ledger":[173,186],"[omesso]\/users\/import rw-ledger":[200],"[omesso]\/roles rw-t-roles":[228],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[189],"[omesso]\/settings rw-ledger rw-settings":[212,200,200,200],"[omesso]\/profile rw-ledger":[181,185],"[omesso]\/appearance rw-ledger rw-settings":[200,200],"[omesso]\/appearance rw-ledger":[191]}
+[PASS] Y07-it-1366 [it] 1366 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [it] 1366 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[192.1],"n":27},"[omesso]\/roles\/10":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[478.6],"n":27}}
+[PASS] Y01-it-1440 [it] 1440 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-it-1440 [it] 1440 px: no row number clipped
+[PASS] Y03-it-1440 [it] 1440 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1440 [it] 1440 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (6 scrolling boxes)
+[PASS] Y05-it-1440 [it] 1440 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1440 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[200],"[omesso]\/users?page=2 rw-t-users":[200],"[omesso]\/users\/17 rw-ledger":[196,199],"[omesso]\/users\/import rw-ledger":[200],"[omesso]\/roles rw-t-roles":[228],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[198],"[omesso]\/settings rw-ledger rw-settings":[212,200,200,200],"[omesso]\/profile rw-ledger":[197,200],"[omesso]\/appearance rw-ledger rw-settings":[200,200],"[omesso]\/appearance rw-ledger":[200]}
+[PASS] Y07-it-1440 [it] 1440 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [it] 1440 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[192.1],"n":27},"[omesso]\/roles\/10":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[478.6],"n":27}}
+[PASS] Y01-it-1920 [it] 1920 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
+[PASS] Y02-it-1920 [it] 1920 px: no row number clipped
+[PASS] Y03-it-1920 [it] 1920 px: no horizontal page scroll on any screen, the content column stops at the window
+[PASS] Y06-it-1920 [it] 1920 px: whatever is wider than the content column sits in a box that scrolls inside it, and its far end can be reached (4 scrolling boxes)
+[PASS] Y05-it-1920 [it] 1920 px: role matrices (demo Approver and the role page with the long area), every column header label and box inside its own column
+[INFO] [it] 1920 px, marginal (.rw-anno) widths: {"[omesso]\/users rw-t-users":[449],"[omesso]\/users?page=2 rw-t-users":[200],"[omesso]\/users\/17 rw-ledger":[200,200],"[omesso]\/users\/import rw-ledger":[200],"[omesso]\/roles rw-t-roles":[695],"[omesso]\/permissions rw-t-users rw-t-permissions":[240,240,240,240,240,240,240,240,240,240,240,240],"[omesso]\/activity rw-t-users rw-t-activity":[200],"[omesso]\/sessions rw-ledger":[200],"[omesso]\/settings rw-ledger rw-settings":[212,200,200,200],"[omesso]\/profile rw-ledger":[200,200],"[omesso]\/appearance rw-ledger rw-settings":[200,200],"[omesso]\/appearance rw-ledger":[200]}
+[PASS] Y07-it-1920 [it] 1920 px: matrix action columns never narrower than their header content, the matrix either fits its box or scrolls inside it
+[INFO] [it] 1920 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[192.1],"n":27},"[omesso]\/roles\/10":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[478.6],"n":27}}
+[INFO] phase A from verify-s1.phase-a.php
+
+===== phase A =====
+[PASS] A00    Data files: areas.{area} in English and Italian for the same areas (module and demo: 9)
+[INFO] expected Italian area names: {"activity":"Attività","admin":"Admin","appearance":"Aspetto","articles":"Articoli","beta":"Beta","documents":"Documenti","marked":"<i>Marcata<\/i> & \"q\" <script>alert(71)<\/script>","permissions":"Permessi","roles":"Ruoli","security":"Sicurezza","sessions":"Sessioni","settings":"Impostazioni","users":"Utenti","warehouse":"Warehouse","warehouse-operations":"Warehouse-operations"}
+[INFO] server pid=41316 on 127.0.0.1:8071 prefix=''
+[PASS] A01-it [it] Permissions page: every area title is the area name in that language (15 areas, module, demo, application; untranslated ones capitalised)
+[PASS] A04    Italian area name with markup (application translation) is escaped in the Permissions title
+[PASS] A02    Italian Permissions page: no English area name of the data files among the titles
+[PASS] A01-en [en] Permissions page: every area title is the area name in that language (15 areas, module, demo, application; untranslated ones capitalised)
+[INFO] server pid=40508 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=32760 on 127.0.0.1:8071 prefix=''
+[INFO] [it] matrix rows read: 60; sample aria-labels ["Concedi ogni azione in Attività","Concedi ogni azione in Admin","Concedi ogni azione in Aspetto","Concedi ogni azione in Articoli"]; read-only matrices with a row box: 0
+[PASS] A03-it [it] Matrix rows (role and user, editable by the owner and read-only for a viewer): area name in that language, untranslated ones capitalised, the slug area.* unchanged, row-box aria-label with the same name, markup escaped
+[INFO] [en] matrix rows read: 60; sample aria-labels ["Grant every action on Activity","Grant every action on Admin","Grant every action on Appearance","Grant every action on Articles"]; read-only matrices with a row box: 0
+[PASS] A03-en [en] Matrix rows (role and user, editable by the owner and read-only for a viewer): area name in that language, untranslated ones capitalised, the slug area.* unchanged, row-box aria-label with the same name, markup escaped
+[INFO] phase C from verify-s2.phase-c.php
+
+===== phase C =====
+[PASS] C00    Data files: actions.{action} in English and Italian for the same actions (module and demo: 11)
+[INFO] expected Italian column names: {"access":"access","activate":"attivare","alerts":"avvisi","approve":"approvare","approve-transfers":"approve-transfers","archive":"archive","assign":"assegnare","audit-stock":"audit-stock","close-period":"close-period","create":"creare","delete":"eliminare","dispatch-orders":"dispatch-orders","edit":"edit","export-ledger":"export-ledger","forecast-demand":"forecast-demand","import":"importare","manage-admins":"manage-admins","override":"eccezioni","override-limits":"override-limits","print-labels":"print-labels","publish":"<i>Pubblica<\/i> & \"q\" <script>alert(72)<\/script>","receive-goods":"receive-goods","reconcile-inventory":"reconcile-inventory","recount":"recount","reopen-period":"reopen-period","revoke":"revocare","settings":"settings","update":"modificare","view":"vedere"}
+[INFO] server pid=25968 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=21772 on 127.0.0.1:8071 prefix=''
+[INFO] [it] column heads read: 116; aria-labels ["Concedi «vedere» in ogni area","Concedi «access» in ogni area","Concedi «settings» in ogni area","Concedi «modificare» in ogni area","Concedi «<i>Pubblica<\/i> & \"q\" <script>alert(72)<\/script>» in ogni area"]
+[PASS] C01-it [it] Column heads of the four matrices (role and user, editable and read-only): action name in that language, the application's translation, the slug without one; column box aria-label with the same name; markup escaped
+[INFO] [en] column heads read: 116; aria-labels ["Grant view on every area","Grant access on every area","Grant settings on every area","Grant update on every area","Grant publish on every area"]
+[PASS] C01-en [en] Column heads of the four matrices (role and user, editable and read-only): action name in that language, the application's translation, the slug without one; column box aria-label with the same name; markup escaped
+[PASS] C02    Italian page source: the application translation with markup is escaped (no raw <script> or <i>)
+[PASS] C03    The matrices carry the same slugs and values in Italian and English: every attribute of cells and boxes (labels aside) and every row slug identical
+[INFO] server pid=30684 on 127.0.0.1:8071 prefix=''
+[INFO] save clicks: [["login",null],["g r",null],["click role","ok"],["click role 2","ok"],["save role","ok"],["g u",null],["click user","ok"],["save user","ok"]]
+[PASS] C04    Italian role matrix: clicking the translated columns (application «Pubblica», «eliminare») and saving stores articles.publish and users.delete
+[PASS] C05    Italian user matrix: a click in the untranslated column «recount» and saving stores the override warehouse.recount
+[INFO] phase R from verify-s2.phase-r.php
+
+===== phase R =====
+[PASS] R00    Language files: panel.activity.fields in English and Italian for the same 23 fields
+[INFO] server pid=49880 on 127.0.0.1:8071 prefix=''
+[INFO] appearance form fields: {"csrf_test_name":"hidden","base":"radio","colors[light][surface]":"hidden","colors[dark][surface]":"hidden","colors[light][ink]":"hidden","colors[dark][ink]":"hidden","colors[light][accent]":"hidden","colors[dark][accent]":"hidden","colors[light][accent-hover]":"hidden","colors[light][accent-tint]":"hidden","colors[light][on-accent]":"hidden","colors[dark][accent-hover]":"hidden","colors[dark][accent-tint]":"hidden","colors[dark][on-accent]":"hidden","radius":"select","density":"select","sidebar":"select"}
+[INFO] changes made: {"user":[303,["username"]],"role":[303,["name","description"]],"settings":[303,["lock_minutes","sign_in_rate","session_lifetime"]],"appearance":[303,["colors[light][accent]","radius","density"]]}
+[INFO] activity rows written: 7 [{"action":"user.updated","details":"{\"username\":[\"s2ruser\",\"s2ruser2\"]}"},{"action":"role.updated","details":"{\"name\":[\"Team R\",\"Team R2\"],\"description\":[\"First\",\"Second <b>bold<\\\/b>\"]}"},{"action":"settings.updated","details":"{\"session_lifetime\":[7200,1800],\"lock_minutes\":[15,17],\"sign_in_rate\":[1000,100]}"},{"action":"appearance.updated","details":"{\"radius\":[null,0],\"density\":[null,\"compact\"],\"light.accent\":[null,\"#12ab34\"]}"},{"action":"role.permission_granted","details":"{\"permission\":\"activity.view\"}"},{"action":"user.role_assigned","details":"{\"role\":\"Team R2\"}"},{"action":"user.override_denied","details":"{\"permission\":\"users.delete\"}"}]
+[INFO] unknown-field row copied from a module row: {"mystery_field":["<b>old<\/b>","<script>alert(73)<\/script>"]}
+[INFO] server pid=25856 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=31384 on 127.0.0.1:8071 prefix=''
+[INFO] details in Italian: ["Permesso: users.delete","Ruolo: Team R2","Permesso: activity.view","Raggio degli angoli: — → 0Densità: — → compactChiaro · accent: — → #12ab34","Durata della sessione: 7200 → 1800Durata del blocco: 15 → 17Tentativi di accesso per indirizzo: 1000 → 100","Nome: Team R → Team R2Descrizione: First → Second <b>bold<\/b>","mystery_field: <b>old<\/b> → <script>alert(73)<\/script>","Nome utente: s2ruser → s2ruser2","Permesso: warehouse.recount","Permesso: users.delete","Permesso: articles.publish"]
+[INFO] details in English: ["Permission: users.delete","Role: Team R2","Permission: activity.view","Corner radius: — → 0Density: — → compactLight · accent: — → #12ab34","Session lifetime: 7200 → 1800Lock duration: 15 → 17Sign-in attempts per address: 1000 → 100","Name: Team R → Team R2Description: First → Second <b>bold<\/b>","mystery_field: <b>old<\/b> → <script>alert(73)<\/script>","Username: s2ruser → s2ruser2","Permission: warehouse.recount","Permission: users.delete","Permission: articles.publish"]
+[INFO] field keys in the new rows: ["username","name","description","session_lifetime","lock_minutes","sign_in_rate","radius","density","light.accent","permission","role"]
+[PASS] R01-it Italian log: the field names of the details written by the module (user, role, settings, appearance, permission, role assigned, override) are the Italian names
+[PASS] R01-en English log: the same entries show the English names
+[INFO] appearance keys written: ["radius","density","light.accent"]; Italian: ["Raggio degli angoli: — → 0Densità: — → compactChiaro · accent: — → #12ab34"]
+[PASS] R02    A theme colour reads «Chiaro · accent» (Italian) / «Light · accent» (English)
+[PASS] R03    An unknown field keeps its name in both languages (mystery_field)
+[PASS] R04    Escape intact: markup in the values (role description, the unknown field) is shown as text in both languages
+[INFO] phase T from verify-s2.phase-t.adapted.php
+
+===== phase T =====
+[PASS] T00    Language data files: every English key has an Italian translation, and only those keys (57 keys, module and demo)
+[PASS] T00b   The database holds exactly the English text of the data files for every seeded role and permission (module and demo)
+[INFO] server pid=21404 on 127.0.0.1:8071 prefix=''
+[PASS] T01a   Owner signs in and chooses Italian from the profile
+[PASS] T01    Italian reader: seeded role names/descriptions and permission descriptions in Italian on roles list, role pages, Permissions (with Granted by), users list, user pages, Settings default role, role edit and create forms, Activity, demo showcase bar; no English seed text left
+[INFO] Area titles on the Italian Permissions page: ["Attivit\u00e0","Admin","Aspetto","Beta","Documenti","Permessi","Ruoli","Sicurezza","Sessioni","Impostazioni","Utenti","Warehouse-operations"]
+[PASS] T01b   Italian Permissions page: the "Concesso da" column names Amministratore, never Admin
+[PASS] T01c   Italian role edit form: name and description fields hold the Italian text
+[PASS] T01d   Italian demo list: column "Proprietario" (was Owner)
+[PASS] T02    English reader: the same pages show the English seed text as before
+[PASS] T03-admin Italian: saving the edit form of admin untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[PASS] T03-user Italian: saving the edit form of user untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[PASS] T03-demo-reader Italian: saving the edit form of demo-reader untouched leaves the database unchanged (role row apart from updated_at, grants, assignments) and writes no role.* activity entry
+[INFO] updated_at changed by an untouched save: {"admin":true,"user":true,"demo-reader":true,"admin (English form)":true}
+[PASS] T04    Italian: description changed, name untouched: the new description is saved as written and the name stays the stored English "Admin"
+[PASS] T05    Changed description shown as written in both languages; the untouched name still translated (Amministratore / Admin)
+[PASS] T06    A name changed by an admin ("Member S1") is shown as written to the Italian reader (roles list, users list, Settings); its untouched description stays translated
+[PASS] T07    Italian: a name typed by the admin (Lettori scelti) is saved as written and shown as written in English too
+[PASS] T08    Name set back to the seed text ("User"): the Italian reader sees "Utente" again
+[INFO] Activity rows on the role user: [{"action":"role.updated","subject_label":"Member S1"},{"action":"role.updated","subject_label":"User"}]
+[PASS] T09    Activity log keeps the labels of the moment: the rename rows of the role user still carry their own labels after the role was renamed again
+[PASS] T10    Application role and permission translated as views.html says (app/Language/{en,it}/RoleWardenData.php): Redattore, its description, Pubblicare articoli, on roles list, Permissions, users list and user page
+[PASS] T10b   The same application role in English: Editor, Edits the articles.
+[PASS] T11    Markup in an admin-typed role name and description, and in an application translation, is escaped on every page in both languages (and the escaped text is shown)
+[INFO] phase D from verify-s1.phase-d.php
+
+===== phase D =====
+[PASS] D00    demo:uninstall of the demo installed at the start (after the other phases) succeeds
+[PASS] D01    demo:install again (exit 0)
+[PASS] D01b   The reinstalled demo stores its English seed text (Reader, Author, Approver)
+[INFO] server pid=31036 on 127.0.0.1:8071 prefix=''
+[INFO] activity rows written by real users about demo objects: [["v8bowner","role.updated","role","Reader"],["v8bowner","user.role_assigned","user","v8bplain"]]
+[INFO] activity rows with a demo account as actor or subject: [["v8bowner","user.deactivated","user","demo-approver"],["v8bowner","user.activated","user","demo-approver"]]
+[PASS] D02    Before the removal there are rows of both kinds: real owner about demo roles/accounts, and demo accounts as actor or subject
+[PASS] D03    demo:uninstall after the real use (exit 0, no PHP error)
+[PASS] D04    Rows written by the real owner about demo roles and the demo role assignment stay after the removal, unchanged (decision of 2026-10-16)
+[PASS] D05    Rows with a demo account as actor or as subject are gone (deactivation and activation of the approver, the author's own actions)
+[INFO] Differences left by real accounts (allowed): 8
+[PASS] D06    Apart from what real accounts did (their log rows, sign-ins and password rehash, sessions, last activity, the daily pruning date), the database is as before the installation: no demo table, role, permission, account, assignment, setting or migration left
+[PASS] D06b   The plain user lost only the demo role given to it, its own roles are as before
+[PASS] D06c   Real accounts: every users row as before the installation, apart from last activity
+[PASS] D07    The demo installs again after the removal (exit 0)
+[INFO] phase O from verify-s1.phase-o.php
+
+===== phase O =====
+[INFO] sign-out text from the language files: en "Sign out", it "Esci"
+[INFO] server pid=16172 on 127.0.0.1:8071 prefix=''
+[INFO] sign-out hrefs: ["http:\/\/127.0.0.1:8071\/index.php\/logout"]
+[PASS] O01    Every panel page (15) carries one top-bar link "Sign out" for the signed-in super admin
+[PASS] O02    The link points at Shield's logout of this application (same href everywhere)
+[PASS] O03    A user with no permission has the link on the pages open to them (profile, own sessions)
+[PASS] O04    Italian: the link reads "Esci" on every panel page, never "Sign out"
+[PASS] O05    Following the link closes the session: a panel page then redirects to the sign-in page
+[PASS] O05b   After the sign-out the demo page is closed as well (redirect to sign-in or not served)
+[INFO] server pid=23952 on 127.0.0.1:8071 prefix=''
+[INFO] focus styles: {"before":"none|3px|rgb(18, 171, 52)|none|none|rgb(255, 255, 255)|rgb(18, 171, 52)","after":"solid|2px|rgb(18, 171, 52)|none|none|rgb(255, 255, 255)|rgb(18, 171, 52)","focused":true,"focusVisible":true,"visible":true,"overflowX":0}
+[PASS] O06    Chrome, 1280 px: the link takes the keyboard focus, matches :focus-visible and its look changes (outline, shadow, underline or colours)
+[PASS] O07    Chrome, 1280 px: no horizontal scroll with the link in the top bar (users, role, Permissions, Settings)
+[PASS] O08    Chrome: clicking the link signs out; the panel then opens the sign-in page
+[INFO] phase W from verify-s1.phase-w.php
+
+===== phase W =====
+PHP Fatal error:  Uncaught RuntimeException: junction failed in E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.lib.php:222
+Stack trace:
+#0 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u1.harness.php(69): junction('C:/Users/fabio/...', 'C:/Users/fabio/...')
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\verify-u1.phase-w.php(8): app_copy('appW', 'C:/Users/fabio/...', true)
+#2 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u1.harness.php(168): require('C:\\Users\\fabio\\...')
+#3 {main}
+  thrown in E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.lib.php on line 222
+
+Fatal error: Uncaught RuntimeException: junction failed in E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.lib.php:222
+Stack trace:
+#0 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u1.harness.php(69): junction('C:/Users/fabio/...', 'C:/Users/fabio/...')
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\76d069f5-945a-4655-83bc-614633267189\scratchpad\u1r-run2\u1r-s1-development\verify-u1.phase-w.php(8): app_copy('appW', 'C:/Users/fabio/...', true)
+#2 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u1.harness.php(168): require('C:\\Users\\fabio\\...')
+#3 {main}
+  thrown in E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.lib.php on line 222
+Traceback (most recent call last):
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u1.suite.py", line 146, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u1.suite.py", line 122, in main
+    sp.run(['php', HERE / 'verify-v4.snapshot.php', 'restore', WORK / 'snapshot.sql'], env=ENV, check=True)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['php', WindowsPath('E:/progetti_lavoro/ASP/rolewarden-ci4/tests/Integration/verify-v4.snapshot.php'), 'restore', WindowsPath('C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/76d069f5-945a-4655-83bc-614633267189/scratchpad/u1r-run2/u1r-s1-development/snapshot.sql')]' returned non-zero exit status 3221225794.

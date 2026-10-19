@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude (1.1, tappa U1 Navigazione)
+**Agente:** Claude Code
+**Dalle:** 2026-10-18 23:00
+**Scope:** layout del pannello, barra laterale, CSS, personalizzatore (stile della barra), Impostazioni (pannello Oggi), lingue, una migrazione di dati
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -996,3 +996,17 @@ Formato di ogni voce:
 - Cosa ho fatto: verificato il design system aggiornato dall'utente (direzione B: Dashboard, barra laterale a tre stili, ricerca Ctrl K, grafici). Era partito da una copia vecchia: ripristinate cinque decisioni ("Last active", quadratino tratteggiato del non concesso, niente scorrimento laterale sotto 1440px, ruolo Administrator per permesso, Toast). Descritti temi, font inclusi e Tailwind v4; corretti contrasto della voce attiva sulle barre scure (`side-accent`), colori a mano di Charcoal (token `charcoal-*`), conteggi nella mappa di calore; barra Paper predefinita, cosi' l'aggiornamento dalla 1.0 non cambia aspetto. Riesportato in `docs/design-system/` con `tokens.css` rigenerato. SPEC: colonna v1.1 nella matrice e decisioni del 2026-10-18 (dashboard, barra, ricerca, verifica di un permesso, blocchi dell'applicazione).
 - Stato: completato, solo documentazione; nessun codice.
 - Note per il prossimo: decisioni dell'utente per la 1.1: API dei blocchi dell'applicazione nella 1.1; migrazione che concede `dashboard.*` ai ruoli con `activity.view`; personalizzazione con Settings, senza predefiniti per ruolo. Da fare prima del codice: valori dei token `side-*`, `charcoal-*`, `heat-*` per Clarity e Contrast, approvati su anteprima (regola V5); un brief della 1.1 con le tappe. L'originale della SPEC su Claude non e' allineato da tempo: si lavora su `docs/SPEC.md`.
+
+### [2026-10-19 02:30] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: collaudo U1 (1.1, Navigazione) su `6c636d4`, riverifica su `f4115c5`; scritti solo `tests/Integration/verify-u1.*` (suite, fasi, runner host e Docker, copie adattate `verify-u1.phase-l.adapted.php`, `verify-u1.v5adapted.php`, `verify-u1.v2adapted.php`), `tests/Integration/U1-REPORT.md` e questa voce
+- Cosa ho fatto: collaudo in nero (HTTP, Chrome headless con albero di accessibilità, query su `rolewarden_test`) di voci e permessi, contatori, Oggi, compressione, stili Paper/Ink/Charcoal nei 3 temi in chiaro e scuro, lingue, escape e CSRF; in Docker l'aggiornamento da `build/rolewarden-app-1.0.0.zip` (migrazione, rollback, layout 1.0 sovrascritto, fasi S3) e un'installazione nuova
+- Stato: completato in parte. **Esito: PASS sui punti 1-7, punto 8 parziale; U1 non ancora approvata.**
+  - Suite U1 su `f4115c5`: 226 PASS, 0 FAIL, 2 AMB in development e in production. Aggiornamento dalla 1.0.0 80/80, installazione nuova 66/66.
+  - Regressione: V8b 116/116 in development e production (L17 adattato: il form di compressione della barra sta su ogni pagina); S1 145/145 in development fino alla fase O. Il giro S1 è stato fermato dal sistema per memoria scarsa; V8, V5 e V2 non eseguite (copie adattate pronte).
+- Note per il prossimo:
+  - **D1** (contatore Ruoli con i ruoli eliminati) corretto in `f4115c5` e riverificato.
+  - **Ambiguità all'utente, non decise:** A1, il 3:1 della voce attiva in Paper (velatura 1.05-1.64:1, testo almeno 6.95:1); A2, nomi dei token `--side-accent`, `--on-side-accent` e `--charcoal-*` assenti nel CSS (Ink e Charcoal leggono i token scuri in entrambi i modi; i valori resi sono corretti).
+  - Da completare: S1 W, B, G e production, V8, V5 e V2, una suite alla volta in primo piano (comandi in `U1-REPORT.md`).
+  - Controllo visivo in browser vero dovuto all'autore e all'utente; screenshot `verify-u1.style-*.png`.
+  - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` (due ripristini fatti a mano dopo processi fermati per memoria), Mailpit vuoto, immagine `u1-col-php:8.3`, rete `u1-net` e container rimossi. Restano in scratchpad `u1r-run2` e `u1r-v8b-development` (profili Chrome bloccati). Nessun commit.

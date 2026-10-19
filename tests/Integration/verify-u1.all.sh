@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# U1 driver (Collaudatore ad Hoc): tappa U1 of 1.1 on RW_V8_NEW (default d73ce80, riverifica), host suites strictly one at a time.
+# U1 driver (Collaudatore ad Hoc): tappa U1 of 1.1 on RW_V8_NEW (default b1df3cc, second riverifica), host suites strictly one at a time.
 #   U1 suite (verify-u1.harness.php, phases NAV, CNT, TODAY, RAIL, STYLE, LANG, ESC) in development and production;
 #   regression: V8b phases L, M, P, I, G and S1 phases N, Q, Y, A, C, R, T, D, O, W, B, G (S2 loader order), V8 A-D, F, G,
 #   V5 and V2 (test, extra, adapt) through verify-u1.regress.py. The Docker part (point 6 and S3) is verify-u1.s3run.py.
@@ -7,7 +7,7 @@
 # Usage: bash verify-u1.all.sh [step ...]   (no step: all)
 cd "$(dirname "$0")" || exit 1
 : "${RW_DB_USERNAME:?}" "${RW_DB_PASSWORD:?}" "${RW_U1_SCRATCH:?}"
-export RW_V8_NEW=${RW_V8_NEW:-d73ce80} RW_S1_BASE=b1cca14 RW_V8_SCRATCH="$RW_U1_SCRATCH"
+export RW_V8_NEW=${RW_V8_NEW:-b1df3cc} RW_S1_BASE=b1cca14 RW_V8_SCRATCH="$RW_U1_SCRATCH"
 P=verify-u1.progress.txt
 n=0
 step() { # label, command...
@@ -28,6 +28,8 @@ done
 for e in development production; do
   want "v8b.$e" && RW_V8B_ENV=$e RW_V8B_WORK="$RW_U1_SCRATCH/u1r-v8b-$e" step "v8b.$e" python verify-u1.suite.py s1 "v8b.$RW_V8_NEW.$e" L,M,P,I,G
   want "s1.$e" && RW_V8B_ENV=$e RW_V8B_WORK="$RW_U1_SCRATCH/u1r-s1-$e" step "s1.$e" python verify-u1.suite.py s1 "s1.$RW_V8_NEW.$e" N,Q,Y,A,C,R,T,D,O,W,B,G
+  # S1 layout only (phase Y, Chrome at 1280-1920 px): for CSS-only commits that can move the sidebar layout
+  want "s1y.$e" && RW_V8B_ENV=$e RW_V8B_WORK="$RW_U1_SCRATCH/u1r-s1y-$e" step "s1y.$e" python verify-u1.suite.py s1 "s1y.$RW_V8_NEW.$e" Y
 done
 want v8 && RW_V8B_WORK="$RW_U1_SCRATCH/u1r-v8" step v8 python verify-u1.suite.py v8 "$RW_V8_NEW" A,B,C,D,F,G
 for job in v5:development v5:production test:development test:production extra:development extra:production adapt:development adapt:production; do

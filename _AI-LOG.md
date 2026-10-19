@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude (1.1, tappa U1 Navigazione)
-**Agente:** Claude Code
-**Dalle:** 2026-10-19 07:10 (A1, A2 e regressione di U1)
-**Scope:** layout del pannello, barra laterale, CSS, personalizzatore (stile della barra), Impostazioni (pannello Oggi), lingue, una migrazione di dati
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1025,3 +1025,29 @@ Formato di ogni voce:
   - **Ambiguità A3 (all'utente, non decisa):** `--side-ink` e `--side-muted` mappati direttamente sui primitivi per tema, non tramite `--l-*`/`--d-*` (V5 T02).
   - Non ripetute su `d73ce80`: V8b e il giro Docker S3 (commit solo CSS e README).
   - **Pulizia:** DB uguale allo snapshot `f7f37c04…e21e64` dopo tutte le 21 esecuzioni, Mailpit vuoto, nessun processo residuo, nessun container. Restano in scratchpad `u1rc/` e `u1rc2/` (solo profili Chrome bloccati dal sandbox, nessuna credenziale), da cancellare a mano. Nessun commit.
+
+### [2026-10-19 15:10] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `U1-REPORT.md` (nuova sezione in cima), `verify-u1.all.sh` (passo `s1y.<env>`) e uscite `verify-u1.*b1df3cc*`
+- Cosa ho fatto: seconda riverifica di U1 sul commit `b1df3cc`, in nero, solo `rolewarden_test`, una suite alla volta.
+  - **V5 adattata:** 177/177 in development e production. T02 e T05 PASS, 1 AMB già nota (T06).
+  - **U1:** 226/226 ×2, 0 AMB.
+  - **A2:** 15/15 ×2.
+  - **S1 fase Y (layout):** 52/52 ×2.
+  - **Rispetto a `d73ce80`:** controlli U1/A2 identici, e valori resi e layout invariati. Nel CSS servito cambiano solo `gap: var(--space-0-5)` (2px), `line-height: var(--space-5)` (20px) e `--side-ink`/`--side-muted` tramite le coppie `--l-*`/`--d-*`.
+- Stato: completato. **Esito PASS; U1 approvata, punto 8 completo.**
+- Note per il prossimo:
+  - D2 corretto. A3 decisa dall'utente e applicata. Nessun difetto o ambiguità nuova.
+  - Correzione al giro precedente: `--space-0-5: 2px` esisteva già.
+  - **Pulizia:**
+    - Il primo tentativo si era fermato per memoria scarsa. Ho rigenerato lo snapshot canonico del database vuoto: hash identico a `f7f37c04…e21e64`. Poi l'ho ripristinato.
+    - Dopo tutte le 8 esecuzioni e alla fine: DB uguale a `f7f37c04…e21e64`, Mailpit vuoto, nessun processo residuo.
+    - In scratchpad restano `u1rc/`, `u1rc2/`, `u1rc3/` e `u1rc4/`: solo profili Chrome bloccati dal sandbox, nessuna credenziale. Vanno cancellati a mano.
+    - Nessun commit.
+
+### [2026-10-19 15:30] - Claude
+- Tipo: fix
+- Scope: tappa U1 (1.1, Navigazione); `resources/css/panel.css` e compilato, `docs/design-system/README.md` e l'originale su Claude (versione 13); commit `d73ce80`, `b1df3cc`
+- Cosa ho fatto: decisioni dell'utente sulle ambiguità del collaudo. A1: in Paper il 3:1 della voce attiva lo portano testo `accent` e peso 600, la velatura è un segnale (regola nel design system, copia e originale). A2: token `--side-accent`, `--on-side-accent`, `--charcoal-*` nel CSS, letti da Ink e Charcoal, impostabili da un file di tema. D2 della riverifica (gap e line-height grezzi nella barra) su `--space-0-5` e `--space-5`. A3: `--side-ink` e `--side-muted` passano per le coppie `--l-*`/`--d-*`. Valori resi invariati.
+- Stato: completato. **U1 approvata dal collaudo** su `b1df3cc`: V5 177/177, U1 226/226, A2 15/15, S1 fase Y 52/52 in development e production; S1, V8, V2 PASS su `d73ce80`.
+- Note per il prossimo: controllo visivo in browser vero dovuto all'utente. Nessun `--leading-*` vale 20px in tutti i temi, per questo il contatore usa un token di spaziatura. In scratchpad restano profili Chrome bloccati (`u1rc*`) e in `tests/Integration/verify-v5.work/`, da cancellare a mano. Prossima tappa: U2 Verifica di un permesso.

@@ -1,5 +1,51 @@
 # U1 — Navigazione (v1.1): collaudo indipendente
 
+## Seconda riverifica su `b1df3cc` (2026-10-19, Collaudatore ad Hoc)
+
+**Esito: PASS. U1 è approvata, punto 8 completo.** D2 è corretto. A3, decisa dall'utente (le coppie per modo valgono anche per `--side-ink` e `--side-muted`), è applicata nel CSS servito.
+
+Del commit conosco solo il `--stat`: `resources/css/panel.css` e `src/Assets/css/panel.css`, 9 righe in più e 9 in meno.
+
+| Suite | development | production |
+| --- | --- | --- |
+| V5 adattata | **177/177**, 0 FAIL, 1 AMB già nota (T06); T02 e T05 PASS | **177/177**, uguale |
+| U1 (NAV, CNT, TODAY, RAIL, STYLE, LANG, ESC) | **226/226**, 0 AMB | **226/226**, 0 AMB |
+| A2 (`verify-u1.phase-a2.php`) | **15/15** | **15/15** |
+| S1, solo fase Y (layout in Chrome a 1280-1920 px, passo `s1y.<env>`) | **52/52** | **52/52** |
+
+- **U1 e A2:** i controlli sono gli stessi del giro su `d73ce80`, riga per riga. Cambia solo il testo di T-3 («ora di punta 12:00» invece di «05:00»), perché dipende dall'ora UTC dell'esecuzione. Le misure di colore e contrasto di STYLE e i 12 token di A2 sono confrontati con valori fissi, quindi i valori resi non sono cambiati.
+- **CSS servito, confronto con `d73ce80`:** cambiano solo tre punti.
+  - `.rw-side-nav`: `gap: 2px` diventa `var(--space-0-5)`, che vale 2px.
+  - `.rw-side-count`: `line-height: 20px` diventa `var(--space-5)`, che vale 20px.
+  - In ogni tema `--side-ink` e `--side-muted` passano da `var(--l-side-*)`/`var(--d-side-*)`. Le due coppie hanno lo stesso primitivo di prima, uguale in chiaro e in scuro.
+  - I valori calcolati restano identici.
+- **Perché S1 fase Y:** il `gap` della lista di navigazione può spostare la barra. Il layout misurato (`verify-u1.s1.s1y.b1df3cc.*.layout.json`) coincide con quello del giro S1 completo su `d73ce80`, con quattro sole eccezioni. Tutte dipendono dai dati e non dal CSS:
+  - percorsi degli screenshot;
+  - id utente nelle URL (7 invece di 17);
+  - numero di righe delle tabelle: qui gira solo la fase Y, quindi ci sono meno dati seminati;
+  - di conseguenza, colonne spostate di 0,3 px.
+
+  Non ci sono differenze nella barra.
+- **Non ripetute su `b1df3cc`:** S1 completa, V8, V8b, V2 e il giro Docker. Il commit tocca solo il CSS del pannello, e le misure rese di barra e contenuto sono invariate.
+- **Correzione al giro precedente:** in D2 avevo scritto che non esiste un `--space-*` da 2px. Era sbagliato: `--space-0-5: 2px` c'era già nel CSS servito di `d73ce80` (usato da `.rw-auth-err`, `.rw-toast__close` e altri).
+- **Nota per l'autore (non è un difetto):** il `line-height` del contatore usa un token di spaziatura (`--space-5`). Nessun `--leading-*` vale 20px in tutti i temi, e T05 lo accetta.
+
+### Difetti e ambiguità
+
+Nessun difetto aperto. Nessuna ambiguità nuova. T06 (AMB della V5) era già nota e non riguarda U1.
+
+### Pulizia
+
+- **Primo tentativo:** si è fermato per memoria scarsa.
+  - Lo snapshot del giro era già stato cancellato. È lo snapshot canonico del database vuoto, cioè la sola riga `CREATE DATABASE`.
+  - L'ho rigenerato e il suo SHA256 coincide con `f7f37c04…e21e64`. Poi ho ripristinato `rolewarden_test`, riverificato l'hash e svuotato Mailpit.
+- **Questo giro:** dopo ognuna delle 8 esecuzioni il database è uguale allo snapshot `f7f37c04…e21e64` (`verify-u1.environment.txt`, righe `b1df3cc`).
+- **Alla fine:** hash finale `f7f37c04…e21e64`, Mailpit vuoto, nessun processo php/python/node/chrome mio residuo.
+- **Scratchpad:** restano `u1rc/`, `u1rc2/`, `u1rc3/` e `u1rc4/`. Contengono solo profili Chrome che il sandbox non lascia cancellare, nessun `.env` e nessuna credenziale. Vanno cancellati a mano.
+- Nessun commit.
+
+---
+
 ## Riverifica su `d73ce80` (2026-10-19, Collaudatore ad Hoc)
 
 **Esito: FAIL sul punto 8 (regressione V5). U1 non è approvata.** Punti 1-7 PASS; A1 e A2 chiuse secondo le decisioni dell'utente; un difetto nuovo (D2) e un'ambiguità nuova (A3) dalla V5.

@@ -7,7 +7,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase NAV =====
 
 == NAV: items, permissions, groups, aria-current
-[INFO] server pid=36056 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=23076 on 127.0.0.1:8071 prefix=''
 [PASS] N-owner-1 owner: the sidebar renders exactly the items of the permissions held (activity,appearance,permissions,roles,settings,users)
 [PASS] N-owner-2 owner: no empty group, no disabled or link-less item
 [PASS] N-owner-3 owner: group headers among Overview/Access/Security/System, in that order
@@ -81,7 +81,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N-off  A deactivated account with the admin role gets no sidebar item (signed in or not)
 [INFO] deactivate through the panel: 303, users.active=0
 [PASS] N-mid  Deactivated from the panel while signed in: the next page shows no item
-[INFO] role deleted from the panel: 303; deleted_at="2026-10-19 05:16:21"; assignment left=1
+[INFO] role deleted from the panel: 303; deleted_at="2026-10-19 12:38:17"; assignment left=1
 [PASS] N-del  After its only role is deleted from the panel, the user sees exactly the items the server still opens for him
 [PASS] N-clean NAV pages: no 5xx, no SQL or PHP error text
 [INFO] phase CNT from verify-u1.phase-cnt.php
@@ -89,18 +89,18 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase CNT =====
 
 == CNT: counters
-[INFO] server pid=15392 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=29668 on 127.0.0.1:8071 prefix=''
 [PASS] C-1    Users and Permissions counters and the Users screen header equal direct queries (start; Roles apart in C-2r)
-[INFO] user deleted from the panel: 303, deleted_at="2026-10-19 05:16:26", row still there=1
-[INFO] role deleted from the panel: 303, deleted_at="2026-10-19 05:16:26"
+[INFO] user deleted from the panel: 303, deleted_at="2026-10-19 12:38:21", row still there=1
+[INFO] role deleted from the panel: 303, deleted_at="2026-10-19 12:38:22"
 [PASS] C-2    After a deactivation, a deleted user and a new permission: Users and Permissions counters and the Users header still equal the queries (deleted users left out, deactivated counted)
 [INFO] Roles screen rows: 18; roles not deleted: 18; with the deleted ones: 20; Roles counter: 18
 [PASS] C-2r   After a role deleted from the panel the Roles counter equals the roles not deleted (and the rows of the Roles screen)
 [PASS] C-3    Another account (admin) sees the same figures
 [PASS] C-4    Before the first opening of the log there is no Activity counter, whatever the log holds (4 entries, 0 failed sign-ins)
-[INFO] after the first opening: {"id":8,"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-19 05:16:31","type":"string","context":"user:25","created_at":"2026-10-19 05:16:31","updated_at":"2026-10-19 05:16:31"}
+[INFO] after the first opening: {"id":8,"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-19 12:38:26","type":"string","context":"user:25","created_at":"2026-10-19 12:38:26","updated_at":"2026-10-19 12:38:26"}
 [PASS] C-5    Right after opening the log the counter is absent (nothing new)
-[INFO] since 2026-10-19 05:16:31: log entries by others 2 (actions ["settings.updated","settings.updated"]), by the holder 1, failed sign-ins 4, successful 1
+[INFO] since 2026-10-19 12:38:26: log entries by others 2 (actions ["settings.updated","settings.updated"]), by the holder 1, failed sign-ins 4, successful 1
 [INFO] activity counter shown: {"path":"[omesso]\/activity","text":"Activity","count":"6 new","countClass":"rw-side-count rw-side-count--hot","current":"","title":"","aria":"","group":"Security"}
 [PASS] C-6    Activity counter = log entries by others + failed sign-ins since the last opening (2 + 4); the holder's own entries (1) and successful sign-ins (1) not counted
 [PASS] C-6b   The counter is a figure the holder can act on (digits, "new" chip marked for attention)
@@ -115,13 +115,13 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase TODAY =====
 
 == TODAY: panel, figures, switch
-[INFO] server pid=18192 on 127.0.0.1:8071 prefix=''
-[INFO] auth_logins planted for today {"0":[2,1],"1":[3,0],"3":[1,2]}, current UTC hour 5
-[INFO] Today shown: {"text":"Today 35 sign-ins, 9 failed","b":"35","svgRole":"img","svgAria":"Sign-ins by hour today, busiest 05:00 with 29","svgView":"","points":[[0,26.2],[7.7,25.3],[15.3,28],[23,27.1],[30.6,28],[38.3,2],[45.9,28],[53.6,28],[61.2,28],[68.9,28],[76.5,28],[84.2,28],[91.8,28],[99.5,28],[107.1,28],[114.8,28],[122.4,28],[130.1,28],[137.7,28],[145.4,28],[153,28],[160.7,28],[168.3,28],[176,28]]} expected {"ok":35,"fail":9}
+[INFO] server pid=19300 on 127.0.0.1:8071 prefix=''
+[INFO] auth_logins planted for today {"0":[2,1],"4":[3,0],"8":[1,2]}, current UTC hour 12
+[INFO] Today shown: {"text":"Today 35 sign-ins, 9 failed","b":"35","svgRole":"img","svgAria":"Sign-ins by hour today, busiest 12:00 with 29","svgView":"","points":[[0,26.2],[7.7,28],[15.3,28],[23,28],[30.6,25.3],[38.3,28],[45.9,28],[53.6,28],[61.2,27.1],[68.9,28],[76.5,28],[84.2,28],[91.8,2],[99.5,28],[107.1,28],[114.8,28],[122.4,28],[130.1,28],[137.7,28],[145.4,28],[153,28],[160.7,28],[168.3,28],[176,28]]} expected {"ok":35,"fail":9}
 [PASS] T-1    Today: sign-ins of today (35) and failed ones (9) as in auth_logins; yesterday's left out
-[INFO] hourly successful [2,3,0,1,0,29,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] all attempts [3,3,0,3,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] y=[26.2,25.3,28,27.1,28,2,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28] matches successful=true all=false
+[INFO] hourly successful [2,0,0,0,3,0,0,0,1,0,0,0,29,0,0,0,0,0,0,0,0,0,0,0] all attempts [3,0,0,0,3,0,0,0,3,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0] y=[26.2,28,28,28,25.3,28,28,28,27.1,28,28,28,2,28,28,28,28,28,28,28,28,28,28,28] matches successful=true all=false
 [PASS] T-2    Hourly line: 24 points, one per hour, heights proportional to the successful sign-ins of each hour
-[PASS] T-3    Line with role=img and a label naming its sense (busiest hour 05:00 with 29)
+[PASS] T-3    Line with role=img and a label naming its sense (busiest hour 12:00 with 29)
 [PASS] T-4    Today only for those holding activity.view (role, inheritance, super admin), never without it or with it denied
 [INFO] switch off: HTTP 303 -> http://127.0.0.1:8071/index.php/[omesso]/settings; settings rows [{"class":"RoleWarden\\Config\\RoleWarden","value":"0","type":"boolean","context":null}]
 [INFO] log entries after the switch: [{"action":"settings.updated","details":"{\"sidebar_today\":[true,false]}"}]
@@ -138,7 +138,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase RAIL =====
 
 == RAIL: collapse to icons
-[INFO] server pid=25172 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=9472 on 127.0.0.1:8071 prefix=''
 [PASS] R-1    Expanded by default: a toggle form (POST, CSRF token, collapsed=1) with an accessible label
 [PASS] R-2    Refused without the CSRF token (403, or in production the redirect CodeIgniter makes); a GET changes nothing; anonymous is sent to sign in; the sidebar stays expanded
 [PASS] R-3    Collapse: redirect inside the application (an outside Referer is not followed); next page on the rail, toggle now expands
@@ -158,7 +158,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase STYLE =====
 
 == STYLE: sidebar styles
-[INFO] server pid=5844 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=20544 on 127.0.0.1:8071 prefix=''
 [PASS] S-0    No theme file yet: the sidebar is Paper
 [INFO] saved ink: HTTP 303; theme file {"base":"console","radius":null,"density":null,"sidebar":"ink","colors":{"light":[],"dark":[]}}
 [PASS] S-ink  Customizer saves ink in the theme file and every user's sidebar takes it
@@ -290,13 +290,13 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase LANG =====
 
 == LANG: English and Italian
-[INFO] server pid=19956 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=22840 on 127.0.0.1:8071 prefix=''
 [INFO] EN {"aside":"Main","group0":"Access","group1":"Security","group2":"System","item:[omesso]\/users":"Users","item:[omesso]\/roles":"Roles","item:[omesso]\/permissions":"Permissions","item:[omesso]\/activity":"Activity","item:[omesso]\/settings":"Settings","item:[omesso]\/appearance":"Appearance","tog-aria":"Collapse the sidebar","tog-title":"Collapse the sidebar","today-label":"Today","today-note":"sign-ins, # failed","today-svg":"Sign-ins by hour today, busiest # with #","rail-tog-aria":"Expand the sidebar","rail-tog-title":"Expand the sidebar","settings-label0":"Today in the sidebar","settings-help0":"Sign-ins and failures of the day, for those who can see the activity log.","settings-opt0":"Shown","settings-opt1":"Hidden","settings-section":"Panel","appearance-label0":"Sidebar","appearance-help0":"Paper is the light sidebar; Ink and Charcoal are dark in light and dark mode alike.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Shape"}
 [INFO] IT {"aside":"Principale","group0":"Accesso","group1":"Sicurezza","group2":"Sistema","item:[omesso]\/users":"Utenti","item:[omesso]\/roles":"Ruoli","item:[omesso]\/permissions":"Permessi","item:[omesso]\/activity":"Attività","item:[omesso]\/settings":"Impostazioni","item:[omesso]\/appearance":"Aspetto","tog-aria":"Comprimi la barra laterale","tog-title":"Comprimi la barra laterale","today-label":"Oggi","today-note":"accessi, # falliti","today-svg":"Accessi di oggi per ora, il massimo alle # con #","rail-tog-aria":"Espandi la barra laterale","rail-tog-title":"Espandi la barra laterale","settings-label0":"Oggi nella barra laterale","settings-help0":"Accessi e tentativi falliti del giorno, per chi può vedere il log attività.","settings-opt0":"Visibile","settings-opt1":"Nascosto","settings-section":"Pannello","appearance-label0":"Barra laterale","appearance-help0":"Paper è la barra chiara; Ink e Charcoal sono scure sia in chiaro sia in scuro.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Forma"}
 [PASS] L-1    Every new string of the sidebar, the Today panel, the toggle (both states), the Settings switch and the Appearance style row has its Italian text
 [PASS] L-2    None of those English strings appears as a word in the text, labels or tooltips of the Italian pages (Users, Settings, Appearance, Activity, Profile; Paper, Ink, Charcoal excepted)
 [PASS] L-3    The style names stay Paper, Ink and Charcoal in Italian
-[INFO] L-4 excerpts: {"en today":["5:19 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 19 Oct 2026","5:19 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 19 Oct 2026"],"it today":["v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: → 1 127.0.0.1 04 19 ott 2026","v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: 1 → 127.0.0.1 05 19 ott 2026"],"en sidebar":[" v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 19 Oct "," v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 19 Oct "," v8badmin Appearance changed Appearance Sidebar: ink → charcoal 127.0.0.1 10 "],"it sidebar":["19 v8badmin Aspetto cambiato Appearance Barra laterale: ink → — 127.0.0.1 02 19 ott ","19 v8badmin Aspetto cambiato Appearance Barra laterale: — → ink 127.0.0.1 03 19 ott ","18 v8badmin Aspetto cambiato Appearance Barra laterale: ink → charcoal 127.0.0.1 10 "],"en head":"01 19 Oct 2026, 05:19 v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 19 Oct 2026, 05:19 v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 19 Oct 2026, 05:19 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 19 Oct 2026, 05:19 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 19 Oct 2026, 05:19 admin@v8b.test S"}
+[INFO] L-4 excerpts: {"en today":["2:41 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 19 Oct 2026","2:41 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 19 Oct 2026"],"it today":["v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: → 1 127.0.0.1 04 19 ott 2026","v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: 1 → 127.0.0.1 05 19 ott 2026"],"en sidebar":[" v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 19 Oct "," v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 19 Oct "," v8badmin Appearance changed Appearance Sidebar: ink → charcoal 127.0.0.1 10 "],"it sidebar":["41 v8badmin Aspetto cambiato Appearance Barra laterale: ink → — 127.0.0.1 02 19 ott ","41 v8badmin Aspetto cambiato Appearance Barra laterale: — → ink 127.0.0.1 03 19 ott ","40 v8badmin Aspetto cambiato Appearance Barra laterale: ink → charcoal 127.0.0.1 10 "],"en head":"01 19 Oct 2026, 12:41 v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 19 Oct 2026, 12:41 v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 19 Oct 2026, 12:41 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 19 Oct 2026, 12:41 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 19 Oct 2026, 12:41 admin@v8b.test S"}
 [PASS] L-4    The activity log names the two new fields in each language (Today in the sidebar / Oggi nella barra laterale, Sidebar / Barra laterale)
 [PASS] L-clean LANG pages: no 5xx, no SQL or PHP error text
 [INFO] phase ESC from verify-u1.phase-esc.php
@@ -304,7 +304,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase ESC =====
 
 == ESC: escape, CSRF, errors, logs
-[INFO] server pid=3356 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=4652 on 127.0.0.1:8071 prefix=''
 [PASS] E-1    A sidebar label from the application language file (views.html "Changing a few lines") is printed escaped, in the text and in the tooltip
 [PASS] E-2    On the rail the same label in the title attribute is escaped too
 [PASS] E-3    A crafted value on the switch, the style and the collapse field is never printed raw and gives no error page
@@ -314,5 +314,5 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] E-6    Application log: no WARNING, ERROR or CRITICAL line apart from one CSRF refusal per deliberate POST without the token (0)
 
 TOTAL: 226 PASS, 0 FAIL, 0 AMB
-d73ce80 s1.d73ce80.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+b1df3cc s1.b1df3cc.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

@@ -1,0 +1,934 @@
+=== SIDEBAR
+<aside class="rw-sidebar rw-side" data-sidebar="paper" aria-label="Main" x-data='rwSearch({"url":"http:\/\/127.0.0.1:8071\/index.php\/rolewarden\/search"})'>
+  <div class="rw-brand"><b>RoleWarden</b></div>
+
+          <div class="rw-side-group">
+      <a class="rw-side-search" href="http://127.0.0.1:8071/index.php/rolewarden/search">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path></svg>        <span class="rw-side-text">Search or run a command</span>
+        <kbd x-text="mac ? '⌘ K' : 'Ctrl K'">Ctrl K</kbd>
+      </a>
+    </div>
+    <dialog class="rw-cmd" x-ref="dialog" aria-label="Search or run a command">
+      <div class="rw-cmd-field">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path></svg>        <label class="rw-visually-hidden" for="rw-cmd-q">Search screens, actions and permissions</label>
+        <input id="rw-cmd-q" x-ref="q" type="text" role="combobox" aria-expanded="true" aria-controls="rw-cmd-results" aria-autocomplete="list" :aria-activedescendant="active" autocomplete="off" spellcheck="false">
+        <kbd>Esc</kbd>
+      </div>
+      <div class="rw-cmd-results" id="rw-cmd-results" role="listbox" aria-label="Results" x-ref="list"></div>
+      <div class="rw-cmd-foot"><span>Up and down to move</span><span>Enter to open</span><span>Results show only what you may do</span></div>
+    </dialog>
+  
+      <div class="rw-side-group">
+      <span class="rw-side-label">Access</span>
+      <ul class="rw-side-nav">
+                            <li>
+            <a href="http://127.0.0.1:8071/index.php/rolewarden/users" aria-current="page">
+              <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="8" cy="5.5" r="2.5"></circle><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"></path></svg>              <span class="rw-side-text">Users</span>
+                              <span class="rw-side-count">6</span>
+                          </a>
+          </li>
+                            <li>
+            <a href="http://127.0.0.1:8071/index.php/rolewarden/roles">
+              <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M8 2.5l5.5 3-5.5 3-5.5-3z"></path><path d="M2.5 8.5l5.5 3 5.5-3"></path><path d="M2.5 11.5l5.5 3 5.5-3"></path></svg>              <span class="rw-side-text">Roles</span>
+                              <span class="rw-side-count">9</span>
+                          </a>
+          </li>
+                            <li>
+            <a href="http://127.0.0.1:8071/index.php/rolewarden/permissions">
+              <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 2.5h11v11h-11z"></path><path d="M2.5 6.5h11M2.5 10h11M6.5 2.5v11"></path></svg>              <span class="rw-side-text">Permissions</span>
+                              <span class="rw-side-count">30</span>
+                          </a>
+          </li>
+                            <li>
+            <a href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check">
+              <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>              <span class="rw-side-text">Check a permission</span>
+                          </a>
+          </li>
+              </ul>
+    </div>
+      <div class="rw-side-group">
+      <span class="rw-side-label">Security</span>
+      <ul class="rw-side-nav">
+                            <li>
+            <a href="http://127.0.0.1:8071/index.php/rolewarden/activity">
+              <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M5.5 4h8M5.5 8h8M5.5 12h8M2.5 4h.5M2.5 8h.5M2.5 12h.5"></path></svg>              <span class="rw-side-text">Activity</span>
+                          </a>
+          </li>
+              </ul>
+    </div>
+      <div class="rw-side-group">
+      <span class="rw-side-label">System</span>
+      <ul class="rw-side-nav">
+                            <li>
+            <a href="http://127.0.0.1:8071/index.php/rolewarden/settings">
+              <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 4.5h7M12 4.5h1.5M2.5 11.5h2M7 11.5h6.5"></path><circle cx="10.5" cy="4.5" r="1.5"></circle><circle cx="5.5" cy="11.5" r="1.5"></circle></svg>              <span class="rw-side-text">Settings</span>
+                          </a>
+          </li>
+                            <li>
+            <a href="http://127.0.0.1:8071/index.php/rolewarden/appearance">
+              <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="8" cy="8" r="5.5"></circle><path d="M8 2.5v11"></path></svg>              <span class="rw-side-text">Appearance</span>
+                          </a>
+          </li>
+              </ul>
+    </div>
+  
+  <div class="rw-side-foot">
+                <div class="rw-today">
+        <span class="rw-side-label">Today</span>
+        <p><b>1</b> <small>sign-in, 0 failed</small></p>
+        <svg class="rw-today-spark" viewbox="0 0 176 30" preserveaspectratio="none" role="img" aria-label="Sign-ins by hour today, busiest 07:00 with 1"><polyline points="0,28 7.7,28 15.3,28 23,28 30.6,28 38.3,28 45.9,28 53.6,2 61.2,28 68.9,28 76.5,28 84.2,28 91.8,28 99.5,28 107.1,28 114.8,28 122.4,28 130.1,28 137.7,28 145.4,28 153,28 160.7,28 168.3,28 176,28" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></polyline></svg>
+      </div>
+              <form method="post" action="http://127.0.0.1:8071/index.php/rolewarden/sidebar">
+        <input type="hidden" name="csrf_test_name" value="1938bd5668ef5123b3eb94846299940a">        <input type="hidden" name="collapsed" value="1">
+                <button type="submit" class="rw-side-toggle" aria-label="Collapse the sidebar" title="Collapse the sidebar"><svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M10 3.5L5.5 8l4.5 4.5"></path></svg></button>
+      </form>
+      </div>
+</aside>
+=== DIALOG
+<dialog class="rw-cmd" x-ref="dialog" aria-label="Search or run a command">
+      <div class="rw-cmd-field">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path></svg>        <label class="rw-visually-hidden" for="rw-cmd-q">Search screens, actions and permissions</label>
+        <input id="rw-cmd-q" x-ref="q" type="text" role="combobox" aria-expanded="true" aria-controls="rw-cmd-results" aria-autocomplete="list" :aria-activedescendant="active" autocomplete="off" spellcheck="false">
+        <kbd>Esc</kbd>
+      </div>
+      <div class="rw-cmd-results" id="rw-cmd-results" role="listbox" aria-label="Results" x-ref="list"></div>
+      <div class="rw-cmd-foot"><span>Up and down to move</span><span>Enter to open</span><span>Results show only what you may do</span></div>
+    </dialog>
+=== SCRIPT src=http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js
+=== SCRIPT src=http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js
+=== GET rolewarden/search -> 200 {"host":"127.0.0.1:8071","date":"Tue, 20 Oct 2026 07:46:00 GMT","connection":"close","x-powered-by":"PHP\/8.3.11","expires":"Thu, 19 Nov 1981 08:52:00 GMT","cache-control":"no-store, no-cache, must-revalidate","pragma":"no-cache","content-type":"text\/html; charset=UTF-8"}
+<main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data='rwToasts({"messages":[],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}})' true false>
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">×</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head rw-page-head--single">
+  <div>
+    <h1>Search</h1>
+    <p>Results show only what you may do</p>
+  </div>
+</div>
+
+<form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/rolewarden/search" role="search">
+  <div class="rw-field">
+    <label class="rw-label" for="rw-search-q">Search screens, actions and permissions</label>
+    <input class="rw-input" id="rw-search-q" name="q" type="search" value="" autocomplete="off">
+  </div>
+  <button class="rw-btn rw-btn--secondary" type="submit">Search</button>
+</form>
+
+<div class="rw-cmd-page">
+    <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-screens">Go to</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-0" href="http://127.0.0.1:8071/index.php/rolewarden/users">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="8" cy="5.5" r="2.5"></circle><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"></path></svg>        <span class="rw-cmd-text">
+                      <span>Users</span>
+                  </span>
+        <span class="rw-note">6</span>        <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-1" href="http://127.0.0.1:8071/index.php/rolewarden/roles">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M8 2.5l5.5 3-5.5 3-5.5-3z"></path><path d="M2.5 8.5l5.5 3 5.5-3"></path><path d="M2.5 11.5l5.5 3 5.5-3"></path></svg>        <span class="rw-cmd-text">
+                      <span>Roles</span>
+                  </span>
+        <span class="rw-note">9</span>        <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-2" href="http://127.0.0.1:8071/index.php/rolewarden/permissions">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 2.5h11v11h-11z"></path><path d="M2.5 6.5h11M2.5 10h11M6.5 2.5v11"></path></svg>        <span class="rw-cmd-text">
+                      <span>Permissions</span>
+                  </span>
+        <span class="rw-note">30</span>        <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-3" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span>Check a permission</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-4" href="http://127.0.0.1:8071/index.php/rolewarden/activity">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M5.5 4h8M5.5 8h8M5.5 12h8M2.5 4h.5M2.5 8h.5M2.5 12h.5"></path></svg>        <span class="rw-cmd-text">
+                      <span>Activity</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-5" href="http://127.0.0.1:8071/index.php/rolewarden/settings">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 4.5h7M12 4.5h1.5M2.5 11.5h2M7 11.5h6.5"></path><circle cx="10.5" cy="4.5" r="1.5"></circle><circle cx="5.5" cy="11.5" r="1.5"></circle></svg>        <span class="rw-cmd-text">
+                      <span>Settings</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-6" href="http://127.0.0.1:8071/index.php/rolewarden/appearance">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="8" cy="8" r="5.5"></circle><path d="M8 2.5v11"></path></svg>        <span class="rw-cmd-text">
+                      <span>Appearance</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-7" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="8" cy="5.5" r="2.5"></circle><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"></path></svg>        <span class="rw-cmd-text">
+                      <span>Your profile</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-8" href="http://127.0.0.1:8071/index.php/rolewarden/sessions">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 3.5h11v7.5h-11z"></path><path d="M5.5 13.5h5"></path></svg>        <span class="rw-cmd-text">
+                      <span>Your sessions</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+  <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-actions">Actions</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-9" href="http://127.0.0.1:8071/index.php/rolewarden/users/create">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 13.5l2-.5 8-8-1.5-1.5-8 8z"></path></svg>        <span class="rw-cmd-text">
+                      <span>Add a user</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-10" href="http://127.0.0.1:8071/index.php/rolewarden/users/import">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 13.5l2-.5 8-8-1.5-1.5-8 8z"></path></svg>        <span class="rw-cmd-text">
+                      <span>Import users</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-11" href="http://127.0.0.1:8071/index.php/rolewarden/roles/create">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 13.5l2-.5 8-8-1.5-1.5-8 8z"></path></svg>        <span class="rw-cmd-text">
+                      <span>Add a role</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-12" href="http://127.0.0.1:8071/index.php/rolewarden/users">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 13.5l2-.5 8-8-1.5-1.5-8 8z"></path></svg>        <span class="rw-cmd-text">
+                      <span>Add an override for a user</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-13" href="http://127.0.0.1:8071/index.php/rolewarden/profile">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 13.5l2-.5 8-8-1.5-1.5-8 8z"></path></svg>        <span class="rw-cmd-text">
+                      <span>Change your password</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+</div>
+    </main>
+=== GET rolewarden/search?q=users -> 200 {"host":"127.0.0.1:8071","date":"Tue, 20 Oct 2026 07:46:00 GMT","connection":"close","x-powered-by":"PHP\/8.3.11","expires":"Thu, 19 Nov 1981 08:52:00 GMT","cache-control":"no-store, no-cache, must-revalidate","pragma":"no-cache","content-type":"text\/html; charset=UTF-8"}
+<main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data='rwToasts({"messages":[],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}})' true false>
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">×</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head rw-page-head--single">
+  <div>
+    <h1>Search</h1>
+    <p>Results show only what you may do</p>
+  </div>
+</div>
+
+<form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/rolewarden/search" role="search">
+  <div class="rw-field">
+    <label class="rw-label" for="rw-search-q">Search screens, actions and permissions</label>
+    <input class="rw-input" id="rw-search-q" name="q" type="search" value="users" autocomplete="off">
+  </div>
+  <button class="rw-btn rw-btn--secondary" type="submit">Search</button>
+</form>
+
+<div class="rw-cmd-page">
+    <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-permission">Permission</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-0" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.activate">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.activate</code> <span class="rw-muted">· who can do this</span></span>
+            <small>2 users through 1 role</small>                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-1" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.create">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.create</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-2" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.delete">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.delete</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-3" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.edit">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.edit</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-4" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.import">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.import</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-5" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.manage-admins">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.manage-admins</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-6" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.update">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.update</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-7" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.view">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.view</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+  <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-screens">Go to</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-8" href="http://127.0.0.1:8071/index.php/rolewarden/users">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="8" cy="5.5" r="2.5"></circle><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"></path></svg>        <span class="rw-cmd-text">
+                      <span>Users</span>
+                  </span>
+        <span class="rw-note">6</span>        <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+  <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-actions">Actions</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-9" href="http://127.0.0.1:8071/index.php/rolewarden/users/import">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 13.5l2-.5 8-8-1.5-1.5-8 8z"></path></svg>        <span class="rw-cmd-text">
+                      <span>Import users</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+</div>
+    </main>
+=== GET rolewarden/search?q=users.del -> 200 {"host":"127.0.0.1:8071","date":"Tue, 20 Oct 2026 07:46:00 GMT","connection":"close","x-powered-by":"PHP\/8.3.11","expires":"Thu, 19 Nov 1981 08:52:00 GMT","cache-control":"no-store, no-cache, must-revalidate","pragma":"no-cache","content-type":"text\/html; charset=UTF-8"}
+<main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data='rwToasts({"messages":[],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}})' true false>
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">×</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head rw-page-head--single">
+  <div>
+    <h1>Search</h1>
+    <p>Results show only what you may do</p>
+  </div>
+</div>
+
+<form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/rolewarden/search" role="search">
+  <div class="rw-field">
+    <label class="rw-label" for="rw-search-q">Search screens, actions and permissions</label>
+    <input class="rw-input" id="rw-search-q" name="q" type="search" value="users.del" autocomplete="off">
+  </div>
+  <button class="rw-btn rw-btn--secondary" type="submit">Search</button>
+</form>
+
+<div class="rw-cmd-page">
+    <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-permission">Permission</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-0" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.delete">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">users.delete</code> <span class="rw-muted">· who can do this</span></span>
+            <small>2 users through 1 role</small>                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+</div>
+    </main>
+=== GET rolewarden/search?q=role -> 200 {"host":"127.0.0.1:8071","date":"Tue, 20 Oct 2026 07:46:00 GMT","connection":"close","x-powered-by":"PHP\/8.3.11","expires":"Thu, 19 Nov 1981 08:52:00 GMT","cache-control":"no-store, no-cache, must-revalidate","pragma":"no-cache","content-type":"text\/html; charset=UTF-8"}
+<main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data='rwToasts({"messages":[],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}})' true false>
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">×</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head rw-page-head--single">
+  <div>
+    <h1>Search</h1>
+    <p>Results show only what you may do</p>
+  </div>
+</div>
+
+<form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/rolewarden/search" role="search">
+  <div class="rw-field">
+    <label class="rw-label" for="rw-search-q">Search screens, actions and permissions</label>
+    <input class="rw-input" id="rw-search-q" name="q" type="search" value="role" autocomplete="off">
+  </div>
+  <button class="rw-btn rw-btn--secondary" type="submit">Search</button>
+</form>
+
+<div class="rw-cmd-page">
+    <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-permission">Permission</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-0" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=roles.assign">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">roles.assign</code> <span class="rw-muted">· who can do this</span></span>
+            <small>2 users through 1 role</small>                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-1" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=roles.create">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">roles.create</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-2" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=roles.delete">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">roles.delete</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-3" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=roles.update">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">roles.update</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+          <a class="rw-cmd-opt" id="rw-cmd-o-4" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=roles.view">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span><code class="rw-mono">roles.view</code> <span class="rw-muted">· who can do this</span></span>
+                              </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+  <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-screens">Go to</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-5" href="http://127.0.0.1:8071/index.php/rolewarden/roles">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M8 2.5l5.5 3-5.5 3-5.5-3z"></path><path d="M2.5 8.5l5.5 3 5.5-3"></path><path d="M2.5 11.5l5.5 3 5.5-3"></path></svg>        <span class="rw-cmd-text">
+                      <span>Roles</span>
+                  </span>
+        <span class="rw-note">9</span>        <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+  <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-actions">Actions</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-6" href="http://127.0.0.1:8071/index.php/rolewarden/roles/create">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M2.5 13.5l2-.5 8-8-1.5-1.5-8 8z"></path></svg>        <span class="rw-cmd-text">
+                      <span>Add a role</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+</div>
+    </main>
+=== GET rolewarden/search?q=check -> 200 {"host":"127.0.0.1:8071","date":"Tue, 20 Oct 2026 07:46:01 GMT","connection":"close","x-powered-by":"PHP\/8.3.11","expires":"Thu, 19 Nov 1981 08:52:00 GMT","cache-control":"no-store, no-cache, must-revalidate","pragma":"no-cache","content-type":"text\/html; charset=UTF-8"}
+<main class="rw-content">
+      <div class="rw-toasts" aria-live="polite" x-data='rwToasts({"messages":[],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}})' true false>
+  <template x-for="toast in items" :key="toast.id">
+    <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :role="toast.type === 'error' ? 'alert' : null">
+      <p><span class="rw-toast__kind" x-text="kinds[toast.type]"></span> <span x-text="toast.message"></span></p>
+      <button class="rw-toast__close" type="button" aria-label="Dismiss">×</button>
+    </div>
+  </template>
+</div>
+      <div class="rw-page-head rw-page-head--single">
+  <div>
+    <h1>Search</h1>
+    <p>Results show only what you may do</p>
+  </div>
+</div>
+
+<form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/rolewarden/search" role="search">
+  <div class="rw-field">
+    <label class="rw-label" for="rw-search-q">Search screens, actions and permissions</label>
+    <input class="rw-input" id="rw-search-q" name="q" type="search" value="check" autocomplete="off">
+  </div>
+  <button class="rw-btn rw-btn--secondary" type="submit">Search</button>
+</form>
+
+<div class="rw-cmd-page">
+    <div class="rw-cmd-group">
+    <span class="rw-cmd-label" id="rw-cmd-g-screens">Go to</span>
+          <a class="rw-cmd-opt" id="rw-cmd-o-0" href="http://127.0.0.1:8071/index.php/rolewarden/permissions/check">
+        <svg class="rw-side-icon" width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5l3 3"></path><path d="M5 7l1.5 1.5 2.5-2.5"></path></svg>        <span class="rw-cmd-text">
+                      <span>Check a permission</span>
+                  </span>
+                <kbd class="rw-cmd-enter">Enter</kbd>
+      </a>
+      </div>
+</div>
+    </main>
+=== BROWSER
+{
+    "pid": 34108,
+    "steps": [
+        {
+            "op": "login",
+            "tag": "login",
+            "url": "http://127.0.0.1:8071/index.php/rolewarden/users",
+            "status": 200
+        },
+        {
+            "op": "goto",
+            "tag": "g",
+            "status": 200,
+            "url": "http://127.0.0.1:8071/index.php/rolewarden/users"
+        },
+        {
+            "op": "requests",
+            "tag": "r0",
+            "value": [
+                {
+                    "url": "http://127.0.0.1:8071/login",
+                    "method": "GET",
+                    "headers": {
+                        "Upgrade-Insecure-Requests": "1",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0",
+                        "sec-ch-ua-platform": "\"Windows\""
+                    },
+                    "type": "Document"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/login",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Stylesheet"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/login",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Script"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-600.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-serif-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-500.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/favicon.ico",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/login",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Other"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/login",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Origin": "http://127.0.0.1:8071",
+                        "Referer": "http://127.0.0.1:8071/login",
+                        "Upgrade-Insecure-Requests": "1",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0",
+                        "sec-ch-ua-platform": "\"Windows\""
+                    },
+                    "type": "Document"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                    "method": "GET",
+                    "headers": {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Origin": "http://127.0.0.1:8071",
+                        "Referer": "http://127.0.0.1:8071/login",
+                        "Upgrade-Insecure-Requests": "1",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0",
+                        "sec-ch-ua-platform": "\"Windows\""
+                    },
+                    "type": "Document"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Stylesheet"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Script"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Script"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-serif-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-mono-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-600.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-500.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                    "method": "GET",
+                    "headers": {
+                        "Upgrade-Insecure-Requests": "1",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0",
+                        "sec-ch-ua-platform": "\"Windows\""
+                    },
+                    "type": "Document"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Stylesheet"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/js/panel.js",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Script"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/js/vendor/alpine.min.js",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Script"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-serif-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-mono-400.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-600.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/assets/fonts/ibm-plex-sans-500.woff2",
+                    "method": "GET",
+                    "headers": {
+                        "Origin": "http://127.0.0.1:8071",
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/assets/css/panel.css?v=1792481239",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Font"
+                }
+            ]
+        },
+        {
+            "op": "key",
+            "tag": "ck"
+        },
+        {
+            "op": "eval",
+            "tag": "after-ck",
+            "value": {
+                "active": "<input id=\"rw-cmd-q\" x-ref=\"q\" type=\"text\" role=\"combobox\" aria-expanded=\"true\" aria-controls=\"rw-cmd-results\" aria-autocomplete=\"list\" :aria-activedescendant=\"active\" autocomplete=\"off\" spellcheck=\"false\" @input.debounce.150ms=\"load()\" @keydown.down.prevent=\"move(1)\" @keydown.up.prevent=\"move(-1)\" @keydown.enter.prevent=\"go()\" aria-activedescendant=\"rw-cmd-o-0\">",
+                "dialogs": [
+                    {
+                        "open": true,
+                        "html": "<dialog class=\"rw-cmd\" x-ref=\"dialog\" aria-label=\"Search or run a command\" @click=\"$event.target === $el &amp;&amp; $el.close()\" open=\"\">\n      <div class=\"rw-cmd-field\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><circle cx=\"7\" cy=\"7\" r=\"4.5\"></circle><path d=\"M10.5 10.5l3 3\"></path></svg>        <label class=\"rw-visually-hidden\" for=\"rw-cmd-q\">Search screens, actions and permissions</label>\n        <input id=\"rw-cmd-q\" x-ref=\"q\" type=\"text\" role=\"combobox\" aria-expanded=\"true\" aria-controls=\"rw-cmd-results\" aria-autocomplete=\"list\" :aria-activedescendant=\"active\" autocomplete=\"off\" spellcheck=\"false\" @input.debounce.150ms=\"load()\" @keydown.down.prevent=\"move(1)\" @keydown.up.prevent=\"move(-1)\" @keydown.enter.prevent=\"go()\" aria-activedescendant=\"rw-cmd-o-0\">\n        <kbd>Esc</kbd>\n      </div>\n      <div class=\"rw-cmd-results\" id=\"rw-cmd-results\" role=\"listbox\" aria-label=\"Results\" x-ref=\"list\">  <div class=\"rw-cmd-group\" role=\"group\" aria-labelledby=\"rw-cmd-g-screens\">\n    <span class=\"rw-cmd-label\" id=\"rw-cmd-g-screens\">Go to</span>\n          <a class=\"rw-cmd-opt\" id=\"rw-cmd-o-0\" href=\"http://127.0.0.1:8071/index.php/rolewarden/users\" role=\"option\" aria-selected=\"true\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><circle cx=\"8\" cy=\"5.5\" r=\"2.5\"></circle><path d=\"M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4\"></path></svg>        <span class=\"rw-cmd-text\">\n                      <span>Users</span>\n                  </span>\n        <span class=\"rw-note\">6</span>        <kbd class=\"rw-cmd-enter\">Enter</kbd>\n      </a>\n          <a class=\"rw-cmd-opt\" id=\"rw-cmd-o-1\" href=\"http://127.0.0.1:8071/index.php/rolewarden/roles\" role=\"option\" aria-selected=\"false\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><path d=\"M8 2.5l5.5 3-5.5 3-5.5-3z\"></path><path d=\"M2.5 8.5l5.5 3 5.5-3\"></path><path d=\"M2.5 11.5l5.5 3 5.5-3\"></path></svg>        <span class=\"rw-cmd-text\">\n                      <span>Roles</span>\n                  </span>\n        <span class=\"rw-note\">9</span>        <kbd class=\"rw-cmd-enter\">Enter</kbd>\n      </a>\n          <a class=\"rw-cmd-opt\" id=\"rw-cmd-o-2\" href=\"http://127.0.0.1:8071/index.php/rolewarden/permissions\" role=\"option\" aria-selected=\"false\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><path d=\"M2.5 2.5h11v11h-11z\"></path><path d=\"M2.5 6.5h11M2.5 10h11M6.5 2.5v11\"></path></svg>        <span class=\"rw-cmd-text\">\n                      <span>Permissions</span>\n                  </span>\n        <span class=\"rw-note\">30</span>        <kbd class=\"rw-cmd-enter\">Enter</kbd>\n      </a>\n          <a class=\"rw-cmd-opt\" id=\"rw-cmd-o-3\" href=\"http://127.0.0.1:8071/index.php/rolewarden/permissions/check\" role=\"option\" aria-selected=\"false\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><circle cx=\"7\" cy=\"7\" r=\"4.5\"></circle><path d=\"M10.5 10.5l3 3\"></path><path d=\"M5 7l1.5 1.5 2.5-2.5\"></path></svg>        <span class=\"rw-cmd-text\">\n                      <span>Check a permission</span>\n                  </span>\n                <kbd class=\"rw-cmd-enter\">Enter</kbd>\n      </a>\n          <a class=\"rw-cmd-opt\" id=\"rw-cmd-o-4\" href=\"http://127.0.0.1:8071/index.php/rolewarden/activity\" role=\"option\" aria-selected=\"false\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><path d=\"M5.5 4"
+                    }
+                ]
+            }
+        },
+        {
+            "op": "type",
+            "tag": "t"
+        },
+        {
+            "op": "wait"
+        },
+        {
+            "op": "eval",
+            "tag": "after-type",
+            "value": {
+                "active": "<input id=\"rw-cmd-q\" x-ref=\"q\" type=\"text\" role=\"combobox\" aria-expanded=\"true\" aria-controls=\"rw-cmd-results\" aria-autocomplete=\"list\" :aria-activedescendant=\"active\" autocomplete=\"off\" spellcheck=\"false\" @input.debounce.150ms=\"load()\" @keydown.down.prevent=\"move(1)\" @keydown.up.prevent=\"move(-1)\" @keydown.enter.prevent=\"go()\" aria-activedescendant=\"rw-cmd-o-0\">",
+                "dialogs": [
+                    {
+                        "open": true,
+                        "html": "<dialog class=\"rw-cmd\" x-ref=\"dialog\" aria-label=\"Search or run a command\" @click=\"$event.target === $el &amp;&amp; $el.close()\" open=\"\">\n      <div class=\"rw-cmd-field\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><circle cx=\"7\" cy=\"7\" r=\"4.5\"></circle><path d=\"M10.5 10.5l3 3\"></path></svg>        <label class=\"rw-visually-hidden\" for=\"rw-cmd-q\">Search screens, actions and permissions</label>\n        <input id=\"rw-cmd-q\" x-ref=\"q\" type=\"text\" role=\"combobox\" aria-expanded=\"true\" aria-controls=\"rw-cmd-results\" aria-autocomplete=\"list\" :aria-activedescendant=\"active\" autocomplete=\"off\" spellcheck=\"false\" @input.debounce.150ms=\"load()\" @keydown.down.prevent=\"move(1)\" @keydown.up.prevent=\"move(-1)\" @keydown.enter.prevent=\"go()\" aria-activedescendant=\"rw-cmd-o-0\">\n        <kbd>Esc</kbd>\n      </div>\n      <div class=\"rw-cmd-results\" id=\"rw-cmd-results\" role=\"listbox\" aria-label=\"Results\" x-ref=\"list\">  <div class=\"rw-cmd-group\" role=\"group\" aria-labelledby=\"rw-cmd-g-permission\">\n    <span class=\"rw-cmd-label\" id=\"rw-cmd-g-permission\">Permission</span>\n          <a class=\"rw-cmd-opt\" id=\"rw-cmd-o-0\" href=\"http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.delete\" role=\"option\" aria-selected=\"true\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><circle cx=\"7\" cy=\"7\" r=\"4.5\"></circle><path d=\"M10.5 10.5l3 3\"></path><path d=\"M5 7l1.5 1.5 2.5-2.5\"></path></svg>        <span class=\"rw-cmd-text\">\n                      <span><code class=\"rw-mono\">users.delete</code> <span class=\"rw-muted\">· who can do this</span></span>\n            <small>2 users through 1 role</small>                  </span>\n                <kbd class=\"rw-cmd-enter\">Enter</kbd>\n      </a>\n      </div>\n</div>\n      <div class=\"rw-cmd-foot\"><span>Up and down to move</span><span>Enter to open</span><span>Results show only what you may do</span></div>\n    </dialog>"
+                    }
+                ]
+            }
+        },
+        {
+            "op": "requests",
+            "tag": "r1",
+            "value": [
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/search?q=",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Fetch"
+                },
+                {
+                    "url": "http://127.0.0.1:8071/index.php/rolewarden/search?q=users.del",
+                    "method": "GET",
+                    "headers": {
+                        "sec-ch-ua-platform": "\"Windows\"",
+                        "Referer": "http://127.0.0.1:8071/index.php/rolewarden/users",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+                        "sec-ch-ua": "\"Google Chrome\";v=\"155\", \"Chromium\";v=\"155\", \"Not(A:Brand\";v=\"24\"",
+                        "sec-ch-ua-mobile": "?0"
+                    },
+                    "type": "Fetch"
+                }
+            ]
+        },
+        {
+            "op": "key",
+            "tag": "down"
+        },
+        {
+            "op": "eval",
+            "tag": "after-down",
+            "value": {
+                "active": "<input id=\"rw-cmd-q\" x-ref=\"q\" type=\"text\" role=\"combobox\" aria-expanded=\"true\" aria-controls=\"rw-cmd-results\" aria-autocomplete=\"list\" :aria-activedescendant=\"active\" autocomplete=\"off\" spellcheck=\"false\" @input.debounce.150ms=\"load()\" @keydown.down.prevent=\"move(1)\" @keydown.up.prevent=\"move(-1)\" @keydown.enter.prevent=\"go()\" aria-activedescendant=\"rw-cmd-o-0\">",
+                "sel": [
+                    "<a class=\"rw-cmd-opt\" id=\"rw-cmd-o-0\" href=\"http://127.0.0.1:8071/index.php/rolewarden/permissions/check?permission=users.delete\" role=\"option\" aria-selected=\"true\">\n        <svg class=\"rw-side-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"square\" aria-hidden=\"true\"><circle cx=\"7\" cy=\"7\" r=\"4.5\"></circle><path d=\"M10.5 10.5l3 "
+                ]
+            }
+        },
+        {
+            "op": "key",
+            "tag": "esc"
+        },
+        {
+            "op": "eval",
+            "tag": "after-esc",
+            "value": {
+                "active": "<body>\n<div class=\"rw rw-shell\">\n  <aside class=\"rw-sidebar rw-side\" data-sidebar=\"paper\" aria-label=\"Main\" x-data=\"rwSearch({&quot;url&quot;:&quot;http:\\/\\/127.0.0.1:8071\\/index.php\\/rolewarden\\/search&quot;})\" @keydown.window=\"hotkey($event)\">\n  <div class=\"rw-brand\"><b>RoleWarden</b></div>\n\n     ",
+                "open": [
+                    false
+                ]
+            }
+        }
+    ],
+    "errors": [],
+    "consoleErrors": [],
+    "profileRemoved": true
+}

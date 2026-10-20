@@ -1098,3 +1098,16 @@ Formato di ogni voce:
   - **Ambiguità (all'utente, non decise):** A1 velo fisso `rgba(23,25,28,.45)` contro «45% `ink` scrim»; A2 «N users through M roles» conta i ruoli assegnati ai titolari (figli compresi), non quelli che concedono il permesso. Resta aperta A1 di U2.
   - Osservazione non di U3: revoche e disattivazioni scritte direttamente nel database valgono solo dopo `cache:clear`; dal pannello valgono subito.
   - DB uguale allo snapshot `f7f37c04…e21e64` dopo tutte le 22 esecuzioni, Mailpit vuoto, nessun processo residuo. Restano profili Chrome bloccati in `scratchpad/u3/`. Nessun commit.
+
+### [2026-10-20 10:40] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `U3-REPORT.md` (sezione di riverifica), uscite `verify-u3.*` su `fd25932`
+- Cosa ho fatto: riverifica in nero di U3 sul commit `fd25932`, solo `rolewarden_test`, una suite alla volta.
+  - **U3 SRCH+OV:** 165/165 in development e production, 1 AMB (velo). **D1 risolto** (H-1, K-1, K-2 PASS: nessun 5xx né log ERROR/CRITICAL con `%FF%FE`), **D2 risolto** (pulsante nelle barre Ink e Charcoal in chiaro ≥ 7,04:1 in tutti i temi).
+  - **Regressione development:** U2 129/129, U1 226/226, A2 15/15, V8b 116/116 (AMB LA1 nota), S1 Y 52/52.
+  - Nessuna suite di questa regressione si aspettava «Autorizzazioni»: nulla da adattare (lo cercano solo V7 E12b e la sua copia V8b, non eseguite qui).
+- Stato: parziale. **Esito: nessun FAIL, ma riverifica incompleta; U3 non ancora approvata.**
+- Note per il prossimo:
+  - Claude Code ha fermato il driver per memoria di sistema insufficiente; non rilanciato per regola. Mancano: U2, U1, A2, V8b, S1 Y in production; V5 e V2 in entrambi gli ambienti. Comando in fondo a `U3-REPORT.md`.
+  - Il ripristino finale di `s1y.development` (processo rimasto orfano) è fallito; le partenze successive si sono fermate sul controllo di DB non vuoto senza toccare nulla. Ripristinato a mano: hash `f7f37c04…e21e64` identico. Mailpit vuoto, nessun processo residuo, profili Chrome bloccati in `scratchpad/u3r/`. Nessun commit.
+  - Ambiguità aperte, non decise: A1 velo fisso contro «45% `ink` scrim»; A2 conteggio «N users through M roles».

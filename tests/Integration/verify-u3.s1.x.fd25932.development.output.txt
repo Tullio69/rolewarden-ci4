@@ -1,0 +1,13 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase X from verify-u3.phase-x.php
+
+===== phase X =====
+
+== X: probe
+[INFO] server pid=40380 on 127.0.0.1:8071 prefix=''
+[INFO] probe written
+
+TOTAL: 2 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

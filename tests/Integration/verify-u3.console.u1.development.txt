@@ -7,7 +7,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase NAV =====
 
 == NAV: items, permissions, groups, aria-current
-[INFO] server pid=17740 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=17052 on 127.0.0.1:8071 prefix=''
 [PASS] N-owner-1 owner: the sidebar renders exactly the items of the permissions held (activity,appearance,permissions,check,roles,settings,users)
 [PASS] N-owner-2 owner: no empty group, no disabled or link-less item
 [PASS] N-owner-3 owner: group headers among Overview/Access/Security/System, in that order
@@ -81,7 +81,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N-off  A deactivated account with the admin role gets no sidebar item (signed in or not)
 [INFO] deactivate through the panel: 303, users.active=0
 [PASS] N-mid  Deactivated from the panel while signed in: the next page shows no item
-[INFO] role deleted from the panel: 303; deleted_at="2026-10-20 07:20:00"; assignment left=1
+[INFO] role deleted from the panel: 303; deleted_at="2026-10-20 08:04:32"; assignment left=1
 [PASS] N-del  After its only role is deleted from the panel, the user sees exactly the items the server still opens for him
 [PASS] N-clean NAV pages: no 5xx, no SQL or PHP error text
 [INFO] phase CNT from verify-u1.phase-cnt.php
@@ -89,18 +89,18 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase CNT =====
 
 == CNT: counters
-[INFO] server pid=34700 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=22356 on 127.0.0.1:8071 prefix=''
 [PASS] C-1    Users and Permissions counters and the Users screen header equal direct queries (start; Roles apart in C-2r)
-[INFO] user deleted from the panel: 303, deleted_at="2026-10-20 07:20:06", row still there=1
-[INFO] role deleted from the panel: 303, deleted_at="2026-10-20 07:20:07"
+[INFO] user deleted from the panel: 303, deleted_at="2026-10-20 08:04:39", row still there=1
+[INFO] role deleted from the panel: 303, deleted_at="2026-10-20 08:04:39"
 [PASS] C-2    After a deactivation, a deleted user and a new permission: Users and Permissions counters and the Users header still equal the queries (deleted users left out, deactivated counted)
 [INFO] Roles screen rows: 18; roles not deleted: 18; with the deleted ones: 20; Roles counter: 18
 [PASS] C-2r   After a role deleted from the panel the Roles counter equals the roles not deleted (and the rows of the Roles screen)
 [PASS] C-3    Another account (admin) sees the same figures
 [PASS] C-4    Before the first opening of the log there is no Activity counter, whatever the log holds (4 entries, 0 failed sign-ins)
-[INFO] after the first opening: {"id":8,"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-20 07:20:12","type":"string","context":"user:25","created_at":"2026-10-20 07:20:12","updated_at":"2026-10-20 07:20:12"}
+[INFO] after the first opening: {"id":8,"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-20 08:04:45","type":"string","context":"user:25","created_at":"2026-10-20 08:04:45","updated_at":"2026-10-20 08:04:45"}
 [PASS] C-5    Right after opening the log the counter is absent (nothing new)
-[INFO] since 2026-10-20 07:20:12: log entries by others 2 (actions ["settings.updated","settings.updated"]), by the holder 1, failed sign-ins 4, successful 1
+[INFO] since 2026-10-20 08:04:45: log entries by others 2 (actions ["settings.updated","settings.updated"]), by the holder 1, failed sign-ins 4, successful 1
 [INFO] activity counter shown: {"path":"[omesso]\/activity","text":"Activity","count":"6 new","countClass":"rw-side-count rw-side-count--hot","current":"","title":"","aria":"","group":"Security"}
 [PASS] C-6    Activity counter = log entries by others + failed sign-ins since the last opening (2 + 4); the holder's own entries (1) and successful sign-ins (1) not counted
 [PASS] C-6b   The counter is a figure the holder can act on (digits, "new" chip marked for attention)
@@ -115,13 +115,13 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase TODAY =====
 
 == TODAY: panel, figures, switch
-[INFO] server pid=41700 on 127.0.0.1:8071 prefix=''
-[INFO] auth_logins planted for today {"0":[2,1],"2":[3,0],"4":[1,2]}, current UTC hour 7
-[INFO] Today shown: {"text":"Today 35 sign-ins, 9 failed","b":"35","svgRole":"img","svgAria":"Sign-ins by hour today, busiest 07:00 with 29","svgView":"","points":[[0,26.2],[7.7,28],[15.3,25.3],[23,28],[30.6,27.1],[38.3,28],[45.9,28],[53.6,2],[61.2,28],[68.9,28],[76.5,28],[84.2,28],[91.8,28],[99.5,28],[107.1,28],[114.8,28],[122.4,28],[130.1,28],[137.7,28],[145.4,28],[153,28],[160.7,28],[168.3,28],[176,28]]} expected {"ok":35,"fail":9}
+[INFO] server pid=46344 on 127.0.0.1:8071 prefix=''
+[INFO] auth_logins planted for today {"0":[2,1],"2":[3,0],"5":[1,2]}, current UTC hour 8
+[INFO] Today shown: {"text":"Today 35 sign-ins, 9 failed","b":"35","svgRole":"img","svgAria":"Sign-ins by hour today, busiest 08:00 with 29","svgView":"","points":[[0,26.2],[7.7,28],[15.3,25.3],[23,28],[30.6,28],[38.3,27.1],[45.9,28],[53.6,28],[61.2,2],[68.9,28],[76.5,28],[84.2,28],[91.8,28],[99.5,28],[107.1,28],[114.8,28],[122.4,28],[130.1,28],[137.7,28],[145.4,28],[153,28],[160.7,28],[168.3,28],[176,28]]} expected {"ok":35,"fail":9}
 [PASS] T-1    Today: sign-ins of today (35) and failed ones (9) as in auth_logins; yesterday's left out
-[INFO] hourly successful [2,0,3,0,1,0,0,29,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] all attempts [3,0,3,0,3,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] y=[26.2,28,25.3,28,27.1,28,28,2,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28] matches successful=true all=false
+[INFO] hourly successful [2,0,3,0,0,1,0,0,29,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] all attempts [3,0,3,0,0,3,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] y=[26.2,28,25.3,28,28,27.1,28,28,2,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28] matches successful=true all=false
 [PASS] T-2    Hourly line: 24 points, one per hour, heights proportional to the successful sign-ins of each hour
-[PASS] T-3    Line with role=img and a label naming its sense (busiest hour 07:00 with 29)
+[PASS] T-3    Line with role=img and a label naming its sense (busiest hour 08:00 with 29)
 [PASS] T-4    Today only for those holding activity.view (role, inheritance, super admin), never without it or with it denied
 [INFO] switch off: HTTP 303 -> http://127.0.0.1:8071/index.php/[omesso]/settings; settings rows [{"class":"RoleWarden\\Config\\RoleWarden","value":"0","type":"boolean","context":null}]
 [INFO] log entries after the switch: [{"action":"settings.updated","details":"{\"sidebar_today\":[true,false]}"}]
@@ -138,7 +138,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase RAIL =====
 
 == RAIL: collapse to icons
-[INFO] server pid=19620 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=26488 on 127.0.0.1:8071 prefix=''
 [PASS] R-1    Expanded by default: a toggle form (POST, CSRF token, collapsed=1) with an accessible label
 [PASS] R-2    Refused without the CSRF token (403, or in production the redirect CodeIgniter makes); a GET changes nothing; anonymous is sent to sign in; the sidebar stays expanded
 [PASS] R-3    Collapse: redirect inside the application (an outside Referer is not followed); next page on the rail, toggle now expands
@@ -158,7 +158,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase STYLE =====
 
 == STYLE: sidebar styles
-[INFO] server pid=36852 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=19492 on 127.0.0.1:8071 prefix=''
 [PASS] S-0    No theme file yet: the sidebar is Paper
 [INFO] saved ink: HTTP 303; theme file {"base":"console","radius":null,"density":null,"sidebar":"ink","colors":{"light":[],"dark":[]}}
 [PASS] S-ink  Customizer saves ink in the theme file and every user's sidebar takes it
@@ -190,29 +190,27 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] S-console-ink-light-1 console/ink/light: Chrome renders light with data-sidebar=ink
 [PASS] S-console-ink-light-2 console/ink/light: ground, items, labels, counter chips and active item have the values the design system gives for ink in console light (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-console-ink-light-3 console/ink/light: every colour in the sidebar is a token value (71 measured)
-[FAIL] S-console-ink-light-4 console/ink/light: every text of the sidebar at least 4.5:1 (min 1.84, 20 texts)
-         -> [{"text":"Search or run a command","q":1.84,"fg":"rgb(30, 78, 166)","bg":"rgb(24, 41, 77)"}]
+[PASS] S-console-ink-light-4 console/ink/light: every text of the sidebar at least 4.5:1 (min 7.04, 20 texts)
 [PASS] S-console-ink-light-5 console/ink/light: the active item stands out from the sidebar at 3:1 or more (fill 7.85:1, text on fill 8.12:1)
-[INFO] console/ink/light: {"ground":"rgb(15, 29, 58)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.85,"fgVsGround":1.03,"fgVsBg":8.12},"chip":{"bg":"rgb(24, 41, 77)","fg":"rgb(238, 242, 250)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"3 new"},"label":"rgb(169, 182, 209)","min":1.84}
+[INFO] console/ink/light: {"ground":"rgb(15, 29, 58)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.85,"fgVsGround":1.03,"fgVsBg":8.12},"chip":{"bg":"rgb(24, 41, 77)","fg":"rgb(238, 242, 250)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"3 new"},"label":"rgb(169, 182, 209)","min":7.04}
 [PASS] S-console-ink-dark-1 console/ink/dark: Chrome renders dark with data-sidebar=ink
 [PASS] S-console-ink-dark-2 console/ink/dark: ground, items, labels, counter chips and active item have the values the design system gives for ink in console dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-console-ink-dark-3 console/ink/dark: every colour in the sidebar is a token value (71 measured)
-[PASS] S-console-ink-dark-4 console/ink/dark: every text of the sidebar at least 4.5:1 (min 7.29, 20 texts)
+[PASS] S-console-ink-dark-4 console/ink/dark: every text of the sidebar at least 4.5:1 (min 7.61, 20 texts)
 [PASS] S-console-ink-dark-5 console/ink/dark: the active item stands out from the sidebar at 3:1 or more (fill 8.42:1, text on fill 8.12:1)
-[INFO] console/ink/dark: {"ground":"rgb(11, 22, 48)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":8.42,"fgVsGround":1.04,"fgVsBg":8.12},"chip":{"bg":"rgb(20, 35, 68)","fg":"rgb(238, 242, 250)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"3 new"},"label":"rgb(169, 182, 209)","min":7.29}
+[INFO] console/ink/dark: {"ground":"rgb(11, 22, 48)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":8.42,"fgVsGround":1.04,"fgVsBg":8.12},"chip":{"bg":"rgb(20, 35, 68)","fg":"rgb(238, 242, 250)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"3 new"},"label":"rgb(169, 182, 209)","min":7.61}
 [PASS] S-console-charcoal-light-1 console/charcoal/light: Chrome renders light with data-sidebar=charcoal
 [PASS] S-console-charcoal-light-2 console/charcoal/light: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in console light (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-console-charcoal-light-3 console/charcoal/light: every colour in the sidebar is a token value (71 measured)
-[FAIL] S-console-charcoal-light-4 console/charcoal/light: every text of the sidebar at least 4.5:1 (min 1.99, 20 texts)
-         -> [{"text":"Search or run a command","q":1.99,"fg":"rgb(30, 78, 166)","bg":"rgb(35, 36, 40)"}]
+[PASS] S-console-charcoal-light-4 console/charcoal/light: every text of the sidebar at least 4.5:1 (min 7.29, 20 texts)
 [PASS] S-console-charcoal-light-5 console/charcoal/light: the active item stands out from the sidebar at 3:1 or more (fill 7.92:1, text on fill 8.12:1)
-[INFO] console/charcoal/light: {"ground":"rgb(28, 29, 32)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.92,"fgVsGround":1.02,"fgVsBg":8.12},"chip":{"bg":"rgb(35, 36, 40)","fg":"rgb(235, 235, 232)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"4 new"},"label":"rgb(174, 178, 185)","min":1.99}
+[INFO] console/charcoal/light: {"ground":"rgb(28, 29, 32)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.92,"fgVsGround":1.02,"fgVsBg":8.12},"chip":{"bg":"rgb(35, 36, 40)","fg":"rgb(235, 235, 232)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"4 new"},"label":"rgb(174, 178, 185)","min":7.29}
 [PASS] S-console-charcoal-dark-1 console/charcoal/dark: Chrome renders dark with data-sidebar=charcoal
 [PASS] S-console-charcoal-dark-2 console/charcoal/dark: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in console dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-console-charcoal-dark-3 console/charcoal/dark: every colour in the sidebar is a token value (71 measured)
-[PASS] S-console-charcoal-dark-4 console/charcoal/dark: every text of the sidebar at least 4.5:1 (min 7.28, 20 texts)
+[PASS] S-console-charcoal-dark-4 console/charcoal/dark: every text of the sidebar at least 4.5:1 (min 7.29, 20 texts)
 [PASS] S-console-charcoal-dark-5 console/charcoal/dark: the active item stands out from the sidebar at 3:1 or more (fill 7.92:1, text on fill 8.12:1)
-[INFO] console/charcoal/dark: {"ground":"rgb(28, 29, 32)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.92,"fgVsGround":1.02,"fgVsBg":8.12},"chip":{"bg":"rgb(35, 36, 40)","fg":"rgb(235, 235, 232)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"4 new"},"label":"rgb(174, 178, 185)","min":7.28}
+[INFO] console/charcoal/dark: {"ground":"rgb(28, 29, 32)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.92,"fgVsGround":1.02,"fgVsBg":8.12},"chip":{"bg":"rgb(35, 36, 40)","fg":"rgb(235, 235, 232)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"4 new"},"label":"rgb(174, 178, 185)","min":7.29}
 [PASS] S-clarity-paper-light-1 clarity/paper/light: Chrome renders light with data-sidebar=paper
 [PASS] S-clarity-paper-light-2 clarity/paper/light: ground, items, labels, counter chips and active item have the values the design system gives for paper in clarity light (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-clarity-paper-light-3 clarity/paper/light: every colour in the sidebar is a token value (71 measured)
@@ -228,23 +226,21 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] S-clarity-ink-light-1 clarity/ink/light: Chrome renders light with data-sidebar=ink
 [PASS] S-clarity-ink-light-2 clarity/ink/light: ground, items, labels, counter chips and active item have the values the design system gives for ink in clarity light (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-clarity-ink-light-3 clarity/ink/light: every colour in the sidebar is a token value (71 measured)
-[FAIL] S-clarity-ink-light-4 clarity/ink/light: every text of the sidebar at least 4.5:1 (min 1.73, 20 texts)
-         -> [{"text":"Search or run a command","q":1.73,"fg":"rgb(67, 56, 202)","bg":"rgb(38, 42, 82)"}]
+[PASS] S-clarity-ink-light-4 clarity/ink/light: every text of the sidebar at least 4.5:1 (min 7.14, 20 texts)
 [PASS] S-clarity-ink-light-5 clarity/ink/light: the active item stands out from the sidebar at 3:1 or more (fill 8.09:1, text on fill 8.09:1)
-[INFO] clarity/ink/light: {"ground":"rgb(26, 27, 75)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":8.09,"fgVsGround":1,"fgVsBg":8.09},"chip":{"bg":"rgb(38, 42, 82)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"6 new"},"label":"rgb(180, 186, 216)","min":1.73}
+[INFO] clarity/ink/light: {"ground":"rgb(26, 27, 75)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":8.09,"fgVsGround":1,"fgVsBg":8.09},"chip":{"bg":"rgb(38, 42, 82)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"6 new"},"label":"rgb(180, 186, 216)","min":7.14}
 [PASS] S-clarity-ink-dark-1 clarity/ink/dark: Chrome renders dark with data-sidebar=ink
 [PASS] S-clarity-ink-dark-2 clarity/ink/dark: ground, items, labels, counter chips and active item have the values the design system gives for ink in clarity dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-clarity-ink-dark-3 clarity/ink/dark: every colour in the sidebar is a token value (71 measured)
-[PASS] S-clarity-ink-dark-4 clarity/ink/dark: every text of the sidebar at least 4.5:1 (min 7.64, 20 texts)
+[PASS] S-clarity-ink-dark-4 clarity/ink/dark: every text of the sidebar at least 4.5:1 (min 7.95, 20 texts)
 [PASS] S-clarity-ink-dark-5 clarity/ink/dark: the active item stands out from the sidebar at 3:1 or more (fill 8.79:1, text on fill 8.09:1)
-[INFO] clarity/ink/dark: {"ground":"rgb(20, 21, 58)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":8.79,"fgVsGround":1.09,"fgVsBg":8.09},"chip":{"bg":"rgb(31, 34, 71)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"6 new"},"label":"rgb(180, 186, 216)","min":7.64}
+[INFO] clarity/ink/dark: {"ground":"rgb(20, 21, 58)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":8.79,"fgVsGround":1.09,"fgVsBg":8.09},"chip":{"bg":"rgb(31, 34, 71)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"6 new"},"label":"rgb(180, 186, 216)","min":7.95}
 [PASS] S-clarity-charcoal-light-1 clarity/charcoal/light: Chrome renders light with data-sidebar=charcoal
 [PASS] S-clarity-charcoal-light-2 clarity/charcoal/light: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in clarity light (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-clarity-charcoal-light-3 clarity/charcoal/light: every colour in the sidebar is a token value (71 measured)
-[FAIL] S-clarity-charcoal-light-4 clarity/charcoal/light: every text of the sidebar at least 4.5:1 (min 2.11, 20 texts)
-         -> [{"text":"Search or run a command","q":2.11,"fg":"rgb(67, 56, 202)","bg":"rgb(27, 30, 38)"}]
+[PASS] S-clarity-charcoal-light-4 clarity/charcoal/light: every text of the sidebar at least 4.5:1 (min 8.09, 20 texts)
 [PASS] S-clarity-charcoal-light-5 clarity/charcoal/light: the active item stands out from the sidebar at 3:1 or more (fill 9.07:1, text on fill 8.09:1)
-[INFO] clarity/charcoal/light: {"ground":"rgb(20, 22, 28)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":9.07,"fgVsGround":1.12,"fgVsBg":8.09},"chip":{"bg":"rgb(27, 30, 38)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"7 new"},"label":"rgb(180, 186, 198)","min":2.11}
+[INFO] clarity/charcoal/light: {"ground":"rgb(20, 22, 28)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":9.07,"fgVsGround":1.12,"fgVsBg":8.09},"chip":{"bg":"rgb(27, 30, 38)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"7 new"},"label":"rgb(180, 186, 198)","min":8.09}
 [PASS] S-clarity-charcoal-dark-1 clarity/charcoal/dark: Chrome renders dark with data-sidebar=charcoal
 [PASS] S-clarity-charcoal-dark-2 clarity/charcoal/dark: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in clarity dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-clarity-charcoal-dark-3 clarity/charcoal/dark: every colour in the sidebar is a token value (71 measured)
@@ -266,29 +262,27 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] S-contrast-ink-light-1 contrast/ink/light: Chrome renders light with data-sidebar=ink
 [PASS] S-contrast-ink-light-2 contrast/ink/light: ground, items, labels, counter chips and active item have the values the design system gives for ink in contrast light (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-contrast-ink-light-3 contrast/ink/light: every colour in the sidebar is a token value (71 measured)
-[FAIL] S-contrast-ink-light-4 contrast/ink/light: every text of the sidebar at least 4.5:1 (min 1, 20 texts)
-         -> [{"text":"Search or run a command","q":1,"fg":"rgb(11, 61, 145)","bg":"rgb(11, 61, 145)"}]
+[PASS] S-contrast-ink-light-4 contrast/ink/light: every text of the sidebar at least 4.5:1 (min 8.06, 20 texts)
 [PASS] S-contrast-ink-light-5 contrast/ink/light: the active item stands out from the sidebar at 3:1 or more (fill 8.95:1, text on fill 12.92:1)
-[INFO] contrast/ink/light: {"ground":"rgb(7, 42, 102)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":8.95,"fgVsGround":1.44,"fgVsBg":12.92},"chip":{"bg":"rgb(11, 61, 145)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"9 new"},"label":"rgb(221, 231, 247)","min":1}
+[INFO] contrast/ink/light: {"ground":"rgb(7, 42, 102)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":8.95,"fgVsGround":1.44,"fgVsBg":12.92},"chip":{"bg":"rgb(11, 61, 145)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"9 new"},"label":"rgb(221, 231, 247)","min":8.06}
 [PASS] S-contrast-ink-dark-1 contrast/ink/dark: Chrome renders dark with data-sidebar=ink
 [PASS] S-contrast-ink-dark-2 contrast/ink/dark: ground, items, labels, counter chips and active item have the values the design system gives for ink in contrast dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-contrast-ink-dark-3 contrast/ink/dark: every colour in the sidebar is a token value (71 measured)
-[PASS] S-contrast-ink-dark-4 contrast/ink/dark: every text of the sidebar at least 4.5:1 (min 8.95, 20 texts)
+[PASS] S-contrast-ink-dark-4 contrast/ink/dark: every text of the sidebar at least 4.5:1 (min 11, 20 texts)
 [PASS] S-contrast-ink-dark-5 contrast/ink/dark: the active item stands out from the sidebar at 3:1 or more (fill 10.77:1, text on fill 12.92:1)
-[INFO] contrast/ink/dark: {"ground":"rgb(5, 29, 71)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":10.77,"fgVsGround":1.2,"fgVsBg":12.92},"chip":{"bg":"rgb(7, 42, 102)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"9 new"},"label":"rgb(221, 231, 247)","min":8.95}
+[INFO] contrast/ink/dark: {"ground":"rgb(5, 29, 71)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":10.77,"fgVsGround":1.2,"fgVsBg":12.92},"chip":{"bg":"rgb(7, 42, 102)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"9 new"},"label":"rgb(221, 231, 247)","min":11}
 [PASS] S-contrast-charcoal-light-1 contrast/charcoal/light: Chrome renders light with data-sidebar=charcoal
 [PASS] S-contrast-charcoal-light-2 contrast/charcoal/light: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in contrast light (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-contrast-charcoal-light-3 contrast/charcoal/light: every colour in the sidebar is a token value (71 measured)
-[FAIL] S-contrast-charcoal-light-4 contrast/charcoal/light: every text of the sidebar at least 4.5:1 (min 1.8, 20 texts)
-         -> [{"text":"Search or run a command","q":1.8,"fg":"rgb(11, 61, 145)","bg":"rgb(22, 22, 24)"}]
+[PASS] S-contrast-charcoal-light-4 contrast/charcoal/light: every text of the sidebar at least 4.5:1 (min 12.92, 20 texts)
 [PASS] S-contrast-charcoal-light-5 contrast/charcoal/light: the active item stands out from the sidebar at 3:1 or more (fill 12.92:1, text on fill 12.92:1)
-[INFO] contrast/charcoal/light: {"ground":"rgb(10, 10, 11)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":12.92,"fgVsGround":1,"fgVsBg":12.92},"chip":{"bg":"rgb(22, 22, 24)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"10 new"},"label":"rgb(228, 228, 231)","min":1.8}
+[INFO] contrast/charcoal/light: {"ground":"rgb(10, 10, 11)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":12.92,"fgVsGround":1,"fgVsBg":12.92},"chip":{"bg":"rgb(22, 22, 24)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"10 new"},"label":"rgb(228, 228, 231)","min":12.92}
 [PASS] S-contrast-charcoal-dark-1 contrast/charcoal/dark: Chrome renders dark with data-sidebar=charcoal
 [PASS] S-contrast-charcoal-dark-2 contrast/charcoal/dark: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in contrast dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
 [PASS] S-contrast-charcoal-dark-3 contrast/charcoal/dark: every colour in the sidebar is a token value (71 measured)
-[PASS] S-contrast-charcoal-dark-4 contrast/charcoal/dark: every text of the sidebar at least 4.5:1 (min 11.8, 20 texts)
+[PASS] S-contrast-charcoal-dark-4 contrast/charcoal/dark: every text of the sidebar at least 4.5:1 (min 12.92, 20 texts)
 [PASS] S-contrast-charcoal-dark-5 contrast/charcoal/dark: the active item stands out from the sidebar at 3:1 or more (fill 12.92:1, text on fill 12.92:1)
-[INFO] contrast/charcoal/dark: {"ground":"rgb(10, 10, 11)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":12.92,"fgVsGround":1,"fgVsBg":12.92},"chip":{"bg":"rgb(22, 22, 24)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"10 new"},"label":"rgb(228, 228, 231)","min":11.8}
+[INFO] contrast/charcoal/dark: {"ground":"rgb(10, 10, 11)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":12.92,"fgVsGround":1,"fgVsBg":12.92},"chip":{"bg":"rgb(22, 22, 24)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"10 new"},"label":"rgb(228, 228, 231)","min":12.92}
 [INFO] screenshots: verify-u3.u1.style-console-paper-light.png, verify-u3.u1.style-console-paper-dark.png, verify-u3.u1.style-console-ink-light.png, verify-u3.u1.style-console-ink-dark.png, verify-u3.u1.style-console-charcoal-light.png, verify-u3.u1.style-console-charcoal-dark.png, verify-u3.u1.style-clarity-paper-light.png, verify-u3.u1.style-clarity-paper-dark.png, verify-u3.u1.style-clarity-ink-light.png, verify-u3.u1.style-clarity-ink-dark.png, verify-u3.u1.style-clarity-charcoal-light.png, verify-u3.u1.style-clarity-charcoal-dark.png, verify-u3.u1.style-contrast-paper-light.png, verify-u3.u1.style-contrast-paper-dark.png, verify-u3.u1.style-contrast-ink-light.png, verify-u3.u1.style-contrast-ink-dark.png, verify-u3.u1.style-contrast-charcoal-light.png, verify-u3.u1.style-contrast-charcoal-dark.png
 [PASS] S-clean STYLE pages: no 5xx, no SQL or PHP error text
 [INFO] phase LANG from verify-u1.phase-lang.php
@@ -296,13 +290,13 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase LANG =====
 
 == LANG: English and Italian
-[INFO] server pid=5340 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=35308 on 127.0.0.1:8071 prefix=''
 [INFO] EN {"aside":"Main","group0":"Access","group1":"Security","group2":"System","item:[omesso]\/users":"Users","item:[omesso]\/roles":"Roles","item:[omesso]\/permissions":"Permissions","item:[omesso]\/permissions\/check":"Check a permission","item:[omesso]\/activity":"Activity","item:[omesso]\/settings":"Settings","item:[omesso]\/appearance":"Appearance","tog-aria":"Collapse the sidebar","tog-title":"Collapse the sidebar","today-label":"Today","today-note":"sign-ins, # failed","today-svg":"Sign-ins by hour today, busiest # with #","rail-tog-aria":"Expand the sidebar","rail-tog-title":"Expand the sidebar","settings-label0":"Today in the sidebar","settings-help0":"Sign-ins and failures of the day, for those who can see the activity log.","settings-opt0":"Shown","settings-opt1":"Hidden","settings-section":"Panel","appearance-label0":"Sidebar","appearance-help0":"Paper is the light sidebar; Ink and Charcoal are dark in light and dark mode alike.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Shape"}
 [INFO] IT {"aside":"Principale","group0":"Accesso","group1":"Sicurezza","group2":"Sistema","item:[omesso]\/users":"Utenti","item:[omesso]\/roles":"Ruoli","item:[omesso]\/permissions":"Permessi","item:[omesso]\/permissions\/check":"Verifica permesso","item:[omesso]\/activity":"Attività","item:[omesso]\/settings":"Impostazioni","item:[omesso]\/appearance":"Aspetto","tog-aria":"Comprimi la barra laterale","tog-title":"Comprimi la barra laterale","today-label":"Oggi","today-note":"accessi, # falliti","today-svg":"Accessi di oggi per ora, il massimo alle # con #","rail-tog-aria":"Espandi la barra laterale","rail-tog-title":"Espandi la barra laterale","settings-label0":"Oggi nella barra laterale","settings-help0":"Accessi e tentativi falliti del giorno, per chi può vedere il log attività.","settings-opt0":"Visibile","settings-opt1":"Nascosto","settings-section":"Pannello","appearance-label0":"Barra laterale","appearance-help0":"Paper è la barra chiara; Ink e Charcoal sono scure sia in chiaro sia in scuro.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Forma"}
 [PASS] L-1    Every new string of the sidebar, the Today panel, the toggle (both states), the Settings switch and the Appearance style row has its Italian text
 [PASS] L-2    None of those English strings appears as a word in the text, labels or tooltips of the Italian pages (Users, Settings, Appearance, Activity, Profile; Paper, Ink, Charcoal excepted)
 [PASS] L-3    The style names stay Paper, Ink and Charcoal in Italian
-[INFO] L-4 excerpts: {"en today":["7:24 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 20 Oct 2026","7:24 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 20 Oct 2026"],"it today":["v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: → 1 127.0.0.1 04 20 ott 2026","v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: 1 → 127.0.0.1 05 20 ott 2026"],"en sidebar":[" v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 20 Oct "," v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 20 Oct "," v8badmin Appearance changed Appearance Sidebar: ink → charcoal 127.0.0.1 10 "],"it sidebar":["24 v8badmin Aspetto cambiato Appearance Barra laterale: ink → — 127.0.0.1 02 20 ott ","24 v8badmin Aspetto cambiato Appearance Barra laterale: — → ink 127.0.0.1 03 20 ott ","23 v8badmin Aspetto cambiato Appearance Barra laterale: ink → charcoal 127.0.0.1 10 "],"en head":"01 20 Oct 2026, 07:24 v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 20 Oct 2026, 07:24 v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 20 Oct 2026, 07:24 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 20 Oct 2026, 07:24 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 20 Oct 2026, 07:24 admin@v8b.test S"}
+[INFO] L-4 excerpts: {"en today":["8:08 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 20 Oct 2026","8:08 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 20 Oct 2026"],"it today":["v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: → 1 127.0.0.1 04 20 ott 2026","v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: 1 → 127.0.0.1 05 20 ott 2026"],"en sidebar":[" v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 20 Oct "," v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 20 Oct "," v8badmin Appearance changed Appearance Sidebar: ink → charcoal 127.0.0.1 10 "],"it sidebar":["08 v8badmin Aspetto cambiato Appearance Barra laterale: ink → — 127.0.0.1 02 20 ott ","08 v8badmin Aspetto cambiato Appearance Barra laterale: — → ink 127.0.0.1 03 20 ott ","08 v8badmin Aspetto cambiato Appearance Barra laterale: ink → charcoal 127.0.0.1 10 "],"en head":"01 20 Oct 2026, 08:08 v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 20 Oct 2026, 08:08 v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 20 Oct 2026, 08:08 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 20 Oct 2026, 08:08 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 20 Oct 2026, 08:08 admin@v8b.test S"}
 [PASS] L-4    The activity log names the two new fields in each language (Today in the sidebar / Oggi nella barra laterale, Sidebar / Barra laterale)
 [PASS] L-clean LANG pages: no 5xx, no SQL or PHP error text
 [INFO] phase ESC from verify-u1.phase-esc.php
@@ -310,21 +304,15 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase ESC =====
 
 == ESC: escape, CSRF, errors, logs
-[INFO] server pid=41956 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=35224 on 127.0.0.1:8071 prefix=''
 [PASS] E-1    A sidebar label from the application language file (views.html "Changing a few lines") is printed escaped, in the text and in the tooltip
 [PASS] E-2    On the rail the same label in the title attribute is escaped too
 [PASS] E-3    A crafted value on the switch, the style and the collapse field is never printed raw and gives no error page
 [PASS] E-4    The sidebar form (the one form U1 adds) carries the CSRF token on every page seen in this phase
 [PASS] E-5    Every response of this U1 run (460 bodies): no 5xx, no SQL text, no PHP error
-[INFO] application log lines WARNING or above: 3 CRITICAL - 2026-10-20 07:20:47 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed. | CRITICAL - 2026-10-20 07:20:52 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed. | CRITICAL - 2026-10-20 07:21:29 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
+[INFO] application log lines WARNING or above: 3 CRITICAL - 2026-10-20 08:05:19 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed. | CRITICAL - 2026-10-20 08:05:25 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed. | CRITICAL - 2026-10-20 08:06:02 --> CodeIgniter\Security\Exceptions\SecurityException: The action you requested is not allowed.
 [PASS] E-6    Application log: no WARNING, ERROR or CRITICAL line apart from one CSRF refusal per deliberate POST without the token (3)
 
-TOTAL: 220 PASS, 6 FAIL, 0 AMB
-FAIL S-console-ink-light-4 console/ink/light: every text of the sidebar at least 4.5:1 (min 1.84, 20 texts)
-FAIL S-console-charcoal-light-4 console/charcoal/light: every text of the sidebar at least 4.5:1 (min 1.99, 20 texts)
-FAIL S-clarity-ink-light-4 clarity/ink/light: every text of the sidebar at least 4.5:1 (min 1.73, 20 texts)
-FAIL S-clarity-charcoal-light-4 clarity/charcoal/light: every text of the sidebar at least 4.5:1 (min 2.11, 20 texts)
-FAIL S-contrast-ink-light-4 contrast/ink/light: every text of the sidebar at least 4.5:1 (min 1, 20 texts)
-FAIL S-contrast-charcoal-light-4 contrast/charcoal/light: every text of the sidebar at least 4.5:1 (min 1.8, 20 texts)
-fdb37dc s1.u1.fdb37dc.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+TOTAL: 226 PASS, 0 FAIL, 0 AMB
+fd25932 s1.u1.fd25932.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=False (1 .env files deleted first)

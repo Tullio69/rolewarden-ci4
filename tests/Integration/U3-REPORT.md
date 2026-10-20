@@ -166,3 +166,56 @@ Ho letto solo SPEC, BRIEF-v1.1, CHANGELOG (Unreleased), `documentation/` (config
 - **Processi:** nessun processo php/python/node/chrome mio residuo.
 - **Scratchpad:** restano in `scratchpad/u3/` 7 cartelle con soli profili Chrome bloccati (nessun `.env`, nessuna credenziale), da cancellare a mano.
 - Nessun commit.
+
+---
+
+# Riverifica su `fd25932` (2026-10-20, Collaudatore ad Hoc)
+
+## Esito
+
+**Riverifica INCOMPLETA. D1 e D2 risolti; U3 non ancora approvata (approvazione sospesa).**
+
+- Il driver (`verify-u3.all.sh`, `RW_V8_NEW=fd25932`) è stato fermato da Claude Code per memoria di sistema insufficiente durante `s1y.development`. Per regola non l'ho rilanciato da solo: le suite mancanti vanno rilanciate quando c'è memoria.
+- Su tutto ciò che è girato: **nessun FAIL**.
+
+| Suite | development | production |
+| --- | --- | --- |
+| U3, fasi SRCH + OV | **165/165**, 1 AMB (A1 velo) | **165/165**, 1 AMB (A1 velo) |
+| Sonda X | 2/2 | 2/2 |
+| U2 (CHK, ST) | **129/129** | non eseguita |
+| U1 (lib adattata U3) | **226/226** (i 6 S-*-light-4 di D2 ora PASS) | non eseguita |
+| A2 | **15/15** | non eseguita |
+| V8b (L, M, P, I, G) | **116/116**, 1 AMB nota (LA1) | non eseguita |
+| S1, fase Y | **52/52** (ripristino DB fallito, vedi sotto) | non eseguita |
+| V5 adattata | non eseguita | non eseguita |
+| V2 principale | non eseguita | non eseguita |
+
+Ho letto solo questo report, `_AI-LOG.md` e gli script di `tests/Integration/`; del commit conosco solo il `--stat` (4 file: `resources/css/panel.css`, `src/Assets/css/panel.css`, `src/Helpers/rolewarden_helper.php`, `src/Language/it/RoleWarden.php`).
+
+## D1 e D2
+
+- **D1 risolto** (development e production): H-1 (22 ingressi ostili, compresi `%FF%FE` e `%C3%28`, pagina e overlay) PASS; K-1 (2039 risposte, nessun 5xx) PASS; K-2 (log senza WARNING/ERROR/CRITICAL) PASS.
+- **D2 risolto** (development e production): LK-*-{ink,charcoal}-light-5 PASS. Contrasto minimo del pulsante nella barra: Console Ink 7,04:1, Charcoal 7,29:1; Clarity 7,14:1 e 8,55:1; Contrast 8,06:1 e 14,24:1. Paper e modi scuri invariati e corretti (≥ 6,84:1). In U1 development i 6 S-*-light-4 ora passano.
+
+## «Accesso» al posto di «Autorizzazioni»
+
+- Nessuna delle suite di questo collaudo si aspettava «Autorizzazioni»: non ho adattato nulla. U2 e U1 (development) passano col nuovo testo.
+- Lo cercano solo `verify-v7.php` e `verify-v8b.v7adapted.php` (E12b), che non fanno parte di questa regressione: se rilanciate, E12b va adattato a «Accesso».
+
+## Incidente di esecuzione e pulizia
+
+- Alle 10:15 Claude Code ha terminato il driver per memoria insufficiente; il processo Python di `s1y.development` è rimasto orfano ed è arrivato in fondo (52/52), ma il ripristino finale di `rolewarden_test` è fallito (`CalledProcessError` su `verify-v4.snapshot.php restore`, causa non visibile, probabilmente la stessa pressione di memoria).
+- Il driver, ancora vivo, ha lanciato le suite successive: tutte si sono fermate subito sul controllo «database non vuoto» (exit 1 in `verify-u3.progress.txt`, 10:23), senza toccare nulla. Ho terminato il driver.
+- Ho ripristinato a mano `rolewarden_test` dallo snapshot della suite (hash del file `f7f37c04…e21e64`) e ricalcolato lo snapshot canonico: **`f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`, identico**. Tutte le altre esecuzioni di questa riverifica hanno before = after per hash (`verify-u3.environment.txt`).
+- Le uscite console delle partenze abortite le ho riportate alla versione del primo collaudo (`git checkout`); gli esiti abortiti restano solo in `verify-u3.progress.txt`.
+- Mailpit vuoto. Nessun processo php/python/node/chrome mio residuo. Cartella di lavoro di `s1y.development` rimossa (conteneva un `.env`); in `scratchpad/u3r/` restano solo profili Chrome bloccati, senza credenziali. Nessun commit.
+
+## Da fare per chiudere
+
+Rilanciare, con memoria libera, `bash tests/Integration/verify-u3.all.sh s1y.development u2.production u1.production a2.production v8b.production s1y.production v5.development v5.production test.development test.production` (stesse variabili d'ambiente, `RW_V8_NEW=fd25932`).
+
+## Ambiguità ancora aperte (all'utente, non decise)
+
+- **A1 — Colore del velo:** sempre `rgba(23, 25, 28, 0.45)` contro «45% `ink` scrim» del README (AMB-scrim, invariata).
+- **A2 — «N users through M roles»:** M conta i ruoli assegnati ai titolari attraverso cui il permesso arriva, non i ruoli che lo concedono (invariata).
+- L'ambiguità A1 di U2 («Accesso» contro «Autorizzazioni») risulta decisa dall'utente secondo chi ha lanciato il collaudo: il testo servito è stato uniformato.

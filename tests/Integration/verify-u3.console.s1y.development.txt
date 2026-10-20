@@ -5,14 +5,14 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] phase Y from verify-s1.phase-y.php
 
 ===== phase Y =====
-[INFO] server pid=27012 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=40884 on 127.0.0.1:8071 prefix=''
 [INFO] 1280 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[166.5],"area":[105.6],"tableW":1216,"boxW":1016,"boxScrollW":1216,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[153],"area":[105.6],"tableW":1202,"boxW":1016,"boxScrollW":1202,"overflowX":0}}
 [INFO] 1366 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[166.5],"area":[105.6],"tableW":1216,"boxW":1102,"boxScrollW":1216,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[153],"area":[105.6],"tableW":1202,"boxW":1102,"boxScrollW":1202,"overflowX":0}}
 [INFO] 1440 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[166.5],"area":[105.6],"tableW":1216,"boxW":1176,"boxScrollW":1216,"overflowX":0},"admin":{"act":[44,55.6,70,56.2,65.8,55.2,54,71.4,55.7,54.2,57.3,67.8,44,56.6,66.5],"anno":[153],"area":[105.6],"tableW":1202,"boxW":1176,"boxScrollW":1202,"overflowX":0}}
 [INFO] 1920 px, module data only, matrix widths (information; the first round's Y07 against 80/104/200 px, withdrawn by the SPEC correction of 79a0cda): {"demo-approver":{"act":[71,77.4,85.3,77.8,83,77.2,76.5,86.1,77.5,76.7,78.3,84.1,71,78,83.4],"anno":[210.5],"area":[162.6],"tableW":1656,"boxW":1656,"boxScrollW":1656,"overflowX":0},"admin":{"act":[71.5,77.8,85.6,78.1,83.3,77.6,76.9,86.3,77.8,77,78.7,84.4,71.5,78.3,83.7],"anno":[204],"area":[163.5],"tableW":1656,"boxW":1656,"boxScrollW":1656,"overflowX":0}}
-[INFO] server pid=12764 on 127.0.0.1:8071 prefix=''
-[INFO] browser layout en: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3\u3r-s1y-development\chrome-v8b-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3\u3r-s1y-development\chrome-v8b-2'
-[INFO] browser layout it: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3\u3r-s1y-development\chrome-v8b-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3\u3r-s1y-development\chrome-v8b-3'
+[INFO] server pid=18364 on 127.0.0.1:8071 prefix=''
+[INFO] browser layout en: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3r\u3r-s1y-development\chrome-v8b-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3r\u3r-s1y-development\chrome-v8b-2'
+[INFO] browser layout it: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3r\u3r-s1y-development\chrome-v8b-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3r\u3r-s1y-development\chrome-v8b-3'
 [INFO] h1 of the users page in the Italian run: Utenti
 [PASS] Y00-en [en] Chrome headless ran every layout step without driver errors or page exceptions
 [PASS] Y01-en-1280 [en] 1280 px: every numbered table's row-number column is one gutter wide (34 tables, 20 screens, all 200)
@@ -82,5 +82,14 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] [it] 1920 px, matrix widths with the 27 action columns of this phase (information): {"[omesso]\/roles\/9":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[192.1],"n":27},"[omesso]\/roles\/10":{"act":[56.4,55.6,70,87.4,82.2,57,77.6,76.5,82.5,51.2,73.8,68.6,44,80.5,66,80.7,63.5,51.3,75.2,61.6,76.7,54.2,66.9,83.4,63.9],"anno":[478.6],"n":27}}
 
 TOTAL: 52 PASS, 0 FAIL, 0 AMB
-fdb37dc s1.s1y.fdb37dc.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
-Work folder removed=False (1 .env files deleted first)
+Traceback (most recent call last):
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u3.suite.py", line 146, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u3.suite.py", line 122, in main
+    sp.run(['php', HERE / 'verify-v4.snapshot.php', 'restore', WORK / 'snapshot.sql'], env=ENV, check=True)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['php', WindowsPath('E:/progetti_lavoro/ASP/rolewarden-ci4/tests/Integration/verify-v4.snapshot.php'), 'restore', WindowsPath('C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/106f98d3-d691-4d13-80b0-3ff9863f49cc/scratchpad/u3r/u3r-s1y-development/snapshot.sql')]' returned non-zero exit status 3221225794.

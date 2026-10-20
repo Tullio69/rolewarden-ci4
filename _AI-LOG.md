@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude (1.1, tappa U3 Ricerca comandi)
-**Agente:** Claude Code
-**Dalle:** 2026-10-20 00:45
-**Scope:** controller, rotta e view della ricerca comandi, pulsante nella barra, panel.js, CSS, lingue, test
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1123,3 +1123,22 @@ Formato di ogni voce:
   - **Per approvare:** ripetere solo `verify-u3.all.sh u1.production`, dopo aver rimosso `u3w-u1-production` se esiste. Con 226/226, U3 è approvata.
   - Mailpit vuoto, nessun processo residuo, nessun `.env` nello scratchpad. Nessun commit.
   - **Ambiguità aperte, non decise:** A1, velo fisso contro «45% `ink` scrim»; A2, conteggio «N users through M roles».
+
+### [2026-10-20 11:25] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `U3-REPORT.md` (esito finale della riverifica), uscite `verify-u3.*` di `u1.production` su `fd25932`
+- Cosa ho fatto: ripetuta solo `verify-u3.all.sh u1.production` (`RW_V8_NEW=fd25932`): 226/226, Console Ink chiaro e scuro misurati e PASS; i 2 FAIL di misura (EBUSY) del giro precedente non si ripetono.
+- Stato: completato. **Esito finale PASS; U3 approvata.** D1 e D2 risolti, regressione completa senza FAIL in development e production (U3 165/165, U2 129/129, U1 226/226, A2 15/15, V8b 116/116, S1 Y 52/52, V5 177/177, V2 151/151 e 169/169).
+- Note per il prossimo:
+  - Database identico allo snapshot `f7f37c04…e21e64`, Mailpit vuoto, nessun processo residuo, nessun `.env` nello scratchpad; restano profili Chrome bloccati in `scratchpad/u3r/`. Nessun commit.
+  - Ambiguità aperte, all'utente, non decise: A1 velo fisso `rgba(23,25,28,.45)` contro «45% `ink` scrim»; A2 conteggio «N users through M roles» (ruoli assegnati ai titolari, non ruoli che concedono). AMB note LA1 (V8b) e T06 (V5) invariate.
+
+### [2026-10-20 11:35] - Claude
+- Tipo: feature
+- Scope: 1.1 U3 Ricerca comandi (`fdb37dc`), correzioni D1-D2 (`fd25932`), file dei collaudi
+- Cosa ho fatto: corretti D1 (`rw_query()` sostituisce i byte non UTF-8, niente più 500) e D2 (il pulsante di ricerca usa i colori della barra anche in Ink e Charcoal chiari). Decisa con l'utente l'ambiguità A1 di U2: l'occhiello italiano delle schermate di Accesso passa da «Autorizzazioni» ad «Accesso», come il gruppo della barra.
+- Stato: completato. **U3 approvata** (riverifica PASS su `fd25932`, development e production).
+- Note per il prossimo:
+  - Ambiguità di U3 all'utente, non decise: A1 velo fisso contro «45% `ink` scrim» (proposta: velo sempre scuro, correggere il README); A2 conteggio «N users through M roles» (proposta: contare solo i ruoli che concedono il permesso).
+  - V7 E12b e la copia in V8b cercano ancora «Autorizzazioni»: da adattare se si rilanciano.
+  - Da cancellare a mano: `tests/Integration/verify-v5.work/` e le cartelle di profili Chrome nello scratchpad (`u3`, `u3r`).

@@ -173,7 +173,11 @@ Ho letto solo SPEC, BRIEF-v1.1, CHANGELOG (Unreleased), `documentation/` (config
 
 ## Esito
 
-**Nessun difetto del prodotto: D1 e D2 risolti, nessuna regressione. U3 non ancora approvata formalmente: manca una ripetizione pulita di U1 production, i cui 2 FAIL sono di misura e non del prodotto.**
+**PASS. U3 approvata** (riverifica completa su `fd25932`, development e production). D1 e D2 risolti, nessuna regressione.
+
+- **Ripetizione finale di `u1.production` (11:16–11:20, dopo `fd3d4e4`): 226/226.** S-console-ink-{light,dark}-0…5 passano tutti (testi della barra ≥ 7,04:1 in chiaro, ≥ 7,61:1 in scuro). I 2 FAIL di misura del giro precedente (EBUSY) non si ripetono. Database identico allo snapshot (`f7f37c04…e21e64`), Mailpit vuoto, nessun processo residuo.
+
+Storia dei giri (per traccia):
 
 - Primo giro: il driver è stato fermato da Claude Code per memoria insufficiente durante `s1y.development`.
 - Dopo il commit `6cb1030`, su richiesta di chi ha lanciato il collaudo, ho rilanciato le suite mancanti, una alla volta, e sono arrivate tutte in fondo.
@@ -187,7 +191,7 @@ Ho letto solo SPEC, BRIEF-v1.1, CHANGELOG (Unreleased), `documentation/` (config
 | U3, fasi SRCH + OV | **165/165**, 1 AMB (A1 velo) | **165/165**, 1 AMB (A1 velo) |
 | Sonda X | 2/2 | 2/2 |
 | U2 (CHK, ST) | **129/129** | **129/129** |
-| U1 (lib adattata U3) | **226/226** (i 6 S-*-light-4 di D2 ora PASS) | **216/218**, 2 FAIL di misura (EBUSY, vedi sopra) |
+| U1 (lib adattata U3) | **226/226** (i 6 S-*-light-4 di D2 ora PASS) | **226/226** (ripetizione finale; il giro precedente 216/218 per EBUSY) |
 | A2 | **15/15** | **15/15** |
 | V8b (L, M, P, I, G) | **116/116**, 1 AMB nota (LA1) | **116/116**, 1 AMB nota (LA1) |
 | S1, fase Y | **52/52** (primo giro; ripristino DB fallito, rifatto a mano) | **52/52** |
@@ -226,9 +230,10 @@ Ho letto solo questo report, `_AI-LOG.md` e gli script di `tests/Integration/`; 
   - Ho riportato le uscite parziali di `s1y.development` alla versione già committata (52/52).
 - **Stato finale:** Mailpit vuoto; nessun processo php/python/node/chrome mio; nessun `.env` nello scratchpad (`scratchpad/u3r/` contiene solo profili Chrome bloccati); nessun commit.
 
-## Da fare per l'approvazione
+## Chiusura
 
-Con memoria libera, ripetere solo `bash tests/Integration/verify-u3.all.sh u1.production`, con le stesse variabili d'ambiente e `RW_V8_NEW=fd25932`. Prima va rimossa, se esiste, la cartella `u3w-u1-production` nello scratchpad indicato da `RW_U3_SCRATCH`. Se dà 226/226, U3 è approvabile. `s1y.development` ha già dato 52/52 sul prodotto, quindi non serve ripeterla.
+- Ripetuta `u1.production` come indicato: 226/226. Nulla resta da eseguire.
+- Pulizia finale: `rolewarden_test` identico allo snapshot per hash; Mailpit vuoto; nessun processo php/python/node/chrome mio; nessun `.env` nello scratchpad (`scratchpad/u3r/` contiene solo profili Chrome bloccati da cancellare a mano); nessun commit.
 
 ## Ambiguità ancora aperte (all'utente, non decise)
 

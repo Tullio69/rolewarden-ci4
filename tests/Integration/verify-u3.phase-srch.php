@@ -307,6 +307,7 @@ foreach (['users.delete', 'roles.assign', 'u3zone.read', 'u3zone.write', 'permis
         if (($pb[$k]['can'] ?? null) === true) { $hold[] = $u; if (($ex['rule'] ?? '') === 'role') foreach ($ex['via'] ?? [] as $ch) { $viaFirst[$ch[0]] = 1; $viaLast[end($ch)] = 1; foreach ($ch as $x) $viaAll[$x] = 1; } }
         if (($ex['rule'] ?? '') === 'override_denied') $deny[] = $u;
     }
+    $negDb = (int) q1('SELECT COUNT(DISTINCT up.user_id) FROM acl_user_permissions up JOIN acl_permissions p ON p.id=up.permission_id JOIN users u ON u.id=up.user_id WHERE p.slug=? AND up.granted=0 AND u.deleted_at IS NULL', [$slug]);
     $direct = (int) q1('SELECT COUNT(DISTINCT rp.role_id) FROM acl_role_permissions rp JOIN acl_permissions p ON p.id=rp.permission_id JOIN acl_roles r ON r.id=rp.role_id WHERE p.slug=? AND r.deleted_at IS NULL', [$slug]);
     $r = srch($own, $slug, "who $slug");
     $top = $r['items'][0] ?? null;
@@ -315,17 +316,22 @@ foreach (['users.delete', 'roles.assign', 'u3zone.read', 'u3zone.write', 'permis
     $chk = G($own, 'rolewarden/permissions/check?' . http_build_query(['permission' => $slug]), "who check $slug");
     $cx = dom($chk)->query('//main//div[contains(@class,"rw-section-title")]//span[contains(@class,"rw-fig-sm")]')->item(0);
     $WHO[$slug] = ['line' => $line, 'users' => isset($mu[1]) ? (int) $mu[1] : null, 'roles' => isset($mr[1]) ? (int) $mr[1] : null, 'denied' => isset($md[1]) ? (int) $md[1] : 0,
-        'can' => count($hold), 'checkScreen' => $cx ? (int) trim($cx->textContent) : null, 'deniedOverride' => count($deny), 'rolesDirect' => $direct, 'viaFirst' => count($viaFirst), 'viaLast' => count($viaLast), 'viaAll' => count($viaAll), 'rules' => $rules];
+        'can' => count($hold), 'checkScreen' => $cx ? (int) trim($cx->textContent) : null, 'deniedOverride' => count($deny), 'negDb' => $negDb, 'rolesDirect' => $direct, 'viaFirst' => count($viaFirst), 'viaLast' => count($viaLast), 'viaAll' => count($viaAll), 'rules' => $rules];
 }
 info('who can do this (line vs can()/explain()/Check screen): ' . json_encode($WHO, JSON_UNESCAPED_UNICODE));
 $badN = array_filter($WHO, fn ($w) => $w['users'] !== $w['can'] || $w['users'] !== $w['checkScreen']);
 check('ID-N', 'The answer\'s number of users equals the holders by can() and the count of the Check a permission screen, for 6 permissions (super admin, override granted, role, grandparent, two roles; denied, deactivated and deleted users left out)', $badN === [], json_encode($badN, JSON_UNESCAPED_UNICODE));
 $badD = array_filter($WHO, fn ($w) => $w['denied'] !== $w['deniedOverride']);
 check('ID-D', 'The "denied by override" number equals the users whose check explain() decides by override_denied (0 when none and then not said)', $badD === [], json_encode($badD, JSON_UNESCAPED_UNICODE));
+// U3 A2 decided (6d65c48, CommandSearch README): the third number is the users (not deleted) a negative override keeps from it
+$badD2 = array_filter($WHO, fn ($w) => $w['denied'] !== $w['negDb']);
+check('ID-D2', 'The "denied by override" number equals the users (not deleted) with a negative override on the permission, in the database (decision A2)', $badD2 === [], json_encode($badD2, JSON_UNESCAPED_UNICODE));
 $defs = ['viaLast' => 'roles granting it directly, through which holders hold it', 'viaFirst' => 'roles assigned to holders that bring it', 'viaAll' => 'every role on the chains', 'rolesDirect' => 'roles granting it in the database'];
 $fit = []; foreach ($defs as $k => $d) if (! array_filter($WHO, fn ($w) => $w['roles'] !== null && $w['roles'] !== $w[$k])) $fit[] = $k;
 info('the roles number fits the definitions: ' . json_encode($fit));
-check('ID-R', 'The answer\'s number of roles agrees with explain() under one definition for every permission (' . implode(', ', $fit) . ')', $fit !== [], json_encode($WHO));
+// U3 A2 decided (6d65c48, CommandSearch README): M = the roles (not deleted) that grant the permission directly, not the children that inherit it
+$badR = array_filter($WHO, fn ($w) => ($w['roles'] ?? 0) !== $w['rolesDirect']);
+check('ID-R', 'The answer\'s number of roles equals the roles (not deleted) that grant the permission directly in the database, for 6 permissions (decision A2; fits: ' . implode(', ', $fit) . ')', $badR === [], json_encode($badR, JSON_UNESCAPED_UNICODE));
 // follow the top result: Check a permission opens on that permission
 $top = srch($own, 'u3zone.re', 'id follow')['items'][0] ?? null;
 $hc = $top ? G($own, $top['href'], 'id follow open') : '';

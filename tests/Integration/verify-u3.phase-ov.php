@@ -257,6 +257,8 @@ info('look summary: ' . json_encode($LOOK));
 info('scrim vs ink token: ' . json_encode($SCRIM ?? []));
 $fixed = count(array_unique(array_column($SCRIM ?? [], 0))) === 1;
 $offInk = array_filter($SCRIM ?? [], fn ($x) => ($p = parse_rgba3($x[0])) && ($i = parse_rgba3($x[1])) && (abs($p[0] - $i[0]) > 1 || abs($p[1] - $i[1]) > 1 || abs($p[2] - $i[2]) > 1));
-if ($offInk) amb('AMB-scrim', 'Scrim colour: "45% `ink` scrim" (README) vs a fixed value', 'the scrim is ' . ($fixed ? 'always ' . array_values($SCRIM)[0][0] : 'not the ink token') . ' (the preview writes rgba(23, 25, 28, 0.45)); `ink` differs in ' . implode(', ', array_keys($offInk)) . ' (in dark mode `ink` is near white). Not said whether the scrim follows the `ink` token of the theme and mode or is a fixed dark veil.');
+// U3 A1 decided (6d65c48, CommandSearch README): a fixed dark scrim, rgba(23, 25, 28, 0.45), in light and dark mode alike
+$badScrim = array_filter($SCRIM ?? [], fn ($x) => ! (($p = parse_rgba3($x[0])) && abs($p[0] - 23) < 1 && abs($p[1] - 25) < 1 && abs($p[2] - 28) < 1 && abs($p[3] - 0.45) < 0.011));
+check('LK-scrim', 'The scrim is the fixed dark rgba(23, 25, 28, 0.45) in every theme, in light and dark mode (decision A1; ' . count($SCRIM ?? []) . ' theme/mode pairs)', ($SCRIM ?? []) !== [] && $badScrim === [], json_encode($badScrim ?: ($SCRIM ?? [])));
 theme_save($adm, ['base' => 'console', 'sidebar' => ''], 'ov theme back');
 check('OV-clean', 'OV pages: no 5xx, no SQL or PHP error', seen_clean($S0) === [], json_encode(seen_clean($S0)));

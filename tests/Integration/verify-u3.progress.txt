@@ -92,3 +92,10 @@ ALL DONE 11:06:08
 === u1.production 11:16:00
 exit=0 u1.production 11:20:34
 ALL DONE 11:20:34
+### rerun u3 on 6d65c48 (A1/A2 decided) 20:45:09
+=== u3.development 20:45:10
+exit=0 u3.development 21:02:57
+ALL DONE 21:02:57
+=== u3.production 21:03:11
+exit=0 u3.production 21:15:35
+ALL DONE 21:15:35

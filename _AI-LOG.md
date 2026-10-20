@@ -1142,3 +1142,24 @@ Formato di ogni voce:
   - Ambiguità di U3 all'utente, non decise: A1 velo fisso contro «45% `ink` scrim» (proposta: velo sempre scuro, correggere il README); A2 conteggio «N users through M roles» (proposta: contare solo i ruoli che concedono il permesso).
   - V7 E12b e la copia in V8b cercano ancora «Autorizzazioni»: da adattare se si rilanciano.
   - Da cancellare a mano: `tests/Integration/verify-v5.work/` e le cartelle di profili Chrome nello scratchpad (`u3`, `u3r`).
+
+### [2026-10-20 21:20] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `verify-u3.phase-ov.php` (LK-scrim), `verify-u3.phase-srch.php` (ID-R, ID-D2), `U3-REPORT.md` (sezione A1-A2), uscite `verify-u3.*` su `6d65c48`
+- Cosa ho fatto: con le ambiguità A1 e A2 di U3 decise dall'utente (README di CommandSearch, `6d65c48`) le ho trasformate in controlli veri.
+  - **LK-scrim:** velo fisso `rgba(23,25,28,.45)` in chiaro e in scuro.
+  - **ID-R:** M = ruoli non eliminati che concedono il permesso direttamente.
+  - **Nuovo ID-D2:** K = utenti non eliminati con override negativo.
+  - Ripetuta solo `verify-u3.all.sh u3.development u3.production` con `RW_V8_NEW=6d65c48`: 167/167 in development e production, 0 AMB.
+- Stato: completato. **Esito PASS; U3 resta approvata.**
+- Note per il prossimo:
+  - Database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione, Mailpit vuoto, nessun processo residuo, nessun `.env` nello scratchpad.
+  - Restano profili Chrome bloccati in `scratchpad/u3r/` (`old-*` e `u3*-*`), da cancellare a mano.
+  - Nessun commit.
+
+### [2026-10-20 21:30] - Claude
+- Tipo: decisione
+- Scope: ambiguità A1-A2 di U3 (`6d65c48`), README di CommandSearch (originale su Claude versione 20, poi copia in `docs/`)
+- Cosa ho fatto: su decisione dell'utente, il velo della ricerca resta scuro fisso `rgba(23, 25, 28, 0.45)` in chiaro e scuro (README corretto); in «N users through M roles» M conta solo i ruoli non eliminati che concedono il permesso direttamente.
+- Stato: completato. Riverifica U3 167/167 in development e production, nessuna ambiguità aperta: **U3 approvata**.
+- Note per il prossimo: da cancellare a mano `tests/Integration/verify-v5.work/` e le cartelle `u3`, `u3r` nello scratchpad. V7 E12b e la copia in V8b cercano ancora «Autorizzazioni».

@@ -240,3 +240,49 @@ Ho letto solo questo report, `_AI-LOG.md` e gli script di `tests/Integration/`; 
 - **A1 — Colore del velo:** sempre `rgba(23, 25, 28, 0.45)` contro «45% `ink` scrim» del README (AMB-scrim, invariata).
 - **A2 — «N users through M roles»:** M conta i ruoli assegnati ai titolari attraverso cui il permesso arriva, non i ruoli che lo concedono (invariata).
 - L'ambiguità A1 di U2 («Accesso» contro «Autorizzazioni») risulta decisa dall'utente secondo chi ha lanciato il collaudo: il testo servito è stato uniformato.
+
+---
+
+# Ambiguità A1 e A2 decise: controlli veri e ripetizione su `6d65c48` (2026-10-20, Collaudatore ad Hoc)
+
+## Esito
+
+**PASS. U3 resta approvata.** U3 SRCH+OV **167/167** in development e in production, **nessuna AMB**.
+
+## Decisioni dell'utente (dal README di CommandSearch aggiornato, commit `6d65c48`)
+
+- **A1 — Velo:** un velo scuro fisso, `rgba(23, 25, 28, 0.45)`, sia in modo chiaro sia in scuro. Non segue il token `ink`.
+- **A2 — «N users through M roles, K denied by override»:**
+  - N sono tutti quelli che possono, super admin e override positivi compresi;
+  - M sono i ruoli non eliminati che concedono il permesso direttamente, non i figli che lo ereditano;
+  - K sono gli utenti non eliminati che un override negativo esclude.
+
+## Controlli adattati (2 in più rispetto a 165)
+
+- **`verify-u3.phase-ov.php`:** AMB-scrim diventa **LK-scrim**. Il velo è `rgba(23, 25, 28, 0.45)` (tolleranza 1 per canale, 0,011 sull'alfa) in tutte e 6 le coppie tema/modo. Qui c'è un controllo in più.
+- **`verify-u3.phase-srch.php`:**
+  - **ID-R** prima passava se M coincideva con una qualunque delle definizioni possibili. Ora vuole M = numero di ruoli non eliminati con il permesso concesso direttamente in `acl_role_permissions`, su 6 permessi.
+  - Nuovo **ID-D2**: K = utenti non eliminati con override negativo (`acl_user_permissions.granted = 0`) su quel permesso, letti nel database. ID-D, che confronta K con gli esiti `override_denied` di `explain()`, resta com'è. Anche questo è un controllo in più.
+- Nient'altro è cambiato. Non ho letto nulla dell'implementazione: del commit conosco solo il `--stat` (`docs/design-system/components/CommandSearch/README.md`, `src/Controllers/SearchController.php`).
+
+## Risultati
+
+- **ID-R PASS** in entrambi gli ambienti. Per esempio `u3zone.read` ora dice «8 users through 2 roles, 4 denied by override»: 2 ruoli che lo concedono direttamente, mentre prima la risposta diceva 4. `users.delete` dice «5 users through 2 roles».
+- **ID-N, ID-D, ID-D2 PASS:** gli utenti coincidono con `can()` e con la schermata Verifica; i 4 esclusi coincidono sia con `explain()` sia con il database.
+- **LK-scrim PASS:** il velo è fisso nei 3 temi, in chiaro e in scuro.
+- **D1 e D2 restano risolti** (H-1, K-1, K-2 e LK-*-light-5 PASS).
+- Tutto il resto di U3 passa come su `fd25932`.
+- Ho ripetuto solo U3, come richiesto. Il commit tocca solo `SearchController.php` e un README, quindi la regressione completa su `fd25932` resta valida.
+
+## Pulizia
+
+- **Database:** `rolewarden_test` identico allo snapshot `f7f37c04…e21e64` prima e dopo entrambe le esecuzioni (`verify-u3.environment.txt`).
+- **Mailpit:** vuoto.
+- **Processi:** nessun processo mio residuo.
+- **Scratchpad:** nessun `.env`. Le cartelle di lavoro rimaste dai giri precedenti, con dentro solo profili Chrome bloccati, le ho spostate in `old-*` dentro `scratchpad/u3r/`, da cancellare a mano.
+- Nessun commit.
+
+## Ambiguità
+
+Nessuna aperta per U3. Le AMB già note LA1 (V8b) e T06 (V5) non riguardano U3 e restano invariate.
+

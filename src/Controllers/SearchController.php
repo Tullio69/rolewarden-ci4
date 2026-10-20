@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RoleWarden\Controllers;
 
-use RoleWarden\Authorization\Resolver;
 use RoleWarden\Models\PermissionModel;
+use RoleWarden\Models\RoleModel;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\Sidebar;
 
@@ -91,27 +91,22 @@ class SearchController extends BaseController
     }
 
     /**
-     * "8 users through 2 roles, 1 denied by override": who holds the
-     * permission, through how many assigned roles, and how many users a
-     * negative override keeps from it.
+     * "8 users through 2 roles, 1 denied by override": everyone who can do
+     * it, how many roles grant it directly (not the children that inherit
+     * it), and how many users a negative override keeps from it.
      */
     private function answer(string $slug): string
     {
-        $resolver = service('rolewarden');
         $holders = model(PermissionModel::class)->holderIds($slug);
-        $roles = [];
-
-        foreach ($holders as $id) {
-            $why = $resolver->explain($id, $slug);
-
-            if ($why['rule'] === Resolver::RULE_ROLE) {
-                foreach ($why['via'] as $chain) {
-                    $roles[$chain[0]] = true;
-                }
-            }
-        }
-
         $cfg = config('RoleWarden');
+
+        $roles = array_map('intval', array_column(db_connect()->table($cfg->table('role_permissions') . ' rp')
+            ->select('rp.role_id')
+            ->join($cfg->table('permissions') . ' p', 'p.id = rp.permission_id')
+            ->where('p.slug', $slug)
+            ->get()->getResultArray(), 'role_id'));
+        $roles = $roles === [] ? 0 : model(RoleModel::class)->whereIn('id', $roles)->countAllResults();
+
         $denied = array_map('intval', array_column(db_connect()->table($cfg->table('user_permissions') . ' up')
             ->select('up.user_id')
             ->join($cfg->table('permissions') . ' p', 'p.id = up.permission_id')
@@ -119,6 +114,6 @@ class SearchController extends BaseController
             ->get()->getResultArray(), 'user_id'));
         $denied = $denied === [] ? 0 : model(UserModel::class)->whereIn('id', $denied)->countAllResults();
 
-        return lang('RoleWarden.panel.search.answer', [count($holders), count($roles), $denied]);
+        return lang('RoleWarden.panel.search.answer', [count($holders), $roles, $denied]);
     }
 }

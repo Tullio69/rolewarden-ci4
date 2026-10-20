@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude (1.1, tappa U3 Ricerca comandi)
+**Agente:** Claude Code
+**Dalle:** 2026-10-20 00:45
+**Scope:** controller, rotta e view della ricerca comandi, pulsante nella barra, panel.js, CSS, lingue, test
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1084,3 +1084,17 @@ Formato di ogni voce:
 - Cosa ho fatto: tappa U2 Verifica di un permesso (`b921f97`): schermata in sola lettura sotto Accesso con `permissions.view`, chi ha un permesso e perche', esito per un utente con la regola che decide, tutto da `Resolver::explain()`. Stato utente attivo come puntino `granted` con alone che respira tre volte (`6f3922a`), deciso con l'utente il 2026-10-19; design system originale su Claude aggiornato prima della copia. Corretti i difetti del collaudo D1-D3 (`982c1c3`): `via` anche per account disattivato, animazione solo sotto `prefers-reduced-motion: no-preference`, token `--motion-breath` ed `--ease-in-out`.
 - Stato: completato. **U2 approvata** dalla riverifica su `982c1c3` (PASS, vedi `tests/Integration/U2-REPORT.md`).
 - Note per il prossimo: ambiguita' A1 aperta, da decidere con l'utente: il gruppo della barra e' "Accesso", l'occhiello delle schermate di Access e' "Autorizzazioni". La voce Verifica resta in Accesso per scelta dell'utente, anche se il design system la disegna in Sicurezza. Da rimuovere a mano: `tests/Integration/verify-v5.work/` e i profili Chrome nella scratchpad della sessione. Nessun push.
+
+### [2026-10-20 09:40] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `U3-REPORT.md`, `verify-u3.*` (fasi SRCH e OV, sonde X e X2, runner, harness, driver `verify-u3.all.sh`, browser `verify-u3.browser.mjs`, copia adattata `verify-u3.u1lib.adapted.php`, uscite e schermate)
+- Cosa ho fatto: collaudo in nero di U3 (Ricerca comandi) sul commit `fdb37dc`, solo `rolewarden_test`, una suite alla volta, development e production.
+  - **U3:** 156/165 ×2, 1 AMB. Mai fuori portata e completa (30 account × 41 query, ogni indirizzo aperto come l'utente), filtro sul server (overlay = pagina), identificatori e «chi può farlo» coerenti con `can()`/`explain()` e Verifica, azioni solo GET senza scritture, overlay da tastiera e ARIA, Cmd K, barra compressa, senza JS, lingue: PASS.
+  - **Regressione:** U2 129/129, U1 220/226 (lib adattata: il contenitore del pulsante di ricerca non è un gruppo; i 6 FAIL sono D2), A2 15/15, V8b 116/116 (AMB LA1 nota), S1 Y 52/52, V5 177/177 (AMB T06 nota), V2 151/169 PASS.
+- Stato: completato. **Esito FAIL; U3 non approvata.**
+- Note per il prossimo:
+  - **D1:** `GET /rolewarden/search?q=%FF%FE` (UTF-8 non valido) dà 500 in development e production (Laminas Escaper, MessageFormatter nel log).
+  - **D2:** nelle barre Ink e Charcoal in modo chiaro l'etichetta del pulsante di ricerca usa il colore d'accento della pagina: contrasto 1:1-2,1:1 nei tre temi. Lo vede anche U1 (S-*-light-4).
+  - **Ambiguità (all'utente, non decise):** A1 velo fisso `rgba(23,25,28,.45)` contro «45% `ink` scrim»; A2 «N users through M roles» conta i ruoli assegnati ai titolari (figli compresi), non quelli che concedono il permesso. Resta aperta A1 di U2.
+  - Osservazione non di U3: revoche e disattivazioni scritte direttamente nel database valgono solo dopo `cache:clear`; dal pannello valgono subito.
+  - DB uguale allo snapshot `f7f37c04…e21e64` dopo tutte le 22 esecuzioni, Mailpit vuoto, nessun processo residuo. Restano profili Chrome bloccati in `scratchpad/u3/`. Nessun commit.

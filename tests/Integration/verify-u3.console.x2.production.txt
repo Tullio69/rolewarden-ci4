@@ -1,0 +1,34 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase X2 from verify-u3.phase-x2.php
+
+===== phase X2 =====
+[INFO] server pid=200 on 127.0.0.1:8071 prefix=''
+[INFO] login a true
+[INFO] login b true
+[INFO] form on user page: [omesso]/sidebar ["csrf_test_name","collapsed"] 
+[INFO] form on user page: [omesso]/profile/language ["csrf_test_name","back"] EN IT
+[INFO] form on user page: [omesso]/appearance/mode ["csrf_test_name"] System Light Dark
+[INFO] form on user page: [omesso]/users/7/roles/2/revoke ["csrf_test_name"] Remove
+[INFO] form on user page: [omesso]/users/7/roles ["csrf_test_name","role_id"] Approver Author Beta User Developer Reader Super admin Super Admin User Add
+[INFO] form on user page: [omesso]/users/7/deactivate ["csrf_test_name"] Deactivate
+[INFO] form on user page: [omesso]/users/7/sessions/2/revoke ["csrf_test_name"] Sign out
+[INFO] form on user page: [omesso]/users/7/sessions/revoke-all ["csrf_test_name"] Sign out everywhere else
+[INFO] form on user page: [omesso]/users/7/delete ["csrf_test_name"] Delete
+[INFO] deactivate: 303 active=0
+[INFO] a after panel deactivation: users 302 http://127.0.0.1:8071/index.php
+[INFO] a search 200  results 0
+[INFO] b after direct write: users 302
+[INFO] b after cache:clear: users 302 http://127.0.0.1:8071/index.php
+[INFO] b search 200 results 0
+[INFO] check form: <form class="rw-toolbar" method="get" action="http://127.0.0.1:8071/index.php/[omesso]/permissions/check"> <div class="rw-field"> <label class="rw-label" for="rw-check-permission">Permission</label> <select class="rw-select" id="rw-check-permission" name="permission" required> <option value="">Choose a permission</option> <optgroup label="Activity"> <option value="activity.view">activity.view</option> </optgroup> <optgroup label="Admin"> <option value="admin.access">admin.access</option> <option value="admin.settings">admin.settings</option> </optgroup> <optgroup label="Appearance"> <option value="appearance.update">appearance.update</option> </optgroup> <optgroup label="Beta"> <option value="beta.access">beta.access</option> </optgroup> <optgroup label="Documents"> <option value="documents.approve">documents.approve</option> <option value="documents.create">documents.create</option> <option value="documents.delete">documents.delete</option> <option value="documents.update">documents.update</option> <option value="documents.view">documents.view</option> </optgroup> <optgroup label="Permissions"> <option value="permissions.override">permissions.override</option> <option value="permissions.view">permissions.view</option> </optgroup> <optgroup label="Roles"> <option value="roles.assign">roles.assign</option> <option value="roles.create">roles.create</option> <option value="roles.delete">roles.delete</option> <option value="roles.update">roles.update</option> <option value="roles.view">roles.view</option> </optgroup> <optgroup label="Security"> <option value="security.alerts">security.alerts</option> </optgroup> <optgroup label="Sessions"> <option value="sessions.revoke">sessions.revoke</option> <option value="sessions.view">sessions.view</option> </optgroup> <optgroup label="Settings"> <option value="settings.update">settings.update</option> <option value="settings.view">settings.view</option> </optgroup> <optgroup label="Users"> <option value="users.activate">users.activate</option> <option value="users.create">users.create</option> <option value="users.delete">users.delete</option> <option value="users.edit">users.edit</option> <option value="users.import">users.import</option> <option value="users.manage-admins">users.manage-admins</option> <option value="users.update">users.update</option> <option value="users.view" selected>users.view</option> </optgroup> </select> </div> <div class="rw-field"> <label class="rw-label" for="rw-check-user">User</label> <input class="rw-input" id="rw-check-user" name="user" type="search" value="" placeholder="Username, email or id" autocomplete="off"> </div> <button class="rw-btn rw-btn--secondary" type="submit">Check</button> </form>
+[INFO] badutf page 500
+[INFO] badutf2 500
+[INFO] check badutf 200
+[INFO] users list badutf 200
+
+TOTAL: 2 PASS, 0 FAIL, 0 AMB
+fdb37dc s1.x2.fdb37dc.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=True (1 .env files deleted first)

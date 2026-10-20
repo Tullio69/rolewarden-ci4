@@ -1111,3 +1111,15 @@ Formato di ogni voce:
   - Claude Code ha fermato il driver per memoria di sistema insufficiente; non rilanciato per regola. Mancano: U2, U1, A2, V8b, S1 Y in production; V5 e V2 in entrambi gli ambienti. Comando in fondo a `U3-REPORT.md`.
   - Il ripristino finale di `s1y.development` (processo rimasto orfano) è fallito; le partenze successive si sono fermate sul controllo di DB non vuoto senza toccare nulla. Ripristinato a mano: hash `f7f37c04…e21e64` identico. Mailpit vuoto, nessun processo residuo, profili Chrome bloccati in `scratchpad/u3r/`. Nessun commit.
   - Ambiguità aperte, non decise: A1 velo fisso contro «45% `ink` scrim»; A2 conteggio «N users through M roles».
+
+### [2026-10-20 11:20] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/`: `U3-REPORT.md` (riverifica aggiornata), uscite `verify-u3.*` su `fd25932`
+- Cosa ho fatto: completata la regressione della riverifica U3 su `fd25932` (suite mancanti rilanciate una alla volta dopo `6cb1030`). Development: U3 165/165, U2 129/129, U1 226/226, A2 15/15, V8b 116/116, S1 Y 52/52, V5 177/177, V2 151/151. Production: U3 165/165, U2 129/129, U1 216/218, A2 15/15, V8b 116/116, S1 Y 52/52, V5 177/177, V2 169/169. AMB solo quelle note (velo, LA1, T06).
+- Stato: completato salvo un controllo. **Esito: nessun difetto del prodotto, D1 e D2 risolti, nessuna regressione; U3 non ancora approvata formalmente.**
+- Note per il prossimo:
+  - **U1 production, 2 FAIL di misura:** S-console-ink-{light,dark}-0, perché il driver del browser non ha potuto aprire il file di profilo (`EBUSY … DevToolsActivePort`), quindi nessuna misura per Console Ink. Non è un difetto del prodotto: la stessa combinazione passa in development e in U3 production (LK-console-ink-light-5).
+  - **Ripetizione di U1 production:** fermata di nuovo da Claude Code per memoria insufficiente. DB ripristinato e verificato (`f7f37c04…e21e64` identico), poi mi sono fermato.
+  - **Per approvare:** ripetere solo `verify-u3.all.sh u1.production`, dopo aver rimosso `u3w-u1-production` se esiste. Con 226/226, U3 è approvata.
+  - Mailpit vuoto, nessun processo residuo, nessun `.env` nello scratchpad. Nessun commit.
+  - **Ambiguità aperte, non decise:** A1, velo fisso contro «45% `ink` scrim»; A2, conteggio «N users through M roles».

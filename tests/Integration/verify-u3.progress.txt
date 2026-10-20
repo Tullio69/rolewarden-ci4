@@ -64,3 +64,27 @@ exit=1 v8b.production 10:23:43
 === s1y.production 10:23:44
 exit=1 s1y.production 10:23:47
 === v5.development 10:23:47
+### recheck fd25932 resume 10:26:16
+=== s1y.development 10:26:17
+exit=1 s1y.development 10:26:20
+=== u2.production 10:26:20
+exit=0 u2.production 10:29:56
+=== u1.production 10:29:57
+exit=1 u1.production 10:33:57
+=== a2.production 10:33:58
+exit=0 a2.production 10:35:25
+=== v8b.production 10:35:25
+exit=0 v8b.production 10:38:04
+=== s1y.production 10:38:05
+exit=0 s1y.production 10:45:04
+=== v5.development 10:45:04
+exit=0 v5.development 10:54:34
+=== v5.production 10:54:35
+exit=0 v5.production 11:01:42
+=== test.development 11:01:43
+exit=0 test.development 11:04:09
+=== test.production 11:04:10
+exit=0 test.production 11:06:08
+ALL DONE 11:06:08
+### rerun s1y.development u1.production 11:06:28
+=== s1y.development 11:06:29

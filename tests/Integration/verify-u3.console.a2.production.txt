@@ -7,7 +7,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase A2 =====
 
 == A2: sidebar token names
-[INFO] server pid=28060 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=25956 on 127.0.0.1:8071 prefix=''
 [PASS] A2-def-console-light console/light, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
 [PASS] A2-def-console-dark console/dark, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
 [PASS] A2-def-clarity-light clarity/light, no application stylesheet: --side-*, --on-side-accent and --charcoal-* are defined by name with the design system's values (12 tokens)
@@ -24,5 +24,5 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] A2-clean A2 pages: no 5xx, no SQL or PHP error text
 
 TOTAL: 15 PASS, 0 FAIL, 0 AMB
-fdb37dc s1.a2.fdb37dc.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+fd25932 s1.a2.fd25932.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

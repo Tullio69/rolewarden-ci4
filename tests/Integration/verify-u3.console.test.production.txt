@@ -1,14 +1,14 @@
-Verification: fdb37dc test.production.fdb37dc baseline 3805640
+Verification: fd25932 test.production.fd25932 baseline 3805640
 Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
 [RUNNER] demo lines removed from the copy: autoload True, routes True
 == 1 Upgrade, rollback and fresh install ==
 module: 3805640
    spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
-   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 07:16:21 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 09:04:22 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
    spark migrate -n RoleWarden (rc=0): ning: (RoleWarden) 2026-09-27-200002_RoleWarden\Database\Migrations\AddSessionPermissions Running: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Migrations complete.
-   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 07:16:22 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 09:04:24 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] A01    V3 baseline lacks security.alerts (adapted V4)
-module: fdb37dc
+module: fd25932
    spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
 [PASS] A02    Upgrade grants both sessions permissions to admin
 [PASS] A03    Upgrade creates sessions table
@@ -17,21 +17,21 @@ module: fdb37dc
    spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
 [PASS] A05    Upgrade reapplies
    spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
-   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 07:16:25 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 09:04:26 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
    spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
-   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 07:16:26 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 09:04:28 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] A06    Fresh install grants sessions permissions
    spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
 [PASS] A07    Fresh rollback removes module tables
    spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
-   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 07:16:28 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 09:04:30 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] A08    Admin opens V2 settings
 [PASS] G01    Documented initial session/remember values
 == 2 Own sessions and remembered revocation ==
 [PASS] B00    Each sign-in creates exactly one tracked session row
 [PASS] B01    Ordinary user accesses profile and sessions
 [PASS] B02    Three independent browsers are tracked
-[INFO] Session forms [["http:\/\/localhost:8070\/index.php\/rolewarden\/sidebar",""],["http:\/\/localhost:8070\/index.php\/rolewarden\/profile\/language","EN IT"],["http:\/\/localhost:8070\/index.php\/rolewarden\/appearance\/mode","System Light Dark"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/3\/revoke","Sign out"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/4\/revoke","Sign out"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/revoke-all","Sign out everywhere else"]]
+[INFO] Session forms [["http:\/\/localhost:8070\/index.php\/rolewarden\/sidebar",""],["http:\/\/localhost:8070\/index.php\/rolewarden\/profile\/language","EN IT"],["http:\/\/localhost:8070\/index.php\/rolewarden\/appearance\/mode","System Light Dark"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/4\/revoke","Sign out"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/3\/revoke","Sign out"],["http:\/\/localhost:8070\/index.php\/rolewarden\/sessions\/revoke-all","Sign out everywhere else"]]
 [PASS] B01b   Own list offers a Sign out for each other browser and none for this one
 [PASS] T01    Own single sign out: success toast (HTTP 303 then 200)
 [PASS] B02b   Only the chosen row is gone
@@ -154,7 +154,7 @@ module: fdb37dc
 [INFO] rate POST 6 status=303 logins=0 alert=Error: Too many sign-in attempts from this address. Wait a minute and try again.
 [PASS] H06    Configured IP limit: five attempts reach Shield, sixth blocked
 == 10 HTTP publication checks in both environments ==
-[INFO] stopping server pid=11220
+[INFO] stopping server pid=33588
 [INFO] termination requested=true
 [INFO] server closed
 [PASS] J01-production New form has CSRF
@@ -217,7 +217,7 @@ module: fdb37dc
 [PASS] J08-production Malformed id refused without SQL text
 [PASS] J08-production Malformed id refused without SQL text
 [PASS] J08-production Malformed id refused without SQL text
-[INFO] stopping server pid=36624
+[INFO] stopping server pid=30020
 [INFO] termination requested=true
 [INFO] server closed
 [PASS] J04    No SQL/PHP error text on all captured responses
@@ -227,4 +227,4 @@ RESULT 169 checks 169 PASS 0 FAIL
 Test process exit: 0
 [MAIL] captured=9 non-test=[]
 [WRITABLE] entries created during the run (logs/sessions/cache/theme): 63
-fdb37dc test.production.fdb37dc: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_after=0
+fd25932 test.production.fd25932: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_after=0

@@ -1,18 +1,18 @@
-Verification: fdb37dc v5.development.fdb37dc baseline bd7488e
+Verification: fd25932 v5.development.fd25932 baseline bd7488e
 Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
 [RUNNER] demo lines removed from the copy: autoload True, routes True
 == 1 Upgrade from bd7488e by replacing the folder, rollback, fresh install, no build ==
 module: bd7488e
    spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
-   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 06:57:15 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 08:45:21 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
    spark migrate -n RoleWarden (rc=0): ing: (RoleWarden) 2026-09-28-100001_RoleWarden\Database\Migrations\CreateActivityLog Running: (RoleWarden) 2026-09-28-100002_RoleWarden\Database\Migrations\AddActivityPermissions Running: (RoleWarden) 2026-09-28-200001_RoleWarden\Database\Migrations\AddSecurityPermissions Migrations complete.
-   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 06:57:16 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 08:45:22 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] U01    Baseline bd7488e has no appearance.update permission
 [INFO] Baseline: nav has Appearance=false html theme attr=null
-[INFO] stopping server pid=27724
+[INFO] stopping server pid=34208
 [INFO] termination requested=true
 [INFO] server closed
-module: fdb37dc
+module: fd25932
 [PASS] U02    Folder replaced, before migrate: the signed-in panel still answers 200 without SQL text
 [PASS] U02b   Before migrate: admin has no Appearance menu entry (permission not yet granted)
 [PASS] U02c   Before migrate: /rolewarden/appearance is refused cleanly (not 200, not 500)
@@ -27,32 +27,32 @@ module: fdb37dc
 [PASS] U05b   users.view-only user: /rolewarden/appearance refused (not 200, not 500)
 [PASS] U05c   User without permissions: no Appearance entry on the profile page
 [PASS] U06    After migrate: admin opens the customiser (200, Save theme form)
-[INFO] stopping server pid=36656
+[INFO] stopping server pid=22440
 [INFO] termination requested=true
 [INFO] server closed
    spark migrate:rollback -b 3 -f (rc=0): -10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Rolling back: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Rolling back: (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Done rolling back migrations.
 [PASS] U07    Rollback restores ACL rows, migrations and tables exactly
 [PASS] U08    Rolled back, d3c7dbb folder still in place: panel 200, no Appearance entry, customiser refused
-[INFO] stopping server pid=7692
+[INFO] stopping server pid=31944
 [INFO] termination requested=true
 [INFO] server closed
 module: bd7488e
 [PASS] U09    Restored bd7488e folder works after the rollback
-[INFO] stopping server pid=39260
+[INFO] stopping server pid=18540
 [INFO] termination requested=true
 [INFO] server closed
-module: fdb37dc
+module: fd25932
    spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
 [PASS] U10    Upgrade applies again after the rollback
    spark migrate -n CodeIgniter\Settings (rc=0): Settings\Database\Migrations\CreateSettingsTable Running: (CodeIgniter\Settings) 2021-11-14-143905_CodeIgniter\Settings\Database\Migrations\AddContextColumn Running: (CodeIgniter\Settings) 2026-07-20-181246_CodeIgniter\Settings\Database\Migrations\ConvertSqlsrvValueColumn Migrations complete.
-   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 06:57:32 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
+   spark migrate -n CodeIgniter\Shield (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 08:45:38 UTC+00:00 Running all new migrations... Running: (CodeIgniter\Shield) 2020-12-28-223112_CodeIgniter\Shield\Database\Migrations\CreateAuthTables Migrations complete.
    spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
-   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 06:57:33 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 08:45:40 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] U11    Fresh install grants appearance.update to admin
    spark migrate:rollback -b 2 -f (rc=0): oleWarden) 2026-09-20-100003_RoleWarden\Database\Migrations\CreateRolePermissions Rolling back: (RoleWarden) 2026-09-20-100002_RoleWarden\Database\Migrations\CreatePermissions Rolling back: (RoleWarden) 2026-09-20-100001_RoleWarden\Database\Migrations\CreateRoles Done rolling back migrations.
 [PASS] U12    Fresh install rolls back cleanly (no acl_ table left)
    spark migrate -n RoleWarden (rc=0): : (RoleWarden) 2026-10-03-100001_RoleWarden\Database\Migrations\AddAppearancePermissions Running: (RoleWarden) 2026-10-05-100001_RoleWarden\Database\Migrations\AddImportPermissions Running: (RoleWarden) 2026-10-19-100001_RoleWarden\Database\Migrations\SidebarTodayOnUpdate Migrations complete.
-   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 06:57:35 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
+   spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 08:45:42 UTC+00:00 Seeded: RoleWarden\Database\Seeds\RoleWardenSeeder
 [PASS] U13    The package (git archive of d3c7dbb) contains the compiled panel stylesheet
 == Fixtures ==
 [PASS] U14    Served panel.css is byte-identical to the compiled file in the package (installer builds nothing)
@@ -91,7 +91,7 @@ module: fdb37dc
 [PASS] M12    Mode as array: rejected without 500, admin stays Dark
 [PASS] M13    Mode POST without CSRF token is refused (admin stays Dark)
 [PASS] M14    Back to System: the attribute disappears
-[INFO] browser mode: chrome pid 30428, steps 15, errors [], profile removed true
+[INFO] browser mode: chrome pid 17788, steps 15, errors [], profile removed true
 [PASS] M15    Login without a choice: dark OS -> dark surface; light OS -> light surface
 [PASS] M16    A user who chose Light stays light under a dark OS
 [PASS] M17    Top bar System button (clicked in the browser) returns to following the OS (dark, then light)
@@ -163,13 +163,13 @@ module: fdb37dc
 [PASS] C10c   After reset the theme stylesheet URL leaks nothing and does not fail
 == 5 Customiser in the browser: live preview, WCAG AA warnings, save anyway ==
 [INFO] Grey just under AA on Console light surface: ["#747474",4.475224697625079]; just over: ["#737373",4.540022632518506]
-[INFO] browser customiser-served: chrome pid 49700, steps 39, errors [], profile removed true
+[INFO] browser customiser-served: chrome pid 39772, steps 39, errors [], profile removed true
 [INFO] Served customiser states: [{"s0":{"theme":"console","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","ink":"rgb(23, 25, 28)","radius":"3px"}},{"s1":{"theme":"console","warn":true,"bar":"Warning: Text (Light) 4.5:1, under 4.5:1","ink":"rgb(116, 116, 116)","radius":"3px"}},{"s3":{"theme":"console","warn":true,"bar":"Warning: Text (Light) 1.6:1, under 4.5:1","ink":"rgb(200, 200, 200)","radius":"3px"}},{"s8":{"theme":"console","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","ink":"rgb(17, 17, 17)","radius":"8px"}},{"s9":{"theme":"contrast","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","ink":"rgb(17, 17, 17)","radius":"8px"}}]
 [PASS] W00    As served, the customiser starts in the browser: all-clear message, a low-contrast text is flagged, the preview follows the choice
 [PASS] W14    No JavaScript error on the customiser page as served
 [INFO] Theme file left by the served run: "{\n    \"base\": \"contrast\",\n    \"radius\": 8,\n    \"density\": \"comfortable\",\n    \"sidebar\": null,\n    \"colors\": {\n        \"light\": {\n            \"surface\": \"#fafaf9\",\n            \"ink\": \"#c8c8c8\",\n            \"accent\": \"#0b4f8a\",\n            \"accent-hover\": \"#094171\",\n            \"accent-tint\": \"#d9e2e9\",\n            \"on-accent\": \"#ffffff\"\n        },\n        \"dark\": {\n            \"ink\": \"#eeeeee\"\n        }\n    }\n}\n"
 [PASS] W00b   As served, Save from the browser stores the chosen colours in the theme file (D1 recheck)
-[INFO] browser customiser-started: chrome pid 22008, steps 39, errors [], profile removed true
+[INFO] browser customiser-started: chrome pid 31040, steps 39, errors [], profile removed true
 [INFO] Component started by the test: true; console: []
 [INFO] Customiser states: [{"s0":{"theme":"console","mode":"light","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","surface":"rgb(250, 250, 249)","ink":"rgb(23, 25, 28)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(250, 250, 249)","input":["rgb(23, 25, 28)","rgb(255, 255, 255)"],"nav":["rgb(23, 25, 28)","rgb(242, 242, 240)"]}},{"s1":{"theme":"console","mode":"light","warn":true,"bar":"Warning: Text (Light) 4.5:1, under 4.5:1","surface":"rgb(250, 250, 249)","ink":"rgb(116, 116, 116)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(250, 250, 249)","input":["rgb(116, 116, 116)","rgb(255, 255, 255)"],"nav":["rgb(116, 116, 116)","rgb(242, 242, 240)"]}},{"s2":{"theme":"console","mode":"light","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","surface":"rgb(250, 250, 249)","ink":"rgb(115, 115, 115)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(250, 250, 249)","input":["rgb(115, 115, 115)","rgb(255, 255, 255)"],"nav":["rgb(115, 115, 115)","rgb(242, 242, 240)"]}},{"s3":{"theme":"console","mode":"light","warn":true,"bar":"Warning: Text (Light) 1.6:1, under 4.5:1","surface":"rgb(250, 250, 249)","ink":"rgb(200, 200, 200)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(250, 250, 249)","input":["rgb(200, 200, 200)","rgb(255, 255, 255)"],"nav":["rgb(200, 200, 200)","rgb(242, 242, 240)"]}},{"s4":{"theme":"console","mode":"light","warn":true,"bar":"Warning: Text (Dark) 1.5:1, under 4.5:1","surface":"rgb(250, 250, 249)","ink":"rgb(17, 17, 17)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(250, 250, 249)","input":["rgb(17, 17, 17)","rgb(255, 255, 255)"],"nav":["rgb(17, 17, 17)","rgb(242, 242, 240)"]}},{"s5":{"theme":"console","mode":"light","warn":true,"bar":"Warning: Accent (Light) 1.7:1, under 4.5:1","surface":"rgb(250, 250, 249)","ink":"rgb(17, 17, 17)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(250, 250, 249)","input":["rgb(17, 17, 17)","rgb(255, 255, 255)"],"nav":["rgb(17, 17, 17)","rgb(242, 242, 240)"]}},{"s6":{"theme":"console","mode":"light","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","surface":"rgb(250, 250, 249)","ink":"rgb(17, 17, 17)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(250, 250, 249)","input":["rgb(17, 17, 17)","rgb(255, 255, 255)"],"nav":["rgb(17, 17, 17)","rgb(242, 242, 240)"]}},{"s7":{"theme":"console","mode":"light","warn":true,"bar":"Warning: Secondary text (Light) 2.8:1, under 4.5:1 \u00b7 Notes (Light) 3.3:1, under 4.5:1 \u00b7 Accent (Light) 2.2:1, under 4.5:1 \u00b7 Granted (Light) 2.9:1, under 4.5:1 \u00b7 Denied (Light) 2.9:1, under 4.5:1","surface":"rgb(17, 17, 17)","ink":"rgb(240, 240, 240)","radius":"3px","row":"36px","btnRadius":"3px","body":"rgb(17, 17, 17)","input":["rgb(240, 240, 240)","rgb(255, 255, 255)"],"nav":["rgb(240, 240, 240)","rgb(242, 242, 240)"]}},{"s8":{"theme":"console","mode":"light","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","surface":"rgb(250, 250, 249)","ink":"rgb(17, 17, 17)","radius":"8px","row":"52px","btnRadius":"8px","body":"rgb(250, 250, 249)","input":["rgb(17, 17, 17)","rgb(255, 255, 255)"],"nav":["rgb(17, 17, 17)","rgb(242, 242, 240)"]}},{"s9":{"theme":"contrast","mode":"light","warn":false,"bar":"Every text colour is readable on its background (WCAG AA).","surface":"rgb(250, 250, 249)","ink":"rgb(17, 17, 17)","radius":"8px","row":"52px","btnRadius":"8px","body":"rgb(250, 250, 249)","input":["rgb(17, 17, 17)","rgb(255, 255, 255)"],"nav":["rgb(17, 17, 17)","rgb(240, 240, 240)"]}},{"s10":{"theme":"contrast","mode":"light","warn":true,"bar":"Warning: Text (Light) 1.6:1, under 4.5:1","surface":"rgb(250, 250, 249)","ink":"rgb(200, 200, 200)","radius":"8px","row":"52px","btnRadius":"8px","body":"rgb(250, 250, 249)","input":["rgb(200, 200, 200)","rgb(255, 255, 255)"],"nav":["rgb(200, 200, 200)","rgb(240, 240, 240)"]}},{"s11":{"theme":"contrast","mode":"light","warn":true,"bar":"Warning: Text (Light) 1.6:1, under 4.5:1","surface":"rgb(250, 250, 249)","ink":"rgb(200, 200, 200)","radius":"8px","row":"52px","btnRadius":"8px","body":"rgb(250, 250, 249)","input":["rgb(200, 200, 200)","rgb(255, 255, 255)"],"nav":["rgb(200, 200, 200)","rgb(240, 240, 240)"]}}]
 [PASS] W01    Console defaults: no warning, the all-clear message is shown
@@ -189,25 +189,25 @@ module: fdb37dc
 [PASS] W13    Reset button opens a confirmation dialog; Cancel closes it without resetting
 [PASS] W15    A low-contrast text colour is accepted by a plain save too (a warning, never a refusal)
 -- Alpine screens as served (D1 recheck) --
-[INFO] browser alpine-screens: chrome pid 25208, steps 12, errors [], profile removed true
+[INFO] browser alpine-screens: chrome pid 42716, steps 12, errors [], profile removed true
 [INFO] Alpine components per screen [name, started]: {"users":[["rwSearch",true],["rwToasts",true]],"settings":[["rwSearch",true],["rwToasts",true],["rwSettings",true]],"matrix":[["rwSearch",true],["rwToasts",true],["rwMatrix",true]],"usermatrix":[["rwSearch",true],["rwToasts",true],["rwUserMatrix",true]]}; toast: ["Saved V5 toast probe\n\n\u00d7"]; settings bar: {"before":"All changes saved.\nSave settings","after":"1 unsaved change\nSession lifetime\nDiscard\nSave settings","dirty":"rw-bar rw-settings-bar rw-bar--dirty"}; matrix: {"changes":0,"marks":7}
 [PASS] J01    Toasts, Settings, role matrix and user matrix: every rw* Alpine component is running (as served)
 [PASS] J02    A toast pushed from JavaScript appears in the stack
 [PASS] J03    Settings: changing a value updates the changes bar
 [PASS] J04    No JavaScript error on users, settings, role matrix and user matrix
 == 6 The theme survives a module update ==
-[INFO] stopping server pid=33996
+[INFO] stopping server pid=32316
 [INFO] termination requested=true
 [INFO] server closed
-module: fdb37dc-again
-   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 06:59:43 UTC+00:00 Running all new migrations... Migrations complete.
+module: fd25932-again
+   spark migrate -n RoleWarden (rc=0): CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-20 08:47:49 UTC+00:00 Running all new migrations... Migrations complete.
 [PASS] S01    Module folder replaced again (fresh extraction of d3c7dbb): theme file byte-identical
 [PASS] S02    After the update the panel still shows the saved theme with the same values
 [PASS] S03    The replaced module folder contains no theme file (the customisation lives in the application)
-[INFO] stopping server pid=40064
+[INFO] stopping server pid=20140
 [INFO] termination requested=true
 [INFO] server closed
-module: fdb37dc
+module: fd25932
 == 7 app/Config/RoleWarden/theme.json wins; hand-written malicious files ==
 [PASS] A01    With app/Config/RoleWarden/theme.json present, its theme is shown (it wins over writable/)
 [INFO] Customiser with an app theme file: HTTP 200, Save button false, reset form false, text: &times; RoleWarden Appearance The look of this panel for everyone. Every change shows on this page as you make it; nothing is kept until you save. This application keeps its own theme file under version control, so the theme is shown here but cannot be changed from the panel. Saved inapp/Config/RoleWarden/theme.json Theme fileDownload AStarting theme 01 Console Dense and neutral, compact tables, l
@@ -248,15 +248,15 @@ module: fdb37dc
 [PASS] H-app-10 Hand-written app theme file #10: no CSS/markup injection, no error page
 [PASS] H-app-11 Hand-written app theme file #11: no CSS/markup injection, no error page
 [PASS] H-app-12 Hand-written app theme file #12: no CSS/markup injection, no error page
-[INFO] Log lines at WARNING or above with hostile theme files: ["WARNING - 2026-10-20 06:59:59 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 07:00:00 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 07:00:00 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 07:00:00 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 07:00:01 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 07:00:01 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 07:00:01 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 07:00:02 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme."]
+[INFO] Log lines at WARNING or above with hostile theme files: ["WARNING - 2026-10-20 08:48:06 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 08:48:06 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 08:48:06 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 08:48:07 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 08:48:07 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 08:48:07 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 08:48:08 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","WARNING - 2026-10-20 08:48:08 --> RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme."]
 [PASS] H-LOG  Hostile theme files cause no PHP error, warning or exception in the log
-[INFO] Theme-file warnings: 18; sample: ["RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3\\u3r-v5-development\\app\\app\\Config/RoleWarden/theme.json is not valid JSON, using the default theme."]
+[INFO] Theme-file warnings: 18; sample: ["RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\writable\\rolewarden/theme.json is not valid JSON, using the default theme.","RoleWarden: theme file C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\106f98d3-d691-4d13-80b0-3ff9863f49cc\\scratchpad\\u3r\\u3r-v5-development\\app\\app\\Config/RoleWarden/theme.json is not valid JSON, using the default theme."]
 [PASS] H-LOG-PATH The warning for an invalid theme file names that theme file (D5 recheck)
 == 8 Three themes, light and dark, every screen (headless Chrome) ==
 [INFO] Screens rendered: users, user-create, user-detail, user-edit, roles, role-create, role-matrix, role-edit, permissions, settings, activity, profile, sessions, appearance + login
-[INFO] browser render-console: chrome pid 12128, steps 100, errors [], profile removed false
-[INFO] browser render-clarity: chrome pid 12708, steps 100, errors [], profile removed false
-[INFO] browser render-contrast: chrome pid 29360, steps 100, errors [], profile removed false
+[INFO] browser render-console: chrome pid 23500, steps 100, errors [], profile removed false
+[INFO] browser render-clarity: chrome pid 23016, steps 100, errors [], profile removed false
+[INFO] browser render-contrast: chrome pid 18764, steps 100, errors [], profile removed false
 [PASS] R-console-light Console light: login + 14 screens render (200), attributes, every token resolved, surface and text from the tokens
 [PASS] R-console-dark Console dark: login + 14 screens render (200), attributes, every token resolved, surface and text from the tokens
 [PASS] R-console-js Console: no JavaScript error and no driver error while rendering
@@ -269,7 +269,7 @@ module: fdb37dc
 [PASS] R-READ No visible text below 3:1 against its rendered background in any theme, mode or screen
 [PASS] R-AA   Shipped themes: text tokens on their backgrounds meet 4.5:1 in all six combinations (design guide)
 == 9 Fourth theme and a component of the host (README, design guide) ==
-[INFO] stopping server pid=32636
+[INFO] stopping server pid=12868
 [INFO] termination requested=true
 [INFO] server closed
 [PASS] X01    The Appearance screen offers the fourth theme next to the other three
@@ -277,7 +277,7 @@ module: fdb37dc
 [INFO] Error with four themes offered: "Error: Choose one of the listed themes."
 [PASS] X03b   With four themes offered the error does not speak of three (D4 recheck)
 [PASS] X03    An undeclared theme is still refused
-[INFO] browser ocean: chrome pid 36596, steps 17, errors [], profile removed true
+[INFO] browser ocean: chrome pid 3804, steps 17, errors [], profile removed true
 [INFO] Ocean light: {"bg":"rgb(255, 255, 255)","color":"rgb(15, 29, 36)","radius":"6px","raised":"rgb(255, 255, 255)","ink":"rgb(15, 29, 36)","surface":"rgb(247, 250, 251)","rule":"rgb(228, 229, 231)","rowsize":"44px","textmd":"13px"} dark: {"bg":"rgb(35, 36, 40)","color":"rgb(232, 242, 245)","radius":"6px","raised":"rgb(35, 36, 40)","ink":"rgb(232, 242, 245)","surface":"rgb(12, 23, 28)","rule":"rgb(46, 48, 52)","rowsize":"44px","textmd":"13px"}
 [PASS] X04    Ocean colours apply in light and dark
 [PASS] X05    Ocean shape tokens apply (radius 6px, row 44px)
@@ -286,7 +286,7 @@ module: fdb37dc
 [PASS] X08    With Ocean every token used by the panel still resolves (light and dark)
 [PASS] X09    The customiser works on Ocean: a dark text under AA is flagged
 [PASS] X10    No JavaScript error with the fourth theme
-[INFO] stopping server pid=43384
+[INFO] stopping server pid=26916
 [INFO] termination requested=true
 [INFO] server closed
 == 10 Publication ==
@@ -295,11 +295,11 @@ module: fdb37dc
 [PASS] P03    A tampered stored mode value is never written raw into the page
 [PASS] P04    Theme stylesheet route: custom properties only, no path, no JSON, no user or config data; query parameters ignored
 [PASS] P05    Theme stylesheet route with no theme file: no error, no data
-[INFO] Log lines caused by the traversal probes (framework URI filter): ["CRITICAL - 2026-10-20 07:06:26 --> CodeIgniter\\HTTP\\Exceptions\\BadRequestException: The URI you submitted has disallowed characters: \"..\\..\\Config\\RoleWarden.ph","CRITICAL - 2026-10-20 07:06:27 --> CodeIgniter\\HTTP\\Exceptions\\BadRequestException: The URI you submitted has disallowed characters: \"panel.css\u0000.php\""]
+[INFO] Log lines caused by the traversal probes (framework URI filter): ["CRITICAL - 2026-10-20 08:54:29 --> CodeIgniter\\HTTP\\Exceptions\\BadRequestException: The URI you submitted has disallowed characters: \"..\\..\\Config\\RoleWarden.ph","CRITICAL - 2026-10-20 08:54:30 --> CodeIgniter\\HTTP\\Exceptions\\BadRequestException: The URI you submitted has disallowed characters: \"panel.css\u0000.php\""]
 [PASS] P06    Asset and theme routes reject path traversal without leaking files
 [PASS] P07    No SQL error text and no HTTP 500 in any page seen (296)
 [PASS] P08    Application log at threshold 9: no warning or error (CSRF refusals and the hostile-file phase excluded)
-[INFO] stopping server pid=27896
+[INFO] stopping server pid=15136
 [INFO] termination requested=true
 [INFO] server closed
 [PASS] P09    PHP built-in server log (error_reporting=-1): no PHP warning, notice, deprecation or fatal
@@ -309,6 +309,6 @@ module: fdb37dc
 V5 RESULT 177 checks 177 PASS 0 FAIL 1 AMB
 Test process exit: 0
 [MAIL] captured=8 non-test=[]
-[WRITABLE] entries created during the run (logs/sessions/cache/theme): 1024
-fdb37dc v5.development.fdb37dc: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_after=0
-[RUNNER] work folder not removed entirely (729 entries left, Chrome profile files Windows refuses to delete): C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3\u3r-v5-development
+[WRITABLE] entries created during the run (logs/sessions/cache/theme): 1018
+fd25932 v5.development.fd25932: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_after=0
+[RUNNER] work folder not removed entirely (725 entries left, Chrome profile files Windows refuses to delete): C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\106f98d3-d691-4d13-80b0-3ff9863f49cc\scratchpad\u3r\u3r-v5-development

@@ -173,22 +173,26 @@ Ho letto solo SPEC, BRIEF-v1.1, CHANGELOG (Unreleased), `documentation/` (config
 
 ## Esito
 
-**Riverifica INCOMPLETA. D1 e D2 risolti; U3 non ancora approvata (approvazione sospesa).**
+**Nessun difetto del prodotto: D1 e D2 risolti, nessuna regressione. U3 non ancora approvata formalmente: manca una ripetizione pulita di U1 production, i cui 2 FAIL sono di misura e non del prodotto.**
 
-- Il driver (`verify-u3.all.sh`, `RW_V8_NEW=fd25932`) è stato fermato da Claude Code per memoria di sistema insufficiente durante `s1y.development`. Per regola non l'ho rilanciato da solo: le suite mancanti vanno rilanciate quando c'è memoria.
-- Su tutto ciò che è girato: **nessun FAIL**.
+- Primo giro: il driver è stato fermato da Claude Code per memoria insufficiente durante `s1y.development`.
+- Dopo il commit `6cb1030`, su richiesta di chi ha lanciato il collaudo, ho rilanciato le suite mancanti, una alla volta, e sono arrivate tutte in fondo.
+- **U1 production: 216/218, 2 FAIL di misura.** S-console-ink-light-0 e S-console-ink-dark-0 dicono «measured in Chrome»: il driver del browser non ha potuto aprire il proprio file di profilo (`EBUSY: resource busy or locked … chrome-u1-3\DevToolsActivePort`). Per quella combinazione Chrome non ha misurato nulla, quindi mancano anche i 6 controlli che ne seguono (218 invece di 226).
+  - **Non è un difetto del prodotto:** la stessa combinazione passa in development (226/226), e in U3 production la barra Console Ink, chiara e scura, passa (LK-console-ink-light-5, contrasto 7,04:1).
+  - **Non è una prova di PASS:** la combinazione Console Ink in production con la suite U1 resta da misurare.
+- Ho tentato di ripetere `u1.production` insieme a `s1y.development`, ma Claude Code ha fermato di nuovo il processo per memoria insufficiente, durante `s1y.development`. Come mi era stato chiesto, ho ripristinato il DB e mi sono fermato.
 
 | Suite | development | production |
 | --- | --- | --- |
 | U3, fasi SRCH + OV | **165/165**, 1 AMB (A1 velo) | **165/165**, 1 AMB (A1 velo) |
 | Sonda X | 2/2 | 2/2 |
-| U2 (CHK, ST) | **129/129** | non eseguita |
-| U1 (lib adattata U3) | **226/226** (i 6 S-*-light-4 di D2 ora PASS) | non eseguita |
-| A2 | **15/15** | non eseguita |
-| V8b (L, M, P, I, G) | **116/116**, 1 AMB nota (LA1) | non eseguita |
-| S1, fase Y | **52/52** (ripristino DB fallito, vedi sotto) | non eseguita |
-| V5 adattata | non eseguita | non eseguita |
-| V2 principale | non eseguita | non eseguita |
+| U2 (CHK, ST) | **129/129** | **129/129** |
+| U1 (lib adattata U3) | **226/226** (i 6 S-*-light-4 di D2 ora PASS) | **216/218**, 2 FAIL di misura (EBUSY, vedi sopra) |
+| A2 | **15/15** | **15/15** |
+| V8b (L, M, P, I, G) | **116/116**, 1 AMB nota (LA1) | **116/116**, 1 AMB nota (LA1) |
+| S1, fase Y | **52/52** (primo giro; ripristino DB fallito, rifatto a mano) | **52/52** |
+| V5 adattata | **177/177**, 1 AMB nota (T06) | **177/177**, 1 AMB nota (T06) |
+| V2 principale | **151/151** | **169/169** |
 
 Ho letto solo questo report, `_AI-LOG.md` e gli script di `tests/Integration/`; del commit conosco solo il `--stat` (4 file: `resources/css/panel.css`, `src/Assets/css/panel.css`, `src/Helpers/rolewarden_helper.php`, `src/Language/it/RoleWarden.php`).
 
@@ -199,7 +203,7 @@ Ho letto solo questo report, `_AI-LOG.md` e gli script di `tests/Integration/`; 
 
 ## «Accesso» al posto di «Autorizzazioni»
 
-- Nessuna delle suite di questo collaudo si aspettava «Autorizzazioni»: non ho adattato nulla. U2 e U1 (development) passano col nuovo testo.
+- Nessuna delle suite di questo collaudo si aspettava «Autorizzazioni»: non ho adattato nulla. U2 (entrambi gli ambienti) e U1 passano col nuovo testo.
 - Lo cercano solo `verify-v7.php` e `verify-v8b.v7adapted.php` (E12b), che non fanno parte di questa regressione: se rilanciate, E12b va adattato a «Accesso».
 
 ## Incidente di esecuzione e pulizia
@@ -210,9 +214,21 @@ Ho letto solo questo report, `_AI-LOG.md` e gli script di `tests/Integration/`; 
 - Le uscite console delle partenze abortite le ho riportate alla versione del primo collaudo (`git checkout`); gli esiti abortiti restano solo in `verify-u3.progress.txt`.
 - Mailpit vuoto. Nessun processo php/python/node/chrome mio residuo. Cartella di lavoro di `s1y.development` rimossa (conteneva un `.env`); in `scratchpad/u3r/` restano solo profili Chrome bloccati, senza credenziali. Nessun commit.
 
-## Da fare per chiudere
+## Secondo giro (dopo `6cb1030`) e pulizia
 
-Rilanciare, con memoria libera, `bash tests/Integration/verify-u3.all.sh s1y.development u2.production u1.production a2.production v8b.production s1y.production v5.development v5.production test.development test.production` (stesse variabili d'ambiente, `RW_V8_NEW=fd25932`).
+- **10:26–11:06:** U2, A2, V8b e S1 Y in production, e V5 e V2 in entrambi gli ambienti, sono arrivate in fondo. Database identico allo snapshot (`f7f37c04…e21e64`) dopo ognuna; Mailpit vuoto.
+- **`s1y.development`:** si è fermata subito con «ABORT: existing work directory». Nel primo giro la cartella di lavoro non era stata rimossa del tutto per via dei profili Chrome bloccati; la nota sopra che la dava per rimossa era sbagliata. Ne ho tolto il `.env` e l'ho spostata.
+- **`u1.production`:** 216/218, vedi Esito. L'uscita è in `verify-u3.s1.u1.fd25932.production.output.txt`.
+- **Ripetizione di `s1y.development` + `u1.production` (11:06):**
+  - Claude Code l'ha fermata di nuovo per memoria insufficiente, durante `s1y.development`.
+  - Ho terminato il driver e i suoi processi (bash, python, php sulla 8071, node).
+  - Ho ripristinato `rolewarden_test` dallo snapshot della suite: hash ricalcolato **`f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`, identico**.
+  - Ho riportato le uscite parziali di `s1y.development` alla versione già committata (52/52).
+- **Stato finale:** Mailpit vuoto; nessun processo php/python/node/chrome mio; nessun `.env` nello scratchpad (`scratchpad/u3r/` contiene solo profili Chrome bloccati); nessun commit.
+
+## Da fare per l'approvazione
+
+Con memoria libera, ripetere solo `bash tests/Integration/verify-u3.all.sh u1.production`, con le stesse variabili d'ambiente e `RW_V8_NEW=fd25932`. Prima va rimossa, se esiste, la cartella `u3w-u1-production` nello scratchpad indicato da `RW_U3_SCRATCH`. Se dà 226/226, U3 è approvabile. `s1y.development` ha già dato 52/52 sul prodotto, quindi non serve ripeterla.
 
 ## Ambiguità ancora aperte (all'utente, non decise)
 

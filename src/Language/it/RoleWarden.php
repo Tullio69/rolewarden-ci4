@@ -259,7 +259,7 @@ return [
             'memberSince' => 'Iscritto dal',
         ],
         'roles' => [
-            'overline' => 'Autorizzazioni',
+            'overline' => 'Accesso',
             'indexTitle' => 'Ruoli',
             'indexIntro' => 'Un ruolo raggruppa dei permessi. Un ruolo che eredita da un padre riceve tutto quello che ha il padre, e aggiunge i suoi.',
             'createTitle' => 'Nuovo ruolo',

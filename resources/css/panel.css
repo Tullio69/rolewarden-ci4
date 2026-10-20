@@ -272,8 +272,8 @@
   .rw-side-toggle { align-self: flex-start; width: var(--size-square); height: var(--size-square); display: grid; place-items: center; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--sb-muted); cursor: pointer; }
   .rw-side-toggle:hover { background: var(--sb-hover); color: var(--sb-ink); }
   .rw-side kbd, .rw-cmd kbd { font: var(--weight-body) var(--text-xs)/var(--leading-xs) var(--font-mono); padding: 0 var(--space-1); border: var(--rule-width) solid var(--rule-strong); border-radius: var(--radius-sm); color: var(--ink-faint); }
-  .rw .rw-side-search { display: flex; align-items: center; gap: var(--space-2); height: var(--size-control); padding: 0 var(--space-2) 0 var(--space-2-5); border: var(--rule-width) solid var(--sb-rule); border-radius: var(--radius-md); background: var(--sb-raised); color: var(--sb-muted); font: var(--weight-body) var(--text-sm)/var(--leading-xs) var(--font-sans); text-decoration: none; }
-  .rw .rw-side-search:hover { color: var(--sb-ink); text-decoration: none; }
+  .rw a.rw-side-search { display: flex; align-items: center; gap: var(--space-2); height: var(--size-control); padding: 0 var(--space-2) 0 var(--space-2-5); border: var(--rule-width) solid var(--sb-rule); border-radius: var(--radius-md); background: var(--sb-raised); color: var(--sb-muted); font: var(--weight-body) var(--text-sm)/var(--leading-xs) var(--font-sans); text-decoration: none; }
+  .rw a.rw-side-search:hover { color: var(--sb-ink); text-decoration: none; }
   .rw-side-search kbd { border-color: var(--sb-rule); color: var(--sb-muted); }
 
   /* Command search (CommandSearch): a modal <dialog> 72px from the top over the scrim. */
@@ -311,7 +311,7 @@
   .rw .rw-shell--rail .rw-side-nav a { justify-content: center; padding: 0; }
   .rw-shell--rail .rw-side-foot { align-items: center; }
   .rw-shell--rail .rw-side-toggle { align-self: center; }
-  .rw.rw-shell--rail .rw-side-search { justify-content: center; padding: 0; }
+  .rw.rw-shell--rail a.rw-side-search { justify-content: center; padding: 0; }
   .rw-shell--rail .rw-side-search kbd { display: none; }
 
   .rw-topbar { height: var(--size-topbar); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--gutter); border-bottom: var(--rule-width) solid var(--rule); }

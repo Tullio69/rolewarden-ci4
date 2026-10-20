@@ -38,13 +38,14 @@ if (! function_exists('permissions')) {
 if (! function_exists('rw_query')) {
     /**
      * A query-string value as text: '' when missing or when it is not a
-     * string (e.g. ?q[]=x), so filters never see an array.
+     * string (e.g. ?q[]=x), so filters never see an array; bytes that are not
+     * UTF-8 become "?", so escaping and messages never fail on them.
      */
     function rw_query(string $key): string
     {
         $value = service('request')->getGet($key);
 
-        return is_string($value) ? trim($value) : '';
+        return is_string($value) ? trim(mb_scrub($value, 'UTF-8')) : '';
     }
 }
 

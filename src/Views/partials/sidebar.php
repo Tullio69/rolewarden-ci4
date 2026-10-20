@@ -13,23 +13,32 @@ use RoleWarden\Settings\Sidebar;
 $userId = auth()->loggedIn() ? (int) auth()->id() : null;
 $groups = $userId !== null ? Sidebar::groups($userId) : [];
 $today = $userId !== null && ! $collapsed && Sidebar::showsToday() && can('activity.view') ? Sidebar::today() : null;
-
-// 16px glyphs, 1.5px stroke, square caps (design system, Iconography).
-$icons = [
-    'users' => '<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/>',
-    'roles' => '<path d="M8 2.5l5.5 3-5.5 3-5.5-3z"/><path d="M2.5 8.5l5.5 3 5.5-3"/><path d="M2.5 11.5l5.5 3 5.5-3"/>',
-    'permissions' => '<path d="M2.5 2.5h11v11h-11z"/><path d="M2.5 6.5h11M2.5 10h11M6.5 2.5v11"/>',
-    'check' => '<circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5l3 3"/><path d="M5 7l1.5 1.5 2.5-2.5"/>',
-    'activity' => '<path d="M5.5 4h8M5.5 8h8M5.5 12h8M2.5 4h.5M2.5 8h.5M2.5 12h.5"/>',
-    'settings' => '<path d="M2.5 4.5h7M12 4.5h1.5M2.5 11.5h2M7 11.5h6.5"/><circle cx="10.5" cy="4.5" r="1.5"/><circle cx="5.5" cy="11.5" r="1.5"/>',
-    'appearance' => '<circle cx="8" cy="8" r="5.5"/><path d="M8 2.5v11"/>',
-    'collapse' => '<path d="M10 3.5L5.5 8l4.5 4.5"/>',
-    'expand' => '<path d="M6 3.5l4.5 4.5L6 12.5"/>',
-];
-$icon = static fn (string $key): string => '<svg class="rw-side-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">' . $icons[$key] . '</svg>';
+$icon = Sidebar::icon(...);
+$searchLabel = lang('RoleWarden.panel.search.open');
 ?>
-<aside class="rw-sidebar rw-side" data-sidebar="<?= esc(Sidebar::style(), 'attr') ?>" aria-label="<?= esc(lang('RoleWarden.panel.a11y.main'), 'attr') ?>">
+<aside class="rw-sidebar rw-side" data-sidebar="<?= esc(Sidebar::style(), 'attr') ?>" aria-label="<?= esc(lang('RoleWarden.panel.a11y.main'), 'attr') ?>"<?= $userId !== null ? ' x-data="rwSearch(' . esc(json_encode(['url' => site_url('rolewarden/search')]), 'attr') . ')" @keydown.window="hotkey($event)"' : '' ?>>
   <div class="rw-brand"><b>RoleWarden</b></div>
+
+  <?php if ($userId !== null) : ?>
+    <?php // Command search (CommandSearch): without JavaScript the link opens the search page. ?>
+    <div class="rw-side-group">
+      <a class="rw-side-search" href="<?= esc(site_url('rolewarden/search')) ?>" @click.prevent="open()"<?= $collapsed ? ' title="' . esc($searchLabel, 'attr') . '"' : '' ?>>
+        <?= $icon('search') ?>
+        <span class="rw-side-text"><?= esc($searchLabel) ?></span>
+        <kbd x-text="mac ? '⌘ K' : 'Ctrl K'">Ctrl K</kbd>
+      </a>
+    </div>
+    <dialog class="rw-cmd" x-ref="dialog" aria-label="<?= esc($searchLabel, 'attr') ?>" @click="$event.target === $el && $el.close()">
+      <div class="rw-cmd-field">
+        <?= $icon('search') ?>
+        <label class="rw-visually-hidden" for="rw-cmd-q"><?= lang('RoleWarden.panel.search.field') ?></label>
+        <input id="rw-cmd-q" x-ref="q" type="text" role="combobox" aria-expanded="true" aria-controls="rw-cmd-results" aria-autocomplete="list" :aria-activedescendant="active" autocomplete="off" spellcheck="false" @input.debounce.150ms="load()" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)" @keydown.enter.prevent="go()">
+        <kbd><?= lang('RoleWarden.panel.search.esc') ?></kbd>
+      </div>
+      <div class="rw-cmd-results" id="rw-cmd-results" role="listbox" aria-label="<?= esc(lang('RoleWarden.panel.search.results'), 'attr') ?>" x-ref="list"></div>
+      <div class="rw-cmd-foot"><span><?= lang('RoleWarden.panel.search.move') ?></span><span><?= lang('RoleWarden.panel.search.enter') ?></span><span><?= lang('RoleWarden.panel.search.scope') ?></span></div>
+    </dialog>
+  <?php endif ?>
 
   <?php foreach ($groups as $group) : ?>
     <div class="rw-side-group">

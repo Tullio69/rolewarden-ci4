@@ -114,4 +114,28 @@ class PermissionModel extends Model
 
         return $data;
     }
+
+    /**
+     * Ids of the users who hold the permission, in id order, as the resolver
+     * answers. Anyone with a role (a grant, an inherited grant or a super admin
+     * role) or a positive override for it is asked; deleted users are left out.
+     *
+     * @return list<int>
+     */
+    public function holderIds(string $slug): array
+    {
+        $cfg = config('RoleWarden');
+        $withRole = $this->db->table($cfg->table('user_roles'))->distinct()->select('user_id')->get()->getResultArray();
+        $withOverride = $this->db->table($cfg->table('user_permissions') . ' up')
+            ->select('up.user_id')
+            ->join($cfg->table('permissions') . ' p', 'p.id = up.permission_id')
+            ->where('p.slug', $slug)->where('up.granted', 1)
+            ->get()->getResultArray();
+        $ids = array_values(array_unique(array_map('intval', array_column([...$withRole, ...$withOverride], 'user_id'))));
+        $ids = $ids === [] ? [] : array_map('intval', model(UserModel::class)->whereIn('id', $ids)->orderBy('id')->findColumn('id') ?? []);
+        $resolver = service('rolewarden');
+
+        // ponytail: asks the resolver about every user with a role or an override (cached per user); an index of grants if very large user bases make this slow.
+        return array_values(array_filter($ids, static fn (int $id): bool => $resolver->can($id, $slug)));
+    }
 }

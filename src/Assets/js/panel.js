@@ -4,6 +4,7 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('rwMatrix', rwMatrixController);
   Alpine.data('rwUserMatrix', rwUserMatrixController);
   Alpine.data('rwAppearance', rwAppearanceController);
+  Alpine.data('rwSearch', rwSearchController);
 });
 
 /** Shows a toast from anywhere on the page: rwToast('error', 'Could not save this change.'). */
@@ -509,6 +510,81 @@ function rwAppearanceController(config) {
         }
       }
       return found;
+    },
+  };
+}
+
+/**
+ * Command search (docs/design-system/components/CommandSearch). Ctrl K, Cmd K
+ * or the sidebar link opens a modal <dialog>, which closes on Esc and gives
+ * focus back by itself. Each query asks the server, which sends only the
+ * results the user may reach, as HTML; Up and Down move through them, Enter
+ * opens the highlighted one.
+ */
+function rwSearchController(config) {
+  return {
+    active: '',
+    mac: /Mac|iPhone|iPad/.test(navigator.platform),
+    ticket: 0,
+
+    hotkey(event) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        this.open();
+      }
+    },
+
+    open() {
+      if (this.$refs.dialog.open) {
+        return;
+      }
+      this.$refs.dialog.showModal();
+      this.$refs.q.select();
+      this.load();
+    },
+
+    async load() {
+      const ticket = ++this.ticket;
+      try {
+        const response = await fetch(config.url + '?q=' + encodeURIComponent(this.$refs.q.value), { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        if (response.redirected) {
+          window.location.href = response.url; // signed out meanwhile: the login page
+          return;
+        }
+        if (!response.ok || ticket !== this.ticket) {
+          return; // a later query is on its way, or this one failed: keep what is shown
+        }
+        this.$refs.list.innerHTML = await response.text();
+        this.select(0);
+      } catch (e) {
+        // offline: keep the last results
+      }
+    },
+
+    options() {
+      return [...this.$refs.list.querySelectorAll('[role="option"]')];
+    },
+
+    select(index) {
+      const options = this.options();
+      options.forEach((option, i) => option.setAttribute('aria-selected', i === index ? 'true' : 'false'));
+      this.active = options[index] ? options[index].id : '';
+      options[index]?.scrollIntoView({ block: 'nearest' });
+    },
+
+    move(step) {
+      const options = this.options();
+      if (options.length > 0) {
+        const current = options.findIndex((option) => option.id === this.active);
+        this.select((current + step + options.length) % options.length);
+      }
+    },
+
+    go() {
+      const option = this.active !== '' ? document.getElementById(this.active) : null;
+      if (option) {
+        window.location.href = option.href;
+      }
     },
   };
 }

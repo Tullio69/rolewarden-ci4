@@ -50,8 +50,7 @@ class PermissionsController extends BaseController
         $total = 0;
 
         if ($known) {
-            // ponytail: asks the resolver about every user with a role or an override (cached per user); an index of grants if very large user bases make this slow.
-            $ids = array_values(array_filter($this->candidates($slug), static fn (int $id): bool => $resolver->can($id, $slug)));
+            $ids = model(PermissionModel::class)->holderIds($slug);
             $total = count($ids);
             $pageIds = array_slice($ids, ($page - 1) * self::PER_PAGE, self::PER_PAGE);
             $users = $pageIds === [] ? [] : array_column(model(UserModel::class)->whereIn('id', $pageIds)->findAll(), null, 'id');
@@ -92,28 +91,6 @@ class PermissionsController extends BaseController
         $user = ctype_digit($who) ? $users->find((int) $who) : $users->where('username', $who)->first();
 
         return $user ?? $users->findByCredentials(['email' => $who]);
-    }
-
-    /**
-     * Users who might hold the permission: anyone with a role (a grant, an
-     * inherited grant or a super admin role) or a positive override for it.
-     * The model leaves deleted users out.
-     *
-     * @return list<int>
-     */
-    private function candidates(string $slug): array
-    {
-        $db = db_connect();
-        $cfg = config('RoleWarden');
-        $withRole = $db->table($cfg->table('user_roles'))->distinct()->select('user_id')->get()->getResultArray();
-        $withOverride = $db->table($cfg->table('user_permissions') . ' up')
-            ->select('up.user_id')
-            ->join($cfg->table('permissions') . ' p', 'p.id = up.permission_id')
-            ->where('p.slug', $slug)->where('up.granted', 1)
-            ->get()->getResultArray();
-        $ids = array_values(array_unique(array_map('intval', array_column([...$withRole, ...$withOverride], 'user_id'))));
-
-        return $ids === [] ? [] : array_map('intval', model(UserModel::class)->whereIn('id', $ids)->orderBy('id')->findColumn('id') ?? []);
     }
 
     /**

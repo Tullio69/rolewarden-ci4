@@ -20,6 +20,11 @@ version may require changes on your side, listed under "Upgrading". After any up
   outcome with the rule that decides it. Each permission in the Permissions screen links to it.
 - `service('rolewarden')->explain($userId, $slug)`: the rule that decides a check and the
   role chains that hold the permission.
+- **Command search**, from the sidebar or with Ctrl K (Cmd K on macOS): screens, actions and
+  permission identifiers, only those the signed-in user may reach, filtered on the server.
+  Actions open their screen and never act on their own; a permission identifier answers who
+  holds it and opens Check a permission. Without JavaScript the sidebar link opens the same
+  results as a page, `/rolewarden/search`.
 
 ### Changed
 - The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.

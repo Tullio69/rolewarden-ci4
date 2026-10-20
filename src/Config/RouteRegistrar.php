@@ -54,6 +54,8 @@ class RouteRegistrar
                 $routes->post('profile/password', 'AccountController::password');
                 $routes->post('profile/language', 'AccountController::language');
                 $routes->get('sessions', 'AccountController::sessions');
+                // Command search: every result is filtered by the user's own permissions.
+                $routes->get('search', 'SearchController::index');
                 $routes->post('sessions/revoke-all', 'AccountController::revokeOwnAll');
                 $routes->post('sessions/(:num)/revoke', 'AccountController::revokeOwn/$1');
                 $routes->post('sessions/remembered/(:num)/revoke', 'AccountController::revokeOwnRemembered/$1');

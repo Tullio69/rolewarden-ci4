@@ -1,0 +1,318 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase NAV from verify-u4.phase-nav.adapted.php
+
+===== phase NAV =====
+
+== NAV: items, permissions, groups, aria-current
+[INFO] server pid=5864 on 127.0.0.1:8071 prefix=''
+[PASS] N-owner-1 owner: the sidebar renders exactly the items of the permissions held (rolewarden,activity,appearance,permissions,check,roles,settings,users)
+[PASS] N-owner-2 owner: no empty group, no disabled or link-less item
+[PASS] N-owner-3 owner: group headers among Overview/Access/Security/System, in that order
+[PASS] N-owner-4 owner: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-admin-1 admin: the sidebar renders exactly the items of the permissions held (rolewarden,activity,appearance,permissions,check,roles,settings,users)
+[PASS] N-admin-2 admin: no empty group, no disabled or link-less item
+[PASS] N-admin-3 admin: group headers among Overview/Access/Security/System, in that order
+[PASS] N-admin-4 admin: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-plain-1 plain: the sidebar renders exactly the items of the permissions held ()
+[PASS] N-plain-2 plain: no empty group, no disabled or link-less item
+[PASS] N-plain-3 plain: group headers among Overview/Access/Security/System, in that order
+[PASS] N-plain-4 plain: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:users.view-1 r:users.view: the sidebar renders exactly the items of the permissions held (users)
+[PASS] N-r:users.view-2 r:users.view: no empty group, no disabled or link-less item
+[PASS] N-r:users.view-3 r:users.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:users.view-4 r:users.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:roles.view-1 r:roles.view: the sidebar renders exactly the items of the permissions held (roles)
+[PASS] N-r:roles.view-2 r:roles.view: no empty group, no disabled or link-less item
+[PASS] N-r:roles.view-3 r:roles.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:roles.view-4 r:roles.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:permissions.view-1 r:permissions.view: the sidebar renders exactly the items of the permissions held (permissions,check)
+[PASS] N-r:permissions.view-2 r:permissions.view: no empty group, no disabled or link-less item
+[PASS] N-r:permissions.view-3 r:permissions.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:permissions.view-4 r:permissions.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:activity.view-1 r:activity.view: the sidebar renders exactly the items of the permissions held (activity)
+[PASS] N-r:activity.view-2 r:activity.view: no empty group, no disabled or link-less item
+[PASS] N-r:activity.view-3 r:activity.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:activity.view-4 r:activity.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:settings.view-1 r:settings.view: the sidebar renders exactly the items of the permissions held (settings)
+[PASS] N-r:settings.view-2 r:settings.view: no empty group, no disabled or link-less item
+[PASS] N-r:settings.view-3 r:settings.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:settings.view-4 r:settings.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:appearance.update-1 r:appearance.update: the sidebar renders exactly the items of the permissions held (appearance)
+[PASS] N-r:appearance.update-2 r:appearance.update: no empty group, no disabled or link-less item
+[PASS] N-r:appearance.update-3 r:appearance.update: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:appearance.update-4 r:appearance.update: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:create-import-1 r:create-import: the sidebar renders exactly the items of the permissions held ()
+[PASS] N-r:create-import-2 r:create-import: no empty group, no disabled or link-less item
+[PASS] N-r:create-import-3 r:create-import: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:create-import-4 r:create-import: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:mixed-1 r:mixed: the sidebar renders exactly the items of the permissions held (settings,users)
+[PASS] N-r:mixed-2 r:mixed: no empty group, no disabled or link-less item
+[PASS] N-r:mixed-3 r:mixed: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:mixed-4 r:mixed: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-child-role-1 child-role: the sidebar renders exactly the items of the permissions held (activity)
+[PASS] N-child-role-2 child-role: no empty group, no disabled or link-less item
+[PASS] N-child-role-3 child-role: group headers among Overview/Access/Security/System, in that order
+[PASS] N-child-role-4 child-role: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-admin-deny-1 admin-deny: the sidebar renders exactly the items of the permissions held (rolewarden,appearance,permissions,check,roles,settings)
+[PASS] N-admin-deny-2 admin-deny: no empty group, no disabled or link-less item
+[PASS] N-admin-deny-3 admin-deny: group headers among Overview/Access/Security/System, in that order
+[PASS] N-admin-deny-4 admin-deny: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-super-deny-1 super-deny: the sidebar renders exactly the items of the permissions held (rolewarden,activity,permissions,check,roles,users)
+[PASS] N-super-deny-2 super-deny: no empty group, no disabled or link-less item
+[PASS] N-super-deny-3 super-deny: group headers among Overview/Access/Security/System, in that order
+[PASS] N-super-deny-4 super-deny: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-user-grant-1 user-grant: the sidebar renders exactly the items of the permissions held (roles,settings)
+[PASS] N-user-grant-2 user-grant: no empty group, no disabled or link-less item
+[PASS] N-user-grant-3 user-grant: group headers among Overview/Access/Security/System, in that order
+[PASS] N-user-grant-4 user-grant: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-grant-deny-child-1 grant-deny-child: the sidebar renders exactly the items of the permissions held (permissions,check)
+[PASS] N-grant-deny-child-2 grant-deny-child: no empty group, no disabled or link-less item
+[PASS] N-grant-deny-child-3 grant-deny-child: group headers among Overview/Access/Security/System, in that order
+[PASS] N-grant-deny-child-4 grant-deny-child: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-all  No item outside the documented screens (Users, Roles, Permissions, Activity, Settings, Appearance) for any account
+[INFO] owner groups: {"Overview":["[omesso]"],"Access":["users","roles","permissions","check"],"Security":["activity"],"System":["settings","appearance"]}
+[PASS] N-grp  Owner: Access holds Users, Roles, Permissions; Security the Activity log; System Settings and Appearance; no Overview group without an item (Dashboard enters with U4)
+[INFO] aria-current below the lists: {"[omesso]\/users\/2":[200,["[omesso]\/users=page"]],"[omesso]\/users\/create":[200,["[omesso]\/users=page"]],"[omesso]\/users\/import":[200,["[omesso]\/users=page"]],"[omesso]\/users\/2\/edit":[200,["[omesso]\/users=page"]],"[omesso]\/roles\/2":[200,["[omesso]\/roles=page"]],"[omesso]\/roles\/create":[200,["[omesso]\/roles=page"]],"[omesso]\/roles\/2\/edit":[200,["[omesso]\/roles=page"]],"[omesso]\/profile":[200,[]],"[omesso]\/sessions":[200,[]]}
+[PASS] N-sub  Pages below a list (detail, edit, create, import) and Profile/Sessions: at most one item marked current, and only the parent section
+[INFO] deactivated admin: login ok=true profile 200 items []
+[PASS] N-off  A deactivated account with the admin role gets no sidebar item (signed in or not)
+[INFO] deactivate through the panel: 303, users.active=0
+[PASS] N-mid  Deactivated from the panel while signed in: the next page shows no item
+[INFO] role deleted from the panel: 303; deleted_at="2026-10-24 15:47:06"; assignment left=1
+[PASS] N-del  After its only role is deleted from the panel, the user sees exactly the items the server still opens for him
+[PASS] N-clean NAV pages: no 5xx, no SQL or PHP error text
+[INFO] phase CNT from verify-u1.phase-cnt.php
+
+===== phase CNT =====
+
+== CNT: counters
+[INFO] server pid=3592 on 127.0.0.1:8071 prefix=''
+[PASS] C-1    Users and Permissions counters and the Users screen header equal direct queries (start; Roles apart in C-2r)
+[INFO] user deleted from the panel: 303, deleted_at="2026-10-24 15:47:11", row still there=1
+[INFO] role deleted from the panel: 303, deleted_at="2026-10-24 15:47:12"
+[PASS] C-2    After a deactivation, a deleted user and a new permission: Users and Permissions counters and the Users header still equal the queries (deleted users left out, deactivated counted)
+[INFO] Roles screen rows: 18; roles not deleted: 18; with the deleted ones: 20; Roles counter: 18
+[PASS] C-2r   After a role deleted from the panel the Roles counter equals the roles not deleted (and the rows of the Roles screen)
+[PASS] C-3    Another account (admin) sees the same figures
+[PASS] C-4    Before the first opening of the log there is no Activity counter, whatever the log holds (4 entries, 0 failed sign-ins)
+[INFO] after the first opening: {"id":8,"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-24 15:47:16","type":"string","context":"user:25","created_at":"2026-10-24 15:47:16","updated_at":"2026-10-24 15:47:16"}
+[PASS] C-5    Right after opening the log the counter is absent (nothing new)
+[INFO] since 2026-10-24 15:47:16: log entries by others 2 (actions ["settings.updated","settings.updated"]), by the holder 1, failed sign-ins 4, successful 1
+[INFO] activity counter shown: {"path":"[omesso]\/activity","text":"Activity","count":"6 new","countClass":"rw-side-count rw-side-count--hot","current":"","title":"","aria":"","group":"Security"}
+[PASS] C-6    Activity counter = log entries by others + failed sign-ins since the last opening (2 + 4); the holder's own entries (1) and successful sign-ins (1) not counted
+[PASS] C-6b   The counter is a figure the holder can act on (digits, "new" chip marked for attention)
+[PASS] C-7    Each user has his own: another admin, who never opened the log, has no counter while the holder has one
+[PASS] C-8    Another user's opening does not touch the holder's counter
+[PASS] C-9    Opening the log (here with a filter) resets the counter
+[PASS] C-10   After the reset a single failed sign-in shows as 1
+[PASS] C-11   Without activity.view: no Activity item, so no counter
+[PASS] C-clean CNT pages: no 5xx, no SQL or PHP error text
+[INFO] phase TODAY from verify-u1.phase-today.php
+
+===== phase TODAY =====
+
+== TODAY: panel, figures, switch
+[INFO] server pid=13628 on 127.0.0.1:8071 prefix=''
+[INFO] auth_logins planted for today {"0":[2,1],"5":[3,0],"10":[1,2]}, current UTC hour 15
+[INFO] Today shown: {"text":"Today 35 sign-ins, 9 failed","b":"35","svgRole":"img","svgAria":"Sign-ins by hour today, busiest 15:00 with 29","svgView":"","points":[[0,26.2],[7.7,28],[15.3,28],[23,28],[30.6,28],[38.3,25.3],[45.9,28],[53.6,28],[61.2,28],[68.9,28],[76.5,27.1],[84.2,28],[91.8,28],[99.5,28],[107.1,28],[114.8,2],[122.4,28],[130.1,28],[137.7,28],[145.4,28],[153,28],[160.7,28],[168.3,28],[176,28]]} expected {"ok":35,"fail":9}
+[PASS] T-1    Today: sign-ins of today (35) and failed ones (9) as in auth_logins; yesterday's left out
+[INFO] hourly successful [2,0,0,0,0,3,0,0,0,0,1,0,0,0,0,29,0,0,0,0,0,0,0,0] all attempts [3,0,0,0,0,3,0,0,0,0,3,0,0,0,0,35,0,0,0,0,0,0,0,0] y=[26.2,28,28,28,28,25.3,28,28,28,28,27.1,28,28,28,28,2,28,28,28,28,28,28,28,28] matches successful=true all=false
+[PASS] T-2    Hourly line: 24 points, one per hour, heights proportional to the successful sign-ins of each hour
+[PASS] T-3    Line with role=img and a label naming its sense (busiest hour 15:00 with 29)
+[PASS] T-4    Today only for those holding activity.view (role, inheritance, super admin), never without it or with it denied
+[INFO] switch off: HTTP 303 -> http://127.0.0.1:8071/index.php/[omesso]/settings; settings rows [{"class":"RoleWarden\\Config\\RoleWarden","value":"0","type":"boolean","context":null}]
+[INFO] log entries after the switch: [{"action":"settings.updated","details":"{\"sidebar_today\":[true,false]}"}]
+[PASS] T-5    Settings: the switch is saved (Hidden) by a holder of settings.update and the page shows it
+[PASS] T-6    The change is in the activity log (one entry naming the setting)
+[PASS] T-7    Switched off: Today disappears for everyone who could see it
+[INFO] settings.view only: settings page 200, editable form with the switch: true
+[PASS] T-8    Without settings.update the switch is refused (stays Hidden)
+[PASS] T-9    A value other than Shown/Hidden is refused and a POST without the CSRF token is refused (403, or the production redirect): the switch stays Hidden
+[PASS] T-10   Switched on again: back for everyone with activity.view, still not for the others
+[PASS] T-clean TODAY pages: no 5xx, no SQL or PHP error text
+[INFO] phase RAIL from verify-u4.phase-rail.adapted.php
+
+===== phase RAIL =====
+
+== RAIL: collapse to icons
+[INFO] server pid=34372 on 127.0.0.1:8071 prefix=''
+[PASS] R-1    Expanded by default: a toggle form (POST, CSRF token, collapsed=1) with an accessible label
+[PASS] R-2    Refused without the CSRF token (403, or in production the redirect CodeIgniter makes); a GET changes nothing; anonymous is sent to sign in; the sidebar stays expanded
+[PASS] R-3    Collapse: redirect inside the application (an outside Referer is not followed); next page on the rail, toggle now expands
+[PASS] R-4    The rail has no Today panel
+[PASS] R-5    On the rail every item keeps its label in the markup and a tooltip (title)
+[PASS] R-6    Another user's sidebar stays expanded
+[PASS] R-7    The choice survives signing out and in (saved for the user)
+[INFO] rail in Chrome: [{"rail":true,"width":64,"texts":[["Search or run a command",1,1],["Dashboard",1,1],["Users",1,1],["Roles",1,1],["Permissions",1,1],["Check a permission",1,1],["Activity",1,1],["Settings",1,1],["Appearance",1,1]]},[{"role":"link","name":"Search or run a command","ignored":false},{"role":"link","name":"Dashboard","ignored":false},{"role":"link","name":"Users","ignored":false},{"role":"link","name":"Roles","ignored":false},{"role":"link","name":"Permissions","ignored":false},{"role":"link","name":"Check a permission","ignored":false},{"role":"link","name":"Activity","ignored":false},{"role":"link","name":"Settings","ignored":false},{"role":"link","name":"Appearance","ignored":false}],[{"role":"button","name":"Expand the sidebar","ignored":false}]]
+[PASS] R-9    In Chrome the rail is 64px wide and the labels are out of sight (1px clip)
+[PASS] R-10   In Chrome's accessibility tree every rail link is a link named by its label; the toggle button has a name
+[PASS] R-11   Expand: back to the full sidebar with Today
+[PASS] R-12   A user's choice leaves the others alone (plain collapses, owner stays expanded)
+[PASS] R-8    A value other than 0/1 gives no error page
+[PASS] R-clean RAIL pages: no 5xx, no SQL or PHP error text
+[INFO] phase STYLE from verify-u1.phase-style.php
+
+===== phase STYLE =====
+
+== STYLE: sidebar styles
+[INFO] server pid=24296 on 127.0.0.1:8071 prefix=''
+[PASS] S-0    No theme file yet: the sidebar is Paper
+[INFO] saved ink: HTTP 303; theme file {"base":"console","radius":null,"density":null,"sidebar":"ink","colors":{"light":[],"dark":[]}}
+[PASS] S-ink  Customizer saves ink in the theme file and every user's sidebar takes it
+[INFO] saved charcoal: HTTP 303; theme file {"base":"console","radius":null,"density":null,"sidebar":"charcoal","colors":{"light":[],"dark":[]}}
+[PASS] S-charcoal Customizer saves charcoal in the theme file and every user's sidebar takes it
+[PASS] S-paper Customizer saves Paper (the first choice): the file holds no other style and the sidebar is Paper
+[PASS] S-bad0 A style outside Paper/Ink/Charcoal ("neon") is refused: file unchanged, no error page, never printed raw
+[PASS] S-bad1 A style outside Paper/Ink/Charcoal ("Ink") is refused: file unchanged, no error page, never printed raw
+[PASS] S-bad2 A style outside Paper/Ink/Charcoal ("\"><script>alert(1)<\/script>") is refused: file unchanged, no error page, never printed raw
+[PASS] S-bad3 A style outside Paper/Ink/Charcoal ("paper ") is refused: file unchanged, no error page, never printed raw
+[PASS] S-perm Without appearance.update the customizer neither opens nor saves
+[PASS] S-csrf A save without the CSRF token is refused (403, or the production redirect), file unchanged
+[PASS] S-nostyle A theme file without a sidebar style gives Paper
+[INFO] appearance with app/Config/RoleWarden/theme.json: sidebar select present=true
+[PASS] S-app  app/Config/RoleWarden/theme.json with Charcoal wins over writable/ (Ink)
+[PASS] S-app2 Without it, back to the file in writable/ (Ink)
+[PASS] S-console-paper-light-1 console/paper/light: Chrome renders light with data-sidebar=paper
+[PASS] S-console-paper-light-2 console/paper/light: ground, items, labels, counter chips and active item have the values the design system gives for paper in console light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-console-paper-light-3 console/paper/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-console-paper-light-4 console/paper/light: every text of the sidebar at least 4.5:1 (min 6.1, 22 texts)
+[PASS] S-console-paper-light-5 console/paper/light: the active item stands out from the sidebar at 3:1 or more by its accent text and weight 600 (text 6.95:1 on the sidebar, 6.63:1 on the wash; wash 1.05:1, a cue)
+[INFO] console/paper/light: {"ground":"rgb(242, 242, 240)","active":{"bg":"rgb(231, 237, 248)","fg":"rgb(30, 78, 166)","weight":"600","bgVsGround":1.05,"fgVsGround":6.95,"fgVsBg":6.63},"chip":{"bg":"rgb(255, 255, 255)","fg":"rgb(23, 25, 28)"},"hot":{"bg":"rgb(30, 78, 166)","fg":"rgb(255, 255, 255)","text":"2 new"},"label":"rgb(86, 91, 99)","min":6.1}
+[PASS] S-console-paper-dark-1 console/paper/dark: Chrome renders dark with data-sidebar=paper
+[PASS] S-console-paper-dark-2 console/paper/dark: ground, items, labels, counter chips and active item have the values the design system gives for paper in console dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-console-paper-dark-3 console/paper/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-console-paper-dark-4 console/paper/dark: every text of the sidebar at least 4.5:1 (min 5.98, 22 texts)
+[PASS] S-console-paper-dark-5 console/paper/dark: the active item stands out from the sidebar at 3:1 or more by its accent text and weight 600 (text 8.43:1 on the sidebar, 5.98:1 on the wash; wash 1.41:1, a cue)
+[INFO] console/paper/dark: {"ground":"rgb(22, 23, 25)","active":{"bg":"rgb(36, 50, 81)","fg":"rgb(147, 178, 240)","weight":"600","bgVsGround":1.41,"fgVsGround":8.43,"fgVsBg":5.98},"chip":{"bg":"rgb(35, 36, 40)","fg":"rgb(235, 235, 232)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"2 new"},"label":"rgb(174, 178, 185)","min":5.98}
+[PASS] S-console-ink-light-1 console/ink/light: Chrome renders light with data-sidebar=ink
+[PASS] S-console-ink-light-2 console/ink/light: ground, items, labels, counter chips and active item have the values the design system gives for ink in console light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-console-ink-light-3 console/ink/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-console-ink-light-4 console/ink/light: every text of the sidebar at least 4.5:1 (min 7.04, 22 texts)
+[PASS] S-console-ink-light-5 console/ink/light: the active item stands out from the sidebar at 3:1 or more (fill 7.85:1, text on fill 8.12:1)
+[INFO] console/ink/light: {"ground":"rgb(15, 29, 58)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.85,"fgVsGround":1.03,"fgVsBg":8.12},"chip":{"bg":"rgb(24, 41, 77)","fg":"rgb(238, 242, 250)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"3 new"},"label":"rgb(169, 182, 209)","min":7.04}
+[PASS] S-console-ink-dark-1 console/ink/dark: Chrome renders dark with data-sidebar=ink
+[PASS] S-console-ink-dark-2 console/ink/dark: ground, items, labels, counter chips and active item have the values the design system gives for ink in console dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-console-ink-dark-3 console/ink/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-console-ink-dark-4 console/ink/dark: every text of the sidebar at least 4.5:1 (min 7.61, 22 texts)
+[PASS] S-console-ink-dark-5 console/ink/dark: the active item stands out from the sidebar at 3:1 or more (fill 8.42:1, text on fill 8.12:1)
+[INFO] console/ink/dark: {"ground":"rgb(11, 22, 48)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":8.42,"fgVsGround":1.04,"fgVsBg":8.12},"chip":{"bg":"rgb(20, 35, 68)","fg":"rgb(238, 242, 250)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"3 new"},"label":"rgb(169, 182, 209)","min":7.61}
+[PASS] S-console-charcoal-light-1 console/charcoal/light: Chrome renders light with data-sidebar=charcoal
+[PASS] S-console-charcoal-light-2 console/charcoal/light: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in console light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-console-charcoal-light-3 console/charcoal/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-console-charcoal-light-4 console/charcoal/light: every text of the sidebar at least 4.5:1 (min 7.29, 22 texts)
+[PASS] S-console-charcoal-light-5 console/charcoal/light: the active item stands out from the sidebar at 3:1 or more (fill 7.92:1, text on fill 8.12:1)
+[INFO] console/charcoal/light: {"ground":"rgb(28, 29, 32)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.92,"fgVsGround":1.02,"fgVsBg":8.12},"chip":{"bg":"rgb(35, 36, 40)","fg":"rgb(235, 235, 232)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"4 new"},"label":"rgb(174, 178, 185)","min":7.29}
+[PASS] S-console-charcoal-dark-1 console/charcoal/dark: Chrome renders dark with data-sidebar=charcoal
+[PASS] S-console-charcoal-dark-2 console/charcoal/dark: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in console dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-console-charcoal-dark-3 console/charcoal/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-console-charcoal-dark-4 console/charcoal/dark: every text of the sidebar at least 4.5:1 (min 7.29, 22 texts)
+[PASS] S-console-charcoal-dark-5 console/charcoal/dark: the active item stands out from the sidebar at 3:1 or more (fill 7.92:1, text on fill 8.12:1)
+[INFO] console/charcoal/dark: {"ground":"rgb(28, 29, 32)","active":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","weight":"600","bgVsGround":7.92,"fgVsGround":1.02,"fgVsBg":8.12},"chip":{"bg":"rgb(35, 36, 40)","fg":"rgb(235, 235, 232)"},"hot":{"bg":"rgb(147, 178, 240)","fg":"rgb(15, 26, 51)","text":"4 new"},"label":"rgb(174, 178, 185)","min":7.29}
+[PASS] S-clarity-paper-light-1 clarity/paper/light: Chrome renders light with data-sidebar=paper
+[PASS] S-clarity-paper-light-2 clarity/paper/light: ground, items, labels, counter chips and active item have the values the design system gives for paper in clarity light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-clarity-paper-light-3 clarity/paper/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-clarity-paper-light-4 clarity/paper/light: every text of the sidebar at least 4.5:1 (min 6.98, 22 texts)
+[PASS] S-clarity-paper-light-5 clarity/paper/light: the active item stands out from the sidebar at 3:1 or more by its accent text and weight 600 (text 7.31:1 on the sidebar, 6.98:1 on the wash; wash 1.05:1, a cue)
+[INFO] clarity/paper/light: {"ground":"rgb(245, 246, 248)","active":{"bg":"rgb(238, 240, 255)","fg":"rgb(67, 56, 202)","weight":"600","bgVsGround":1.05,"fgVsGround":7.31,"fgVsBg":6.98},"chip":{"bg":"rgb(255, 255, 255)","fg":"rgb(17, 24, 39)"},"hot":{"bg":"rgb(67, 56, 202)","fg":"rgb(255, 255, 255)","text":"5 new"},"label":"rgb(75, 85, 99)","min":6.98}
+[PASS] S-clarity-paper-dark-1 clarity/paper/dark: Chrome renders dark with data-sidebar=paper
+[PASS] S-clarity-paper-dark-2 clarity/paper/dark: ground, items, labels, counter chips and active item have the values the design system gives for paper in clarity dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-clarity-paper-dark-3 clarity/paper/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-clarity-paper-dark-4 clarity/paper/dark: every text of the sidebar at least 4.5:1 (min 6.86, 22 texts)
+[PASS] S-clarity-paper-dark-5 clarity/paper/dark: the active item stands out from the sidebar at 3:1 or more by its accent text and weight 600 (text 9.47:1 on the sidebar, 6.86:1 on the wash; wash 1.38:1, a cue)
+[INFO] clarity/paper/dark: {"ground":"rgb(15, 17, 22)","active":{"bg":"rgb(38, 42, 82)","fg":"rgb(165, 180, 252)","weight":"600","bgVsGround":1.38,"fgVsGround":9.47,"fgVsBg":6.86},"chip":{"bg":"rgb(27, 30, 38)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"5 new"},"label":"rgb(180, 186, 198)","min":6.86}
+[PASS] S-clarity-ink-light-1 clarity/ink/light: Chrome renders light with data-sidebar=ink
+[PASS] S-clarity-ink-light-2 clarity/ink/light: ground, items, labels, counter chips and active item have the values the design system gives for ink in clarity light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-clarity-ink-light-3 clarity/ink/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-clarity-ink-light-4 clarity/ink/light: every text of the sidebar at least 4.5:1 (min 7.14, 22 texts)
+[PASS] S-clarity-ink-light-5 clarity/ink/light: the active item stands out from the sidebar at 3:1 or more (fill 8.09:1, text on fill 8.09:1)
+[INFO] clarity/ink/light: {"ground":"rgb(26, 27, 75)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":8.09,"fgVsGround":1,"fgVsBg":8.09},"chip":{"bg":"rgb(38, 42, 82)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"6 new"},"label":"rgb(180, 186, 216)","min":7.14}
+[PASS] S-clarity-ink-dark-1 clarity/ink/dark: Chrome renders dark with data-sidebar=ink
+[PASS] S-clarity-ink-dark-2 clarity/ink/dark: ground, items, labels, counter chips and active item have the values the design system gives for ink in clarity dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-clarity-ink-dark-3 clarity/ink/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-clarity-ink-dark-4 clarity/ink/dark: every text of the sidebar at least 4.5:1 (min 7.95, 22 texts)
+[PASS] S-clarity-ink-dark-5 clarity/ink/dark: the active item stands out from the sidebar at 3:1 or more (fill 8.79:1, text on fill 8.09:1)
+[INFO] clarity/ink/dark: {"ground":"rgb(20, 21, 58)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":8.79,"fgVsGround":1.09,"fgVsBg":8.09},"chip":{"bg":"rgb(31, 34, 71)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"6 new"},"label":"rgb(180, 186, 216)","min":7.95}
+[PASS] S-clarity-charcoal-light-1 clarity/charcoal/light: Chrome renders light with data-sidebar=charcoal
+[PASS] S-clarity-charcoal-light-2 clarity/charcoal/light: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in clarity light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-clarity-charcoal-light-3 clarity/charcoal/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-clarity-charcoal-light-4 clarity/charcoal/light: every text of the sidebar at least 4.5:1 (min 8.09, 22 texts)
+[PASS] S-clarity-charcoal-light-5 clarity/charcoal/light: the active item stands out from the sidebar at 3:1 or more (fill 9.07:1, text on fill 8.09:1)
+[INFO] clarity/charcoal/light: {"ground":"rgb(20, 22, 28)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":9.07,"fgVsGround":1.12,"fgVsBg":8.09},"chip":{"bg":"rgb(27, 30, 38)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"7 new"},"label":"rgb(180, 186, 198)","min":8.09}
+[PASS] S-clarity-charcoal-dark-1 clarity/charcoal/dark: Chrome renders dark with data-sidebar=charcoal
+[PASS] S-clarity-charcoal-dark-2 clarity/charcoal/dark: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in clarity dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-clarity-charcoal-dark-3 clarity/charcoal/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-clarity-charcoal-dark-4 clarity/charcoal/dark: every text of the sidebar at least 4.5:1 (min 8.09, 22 texts)
+[PASS] S-clarity-charcoal-dark-5 clarity/charcoal/dark: the active item stands out from the sidebar at 3:1 or more (fill 9.07:1, text on fill 8.09:1)
+[INFO] clarity/charcoal/dark: {"ground":"rgb(20, 22, 28)","active":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","weight":"600","bgVsGround":9.07,"fgVsGround":1.12,"fgVsBg":8.09},"chip":{"bg":"rgb(27, 30, 38)","fg":"rgb(238, 240, 245)"},"hot":{"bg":"rgb(165, 180, 252)","fg":"rgb(26, 27, 75)","text":"7 new"},"label":"rgb(180, 186, 198)","min":8.09}
+[PASS] S-contrast-paper-light-1 contrast/paper/light: Chrome renders light with data-sidebar=paper
+[PASS] S-contrast-paper-light-2 contrast/paper/light: ground, items, labels, counter chips and active item have the values the design system gives for paper in contrast light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-contrast-paper-light-3 contrast/paper/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-contrast-paper-light-4 contrast/paper/light: every text of the sidebar at least 4.5:1 (min 8.06, 22 texts)
+[PASS] S-contrast-paper-light-5 contrast/paper/light: the active item stands out from the sidebar at 3:1 or more by its accent text and weight 600 (text 8.81:1 on the sidebar, 8.06:1 on the wash; wash 1.09:1, a cue)
+[INFO] contrast/paper/light: {"ground":"rgb(240, 240, 240)","active":{"bg":"rgb(221, 231, 247)","fg":"rgb(11, 61, 145)","weight":"700","bgVsGround":1.09,"fgVsGround":8.81,"fgVsBg":8.06},"chip":{"bg":"rgb(255, 255, 255)","fg":"rgb(0, 0, 0)"},"hot":{"bg":"rgb(11, 61, 145)","fg":"rgb(255, 255, 255)","text":"8 new"},"label":"rgb(38, 38, 38)","min":8.06}
+[PASS] S-contrast-paper-dark-1 contrast/paper/dark: Chrome renders dark with data-sidebar=paper
+[PASS] S-contrast-paper-dark-2 contrast/paper/dark: ground, items, labels, counter chips and active item have the values the design system gives for paper in contrast dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-contrast-paper-dark-3 contrast/paper/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-contrast-paper-dark-4 contrast/paper/dark: every text of the sidebar at least 4.5:1 (min 8.34, 22 texts)
+[PASS] S-contrast-paper-dark-5 contrast/paper/dark: the active item stands out from the sidebar at 3:1 or more by its accent text and weight 600 (text 13.71:1 on the sidebar, 8.34:1 on the wash; wash 1.64:1, a cue)
+[INFO] contrast/paper/dark: {"ground":"rgb(0, 0, 0)","active":{"bg":"rgb(58, 50, 16)","fg":"rgb(250, 204, 21)","weight":"700","bgVsGround":1.64,"fgVsGround":13.71,"fgVsBg":8.34},"chip":{"bg":"rgb(22, 22, 24)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"8 new"},"label":"rgb(228, 228, 231)","min":8.34}
+[PASS] S-contrast-ink-light-1 contrast/ink/light: Chrome renders light with data-sidebar=ink
+[PASS] S-contrast-ink-light-2 contrast/ink/light: ground, items, labels, counter chips and active item have the values the design system gives for ink in contrast light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-contrast-ink-light-3 contrast/ink/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-contrast-ink-light-4 contrast/ink/light: every text of the sidebar at least 4.5:1 (min 8.06, 22 texts)
+[PASS] S-contrast-ink-light-5 contrast/ink/light: the active item stands out from the sidebar at 3:1 or more (fill 8.95:1, text on fill 12.92:1)
+[INFO] contrast/ink/light: {"ground":"rgb(7, 42, 102)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":8.95,"fgVsGround":1.44,"fgVsBg":12.92},"chip":{"bg":"rgb(11, 61, 145)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"9 new"},"label":"rgb(221, 231, 247)","min":8.06}
+[PASS] S-contrast-ink-dark-1 contrast/ink/dark: Chrome renders dark with data-sidebar=ink
+[PASS] S-contrast-ink-dark-2 contrast/ink/dark: ground, items, labels, counter chips and active item have the values the design system gives for ink in contrast dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-contrast-ink-dark-3 contrast/ink/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-contrast-ink-dark-4 contrast/ink/dark: every text of the sidebar at least 4.5:1 (min 11, 22 texts)
+[PASS] S-contrast-ink-dark-5 contrast/ink/dark: the active item stands out from the sidebar at 3:1 or more (fill 10.77:1, text on fill 12.92:1)
+[INFO] contrast/ink/dark: {"ground":"rgb(5, 29, 71)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":10.77,"fgVsGround":1.2,"fgVsBg":12.92},"chip":{"bg":"rgb(7, 42, 102)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"9 new"},"label":"rgb(221, 231, 247)","min":11}
+[PASS] S-contrast-charcoal-light-1 contrast/charcoal/light: Chrome renders light with data-sidebar=charcoal
+[PASS] S-contrast-charcoal-light-2 contrast/charcoal/light: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in contrast light (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-contrast-charcoal-light-3 contrast/charcoal/light: every colour in the sidebar is a token value (75 measured)
+[PASS] S-contrast-charcoal-light-4 contrast/charcoal/light: every text of the sidebar at least 4.5:1 (min 12.92, 22 texts)
+[PASS] S-contrast-charcoal-light-5 contrast/charcoal/light: the active item stands out from the sidebar at 3:1 or more (fill 12.92:1, text on fill 12.92:1)
+[INFO] contrast/charcoal/light: {"ground":"rgb(10, 10, 11)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":12.92,"fgVsGround":1,"fgVsBg":12.92},"chip":{"bg":"rgb(22, 22, 24)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"10 new"},"label":"rgb(228, 228, 231)","min":12.92}
+[PASS] S-contrast-charcoal-dark-1 contrast/charcoal/dark: Chrome renders dark with data-sidebar=charcoal
+[PASS] S-contrast-charcoal-dark-2 contrast/charcoal/dark: ground, items, labels, counter chips and active item have the values the design system gives for charcoal in contrast dark (weight 600 or more), and every side-*/charcoal-* token is defined by name
+[PASS] S-contrast-charcoal-dark-3 contrast/charcoal/dark: every colour in the sidebar is a token value (75 measured)
+[PASS] S-contrast-charcoal-dark-4 contrast/charcoal/dark: every text of the sidebar at least 4.5:1 (min 12.92, 22 texts)
+[PASS] S-contrast-charcoal-dark-5 contrast/charcoal/dark: the active item stands out from the sidebar at 3:1 or more (fill 12.92:1, text on fill 12.92:1)
+[INFO] contrast/charcoal/dark: {"ground":"rgb(10, 10, 11)","active":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","weight":"700","bgVsGround":12.92,"fgVsGround":1,"fgVsBg":12.92},"chip":{"bg":"rgb(22, 22, 24)","fg":"rgb(255, 255, 255)"},"hot":{"bg":"rgb(250, 204, 21)","fg":"rgb(10, 10, 11)","text":"10 new"},"label":"rgb(228, 228, 231)","min":12.92}
+[INFO] screenshots: verify-u4.u1.style-console-paper-light.png, verify-u4.u1.style-console-paper-dark.png, verify-u4.u1.style-console-ink-light.png, verify-u4.u1.style-console-ink-dark.png, verify-u4.u1.style-console-charcoal-light.png, verify-u4.u1.style-console-charcoal-dark.png, verify-u4.u1.style-clarity-paper-light.png, verify-u4.u1.style-clarity-paper-dark.png, verify-u4.u1.style-clarity-ink-light.png, verify-u4.u1.style-clarity-ink-dark.png, verify-u4.u1.style-clarity-charcoal-light.png, verify-u4.u1.style-clarity-charcoal-dark.png, verify-u4.u1.style-contrast-paper-light.png, verify-u4.u1.style-contrast-paper-dark.png, verify-u4.u1.style-contrast-ink-light.png, verify-u4.u1.style-contrast-ink-dark.png, verify-u4.u1.style-contrast-charcoal-light.png, verify-u4.u1.style-contrast-charcoal-dark.png
+[PASS] S-clean STYLE pages: no 5xx, no SQL or PHP error text
+[INFO] phase LANG from verify-u4.phase-lang.adapted.php
+
+===== phase LANG =====
+
+== LANG: English and Italian
+[INFO] server pid=37288 on 127.0.0.1:8071 prefix=''
+[INFO] EN {"aside":"Main","group0":"Overview","group1":"Access","group2":"Security","group3":"System","item:[omesso]":"Dashboard","item:[omesso]\/users":"Users","item:[omesso]\/roles":"Roles","item:[omesso]\/permissions":"Permissions","item:[omesso]\/permissions\/check":"Check a permission","item:[omesso]\/activity":"Activity","item:[omesso]\/settings":"Settings","item:[omesso]\/appearance":"Appearance","tog-aria":"Collapse the sidebar","tog-title":"Collapse the sidebar","today-label":"Today","today-note":"sign-ins, # failed","today-svg":"Sign-ins by hour today, busiest # with #","rail-tog-aria":"Expand the sidebar","rail-tog-title":"Expand the sidebar","settings-label0":"Today in the sidebar","settings-help0":"Sign-ins and failures of the day, for those who can see the activity log.","settings-opt0":"Shown","settings-opt1":"Hidden","settings-section":"Panel","appearance-label0":"Sidebar","appearance-help0":"Paper is the light sidebar; Ink and Charcoal are dark in light and dark mode alike.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Shape"}
+[INFO] IT {"aside":"Principale","group0":"Panoramica","group1":"Accesso","group2":"Sicurezza","group3":"Sistema","item:[omesso]":"Dashboard","item:[omesso]\/users":"Utenti","item:[omesso]\/roles":"Ruoli","item:[omesso]\/permissions":"Permessi","item:[omesso]\/permissions\/check":"Verifica permesso","item:[omesso]\/activity":"Attività","item:[omesso]\/settings":"Impostazioni","item:[omesso]\/appearance":"Aspetto","tog-aria":"Comprimi la barra laterale","tog-title":"Comprimi la barra laterale","today-label":"Oggi","today-note":"accessi, # falliti","today-svg":"Accessi di oggi per ora, il massimo alle # con #","rail-tog-aria":"Espandi la barra laterale","rail-tog-title":"Espandi la barra laterale","settings-label0":"Oggi nella barra laterale","settings-help0":"Accessi e tentativi falliti del giorno, per chi può vedere il log attività.","settings-opt0":"Visibile","settings-opt1":"Nascosto","settings-section":"Pannello","appearance-label0":"Barra laterale","appearance-help0":"Paper è la barra chiara; Ink e Charcoal sono scure sia in chiaro sia in scuro.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Forma"}
+[PASS] L-1    Every new string of the sidebar, the Today panel, the toggle (both states), the Settings switch and the Appearance style row has its Italian text
+[PASS] L-2    None of those English strings appears as a word in the text, labels or tooltips of the Italian pages (Users, Settings, Appearance, Activity, Profile; Paper, Ink, Charcoal excepted)
+[PASS] L-3    The style names stay Paper, Ink and Charcoal in Italian
+[INFO] L-4 excerpts: {"en today":["5:50 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 24 Oct 2026","5:50 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 24 Oct 2026"],"it today":["v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: → 1 127.0.0.1 04 24 ott 2026","v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: 1 → 127.0.0.1 05 24 ott 2026"],"en sidebar":[" v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 24 Oct "," v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 24 Oct "," v8badmin Appearance changed Appearance Sidebar: ink → charcoal 127.0.0.1 10 "],"it sidebar":["50 v8badmin Aspetto cambiato Appearance Barra laterale: ink → — 127.0.0.1 02 24 ott ","50 v8badmin Aspetto cambiato Appearance Barra laterale: — → ink 127.0.0.1 03 24 ott ","49 v8badmin Aspetto cambiato Appearance Barra laterale: ink → charcoal 127.0.0.1 10 "],"en head":"01 24 Oct 2026, 15:50 v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 24 Oct 2026, 15:50 v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 24 Oct 2026, 15:50 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 24 Oct 2026, 15:50 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 24 Oct 2026, 15:50 admin@v8b.test S"}
+[PASS] L-4    The activity log names the two new fields in each language (Today in the sidebar / Oggi nella barra laterale, Sidebar / Barra laterale)
+[PASS] L-clean LANG pages: no 5xx, no SQL or PHP error text
+[INFO] phase ESC from verify-u1.phase-esc.php
+
+===== phase ESC =====
+
+== ESC: escape, CSRF, errors, logs
+[INFO] server pid=30036 on 127.0.0.1:8071 prefix=''
+[PASS] E-1    A sidebar label from the application language file (views.html "Changing a few lines") is printed escaped, in the text and in the tooltip
+[PASS] E-2    On the rail the same label in the title attribute is escaped too
+[PASS] E-3    A crafted value on the switch, the style and the collapse field is never printed raw and gives no error page
+[PASS] E-4    The sidebar form (the one form U1 adds) carries the CSRF token on every page seen in this phase
+[PASS] E-5    Every response of this U1 run (477 bodies): no 5xx, no SQL text, no PHP error
+[INFO] application log lines WARNING or above: 0 
+[PASS] E-6    Application log: no WARNING, ERROR or CRITICAL line apart from one CSRF refusal per deliberate POST without the token (0)
+
+TOTAL: 226 PASS, 0 FAIL, 0 AMB
+cc26ffb s1.u1.cc26ffb.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=True (1 .env files deleted first)

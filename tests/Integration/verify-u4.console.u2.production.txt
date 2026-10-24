@@ -1,0 +1,187 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase CHK from verify-u2.phase-chk.php
+
+===== phase CHK =====
+
+== CHK: Check a permission (U2)
+[INFO] server pid=32944 on 127.0.0.1:8071 prefix=''
+[INFO] delete u2-doomed through the panel: 303; deleted_at="2026-10-24 15:42:30"; assignments left=1
+[INFO] delete u2-dpar (parent of u2-dkid) through the panel: 303; deleted=false; u2-dkid parent_id now 15
+[INFO] u2-dpar marked deleted by hand (deleted_at), parent_id of u2-dkid kept
+[INFO] delete user through the panel: 303; users.deleted_at="2026-10-24 15:42:32"
+
+-- ACC
+[PASS] A-0    Access accounts: permissions.view by the SPEC precedence equals service can() for every account (12)
+[PASS] A-pv   pv (holds permissions.view): sidebar item shown, screen opens (200) with the outcome
+[PASS] A-pvmid pvmid (holds permissions.view): sidebar item shown, screen opens (200) with the outcome
+[PASS] A-pvkid pvkid (holds permissions.view): sidebar item shown, screen opens (200) with the outcome
+[PASS] A-pvdoomed pvdoomed (lacks permissions.view): sidebar item absent, screen refused by the server, nothing of it in the answer
+[PASS] A-uview uview (lacks permissions.view): sidebar item absent, screen refused by the server, nothing of it in the answer
+[PASS] A-admindeny admindeny (lacks permissions.view): sidebar item absent, screen refused by the server, nothing of it in the answer
+[PASS] A-supdeny supdeny (lacks permissions.view): sidebar item absent, screen refused by the server, nothing of it in the answer
+[PASS] A-usergrant usergrant (holds permissions.view): sidebar item shown, screen opens (200) with the outcome
+[PASS] A-adminoff adminoff (lacks permissions.view): sidebar item absent, screen refused by the server, nothing of it in the answer
+[PASS] A-admin admin (holds permissions.view): sidebar item shown, screen opens (200) with the outcome
+[PASS] A-owner owner (holds permissions.view): sidebar item shown, screen opens (200) with the outcome
+[PASS] A-plain plain (lacks permissions.view): sidebar item absent, screen refused by the server, nothing of it in the answer
+[PASS] A-anon Anonymous: the screen redirects to sign-in
+[PASS] A-item Sidebar: the item "Check a permission" sits in Access after Permissions and is the current page (aria-current="page") on the screen, the only one
+[PASS] A-links Permissions list: every permission (39) links to its check, the link text is the slug
+[PASS] A-select The permission picker offers every permission, nothing else
+
+-- OUT
+[INFO] rules exercised: {"inactive":18,"override_denied":4,"none":72,"super_admin":16,"override_granted":4,"role":12}
+[PASS] O-1    explain() answers {allowed bool, rule among the six RULE_* values, via list} for every pair, allowed always equal to can() (126 pairs)
+[PASS] O-2    can() and explain() rule equal the SPEC precedence computed from the tables for every pair (inactive, override denied also on super admin, override granted, super admin, role direct/parent/grandparent, none, deleted role)
+[PASS] O-3    The screen gives, for every pair, the outcome of can() and marks exactly one rule, the one explain() names, among six rules listed in order; the subject is the user asked
+[PASS] O-4    Every rule of the precedence was exercised at least once
+[PASS] O-5    The roles the screen names as holding it are the chains of explain()["via"] for every pair
+[PASS] O-6    explain()["via"]: each chain from the assigned role up to the role granted directly, also when another rule decides (inactive, denied, granted override, super admin with a role)
+[PASS] O-gp   Inherited from the grandparent: rule role, chain u2-child ← u2-parent ← u2-grand
+[PASS] O-p    Inherited from the parent: rule role, chain u2-parent ← u2-grand
+[PASS] O-sd   A denial on a super admin decides: does not hold, rule override_denied
+[PASS] O-og   A deactivated account with a granting override: does not hold, rule inactive
+[PASS] O-del  The only role deleted from the panel: does not hold, rule none, no role named
+[PASS] O-multi Two roles holding it (one direct, one through two parents): both chains named
+[INFO] deleted parent (u2-dkid under deleted u2-dpar), u2zone.read: {"model":[false,"none"],"modelVia":[],"can":false,"explain":{"allowed":false,"rule":"none","via":[]},"screen":[false,"none",null]}
+[PASS] O-dp   Role whose parent is deleted: the screen agrees with can() and explain() (outcome, rule, roles)
+[INFO] deleted parent grants nothing to its child (can=false)
+
+-- WHO
+[INFO] users: 76 not deleted, deleted [25]
+[PASS] W-u2zone.read-1 u2zone.read: the list is exactly the users for whom can() is true, deleted users left out (10), each once
+[PASS] W-u2zone.read-2 u2zone.read: and that set is the SPEC precedence computed from the tables
+[PASS] W-u2zone.read-3 u2zone.read: each row says why with the rule of explain() (Super admin / Override: granted / Role: chain of via) and links to the check for that user
+[PASS] W-u2zone.read-4 u2zone.read: the heading count is the number of holders on every page (10)
+[PASS] W-u2zone.read-6 u2zone.read: row numbers run 01.. without gaps across pages
+[PASS] W-u2zone.write-1 u2zone.write: the list is exactly the users for whom can() is true, deleted users left out (6), each once
+[PASS] W-u2zone.write-2 u2zone.write: and that set is the SPEC precedence computed from the tables
+[PASS] W-u2zone.write-3 u2zone.write: each row says why with the rule of explain() (Super admin / Override: granted / Role: chain of via) and links to the check for that user
+[PASS] W-u2zone.write-4 u2zone.write: the heading count is the number of holders on every page (6)
+[PASS] W-u2zone.write-6 u2zone.write: row numbers run 01.. without gaps across pages
+[PASS] W-u2zone.none-1 u2zone.none: the list is exactly the users for whom can() is true, deleted users left out (4), each once
+[PASS] W-u2zone.none-2 u2zone.none: and that set is the SPEC precedence computed from the tables
+[PASS] W-u2zone.none-3 u2zone.none: each row says why with the rule of explain() (Super admin / Override: granted / Role: chain of via) and links to the check for that user
+[PASS] W-u2zone.none-4 u2zone.none: the heading count is the number of holders on every page (4)
+[PASS] W-u2zone.none-6 u2zone.none: row numbers run 01.. without gaps across pages
+[PASS] W-u2zone.page-1 u2zone.page: the list is exactly the users for whom can() is true, deleted users left out (47), each once
+[PASS] W-u2zone.page-2 u2zone.page: and that set is the SPEC precedence computed from the tables
+[PASS] W-u2zone.page-3 u2zone.page: each row says why with the rule of explain() (Super admin / Override: granted / Role: chain of via) and links to the check for that user
+[PASS] W-u2zone.page-4 u2zone.page: the heading count is the number of holders on every page (47)
+[PASS] W-u2zone.page-6 u2zone.page: row numbers run 01.. without gaps across pages
+[PASS] W-users.view-1 users.view: the list is exactly the users for whom can() is true, deleted users left out (6), each once
+[PASS] W-users.view-2 users.view: and that set is the SPEC precedence computed from the tables
+[PASS] W-users.view-3 users.view: each row says why with the rule of explain() (Super admin / Override: granted / Role: chain of via) and links to the check for that user
+[PASS] W-users.view-4 users.view: the heading count is the number of holders on every page (6)
+[PASS] W-users.view-6 users.view: row numbers run 01.. without gaps across pages
+[PASS] W-permissions.view-1 permissions.view: the list is exactly the users for whom can() is true, deleted users left out (7), each once
+[PASS] W-permissions.view-2 permissions.view: and that set is the SPEC precedence computed from the tables
+[PASS] W-permissions.view-3 permissions.view: each row says why with the rule of explain() (Super admin / Override: granted / Role: chain of via) and links to the check for that user
+[PASS] W-permissions.view-4 permissions.view: the heading count is the number of holders on every page (7)
+[PASS] W-permissions.view-6 permissions.view: row numbers run 01.. without gaps across pages
+[PASS] W-settings.update-1 settings.update: the list is exactly the users for whom can() is true, deleted users left out (5), each once
+[PASS] W-settings.update-2 settings.update: and that set is the SPEC precedence computed from the tables
+[PASS] W-settings.update-3 settings.update: each row says why with the rule of explain() (Super admin / Override: granted / Role: chain of via) and links to the check for that user
+[PASS] W-settings.update-4 settings.update: the heading count is the number of holders on every page (5)
+[PASS] W-settings.update-6 settings.update: row numbers run 01.. without gaps across pages
+[INFO] pages: {"u2zone.read":{"pages":1,"rows":10},"u2zone.write":{"pages":1,"rows":6},"u2zone.none":{"pages":1,"rows":4},"u2zone.page":{"pages":2,"rows":47},"users.view":{"pages":1,"rows":6},"permissions.view":{"pages":1,"rows":7},"settings.update":{"pages":1,"rows":5}}
+[PASS] W-pg   Pagination: u2zone.page (47 holders) spreads over more than one page, every holder reached through the page links
+[INFO] odd page values (status, rows): {"999":[200,0],"0":[200,25],"-3":[200,25],"abc":[200,25],"1e3":[200,0],"2.5":[200,22]}
+[PASS] W-pg2  Odd page values (999, 0, -3, abc, 1e3, 2.5): no 5xx, never a user who does not hold it
+
+-- API
+[INFO] explain() on odd input: [{"canError":"InvalidArgumentException","explainError":"InvalidArgumentException: Invalid permission \"users.*\": use the \"area.action\" format in lowercase, and no wildcards when checking."},{"canError":"InvalidArgumentException","explainError":"InvalidArgumentException: Invalid permission \"Users.View\": use the \"area.action\" format in lowercase, and no wildcards when checking."},{"canError":"InvalidArgumentException","explainError":"InvalidArgumentException: Invalid permission \"users\": use the \"area.action\" format in lowercase, and no wildcards when checking."},{"canError":"InvalidArgumentException","explainError":"InvalidArgumentException: Invalid permission \"\": use the \"area.action\" format in lowercase, and no wildcards when checking."},{"can":false,"explain":{"allowed":false,"rule":"inactive","via":[]}},{"can":true,"explain":{"allowed":true,"rule":"role","via":[[13]]}},{"can":true,"explain":{"allowed":true,"rule":"super_admin","via":[]}}]
+[PASS] API-1  explain() rejects a wildcard and a slug not in area.action form with InvalidArgumentException, like can() (api.html)
+[PASS] API-2  explain() for a user that does not exist and for a permission that does not exist: denied, same answer as can(), no exception
+[INFO] owner (super admin) on a permission that does not exist: {"can":true,"explain":{"allowed":true,"rule":"super_admin","via":[]}}
+
+-- HOS
+[INFO] hostile: {"perm-missing":[200,["There is no permission \"nope.nothing\"."],null,null,0],"perm-upper":[200,["There is no permission \"U2ZONE.READ\"."],null,null,0],"perm-wild":[200,["There is no permission \"u2zone.*\"."],null,null,0],"perm-bare":[200,["There is no permission \"u2zone\"."],null,null,0],"perm-xss":[200,["There is no permission \"\"><script>alert(1)<\/script>\"."],null,null,0],"perm-sql":[200,["There is no permission \"u2zone.read' OR '1'='1\"."],null,null,0],"perm-long":[200,["There is no permission \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.b\"."],null,null,0],"perm-nul":[200,["There is no permission \"u2zone.read x\"."],null,null,0],"perm-arr":[200,[],null,null,0],"perm-arr2":[200,[],null,null,0],"user-missing":[200,["No user matches \"999999\"."],null,null,10],"user-zero":[200,["No user matches \"0\"."],null,null,10],"user-neg":[200,["No user matches \"-1\"."],null,null,10],"user-sql":[200,["No user matches \"1 OR 1=1\"."],null,null,10],"user-sql2":[200,["No user matches \"' OR ''='\"."],null,null,10],"user-pct":[200,["No user matches \"%\"."],null,null,10],"user-us":[200,["No user matches \"_\"."],null,null,10],"user-xss":[200,["No user matches \"<img src=x onerror=alert(3)>\"."],null,null,10],"user-arr":[200,[],null,null,10],"user-long":[200,["No user matches \"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\"."],null,null,10],"user-float":[200,["No user matches \"1.5\"."],null,null,10],"user-hex":[200,["No user matches \"0x1\"."],null,null,10],"user-deleted-email":[200,["No user matches \"u2-softdel@example.com\"."],null,null,10],"user-deleted-id":[200,["No user matches \"25\"."],null,null,10],"user-only":[200,[],null,null,0],"both-arr":[200,[],null,null,0]}
+[PASS] H-1    Hostile parameters (26, arrays, SQL, wildcard, long, NUL, XSS): no 5xx and no SQL or PHP error text
+[PASS] H-2    Crafted values are never echoed raw
+[PASS] H-3    A permission or a user that does not exist (or a deleted user, or a malformed value) never gives an outcome for some other user
+[PASS] H-4    A permission that does not exist says so (status message), and so does a user that does not exist
+[PASS] H-5    The user is found by id, email and username (placeholder "Username, email or id"), the same user each time
+[INFO] partial username "u2-chi": subject null status ["No user matches \"u2-chi\"."]
+[INFO] username "17" (user 78) vs id 17: subject 17
+[INFO] an id wins over a username made of the same digits
+[PASS] H-6    A crafted role name and username are printed escaped in the outcome and in the list (text intact, no markup)
+
+-- RO
+[INFO] other methods on the screen: {"POST":404,"PUT":404,"PATCH":404,"DELETE":404}
+[PASS] R-1    Read only: after 20 requests of the screen (GET with every kind of input, POST/PUT/PATCH/DELETE with a valid token) the database is unchanged (acl_sessions.last_seen_at and Shield users.last_active aside)
+[PASS] R-2    Other methods than GET do not reach a handler of the screen (no 2xx)
+[PASS] R-3    The screen holds no form of its own that writes (only the GET form; the shell's sidebar, language, mode and sign-out forms aside)
+
+-- LANG
+[INFO] Italian kicker of the Permissions screen (1.0): "Accesso"; sidebar group: ["Panoramica","Accesso","Sicurezza","Sistema"]
+[INFO] Italian strings (en => it): {"Check a permission · RoleWarden":"Verifica di un permesso · RoleWarden","Check a permission":"Verifica permesso","Access":"Accesso","Who holds a permission and why. Add a user to see whether they hold it and which rule decides. Nothing here changes anything.":"Chi ha un permesso e perché. Aggiungi un utente per sapere se lo ha e quale regola decide. Da qui non si cambia nulla.","Permission":"Permesso","User":"Utente","Check":"Verifica","Who holds it":"Chi lo ha","Choose a permission to see who holds it.":"Scegli un permesso per vedere chi lo ha.","Choose a permission":"Scegli un permesso","Username, email or id":"Username, email o id","":"","Why":"Perché","Notes":"Note","Users #":"Utenti #","Super admin":"Super admin","Override: granted":"Override: concesso","Role: U#-direct":"Ruolo: U#-direct","Role: U#-child ← U#-parent ← U#-grand":"Ruolo: U#-child ← U#-parent ← U#-grand","Role: U#-parent ← U#-grand":"Ruolo: U#-parent ← U#-grand","Role: <img src=x onerror=alert(#)>&\"r":"Ruolo: <img src=x onerror=alert(#)>&\"r","Role: U#-child ← U#-parent ← U#-grand, U#-direct":"Ruolo: U#-child ← U#-parent ← U#-grand, U#-direct","Outcome":"Esito","Rules, in order: the first that applies decides":"Regole, in ordine: decide la prima che si applica","The account is deactivated: every permission is denied.":"L'account è disattivato: ogni permesso è negato.","A denial on this user, which beats even a super admin.":"Un divieto su questo utente, che batte anche il super admin.","A grant on this user.":"Una concessione su questo utente.","A super admin role, which holds every permission.":"Un ruolo super admin, che ha tutti i permessi.","A role grants it, on its own or through a parent. decides":"Un ruolo lo concede, direttamente o tramite un ruolo padre. decide","Nothing grants it: denied.":"Niente lo concede: negato.","decides":"decide","Roles that hold it":"Ruoli che lo concedono","u#-#bf#c holds u#SLUG.":"u#-#bf#c ha u#SLUG.","A grant on this user. decides":"Una concessione su questo utente. decide","A role grants it, on its own or through a parent.":"Un ruolo lo concede, direttamente o tramite un ruolo padre.","u#-e#aff#b holds u#SLUG.":"u#-e#aff#b ha u#SLUG.","A super admin role, which holds every permission. decides":"Un ruolo super admin, che ha tutti i permessi. decide","v#bowner holds u#SLUG.":"v#bowner ha u#SLUG.","A denial on this user, which beats even a super admin. decides":"Un divieto su questo utente, che batte anche il super admin. decide","u#-fcf#a#fa does not hold u#SLUG.":"u#-fcf#a#fa non ha u#SLUG.","The account is deactivated: every permission is denied. decides":"L'account è disattivato: ogni permesso è negato. decide","u#-#ea#f#d# does not hold u#SLUG.":"u#-#ea#f#d# non ha u#SLUG.","Nothing grants it: denied. decides":"Niente lo concede: negato. decide","u#-#d#d does not hold u#SLUG.":"u#-#d#d non ha u#SLUG.","There is no permission \"SLUG\".":"Non esiste il permesso \"SLUG\".","No user matches \"#\".":"Nessun utente corrisponde a \"#\"."}
+[INFO] identical in both languages: ["Super admin"]
+[PASS] L-1    Every string of the screen (title, heading, intro, labels, placeholder, button, sections, the six rules, outcome, roles, table, notes, empty and error messages, sidebar item) has an Italian text different from the English one
+[PASS] L-2    No English sentence of the screen appears in the Italian pages (21 sentences)
+[PASS] L-3    The Italian screen still gives the same outcome and rule (the marked rule is the same position)
+
+-- LOG
+[PASS] K-1    Every response of the phase (295): no 5xx, no SQL text, no PHP error
+[INFO] application log lines WARNING or above: 0 
+[PASS] K-2    Application log: no WARNING, ERROR or CRITICAL line (CSRF refusals of the deliberate non-GET requests aside: 0)
+[INFO] phase ST from verify-u2.phase-st.php
+
+===== phase ST =====
+
+== ST: user status dot
+[INFO] server pid=7028 on 127.0.0.1:8071 prefix=''
+[INFO] served .rw-status rules: .rw-status{align-items:center;gap:var(--space-2);color:var(--ink);display:inline-flex} || .rw-status:before{content:"";background:var(--granted);border:1.5px solid var(--granted);width:8px;height:8px;box-shadow:0 0 0 3px var(--granted-tint);box-sizing:border-box;border-radius:50%} || .rw-status--disabled{color:var(--ink-muted)} || .rw-status--disabled:before{border-color:var(--ink-muted);box-shadow:none;background:0 0} || .rw-status:not(.rw-status--disabled):before{animation:rw-alive var(--motion-breath) var(--ease-in-out) 3}
+[INFO] reduced-motion blocks: .rw-status:not(.rw-status--disabled):before{animation:rw-alive var(--motion-breath) var(--ease-in-out) 3} || .rw-toast{animation:none}.rw-toast.is-leaving{transition:none}
+[PASS] ST-console-light-1 console/light: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
+[PASS] ST-console-light-2 console/light: the active dot keeps 3:1 or more on its ground (dot 6.26:1 on rgb(250, 250, 249))
+[PASS] ST-console-light-3 console/light: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
+[PASS] ST-console-light-4 console/light: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
+[PASS] ST-console-light-5 console/light: the animation moves only the halo (box-shadow): nothing slides or scales
+[PASS] ST-console-light-6 console/light: after 5.6s the animation has finished and the dot rests with its halo
+[PASS] ST-console-light-7 console/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
+[PASS] ST-console-dark-1 console/dark: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
+[PASS] ST-console-dark-2 console/dark: the active dot keeps 3:1 or more on its ground (dot 8.2:1 on rgb(28, 29, 32))
+[PASS] ST-console-dark-3 console/dark: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
+[PASS] ST-console-dark-4 console/dark: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
+[PASS] ST-console-dark-5 console/dark: the animation moves only the halo (box-shadow): nothing slides or scales
+[PASS] ST-console-dark-6 console/dark: after 5.6s the animation has finished and the dot rests with its halo
+[PASS] ST-console-dark-7 console/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
+[PASS] ST-clarity-light-1 clarity/light: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
+[PASS] ST-clarity-light-2 clarity/light: the active dot keeps 3:1 or more on its ground (dot 5.02:1 on rgb(255, 255, 255))
+[PASS] ST-clarity-light-3 clarity/light: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
+[PASS] ST-clarity-light-4 clarity/light: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
+[PASS] ST-clarity-light-5 clarity/light: the animation moves only the halo (box-shadow): nothing slides or scales
+[PASS] ST-clarity-light-6 clarity/light: after 5.6s the animation has finished and the dot rests with its halo
+[PASS] ST-clarity-light-7 clarity/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
+[PASS] ST-clarity-dark-1 clarity/dark: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
+[PASS] ST-clarity-dark-2 clarity/dark: the active dot keeps 3:1 or more on its ground (dot 9.87:1 on rgb(20, 22, 28))
+[PASS] ST-clarity-dark-3 clarity/dark: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
+[PASS] ST-clarity-dark-4 clarity/dark: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
+[PASS] ST-clarity-dark-5 clarity/dark: the animation moves only the halo (box-shadow): nothing slides or scales
+[PASS] ST-clarity-dark-6 clarity/dark: after 5.6s the animation has finished and the dot rests with its halo
+[PASS] ST-clarity-dark-7 clarity/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
+[PASS] ST-contrast-light-1 contrast/light: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
+[PASS] ST-contrast-light-2 contrast/light: the active dot keeps 3:1 or more on its ground (dot 8.06:1 on rgb(255, 255, 255))
+[PASS] ST-contrast-light-3 contrast/light: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
+[PASS] ST-contrast-light-4 contrast/light: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
+[PASS] ST-contrast-light-5 contrast/light: the animation moves only the halo (box-shadow): nothing slides or scales
+[PASS] ST-contrast-light-6 contrast/light: after 5.6s the animation has finished and the dot rests with its halo
+[PASS] ST-contrast-light-7 contrast/light: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
+[PASS] ST-contrast-dark-1 contrast/dark: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
+[PASS] ST-contrast-dark-2 contrast/dark: the active dot keeps 3:1 or more on its ground (dot 11.36:1 on rgb(10, 10, 11))
+[PASS] ST-contrast-dark-3 contrast/dark: disabled is a hollow `ink-muted` ring, `ink-muted` word, no halo, no animation, never `denied`
+[PASS] ST-contrast-dark-4 contrast/dark: on load the active halo breathes: one animation of 1.6s run 3 times (4.8s in all, under 5s), no delay
+[PASS] ST-contrast-dark-5 contrast/dark: the animation moves only the halo (box-shadow): nothing slides or scales
+[PASS] ST-contrast-dark-6 contrast/dark: after 5.6s the animation has finished and the dot rests with its halo
+[PASS] ST-contrast-dark-7 contrast/dark: under prefers-reduced-motion the dot does not move (no animation) and still shows its halo
+[INFO] contrast of the active dot (dot/ground, dot/halo, halo/ground): {"console\/light":[6.26,5.63,1.11,"rgb(250, 250, 249)"],"console\/dark":[8.2,6.55,1.25,"rgb(28, 29, 32)"],"clarity\/light":[5.02,4.5,1.11,"rgb(255, 255, 255)"],"clarity\/dark":[9.87,7.45,1.32,"rgb(20, 22, 28)"],"contrast\/light":[8.06,6.72,1.2,"rgb(255, 255, 255)"],"contrast\/dark":[11.36,8.25,1.38,"rgb(10, 10, 11)"]}
+[PASS] ST-css Served CSS: keyframes of the status animate only box-shadow, and the status animation is off under prefers-reduced-motion (reduce block with none, or declared only inside no-preference)
+[PASS] ST-clean ST pages: no 5xx, no SQL or PHP error
+
+TOTAL: 129 PASS, 0 FAIL, 0 AMB
+cc26ffb s1.u2.cc26ffb.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=True (1 .env files deleted first)

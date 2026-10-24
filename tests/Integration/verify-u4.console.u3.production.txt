@@ -1,0 +1,14 @@
+ABORT: this snapshot adapter requires an empty rolewarden_test
+Traceback (most recent call last):
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u4.suite.py", line 146, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u4.suite.py", line 69, in main
+    before = dump()
+  File "E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-u4.suite.py", line 38, in dump
+    return sp.run(['php', HERE / 'verify-v4.snapshot.php'], env=ENV, check=True, stdout=sp.PIPE).stdout
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['php', WindowsPath('E:/progetti_lavoro/ASP/rolewarden-ci4/tests/Integration/verify-v4.snapshot.php')]' returned non-zero exit status 4.

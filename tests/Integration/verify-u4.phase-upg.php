@@ -57,6 +57,17 @@ $MU3 = tree('8dc8a49', 'mu3');
 $MNEW = tree($NEWC, 'mnew');
 $APPU = app_copy('appu', $M100, false);
 
+// ---------------------------------------------------------------- re-verification on c998ac8: fresh installs without the demo, admin gets every stock permission
+function admin_missing(): array { return array_column(q("SELECT p.slug FROM acl_permissions p WHERE p.id NOT IN (SELECT rp.permission_id FROM acl_role_permissions rp JOIN acl_roles r ON r.id=rp.role_id WHERE r.slug='admin') ORDER BY p.slug"), 'slug'); }
+use_module($APPU, $M100);
+base_install($APPU);
+$miss100 = admin_missing(); $perms100 = array_column(q('SELECT slug FROM acl_permissions ORDER BY slug'), 'slug');
+use_module($APPU, $MNEW);
+check('UPG-fresh-3', 'Fresh install of the commit under test (no demo) succeeds', base_install($APPU), '');
+$missNew = admin_missing(); $permsNew = array_column(q('SELECT slug FROM acl_permissions ORDER BY slug'), 'slug');
+info('fresh 1.0.0: ' . count($perms100) . ' permissions, admin lacks ' . json_encode($miss100) . '; fresh new: ' . count($permsNew) . ' permissions, admin lacks ' . json_encode($missNew) . '; new since 1.0.0: ' . json_encode(array_values(array_diff($permsNew, $perms100))));
+check('UPG-fresh-4', 'Fresh install: admin is granted every stock permission it had on a fresh 1.0.0 plus the five dashboard.* (it lacks nothing more than in 1.0.0)', $missNew === $miss100 && array_intersect(DP, $missNew) === [], json_encode(['new lacks' => $missNew, '1.0.0 lacks' => $miss100]));
+
 /** 1.0.0 installed and used: custom roles, a buyer's own permission, overrides, admin customised. */
 function install_100(string $app, bool $adminWithoutActivity): array
 {
@@ -108,6 +119,12 @@ $nonDashA = array_values(array_filter($addedA, fn ($g) => ! str_contains($g, ':d
 check('UPG-A3', 'Nothing else changes: no other grant added or removed, role names, buyer permission, overrides and users untouched', $other === [] && $nonDashA === [] && $goneA === [], json_encode(['grants added besides dashboard.*' => $nonDashA, 'grants removed' => $goneA, 'other rows' => array_slice($other, 0, 8)]));
 info('A diff (migrations and settings rows included): ' . json_encode(array_slice($dA, 0, 30)));
 check('UPG-A4', "admin still lacks users.delete and keeps its buyer name", ! in_array('admin:users.delete', grants_of(['users.delete']), true) && q1('SELECT name FROM acl_roles WHERE slug=?', ['admin']) === 'Administrators (renamed by the buyer)', '');
+// re-verification on c998ac8: path A rollback (the whole 1.1 batch of the single migrate) gives back the 1.0.0 database exactly
+$o = spark_ok($APPU, ['migrate:rollback', '-f'], 'rollback A');
+$dRA = statediff($S0, fullstate());
+check('UPG-A6', 'Path A: migrate:rollback brings the database back exactly to the customised 1.0.0 state (every table, every row)', rc($o) === 0 && $dRA === [], json_encode(array_slice($dRA, 0, 10)));
+$o = spark_ok($APPU, ['migrate', '-n', 'RoleWarden'], 'migrate A again');
+check('UPG-A7', 'Path A: migrating again gives the same dashboard.* grants and still no other grant added', rc($o) === 0 && grants_of(DP) === $gotA && array_values(array_filter(array_diff(all_grants(), $G0), fn ($g) => ! str_contains($g, ':dashboard.'))) === [], json_encode(grants_of(DP)));
 // the upgraded panel: the auditor sees the dashboard, its child inherits it, the plain role does not
 server_stop();
 serve8($APPU, 'UPG-A');

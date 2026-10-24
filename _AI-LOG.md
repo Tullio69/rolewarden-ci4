@@ -1179,3 +1179,19 @@ Formato di ogni voce:
 - Difetti: **D1** la migrazione `AddDashboardPermissions` ridà ad `admin` i permessi di serie revocati dall'acquirente (`users.delete`, `activity.view` osservati) e il rollback non li toglie (UPG-A3, A4, B3, B5)
 - Ambiguita' di specifica (non decise): **A1** mappa di calore in griglia HTML `role="img"`, non SVG; **A2** numeri degli utenti per ruolo in elenco visibile, non in `<details>`; **A3** un ruolo cancellato con `activity.view` riceve i `dashboard.*`; **A4** con piu' motivi di avviso (due IP/giorni, IP ed email bloccata) l'avviso nomina solo l'IP del giorno piu' recente
 - Note per il prossimo: dettagli e riproduzione in `tests/Integration/U4-REPORT.md`; driver `verify-u4.all.sh`. Una riesecuzione adattata di U3 development e' stata interrotta dall'host per memoria (uscita `*.adapted-interrupted.*`, non valida; DB ripristinato a mano dallo snapshot). Docker: `rolewarden-db` ricreato con `DB_PORT=3317` (il `.env` del repository dice 3306). Nessun commit
+
+### [2026-10-24 19:10] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica in nero della U4 (Dashboard) su `c998ac8` dopo D1. Scritti solo `tests/Integration/verify-u4.*` (aggiunti UPG-fresh-3/4 e UPG-A6/A7 a `verify-u4.phase-upg.php`, nuove uscite) e la sezione «Riverifica su c998ac8» di `U4-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash identico).
+- Cosa ho fatto:
+  - U4 UPG: 27/27 in development e in production. DASH: 238/238 in development, 239/239 in production.
+  - Regressioni, una alla volta: U3 SRCH 41/41, U2 129/129, U1 226/226 adattata, in tutti e due gli ambienti.
+- Stato: completato. **Esito PASS. D1 chiuso: U4 approvata quanto ai difetti.**
+  - La migrazione aggiunge solo le concessioni dei cinque `dashboard.*`, sia dalla 1.0.0 sia da `8dc8a49`.
+  - Il rollback riporta il database esattamente allo stato precedente, nei percorsi A e B.
+  - Un'installazione nuova dà ad `admin` gli stessi permessi di serie della 1.0.0, più i cinque `dashboard.*`.
+- Ambiguita' di specifica: **A1-A4 ancora aperte**, non toccate dal commit e non decise.
+- Note per il prossimo:
+  - Ad `admin`, come gia' nella 1.0.0, mancano `admin.access`, `admin.settings`, `beta.access`, `users.edit` e `users.manage-admins`. E' un'osservazione, non un difetto.
+  - Da cancellare a mano i profili Chrome bloccati in `scratchpad/u4r-u2-development` e `scratchpad/old-u4r-u2-development`.
+  - Nessun commit.

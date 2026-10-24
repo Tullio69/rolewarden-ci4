@@ -171,3 +171,32 @@ Ho letto solo `CLAUDE.md` (protocollo), `docs/SPEC.md` (Pannello admin, decision
   - **Esito:** U1 production adattata 226/226. Uscite non adattate in `verify-u4.console.u1.development.unadapted.txt` e `verify-u4.console.u3.*.unadapted.txt`.
 - **Riesecuzione interrotta dall'host.** La riesecuzione adattata di U3 in development (`*.adapted-interrupted.*`) è stata fermata per memoria insufficiente: i processi spark uscivano con `rc=-1073741502`. Quell'uscita non vale. Il database l'ho ripristinato a mano dallo snapshot della corsa (hash identico, riga in `verify-u4.environment.txt`). Non ho rilanciato U3 production adattata e U1 development adattata.
 - U2 passa senza adattamenti in entrambi gli ambienti.
+
+## Riverifica su c998ac8
+
+**Collaudatore ad Hoc (Claude), 2026-10-24, commit `c998ac8` (correzione di D1). Esito: PASS. D1 è chiuso. U4 è approvata per quanto riguarda i difetti; A1–A4 restano aperte e vanno decise.**
+
+Stesse regole di lettura del primo giro. Ho aperto solo il report U4 e i runner `verify-u4.*`. Driver: `verify-u4.all.sh` con `RW_V8_NEW=c998ac8`, una suite alla volta.
+
+| Suite | development | production |
+| --- | --- | --- |
+| U4 UPG (seed, aggiornamento da 1.0.0, rollback) | **27/27** | **27/27** |
+| U4 DASH | **238/238** | **239/239** |
+| U3 SRCH (copia adattata) | **41/41** | **41/41** |
+| U2 CHK, ST | **129/129** | **129/129** |
+| U1 NAV…ESC (copie adattate) | **226/226** | **226/226** |
+
+- **Controlli nuovi in `verify-u4.phase-upg.php`:**
+  - UPG-fresh-3/4: installazione nuova senza demo. Ad `admin` non manca nessun permesso di serie più che su una 1.0.0 nuova, e ha i cinque `dashboard.*`. Su tutte e due le versioni mancano ad `admin` gli stessi cinque permessi: `admin.access`, `admin.settings`, `beta.access`, `users.edit`, `users.manage-admins`. È lo stato della 1.0.0, che la SPEC non contraddice, quindi non è un difetto.
+  - UPG-A6/A7: percorso A. Il `migrate:rollback` dell'unico lotto 1.1 riporta il database esattamente allo stato 1.0.0 personalizzato: ogni tabella, ogni riga, diff vuoto. Rifacendo il migrate tornano le stesse concessioni e nessun'altra.
+- **D1 chiuso:**
+  - UPG-A3/A4: dopo l'aggiornamento diretto da 1.0.0 nessuna concessione in più oltre ai `dashboard.*`, e `admin` continua a non avere `users.delete`.
+  - UPG-B3: il solo lotto U4 aggiunge i cinque permessi, le loro concessioni e la sua riga in `migrations`, nient'altro. `admin` resta senza `users.delete` e `activity.view`.
+  - UPG-B5: dopo il rollback il database è quello di prima, più l'override non correlato scritto nel frattempo. Concessioni aggiunte o mancanti: `[]`.
+- **Regressioni completate** (nel primo giro erano rimaste interrotte o non lanciate):
+  - U3 development e production adattate: 41/41, nessuna uscita `rc=-1073741502`.
+  - U1 development adattata: 226/226.
+- **Ambiguità:** A1–A4 restano aperte. Il commit non le tocca, e A3 si osserva ancora: il ruolo cancellato `u4-gone-auditor` riceve i cinque permessi.
+- **Ambiente:**
+  - Database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u4.environment.txt`), Mailpit vuoto, nessun processo residuo.
+  - Resta da cancellare a mano un profilo Chrome bloccato, in `scratchpad/u4r-u2-development` e `scratchpad/old-u4r-u2-development`.

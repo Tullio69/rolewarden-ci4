@@ -24,7 +24,7 @@ $me = auth()->user();
     <ul class="rw-nav">
       <li><a href="<?= esc(site_url('demo')) ?>" aria-current="page"><span>01</span><?= lang('Demo.documents') ?></a></li>
       <?php if (can('users.view')) : ?>
-        <li><a href="<?= esc(site_url('rolewarden/users')) ?>"><span>02</span><?= lang('Demo.panel') ?></a></li>
+        <li><a href="<?= esc(site_url('rolewarden')) ?>"><span>02</span><?= lang('Demo.panel') ?></a></li>
       <?php endif ?>
     </ul>
   </aside>

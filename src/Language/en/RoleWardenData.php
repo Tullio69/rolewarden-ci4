@@ -19,6 +19,7 @@ return [
         'activity' => 'Activity',
         'security' => 'Security',
         'appearance' => 'Appearance',
+        'dashboard' => 'Dashboard',
     ],
     'actions' => [
         'view' => 'view',
@@ -31,6 +32,11 @@ return [
         'override' => 'override',
         'revoke' => 'revoke',
         'alerts' => 'alerts',
+        'figures' => 'figures',
+        'signins' => 'sign-ins',
+        'security' => 'security',
+        'roles' => 'roles',
+        'changes' => 'changes',
     ],
     'permissions' => [
         'users' => [
@@ -68,6 +74,13 @@ return [
         ],
         'appearance' => [
             'update' => 'Change the panel theme',
+        ],
+        'dashboard' => [
+            'figures' => 'See the key figures on the dashboard',
+            'signins' => 'See sign-ins over time and by day and hour on the dashboard',
+            'security' => 'See the security notice on the dashboard',
+            'roles' => 'See users per role on the dashboard',
+            'changes' => 'See the latest permission changes on the dashboard',
         ],
     ],
 ];

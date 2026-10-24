@@ -85,9 +85,9 @@ composer require codeigniter4/translations   # optional: CodeIgniter's own messa
     <h3 id="wiring">Wiring</h3>
     <p>In <code>app/Config/Auth.php</code>, let Shield ask RoleWarden for permissions:</p>
 <pre><code>public string $userProvider = \RoleWarden\Models\UserModel::class;</code></pre>
-    <p>In the same file, use RoleWarden's sign-in screen (the <code>$views</code> array) and, if most people who sign in are administrators, land them on the panel (the <code>$redirects</code> array):</p>
+    <p>In the same file, use RoleWarden's sign-in screen (the <code>$views</code> array) and land people on the panel after signing in (the <code>$redirects</code> array). <code>/rolewarden</code> is the dashboard; whoever holds none of its <code>dashboard.*</code> permissions goes on to the first screen they can see:</p>
 <pre><code>'login' =&gt; '\RoleWarden\Views\auth\login',</code></pre>
-<pre><code>'login' =&gt; 'rolewarden/users',</code></pre>
+<pre><code>'login' =&gt; 'rolewarden',</code></pre>
     <p>In <code>app/Config/Routes.php</code>, next to the line Shield already needs:</p>
 <pre><code>service('auth')-&gt;routes($routes);
 \RoleWarden\Config\RouteRegistrar::register($routes);</code></pre>

@@ -87,7 +87,7 @@ edit("app/Config/Autoload.php", "APP_NAMESPACE => APPPATH,", "APP_NAMESPACE => A
 // README "Wiring the admin panel".
 edit("app/Config/Auth.php", "public string \$userProvider = UserModel::class;", "public string \$userProvider = \\RoleWarden\\Models\\UserModel::class;");
 edit("app/Config/Auth.php", "\x27login\x27                       => \x27\\CodeIgniter\\Shield\\Views\\login\x27,", "\x27login\x27                       => \x27\\RoleWarden\\Views\\auth\\login\x27,");
-edit("app/Config/Auth.php", "\x27login\x27             => \x27/\x27,", "\x27login\x27             => \x27rolewarden/users\x27,");
+edit("app/Config/Auth.php", "\x27login\x27             => \x27/\x27,", "\x27login\x27             => \x27rolewarden\x27,");
 edit("app/Config/Routes.php", "service(\x27auth\x27)->routes(\$routes);", "service(\x27auth\x27)->routes(\$routes);\n\\RoleWarden\\Config\\RouteRegistrar::register(\$routes);\n\\RoleWardenDemo\\Config\\DemoRoutes::register(\$routes);");
 
 // Roles live in the panel. Shield keeps only its default group, so the migration that
@@ -98,7 +98,7 @@ replaceArray("app/Config/AuthGroups.php", "matrix", "[\n        \x27user\x27 => 
 
 // The home page opens the installer until RoleWarden is installed, then the panel.
 // Relative Location: before the installer writes .env, baseURL may not be this server.
-edit("app/Config/Routes.php", "\$routes->get(\x27/\x27, \x27Home::index\x27);", "\$routes->get(\x27/\x27, static fn () => service(\x27response\x27)->setStatusCode(302)->setHeader(\x27Location\x27, \\RoleWarden\\Install\\Installer::installed() ? \x27rolewarden/users\x27 : \x27rolewarden/install\x27));");
+edit("app/Config/Routes.php", "\$routes->get(\x27/\x27, \x27Home::index\x27);", "\$routes->get(\x27/\x27, static fn () => service(\x27response\x27)->setStatusCode(302)->setHeader(\x27Location\x27, \\RoleWarden\\Install\\Installer::installed() ? \x27rolewarden\x27 : \x27rolewarden/install\x27));");
 
 // The panel speaks English and Italian; the browser picks.
 edit("app/Config/App.php", "public bool \$negotiateLocale = false;", "public bool \$negotiateLocale = true;");

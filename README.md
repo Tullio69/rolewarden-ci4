@@ -205,12 +205,12 @@ To land on the panel after signing in, change the `login` entry of the `$redirec
 Shield scaffolds in the same file (Shield's default is `/`):
 
 ```php
-'login' => 'rolewarden/users',
+'login' => 'rolewarden',
 ```
 
 Shield still sends a user back to the page they were trying to open, when there was one.
-A user without `users.view` is turned away by the panel's permission check, as on any
-panel URL, so set this only if most people who sign in are administrators.
+`/rolewarden` is the dashboard; a user who holds none of its `dashboard.*` permissions is
+sent on to the first panel screen they can see, or to their profile.
 
 Registration and password recovery stay exactly Shield's own screens (this module does
 not touch identity or credentials); only the login screen is restyled.

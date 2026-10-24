@@ -48,7 +48,7 @@
     <h3>The panel has no style</h3>
     <p>The stylesheet is served by the module at <code>/rolewarden/assets/css/panel.css</code>. Check that address in the browser: a 404 means the routes line is missing; anything else is in the log.</p>
     <h3>Signing in sends me to the home page</h3>
-    <p>Set the <code>login</code> entry of <code>$redirects</code> in <code>app/Config/Auth.php</code> to <code>'rolewarden/users'</code>. Shield still returns a user to the page they were trying to open, when there was one.</p>
+    <p>Set the <code>login</code> entry of <code>$redirects</code> in <code>app/Config/Auth.php</code> to <code>'rolewarden'</code>. Shield still returns a user to the page they were trying to open, when there was one.</p>
     <h3>I can sign in but every panel page turns me away</h3>
     <p>Your account holds none of the panel's permissions. Give it a role that does, from another administrator's account or, for the first super admin, with the query in <a href="installation.html#migrations">Installation</a>.</p>
     <h3>A permission I granted is not taken into account</h3>

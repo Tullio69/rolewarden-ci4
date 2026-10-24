@@ -17,6 +17,7 @@ return [
         'activity' => 'Attività',
         'security' => 'Sicurezza',
         'appearance' => 'Aspetto',
+        'dashboard' => 'Dashboard',
     ],
     'actions' => [
         'view' => 'vedere',
@@ -29,6 +30,11 @@ return [
         'override' => 'eccezioni',
         'revoke' => 'revocare',
         'alerts' => 'avvisi',
+        'figures' => 'cifre',
+        'signins' => 'accessi',
+        'security' => 'sicurezza',
+        'roles' => 'ruoli',
+        'changes' => 'modifiche',
     ],
     'permissions' => [
         'users' => [
@@ -66,6 +72,13 @@ return [
         ],
         'appearance' => [
             'update' => 'Cambiare il tema del pannello',
+        ],
+        'dashboard' => [
+            'figures' => 'Vedere le cifre chiave nella dashboard',
+            'signins' => 'Vedere gli accessi nel tempo e per giorno e ora nella dashboard',
+            'security' => "Vedere l'avviso di sicurezza nella dashboard",
+            'roles' => 'Vedere gli utenti per ruolo nella dashboard',
+            'changes' => 'Vedere le ultime modifiche ai permessi nella dashboard',
         ],
     ],
 ];

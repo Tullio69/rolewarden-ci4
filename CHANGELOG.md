@@ -25,6 +25,14 @@ version may require changes on your side, listed under "Upgrading". After any up
   Actions open their screen and never act on their own; a permission identifier answers who
   holds it and opens Check a permission. Without JavaScript the sidebar link opens the same
   results as a page, `/rolewarden/search`.
+- **Dashboard** at `/rolewarden`: key figures (active users, sign-ins, failed sign-ins,
+  permission changes, each with its change on the previous period), sign-ins over time and
+  by weekday and hour, a security notice when an address reaches the lock threshold or an
+  email is locked, users per role and the latest permission changes, over 7, 30 or 90 days.
+  Each block has its own permission: `dashboard.figures`, `dashboard.signins`,
+  `dashboard.security`, `dashboard.roles`, `dashboard.changes`. Charts are SVG drawn on the
+  server from the theme's colours, each with its numbers as a table. Whoever holds none of
+  them is sent on to the first screen of the sidebar they can see.
 
 ### Changed
 - The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.
@@ -36,7 +44,11 @@ version may require changes on your side, listed under "Upgrading". After any up
 - If you extend `RoleWarden\Authorization\Resolver` with a method of your own named
   `explain()`, rename it: the class now has one.
 - Run `php spark migrate -n RoleWarden`. An updated installation keeps the Paper sidebar and
-  starts with Today switched off; a new one starts with it on.
+  starts with Today switched off; a new one starts with it on. The migration adds the five
+  `dashboard.*` permissions, granted to `admin` and to every role that holds `activity.view`;
+  rolling it back deletes them, with every grant and override of them.
+- To land on the dashboard after signing in, set the `login` entry of `$redirects` in
+  `app/Config/Auth.php` to `'rolewarden'` (it was `'rolewarden/users'`).
 - If you copied `layouts/panel.php` into `app/Views/overrides/`, your copy keeps the 1.0
   sidebar and still works. To get the new one, replace its `<aside>` with
   `<?= view('RoleWarden\Views\partials\sidebar', ['active' => $active, 'collapsed' => $collapsed]) ?>`

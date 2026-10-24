@@ -24,6 +24,7 @@ final class Sidebar
 
     // 16px glyphs, 1.5px stroke, square caps (design system, Iconography).
     private const ICONS = [
+        'dashboard' => '<path d="M2.5 2.5h4.5v6h-4.5zM9 2.5h4.5v3.5h-4.5zM9 8h4.5v5.5h-4.5zM2.5 10.5h4.5v3h-4.5z"/>',
         'users' => '<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.6 2.6-4 5-4s4.4 1.4 5 4"/>',
         'roles' => '<path d="M8 2.5l5.5 3-5.5 3-5.5-3z"/><path d="M2.5 8.5l5.5 3 5.5-3"/><path d="M2.5 11.5l5.5 3 5.5-3"/>',
         'permissions' => '<path d="M2.5 2.5h11v11h-11z"/><path d="M2.5 6.5h11M2.5 10h11M6.5 2.5v11"/>',
@@ -91,7 +92,9 @@ final class Sidebar
         $count = static fn (string $table): string => (string) $db->table($table)->countAllResults();
 
         $groups = [
-            'overview' => [],
+            'overview' => [
+                ['dashboard', array_values(\RoleWarden\Dashboard\Dashboard::BLOCKS), null, ''],
+            ],
             'access' => [
                 ['users', 'users.view', static fn (): string => (string) model(\RoleWarden\Models\UserModel::class)->countAllResults()],
                 ['roles', 'roles.view', static fn (): string => (string) model(\RoleWarden\Models\RoleModel::class)->countAllResults()],
@@ -115,7 +118,7 @@ final class Sidebar
             foreach ($items as $item) {
                 [$key, $permission, $counter] = $item;
 
-                if (! can($permission)) {
+                if (! (is_array($permission) ? can_any($permission) : can($permission))) {
                     continue;
                 }
 

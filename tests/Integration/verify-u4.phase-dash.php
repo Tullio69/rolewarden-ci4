@@ -82,11 +82,19 @@ function dash(string $h): array
             foreach ($xp->query('./td', $tr) as $td) $row[] = (int) norm4($td->textContent);
             $o['heat'][norm4($xp->query('./th', $tr)->item(0)->textContent)] = $row;
         }
-        foreach ($xp->query('.//*[contains(@class,"rw-dash-heat-row")]', $hs) as $rowEl) {
-            $lab = norm4($xp->query('./span', $rowEl)->item(0)->textContent);
-            $cells = [];
-            foreach ($xp->query('./i', $rowEl) as $i) $cells[] = [preg_match('/rw-heat-(\d)/', $i->getAttribute('class'), $m) ? (int) $m[1] : -1, norm4($i->getAttribute('title'))];
-            $o['heatCells'][$lab] = $cells;
+        // second re-verification on 29a5df6 (A1 decided): the heat map is an SVG; one rect per weekday and hour, each with
+        // its level class and a <title> naming its count; the day is read from the title, never from the markup order
+        $hsvg = $xp->query('.//*[local-name()="svg"]', $hs)->item(0);
+        $o['heatSvg'] = $hsvg ? ['role' => $hsvg->getAttribute('role'), 'aria' => norm4($hsvg->getAttribute('aria-label')), 'rects' => $xp->query('.//*[local-name()="rect"]', $hsvg)->length] : null;
+        $o['heatHtmlCells'] = $xp->query('.//*[contains(@class,"rw-dash-heat-row")]', $hs)->length;
+        // the cells are read from the raw HTML: libxml's HTML parser drops a <title> nested in an inline svg
+        if ($hsvg && preg_match('/<svg[^>]*rw-dash-heat-svg[^>]*>(.*?)<\/svg>/s', $h, $sm)) {
+            preg_match_all('/<rect\b([^>]*)>\s*<title>(.*?)<\/title>\s*<\/rect>/s', $sm[1], $rm, PREG_SET_ORDER);
+            foreach ($rm as $r1) {
+                $tt = norm4($r1[2]);
+                $lab = preg_match('/, (\S+) (\d+):00$/u', $tt, $m) ? $m[1] : '?';
+                $o['heatCells'][$lab][] = [preg_match('/rw-heat-(\d)/', $r1[1], $m) ? (int) $m[1] : -1, $tt];
+            }
         }
         $img = $xp->query('.//*[@role="img"]', $hs)->item(0);
         $o['heatImg'] = $img ? norm4($img->getAttribute('aria-label')) : null;
@@ -101,6 +109,11 @@ function dash(string $h): array
         $img = $xp->query('.//*[@role="img"]', $rs)->item(0);
         $o['rolesImg'] = $img ? norm4($img->getAttribute('aria-label')) : null;
         $o['rolesDetails'] = $xp->query('.//details/summary', $rs)->length;
+        // A2 decided: the numbers in a <details>, on view only the legend of names
+        $o['rolesRowsInDetails'] = $xp->query('.//details//table//tbody/tr', $rs)->length;
+        $o['rolesRowsOutside'] = $xp->query('.//table//tbody/tr[not(ancestor::details)]', $rs)->length;
+        $o['rolesLegend'] = [];
+        foreach ($xp->query('.//*[contains(@class,"rw-legend")]/li[not(ancestor::details)]', $rs) as $li) $o['rolesLegend'][] = norm4($li->textContent);
         $n = $xp->query('.//*[contains(@class,"rw-section-title")]//*[contains(@class,"rw-note")]', $rs)->item(0);
         $o['rolesNote'] = $n ? norm4($n->textContent) : null;
     }
@@ -113,7 +126,7 @@ function dash(string $h): array
     foreach ($xp->query('//a|//button') as $a) if (preg_match('/^(Review attempts|Esamina i tentativi|Rivedi)/u', norm4($a->textContent))) {
         $box = $a->parentNode;
         while ($box && $box->nodeName !== 'section' && $box->nodeName !== 'div' && $box->nodeName !== 'aside') $box = $box->parentNode;
-        $o['notice'] = ['text' => $box ? norm4($box->textContent) : '', 'href' => html_entity_decode($a->getAttribute('href')), 'html' => $box ? $box->ownerDocument->saveHTML($box) : '', 'tag' => $a->nodeName, 'class' => $a->getAttribute('class')];
+        $o['notice'] = ['text' => $box ? norm4($box->textContent) : '', 'href' => html_entity_decode($a->getAttribute('href')), 'html' => $box ? $box->ownerDocument->saveHTML($box) : '', 'tag' => $a->nodeName, 'class' => $a->getAttribute('class'), 'lines' => $box ? array_map(fn ($li) => norm4($li->textContent), iterator_to_array($xp->query('.//li', $box))) : []];
     }
     return $o;
 }
@@ -307,6 +320,7 @@ foreach ([7, 30, 90] as $n) {
     }
     check("$tag-H2", "$n days: each cell has level ceil(4 x n / max) (0 when empty, max $max) and names its count in its title", $lvBad === [] && count($d['heatCells']) === 7, json_encode(array_slice($lvBad, 0, 6)));
     check("$tag-H3", "$n days: the heat map has role=img with an aria-label, and its numbers in a <details>", ($d['heatImg'] ?? '') !== '' && ($d['heatDetails'] ?? 0) === 1, json_encode([$d['heatImg'] ?? null, $d['heatDetails'] ?? null]));
+    check("$tag-H4", "$n days: A1, the heat map is drawn as SVG (role=img, aria-label, 7 x 24 = 168 cells, no HTML cell grid)", ($d['heatSvg']['role'] ?? '') === 'img' && ($d['heatSvg']['aria'] ?? '') !== '' && ($d['heatSvg']['rects'] ?? 0) === 168 && ($d['heatHtmlCells'] ?? 1) === 0 && array_sum(array_map('count', $d['heatCells'])) === 168, json_encode([$d['heatSvg'] ?? null, $d['heatHtmlCells'] ?? null, array_map('count', $d['heatCells'])]));
     // users per role
     $er = $e['roles'];
     $top = array_slice($er, 0, 4);
@@ -316,6 +330,8 @@ foreach ([7, 30, 90] as $n) {
     $gotRows = array_map(fn ($r) => [$r[0], $r[1]], $d['roles']);
     check("$tag-R1", "$n days: users per role = direct assignments of non-deleted users to non-deleted roles, descending, the first four plus \"Other roles\" (sum of the rest, $restSum)", $gotRows === $expRows, json_encode(['got' => $gotRows, 'exp' => $expRows]));
     check("$tag-R2", "$n days: the share chart has role=img and an aria-label", ($d['rolesImg'] ?? '') !== '', (string) ($d['rolesImg'] ?? ''));
+    check("$tag-R3", "$n days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)", ($d['rolesDetails'] ?? 0) === 1 && ($d['rolesRowsInDetails'] ?? 0) === count($expRows) && ($d['rolesRowsOutside'] ?? 1) === 0, json_encode([$d['rolesDetails'] ?? null, $d['rolesRowsInDetails'] ?? null, $d['rolesRowsOutside'] ?? null]));
+    check("$tag-R4", "$n days: A2, on view only the legend of names, in the order of the shares, without numbers", $d['rolesLegend'] === array_column($expRows, 0), json_encode(['legend' => $d['rolesLegend'], 'exp' => array_column($expRows, 0)]));
     if ($n === 30) info('roles note: ' . ($d['rolesNote'] ?? '') . ' ; percents: ' . json_encode(array_column($d['roles'], 2)) . ' ; roles details: ' . ($d['rolesDetails'] ?? 0));
     // latest changes
     $lat = $e['latest'];
@@ -414,17 +430,54 @@ sec_rows(array_merge(array_map(fn ($i) => ["203.0.113." . (50 + $i), 'recovered@
 check('SEC-i', '5 failures followed by a successful sign-in: the email is not locked, no notice', notice_for($own, 30, 'sec i') === null, '');
 sec_clear();
 
-// m: two addresses on two days; n: an address and a locked email together
-sec_rows(array_map(fn ($i) => ['203.0.113.70', "victim$i@u4.test", $at(5, sprintf('08:%02d:00', $i)), 0], range(0, 4)));
-sec_rows(array_map(fn ($i) => ['203.0.113.71', "victim$i@u4.test", $at(2, sprintf('08:%02d:00', $i)), 0], range(0, 4)));
-$nt = notice_for($own, 30, 'sec m');
-info('two addresses on two days (5 and 2 days ago): ' . json_encode([$nt['text'] ?? null, $nt ? qs($nt['href']) : null]));
+// A4 decided (second re-verification on 29a5df6): the notice lists every reason, one line each: every address at the
+// threshold with its day (the most recent first), then every locked email; the action opens auth.failed from the oldest
+// day cited to the most recent, today included with a locked email; with one reason, that day.
+$Dn = fn (int $k) => date('Y-m-d', strtotime("-$k days", $T0));
+$ip5 = fn (string $ip, int $daysAgo, string $hh) => sec_rows(array_map(fn ($i) => [$ip, "victim$i@u4.test", $at($daysAgo, sprintf('%s:%02d:00', $hh, $i)), 0], range(0, 4)));
+$lock5 = fn (string $email, int $base) => sec_rows(array_map(fn ($i) => ['198.51.100.' . ($base + $i), $email, dt(time() - 240 + $i * 30), 0], range(0, 4)));
+$lineIdx = function (array $lines, string $needle): int { foreach ($lines as $k => $l) if (str_contains($l, $needle)) return $k; return -1; };
+$info4 = fn (string $what, ?array $nt) => info("A4 $what: " . json_encode(['lines' => $nt['lines'] ?? null, 'query' => $nt ? qs($nt['href']) : null]));
+// m: two addresses on two days (5 and 2 days ago)
+$ip5('203.0.113.70', 5, '08'); $ip5('203.0.113.71', 2, '08');
+$nt = notice_for($own, 30, 'sec m'); $qn = $nt ? qs($nt['href']) : []; $info4('two addresses on two days', $nt);
 check('SEC-m', 'Two addresses at the threshold on two days: one notice, one action', $nt !== null && substr_count(G($own, DASHURL . '?period=30', 'sec m2'), 'Review attempts') === 1, '');
-sec_rows(array_map(fn ($i) => ["203.0.113." . (80 + $i), 'locked2@u4.test', dt(time() - 200 + $i * 30), 0], range(0, 4)));
-$nt = notice_for($own, 30, 'sec n');
-$qn = $nt ? qs($nt['href']) : [];
-info('address and locked email together: ' . json_encode([$nt['text'] ?? null, $qn]));
-check('SEC-n', 'An address at the threshold and a locked email together: the action opens the day of the address, not only today', $nt !== null && ($qn['action'] ?? '') === 'auth.failed' && in_array($qn['from'] ?? '', [date('Y-m-d', strtotime('-5 days', $T0)), date('Y-m-d', strtotime('-2 days', $T0))], true), json_encode($qn));
+check('SEC-m-lines', 'A4: two lines, one per address, each with its day, the most recent first (203.0.113.71 then 203.0.113.70)', $nt && count($nt['lines']) === 2 && $lineIdx($nt['lines'], '203.0.113.71') === 0 && $lineIdx($nt['lines'], '203.0.113.70') === 1, json_encode($nt['lines'] ?? null));
+check('SEC-m-link', 'A4: the action opens auth.failed from the oldest day cited to the most recent (' . $Dn(5) . ' to ' . $Dn(2) . ')', ($qn['action'] ?? '') === 'auth.failed' && ($qn['from'] ?? '') === $Dn(5) && ($qn['to'] ?? '') === $Dn(2), json_encode($qn));
+// n: plus a locked email
+$lock5('locked2@u4.test', 80);
+$nt = notice_for($own, 30, 'sec n'); $qn = $nt ? qs($nt['href']) : []; $info4('two addresses and a locked email', $nt);
+check('SEC-n-lines', 'A4: the two address lines first (most recent first), then the locked email on its own line', $nt && count($nt['lines']) === 3 && $lineIdx($nt['lines'], '203.0.113.71') === 0 && $lineIdx($nt['lines'], '203.0.113.70') === 1 && $lineIdx($nt['lines'], 'locked2@u4.test') === 2, json_encode($nt['lines'] ?? null));
+check('SEC-n-link', 'A4: with a locked email the action runs from the oldest day cited to today (' . $Dn(5) . ' to ' . $TODAY . ')', ($qn['action'] ?? '') === 'auth.failed' && ($qn['from'] ?? '') === $Dn(5) && ($qn['to'] ?? '') === $TODAY, json_encode($qn));
+check('SEC-n-one', 'A4: still one notice and one action', substr_count(G($own, DASHURL . '?period=30', 'sec n2'), 'Review attempts') === 1, '');
+sec_clear();
+// o: the same address at the threshold on two days (8 and 3 days ago): one line per day; in 7 days only the day inside
+$ip5('203.0.113.72', 8, '07'); $ip5('203.0.113.72', 3, '07');
+$d8 = date('j M', strtotime('-8 days', $T0)); $d3 = date('j M', strtotime('-3 days', $T0));
+$nt = notice_for($own, 30, 'sec o30'); $qn = $nt ? qs($nt['href']) : []; $info4('one address on two days, 30', $nt);
+check('SEC-o30', 'A4: one address at the threshold on two days gives two lines (one per day, the most recent first) and the action ' . $Dn(8) . ' to ' . $Dn(3), $nt && count($nt['lines']) === 2 && str_contains($nt['lines'][0], $d3) && str_contains($nt['lines'][1], $d8) && ($qn['from'] ?? '') === $Dn(8) && ($qn['to'] ?? '') === $Dn(3), json_encode([$nt['lines'] ?? null, $qn, $d3, $d8]));
+$nt = notice_for($own, 7, 'sec o7'); $qn = $nt ? qs($nt['href']) : []; $info4('one address on two days, 7', $nt);
+check('SEC-o7', 'A4: in 7 days only the day inside the period counts: one line, the action on that day (' . $Dn(3) . ')', $nt && count($nt['lines']) === 1 && str_contains($nt['lines'][0], $d3) && ($qn['from'] ?? '') === $Dn(3) && ($qn['to'] ?? '') === $Dn(3), json_encode([$nt['lines'] ?? null, $qn]));
+sec_clear();
+// p: two addresses at the threshold on the same day (4 days ago)
+$ip5('203.0.113.73', 4, '06'); $ip5('203.0.113.74', 4, '09');
+$nt = notice_for($own, 30, 'sec p'); $qn = $nt ? qs($nt['href']) : []; $info4('two addresses on the same day', $nt);
+check('SEC-p', 'A4: two addresses on the same day give two lines, and the action is that day (' . $Dn(4) . ')', $nt && count($nt['lines']) === 2 && $lineIdx($nt['lines'], '203.0.113.73') >= 0 && $lineIdx($nt['lines'], '203.0.113.74') >= 0 && ($qn['from'] ?? '') === $Dn(4) && ($qn['to'] ?? '') === $Dn(4), json_encode([$nt['lines'] ?? null, $qn]));
+sec_clear();
+// q: two locked emails alone
+$lock5('locked3@u4.test', 10); $lock5('locked4@u4.test', 20);
+$nt = notice_for($own, 30, 'sec q'); $qn = $nt ? qs($nt['href']) : []; $info4('two locked emails', $nt);
+check('SEC-q', 'A4: two locked emails alone: both cited, no address line, the action is today (' . $TODAY . ')', $nt && $lineIdx($nt['lines'], 'locked3@u4.test') >= 0 && $lineIdx($nt['lines'], 'locked4@u4.test') >= 0 && ! preg_match('/203\.0\.113|198\.51\.100/', implode(' ', $nt['lines'])) && ($qn['from'] ?? '') === $TODAY && ($qn['to'] ?? '') === $TODAY, json_encode([$nt['lines'] ?? null, $qn]));
+info('A4 two locked emails: number of lines = ' . count($nt['lines'] ?? []) . ' (one per email, or one line naming both)');
+// r: an address 40 days ago plus the locked emails: in 30 days only the emails (today), in 90 days from that day to today
+$ip5('203.0.113.75', 40, '05');
+$nt = notice_for($own, 30, 'sec r30'); $qn = $nt ? qs($nt['href']) : []; $info4('address 40 days ago and locked emails, 30', $nt);
+check('SEC-r30', 'A4: an address outside the period is not cited; with only locked emails the action is today', $nt && $lineIdx($nt['lines'], '203.0.113.75') === -1 && ($qn['from'] ?? '') === $TODAY && ($qn['to'] ?? '') === $TODAY, json_encode([$nt['lines'] ?? null, $qn]));
+$nt = notice_for($own, 90, 'sec r90'); $qn = $nt ? qs($nt['href']) : []; $info4('address 40 days ago and locked emails, 90', $nt);
+check('SEC-r90', 'A4: in 90 days the address line comes first, the emails after, and the action runs from ' . $Dn(40) . ' to today', $nt && $lineIdx($nt['lines'], '203.0.113.75') === 0 && $lineIdx($nt['lines'], 'locked3@u4.test') > 0 && ($qn['from'] ?? '') === $Dn(40) && ($qn['to'] ?? '') === $TODAY, json_encode([$nt['lines'] ?? null, $qn]));
+$okOpen = false;
+if ($nt) { G($own, $nt['href'], 'notice r link'); $okOpen = $own->status === 200; }
+check('SEC-r-open', 'A4: the action of the notice opens (200)', $okOpen, '');
 sec_clear();
 $hp = G($own, 'rolewarden/permissions', 'permissions screen');
 $descOk = [];

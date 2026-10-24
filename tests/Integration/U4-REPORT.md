@@ -200,3 +200,56 @@ Stesse regole di lettura del primo giro. Ho aperto solo il report U4 e i runner 
 - **Ambiente:**
   - Database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u4.environment.txt`), Mailpit vuoto, nessun processo residuo.
   - Resta da cancellare a mano un profilo Chrome bloccato, in `scratchpad/u4r-u2-development` e `scratchpad/old-u4r-u2-development`.
+
+## Seconda riverifica su 29a5df6
+
+**Collaudatore ad Hoc (Claude), 2026-10-25, commit `29a5df6` (decisioni dell'utente su A1–A4). Esito: PASS. U4 è approvata. A1–A4 sono chiuse come decise; resta una nuova ambiguità minore, A5, non bloccante.**
+
+Stesse regole di lettura dei giri precedenti. Ho aperto in più solo `git show 29a5df6 -- docs CHANGELOG.md`; del resto del commit conosco solo il `--stat`. Driver `verify-u4.all.sh` con `RW_V8_NEW=29a5df6`, una suite alla volta.
+
+| Suite | development | production |
+| --- | --- | --- |
+| U4 DASH (con i controlli A1, A2, A4) | **256/256** | **257/257** (in più SQL-prod) |
+| U4 UPG (con i controlli A3) | **29/29** | **29/29** |
+| U3 SRCH (copia adattata) | **41/41** | **41/41** |
+| U2 CHK, ST | **129/129** | **129/129** |
+| U1 NAV…ESC (copie adattate) | **226/226** | **226/226** |
+
+**Totale:** 1363/1363. Il numero dei controlli `N*-neg-*` (segno meno osservato) dipende dai dati del momento: 256 contro i 238 del giro precedente sono +18 controlli nuovi e un `neg` in meno.
+
+### Controlli adattati e nuovi
+
+- **A1, mappa di calore in SVG** (`verify-u4.phase-dash.php`):
+  - N*-H4 (nuovo): un `svg` con `role="img"` e `aria-label`, 168 `rect` (7 × 24), nessuna griglia HTML di celle.
+  - N*-H2 (adattato): il livello si legge dalla classe `rw-heat-n` di ogni `rect`, il conteggio dal suo `<title>` («N sign-ins, Mon 0:00»), e il giorno dal titolo stesso, non dall'ordine nel markup. Le celle si leggono dall'HTML grezzo, perché il parser HTML di libxml scarta un `<title>` dentro un `svg` in linea. Livello `ceil(4n/max)` di ogni cella: PASS in 7, 30 e 90 giorni.
+  - H1 e H3 invariati (tabella in `<details>` uguale alle query): PASS. CLR-4 (`rw-heat-0..4` → `heat-0..4`): PASS.
+- **A2, numeri degli utenti per ruolo:**
+  - N*-R3 (nuovo): la tabella sta in un `<details>` sotto la barra, una riga per quota, nessuna riga fuori.
+  - N*-R4 (nuovo): a vista solo la legenda dei nomi, nello stesso ordine delle quote, senza numeri.
+- **A3, ruolo cancellato:**
+  - UPG-A2 e UPG-B2 ora esigono esattamente `admin` più i ruoli non cancellati con `activity.view` diretto: niente più tolleranza per `u4-gone-auditor`.
+  - UPG-A2-gone e UPG-B2-gone (nuovi): il ruolo cancellato non riceve nessuno dei cinque, sia nell'aggiornamento diretto da 1.0.0 sia nel solo lotto U4.
+- **A4, avviso con più motivi:** le righe dell'avviso sono gli `<li>` del riquadro. Al posto del vecchio SEC-n:
+  - SEC-m-lines, SEC-m-link: due IP in due giorni (5 e 2 giorni fa) danno due righe, prima il più recente; link da 5 a 2 giorni fa.
+  - SEC-n-lines, SEC-n-link, SEC-n-one: in più un'email bloccata. Tre righe, l'email per ultima; link dal giorno più vecchio a oggi; sempre un solo avviso e una sola azione.
+  - SEC-o30, SEC-o7: lo stesso IP alla soglia in due giorni (8 e 3 giorni fa) dà una riga per giorno. In 7 giorni resta solo il giorno dentro il periodo, e il link è quel giorno.
+  - SEC-p: due IP nello stesso giorno danno due righe, e il link è quel giorno.
+  - SEC-q: due email bloccate da sole. Tutte e due citate, nessuna riga di IP, link oggi.
+  - SEC-r30, SEC-r90, SEC-r-open: un IP alla soglia 40 giorni fa più le email bloccate. In 30 giorni l'IP non è citato e il link è oggi. In 90 giorni prima l'IP, poi le email, e il link va da 40 giorni fa a oggi. Il link si apre (200).
+  - I casi con un solo motivo (SEC-a, SEC-g) restano invariati e passano: per l'IP il link è il suo giorno, per la sola email è oggi.
+- **Sensibilità:** le stesse suite su `c998ac8` falliscono proprio sui controlli nuovi. UPG 25/29: A2, A2-gone, B2, B2-gone. DASH development 235/256: H2, H4, R3 e R4 nei tre periodi, e tutti i SEC A4 tranne `n-one`, `r30` e `r-open`. Uscite in `verify-u4.console.sens.*.c998ac8.development.txt`.
+- **Nessuna regressione su D1:** UPG-A3, A4, A6, A7 e B3–B6 passano invariati in tutti e due gli ambienti.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità nuove (da decidere, non decise qui)
+
+- **A5 — Più email bloccate: una riga sola.** Con due email bloccate l'avviso usa una sola riga: «2 emails are locked after too many failed sign-ins: locked3@u4.test, locked4@u4.test». Ogni IP alla soglia ha invece la sua riga. La SPEC dice «una riga ciascuno: ogni IP … poi tutte le email bloccate». Il README del componente dice «one line per reason (every address at the lock threshold, then the locked emails)». Non è chiaro se le email bloccate siano un solo motivo o una riga ciascuna. Il comportamento osservato è coerente con la lettura «le email bloccate sono un motivo». Non è bloccante.
+
+### Ambiente
+
+- **Database:** solo `rolewarden_test` (127.0.0.1:3317). Snapshot identico prima e dopo in ogni esecuzione (`f7f37c04…e21e64`, `verify-u4.environment.txt`), Mailpit vuoto, nessun processo residuo.
+- **Sonda X** su `29a5df6` per leggere il markup servito. I dump HTML sono nello scratchpad, non nel repository.
+- **Primo `u2.development`:** si è fermato all'avvio con «ABORT: existing work directory». È il profilo Chrome bloccato del giro precedente, `scratchpad/u4r-u2-development`. L'ho rilanciato con la cartella di lavoro `u4r2-u2-development`: 129/129. Il profilo bloccato resta da cancellare a mano (`old-u4r-u2-development` invece è stato rimosso).

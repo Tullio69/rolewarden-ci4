@@ -7,8 +7,8 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase SRCH =====
 
 == SRCH: command search over HTTP (U3)
-[INFO] server pid=18616 on 127.0.0.1:8071 prefix=''
-[INFO] u3-doomed deleted through the panel: deleted_at="2026-10-24 16:23:35"
+[INFO] server pid=6188 on 127.0.0.1:8071 prefix=''
+[INFO] u3-doomed deleted through the panel: deleted_at="2026-10-24 22:32:16"
 
 -- REACH
 [INFO] owner (super admin), empty query: 15 results: ["Go to|Dashboard -> [omesso]","Go to|Users -> [omesso]\/users (45)","Go to|Roles -> [omesso]\/roles (32)","Go to|Permissions -> [omesso]\/permissions (37)","Go to|Check a permission -> [omesso]\/permissions\/check","Go to|Activity -> [omesso]\/activity","Go to|Settings -> [omesso]\/settings","Go to|Appearance -> [omesso]\/appearance","Go to|Your profile -> [omesso]\/profile","Go to|Your sessions -> [omesso]\/sessions","Actions|Add a user -> [omesso]\/users\/create","Actions|Import users -> [omesso]\/users\/import","Actions|Add a role -> [omesso]\/roles\/create","Actions|Add an override for a user -> [omesso]\/users","Actions|Change your password -> [omesso]\/profile"]
@@ -80,5 +80,5 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] K-2    Application log: no WARNING, ERROR or CRITICAL line (CSRF refusals of the deliberate non-GET requests aside: 0)
 
 TOTAL: 41 PASS, 0 FAIL, 0 AMB
-c998ac8 s1.u3.c998ac8.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+29a5df6 s1.u3.29a5df6.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

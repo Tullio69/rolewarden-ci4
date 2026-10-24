@@ -109,8 +109,10 @@ $S1 = fullstate();
 $expA = expected_grants(array_merge(['admin'], $rolesAv));
 $gotA = grants_of(DP);
 check('UPG-A1', 'The migration creates the five dashboard.* permissions, slugs ' . implode(', ', DP), array_column(q("SELECT slug FROM acl_permissions WHERE slug LIKE 'dashboard.%' ORDER BY slug"), 'slug') === DP, '');
-check('UPG-A2', 'It grants them to admin and to every role with activity.view directly (' . implode(', ', $rolesAv) . '), not to a child that inherits it nor to other roles', array_values(array_diff($gotA, array_merge($expA, expected_grants(['u4-gone-auditor'])))) === [] && array_values(array_diff($expA, $gotA)) === [], json_encode(['got' => $gotA, 'exp' => $expA]));
-info('deleted role with activity.view (u4-gone-auditor) received: ' . json_encode(array_values(array_filter($gotA, fn ($g) => str_starts_with($g, 'u4-gone-auditor:')))));
+// second re-verification on 29a5df6 (A3 decided): the deleted role is left out, so the grants are exactly admin + the non-deleted roles
+check('UPG-A2', 'It grants them to admin and to every non-deleted role with activity.view directly (' . implode(', ', $rolesAv) . '), not to a child that inherits it nor to other roles', $gotA === $expA, json_encode(['got' => $gotA, 'exp' => $expA]));
+$goneGotA = array_values(array_filter($gotA, fn ($g) => str_starts_with($g, 'u4-gone-auditor:')));
+check('UPG-A2-gone', 'A3: the deleted role u4-gone-auditor (activity.view directly, deleted_at set) receives none of the five dashboard.*', in_array('u4-gone-auditor', direct_activity_roles(true), true) && $goneGotA === [], json_encode(['received' => $goneGotA, 'with deleted' => direct_activity_roles(true)]));
 $dA = statediff($S0, $S1);
 $expRows = 5 + count(array_unique(array_merge(['admin'], $rolesAv))) * 5;
 $other = array_values(array_filter($NOISE($dA), fn ($l) => ! preg_match('/^acl_permissions row extra: .*"slug":"dashboard\./', $l) && ! preg_match('/^acl_role_permissions(:| row extra)/', $l)));
@@ -150,7 +152,8 @@ $batchRows = q("SELECT class, batch FROM migrations WHERE batch=(SELECT MAX(batc
 check('UPG-B1', 'The U4 step is one migration in its own batch (AddDashboardPermissions)', rc($o) === 0 && count($batchRows) === 1 && str_contains($batchRows[0]['class'], 'AddDashboardPermissions'), json_encode($batchRows));
 $gotB = grants_of(DP);
 $expB = expected_grants(array_merge(['admin'], $rolesAvB));
-check('UPG-B2', 'admin without activity.view still receives dashboard.* (CHANGELOG: granted to admin and to every role with activity.view); u4-auditor too', array_values(array_diff($expB, $gotB)) === [] && array_values(array_diff($gotB, array_merge($expB, expected_grants(['u4-gone-auditor'])))) === [], json_encode(['got' => $gotB, 'exp' => $expB]));
+check('UPG-B2', 'admin without activity.view still receives dashboard.* (CHANGELOG: granted to admin and to every non-deleted role with activity.view); u4-auditor too, exactly these', $gotB === $expB, json_encode(['got' => $gotB, 'exp' => $expB]));
+check('UPG-B2-gone', 'A3: in the U4 batch alone the deleted role u4-gone-auditor receives none of the five dashboard.*', array_values(array_filter($gotB, fn ($g) => str_starts_with($g, 'u4-gone-auditor:'))) === [], json_encode($gotB));
 $dB = statediff($SB1, $SB2);
 $otherB = array_values(array_filter($dB, fn ($l) => ! preg_match('/^acl_permissions row extra: .*"slug":"dashboard\./', $l) && ! preg_match('/^acl_role_permissions(:| row extra)/', $l) && ! preg_match('/^migrations row extra: .*AddDashboardPermissions/', $l)));
 $addedB = array_values(array_diff(all_grants(), $GB1)); $goneB = array_values(array_diff($GB1, all_grants()));

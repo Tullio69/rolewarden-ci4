@@ -7,11 +7,11 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase CHK =====
 
 == CHK: Check a permission (U2)
-[INFO] server pid=5012 on 127.0.0.1:8071 prefix=''
-[INFO] delete u2-doomed through the panel: 303; deleted_at="2026-10-24 16:56:35"; assignments left=1
+[INFO] server pid=14544 on 127.0.0.1:8071 prefix=''
+[INFO] delete u2-doomed through the panel: 303; deleted_at="2026-10-24 22:54:12"; assignments left=1
 [INFO] delete u2-dpar (parent of u2-dkid) through the panel: 303; deleted=false; u2-dkid parent_id now 15
 [INFO] u2-dpar marked deleted by hand (deleted_at), parent_id of u2-dkid kept
-[INFO] delete user through the panel: 303; users.deleted_at="2026-10-24 16:56:37"
+[INFO] delete user through the panel: 303; users.deleted_at="2026-10-24 22:54:13"
 
 -- ACC
 [PASS] A-0    Access accounts: permissions.view by the SPEC precedence equals service can() for every account (12)
@@ -133,7 +133,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase ST =====
 
 == ST: user status dot
-[INFO] server pid=33852 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=18908 on 127.0.0.1:8071 prefix=''
 [INFO] served .rw-status rules: .rw-status{align-items:center;gap:var(--space-2);color:var(--ink);display:inline-flex} || .rw-status:before{content:"";background:var(--granted);border:1.5px solid var(--granted);width:8px;height:8px;box-shadow:0 0 0 3px var(--granted-tint);box-sizing:border-box;border-radius:50%} || .rw-status--disabled{color:var(--ink-muted)} || .rw-status--disabled:before{border-color:var(--ink-muted);box-shadow:none;background:0 0} || .rw-status:not(.rw-status--disabled):before{animation:rw-alive var(--motion-breath) var(--ease-in-out) 3}
 [INFO] reduced-motion blocks: .rw-status:not(.rw-status--disabled):before{animation:rw-alive var(--motion-breath) var(--ease-in-out) 3} || .rw-toast{animation:none}.rw-toast.is-leaving{transition:none}
 [PASS] ST-console-light-1 console/light: active dot filled `granted` (fill and edge), 8px round, `ink` word; at rest a 3px `granted-tint` halo
@@ -183,5 +183,5 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] ST-clean ST pages: no 5xx, no SQL or PHP error
 
 TOTAL: 129 PASS, 0 FAIL, 0 AMB
-c998ac8 s1.u2.c998ac8.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+29a5df6 s1.u2.29a5df6.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

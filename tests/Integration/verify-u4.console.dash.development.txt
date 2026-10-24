@@ -7,8 +7,8 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase DASH =====
 
 == DASH: dashboard (U4)
-[INFO] server pid=27164 on 127.0.0.1:8071 prefix=''
-[INFO] auth_logins rows written: 914
+[INFO] server pid=13428 on 127.0.0.1:8071 prefix=''
+[INFO] auth_logins rows written: 887
 [PASS] D-login The super admin signs in
 [PASS] D-200  /rolewarden answers 200 with the dashboard for the super admin
 [PASS] D-def30 Without ?period= the period is 30 days (SPEC: predefinito 30)
@@ -20,17 +20,15 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N7-F1  7 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
 [INFO] N7 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
 [PASS] N7-F1d 7 days: the change of active users is the accounts created in the period among the non-deleted (+14)
-[PASS] N7-F2  7 days: sign-ins = auth_logins success=1 in the period (19)
-[PASS] N7-F2d 7 days: change of sign-ins on the previous 7 days, signed (-6)
-[PASS] N7-F3  7 days: failed sign-ins = success=0 in the period (11)
-[PASS] N7-F2n 7 days: the sign-ins note names the peak day count (6)
-[PASS] N7-F3n 7 days: the failed note gives the previous period (12)
-[PASS] N7-F3d 7 days: change of failed sign-ins, signed (-1)
-[PASS] N7-F4  7 days: permission changes = the seven actions in the period (17)
-[PASS] N7-F4d 7 days: change of permission changes, signed (11)
+[PASS] N7-F2  7 days: sign-ins = auth_logins success=1 in the period (33)
+[PASS] N7-F2d 7 days: change of sign-ins on the previous 7 days, signed (8)
+[PASS] N7-F3  7 days: failed sign-ins = success=0 in the period (10)
+[PASS] N7-F2n 7 days: the sign-ins note names the peak day count (7)
+[PASS] N7-F3n 7 days: the failed note gives the previous period (6)
+[PASS] N7-F3d 7 days: change of failed sign-ins, signed (4)
+[PASS] N7-F4  7 days: permission changes = the seven actions in the period (18)
+[PASS] N7-F4d 7 days: change of permission changes, signed (12)
 [PASS] N7-F4n 7 days: the note says how many are overrides (4)
-[PASS] N7-neg-bb59faaa3db40a4313f80f540df4ccc6 7 days: a negative change carries its minus sign (Sign-ins, 7 days: −6)
-[PASS] N7-neg-c7aa7571e9a6b8507e46f472a92cc35a 7 days: a negative change carries its minus sign (Failed, 7 days: −1)
 [PASS] N7-Facc 7 days: the first figure in accent, the others not
 [PASS] N7-S1  7 days: the table of sign-ins per day has the 7 calendar days, oldest first, with successful and failed per day = auth_logins
 [PASS] N7-S2  7 days: the legend totals are the period totals
@@ -41,10 +39,13 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N7-H1  7 days: the heat-map table = successful sign-ins of the period by weekday (Mon-Sun) and hour, summed
 [PASS] N7-H2  7 days: each cell has level ceil(4 x n / max) (0 when empty, max 2) and names its count in its title
 [PASS] N7-H3  7 days: the heat map has role=img with an aria-label, and its numbers in a <details>
+[PASS] N7-H4  7 days: A1, the heat map is drawn as SVG (role=img, aria-label, 7 x 24 = 168 cells, no HTML cell grid)
 [PASS] N7-R1  7 days: users per role = direct assignments of non-deleted users to non-deleted roles, descending, the first four plus "Other roles" (sum of the rest, 11)
 [PASS] N7-R2  7 days: the share chart has role=img and an aria-label
+[PASS] N7-R3  7 days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)
+[PASS] N7-R4  7 days: A2, on view only the legend of names, in the order of the shares, without numbers
 [PASS] N7-C1  7 days: the latest five permission changes of the period, newest first (actor, subject)
-[PASS] N7-C2  7 days: "View all 17" opens the activity log filtered on the period (2026-10-18 to 2026-10-24)
+[PASS] N7-C2  7 days: "View all 18" opens the activity log filtered on the period (2026-10-18 to 2026-10-24)
 [PASS] N7-noSec 7 days: no security notice when no address reaches the threshold in a day and no email is locked
 [PASS] N7-C3  7 days: the View all link opens (200)
 [PASS] N30-0  30 days: 200, period 30 pressed, no PHP error, no SQL text
@@ -53,16 +54,16 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N30-F1 30 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
 [INFO] N30 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
 [PASS] N30-F1d 30 days: the change of active users is the accounts created in the period among the non-deleted (+19)
-[PASS] N30-F2 30 days: sign-ins = auth_logins success=1 in the period (101)
-[PASS] N30-F2d 30 days: change of sign-ins on the previous 30 days, signed (-14)
-[PASS] N30-F3 30 days: failed sign-ins = success=0 in the period (41)
-[PASS] N30-F2n 30 days: the sign-ins note names the peak day count (7)
-[PASS] N30-F3n 30 days: the failed note gives the previous period (36)
-[PASS] N30-F3d 30 days: change of failed sign-ins, signed (5)
-[PASS] N30-F4 30 days: permission changes = the seven actions in the period (37)
-[PASS] N30-F4d 30 days: change of permission changes, signed (8)
-[PASS] N30-F4n 30 days: the note says how many are overrides (4)
-[PASS] N30-neg-82de8018da58761a652b7d4e88f1f4e0 30 days: a negative change carries its minus sign (Sign-ins, 30 days: −14)
+[PASS] N30-F2 30 days: sign-ins = auth_logins success=1 in the period (111)
+[PASS] N30-F2d 30 days: change of sign-ins on the previous 30 days, signed (19)
+[PASS] N30-F3 30 days: failed sign-ins = success=0 in the period (32)
+[PASS] N30-F2n 30 days: the sign-ins note names the peak day count (8)
+[PASS] N30-F3n 30 days: the failed note gives the previous period (33)
+[PASS] N30-F3d 30 days: change of failed sign-ins, signed (-1)
+[PASS] N30-F4 30 days: permission changes = the seven actions in the period (39)
+[PASS] N30-F4d 30 days: change of permission changes, signed (12)
+[PASS] N30-F4n 30 days: the note says how many are overrides (5)
+[PASS] N30-neg-41bd4afa319a17378d29b57022dd3fc1 30 days: a negative change carries its minus sign (Failed, 30 days: −1)
 [PASS] N30-Facc 30 days: the first figure in accent, the others not
 [PASS] N30-S1 30 days: the table of sign-ins per day has the 30 calendar days, oldest first, with successful and failed per day = auth_logins
 [PASS] N30-S2 30 days: the legend totals are the period totals
@@ -71,14 +72,17 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N30-S5 30 days: the chart is an SVG with role=img and an aria-label stating the totals
 [PASS] N30-S6 30 days: the numbers of the sign-ins chart sit in a <details>
 [PASS] N30-H1 30 days: the heat-map table = successful sign-ins of the period by weekday (Mon-Sun) and hour, summed
-[PASS] N30-H2 30 days: each cell has level ceil(4 x n / max) (0 when empty, max 4) and names its count in its title
+[PASS] N30-H2 30 days: each cell has level ceil(4 x n / max) (0 when empty, max 3) and names its count in its title
 [PASS] N30-H3 30 days: the heat map has role=img with an aria-label, and its numbers in a <details>
+[PASS] N30-H4 30 days: A1, the heat map is drawn as SVG (role=img, aria-label, 7 x 24 = 168 cells, no HTML cell grid)
 [PASS] N30-R1 30 days: users per role = direct assignments of non-deleted users to non-deleted roles, descending, the first four plus "Other roles" (sum of the rest, 11)
 [PASS] N30-R2 30 days: the share chart has role=img and an aria-label
-[INFO] roles note: 34 users, 15 roles ; percents: ["23%","17%","14%","14%","31%"] ; roles details: 0
+[PASS] N30-R3 30 days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)
+[PASS] N30-R4 30 days: A2, on view only the legend of names, in the order of the shares, without numbers
+[INFO] roles note: 34 users, 15 roles ; percents: ["23%","17%","14%","14%","31%"] ; roles details: 1
 [PASS] N30-C1 30 days: the latest five permission changes of the period, newest first (actor, subject)
-[PASS] N30-C2 30 days: "View all 37" opens the activity log filtered on the period (2026-09-25 to 2026-10-24)
-[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 24 Oct, 16:19 02 v8badmin revoked roles.view from Recent1 24 Oct, 16:19 03 v8badmin granted Recent2 roles.view 24 Oct, 16:19 04 The system denied Recent3 roles.view 24 Oct, 16:19 05 v8badmin cleared the override of roles.view for Recent4 24 Oct, 16:19 ; view-all query: {"from":"2026-09-25","to":"2026-10-24"}
+[PASS] N30-C2 30 days: "View all 39" opens the activity log filtered on the period (2026-09-25 to 2026-10-24)
+[INFO] changes block text: D Latest permission changes View all 39 01 v8badmin granted Recent0 roles.view 24 Oct, 22:23 02 v8badmin revoked roles.view from Recent1 24 Oct, 22:22 03 v8badmin granted Recent2 roles.view 24 Oct, 22:22 04 The system denied Recent3 roles.view 24 Oct, 22:22 05 v8badmin cleared the override of roles.view for Recent4 24 Oct, 22:22 ; view-all query: {"from":"2026-09-25","to":"2026-10-24"}
 [PASS] N30-noSec 30 days: no security notice when no address reaches the threshold in a day and no email is locked
 [PASS] N30-C3 30 days: the View all link opens (200)
 [PASS] N90-0  90 days: 200, period 90 pressed, no PHP error, no SQL text
@@ -87,16 +91,16 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N90-F1 90 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
 [INFO] N90 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
 [PASS] N90-F1d 90 days: the change of active users is the accounts created in the period among the non-deleted (+26)
-[PASS] N90-F2 90 days: sign-ins = auth_logins success=1 in the period (313)
-[PASS] N90-F2d 90 days: change of sign-ins on the previous 90 days, signed (-2)
-[PASS] N90-F3 90 days: failed sign-ins = success=0 in the period (115)
-[PASS] N90-F2n 90 days: the sign-ins note names the peak day count (8)
-[PASS] N90-F3n 90 days: the failed note gives the previous period (94)
-[PASS] N90-F3d 90 days: change of failed sign-ins, signed (21)
+[PASS] N90-F2 90 days: sign-ins = auth_logins success=1 in the period (294)
+[PASS] N90-F2d 90 days: change of sign-ins on the previous 90 days, signed (-9)
+[PASS] N90-F3 90 days: failed sign-ins = success=0 in the period (100)
+[PASS] N90-F2n 90 days: the sign-ins note names the peak day count (9)
+[PASS] N90-F3n 90 days: the failed note gives the previous period (95)
+[PASS] N90-F3d 90 days: change of failed sign-ins, signed (5)
 [PASS] N90-F4 90 days: permission changes = the seven actions in the period (79)
 [PASS] N90-F4d 90 days: change of permission changes, signed (53)
 [PASS] N90-F4n 90 days: the note says how many are overrides (32)
-[PASS] N90-neg-1c2cf13b8deb3bc0826b211d387c3736 90 days: a negative change carries its minus sign (Sign-ins, 90 days: −2)
+[PASS] N90-neg-1c2cf13b8deb3bc0826b211d387c3736 90 days: a negative change carries its minus sign (Sign-ins, 90 days: −9)
 [PASS] N90-Facc 90 days: the first figure in accent, the others not
 [PASS] N90-S1 90 days: the table of sign-ins per day has the 90 calendar days, oldest first, with successful and failed per day = auth_logins
 [PASS] N90-S2 90 days: the legend totals are the period totals
@@ -105,10 +109,13 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N90-S5 90 days: the chart is an SVG with role=img and an aria-label stating the totals
 [PASS] N90-S6 90 days: the numbers of the sign-ins chart sit in a <details>
 [PASS] N90-H1 90 days: the heat-map table = successful sign-ins of the period by weekday (Mon-Sun) and hour, summed
-[PASS] N90-H2 90 days: each cell has level ceil(4 x n / max) (0 when empty, max 6) and names its count in its title
+[PASS] N90-H2 90 days: each cell has level ceil(4 x n / max) (0 when empty, max 7) and names its count in its title
 [PASS] N90-H3 90 days: the heat map has role=img with an aria-label, and its numbers in a <details>
+[PASS] N90-H4 90 days: A1, the heat map is drawn as SVG (role=img, aria-label, 7 x 24 = 168 cells, no HTML cell grid)
 [PASS] N90-R1 90 days: users per role = direct assignments of non-deleted users to non-deleted roles, descending, the first four plus "Other roles" (sum of the rest, 11)
 [PASS] N90-R2 90 days: the share chart has role=img and an aria-label
+[PASS] N90-R3 90 days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)
+[PASS] N90-R4 90 days: A2, on view only the legend of names, in the order of the shares, without numbers
 [PASS] N90-C1 90 days: the latest five permission changes of the period, newest first (actor, subject)
 [PASS] N90-C2 90 days: "View all 79" opens the activity log filtered on the period (2026-07-27 to 2026-10-24)
 [PASS] N90-noSec 90 days: no security notice when no address reaches the threshold in a day and no email is locked
@@ -117,11 +124,11 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] SEC-a7-link 7 days: its action opens the activity log on auth.failed for that day (2026-10-21)
 [PASS] SEC-a30 30 days: an address with 5 failed sign-ins (lockAttempts) on one day 3 days ago gives the notice
 [PASS] SEC-a30-link 30 days: its action opens the activity log on auth.failed for that day (2026-10-21)
-[INFO] notice: 5 failed sign-ins from 203.0.113.9 on 21 Oct, the lock threshold is 5. Review attempts | <div class="rw-dash-notice" role="status"> <svg width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M8 1.8l5.2 2v4.1c0 3-2.2 5.3-5.2 6.3-3-1-5.2-3.3-5.2-6.3V3.8z"></path><path d="M8 5.5v3M8 10.5v.5"></path></svg> <span><strong>5 failed sign-ins</strong> from 203.0.113.9 on 21 Oct, the lock threshold is 5.</span> <a class="rw-btn rw-btn--primary rw-btn--sm" href="http://127.0.0.1:8071/index.php/[omesso]/activity?action=auth.failed&amp;from=2026-10-21&amp;to=2026-10-21">Review attempts</a> </div>
+[INFO] notice: 5 failed sign-ins from 203.0.113.9 on 21 Oct, the lock threshold is 5. Review attempts | <div class="rw-dash-notice" role="status"> <svg width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M8 1.8l5.2 2v4.1c0 3-2.2 5.3-5.2 6.3-3-1-5.2-3.3-5.2-6.3V3.8z"></path><path d="M8 5.5v3M8 10.5v.5"></path></svg> <ul> <li><strong>5 failed sign-ins</strong> from 203.0.113.9 on 21 Oct, the lock threshold is 5.</li> </ul> <a class="rw-btn rw-btn--primary rw-btn--sm" href="http://127.0.0.1:8071/index.php/[omesso]/activity?action=auth.failed&amp;from=2026-10-21&amp;to=2026-10-21">Review attempts</a> </div>
 [PASS] SEC-a-txt The notice names the address, the day and the threshold
 [PASS] SEC-a-nodenied The notice informs, never alarms: no denied colour or class in it
 [PASS] SEC-a-open The notice action opens the activity log (200)
-[INFO] activity log opened by the notice: occurrences of 203.0.113.9 = 5 ; × RoleWarden Activity Every change to users, roles, permissions and settings, and every sign-in attempt, newest first. Entries6 User Action Any action Signed in Failed sign-in User created User imported User registered User edited Password set by an admin User activated User deactivated User deleted Role assigned Role revoked Permission granted to user Permission denied to user User override removed Role created Role edited Role deleted Permission added to role Permission removed from role Settings changed Password changed Session signed out Remembered browser forgotten All other sessions sig...
+[INFO] activity log opened by the notice: occurrences of 203.0.113.9 = 5 ; × RoleWarden Activity Every change to users, roles, permissions and settings, and every sign-in attempt, newest first. Entries5 User Action Any action Signed in Failed sign-in User created User imported User registered User edited Password set by an admin User activated User deactivated User deleted Role assigned Role revoked Permission granted to user Permission denied to user User override removed Role created Role edited Role deleted Permission added to role Permission removed from role Settings changed Password changed Session signed out Remembered browser forgotten All other sessions sig...
 [PASS] SEC-a90 90 days: an address with 5 failed sign-ins (lockAttempts) on one day 3 days ago gives the notice
 [PASS] SEC-a90-link 90 days: its action opens the activity log on auth.failed for that day (2026-10-21)
 [PASS] SEC-b7 7 days: 5 failures of one address 12 days ago are outside the period: no notice
@@ -142,10 +149,28 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] SEC-g90-link 90 days: for the locked email alone the action opens the failed sign-ins of today (2026-10-24)
 [PASS] SEC-h  An email whose lock has expired (5 failures 3 hours ago, lock 15 minutes) gives no notice
 [PASS] SEC-i  5 failures followed by a successful sign-in: the email is not locked, no notice
-[INFO] two addresses on two days (5 and 2 days ago): ["5 failed sign-ins from 203.0.113.71 on 22 Oct, the lock threshold is 5. Review attempts",{"action":"auth.failed","from":"2026-10-22","to":"2026-10-22"}]
+[INFO] A4 two addresses on two days: {"lines":["5 failed sign-ins from 203.0.113.71 on 22 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.70 on 19 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-19","to":"2026-10-22"}}
 [PASS] SEC-m  Two addresses at the threshold on two days: one notice, one action
-[INFO] address and locked email together: ["5 failed sign-ins from 203.0.113.71 on 22 Oct, the lock threshold is 5. Review attempts",{"action":"auth.failed","from":"2026-10-22","to":"2026-10-22"}]
-[PASS] SEC-n  An address at the threshold and a locked email together: the action opens the day of the address, not only today
+[PASS] SEC-m-lines A4: two lines, one per address, each with its day, the most recent first (203.0.113.71 then 203.0.113.70)
+[PASS] SEC-m-link A4: the action opens auth.failed from the oldest day cited to the most recent (2026-10-19 to 2026-10-22)
+[INFO] A4 two addresses and a locked email: {"lines":["5 failed sign-ins from 203.0.113.71 on 22 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.70 on 19 Oct, the lock threshold is 5.","One email is locked after too many failed sign-ins: locked2@u4.test"],"query":{"action":"auth.failed","from":"2026-10-19","to":"2026-10-24"}}
+[PASS] SEC-n-lines A4: the two address lines first (most recent first), then the locked email on its own line
+[PASS] SEC-n-link A4: with a locked email the action runs from the oldest day cited to today (2026-10-19 to 2026-10-24)
+[PASS] SEC-n-one A4: still one notice and one action
+[INFO] A4 one address on two days, 30: {"lines":["5 failed sign-ins from 203.0.113.72 on 21 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.72 on 16 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-16","to":"2026-10-21"}}
+[PASS] SEC-o30 A4: one address at the threshold on two days gives two lines (one per day, the most recent first) and the action 2026-10-16 to 2026-10-21
+[INFO] A4 one address on two days, 7: {"lines":["5 failed sign-ins from 203.0.113.72 on 21 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-21","to":"2026-10-21"}}
+[PASS] SEC-o7 A4: in 7 days only the day inside the period counts: one line, the action on that day (2026-10-21)
+[INFO] A4 two addresses on the same day: {"lines":["5 failed sign-ins from 203.0.113.73 on 20 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.74 on 20 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-20","to":"2026-10-20"}}
+[PASS] SEC-p  A4: two addresses on the same day give two lines, and the action is that day (2026-10-20)
+[INFO] A4 two locked emails: {"lines":["2 emails are locked after too many failed sign-ins: locked3@u4.test, locked4@u4.test"],"query":{"action":"auth.failed","from":"2026-10-24","to":"2026-10-24"}}
+[PASS] SEC-q  A4: two locked emails alone: both cited, no address line, the action is today (2026-10-24)
+[INFO] A4 two locked emails: number of lines = 1 (one per email, or one line naming both)
+[INFO] A4 address 40 days ago and locked emails, 30: {"lines":["2 emails are locked after too many failed sign-ins: locked3@u4.test, locked4@u4.test"],"query":{"action":"auth.failed","from":"2026-10-24","to":"2026-10-24"}}
+[PASS] SEC-r30 A4: an address outside the period is not cited; with only locked emails the action is today
+[INFO] A4 address 40 days ago and locked emails, 90: {"lines":["5 failed sign-ins from 203.0.113.75 on 14 Sep, the lock threshold is 5.","2 emails are locked after too many failed sign-ins: locked3@u4.test, locked4@u4.test"],"query":{"action":"auth.failed","from":"2026-09-14","to":"2026-10-24"}}
+[PASS] SEC-r90 A4: in 90 days the address line comes first, the emails after, and the action runs from 2026-09-14 to today
+[PASS] SEC-r-open A4: the action of the notice opens (200)
 [PASS] PERMS-screen The Permissions screen lists the five dashboard.* with their descriptions
 [PASS] NAV-owner owner: the Dashboard item is in the sidebar (holds 5 dashboard.*)
 [PASS] P-owner owner: /rolewarden renders exactly the blocks of figures, signins, security, roles, changes
@@ -246,7 +271,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] HOS-DELETE DELETE /rolewarden is not answered with a 2xx
 [PASS] CLR-1  No literal colour in the dashboard markup (attributes and inline styles): every colour comes from the stylesheet tokens
 [PASS] CLR-2  No granted/denied in the charts (the markup before the changes list)
-[INFO] dashboard CSS rules: 73; colour variables used: ink-muted, accent, on-accent, accent-tint, ink, rule-strong-width, rule-strong, rule-width, rule, radius-sm, surface-sunk, focus-width, focus, heat-0, heat-1, heat-2, heat-3, heat-4
+[INFO] dashboard CSS rules: 80; colour variables used: ink-muted, accent, on-accent, accent-tint, ink, rule-strong-width, rule-strong, rule-width, rule, radius-sm, surface-sunk, focus-width, focus, heat-0, heat-1, heat-2, heat-3, heat-4
 [PASS] CLR-3  The served stylesheet colours every dashboard rule (rw-dash, rw-heat, rw-share, rw-legend) through variables only, never granted/denied
 [PASS] CLR-4  Heat levels rw-heat-0..4 use the heat-0..heat-4 tokens
 [PASS] CLR-rw-dash-line Chart rule: .rw-dash-line drawn in accent (design system Charts)
@@ -258,20 +283,20 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] LANG-1 Every dashboard string exists in English and in Italian (same keys, none empty)
 [PASS] LANG-2 No dashboard string left in English in the Italian file (except names and placeholders)
 [PASS] LANG-3 No English dashboard text in the Italian page (headings, notes, labels, tables, weekdays, months)
-[INFO] IT excerpt: × Buon pomeriggio, v8bowner I tuoi accessi, a colpo d’occhio Dal 25 set al 24 ott 2026 7 giorni 30 giorni 90 giorni 5 accessi falliti da 203.0.113.9 il 23 ott, la soglia di blocco è 5. Rivedi i tentativi Utenti attivi 51 +40 nuovi Account creati nel periodo su 55 account, 93% Accessi, 30 giorni 126 +11 Variazione sui 30 giorni precedenti picco di 28 il 24 ott Falliti, 30 giorni 46 +10 Variazione sui 30 giorni precedenti 36 nel periodo precedente Modifiche ai permessi 37 +8 Variazione sui 30 giorni precedenti 4 override utente tra queste A Accessi negli ultimi 30 giorni Riusciti 126 Falliti 46 50250 25 set2 ott10 ott17 ott24 ott Mostra i numeri GiornoRiuscitiFalliti ven 25 set62 sab 26 set72 dom 27 set31 lun 28 set51 mar 29 set31 mer 30 set31 gio 1 ott50 ven 2 ott00 sab 3 ott20 dom 4 ott42 lun 5 ott40 mar 6 ott52 mer 7 ott01 gio 8 ott00 ven 9 ott32 sab 10 ott73 dom 11 ott21 lun 12 ott41 mar 13 ott72 mer 14 ott13 gio 15 ott72 ven 16 ott11 sab 17 ott32 dom 18 ott54 lun 19 ott00 mar 20 ott63 mer 21 ott31 gio 22 ott20 ven 23 ott05 sab 24 ott283 B Quando si accede di punta: sab 16:00 lun mar mer gio ven sab dom 00061218 MenoPiù Mostra i numeri Giorno000102030405060708091011121314151617181920212223 lun002011031010100100011000 mar002132000010121101111003 mer000000100000010200100011 gio010101000010012001112200 ven110000000111010201100000 sab1111210210020001250200214 dom201002201010000010101200 C Chi ha quale ruolo 55 utenti, 30 ruoli Chi ha quale ruolo U4-alpha 15% 8 U4-bravo 11%...
+[INFO] IT excerpt: × Buonasera, v8bowner I tuoi accessi, a colpo d’occhio Dal 25 set al 24 ott 2026 7 giorni 30 giorni 90 giorni 5 accessi falliti da 203.0.113.9 il 23 ott, la soglia di blocco è 5. Rivedi i tentativi Utenti attivi 51 +40 nuovi Account creati nel periodo su 55 account, 93% Accessi, 30 giorni 136 +44 Variazione sui 30 giorni precedenti picco di 28 il 24 ott Falliti, 30 giorni 37 +4 Variazione sui 30 giorni precedenti 33 nel periodo precedente Modifiche ai permessi 39 +12 Variazione sui 30 giorni precedenti 5 override utente tra queste A Accessi negli ultimi 30 giorni Riusciti 136 Falliti 37 50250 25 set2 ott10 ott17 ott24 ott Mostra i numeri GiornoRiuscitiFalliti ven 25 set83 sab 26 set40 dom 27 set12 lun 28 set21 mar 29 set51 mer 30 set52 gio 1 ott10 ven 2 ott41 sab 3 ott20 dom 4 ott31 lun 5 ott70 mar 6 ott30 mer 7 ott42 gio 8 ott20 ven 9 ott01 sab 10 ott22 dom 11 ott81 lun 12 ott60 mar 13 ott01 mer 14 ott30 gio 15 ott20 ven 16 ott22 sab 17 ott42 dom 18 ott72 lun 19 ott72 mar 20 ott22 mer 21 ott50 gio 22 ott20 ven 23 ott76 sab 24 ott283 B Quando si accede di punta: sab 22:00 lunmarmergiovensabdom 2 accessi, lun 0:002 accessi, lun 1:001 accesso, lun 2:001 accesso, lun 3:001 accesso, lun 4:002 accessi, lun 5:000 accessi, lun 6:001 accesso, lun 7:000 accessi, lun 8:000 accessi, lun 9:001 accesso, lun 10:001 accesso, lun 11:001 accesso, lun 12:002 accessi, lun 13:000 accessi, lun 14:000 accessi, lun 15:000 accessi, lun 16:000 accessi, lun 17:001 accesso, lun 18:000 accessi, lun ...
 [PASS] LOGIN-1 With the 1.0 Auth.php (login => rolewarden/users) sign-in still lands on Users
 [PASS] LOGIN-2 With login => 'rolewarden' (CHANGELOG) sign-in lands on the dashboard (200)
 [PASS] LOGIN-3 Same setting, a user without dashboard.* goes on to the first screen it can see
 [INFO] after sign-in from /[omesso]?period=7: http://127.0.0.1:8071/index.php/[omesso]
-[INFO] server pid=35260 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=6148 on 127.0.0.1:8071 prefix=''
 [INFO] TZ: last day of the table ["Sun 25 Oct",1,0] ; today in Kiritimati: Sun 25 Oct ; range 19 Oct to 25 Oct 2026
 [PASS] TZ-1   With appTimezone Pacific/Kiritimati the last day of the period is today in that time zone
-[INFO] server pid=26908 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=18136 on 127.0.0.1:8071 prefix=''
 [PASS] LOG-1  No response of this phase has status >= 500, PHP error text or SQL text
 [INFO] log lines written by the SQL-error probe: []
 [PASS] LOG-2  No WARNING/NOTICE/DEPRECATED/ERROR/CRITICAL line in the application log (threshold 9)
 [PASS] LOG-3  No PHP warning, notice or deprecation in the server output
 
-TOTAL: 238 PASS, 0 FAIL, 0 AMB
-c998ac8 s1.dash.c998ac8.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+TOTAL: 256 PASS, 0 FAIL, 0 AMB
+29a5df6 s1.dash.29a5df6.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

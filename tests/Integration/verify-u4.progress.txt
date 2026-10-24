@@ -63,3 +63,37 @@ ALL DONE 18:59:49
 === u1.production 18:59:50
 exit=0 u1.production 19:04:04
 ALL DONE 19:04:04
+=== dash.development 00:18:40
+exit=1 dash.development 00:20:54
+ALL DONE 00:20:54
+=== dash.development 00:23:16
+exit=0 dash.development 00:25:05
+ALL DONE 00:25:05
+=== upg.development 00:25:20
+exit=0 upg.development 00:26:21
+=== dash.production 00:26:22
+exit=0 dash.production 00:27:49
+=== upg.production 00:27:50
+exit=0 upg.production 00:28:44
+ALL DONE 00:28:44
+--- seconda riverifica 29a5df6 Sun Oct 25 00:31:53     2026
+=== u3.development 00:31:53
+exit=0 u3.development 00:44:28
+ALL DONE 00:44:29
+=== u3.production 00:44:29
+exit=0 u3.production 00:53:44
+ALL DONE 00:53:44
+=== u2.development 00:53:45
+exit=1 u2.development 00:53:47
+ALL DONE 00:53:47
+=== u2.production 00:53:48
+exit=0 u2.production 00:57:25
+ALL DONE 00:57:25
+=== u1.development 00:57:26
+exit=0 u1.development 01:03:21
+ALL DONE 01:03:21
+=== u1.production 01:03:22
+exit=0 u1.production 01:07:38
+ALL DONE 01:07:38
+=== u2.development (work u4r2-u2-development, the old u4r-u2-development is a locked Chrome profile) 01:07:49
+exit=0 u2.development 01:12:36

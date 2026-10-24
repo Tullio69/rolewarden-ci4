@@ -8,7 +8,8 @@ use CodeIgniter\Database\Seeder;
 
 /**
  * Seeds the system roles and permissions. Safe to run more than once:
- * rows are matched by slug and only inserted when missing.
+ * rows are matched by slug and only inserted when missing, and grants an
+ * application revoked from "admin" are not given back.
  */
 class RoleWardenSeeder extends Seeder
 {
@@ -23,8 +24,10 @@ class RoleWardenSeeder extends Seeder
         $cfg = config('RoleWarden');
         $now = date('Y-m-d H:i:s');
 
+        $newRoles = [];
+
         foreach (self::ROLES as $slug => $isSuper) {
-            $this->insertMissing($cfg->table('roles'), $slug, [
+            $newRoles[$slug] = $this->insertMissing($cfg->table('roles'), $slug, [
                 'name' => self::texts()['roles'][$slug]['name'],
                 'description' => self::texts()['roles'][$slug]['description'],
                 'is_system' => 1,
@@ -34,15 +37,19 @@ class RoleWardenSeeder extends Seeder
             ]);
         }
 
+        $newSlugs = [];
+
         foreach (self::permissions() as $area => $actions) {
             foreach ($actions as $action => $description) {
-                $this->insertMissing($cfg->table('permissions'), "{$area}.{$action}", [
+                if ($this->insertMissing($cfg->table('permissions'), "{$area}.{$action}", [
                     'area' => $area,
                     'description' => $description,
                     'is_system' => 1,
                     'created_at' => $now,
                     'updated_at' => $now,
-                ]);
+                ])) {
+                    $newSlugs[] = "{$area}.{$action}";
+                }
             }
         }
 
@@ -56,12 +63,19 @@ class RoleWardenSeeder extends Seeder
             }
         }
 
-        $permissionIds = array_column(
-            $this->db->table($cfg->table('permissions'))->select('id')->whereIn('slug', $ownSlugs)->get()->getResultArray(),
-            'id',
-        );
-
+        // A role created now gets every permission; an existing one only the
+        // permissions created now, so a grant the application revoked stays revoked.
         foreach (self::ALL_PERMISSIONS_ROLES as $slug) {
+            $slugs = $newRoles[$slug] ? $ownSlugs : $newSlugs;
+
+            if ($slugs === []) {
+                continue;
+            }
+
+            $permissionIds = array_column(
+                $this->db->table($cfg->table('permissions'))->select('id')->whereIn('slug', $slugs)->get()->getResultArray(),
+                'id',
+            );
             $roleId = $this->db->table($cfg->table('roles'))->select('id')->where('slug', $slug)->get()->getRow('id');
 
             foreach ($permissionIds as $permissionId) {
@@ -95,10 +109,15 @@ class RoleWardenSeeder extends Seeder
         return require __DIR__ . '/../../Language/en/RoleWardenData.php';
     }
 
-    private function insertMissing(string $table, string $slug, array $data): void
+    /** @return bool whether the row was inserted */
+    private function insertMissing(string $table, string $slug, array $data): bool
     {
-        if ($this->db->table($table)->where('slug', $slug)->countAllResults() === 0) {
-            $this->db->table($table)->insert(['slug' => $slug] + $data);
+        if ($this->db->table($table)->where('slug', $slug)->countAllResults() !== 0) {
+            return false;
         }
+
+        $this->db->table($table)->insert(['slug' => $slug] + $data);
+
+        return true;
     }
 }

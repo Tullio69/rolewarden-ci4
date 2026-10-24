@@ -39,6 +39,8 @@ version may require changes on your side, listed under "Upgrading". After any up
 
 ### Fixed
 - The counts at the top of the Users screen no longer include deleted users.
+- Updating no longer gives `admin` back the stock permissions you revoked from it: the
+  seeder grants an existing `admin` only the permissions it creates.
 
 ### Upgrading
 - If you extend `RoleWarden\Authorization\Resolver` with a method of your own named

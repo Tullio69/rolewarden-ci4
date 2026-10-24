@@ -107,14 +107,14 @@ final class Dashboard
     }
 
     /**
-     * The address with the most failed sign-ins on one calendar day, when
-     * that reaches $threshold; on a tie, the latest day.
+     * Every address that reached $threshold failed sign-ins on one calendar
+     * day, once per day, latest day first and the busiest first within a day.
      *
      * @param list<array{date: string, ip_address: string|null}> $failures
      *
-     * @return array{ip: string, day: string, count: int}|null
+     * @return list<array{ip: string, day: string, count: int}>
      */
-    public static function busiestAddress(array $failures, int $threshold): ?array
+    public static function addresses(array $failures, int $threshold): array
     {
         $counts = [];
 
@@ -127,17 +127,19 @@ final class Dashboard
             }
         }
 
-        $best = null;
+        $found = [];
 
         foreach ($counts as $key => $count) {
             [$day, $ip] = explode(' ', $key, 2);
 
-            if ($count >= $threshold && ($best === null || $count > $best['count'] || ($count === $best['count'] && $day > $best['day']))) {
-                $best = ['ip' => $ip, 'day' => $day, 'count' => $count];
+            if ($count >= $threshold) {
+                $found[] = ['ip' => $ip, 'day' => $day, 'count' => $count];
             }
         }
 
-        return $best;
+        usort($found, static fn (array $a, array $b): int => [$b['day'], $b['count'], $a['ip']] <=> [$a['day'], $a['count'], $b['ip']]);
+
+        return $found;
     }
 
     /**
@@ -213,36 +215,32 @@ final class Dashboard
     }
 
     /**
-     * The security notice: an address that reached the lock threshold on one
-     * day of the period, else the emails locked now; null when neither.
+     * The security notice: every address that reached the lock threshold on
+     * one day of the period and every email locked now; null when neither.
      *
-     * @return array{ip: string, day: string, count: int, threshold: int}|array{locked: list<string>}|null
+     * @return array{addresses: list<array{ip: string, day: string, count: int}>, locked: list<string>, threshold: int}|null
      */
     public static function security(array $period, int $now): ?array
     {
         helper('setting');
         $threshold = (int) setting('RoleWarden.lockAttempts');
+        $minutes = (int) setting('RoleWarden.lockMinutes');
         $logins = config('Auth')->tables['logins'];
         $failures = db_connect()->table($logins)->select('date, ip_address')->where('success', 0)
             ->where('date >=', $period['from'])->where('date <=', $period['to'])->get()->getResultArray();
-        $address = self::busiestAddress($failures, $threshold);
-
-        if ($address !== null) {
-            return $address + ['threshold' => $threshold];
-        }
-
-        $since = date('Y-m-d H:i:s', $now - (int) setting('RoleWarden.lockMinutes') * 60);
+        $addresses = self::addresses($failures, $threshold);
+        $since = date('Y-m-d H:i:s', $now - $minutes * 60);
         $locked = [];
 
-        foreach (db_connect()->table($logins)->distinct()->select('identifier')->where('success', 0)->where('date >', $since)->get()->getResultArray() as $row) {
+        foreach (db_connect()->table($logins)->distinct()->select('identifier')->where('success', 0)->where('date >', $since)->orderBy('identifier')->get()->getResultArray() as $row) {
             $email = (string) $row['identifier'];
 
-            if ($email !== '' && SignIn::lockedFor(SignIn::recentFailures($email), $threshold, (int) setting('RoleWarden.lockMinutes'), $now) > 0) {
+            if ($email !== '' && SignIn::lockedFor(SignIn::recentFailures($email), $threshold, $minutes, $now) > 0) {
                 $locked[] = $email;
             }
         }
 
-        return $locked !== [] ? ['locked' => $locked] : null;
+        return $addresses !== [] || $locked !== [] ? ['addresses' => $addresses, 'locked' => $locked, 'threshold' => $threshold] : null;
     }
 
     /**

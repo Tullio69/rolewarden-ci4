@@ -106,13 +106,14 @@ $second = chr(ord($letter) + 1);
     <?php if ($peakCell !== null) : ?><span class="rw-note"><?= esc(lang('RoleWarden.panel.dashboard.signins.busiest', [$weekdays[$peakCell[0]], $peakCell[1]])) ?></span><?php endif ?>
   </div>
   <div class="rw-dash-body">
-    <div class="rw-dash-heat" role="img" aria-label="<?= esc($heatLabel, 'attr') ?>">
-      <?php foreach ($heat as $d => $hours) : ?>
-        <div class="rw-dash-heat-row"><span class="rw-note" aria-hidden="true"><?= esc($weekdays[$d]) ?></span>
-          <?php foreach ($hours as $h => $v) : ?><i class="rw-heat-<?= Dashboard::heatLevel($v, $max) ?>" title="<?= esc(lang('RoleWarden.panel.dashboard.signins.cell', [$v, $weekdays[$d], $h]), 'attr') ?>"></i><?php endforeach ?>
-        </div>
-      <?php endforeach ?>
-      <div class="rw-dash-heat-hours rw-note" aria-hidden="true"><span></span><span>00</span><span>06</span><span>12</span><span>18</span></div>
+    <div class="rw-dash-heat">
+      <div class="rw-dash-heat-days rw-note" aria-hidden="true"><?php foreach ($weekdays as $weekday) : ?><span><?= esc($weekday) ?></span><?php endforeach ?></div>
+      <svg class="rw-dash-svg rw-dash-heat-svg" role="img" aria-label="<?= esc($heatLabel, 'attr') ?>" viewBox="0 0 240 147" preserveAspectRatio="none">
+        <?php foreach ($heat as $d => $hours) : ?>
+          <?php foreach ($hours as $h => $v) : ?><rect x="<?= $h * 10 ?>" y="<?= $d * 21 ?>" width="8.8" height="18" class="rw-heat-<?= Dashboard::heatLevel($v, $max) ?>"><title><?= esc(lang('RoleWarden.panel.dashboard.signins.cell', [$v, $weekdays[$d], $h])) ?></title></rect><?php endforeach ?>
+        <?php endforeach ?>
+      </svg>
+      <div class="rw-dash-heat-hours rw-note" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span></div>
     </div>
     <div class="rw-dash-heat-key rw-note" aria-hidden="true"><?= lang('RoleWarden.panel.dashboard.signins.fewer') ?><?php foreach (range(0, 4) as $level) : ?><i class="rw-heat-<?= $level ?>"></i><?php endforeach ?><?= lang('RoleWarden.panel.dashboard.signins.more') ?></div>
     <details class="rw-dash-numbers">

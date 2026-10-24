@@ -56,7 +56,7 @@ final class DashboardTest extends TestCase
         $this->assertSame(3, array_sum(array_map('array_sum', $buckets['heat'])));
     }
 
-    public function testBusiestAddressNeedsTheThresholdOnOneDay(): void
+    public function testAddressesNeedTheThresholdOnOneDay(): void
     {
         $failures = [
             ['date' => '2026-10-16 08:00:00', 'ip_address' => '203.0.113.42'],
@@ -66,18 +66,23 @@ final class DashboardTest extends TestCase
             ['date' => '2026-10-17 09:01:00', 'ip_address' => null],
         ];
 
-        $this->assertNull(Dashboard::busiestAddress($failures, 3));
-        $this->assertSame(['ip' => '203.0.113.42', 'day' => '2026-10-16', 'count' => 2], Dashboard::busiestAddress($failures, 2));
+        $this->assertSame([], Dashboard::addresses($failures, 3));
+        $this->assertSame([['ip' => '203.0.113.42', 'day' => '2026-10-16', 'count' => 2]], Dashboard::addresses($failures, 2));
     }
 
-    public function testBusiestAddressPrefersTheLatestDayOnATie(): void
+    public function testAddressesListEveryOneLatestDayFirst(): void
     {
         $failures = [
             ['date' => '2026-10-16 08:00:00', 'ip_address' => '203.0.113.42'],
             ['date' => '2026-10-18 08:00:00', 'ip_address' => '198.51.100.7'],
+            ['date' => '2026-10-18 08:01:00', 'ip_address' => '192.0.2.1'],
+            ['date' => '2026-10-18 08:02:00', 'ip_address' => '192.0.2.1'],
         ];
 
-        $this->assertSame('2026-10-18', Dashboard::busiestAddress($failures, 1)['day']);
+        $this->assertSame(
+            [['192.0.2.1', '2026-10-18'], ['198.51.100.7', '2026-10-18'], ['203.0.113.42', '2026-10-16']],
+            array_map(static fn (array $a): array => [$a['ip'], $a['day']], Dashboard::addresses($failures, 1)),
+        );
     }
 
     public function testSharesKeepTheLargestRolesAndSumTheRest(): void

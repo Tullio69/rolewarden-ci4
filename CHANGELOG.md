@@ -47,7 +47,7 @@ version may require changes on your side, listed under "Upgrading". After any up
   `explain()`, rename it: the class now has one.
 - Run `php spark migrate -n RoleWarden`. An updated installation keeps the Paper sidebar and
   starts with Today switched off; a new one starts with it on. The migration adds the five
-  `dashboard.*` permissions, granted to `admin` and to every role that holds `activity.view`;
+  `dashboard.*` permissions, granted to `admin` and to every role not deleted that holds `activity.view`;
   rolling it back deletes them, with every grant and override of them.
 - To land on the dashboard after signing in, set the `login` entry of `$redirects` in
   `app/Config/Auth.php` to `'rolewarden'` (it was `'rolewarden/users'`).

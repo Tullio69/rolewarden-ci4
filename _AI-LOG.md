@@ -1195,3 +1195,10 @@ Formato di ogni voce:
   - Ad `admin`, come gia' nella 1.0.0, mancano `admin.access`, `admin.settings`, `beta.access`, `users.edit` e `users.manage-admins`. E' un'osservazione, non un difetto.
   - Da cancellare a mano i profili Chrome bloccati in `scratchpad/u4r-u2-development` e `scratchpad/old-u4r-u2-development`.
   - Nessun commit.
+
+### [2026-10-25] - Claude (Claude Code)
+- Tipo: decisione + fix
+- Scope: ambiguita' A1-A4 di U4: `src/Dashboard/Dashboard.php`, `src/Views/dashboard/blocks/{security,roles,signins}.php`, migrazione `AddDashboardPermissions`, `resources/css/panel.css` e CSS compilato, `tests/Unit/Dashboard/DashboardTest.php`, `docs/SPEC.md`, `docs/design-system/components/Dashboard/README.md`, CHANGELOG
+- Cosa ho fatto: su decisione dell'utente. A1: mappa di calore in SVG (rect con `<title>`, livelli `heat-0..4`). A2: i numeri degli utenti per ruolo in un `<details>`, a vista resta la barra con la legenda dei nomi. A3: la migrazione non concede `dashboard.*` ai ruoli cancellati. A4: l'avviso elenca tutti i motivi, una riga ciascuno (ogni IP alla soglia per giorno, il piu' recente per primo, poi tutte le email bloccate); l'azione apre `auth.failed` dal giorno piu' vecchio citato al piu' recente, oggi se c'e' un'email bloccata. `busiestAddress()` sostituita da `addresses()`. 84 test unitari OK, PHPStan pulito sui file toccati.
+- Stato: completato, in attesa della riverifica del Collaudatore ad Hoc
+- Note per il prossimo: SPEC e README del componente Dashboard aggiornati solo in `docs/`: gli originali su Claude (specifica e design system "RoleWarden") vanno allineati.

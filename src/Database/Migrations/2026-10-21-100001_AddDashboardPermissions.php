@@ -10,8 +10,9 @@ use RoleWarden\Database\Seeds\RoleWardenSeeder;
 /**
  * v1.1 upgrade path for the dashboard (SPEC, decisions of 2026-10-18 and
  * 2026-10-21): adds the five dashboard.* permissions, granted to "admin" by
- * the seeder, and grants them to every role that holds activity.view
- * directly, so whoever reads the log on a 1.0 installation gets the dashboard.
+ * the seeder, and grants them to every role not deleted that holds
+ * activity.view directly, so whoever reads the log on a 1.0 installation
+ * gets the dashboard.
  * Roles inheriting activity.view get them through the same inheritance.
  */
 class AddDashboardPermissions extends Migration
@@ -28,7 +29,9 @@ class AddDashboardPermissions extends Migration
             $this->db->table($cfg->table('role_permissions') . ' rp')
                 ->select('rp.role_id')
                 ->join($cfg->table('permissions') . ' p', 'p.id = rp.permission_id')
+                ->join($cfg->table('roles') . ' r', 'r.id = rp.role_id')
                 ->where('p.slug', 'activity.view')
+                ->where('r.deleted_at', null)
                 ->get()->getResultArray(),
             'role_id',
         ));

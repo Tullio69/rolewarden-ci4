@@ -1457,3 +1457,14 @@ Formato di ogni voce:
   - D2 va confermato con uno strumento che misuri i fotogrammi in movimento senza i falsi positivi di rv5, oppure va deciso se basta il controllo a occhio;
   - restano `motion.production`, `cust.development`, `dash.development`, `u3.development`, `u1.development`, un passo per sessione;
   - nessun commit. Lock rilasciato.
+
+### [2026-10-26 00:30] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: passo `motion.production` del movimento su 933154b (rv7), in nero. Scritto solo in `tests/Integration/` (uscite `-rv7`, `verify-motion.phase-motion.php`, sezione «Riverifica a passi su 933154b (rv7)» di `MOTION-REPORT.md`). Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Strumento: NAV-d2 corretto come deciso il 2026-10-26 (copertura come INFO, FAIL solo con un'etichetta giudicata sotto 3:1).
+  - Hash `f7f37c04…e21e64` verificato prima e dopo.
+  - `motion.production`: **128/128 PASS**, 0 FAIL, 0 AMB, completo. NAV-d2/d5 non fanno parte di production (lo strumento li esegue solo in development).
+- Stato: **passo PASS**; movimento non ancora approvato (restano `motion.development`, `cust.development`, `dash.development`, `u3.development`, `u1.development`).
+- Ambiguita' di specifica: nessuna nuova.
+- Note per il prossimo: nessun processo residuo, `.env` cancellato, restano i profili `chrome-mo-*` (EPERM) in `work/mw-motion-production-rv7`. Nessun commit. Lock rilasciato.

@@ -393,3 +393,13 @@ Con questa macchina la memoria non basta per più di un passo di fila: conviene 
 - Nessun `.env` residuo (quello di production l'ho cancellato a mano) e nessun processo di test residuo.
 - Le cartelle di lavoro di rv6 sono svuotate, tranne i profili Chrome `chrome-mo-*` (EPERM).
 - Nessun commit.
+
+## Riverifica a passi su 933154b (rv7)
+
+**Collaudatore ad Hoc (Claude), 2026-10-26.** Un passo per sessione. Prima del passo NAV-d2 è stato corretto come deciso dall'utente il 2026-10-26: la copertura (fotogrammi giudicati, misure sotto l'evidenziazione) è ora un INFO e il controllo fallisce solo se un fotogramma giudicato ha un'etichetta sotto 3:1 (soglia decisa, `docs/design-system/README.md`, Motion, «Page to page»).
+
+| Passo | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| `motion.production` | production | **PASS, 128/128**, 0 FAIL, 0 AMB, passo completo (exit 0, 00:06-00:24). LOG-5xx, LOG-app, LOG-srv PASS. Nota: i blocchi dei fotogrammi (NAV-d2, NAV-d5) lo strumento li esegue solo in development, quindi in production non ci sono | hash `f7f37c04…e21e64` prima e dopo, ripristinato dal runner, identico, Mailpit vuoto; nessun processo residuo; `.env` cancellato, restano i profili `chrome-mo-*` (EPERM) |
+
+Restano da eseguire, uno per sessione: `motion.development` (NAV-d2 con il criterio deciso), `cust.development`, `dash.development`, `u3.development`, `u1.development`.

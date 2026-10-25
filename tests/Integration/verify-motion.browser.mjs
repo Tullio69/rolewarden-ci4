@@ -246,11 +246,14 @@ async function main() {
           for (const [i, at] of step.times.entries()) {
             const wait = at - (Date.now() - t0); if (wait > 0) await sleep(wait);
             const real = Date.now() - t0;
+            // the expression runs just before and just after the screenshot: v0 and v, so a frame whose geometry moved (or whose
+            // document changed) between the two can be told apart from one whose image matches the geometry
+            let v0 = null; if (step.expr) { try { v0 = await evaluate(step.expr); } catch (e) { v0 = 'eval error: ' + e.message; } }
             const shot = await send('Page.captureScreenshot', { format: 'png', clip: step.clip ? { ...step.clip, scale: 1 } : undefined }, s);
             const p = step.path.replace('%d', String(i).padStart(2, '0'));
             writeFileSync(p, Buffer.from(shot.data, 'base64'));
             let v = null; if (step.expr) { try { v = await evaluate(step.expr); } catch (e) { v = 'eval error: ' + e.message; } }
-            rec.value.push({ at: real, path: p, v });
+            rec.value.push({ at: real, path: p, v0, v });
           }
           await sleep(400); await settle();
           rec.url = await evaluate('location.href');

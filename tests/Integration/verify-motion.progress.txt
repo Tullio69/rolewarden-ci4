@@ -38,3 +38,9 @@ ALL DONE 20:07:26
 === motion.development 20:08:39
 exit=127 motion.development 20:09:39
 ALL DONE 20:09:39
+=== motion.development 20:19:26
+exit=1 motion.development 20:42:55
+ALL DONE 20:42:55
+=== motion.production 20:44:00
+exit=127 motion.production 20:48:22
+ALL DONE 20:48:23

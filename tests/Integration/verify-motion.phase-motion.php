@@ -243,6 +243,13 @@ function label_legibility(array $frames): array
             $out[$y] = $mx; }
         return $out; };
     $touch = fn ($pl, $r) => $pl && $pl[1] < $r[3] && $pl[3] > $r[1] && $pl[0] < $r[2] && $pl[2] > $r[0];
+    // rv5: the geometry is read just before and just after the screenshot; a frame is judged only when both readings agree (same
+    // document, same label boxes, pill within 2 px), else the image may not match the boxes (rv5 false positives, page switch)
+    $stable = function (array $f): bool { $a = $f['v0'] ?? null; $b = $f['v'] ?? null; if (! is_array($a) || ! is_array($b)) return false;
+        if (($a['url'] ?? '') !== ($b['url'] ?? '') || json_encode($a['labels']) !== json_encode($b['labels'])) return false;
+        if (($a['pill'] === null) !== ($b['pill'] === null)) return false; if ($a['pill'] === null) return true;
+        foreach ([0, 1, 2, 3] as $i) if (abs($a['pill'][$i] - $b['pill'][$i]) > 2) return false; return true; };
+    $frames = array_values(array_filter($frames, $stable));
     // reference: inked row offsets of each label, from frames where the pill does not touch it
     $ink = [];
     foreach ($frames as $f) { $v = $f['v'] ?? null; if (! is_array($v) || ! is_file($f['path'] ?? '')) continue; $im = imagecreatefrompng($f['path']); if (! $im) continue;
@@ -273,7 +280,7 @@ function label_legibility(array $frames): array
         imagedestroy($im);
     }
     if ($noRef) info('D2: labels never clear of the pill (no reference, not judged): ' . json_encode(array_keys($noRef)));
-    return [$low, $nOver, $nAll, $minOver];
+    return [$low, $nOver, $nAll, $minOver, count($frames)];
 }
 $steps = [['op' => 'initscript', 'source' => INIT], mo_login(), ['op' => 'eval', 'expr' => "({ url: location.pathname, reveal: window.__rwReveal || null })", 'tag' => 'login-reveal'], ['op' => 'goto', 'url' => U1BASE . 'rolewarden/activity', 'tag' => 'nav-start']];
 foreach ($SIDE as $sp) { $steps[] = ['op' => 'mouse', 'selector' => $sideSel($sp), 'click' => true, 'nav' => true, 'tag' => "go $sp"]; $steps[] = ['op' => 'wait', 'ms' => 900]; $steps[] = ['op' => 'eval', 'expr' => NAV, 'tag' => "nav $sp"]; }
@@ -319,9 +326,9 @@ if ($ENVN === 'development') {
         }
         foreach ($jobs as $jn => $jr) {
             $frames = bval($jr, 'frames') ?: [];
-            [$low, $nOver, $nAll, $minOver] = label_legibility($frames);
-            info("D2 $jn: " . count($frames) . " frames, $nAll label measures, $nOver of them under the moving highlight (lowest contrast there " . $minOver . ':1); below 3:1: ' . json_encode(array_slice($low, 0, 20)));
-            check("NAV-d2-$jn", "Sidebar click Users -> Settings ($jn): in every frame every sidebar label, those the highlight crosses and the one it lands on included, stays legible (contrast of its glyphs on what lies behind them at least 3:1)", count($frames) >= 10 && $nOver >= 5 && $low === [], json_encode(['frames' => count($frames), 'measures' => $nAll, 'underPill' => $nOver, 'minUnderPill' => $minOver, 'low' => array_slice($low, 0, 20), 'n' => count($low)]));
+            [$low, $nOver, $nAll, $minOver, $nStable] = label_legibility($frames);
+            info("D2 $jn: " . count($frames) . " frames ($nStable with the same geometry before and after the screenshot, judged), $nAll label measures, $nOver of them under the moving highlight (lowest contrast there " . $minOver . ':1); below 3:1: ' . json_encode(array_slice($low, 0, 20)));
+            check("NAV-d2-$jn", "Sidebar click Users -> Settings ($jn): in every frame every sidebar label, those the highlight crosses and the one it lands on included, stays legible (contrast of its glyphs on what lies behind them at least 3:1)", $nStable >= 10 && $nOver >= 5 && $low === [], json_encode(['frames' => count($frames), 'measures' => $nAll, 'underPill' => $nOver, 'minUnderPill' => $minOver, 'low' => array_slice($low, 0, 20), 'n' => count($low)]));
             [$ok5, $why5] = slide_ok(bval($jr, 'plog'), bval($jr, 'users-pill'));
             info("D5 $jn: $why5");
             check("NAV-d5-$jn", "Sidebar click Users -> Settings ($jn): from the first animation frame of the new page the highlight starts on the item left (Users) and only moves towards Settings", $ok5, $why5);

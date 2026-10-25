@@ -1420,3 +1420,24 @@ Formato di ogni voce:
   - per chiudere: `RW_MOTION_RUN=-rv5`, prima `motion.development`, poi `motion.production`, poi la regressione, uno alla volta e con memoria libera;
   - nessun commit. Lock rilasciato.
 
+### [2026-10-25 20:50] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica finale in nero del movimento su 933154b (rv5). Ho scritto solo:
+  - `tests/Integration/verify-motion.*`: driver e fase, cioe' D2 con la geometria letta prima e dopo lo screenshot, piu' le uscite `-rv5` e i fotogrammi;
+  - la sezione «Riverifica finale su 933154b (rv5)» di `MOTION-REPORT.md`.
+  Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Hash verificato all'inizio: `f7f37c04…e21e64`.
+  - MOTION development: **136/139**. I 3 FAIL NAV-d2 (paper, ink, charcoal) sono falsi positivi dello strumento: la geometria era letta dopo lo screenshot, quando l'evidenziazione si era gia' spostata o la pagina era cambiata. A occhio tutte le etichette sono leggibili; Ink a velocita' reale passa (7,9:1). Ho corretto lo strumento, ma la correzione non e' ancora stata eseguita.
+  - D5: scarto della partenza **0 px** in Paper, Ink, Charcoal e Ink a velocita' reale, sempre monotono verso Settings.
+  - D1, D3, D4 e A1: PASS.
+  - MOTION production: interrotta da Claude Code per memoria dopo 6 PASS e 0 FAIL. Non l'ho rilanciata.
+  - Regressione non eseguita.
+- Stato: **parziale, nessuna approvazione** (esito INCOMPLETO, nessun difetto del prodotto trovato).
+- Ambiguita' di specifica: nessuna nuova. Soglia 3:1 per «illeggibile»: interpretazione mia, da confermare.
+- Osservazione non decisa: durante il cambio di pagina (fotogrammi 02-03, rallentati 10 volte) la pagina compare circa 5 px piu' in alto. Probabilmente e' l'istantanea della view transition; da valutare.
+- Note per il prossimo:
+  - dopo l'interruzione ho fermato i processi orfani e ripristinato a mano dallo snapshot di production-rv5: hash identico, Mailpit vuoto;
+  - ho cancellato il `.env` e la cartella di lavoro, tranne i profili Chrome (EPERM);
+  - per chiudere, uno alla volta e con piu' memoria: `motion.development` (conferma di D2), `motion.production`, `cust.development`, `dash.development`, `u3.development`, `u1.development`;
+  - nessun commit. Lock rilasciato.

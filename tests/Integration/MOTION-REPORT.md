@@ -258,3 +258,84 @@ Nessuna nuova.
 - Mailpit vuoto, nessun `.env` e nessun processo residuo.
 - Restano nello scratchpad i profili Chrome di `mw-motion-development-rv1…rv4`, bloccati da EPERM.
 - Nessun commit.
+
+## Riverifica finale su 933154b (rv5)
+
+**Collaudatore ad Hoc (Claude), 2026-10-25. Esito: INCOMPLETO, nessuna approvazione.**
+
+MOTION in development è stata eseguita per intero: 136/139. I 3 FAIL sono tutti NAV-d2 e, guardati fotogramma per fotogramma, sono un errore del mio strumento, non della pagina. MOTION in production è stata interrotta da Claude Code per memoria bassa dopo 6 controlli, tutti PASS. Come previsto, non l'ho rilanciata e non ho eseguito la regressione.
+
+### Conteggi per fase e ambiente
+
+| Fase | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| MOTION (`motion.development`) | development | **136/139**. FAIL: NAV-d2-paper, NAV-d2-ink, NAV-d2-charcoal, falsi positivi dello strumento (sotto) | ripristinato dal runner, hash identico, Mailpit vuoto |
+| MOTION (`motion.production`) | production | **interrotto per memoria** dopo 6 PASS e 0 FAIL (ERR-console dei temi) | processi orfani fermati, ripristinato a mano dal suo `snapshot.sql`, hash identico, Mailpit vuoto |
+| U5 CUST, U4 DASH, U3 SRCH, U1 (NAV, RAIL, STYLE, ESC) | development | **non eseguiti** (interruzione precedente) | - |
+
+Hash `f7f37c04…e21e64` verificato prima di cominciare e dopo ogni passo (`verify-motion.environment.txt`).
+
+### D2: perché i 3 FAIL sono dello strumento
+
+- La regola delle righe con inchiostro (il falso positivo di rv3) era già nello strumento. In rv5 regge: il rilievo «Security below 1,05:1» di Charcoal non compare più.
+- I nuovi rilievi hanno un'altra causa. Il driver fa lo screenshot e **solo dopo** legge la posizione delle etichette e dell'evidenziazione. Con la macchina a corto di memoria, fra le due operazioni passa abbastanza tempo da:
+  - spostare l'evidenziazione;
+  - nei fotogrammi 02-03, cambiare documento.
+
+  Così le misure cadono su punti dell'immagine dove l'etichetta non c'è (contrasto 1:1).
+- **Rilievi** (rallentati 10 volte):
+  - Paper a 409 ms (Permissions, 35), 1523 ms (Activity) e 2407 ms (Settings);
+  - Ink a 428 ms (Roles, 11), 1595 ms (Security), 1788 ms (Activity), 2437 ms (Settings) e 2537 ms (System);
+  - Charcoal a 431, 1591, 2442 e 2534 ms.
+
+  Ink a velocità reale non ha rilievi: il minimo sotto l'evidenziazione è 7,9:1.
+- **Controllo a occhio:**
+  - nei fotogrammi `verify-motion.frames.development-rv5.{paper,ink}.02/03/16.png` tutte le etichette sono leggibili;
+  - nel 16 di Ink l'evidenziazione sta su SYSTEM, che resta leggibile, e non su Settings come dice la geometria letta dopo;
+  - nel 03 di Ink «Check a permission» si legge sopra la velatura;
+  - nel 24 Settings è evidenziata e leggibile.
+- **Correzione dello strumento (dopo rv5, non ancora eseguita):**
+  - `verify-motion.browser.mjs` legge la geometria subito prima e subito dopo lo screenshot (`v0` e `v`);
+  - `label_legibility` giudica solo i fotogrammi in cui le due letture coincidono: stesso documento, stesse etichette, evidenziazione entro 2 px;
+  - NAV-d2 chiede almeno 10 fotogrammi giudicati.
+
+  Va confermata con un giro di `motion.development`.
+
+### D5: scarto della partenza, misurato
+
+Il registro `requestAnimationFrame` della pagina nuova (/settings) confronta la prima posizione dell'evidenziazione con la sua posizione a riposo su Users (y = 204):
+
+| Tema | Primo fotogramma | Scarto | Monotona verso Settings | Fotogrammi |
+| --- | --- | --- | --- | --- |
+| Paper (rallentato 10 volte) | y 204 | **0 px** | sì, fino a 442 | 292 |
+| Ink (rallentato 10 volte) | y 204 | **0 px** | sì, fino a 442 | 286 |
+| Charcoal (rallentato 10 volte) | y 204 | **0 px** | sì, fino a 442 | 288 |
+| Ink, velocità reale | y 204 | **0 px** | sì, fino a 442 | 275 |
+
+NAV-d5 passa in tutti e quattro i casi: D5 è corretto.
+
+### Altri risultati di development
+
+D1 (VT-err, NAV-vt), D3, D4 e A1 come decisa: tutti PASS, come in rv3.
+
+### Osservazione, non decisa
+
+Nei fotogrammi 02-03, con le animazioni rallentate 10 volte e durante il cambio di pagina, in Paper e in Ink tutta la pagina compare circa 5 px più in alto che nei fotogrammi 00 e 24 (Dashboard a y 147 invece di 152). Il registro della pagina nuova non mostra spostamenti, quindi è probabilmente l'istantanea della view transition, o la cattura dello screenshot durante la transizione. Non lo classifico come difetto: lo riporto perché chi conosce la specifica decida se va verificato.
+
+### Ambiguità
+
+Nessuna nuova. Resta da confermare l'interpretazione della soglia 3:1 per «illeggibile».
+
+### Cosa manca per chiudere
+
+1. `motion.development` con lo strumento corretto (conferma di D2).
+2. `motion.production`.
+3. `cust.development`, `dash.development`, `u3.development`, `u1.development`.
+
+Uno alla volta, con più memoria libera. In rv5 ne erano liberi circa 2,6 GB su 16.
+
+### Ambiente
+
+- Nessun `.env` residuo (quello della cartella di production l'ho cancellato a mano) e nessun processo di test residuo.
+- Le cartelle di lavoro di rv4 e rv5 sono svuotate, tranne i profili Chrome `chrome-mo-*` (EPERM).
+- Nessun commit.

@@ -1341,3 +1341,10 @@ Formato di ogni voce:
   - Regressione: CUST in development e production, DASH in development, una suite alla volta.
 - Stato: completato. **Esito PASS, 692/692**: DEMO 65/65 e 65/65, CUST 152/152 e 152/152, DASH 258/258. **D1 chiuso, A1 e A2 chiuse come decise, blocco della demo approvato.** Difetti: nessuno. Ambiguita' nuove: nessuna.
 - Note per il prossimo: il blocco che lancia mostra titolo e messaggio in en e it, scrive un ERROR per blocco nel log, l'output a meta' della view non arriva nella pagina e il markup resta bilanciato. Nessun processo residuo. Nessun commit.
+
+### [2026-10-25 16:40] - Claude (Claude Code)
+- Tipo: feature
+- Scope: `resources/css/panel.css` e compilato, `src/Assets/js/panel.js`, `src/Views/partials/sidebar.php` (`rw-side-pill`), `src/Views/dashboard/blocks/figures.php` (`data-rw-count`), `docs/design-system/README.md` (Motion riscritta), `docs/design-system/components/Toast/README.md`, `CHANGELOG.md`
+- Cosa ho fatto: movimento in tutto il pannello ("/impeccable animate overdrive", direzione "Overdrive pieno" scelta dall'utente, che cambia la regola Motion del design system). View Transitions tra pagine (barra e top bar ferme, contenuto che passa, evidenziazione della voce attiva che scorre con un FLIP tra documenti via sessionStorage); dialog e ricerca che crescono dal pulsante (`rwMorph`); righe a cascata; dashboard che si disegna (conteggio cifre, grafico a tendina, barre, mappa di calore a onda, quote e avviso); segni della matrice che si disegnano; Personalizza con FLIP; toast con barra del tempo e FLIP; riflesso sui pulsanti primari (`@property`); pressione 97%; titoli di sezione legati allo scroll. Tutto spento con `prefers-reduced-motion`. Verificato a vista con Chrome headless via CDP su una pagina di prova con CSS e JS veri (fotogrammi a tempi fissi): corretti in corso l'evidenziazione che copriva il testo, il contenuto che si sdoppiava nel morph dei dialog e le quote che si separavano.
+- Stato: completato, in attesa del Collaudatore ad Hoc.
+- Note per il prossimo: l'originale del design system su Claude va allineato dall'utente (sezione Motion e Toast). Lock rilasciato per il collaudo.

@@ -28,7 +28,7 @@ RoleWarden is an admin panel for roles and permissions in CodeIgniter 4 apps. It
 
 **Rules, not boxes.** Group content with hairlines and white space. No cards, no card grids, no KPI tiles. Tables have no outer border and no zebra stripes: a `rule` under each row, a `rule-strong` under the header row and above the footer. Key figures sit in a **ledger strip**, never in tiles: a 2px `ink` rule above, a `rule-strong` rule below, a `rule` between figures. The one raised panel in the product is the sidebar's Today summary.
 
-**Radii and depth.** `radius-0` for all structure, `radius-sm` for checkboxes and labels, `radius-md` (4px) for buttons, inputs and the Today panel, and never more. Only menus, tooltips and the command search take `shadow-float`. No gradients, glass, textures or paper effects.
+**Radii and depth.** `radius-0` for all structure, `radius-sm` for checkboxes and labels, `radius-md` (4px) for buttons, inputs and the Today panel, and never more. Only menus, tooltips and the command search take `shadow-float`. No gradients, glass, textures or paper effects; the one gradient is the sheen that crosses a primary button on hover (see Motion).
 
 **States.**
 - Focus: every control shows a 2px solid `focus` outline with a 2px offset (`:focus-visible`). Never remove it.
@@ -36,7 +36,15 @@ RoleWarden is an admin panel for roles and permissions in CodeIgniter 4 apps. It
 - Disabled: 50% opacity text, `cursor: not-allowed`, still readable.
 - Unsaved: a changed cell carries a small `accent` corner dot and an `accent-tint` wash; the row's right margin notes "changed"; an `accent-tint` bar above the table counts the changes and holds Discard and Save changes.
 
-**Motion.** 120ms ease-out on color and background only. Nothing slides, bounces or scales. Two exceptions, neither under `prefers-reduced-motion`: a toast, which fades and rises 8px (see Toast), and the active dot of a user's status, whose halo breathes three times on load (1.6s each, under 5s in all) and then rests.
+**Motion** (changed on 2026-10-25). Motion explains a change: where the page went, what a click did, what just arrived. Nothing bounces; content is there without it, and nothing waits for it.
+- Tokens: `motion-fast` 120ms (feedback), `motion-base` 160ms (exits, small arrivals), `motion-slow` 320ms (arrivals, page hand-over), `motion-reveal` 640ms (charts drawing); `ease-expo` (`cubic-bezier(0.16, 1, 0.3, 1)`) for every arrival, `ease-out` for exits, which are faster than arrivals. A cascade steps 18ms per item and stops adding after 240ms.
+- Page to page (View Transitions): the sidebar and top bar stay; the content leaves in 120ms and the new one rises 10px out of a 3px blur in 320ms; the sidebar's active highlight slides from the old item to the new one. Browsers without view transitions change page as before.
+- Dialogs grow out of the button that opened them (command search out of the sidebar's search box), and the page under them does not move. Backdrops fade; the customize panel and tooltips arrive from 6px above at 98%.
+- Lists and tables arrive row after row. The dashboard draws itself once per visit: key figures count up, the sign-in line and its area wipe in from the left, failures grow from the baseline, the heat map lights up hour by hour, the role shares and the security notice wipe in.
+- Feedback: controls give way to 97% when pressed; a primary button's sheen crosses it once on hover; a matrix cell draws its new mark and lands its change dot; a checked box ticks; the unsaved bar's dot rings twice; a reordered dashboard block slides to its place and glows; the rule that decides on Check a permission is marked; on sign-in the rule under the heading draws before the rows land; section titles of long pages settle as they scroll in.
+- Never moving: the sidebar and top bar never replay an entrance from page to page.
+- `prefers-reduced-motion: reduce`: no movement, no cascade, no drawing, no count, no page hand-over, no morph; colour and background changes stay, and so does the backdrop's fade.
+- Toast and the user's status keep their own rules (see Toast and UserStatus).
 
 ## Themes
 

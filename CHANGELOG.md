@@ -43,6 +43,11 @@ version may require changes on your side, listed under "Upgrading". After any up
   **Demo documents**, to copy from.
 
 ### Changed
+- **Motion** across the panel, all of it off under the system's reduced-motion setting: pages hand
+  over to each other with the sidebar's highlight sliding to the new item, dialogs grow out of
+  their button, lists arrive row by row, the dashboard draws its figures and charts, and matrix
+  cells, toasts and the customize panel show what changed. Browsers without View Transitions
+  change page as before.
 - The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.
 
 ### Fixed

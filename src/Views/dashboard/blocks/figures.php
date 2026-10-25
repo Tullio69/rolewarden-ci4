@@ -48,7 +48,7 @@ $items = [
     <div class="rw-dash-fig">
       <span class="rw-header"><?= esc($label) ?></span>
       <div class="rw-dash-val">
-        <b<?= $i === 0 ? ' class="rw-dash-accent"' : '' ?>><?= esc($n($value)) ?></b>
+        <b<?= $i === 0 ? ' class="rw-dash-accent"' : '' ?> data-rw-count="<?= (int) $value ?>"><?= esc($n($value)) ?></b>
         <?php $help = $i === 0 ? lang('RoleWarden.panel.dashboard.figures.createdHelp') : lang('RoleWarden.panel.dashboard.figures.deltaHelp', [$period['days']]) ?>
         <span class="rw-dash-chip" title="<?= esc($help, 'attr') ?>"><?= esc($chip) ?><span class="rw-visually-hidden"> <?= esc($help) ?></span></span>
       </div>

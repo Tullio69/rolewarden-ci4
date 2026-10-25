@@ -48,6 +48,8 @@ $searchLabel = lang('RoleWarden.panel.search.open');
           <?php $label = lang('RoleWarden.panel.nav.' . $item['key']); ?>
           <li>
             <a href="<?= esc($item['url']) ?>"<?= $active === $item['key'] ? ' aria-current="page"' : '' ?><?= $collapsed ? ' title="' . esc($label, 'attr') . '"' : '' ?>>
+              <?php // The active highlight is its own element, so it can travel between pages. ?>
+              <?= $active === $item['key'] ? '<span class="rw-side-pill" aria-hidden="true"></span>' : '' ?>
               <?= $icon($item['icon']) ?>
               <span class="rw-side-text"><?= esc($label) ?></span>
               <?php if ($item['count'] !== null) : ?>

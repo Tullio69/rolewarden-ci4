@@ -76,6 +76,10 @@
   --size-cell: 96px;
   --motion-fast: 120ms; --motion-base: 160ms; --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --motion-breath: 1.6s; --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Motion (design system README, "Motion"): arrivals decelerate on --ease-expo, exits
+     leave on --ease-out in less time than they came. */
+  --motion-slow: 320ms; --motion-reveal: 640ms; --motion-stagger: 18ms; --motion-stagger-max: 240ms;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   /* The 45% ink scrim under the command search, the same in both modes. */
   --scrim: rgba(23, 25, 28, 0.45);
   --size-dialog: 600px;
@@ -178,8 +182,8 @@
 
   .rw-btn { display: inline-flex; align-items: center; text-decoration: none; gap: var(--space-2); height: var(--size-control); padding: 0 var(--space-4); border-radius: var(--radius-md); font: var(--weight-medium) var(--text-md)/var(--leading-md) var(--font-sans); border: var(--rule-width) solid transparent; cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out); white-space: nowrap; }
   .rw-btn:disabled { opacity: .5; cursor: not-allowed; }
-  .rw-btn--primary { background: var(--accent); color: var(--on-accent); }
-  .rw-btn--primary:hover:not(:disabled) { background: var(--accent-hover); }
+  .rw-btn--primary { background-color: var(--accent); color: var(--on-accent); }
+  .rw-btn--primary:hover:not(:disabled) { background-color: var(--accent-hover); }
   .rw-btn--secondary { background: var(--surface-raised); color: var(--ink); border-color: var(--control-border); }
   .rw-btn--secondary:hover:not(:disabled) { background: var(--surface-sunk); }
   .rw-btn--ghost { background: transparent; color: var(--accent); padding: 0 var(--space-2); }
@@ -557,7 +561,7 @@
   .rw-toast__close:hover { background: var(--surface-sunk); color: var(--ink); }
   .rw-toast__close:focus-visible { outline: var(--focus-width) solid var(--focus); outline-offset: 2px; }
   .rw-toast.is-leaving { opacity: 0; transition: opacity var(--motion-fast) var(--ease-out); }
-  @keyframes rw-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes rw-toast-in { from { opacity: 0; transform: translateY(12px) scale(0.98); filter: blur(2px); } to { opacity: 1; transform: none; filter: none; } }
   @media (prefers-reduced-motion: reduce) { .rw-toast { animation: none; } .rw-toast.is-leaving { transition: none; } }
   /* Without JavaScript the stack is static, above the content. */
   .rw-c-label { padding-left: var(--space-3); }
@@ -686,4 +690,120 @@
   .rw-dash-what { flex: 1; }
   .rw-dash-what code { padding: 1px var(--space-1-5); border-radius: var(--radius-sm); background: var(--surface-sunk); font-size: var(--text-md); }
   @media (max-width: 1100px) { .rw-dash-half { grid-column: 1 / -1; } .rw-dash-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* ---------- Motion (design system README, "Motion") ----------
+     Motion explains a change: where the page went, what a click did, what just arrived.
+     Everything starts from content that is already there without it; every effect has a
+     reduced-motion path; the shell (sidebar, top bar) never replays an entrance. */
+
+  /* Page to page: the sidebar and top bar stay, the content hands over, and the active
+     item's highlight travels from the old item to the new one (rwPill in panel.js). */
+  .rw-side { view-transition-name: rw-side; }
+  .rw-topbar { view-transition-name: rw-topbar; }
+  .rw-content { view-transition-name: rw-main; }
+  .rw .rw-side-nav a { position: relative; isolation: isolate; }
+  .rw .rw-side-nav a[aria-current="page"]:has(> .rw-side-pill) { background: transparent; }
+  .rw-side-pill { position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--sb-act-bg); }
+
+  /* A pressed control gives way under the pointer. */
+  .rw-btn, .rw-page, .rw-mode button, .rw-cell { transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out); }
+  .rw-btn:active:not(:disabled), .rw-page:active, .rw-mode button:active, .rw-cell:active:not([aria-disabled="true"]) { transform: scale(0.97); }
+
+  /* The primary action catches the light once when the pointer reaches it. */
+  .rw-btn--primary { background-image: linear-gradient(105deg, transparent calc(var(--rw-sheen) - 22%), color-mix(in oklab, var(--on-accent) 18%, transparent) var(--rw-sheen), transparent calc(var(--rw-sheen) + 22%)); }
+  .rw-btn--primary:hover:not(:disabled) { --rw-sheen: 140%; transition: background-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out), --rw-sheen 900ms var(--ease-expo); }
+
+  .rw-bar, .rw-ledger.rw-settings tr .rw-m-num, .rw-ledger.rw-settings tr .rw-note { transition: background-color var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out); }
+
+  /* Overlays: the customize panel and tooltips arrive, the backdrops fade. */
+  .rw-dash-panel, .rw-tip { transform-origin: top right; transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-slow) var(--ease-expo); }
+  .rw-cmd::backdrop, dialog.rw-confirm::backdrop { transition: background-color var(--motion-slow) var(--ease-out), overlay var(--motion-slow) allow-discrete, display var(--motion-slow) allow-discrete; }
+  @starting-style {
+    .rw-dash-panel, .rw-tip { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    .rw-cmd[open]::backdrop, dialog.rw-confirm[open]::backdrop { background-color: transparent; }
+  }
+  /* Where dialogs cannot morph from their button (no view transitions), they still arrive. */
+  @supports not (view-transition-name: none) {
+    .rw-cmd, dialog.rw-confirm { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-slow) var(--ease-expo); }
+    @starting-style { .rw-cmd[open], dialog.rw-confirm[open] { opacity: 0; transform: translateY(8px) scale(0.98); } }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Lists and tables arrive as lists: row after row, the whole cascade within 240ms. */
+    .rw-content tbody tr, .rw-dash-changes li, .rw-dash-fig, .rw-auth-form .rw-auth-row, .rw-install-block { animation: rw-rise var(--motion-slow) var(--ease-expo) both; }
+    .rw-cmd-results[data-enter] .rw-cmd-opt { animation: rw-rise var(--motion-base) var(--ease-expo) both; }
+
+    /* The dashboard draws itself: the line and its area wipe in from the left, the
+       failures grow from the baseline, the heat map lights up hour by hour, the role
+       shares fill their bar. */
+    .rw-dash-svg:not(.rw-dash-heat-svg) { animation: rw-wipe var(--motion-reveal) var(--ease-expo) both; }
+    .rw-dash-bar { transform-box: fill-box; transform-origin: 50% 100%; animation: rw-grow-y var(--motion-reveal) var(--ease-expo) both; }
+    .rw-dash-heat-svg rect { transform-box: fill-box; transform-origin: center; animation: rw-light var(--motion-slow) var(--ease-expo) both; }
+    .rw-dash-split, .rw-dash-notice { animation: rw-wipe var(--motion-reveal) var(--ease-expo) both; }
+
+    /* Check a permission: the rule that decides is marked as the reader gets to it. */
+    .rw-check-rules [aria-current] { background: linear-gradient(var(--accent-tint), var(--accent-tint)) left center / 0% 100% no-repeat; animation: rw-mark-rule var(--motion-reveal) var(--ease-expo) 200ms both; }
+
+    /* Sign-in: the ledger rule under the heading draws before the rows land. */
+    .rw-auth-head { border-bottom-color: transparent; background: linear-gradient(var(--rule-strong), var(--rule-strong)) left bottom / 100% var(--rule-strong-width) no-repeat; animation: rw-rule var(--motion-reveal) var(--ease-expo) both; }
+
+    /* A cell changed in a matrix draws its new mark; the change dot lands. */
+    .rw-cell--changed .rw-mark path, .rw-cell--changed .rw-mark circle { stroke-dasharray: 1; animation: rw-draw var(--motion-slow) var(--ease-expo) both; }
+    .rw-cell--changed .rw-mark-blank, .rw-cell--changed::after, .rw-check:checked:focus::before { animation: rw-pop var(--motion-base) var(--ease-expo) both; }
+    .rw-check:checked:focus::before { animation-name: rw-tick; }
+    .rw-bar--dirty .rw-bar-dot { animation: rw-ping 900ms var(--ease-out) 2; }
+
+    /* Toasts arrive from below out of focus; a timer line shows how long one stays. */
+    .rw-toast { animation: rw-toast-in var(--motion-slow) var(--ease-expo); }
+    .rw-toast.is-leaving { opacity: 0; transform: translateX(16px); transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out); }
+    .rw-toast--success::after, .rw-toast--warning::after { content: ""; position: absolute; left: var(--space-4); right: var(--space-4); bottom: 0; height: 2px; background: var(--rule-strong); transform-origin: left center; animation: rw-timer 5s linear both; }
+    .rw-toasts:hover .rw-toast::after, .rw-toasts:focus-within .rw-toast::after { animation-play-state: paused; }
+    .rw-appearance-toast::after { content: none; }
+
+    /* Long pages: each section title settles as it scrolls into view. */
+    @supports (animation-timeline: view()) {
+      .rw-section-title { animation: rw-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 80%; }
+    }
+
+    @supports (animation-delay: calc(sibling-index() * 1ms)) {
+      .rw-content tbody tr, .rw-dash-changes li, .rw-dash-fig, .rw-auth-form .rw-auth-row, .rw-install-block, .rw-cmd-results[data-enter] .rw-cmd-opt { animation-delay: min(calc((sibling-index() - 1) * var(--motion-stagger)), var(--motion-stagger-max)); }
+      .rw-dash-bar { animation-delay: min(calc(sibling-index() * 6ms), 360ms); }
+      .rw-dash-heat-svg rect { animation-delay: calc(mod(sibling-index() - 1, 24) * 14ms + 120ms); }
+    }
+  }
+
+  @keyframes rw-rise { from { opacity: 0; transform: translateY(8px); } }
+  @keyframes rw-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes rw-grow-y { from { transform: scaleY(0); } }
+  @keyframes rw-light { from { opacity: 0; transform: scale(0.4); } }
+  @keyframes rw-mark-rule { to { background-size: 100% 100%; } }
+  @keyframes rw-rule { from { background-size: 0% var(--rule-strong-width); } }
+  @keyframes rw-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes rw-pop { from { opacity: 0; transform: scale(0.4); } }
+  @keyframes rw-tick { from { transform: rotate(-45deg) translate(1px, -1px) scale(0.3); } }
+  @keyframes rw-ping { from { box-shadow: 0 0 0 0 var(--accent); } to { box-shadow: 0 0 0 8px transparent; } }
+  @keyframes rw-timer { to { transform: scaleX(0); } }
 }
+
+/* Registered so the primary button's sheen can travel (CSS cannot interpolate an untyped one). */
+@property --rw-sheen { syntax: "<percentage>"; inherits: false; initial-value: -40%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--motion-base); }
+::view-transition-old(rw-main) { animation: rw-page-out var(--motion-fast) var(--ease-out) both; }
+::view-transition-new(rw-main) { animation: rw-page-in var(--motion-slow) var(--ease-expo) both; }
+/* The sidebar is the same page to page: only the new one shows, live, so its highlight can travel. */
+::view-transition-old(rw-side) { display: none; }
+::view-transition-new(rw-side) { animation: none; }
+::view-transition-group(rw-main), ::view-transition-group(rw-side), ::view-transition-group(rw-morph) { animation-duration: var(--motion-slow); animation-timing-function: var(--ease-expo); }
+/* A dialog growing out of its button (rwMorph): the page under it does not move. */
+.rw-morphing::view-transition-old(rw-main), .rw-morphing::view-transition-old(rw-topbar) { display: none; }
+.rw-morphing::view-transition-new(rw-main), .rw-morphing::view-transition-new(rw-topbar) { animation: none; }
+::view-transition-old(rw-morph) { block-size: 100%; object-fit: cover; animation: rw-fade-out 80ms var(--ease-out) both; }
+::view-transition-new(rw-morph) { block-size: 100%; object-fit: cover; object-position: top; animation: rw-morph-in var(--motion-slow) var(--ease-expo) both; }
+@keyframes rw-fade-out { to { opacity: 0; } }
+@keyframes rw-page-out { to { opacity: 0; transform: translateY(-4px); } }
+@keyframes rw-page-in { from { opacity: 0; transform: translateY(10px); filter: blur(3px); } }
+@keyframes rw-morph-in { from { opacity: 0; filter: blur(4px); } }

@@ -8,6 +8,105 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('rwDashboard', rwDashboardController);
 });
 
+const RW_EASE_EXPO = 'cubic-bezier(0.16, 1, 0.3, 1)'; // --ease-expo in panel.css
+
+function rwReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/**
+ * Runs `change` (opening or closing a dialog) as a view transition in which `from`
+ * turns into `to`: a dialog grows out of the button that opened it and goes back
+ * into it. Without view transitions, or with reduced motion, it just runs `change`.
+ */
+function rwMorph(change, from, to) {
+  if (!document.startViewTransition || rwReducedMotion() || !from || !to || !from.isConnected) {
+    change();
+    return;
+  }
+  from.style.viewTransitionName = 'rw-morph';
+  document.documentElement.classList.add('rw-morphing');
+  const transition = document.startViewTransition(() => {
+    from.style.viewTransitionName = '';
+    to.style.viewTransitionName = 'rw-morph';
+    change();
+  });
+  transition.finished.finally(() => {
+    to.style.viewTransitionName = '';
+    document.documentElement.classList.remove('rw-morphing');
+  });
+}
+
+/**
+ * Slides elements from where they were (`before`, their tops before a DOM change)
+ * to where they are now, so a reordered list or a closed toast does not jump.
+ */
+function rwSlide(elements, before) {
+  if (rwReducedMotion()) return;
+  elements.forEach((el, i) => {
+    const dy = before[i] - el.getBoundingClientRect().top;
+    if (el.isConnected && dy) el.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 320, easing: RW_EASE_EXPO });
+  });
+}
+
+/**
+ * Dashboard key figures count up to their value (data-rw-count), then show the
+ * server's own text again. The width is held so the chip beside does not move.
+ */
+function rwCountUp() {
+  if (rwReducedMotion()) return;
+  const format = new Intl.NumberFormat(document.documentElement.lang || undefined);
+  document.querySelectorAll('[data-rw-count]').forEach((el) => {
+    const target = Number(el.dataset.rwCount);
+    const text = el.textContent;
+    if (!(target > 1)) return;
+    el.style.minWidth = el.getBoundingClientRect().width + 'px';
+    const start = performance.now();
+    const step = (now) => {
+      const p = Math.min((now - start) / 640, 1);
+      el.textContent = p < 1 ? format.format(Math.round(target * (1 - 2 ** (-10 * p)))) : text;
+      if (p < 1) requestAnimationFrame(step);
+      else el.style.minWidth = '';
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', rwCountUp);
+
+/**
+ * The sidebar's active highlight travels from the item of the page left to the item
+ * of the page opened: the old position is kept in sessionStorage when the page goes,
+ * and the new highlight slides from there (a FLIP across two documents).
+ */
+const RW_PILL_KEY = 'rw-pill';
+
+window.addEventListener('pagehide', () => {
+  const pill = document.querySelector('.rw-side-pill');
+  try {
+    if (pill) sessionStorage.setItem(RW_PILL_KEY, String(pill.getBoundingClientRect().top));
+    else sessionStorage.removeItem(RW_PILL_KEY);
+  } catch (e) {
+    // storage blocked: the highlight simply appears in place
+  }
+});
+
+function rwPill() {
+  let from = null;
+  try {
+    from = sessionStorage.getItem(RW_PILL_KEY);
+    sessionStorage.removeItem(RW_PILL_KEY);
+  } catch (e) {
+    return;
+  }
+  const pill = document.querySelector('.rw-side-pill');
+  if (from === null || !pill || rwReducedMotion()) return;
+  const dy = Number(from) - pill.getBoundingClientRect().top;
+  if (dy) pill.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 420, easing: RW_EASE_EXPO });
+}
+
+document.addEventListener('DOMContentLoaded', rwPill);
+
 /** Shows a toast from anywhere on the page: rwToast('error', 'Could not save this change.'). */
 function rwToast(type, message) {
   window.dispatchEvent(new CustomEvent('rw-toast', { detail: { type, message } }));
@@ -54,7 +153,13 @@ function rwToastsController(config) {
       const toast = this.items.find((t) => t.id === id);
       if (!toast || toast.leaving) return;
       toast.leaving = true;
-      setTimeout(() => { this.items = this.items.filter((t) => t.id !== id); }, 120);
+      setTimeout(() => {
+        // The toasts left in the stack slide into the gap instead of jumping.
+        const others = [...this.$root.querySelectorAll('.rw-toast:not(.is-leaving)')];
+        const tops = others.map((el) => el.getBoundingClientRect().top);
+        this.items = this.items.filter((t) => t.id !== id);
+        this.$nextTick(() => rwSlide(others, tops));
+      }, 160);
     },
   };
 }
@@ -94,21 +199,24 @@ function rwSettingsController(config) {
   };
 }
 
+/** Opens a confirm dialog out of the button that asked for it. */
 function rwConfirm(id) {
   const dialog = document.getElementById(id);
-  if (dialog) dialog.showModal();
+  if (!dialog) return;
+  dialog.rwTrigger = document.activeElement;
+  rwMorph(() => dialog.showModal(), dialog.rwTrigger, dialog);
 }
 
 function rwCancelConfirm(id) {
   const dialog = document.getElementById(id);
-  if (dialog) dialog.close();
+  if (dialog) rwMorph(() => dialog.close(), dialog, dialog.rwTrigger);
 }
 
 const RW_MARK_SVG = {
-  role: '<svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
-  inherit: '<svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
-  grant: '<svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
-  deny: '<svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg>',
+  role: '<svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+  inherit: '<svg class="rw-mark rw-mark--inherit" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M8.6 5.5l-1.6 6M13.6 5.5l-1.6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+  grant: '<svg class="rw-mark rw-mark--grant" viewBox="0 0 20 20" aria-hidden="true"><circle pathLength="1" cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path pathLength="1" d="M6.5 10.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+  deny: '<svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path pathLength="1" d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path pathLength="1" d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg>',
   none: '<span class="rw-mark-blank" aria-hidden="true"></span>',
 };
 
@@ -539,8 +647,13 @@ function rwSearchController(config) {
       if (this.$refs.dialog.open) {
         return;
       }
-      this.$refs.dialog.showModal();
-      this.$refs.q.select();
+      // The dialog grows out of the sidebar's search box, also when Ctrl K opened it.
+      rwMorph(() => {
+        this.$refs.dialog.showModal();
+        this.$refs.q.select();
+      }, this.$root.querySelector('.rw-side-search'), this.$refs.dialog);
+      this.$refs.list.dataset.enter = '';
+      setTimeout(() => { delete this.$refs.list.dataset.enter; }, 600);
       this.load();
     },
 
@@ -590,7 +703,6 @@ function rwSearchController(config) {
   };
 }
 
-/** #rgb, #rrggbb or rgb(...) as #rrggbb (computed custom properties keep what was written). */
 /**
  * Dashboard customize panel (views/dashboard/customize.php). Up and down swap
  * a row with its neighbour by moving the neighbour, so the focused button stays
@@ -611,7 +723,11 @@ function rwDashboardController() {
     move(row, step, button) {
       if (!this.movable(row, step)) return;
       const other = this.neighbour(row, step);
+      const rows = [...row.parentNode.children];
+      const tops = rows.map((el) => el.getBoundingClientRect().top);
       row.parentNode.insertBefore(other, step < 0 ? row.nextElementSibling : row);
+      rwSlide(rows, tops);
+      row.animate([{ backgroundColor: 'var(--accent-tint)' }, { backgroundColor: 'transparent' }], { duration: 900, easing: 'ease-out' });
       this.moves++;
       this.$nextTick(() => {
         if (button.disabled) row.querySelector('.rw-dash-move button:not(:disabled)')?.focus();
@@ -620,6 +736,7 @@ function rwDashboardController() {
   };
 }
 
+/** #rgb, #rrggbb or rgb(...) as #rrggbb (computed custom properties keep what was written). */
 function rwHex(value) {
   if (/^#[0-9a-f]{6}$/i.test(value)) return value.toLowerCase();
   if (/^#[0-9a-f]{3}$/i.test(value)) return '#' + value.slice(1).split('').map((c) => c + c).join('').toLowerCase();

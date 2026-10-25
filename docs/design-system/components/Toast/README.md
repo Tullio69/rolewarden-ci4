@@ -9,7 +9,7 @@ Immediate feedback on the action just taken: saved, failed, or worth a second lo
 - Kinds are told apart by that first word, not by colour. Only `error` uses colour: a `denied` border and a `denied` first word. Success is never `granted`, and warning has no colour of its own.
 - Success and warning leave by themselves after 5 seconds. The timer pauses while the pointer is over the stack or focus is inside it. Errors stay until they are closed.
 - Accessibility: the stack is `aria-live="polite"`, and an error toast carries `role="alert"`. The close button keeps the 2px `focus` ring. Opening a toast never moves focus.
-- Motion: fade and rise 8px in 160ms `ease-out`; leave with a 120ms fade. With `prefers-reduced-motion`, appear and leave without movement.
+- Motion: rise 12px out of a 2px blur in 320ms `ease-expo`; leave sliding 16px right while fading, in 160ms. A 2px `rule-strong` line under success and warning shrinks over the 5 seconds and stops while the timer pauses. When a toast leaves, the others slide into the gap. With `prefers-reduced-motion`, appear and leave without movement and without the line.
 - Without JavaScript, the same markup renders at the top of the content column, static and without the close button. The message stays readable.
 - Classes: `rw-toasts` (stack; add `rw-toasts--static` for the no-JavaScript form), `rw-toast`, `rw-toast--success`, `rw-toast--warning`, `rw-toast--error`, `rw-toast__kind`, `rw-toast__close`.
 - Don't use a toast for validation errors that belong to one field: show "Error: ..." under the control. Don't put links or actions inside a toast, and don't use it for anything the user must read later.

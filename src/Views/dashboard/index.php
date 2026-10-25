@@ -53,6 +53,10 @@ $letter = 'A';
   <?= view('RoleWarden\Views\dashboard\blocks\security', $data) ?>
 <?php endif ?>
 
+<?php if ($blocks === []) : ?>
+  <p class="rw-dash-empty"><?= esc(lang('RoleWarden.panel.dashboard.customize.empty')) ?></p>
+<?php endif ?>
+
 <div class="rw-dash">
 <?php foreach ($flow as $block) : ?>
   <?php if (isset($app[$block])) : ?>

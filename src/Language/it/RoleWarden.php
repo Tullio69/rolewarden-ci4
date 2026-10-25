@@ -158,6 +158,7 @@ return [
                 'savedGlobal' => 'La dashboard predefinita è salvata. Vale per chi non ha fatto una scelta propria.',
                 'reset' => 'La tua dashboard segue di nuovo il predefinito.',
                 'invalid' => 'Non è stato possibile salvare questa disposizione. Ricarica la pagina e riprova.',
+                'empty' => 'Tutti i blocchi sono nascosti. Apri Personalizza per mostrarli di nuovo.',
                 'blocks' => [
                     'security' => 'Avviso di sicurezza',
                     'figures' => 'Cifre chiave',

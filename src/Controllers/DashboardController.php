@@ -33,7 +33,9 @@ class DashboardController extends BaseController
         $layout = Layout::for($userId);
         $blocks = array_values(array_diff(array_intersect($layout['order'], $allowed), $layout['hidden']));
         $now = time();
-        $period = Dashboard::period(rw_query('period') !== '' ? (int) rw_query('period') : $layout['period'], $now);
+        // A period not offered in ?period= falls back to the saved one.
+        $asked = (int) rw_query('period');
+        $period = Dashboard::period(in_array($asked, Dashboard::PERIODS, true) ? $asked : $layout['period'], $now);
         $shows = static fn (string $block): bool => in_array($block, $blocks, true);
         $buckets = $shows('figures') || $shows('signins') ? Dashboard::buckets(Dashboard::signInRows($period), $period['dates']) : null;
         $me = auth()->user();

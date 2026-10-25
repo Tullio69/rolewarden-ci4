@@ -1259,3 +1259,10 @@ Formato di ogni voce:
   - A3: la posizione dei blocchi che chi salva il globale non vede non e' definita.
   Nessuna ambiguita' nuova.
 - Note per il prossimo: nessun processo residuo, scratchpad pulito. Nessun commit.
+
+### [2026-10-25 12:45] - Claude (Claude Code)
+- Tipo: fix
+- Scope: `src/Controllers/DashboardController.php`, `src/Views/dashboard/index.php`, `resources/css/panel.css` e `src/Assets/css/panel.css`, `src/Language/{en,it}/RoleWarden.php`, `docs/SPEC.md`
+- Cosa ho fatto: ambiguita' U5 A1-A3 decise dall'utente con le scelte raccomandate. A1: un `?period=` non offerto vale il periodo salvato. A2: con tutti i blocchi nascosti la pagina mostra un messaggio (`rw-dash-empty`, stringa `panel.dashboard.customize.empty`) che rimanda a Personalizza. A3: comportamento attuale confermato (i blocchi che chi salva il globale non vede tengono posizione relativa e stato), scritto in SPEC.
+- Stato: completato, in attesa della riverifica del Collaudatore ad Hoc su A1-A2 piu' CUST.
+- Note per il prossimo: 89 test unitari e PHPStan verdi. Originali su Claude (specifica) da allineare a cura dell'utente. Lock rilasciato per il collaudo.

@@ -158,6 +158,7 @@ return [
                 'savedGlobal' => 'The default dashboard is saved. It applies to everyone who has not made their own choice.',
                 'reset' => 'Your dashboard follows the default again.',
                 'invalid' => 'This dashboard layout could not be saved. Reload the page and try again.',
+                'empty' => 'Every block is hidden. Open Customize to show them again.',
                 'blocks' => [
                     'security' => 'Security notice',
                     'figures' => 'Key figures',

@@ -7,7 +7,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase DASH =====
 
 == DASH: dashboard (U4)
-[INFO] server pid=23584 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=24688 on 127.0.0.1:8071 prefix=''
 [INFO] auth_logins rows written: 914
 [PASS] D-login The super admin signs in
 [PASS] D-200  /rolewarden answers 200 with the dashboard for the super admin
@@ -84,7 +84,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] roles note: 34 users, 15 roles ; percents: ["23%","17%","14%","14%","31%"] ; roles details: 1
 [PASS] N30-C1 30 days: the latest five permission changes of the period, newest first (actor, subject)
 [PASS] N30-C2 30 days: "View all 37" opens the activity log filtered on the period (2026-09-26 to 2026-10-25)
-[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 25 Oct, 12:39 02 v8badmin revoked roles.view from Recent1 25 Oct, 12:38 03 v8badmin granted Recent2 roles.view 25 Oct, 12:38 04 The system denied Recent3 roles.view 25 Oct, 12:38 05 v8badmin cleared the override of roles.view for Recent4 25 Oct, 12:38 ; view-all query: {"from":"2026-09-26","to":"2026-10-25"}
+[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 25 Oct, 13:15 02 v8badmin revoked roles.view from Recent1 25 Oct, 13:15 03 v8badmin granted Recent2 roles.view 25 Oct, 13:15 04 The system denied Recent3 roles.view 25 Oct, 13:15 05 v8badmin cleared the override of roles.view for Recent4 25 Oct, 13:15 ; view-all query: {"from":"2026-09-26","to":"2026-10-25"}
 [PASS] N30-noSec 30 days: no security notice when no address reaches the threshold in a day and no email is locked
 [PASS] N30-C3 30 days: the View all link opens (200)
 [PASS] N90-0  90 days: 200, period 90 pressed, no PHP error, no SQL text
@@ -285,20 +285,20 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] LANG-1 Every dashboard string exists in English and in Italian (same keys, none empty)
 [PASS] LANG-2 No dashboard string left in English in the Italian file (except names and placeholders)
 [PASS] LANG-3 No English dashboard text in the Italian page (headings, notes, labels, tables, weekdays, months)
-[INFO] IT excerpt: × Buon pomeriggio, v8bowner I tuoi accessi, a colpo d’occhio Dal 26 set al 25 ott 2026 7 giorni 30 giorni 90 giorni Personalizza Personalizza la dashboard Scegli i blocchi che vedi, il loro ordine e il periodo con cui si apre la pagina. Avviso di sicurezza Sempre in cima quando compare Cifre chiave ↑ ↓ Accessi ↑ ↓ Chi ha quale ruolo ↑ ↓ Ultime modifiche ai permessi ↑ ↓ Periodo all’apertura 7 giorni 30 giorni 90 giorni Salva per me Salva come predefinito per tutti Torna al predefinito 5 accessi falliti da 203.0.113.9 il 24 ott, la soglia di blocco è 5. Rivedi i tentativi Utenti attivi 51 +40 nuovi Account creati nel periodo su 55 account, 93% Accessi, 30 giorni 126 +11 Variazione sui 30 giorni precedenti picco di 28 il 25 ott Falliti, 30 giorni 46 +10 Variazione sui 30 giorni precedenti 36 nel periodo precedente Modifiche ai permessi 37 +10 Variazione sui 30 giorni precedenti 4 override utente tra queste A Accessi negli ultimi 30 giorni Riusciti 126 Falliti 46 50250 26 set3 ott11 ott18 ott25 ott Mostra i numeri GiornoRiuscitiFalliti sab 26 set62 dom 27 set72 lun 28 set31 mar 29 set51 mer 30 set31 gio 1 ott31 ven 2 ott50 sab 3 ott00 dom 4 ott20 lun 5 ott42 mar 6 ott40 mer 7 ott52 gio 8 ott01 ven 9 ott00 sab 10 ott32 dom 11 ott73 lun 12 ott21 mar 13 ott41 mer 14 ott72 gio 15 ott13 ven 16 ott72 sab 17 ott11 dom 18 ott32 lun 19 ott54 mar 20 ott00 mer 21 ott63 gio 22 ott31 ven 23 ott20 sab 24 ott05 dom 25 ott283 B Quando si accede di punta: dom 12:00 lunmarmer...
+[INFO] IT excerpt: × Buon pomeriggio, v8bowner I tuoi accessi, a colpo d’occhio Dal 26 set al 25 ott 2026 7 giorni 30 giorni 90 giorni Personalizza Personalizza la dashboard Scegli i blocchi che vedi, il loro ordine e il periodo con cui si apre la pagina. Avviso di sicurezza Sempre in cima quando compare Cifre chiave ↑ ↓ Accessi ↑ ↓ Chi ha quale ruolo ↑ ↓ Ultime modifiche ai permessi ↑ ↓ Documenti della demo ↑ ↓ Periodo all’apertura 7 giorni 30 giorni 90 giorni Salva per me Salva come predefinito per tutti Torna al predefinito 5 accessi falliti da 203.0.113.9 il 24 ott, la soglia di blocco è 5. Rivedi i tentativi Utenti attivi 51 +40 nuovi Account creati nel periodo su 55 account, 93% Accessi, 30 giorni 126 +11 Variazione sui 30 giorni precedenti picco di 28 il 25 ott Falliti, 30 giorni 46 +10 Variazione sui 30 giorni precedenti 36 nel periodo precedente Modifiche ai permessi 37 +10 Variazione sui 30 giorni precedenti 4 override utente tra queste A Accessi negli ultimi 30 giorni Riusciti 126 Falliti 46 50250 26 set3 ott11 ott18 ott25 ott Mostra i numeri GiornoRiuscitiFalliti sab 26 set62 dom 27 set72 lun 28 set31 mar 29 set51 mer 30 set31 gio 1 ott31 ven 2 ott50 sab 3 ott00 dom 4 ott20 lun 5 ott42 mar 6 ott40 mer 7 ott52 gio 8 ott01 ven 9 ott00 sab 10 ott32 dom 11 ott73 lun 12 ott21 mar 13 ott41 mer 14 ott72 gio 15 ott13 ven 16 ott72 sab 17 ott11 dom 18 ott32 lun 19 ott54 mar 20 ott00 mer 21 ott63 gio 22 ott31 ven 23 ott20 sab 24 ott05 dom 25 ott283 B Quando si accede ...
 [PASS] LOGIN-1 With the 1.0 Auth.php (login => rolewarden/users) sign-in still lands on Users
 [PASS] LOGIN-2 With login => 'rolewarden' (CHANGELOG) sign-in lands on the dashboard (200)
 [PASS] LOGIN-3 Same setting, a user without dashboard.* goes on to the first screen it can see
 [INFO] after sign-in from /[omesso]?period=7: http://127.0.0.1:8071/index.php/[omesso]
-[INFO] server pid=40880 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=3908 on 127.0.0.1:8071 prefix=''
 [INFO] TZ: last day of the table ["Mon 26 Oct",1,0] ; today in Kiritimati: Mon 26 Oct ; range 20 Oct to 26 Oct 2026
 [PASS] TZ-1   With appTimezone Pacific/Kiritimati the last day of the period is today in that time zone
-[INFO] server pid=36060 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=40428 on 127.0.0.1:8071 prefix=''
 [PASS] LOG-1  No response of this phase has status >= 500, PHP error text or SQL text
 [INFO] log lines written by the SQL-error probe: []
 [PASS] LOG-2  No WARNING/NOTICE/DEPRECATED/ERROR/CRITICAL line in the application log (threshold 9)
 [PASS] LOG-3  No PHP warning, notice or deprecation in the server output
 
 TOTAL: 258 PASS, 0 FAIL, 0 AMB
-2fb290d s1.dash.2fb290d.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+db68a26 s1.dash.db68a26.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

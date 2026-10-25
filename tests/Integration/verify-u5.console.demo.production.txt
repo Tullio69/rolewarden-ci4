@@ -12,15 +12,16 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] PRE-uni demo:uninstall of the harness demo (exit 0)
 [INFO] PRE writable files after demo:uninstall: []
 [PASS] PRE-clean Fresh installation without the demo: no demo_documents table, no documents.* permission
-[INFO] server pid=25164 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=17348 on 127.0.0.1:8071 prefix=''
 [PASS] PRE-200 Before demo:install the super admin opens the dashboard: 200, no error text, no SQL text
 [PASS] PRE-log Before demo:install: no WARNING/ERROR line in the log (no query on a missing table)
 [INFO] PRE the super admin sees the block: {"title":"Demo documents","text":"E Demo documents Run php spark demo:install to fill this block."}
+[PASS] PRE-A2 A2: before demo:install the super admin sees the block, asking to run demo:install
 [PASS] PRE-block Before demo:install the block, if shown, holds no figures read from a table (no status figures)
 [INFO] PRE admin (documents.view does not exist yet): block null
 [PASS] PRE-adm Before demo:install admin opens the dashboard (200) without the block, documents.view not being held
 [PASS] INS    php spark demo:install (exit 0) creates demo_documents and the documents.* permissions
-[INFO] server pid=37172 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=27560 on 127.0.0.1:8071 prefix=''
 [PASS] VIS-owner owner (documents.view held): the block shows (no 5xx)
 [PASS] VIS-reader reader (documents.view held): the block shows (no 5xx)
 [INFO] VIS reader dashboard: 200  order ["demo-documents"]
@@ -43,7 +44,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] ACT create form: {"action":"http:\/\/127.0.0.1:8071\/index.php\/demo","fields":["csrf_test_name","title","body"]}
 [PASS] ACT-create The author creates a document from the demo (one more row)
 [PASS] ACT-approve The approver approves the submitted document from the demo
-[INFO] ACT approved doc: [{"id":2,"status":"approved","created_at":"2026-10-05 12:51:43","approved_at":"2026-10-25 12:51:52","updated_at":"2026-10-25 12:51:52"}]
+[INFO] ACT approved doc: [{"id":2,"status":"approved","created_at":"2026-10-05 13:10:09","approved_at":"2026-10-25 13:10:19","updated_at":"2026-10-25 13:10:19"}]
 [INFO] NUM after table by status: {"approved":3,"draft":2}, written 7/30/90: [2,3,4]
 [PASS] NUM-after-7-st after, 7 days: documents by status = the table ({"Draft":2,"Submitted":0,"Approved":3})
 [PASS] NUM-after-7-w after, 7 days: the note gives the documents written in the period (2)
@@ -59,27 +60,37 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] LANG it text: A Documenti della demo Bozza2 Inviato0 Approvato3 3 documenti scritti negli ultimi 30 giorni. Apri i documenti
 [PASS] LANG-it-cust In Italian the panel row of the block is the Italian title
 [PASS] ESC-1  A row with a hostile status and title: the page opens, nothing of it unescaped in the block
-[INFO] ESC block with a hostile status: figs {"Draft":2,"Submitted":0,"Approved":3,"Demo.statuses.<b>x<\/b>&\"":1} note 4 documents written in the last 30 days. Open the documents
+[INFO] ESC block with a hostile status: figs {"Draft":2,"Submitted":0,"Approved":3} note 4 documents written in the last 30 days. Open the documents
 [PASS] ESC-2  No hostile string unescaped anywhere on the dashboard
 [PASS] UNI-0  php spark demo:uninstall (exit 0): table and documents.* gone
-[INFO] server pid=35920 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=38620 on 127.0.0.1:8071 prefix=''
 [PASS] UNI-200 After demo:uninstall the super admin opens the dashboard: 200, no error text, no SQL text
 [PASS] UNI-log After demo:uninstall: no WARNING/ERROR line in the log
 [PASS] UNI-nofig After demo:uninstall the block, if still shown, reads no table (no status figures)
 [INFO] UNI super admin block after uninstall: {"title":"Demo documents","text":"E Demo documents Run php spark demo:install to fill this block.","inPanel":true}
+[PASS] UNI-A2 A2: after demo:uninstall the super admin still sees the block, asking to run demo:install
 [PASS] UNI-adm After demo:uninstall admin opens the dashboard without the block
-[INFO] server pid=23384 on 127.0.0.1:8071 prefix=''
-[FAIL] ROB-1  Demo installed, demo_documents missing: the super admin still opens the dashboard (no 5xx, no SQL text)
-         -> [500,["ERROR - 2026-10-25 12:52:04 --> Table '[omesso]_test.demo_documents' doesn't exist","CRITICAL - 2026-10-25 12:52:04 --> CodeIgniter\\Database\\Exceptions\\DatabaseException: Table '[omesso]_test.demo_documents' doesn't exist"]]
-[FAIL] ROB-2  Demo installed, demo_documents missing: the block does not query the missing table (no SQL error in the log)
-         -> ["ERROR - 2026-10-25 12:52:04 --> Table '[omesso]_test.demo_documents' doesn't exist","CRITICAL - 2026-10-25 12:52:04 --> CodeIgniter\\Database\\Exceptions\\DatabaseException: Table '[omesso]_test.demo_documents' doesn't exist"]
-[INFO] ROB demo:uninstall with the table gone: rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-25 12:52:05 UTC+00:00 Demo removed: its table, roles, permissions, accounts and settings are gone. Now delete the demo folder and its two lines in app/Config (see the demo README).
+[INFO] server pid=4844 on 127.0.0.1:8071 prefix=''
+[PASS] ROB-1  Demo installed, demo_documents missing: the super admin still opens the dashboard (no 5xx, no SQL text)
+[PASS] ROB-2  Demo installed, demo_documents missing: the block does not query the missing table (no SQL error in the log)
+[INFO] ROB demo:uninstall with the table gone: rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-25 13:10:32 UTC+00:00 Demo removed: its table, roles, permissions, accounts and settings are gone. Now delete the demo folder and its two lines in app/Config (see the demo README).
+[INFO] server pid=29296 on 127.0.0.1:8071 prefix=''
+[PASS] THR-200 A1: with a block that throws in data() and one that throws in its view, the dashboard answers 200 with no error text
+[PASS] THR-data A1: the data() block keeps its section, letter and title, and says it could not be loaded (en)
+[PASS] THR-view A1: the view block keeps its section, letter and title, and says it could not be loaded (en)
+[PASS] THR-half A1: the output the throwing view wrote before throwing is not in the page
+[PASS] THR-markup A1: the markup stays whole: main closed, section/div/table/details/form/ul/ol balanced inside it
+[PASS] THR-after A1: the block after them renders whole (title, body)
+[PASS] THR-others A1: the module blocks and the demo block render as usual (figures, signins, roles, changes, demo with its figures)
+[INFO] THR log: ERROR - 2026-10-25 13:10:36 --> RoleWarden: dashboard block "u5-throw-data" failed: U5-THROW-DATA | ERROR - 2026-10-25 13:10:36 --> RoleWarden: dashboard block "u5-throw-view" failed: U5-THROW-VIEW
+[PASS] THR-log A1: the log holds an error for each throwing block
+[PASS] THR-it A1: in Italian both blocks keep their title and say "Non è stato possibile caricare questo blocco. L'errore è nel log dell'applicazione.", without the English message
+[PASS] THR-log2 A1: a second page view logs the errors again, still 200
+[PASS] THR-clean A1: the test blocks are removed from the copy app
 [PASS] LOG-5xx No answer >= 500, no SQL text, no PHP error on any page of the phase
 [PASS] LOG-srv No PHP warning in the server logs
-[PASS] LOG-app No WARNING/ERROR line in the application log over the phase (CSRF refusals and the ROB case aside)
+[PASS] LOG-app No WARNING/ERROR line in the application log over the phase (CSRF refusals, the ROB case and the THROW blocks aside)
 
-TOTAL: 50 PASS, 2 FAIL, 0 AMB
-FAIL ROB-1 Demo installed, demo_documents missing: the super admin still opens the dashboard (no 5xx, no SQL text)
-FAIL ROB-2 Demo installed, demo_documents missing: the block does not query the missing table (no SQL error in the log)
-0c136e6 s1.demo.0c136e6.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+TOTAL: 65 PASS, 0 FAIL, 0 AMB
+db68a26 s1.demo.db68a26.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

@@ -7,10 +7,11 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase CUST =====
 
 == CUST: dashboard customization and application blocks (U5)
+[PASS] SET-nodemo ADAPTED: the demo uninstalled and unwired from the copy app before the phase
 [PASS] SET-mig The application adds u5orders.view and u5stock.view with a migration as documented (exit 0, both present)
 [PASS] SET-adm Model: admin holds settings.update and the five dashboard.*, not the application permissions
 [PASS] SET-v1 Model: u5-viewer has no settings.update
-[INFO] server pid=37636 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=39356 on 127.0.0.1:8071 prefix=''
 [PASS] SET-login All seven accounts sign in
 [PASS] DEF-own Nobody has chosen: the super admin sees the stock order, application blocks after the five (security,figures,signins,roles,changes,u5-orders,u5stock2), 30 days
 [PASS] DEF-panel Customize is a secondary button (summary) next to the period, opening a POST form
@@ -153,7 +154,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] BAD-save Saving with invalid blocks registered works (no 5xx) and names none of them
 [PASS] A5-1   Three locked emails: one line names all three, the address line stays apart (two lines)
 [PASS] A5-2   The address line comes first, the emails after
-[PASS] LANG-keys The customize strings have the same keys in en and it (20), none empty, none left in English
+[PASS] LANG-keys The customize strings have the same keys in en and it (21), none empty, none left in English
 [PASS] LANG-fields The activity field names of the layout exist in both languages, translated
 [PASS] LANG-it In Italian the panel reads Personalizza, Salva per me, Salva come predefinito per tutti, Torna al predefinito, with the block names in Italian
 [PASS] LANG-it-en No English customize string left on the Italian page
@@ -186,6 +187,6 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] SCH-2  Fresh installs of 29a5df6 (U4) and 09b9159 (U5) have the same tables and the same CREATE TABLE
 [INFO] SCH tables: acl_activity_log,acl_permissions,acl_role_permissions,acl_roles,acl_sessions,acl_user_permissions,acl_user_roles,auth_groups_users,auth_identities,auth_logins,auth_permissions_users,auth_remember_tokens,auth_token_logins,migrations,settings,users
 
-TOTAL: 151 PASS, 0 FAIL, 0 AMB
-2fb290d s1.cust.2fb290d.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+TOTAL: 152 PASS, 0 FAIL, 0 AMB
+db68a26 s1.cust.db68a26.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (2 .env files deleted first)

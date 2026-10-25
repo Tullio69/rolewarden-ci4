@@ -121,3 +121,19 @@ ALL DONE 13:57:24
 === cust.development 13:57:38
 exit=0 cust.development 13:59:54
 ALL DONE 13:59:54
+--- riverifica db68a26 (blocco demo)
+=== demo.development 14:08:28
+exit=0 demo.development 14:09:35
+ALL DONE 14:09:35
+=== demo.production 14:09:46
+exit=0 demo.production 14:10:43
+ALL DONE 14:10:43
+=== cust.development 14:10:53
+exit=0 cust.development 14:13:35
+ALL DONE 14:13:35
+=== cust.production 14:13:38
+exit=0 cust.production 14:15:26
+ALL DONE 14:15:26
+=== dash.development 14:15:43
+exit=0 dash.development 14:17:32
+ALL DONE 14:17:32

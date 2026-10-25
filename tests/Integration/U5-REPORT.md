@@ -362,3 +362,55 @@ Non ho aperto `demo/src` né il codice del modulo. Del commit conosco solo il `-
 - L'app di prova `../rolewarden-app-test` non è stata toccata: ogni esecuzione lavora su una copia nello scratchpad, poi rimossa.
 - Nessun processo residuo.
 
+## Riverifica su db68a26 (blocco demo)
+
+**Collaudatore ad Hoc (Claude), 2026-10-25, commit `db68a26`: D1 corretto in `b2c23a1`, A1 e A2 decise dall'utente. Esito: PASS. D1 è chiuso, A1 e A2 sono chiuse come decise. Il blocco della demo è approvato.**
+
+Ho seguito le stesse regole di lettura del giro su `0c136e6`. In più ho letto solo:
+- la voce *API dei blocchi* della SPEC e `documentation/api.html#dashboard-blocks` per A1;
+- `demo/README.md`, sezione "Dashboard block", per A2;
+- la nuova stringa `failed` dei file di lingua, solo per la traduzione.
+
+Non ho aperto `demo/src` né il codice del modulo.
+
+Ho eseguito una suite alla volta, attendendo ogni volta che i suoi processi fossero chiusi (`RW_U5_RUN=-v6`).
+
+| Suite | development | production |
+| --- | --- | --- |
+| U5 DEMO (con A1 e A2) | **65/65** | **65/65** |
+| U5 CUST (regressione, adattata) | **152/152** | **152/152** |
+| U4 DASH (regressione) | **258/258** | non richiesta |
+
+**Totale:** 692/692.
+
+- **D1 chiuso (ROB-1, ROB-2).** La demo risulta installata ma `demo_documents` non c'è: la dashboard risponde 200, senza testo SQL e senza nessuna riga d'errore sulla tabella nel log. Succede lo stesso in development e in production.
+- **A2 (PRE-A2, UNI-A2, nuovi).** Prima di `demo:install` e dopo `demo:uninstall`, con la demo collegata, il super admin vede il blocco con l'invito a eseguire `demo:install`, come scrive il README. Admin non lo vede.
+- **A1, sezione nuova THROW.** Nella copia dell'app ho registrato tre blocchi, tutti con `dashboard.figures`, e alla fine li ho rimossi (THR-clean):
+  - `u5-throw-data`, che lancia in `data()`;
+  - `u5-throw-view`, che scrive `<div class="u5-half"><table><tr><td>HALF-OUTPUT-MARK` e poi lancia;
+  - `u5-after-ok`, valido, dopo di loro.
+
+  Con la demo installata:
+  - **THR-200:** 200 in development e in production, senza testo d'errore.
+  - **THR-data, THR-view:** ogni blocco che lancia tiene sezione, lettera e titolo, e dice «This block could not be loaded. The error is in the application log.».
+  - **THR-it:** in italiano dice «Non è stato possibile caricare questo blocco. L'errore è nel log dell'applicazione.», senza il testo inglese.
+  - **THR-log, THR-log2:** nel log c'è un `ERROR … dashboard block "u5-throw-data" failed: U5-THROW-DATA` e uno per `u5-throw-view`, e si ripetono a ogni pagina.
+  - **THR-half:** l'output scritto a metà dalla view non compare nella pagina.
+  - **THR-markup:** `main` è chiuso e `section`, `div`, `table`, `details`, `form`, `ul` e `ol` sono bilanciati.
+  - **THR-after, THR-others:** il blocco successivo si vede intero, e così i blocchi del modulo e quello della demo, con le sue cifre.
+- **Tutti gli altri controlli DEMO** passano come sul giro precedente. Uno stato sconosciuto scritto in tabella ora non compare più: con `b2c23a1` gli stati non previsti vengono esclusi, e l'osservazione sulla chiave grezza `Demo.statuses.*` non vale più.
+- **Regressione:** CUST adattata (`SET-nodemo`) e DASH passano. DASH gira con la demo collegata e installata, e il blocco della demo non la disturba.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità
+
+Nessuna nuova.
+
+### Ambiente
+
+- Database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u5.environment.txt`), Mailpit vuoto.
+- `../rolewarden-app-test` non è stata toccata. Nessun processo residuo.
+

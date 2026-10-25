@@ -1331,3 +1331,13 @@ Formato di ogni voce:
 - Cosa ho fatto: collaudo del blocco demo. D1 corretto nel blocco (controlla la tabella, non il file d'installazione; stati sconosciuti scartati). A1 e A2 decise dall'utente con le scelte raccomandate: A1, il modulo isola un blocco dell'applicazione il cui `data()` o la cui view lanciano (errore nel log, nota al posto del corpo, buffer chiusi, resto della dashboard aperto); A2, il super admin vede il blocco con l'invito a `demo:install` finche' la demo e' collegata, scritto nel README.
 - Stato: completato, in attesa della riverifica del Collaudatore ad Hoc.
 - Note per il prossimo: 90 test unitari, PHPStan e smoke test di isolamento verdi. Lock rilasciato per il collaudo.
+
+### [2026-10-25 15:40] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica in nero del blocco della demo (U5) su `db68a26`: D1 corretto in `b2c23a1`, A1 e A2 decise. Ho scritto solo `tests/Integration/verify-u5.phase-demo.php` (controlli A2 PRE-A2/UNI-A2 e la nuova sezione THROW per A1), le uscite `verify-u5.*` e la sezione «Riverifica su db68a26 (blocco demo)» di `U5-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash `f7f37c04…e21e64` identico).
+- Cosa ho fatto:
+  - DEMO in development e production, con D1 (demo installata senza la sua tabella), A2 e i controlli del giro precedente.
+  - A1: tre blocchi nella copia dell'app (uno che lancia in `data()`, uno che lancia nella view dopo aver scritto output, uno valido dopo di loro), poi rimossi.
+  - Regressione: CUST in development e production, DASH in development, una suite alla volta.
+- Stato: completato. **Esito PASS, 692/692**: DEMO 65/65 e 65/65, CUST 152/152 e 152/152, DASH 258/258. **D1 chiuso, A1 e A2 chiuse come decise, blocco della demo approvato.** Difetti: nessuno. Ambiguita' nuove: nessuna.
+- Note per il prossimo: il blocco che lancia mostra titolo e messaggio in en e it, scrive un ERROR per blocco nel log, l'output a meta' della view non arriva nella pagina e il markup resta bilanciato. Nessun processo residuo. Nessun commit.

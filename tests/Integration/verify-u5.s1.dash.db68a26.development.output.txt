@@ -1,0 +1,302 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase DASH from verify-u4.phase-dash.php
+
+===== phase DASH =====
+
+== DASH: dashboard (U4)
+[INFO] server pid=24688 on 127.0.0.1:8071 prefix=''
+[INFO] auth_logins rows written: 914
+[PASS] D-login The super admin signs in
+[PASS] D-200  /rolewarden answers 200 with the dashboard for the super admin
+[PASS] D-def30 Without ?period= the period is 30 days (SPEC: predefinito 30)
+[PASS] NAV-cur On /rolewarden the Dashboard item is the current one (aria-current) in the Overview group
+[PASS] NAV-first Dashboard is the first item of the Overview group
+[PASS] N7-0   7 days: 200, period 7 pressed, no PHP error, no SQL text
+[PASS] N7-range 7 days: the header states the period from 2026-10-19 to today
+[PASS] N7-F0  7 days: four key figures
+[PASS] N7-F1  7 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
+[INFO] N7 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
+[PASS] N7-F1d 7 days: the change of active users is the accounts created in the period among the non-deleted (+14)
+[PASS] N7-F2  7 days: sign-ins = auth_logins success=1 in the period (19)
+[PASS] N7-F2d 7 days: change of sign-ins on the previous 7 days, signed (-6)
+[PASS] N7-F3  7 days: failed sign-ins = success=0 in the period (11)
+[PASS] N7-F2n 7 days: the sign-ins note names the peak day count (6)
+[PASS] N7-F3n 7 days: the failed note gives the previous period (12)
+[PASS] N7-F3d 7 days: change of failed sign-ins, signed (-1)
+[PASS] N7-F4  7 days: permission changes = the seven actions in the period (17)
+[PASS] N7-F4d 7 days: change of permission changes, signed (11)
+[PASS] N7-F4n 7 days: the note says how many are overrides (4)
+[PASS] N7-neg-bb59faaa3db40a4313f80f540df4ccc6 7 days: a negative change carries its minus sign (Sign-ins, 7 days: −6)
+[PASS] N7-neg-c7aa7571e9a6b8507e46f472a92cc35a 7 days: a negative change carries its minus sign (Failed, 7 days: −1)
+[PASS] N7-Facc 7 days: the first figure in accent, the others not
+[PASS] N7-S1  7 days: the table of sign-ins per day has the 7 calendar days, oldest first, with successful and failed per day = auth_logins
+[PASS] N7-S2  7 days: the legend totals are the period totals
+[PASS] N7-S3  7 days: the line has one point per day, height proportional to the successful sign-ins of that day (zero on the baseline)
+[PASS] N7-S4  7 days: one bar per day with failures, height proportional to the failures, on the scale of the line
+[PASS] N7-S5  7 days: the chart is an SVG with role=img and an aria-label stating the totals
+[PASS] N7-S6  7 days: the numbers of the sign-ins chart sit in a <details>
+[PASS] N7-H1  7 days: the heat-map table = successful sign-ins of the period by weekday (Mon-Sun) and hour, summed
+[PASS] N7-H2  7 days: each cell has level ceil(4 x n / max) (0 when empty, max 2) and names its count in its title
+[PASS] N7-H3  7 days: the heat map has role=img with an aria-label, and its numbers in a <details>
+[PASS] N7-H4  7 days: A1, the heat map is drawn as SVG (role=img, aria-label, 7 x 24 = 168 cells, no HTML cell grid)
+[PASS] N7-R1  7 days: users per role = direct assignments of non-deleted users to non-deleted roles, descending, the first four plus "Other roles" (sum of the rest, 11)
+[PASS] N7-R2  7 days: the share chart has role=img and an aria-label
+[PASS] N7-R3  7 days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)
+[PASS] N7-R4  7 days: A2, on view only the legend of names, in the order of the shares, without numbers
+[PASS] N7-C1  7 days: the latest five permission changes of the period, newest first (actor, subject)
+[PASS] N7-C2  7 days: "View all 17" opens the activity log filtered on the period (2026-10-19 to 2026-10-25)
+[PASS] N7-noSec 7 days: no security notice when no address reaches the threshold in a day and no email is locked
+[PASS] N7-C3  7 days: the View all link opens (200)
+[PASS] N30-0  30 days: 200, period 30 pressed, no PHP error, no SQL text
+[PASS] N30-range 30 days: the header states the period from 2026-09-26 to today
+[PASS] N30-F0 30 days: four key figures
+[PASS] N30-F1 30 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
+[INFO] N30 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
+[PASS] N30-F1d 30 days: the change of active users is the accounts created in the period among the non-deleted (+19)
+[PASS] N30-F2 30 days: sign-ins = auth_logins success=1 in the period (101)
+[PASS] N30-F2d 30 days: change of sign-ins on the previous 30 days, signed (-14)
+[PASS] N30-F3 30 days: failed sign-ins = success=0 in the period (41)
+[PASS] N30-F2n 30 days: the sign-ins note names the peak day count (7)
+[PASS] N30-F3n 30 days: the failed note gives the previous period (36)
+[PASS] N30-F3d 30 days: change of failed sign-ins, signed (5)
+[PASS] N30-F4 30 days: permission changes = the seven actions in the period (37)
+[PASS] N30-F4d 30 days: change of permission changes, signed (10)
+[PASS] N30-F4n 30 days: the note says how many are overrides (4)
+[PASS] N30-neg-82de8018da58761a652b7d4e88f1f4e0 30 days: a negative change carries its minus sign (Sign-ins, 30 days: −14)
+[PASS] N30-Facc 30 days: the first figure in accent, the others not
+[PASS] N30-S1 30 days: the table of sign-ins per day has the 30 calendar days, oldest first, with successful and failed per day = auth_logins
+[PASS] N30-S2 30 days: the legend totals are the period totals
+[PASS] N30-S3 30 days: the line has one point per day, height proportional to the successful sign-ins of that day (zero on the baseline)
+[PASS] N30-S4 30 days: one bar per day with failures, height proportional to the failures, on the scale of the line
+[PASS] N30-S5 30 days: the chart is an SVG with role=img and an aria-label stating the totals
+[PASS] N30-S6 30 days: the numbers of the sign-ins chart sit in a <details>
+[PASS] N30-H1 30 days: the heat-map table = successful sign-ins of the period by weekday (Mon-Sun) and hour, summed
+[PASS] N30-H2 30 days: each cell has level ceil(4 x n / max) (0 when empty, max 4) and names its count in its title
+[PASS] N30-H3 30 days: the heat map has role=img with an aria-label, and its numbers in a <details>
+[PASS] N30-H4 30 days: A1, the heat map is drawn as SVG (role=img, aria-label, 7 x 24 = 168 cells, no HTML cell grid)
+[PASS] N30-R1 30 days: users per role = direct assignments of non-deleted users to non-deleted roles, descending, the first four plus "Other roles" (sum of the rest, 11)
+[PASS] N30-R2 30 days: the share chart has role=img and an aria-label
+[PASS] N30-R3 30 days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)
+[PASS] N30-R4 30 days: A2, on view only the legend of names, in the order of the shares, without numbers
+[INFO] roles note: 34 users, 15 roles ; percents: ["23%","17%","14%","14%","31%"] ; roles details: 1
+[PASS] N30-C1 30 days: the latest five permission changes of the period, newest first (actor, subject)
+[PASS] N30-C2 30 days: "View all 37" opens the activity log filtered on the period (2026-09-26 to 2026-10-25)
+[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 25 Oct, 13:15 02 v8badmin revoked roles.view from Recent1 25 Oct, 13:15 03 v8badmin granted Recent2 roles.view 25 Oct, 13:15 04 The system denied Recent3 roles.view 25 Oct, 13:15 05 v8badmin cleared the override of roles.view for Recent4 25 Oct, 13:15 ; view-all query: {"from":"2026-09-26","to":"2026-10-25"}
+[PASS] N30-noSec 30 days: no security notice when no address reaches the threshold in a day and no email is locked
+[PASS] N30-C3 30 days: the View all link opens (200)
+[PASS] N90-0  90 days: 200, period 90 pressed, no PHP error, no SQL text
+[PASS] N90-range 90 days: the header states the period from 2026-07-28 to today
+[PASS] N90-F0 90 days: four key figures
+[PASS] N90-F1 90 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
+[INFO] N90 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
+[PASS] N90-F1d 90 days: the change of active users is the accounts created in the period among the non-deleted (+26)
+[PASS] N90-F2 90 days: sign-ins = auth_logins success=1 in the period (313)
+[PASS] N90-F2d 90 days: change of sign-ins on the previous 90 days, signed (-2)
+[PASS] N90-F3 90 days: failed sign-ins = success=0 in the period (115)
+[PASS] N90-F2n 90 days: the sign-ins note names the peak day count (8)
+[PASS] N90-F3n 90 days: the failed note gives the previous period (94)
+[PASS] N90-F3d 90 days: change of failed sign-ins, signed (21)
+[PASS] N90-F4 90 days: permission changes = the seven actions in the period (79)
+[PASS] N90-F4d 90 days: change of permission changes, signed (53)
+[PASS] N90-F4n 90 days: the note says how many are overrides (32)
+[PASS] N90-neg-1c2cf13b8deb3bc0826b211d387c3736 90 days: a negative change carries its minus sign (Sign-ins, 90 days: −2)
+[PASS] N90-Facc 90 days: the first figure in accent, the others not
+[PASS] N90-S1 90 days: the table of sign-ins per day has the 90 calendar days, oldest first, with successful and failed per day = auth_logins
+[PASS] N90-S2 90 days: the legend totals are the period totals
+[PASS] N90-S3 90 days: the line has one point per day, height proportional to the successful sign-ins of that day (zero on the baseline)
+[PASS] N90-S4 90 days: one bar per day with failures, height proportional to the failures, on the scale of the line
+[PASS] N90-S5 90 days: the chart is an SVG with role=img and an aria-label stating the totals
+[PASS] N90-S6 90 days: the numbers of the sign-ins chart sit in a <details>
+[PASS] N90-H1 90 days: the heat-map table = successful sign-ins of the period by weekday (Mon-Sun) and hour, summed
+[PASS] N90-H2 90 days: each cell has level ceil(4 x n / max) (0 when empty, max 6) and names its count in its title
+[PASS] N90-H3 90 days: the heat map has role=img with an aria-label, and its numbers in a <details>
+[PASS] N90-H4 90 days: A1, the heat map is drawn as SVG (role=img, aria-label, 7 x 24 = 168 cells, no HTML cell grid)
+[PASS] N90-R1 90 days: users per role = direct assignments of non-deleted users to non-deleted roles, descending, the first four plus "Other roles" (sum of the rest, 11)
+[PASS] N90-R2 90 days: the share chart has role=img and an aria-label
+[PASS] N90-R3 90 days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)
+[PASS] N90-R4 90 days: A2, on view only the legend of names, in the order of the shares, without numbers
+[PASS] N90-C1 90 days: the latest five permission changes of the period, newest first (actor, subject)
+[PASS] N90-C2 90 days: "View all 79" opens the activity log filtered on the period (2026-07-28 to 2026-10-25)
+[PASS] N90-noSec 90 days: no security notice when no address reaches the threshold in a day and no email is locked
+[PASS] N90-C3 90 days: the View all link opens (200)
+[PASS] SEC-a7 7 days: an address with 5 failed sign-ins (lockAttempts) on one day 3 days ago gives the notice
+[PASS] SEC-a7-link 7 days: its action opens the activity log on auth.failed for that day (2026-10-22)
+[PASS] SEC-a30 30 days: an address with 5 failed sign-ins (lockAttempts) on one day 3 days ago gives the notice
+[PASS] SEC-a30-link 30 days: its action opens the activity log on auth.failed for that day (2026-10-22)
+[INFO] notice: 5 failed sign-ins from 203.0.113.9 on 22 Oct, the lock threshold is 5. Review attempts | <div class="rw-dash-notice" role="status"> <svg width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><path d="M8 1.8l5.2 2v4.1c0 3-2.2 5.3-5.2 6.3-3-1-5.2-3.3-5.2-6.3V3.8z"></path><path d="M8 5.5v3M8 10.5v.5"></path></svg> <ul> <li><strong>5 failed sign-ins</strong> from 203.0.113.9 on 22 Oct, the lock threshold is 5.</li> </ul> <a class="rw-btn rw-btn--primary rw-btn--sm" href="http://127.0.0.1:8071/index.php/[omesso]/activity?action=auth.failed&amp;from=2026-10-22&amp;to=2026-10-22">Review attempts</a> </div>
+[PASS] SEC-a-txt The notice names the address, the day and the threshold
+[PASS] SEC-a-nodenied The notice informs, never alarms: no denied colour or class in it
+[PASS] SEC-a-open The notice action opens the activity log (200)
+[INFO] activity log opened by the notice: occurrences of 203.0.113.9 = 5 ; × RoleWarden Activity Every change to users, roles, permissions and settings, and every sign-in attempt, newest first. Entries6 User Action Any action Signed in Failed sign-in User created User imported User registered User edited Password set by an admin User activated User deactivated User deleted Role assigned Role revoked Permission granted to user Permission denied to user User override removed Role created Role edited Role deleted Permission added to role Permission removed from role Settings changed Password changed Session signed out Remembered browser forgotten All other sessions sig...
+[PASS] SEC-a90 90 days: an address with 5 failed sign-ins (lockAttempts) on one day 3 days ago gives the notice
+[PASS] SEC-a90-link 90 days: its action opens the activity log on auth.failed for that day (2026-10-22)
+[PASS] SEC-b7 7 days: 5 failures of one address 12 days ago are outside the period: no notice
+[PASS] SEC-b30 30 days: the same failures give the notice
+[PASS] SEC-c  4 failures of one address on a day (threshold 5): no notice
+[PASS] SEC-d  4 failures on one day and 1 the next day: no notice (one calendar day counts)
+[PASS] SEC-e  Successful sign-ins of the address do not count towards the threshold
+[PASS] SEC-f0 Settings: lock threshold saved as 3
+[PASS] SEC-f1 With lockAttempts 3, 3 failures of one address in a day give the notice
+[PASS] SEC-f2 Back to 5, the same 3 failures give no notice
+[INFO] lock probe on the sign-in screen: true
+[PASS] SEC-g7 7 days: an email locked now (5 failures from 5 addresses) gives the notice
+[PASS] SEC-g7-link 7 days: for the locked email alone the action opens the failed sign-ins of today (2026-10-25)
+[PASS] SEC-g30 30 days: an email locked now (5 failures from 5 addresses) gives the notice
+[PASS] SEC-g30-link 30 days: for the locked email alone the action opens the failed sign-ins of today (2026-10-25)
+[INFO] locked notice: One email is locked after too many failed sign-ins: locked@u4.test Review attempts
+[PASS] SEC-g90 90 days: an email locked now (5 failures from 5 addresses) gives the notice
+[PASS] SEC-g90-link 90 days: for the locked email alone the action opens the failed sign-ins of today (2026-10-25)
+[PASS] SEC-h  An email whose lock has expired (5 failures 3 hours ago, lock 15 minutes) gives no notice
+[PASS] SEC-i  5 failures followed by a successful sign-in: the email is not locked, no notice
+[INFO] A4 two addresses on two days: {"lines":["5 failed sign-ins from 203.0.113.71 on 23 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.70 on 20 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-20","to":"2026-10-23"}}
+[PASS] SEC-m  Two addresses at the threshold on two days: one notice, one action
+[PASS] SEC-m-lines A4: two lines, one per address, each with its day, the most recent first (203.0.113.71 then 203.0.113.70)
+[PASS] SEC-m-link A4: the action opens auth.failed from the oldest day cited to the most recent (2026-10-20 to 2026-10-23)
+[INFO] A4 two addresses and a locked email: {"lines":["5 failed sign-ins from 203.0.113.71 on 23 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.70 on 20 Oct, the lock threshold is 5.","One email is locked after too many failed sign-ins: locked2@u4.test"],"query":{"action":"auth.failed","from":"2026-10-20","to":"2026-10-25"}}
+[PASS] SEC-n-lines A4: the two address lines first (most recent first), then the locked email on its own line
+[PASS] SEC-n-link A4: with a locked email the action runs from the oldest day cited to today (2026-10-20 to 2026-10-25)
+[PASS] SEC-n-one A4: still one notice and one action
+[INFO] A4 one address on two days, 30: {"lines":["5 failed sign-ins from 203.0.113.72 on 22 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.72 on 17 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-17","to":"2026-10-22"}}
+[PASS] SEC-o30 A4: one address at the threshold on two days gives two lines (one per day, the most recent first) and the action 2026-10-17 to 2026-10-22
+[INFO] A4 one address on two days, 7: {"lines":["5 failed sign-ins from 203.0.113.72 on 22 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-22","to":"2026-10-22"}}
+[PASS] SEC-o7 A4: in 7 days only the day inside the period counts: one line, the action on that day (2026-10-22)
+[INFO] A4 two addresses on the same day: {"lines":["5 failed sign-ins from 203.0.113.73 on 21 Oct, the lock threshold is 5.","5 failed sign-ins from 203.0.113.74 on 21 Oct, the lock threshold is 5."],"query":{"action":"auth.failed","from":"2026-10-21","to":"2026-10-21"}}
+[PASS] SEC-p  A4: two addresses on the same day give two lines, and the action is that day (2026-10-21)
+[INFO] A4 two locked emails: {"lines":["2 emails are locked after too many failed sign-ins: locked3@u4.test, locked4@u4.test"],"query":{"action":"auth.failed","from":"2026-10-25","to":"2026-10-25"}}
+[PASS] SEC-q  A4: two locked emails alone: both cited, no address line, the action is today (2026-10-25)
+[INFO] A4 two locked emails: number of lines = 1 (one per email, or one line naming both)
+[INFO] A4 address 40 days ago and locked emails, 30: {"lines":["2 emails are locked after too many failed sign-ins: locked3@u4.test, locked4@u4.test"],"query":{"action":"auth.failed","from":"2026-10-25","to":"2026-10-25"}}
+[PASS] SEC-r30 A4: an address outside the period is not cited; with only locked emails the action is today
+[INFO] A4 address 40 days ago and locked emails, 90: {"lines":["5 failed sign-ins from 203.0.113.75 on 15 Sep, the lock threshold is 5.","2 emails are locked after too many failed sign-ins: locked3@u4.test, locked4@u4.test"],"query":{"action":"auth.failed","from":"2026-09-15","to":"2026-10-25"}}
+[PASS] SEC-r90 A4: in 90 days the address line comes first, the emails after, and the action runs from 2026-09-15 to today
+[PASS] SEC-r-open A4: the action of the notice opens (200)
+[PASS] PERMS-screen The Permissions screen lists the five dashboard.* with their descriptions
+[PASS] NAV-owner owner: the Dashboard item is in the sidebar (holds 5 dashboard.*)
+[PASS] P-owner owner: /rolewarden renders exactly the blocks of figures, signins, security, roles, changes
+[PASS] NAV-admin admin: the Dashboard item is in the sidebar (holds 5 dashboard.*)
+[PASS] P-admin admin: /rolewarden renders exactly the blocks of figures, signins, security, roles, changes
+[PASS] NAV-plain plain: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-plain plain (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/profile)
+[PASS] P-plain-open plain: that screen opens (200)
+[PASS] NAV-only:dashboard.figures only:dashboard.figures: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-only:dashboard.figures only:dashboard.figures: /rolewarden renders exactly the blocks of figures
+[PASS] NAV-only:dashboard.signins only:dashboard.signins: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-only:dashboard.signins only:dashboard.signins: /rolewarden renders exactly the blocks of signins
+[PASS] P-only:dashboard.signins-leak only:dashboard.signins: none of the key figures' labels reaches the page
+[PASS] NAV-only:dashboard.security only:dashboard.security: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-only:dashboard.security only:dashboard.security: /rolewarden renders exactly the blocks of security
+[PASS] P-only:dashboard.security-leak only:dashboard.security: none of the key figures' labels reaches the page
+[PASS] NAV-only:dashboard.roles only:dashboard.roles: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-only:dashboard.roles only:dashboard.roles: /rolewarden renders exactly the blocks of roles
+[PASS] P-only:dashboard.roles-leak only:dashboard.roles: none of the key figures' labels reaches the page
+[PASS] NAV-only:dashboard.changes only:dashboard.changes: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-only:dashboard.changes only:dashboard.changes: /rolewarden renders exactly the blocks of changes
+[PASS] P-only:dashboard.changes-leak only:dashboard.changes: none of the key figures' labels reaches the page
+[PASS] NAV-two two: the Dashboard item is in the sidebar (holds 2 dashboard.*)
+[PASS] P-two  two: /rolewarden renders exactly the blocks of figures, changes
+[PASS] NAV-child child: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-child child: /rolewarden renders exactly the blocks of signins
+[PASS] P-child-leak child: none of the key figures' labels reaches the page
+[PASS] NAV-user+roles user+roles: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-user+roles user+roles: /rolewarden renders exactly the blocks of roles
+[PASS] P-user+roles-leak user+roles: none of the key figures' labels reaches the page
+[PASS] NAV-admin-figures admin-figures: the Dashboard item is in the sidebar (holds 3 dashboard.*)
+[PASS] P-admin-figures admin-figures: /rolewarden renders exactly the blocks of signins, roles, changes
+[PASS] P-admin-figures-leak admin-figures: none of the key figures' labels reaches the page
+[PASS] NAV-super-changes super-changes: the Dashboard item is in the sidebar (holds 4 dashboard.*)
+[PASS] P-super-changes super-changes: /rolewarden renders exactly the blocks of figures, signins, security, roles
+[PASS] NAV-child-deny child-deny: the Dashboard item is in the sidebar (holds 1 dashboard.*)
+[PASS] P-child-deny child-deny: /rolewarden renders exactly the blocks of changes
+[PASS] P-child-deny-leak child-deny: none of the key figures' labels reaches the page
+[PASS] NAV-admin-disabled admin-disabled: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-admin-disabled admin-disabled (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/profile)
+[PASS] P-admin-disabled-open admin-disabled: that screen opens (200)
+[PASS] NAV-super-disabled super-disabled: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-super-disabled super-disabled (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/profile)
+[PASS] P-super-disabled-open super-disabled: that screen opens (200)
+[PASS] NAV-norole norole: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-norole norole (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/profile)
+[PASS] P-norole-open norole: that screen opens (200)
+[PASS] NAV-none:users.view none:users.view: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-none:users.view none:users.view (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/users)
+[PASS] P-none:users.view-open none:users.view: that screen opens (200)
+[PASS] NAV-none:roles.view none:roles.view: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-none:roles.view none:roles.view (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/roles)
+[PASS] P-none:roles.view-open none:roles.view: that screen opens (200)
+[PASS] NAV-none:permissions.view none:permissions.view: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-none:permissions.view none:permissions.view (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/permissions)
+[PASS] P-none:permissions.view-open none:permissions.view: that screen opens (200)
+[PASS] NAV-none:activity.view none:activity.view: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-none:activity.view none:activity.view (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/activity)
+[PASS] P-none:activity.view-open none:activity.view: that screen opens (200)
+[PASS] NAV-none:settings.view none:settings.view: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-none:settings.view none:settings.view (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/settings)
+[PASS] P-none:settings.view-open none:settings.view: that screen opens (200)
+[PASS] NAV-none:appearance.update none:appearance.update: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-none:appearance.update none:appearance.update (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/appearance)
+[PASS] P-none:appearance.update-open none:appearance.update: that screen opens (200)
+[PASS] NAV-none:settings-roles none:settings-roles: the Dashboard item is in the sidebar not at all (no dashboard.*)
+[PASS] P-none:settings-roles none:settings-roles (no dashboard.*): /rolewarden redirects to the first sidebar item it can see (rolewarden/roles)
+[PASS] P-none:settings-roles-open none:settings-roles: that screen opens (200)
+[PASS] P-revoke dashboard.changes revoked from the role: the next request no longer renders its block
+[PASS] P-revoke-all All its dashboard.* revoked: /rolewarden now redirects away
+[PASS] P-anon Anonymous: /rolewarden goes to the sign-in page
+[PASS] HOS-30 period="0": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-31 period="1": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-3134 period="14": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-333635 period="365": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-2d37 period="-7": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-616263 period="abc": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-372e35 period="7.5": 200 with one of 7/30/90, no error, no SQL
+[INFO] period="7.5" gives 7
+[PASS] HOS-2037 period=" 7": 200 with one of 7/30/90, no error, no SQL
+[INFO] period=" 7" gives 7
+[PASS] HOS-3037 period="07": 200 with one of 7/30/90, no error, no SQL
+[INFO] period="07" gives 7
+[PASS] HOS-37616263 period="7abc": 200 with one of 7/30/90, no error, no SQL
+[INFO] period="7abc" gives 7
+[PASS] HOS-316531 period="1e1": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-3700 period="7\u0000": 200 with one of 7/30/90, no error, no SQL
+[INFO] period="7\u0000" gives 7
+[PASS] HOS-254646254645 period="%FF%FE": 200 with one of 7/30/90, no error, no SQL
+[PASS] HOS-5d2d494925f0f01e6d163a10890c4cba ?period[]=7: 200 with one of 7/30/90, no error
+[INFO] ?period[]=7 gives 30
+[PASS] HOS-2ff681baf2c727fb84b98f77dd8d52d6 ?period[a][b]=30: 200 with one of 7/30/90, no error
+[INFO] ?period[a][b]=30 gives 30
+[PASS] HOS-1688192b7cdd0f25124489895bc4b3d0 ?period=7&period=90: 200 with one of 7/30/90, no error
+[INFO] ?period=7&period=90 gives 90
+[PASS] HOS-POST POST /rolewarden is not answered with a 2xx
+[PASS] HOS-PUT PUT /rolewarden is not answered with a 2xx
+[PASS] HOS-DELETE DELETE /rolewarden is not answered with a 2xx
+[PASS] CLR-1  No literal colour in the dashboard markup (attributes and inline styles): every colour comes from the stylesheet tokens
+[PASS] CLR-2  No granted/denied in the charts (the markup before the changes list)
+[INFO] dashboard CSS rules: 94; colour variables used: ink-muted, accent, on-accent, focus-width, focus, surface-raised, ink, rule-strong-width, rule-strong, radius-md, shadow-float, rule-width, rule, accent-tint, radius-sm, surface-sunk, heat-0, heat-1, heat-2, heat-3, heat-4
+[PASS] CLR-3  The served stylesheet colours every dashboard rule (rw-dash, rw-heat, rw-share, rw-legend) through variables only, never granted/denied
+[PASS] CLR-4  Heat levels rw-heat-0..4 use the heat-0..heat-4 tokens
+[PASS] CLR-rw-dash-line Chart rule: .rw-dash-line drawn in accent (design system Charts)
+[PASS] CLR-rw-dash-area Chart rule: .rw-dash-area drawn in accent-tint (design system Charts)
+[PASS] CLR-rw-dash-bar Chart rule: .rw-dash-bar drawn in ink (design system Charts)
+[PASS] CLR-rw-dash-mid Chart rule: .rw-dash-mid drawn in rule-strong (design system Charts)
+[PASS] CLR-rw-dash-base Chart rule: .rw-dash-base drawn in ink (design system Charts)
+[PASS] LANG-0 Italian chosen: the page is in Italian (html lang it)
+[PASS] LANG-1 Every dashboard string exists in English and in Italian (same keys, none empty)
+[PASS] LANG-2 No dashboard string left in English in the Italian file (except names and placeholders)
+[PASS] LANG-3 No English dashboard text in the Italian page (headings, notes, labels, tables, weekdays, months)
+[INFO] IT excerpt: × Buon pomeriggio, v8bowner I tuoi accessi, a colpo d’occhio Dal 26 set al 25 ott 2026 7 giorni 30 giorni 90 giorni Personalizza Personalizza la dashboard Scegli i blocchi che vedi, il loro ordine e il periodo con cui si apre la pagina. Avviso di sicurezza Sempre in cima quando compare Cifre chiave ↑ ↓ Accessi ↑ ↓ Chi ha quale ruolo ↑ ↓ Ultime modifiche ai permessi ↑ ↓ Documenti della demo ↑ ↓ Periodo all’apertura 7 giorni 30 giorni 90 giorni Salva per me Salva come predefinito per tutti Torna al predefinito 5 accessi falliti da 203.0.113.9 il 24 ott, la soglia di blocco è 5. Rivedi i tentativi Utenti attivi 51 +40 nuovi Account creati nel periodo su 55 account, 93% Accessi, 30 giorni 126 +11 Variazione sui 30 giorni precedenti picco di 28 il 25 ott Falliti, 30 giorni 46 +10 Variazione sui 30 giorni precedenti 36 nel periodo precedente Modifiche ai permessi 37 +10 Variazione sui 30 giorni precedenti 4 override utente tra queste A Accessi negli ultimi 30 giorni Riusciti 126 Falliti 46 50250 26 set3 ott11 ott18 ott25 ott Mostra i numeri GiornoRiuscitiFalliti sab 26 set62 dom 27 set72 lun 28 set31 mar 29 set51 mer 30 set31 gio 1 ott31 ven 2 ott50 sab 3 ott00 dom 4 ott20 lun 5 ott42 mar 6 ott40 mer 7 ott52 gio 8 ott01 ven 9 ott00 sab 10 ott32 dom 11 ott73 lun 12 ott21 mar 13 ott41 mer 14 ott72 gio 15 ott13 ven 16 ott72 sab 17 ott11 dom 18 ott32 lun 19 ott54 mar 20 ott00 mer 21 ott63 gio 22 ott31 ven 23 ott20 sab 24 ott05 dom 25 ott283 B Quando si accede ...
+[PASS] LOGIN-1 With the 1.0 Auth.php (login => rolewarden/users) sign-in still lands on Users
+[PASS] LOGIN-2 With login => 'rolewarden' (CHANGELOG) sign-in lands on the dashboard (200)
+[PASS] LOGIN-3 Same setting, a user without dashboard.* goes on to the first screen it can see
+[INFO] after sign-in from /[omesso]?period=7: http://127.0.0.1:8071/index.php/[omesso]
+[INFO] server pid=3908 on 127.0.0.1:8071 prefix=''
+[INFO] TZ: last day of the table ["Mon 26 Oct",1,0] ; today in Kiritimati: Mon 26 Oct ; range 20 Oct to 26 Oct 2026
+[PASS] TZ-1   With appTimezone Pacific/Kiritimati the last day of the period is today in that time zone
+[INFO] server pid=40428 on 127.0.0.1:8071 prefix=''
+[PASS] LOG-1  No response of this phase has status >= 500, PHP error text or SQL text
+[INFO] log lines written by the SQL-error probe: []
+[PASS] LOG-2  No WARNING/NOTICE/DEPRECATED/ERROR/CRITICAL line in the application log (threshold 9)
+[PASS] LOG-3  No PHP warning, notice or deprecation in the server output
+
+TOTAL: 258 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

@@ -8,6 +8,7 @@
  * creating and approving from the demo), CUS (hide, reorder), LANG, ESC, UNI (after demo:uninstall), LOG.
  */
 require_once __DIR__ . '/verify-u1.lib.php';
+require_once __DIR__ . '/verify-u5.blocks.php';
 date_default_timezone_set('UTC');
 echo "\n== DEMO: the demo dashboard block (U5)\n";
 $S0 = count($GLOBALS['SEEN']);
@@ -73,6 +74,8 @@ $b = dblock($h);
 check('PRE-200', 'Before demo:install the super admin opens the dashboard: 200, no error text, no SQL text', $own->status === 200 && ! phperr(text_of($h)) && ! leaks_sql($h), (string) $own->status);
 check('PRE-log', 'Before demo:install: no WARNING/ERROR line in the log (no query on a missing table)', badlog($APP, $L0) === [], json_encode(array_slice(badlog($APP, $L0), 0, 4)));
 info('PRE the super admin sees the block: ' . json_encode($b ? ['title' => $b['title'], 'text' => $b['text']] : null));
+// A2 decided (demo/README.md, "Dashboard block"): wired but not installed, a super admin still sees the block asking to run demo:install
+check('PRE-A2', 'A2: before demo:install the super admin sees the block, asking to run demo:install', $b !== null && str_contains($b['text'], 'demo:install'), json_encode($b['text'] ?? null));
 check('PRE-block', 'Before demo:install the block, if shown, holds no figures read from a table (no status figures)', $b === null || $b['figs'] === [], json_encode($b['figs'] ?? null));
 [$adm, $ok] = u1login('d-adm', 'admin@v8b.test', OPW);
 $ha = G($adm, 'rolewarden', 'pre adm');
@@ -192,6 +195,7 @@ check('UNI-200', 'After demo:uninstall the super admin opens the dashboard: 200,
 check('UNI-log', 'After demo:uninstall: no WARNING/ERROR line in the log', badlog($APP, $L1) === [], json_encode(array_slice(badlog($APP, $L1), 0, 4)));
 check('UNI-nofig', 'After demo:uninstall the block, if still shown, reads no table (no status figures)', $b === null || $b['figs'] === [], json_encode($b['figs'] ?? null));
 info('UNI super admin block after uninstall: ' . json_encode($b ? ['title' => $b['title'], 'text' => $b['text'], 'inPanel' => in_array(DKEY, array_column(cust_keys($h), 0), true)] : null));
+check('UNI-A2', 'A2: after demo:uninstall the super admin still sees the block, asking to run demo:install', $b !== null && str_contains($b['text'], 'demo:install'), json_encode($b['text'] ?? null));
 [$adm, $ok] = u1login('d3-adm', 'admin@v8b.test', OPW);
 $ha = G($adm, 'rolewarden', 'uni adm');
 check('UNI-adm', 'After demo:uninstall admin opens the dashboard without the block', $adm->status === 200 && dblock($ha) === null, '');
@@ -215,11 +219,63 @@ info('ROB demo:uninstall with the table gone: ' . short($o, 300));
 $GLOBALS['SEEN'] = array_values(array_filter($GLOBALS['SEEN'], fn ($x) => ! str_starts_with($x[0], 'rob ')));
 $ROBLINES = $robLog;
 
+// ================================================================= THROW (A1 decided): an application block whose data() or view throws
+$EN_FAIL = 'This block could not be loaded. The error is in the application log.';
+$IT_FAIL = "Non è stato possibile caricare questo blocco. L'errore è nel log dell'applicazione.";
+@mkdir("$APP/app/Dashboard", 0777, true); @mkdir("$APP/app/Views/dashboard", 0777, true);
+file_put_contents("$APP/app/Dashboard/U5ThrowData.php", u5_block_src('U5ThrowData', 'u5-throw-data', 'U5 Throwing data', 'dashboard.figures', 'App\Views\dashboard\u5okview', "(static function (): array { throw new \\RuntimeException('U5-THROW-DATA'); })()"));
+file_put_contents("$APP/app/Dashboard/U5ThrowView.php", u5_block_src('U5ThrowView', 'u5-throw-view', 'U5 Throwing view', 'dashboard.figures', 'App\Views\dashboard\u5throwview', null));
+file_put_contents("$APP/app/Dashboard/U5AfterOk.php", u5_block_src('U5AfterOk', 'u5-after-ok', 'U5 After ok', 'dashboard.figures', 'App\Views\dashboard\u5okview', null));
+file_put_contents("$APP/app/Views/dashboard/u5throwview.php", "<div class=\"u5-half\"><table><tr><td>HALF-OUTPUT-MARK\n<?php throw new \\RuntimeException('U5-THROW-VIEW'); ?>\n</td></tr></table></div>\n");
+file_put_contents("$APP/app/Views/dashboard/u5okview.php", "<p class=\"u5-ok\">OK-BODY-MARK days=<?= esc((string) \$period['days']) ?></p>\n");
+u5_set_list($APP, ['App\Dashboard\U5ThrowData', 'App\Dashboard\U5ThrowView', 'App\Dashboard\U5AfterOk']);
+$o = sp8($APP, ['demo:install'], ['demo.password' => DPW]);
+sp8($APP, ['cache:clear']);
+$L3 = count(bad_log_lines(logs_of($APP)));
+serve8($APP, 'DEMO5');
+[$own, $ok] = u1login('d5-own', 'owner@v8b.test', OPW);
+$h = G($own, 'rolewarden', 'thr own');
+$sec = function (string $h, string $key): ?array {
+    if (! preg_match('/<section[^>]*aria-labelledby="rw-dash-app-' . preg_quote($key, '/') . '"[^>]*>(.*?)<\/section>/s', $h, $m)) return null;
+    $xp = dom('<div>' . $m[1] . '</div>');
+    return ['title' => norm5((string) $xp->query('//h2')->item(0)?->textContent), 'letter' => norm5((string) $xp->query('//*[contains(@class,"rw-section-n")]')->item(0)?->textContent), 'text' => norm5($xp->query('//div')->item(0)->textContent), 'html' => $m[0]];
+};
+$td = $sec($h, 'u5-throw-data'); $tv = $sec($h, 'u5-throw-view'); $ta = $sec($h, 'u5-after-ok');
+check('THR-200', 'A1: with a block that throws in data() and one that throws in its view, the dashboard answers 200 with no error text', $own->status === 200 && ! phperr(text_of($h)) && ! leaks_sql($h), (string) $own->status);
+check('THR-data', 'A1: the data() block keeps its section, letter and title, and says it could not be loaded (en)', $td && $td['title'] === 'U5 Throwing data' && preg_match('/^[A-Z]$/', $td['letter']) && str_contains($td['text'], $EN_FAIL), json_encode($td ? [$td['title'], $td['text']] : null));
+check('THR-view', 'A1: the view block keeps its section, letter and title, and says it could not be loaded (en)', $tv && $tv['title'] === 'U5 Throwing view' && preg_match('/^[A-Z]$/', $tv['letter']) && str_contains($tv['text'], $EN_FAIL), json_encode($tv ? [$tv['title'], $tv['text']] : null));
+check('THR-half', 'A1: the output the throwing view wrote before throwing is not in the page', ! str_contains($h, 'HALF-OUTPUT-MARK') && ! str_contains($h, 'u5-half'), '');
+$m0 = (int) strpos($h, '<main'); $m1 = (int) strpos($h, '</main>', $m0); $mh = substr($h, $m0, max(0, $m1 - $m0));
+$bal = []; foreach (['section', 'div', 'table', 'details', 'form', 'ul', 'ol'] as $t) $bal[$t] = preg_match_all("/<$t\\b/i", $mh) - preg_match_all("/<\\/$t>/i", $mh);
+check('THR-markup', 'A1: the markup stays whole: main closed, section/div/table/details/form/ul/ol balanced inside it', $m1 > $m0 && array_filter($bal) === [] && str_contains($h, '</html>'), json_encode($bal));
+check('THR-after', 'A1: the block after them renders whole (title, body)', $ta && $ta['title'] === 'U5 After ok' && str_contains($ta['html'], 'OK-BODY-MARK days=30'), json_encode($ta['text'] ?? null));
+$okOthers = render_order($h);
+$db = dblock($h);
+check('THR-others', 'A1: the module blocks and the demo block render as usual (figures, signins, roles, changes, demo with its figures)', count(array_intersect(['figures', 'signins', 'roles', 'changes', DKEY], $okOthers)) === 5 && $db && $db['figs'] !== [] && substr_count($h, 'rw-dash-strip') === 1, json_encode([$okOthers, $db['figs'] ?? null]));
+$tl = badlog($APP, $L3);
+info('THR log: ' . short(implode(' | ', $tl), 1200));
+check('THR-log', 'A1: the log holds an error for each throwing block', (bool) preg_grep('/U5-THROW-DATA/', $tl) && (bool) preg_grep('/U5-THROW-VIEW/', $tl), json_encode(array_slice($tl, 0, 4)));
+postform($own, 'rolewarden/profile', '#profile/language$#', ['language' => 'it'], 'thr it');
+$hi = G($own, 'rolewarden', 'thr own it');
+$tdi = $sec($hi, 'u5-throw-data'); $tvi = $sec($hi, 'u5-throw-view');
+check('THR-it', 'A1: in Italian both blocks keep their title and say "' . $IT_FAIL . '", without the English message', $own->status === 200 && $tdi && $tvi && str_contains($tdi['text'], $IT_FAIL) && str_contains($tvi['text'], $IT_FAIL) && ! str_contains($hi, $EN_FAIL) && $tdi['title'] === 'U5 Throwing data' && ! str_contains($hi, 'HALF-OUTPUT-MARK'), json_encode([$tdi['text'] ?? null, $tvi['text'] ?? null]));
+postform($own, 'rolewarden/profile', '#profile/language$#', ['language' => 'en'], 'thr en');
+$h2 = G($own, 'rolewarden', 'thr own again');
+$tl2 = badlog($APP, $L3);
+check('THR-log2', 'A1: a second page view logs the errors again, still 200', $own->status === 200 && count(preg_grep('/U5-THROW-DATA/', $tl2)) > count(preg_grep('/U5-THROW-DATA/', $tl)), '');
+server_stop();
+$THROWLINES = badlog($APP, $L3);
+foreach (['U5ThrowData', 'U5ThrowView', 'U5AfterOk'] as $c) @unlink("$APP/app/Dashboard/$c.php");
+@unlink("$APP/app/Views/dashboard/u5throwview.php"); @unlink("$APP/app/Views/dashboard/u5okview.php");
+@rmdir("$APP/app/Views/dashboard"); @rmdir("$APP/app/Dashboard"); @unlink("$APP/app/Config/RoleWarden.php");
+check('THR-clean', 'A1: the test blocks are removed from the copy app', ! is_dir("$APP/app/Dashboard") && ! is_file("$APP/app/Config/RoleWarden.php"), '');
+sp8($APP, ['demo:uninstall']);
+
 // ================================================================= LOG
 $bad = seen_clean($S0);
 check('LOG-5xx', 'No answer >= 500, no SQL text, no PHP error on any page of the phase', $bad === [], json_encode(array_slice($bad, 0, 8)));
 $srv = '';
 foreach (['DEMO', 'DEMO2', 'DEMO3'] as $t) $srv .= (string) @file_get_contents("$WORK/server-$t.log");
 check('LOG-srv', 'No PHP warning in the server logs', ! preg_match('/PHP (Warning|Notice|Deprecated|Fatal)/', $srv), '');
-$rest = array_values(array_diff(badlog($APP, 0), $ROBLINES));
-check('LOG-app', 'No WARNING/ERROR line in the application log over the phase (CSRF refusals and the ROB case aside)', $rest === [], json_encode(array_slice($rest, 0, 6)));
+$rest = array_values(array_diff(badlog($APP, 0), $ROBLINES, $THROWLINES));
+check('LOG-app', 'No WARNING/ERROR line in the application log over the phase (CSRF refusals, the ROB case and the THROW blocks aside)', $rest === [], json_encode(array_slice($rest, 0, 6)));

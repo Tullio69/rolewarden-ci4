@@ -2,7 +2,8 @@
 /**
  * Shell of a dashboard block of the application (RoleWarden\Dashboard\Block):
  * the module draws the section, its letter and the title, the block's own
- * view draws the body with what data() returned, plus $period and $userId.
+ * view draws the body with what data() returned, plus $period and $userId,
+ * in a renderer of its own so it sees nothing of the other blocks.
  *
  * @var RoleWarden\Dashboard\Block $block
  * @var array<string, mixed>       $data
@@ -17,6 +18,6 @@ $id = 'rw-dash-app-' . $block->key();
     <h2 id="<?= esc($id, 'attr') ?>"><?= esc($block->title()) ?></h2>
   </div>
   <div class="rw-dash-body">
-    <?= view($block->view(), $data) ?>
+    <?= Config\Services::renderer(null, null, false)->setData($data, 'raw')->render($block->view(), null, false) ?>
   </div>
 </section>

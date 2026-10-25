@@ -97,8 +97,8 @@ class DashboardController extends BaseController
             return redirect()->to($back)->with('rw_error', lang('RoleWarden.panel.dashboard.customize.invalid'));
         }
 
-        $order = array_values(array_intersect(array_map('strval', (array) $this->request->getPost('order')), $allowed));
-        $shown = array_map('strval', (array) $this->request->getPost('shown'));
+        $order = array_values(array_intersect(self::strings($this->request->getPost('order')), $allowed));
+        $shown = self::strings($this->request->getPost('shown'));
         $current = $scope === 'global' ? Layout::global() : Layout::for($userId);
         // Blocks out of the user's sight keep what the layout already says about them.
         $hidden = array_merge(array_diff($order, $shown), array_diff($current['hidden'], $allowed));
@@ -133,6 +133,16 @@ class DashboardController extends BaseController
         $permissions = Dashboard::BLOCKS + array_map(static fn ($block): string => $block->permission(), $registered);
 
         return array_keys(array_filter($permissions, static fn (string $permission): bool => can($permission)));
+    }
+
+    /**
+     * The plain strings of a posted list; nested arrays and anything else dropped.
+     *
+     * @return list<string>
+     */
+    private static function strings(mixed $posted): array
+    {
+        return array_values(array_filter(is_array($posted) ? $posted : [], 'is_string'));
     }
 
     /**

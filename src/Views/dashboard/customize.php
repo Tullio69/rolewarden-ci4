@@ -30,8 +30,8 @@
             <span class="rw-note"><?= lang('RoleWarden.panel.dashboard.customize.pinned') ?></span>
           <?php else : ?>
             <span class="rw-dash-move" x-cloak>
-              <button type="button" class="rw-btn rw-btn--ghost" @click="move($el.closest('li'), -1)" :disabled="! movable($el.closest('li'), -1)" aria-label="<?= esc(lang('RoleWarden.panel.dashboard.customize.up', [$row['title']]), 'attr') ?>">&uarr;</button>
-              <button type="button" class="rw-btn rw-btn--ghost" @click="move($el.closest('li'), 1)" :disabled="! movable($el.closest('li'), 1)" aria-label="<?= esc(lang('RoleWarden.panel.dashboard.customize.down', [$row['title']]), 'attr') ?>">&darr;</button>
+              <button type="button" class="rw-btn rw-btn--ghost" @click="move($el.closest('li'), -1, $el)" :disabled="! movable($el.closest('li'), -1)" aria-label="<?= esc(lang('RoleWarden.panel.dashboard.customize.up', [$row['title']]), 'attr') ?>">&uarr;</button>
+              <button type="button" class="rw-btn rw-btn--ghost" @click="move($el.closest('li'), 1, $el)" :disabled="! movable($el.closest('li'), 1)" aria-label="<?= esc(lang('RoleWarden.panel.dashboard.customize.down', [$row['title']]), 'attr') ?>">&darr;</button>
             </span>
           <?php endif ?>
         </li>

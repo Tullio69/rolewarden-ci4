@@ -594,7 +594,8 @@ function rwSearchController(config) {
 /**
  * Dashboard customize panel (views/dashboard/customize.php). Up and down swap
  * a row with its neighbour by moving the neighbour, so the focused button stays
- * put; the order posted is the rows' order. Nothing moves above a pinned row.
+ * put; when it can't move further, focus goes to the row's other button. The
+ * order posted is the rows' order. Nothing moves above a pinned row.
  */
 function rwDashboardController() {
   return {
@@ -607,11 +608,14 @@ function rwDashboardController() {
       const other = this.neighbour(row, step);
       return other !== null && !other.hasAttribute('data-pinned');
     },
-    move(row, step) {
+    move(row, step, button) {
       if (!this.movable(row, step)) return;
       const other = this.neighbour(row, step);
       row.parentNode.insertBefore(other, step < 0 ? row.nextElementSibling : row);
       this.moves++;
+      this.$nextTick(() => {
+        if (button.disabled) row.querySelector('.rw-dash-move button:not(:disabled)')?.focus();
+      });
     },
   };
 }

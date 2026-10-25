@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude Code
-**Agente:** Claude Code (Opus)
-**Dalle:** 2026-10-25 17:10
-**Scope:** fix collaudo movimento D1-D5 (`resources/css/panel.css`, `src/Assets/js/panel.js`, viste del pannello)
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1382,3 +1382,17 @@ Formato di ogni voce:
   - Il toast di avviso non è raggiungibile via HTTP, quindi non è testato.
   - Restano nello scratchpad profili Chrome `mw-*` che il sandbox non lascia cancellare (EPERM), senza `.env`.
   - Nessun processo residuo. Nessun commit.
+
+### [2026-10-25 17:55] - Claude Code
+- Tipo: fix
+- Scope: `resources/css/panel.css`, `src/Assets/css/panel.css`, `src/Assets/js/panel.js`, `src/Helpers/rolewarden_helper.php`, `src/Views/layouts/panel.php`, `docs/design-system/README.md`
+- Cosa ho fatto: corretti i difetti D1-D5 del collaudo del movimento (af6dab7).
+  - D1: l'opt-in alle View Transitions sta in uno `<style>` nella testa della pagina, tramite `rw_stylesheets()`. Letto da panel.css, Chrome lo vedeva troppo tardi mentre panel.js era in attesa.
+  - D2: l'evidenziazione sta sotto tutte le voci e le due etichette cambiano colore con lei.
+  - D3: il conteggio parte dal tempo del primo fotogramma, con le cifre raggruppate come il testo del server.
+  - D4: con il movimento ridotto Personalizza e tooltip si limitano alla dissolvenza.
+  - D5: panel.js blocca il primo render, quindi l'evidenziazione parte dalla voce lasciata.
+  - A1 decisa dall'utente: la pressione al 97% resta anche con il movimento ridotto (a790b3a, design system).
+- Stato: completato, riverifica del Collaudatore ad Hoc lanciata su a790b3a
+- Note per il prossimo: l'originale del design system su Claude va allineato (Motion, Toast, A1).
+

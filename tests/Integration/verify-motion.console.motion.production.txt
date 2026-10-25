@@ -1,0 +1,195 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase MOTION from verify-motion.phase-motion.php
+
+===== phase MOTION =====
+
+== MOTION: motion across the panel (b38e350)
+[INFO] cache:clear rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-25 16:58:22 UTC+00:00 Cache cleared.
+[INFO] server pid=9772 on 127.0.0.1:8071 prefix=''
+[PASS] SET-1  Owner signs in over HTTP; the test data is in place (1,234 bulk users, 12,345 + 2,345 sign-ins, 1,111 changes)
+[INFO] served counters: [["1242","1,242"],["12346","12,346"],["2345","2,345"],["1111","1,111"]]
+[INFO] browser err console/paper: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-1'
+[PASS] ERR-console-paper No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme console, sidebar paper
+[INFO] browser err console/ink: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-2'
+[PASS] ERR-console-ink No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme console, sidebar ink
+[INFO] browser err console/charcoal: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-3'
+[PASS] ERR-console-charcoal No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme console, sidebar charcoal
+[INFO] browser err clarity/paper: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-4 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-4'
+[PASS] ERR-clarity-paper No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme clarity, sidebar paper
+[INFO] browser err clarity/ink: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-5 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-5'
+[PASS] ERR-clarity-ink No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme clarity, sidebar ink
+[INFO] browser err clarity/charcoal: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-6 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-6'
+[PASS] ERR-clarity-charcoal No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme clarity, sidebar charcoal
+[INFO] browser err contrast/paper: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-7 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-7'
+[PASS] ERR-contrast-paper No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme contrast, sidebar paper
+[INFO] browser err contrast/ink: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-8 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-8'
+[PASS] ERR-contrast-ink No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme contrast, sidebar ink
+[INFO] browser err contrast/charcoal: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-9 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-9'
+[PASS] ERR-contrast-charcoal No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme contrast, sidebar charcoal
+[INFO] view transition errors over the 9 tours: 81
+[FAIL] VT-err No "Transition was aborted ... ViewTransition opt-in disabled" error when moving between pages of the panel
+         -> uncaught InvalidStateError on 81 sidebar navigations
+[INFO] browser nav: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-10 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-10'
+[PASS] NAV-rolewarden/users Sidebar click on rolewarden/users: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[PASS] NAV-rolewarden/roles Sidebar click on rolewarden/roles: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[PASS] NAV-rolewarden/permissions Sidebar click on rolewarden/permissions: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[PASS] NAV-rolewarden/permissions/check Sidebar click on rolewarden/permissions/check: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[PASS] NAV-rolewarden/activity Sidebar click on rolewarden/activity: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[PASS] NAV-rolewarden/settings Sidebar click on rolewarden/settings: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[PASS] NAV-rolewarden/appearance Sidebar click on rolewarden/appearance: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[PASS] NAV-rolewarden/ Sidebar click on rolewarden/: that item alone is current, the highlight sits inside it, settled, and no item text is covered
+[INFO] pagereveal on sidebar navigations: none,none,none,none,none,none,none,none
+[FAIL] NAV-vt Moving between pages runs a view transition (pagereveal carries one) in a browser with View Transitions (Chrome 155)
+         -> none,none,none,none,none,none,none,none
+[PASS] NAV-rail Rail: collapsing works, navigation in the rail keeps one current item with the highlight inside it, expanding again works
+[PASS] NAV-console No JavaScript error other than the view transition during the navigation and the rail
+[INFO] browser rm reduce: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-11 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-11'
+[INFO] browser rm calibration: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-12 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-12'
+[PASS] RM-db  The two saves of the reduced-motion runs leave the role as it was (one grant, one revoke)
+[PASS] RM-calib Calibration: without the setting the recorder does see moving animations start on the dashboard
+[INFO] calibration: moving animations recorded at 15 of the sampled points without the setting
+[FAIL] RM-dash Reduced motion: no moving animation starts or runs (dash)
+         -> [{"moving":[],"count":0,"all":0,"reveal":"none","url":"\/index.php\/[omesso]"},{"count":1,"all":2,"moving":["transition transform [transform,transform] FORM.rw-dash-panel 320ms d0"],"url":"\/index.php\/[omesso]"}]
+[FAIL] RM-cust Reduced motion: no moving animation starts or runs (cust)
+         -> [{"moving":[],"count":0,"all":1,"reveal":"none","url":"\/index.php\/[omesso]"},{"count":2,"all":3,"moving":["transition transform [transform] SUMMARY.rw-btn rw-btn--secondary 120ms d0","transition transform [transform] SUMMARY.rw-btn rw-btn--secondary 120ms d0"],"url":"\/index.php\/[omesso]"}]
+[PASS] RM-users Reduced motion: no moving animation starts or runs (users)
+[PASS] RM-roles Reduced motion: no moving animation starts or runs (roles)
+[PASS] RM-permissions Reduced motion: no moving animation starts or runs (permissions)
+[PASS] RM-check Reduced motion: no moving animation starts or runs (check)
+[PASS] RM-activity Reduced motion: no moving animation starts or runs (activity)
+[PASS] RM-settings Reduced motion: no moving animation starts or runs (settings)
+[PASS] RM-appearance Reduced motion: no moving animation starts or runs (appearance)
+[PASS] RM-role Reduced motion: no moving animation starts or runs (role)
+[PASS] RM-user Reduced motion: no moving animation starts or runs (user)
+[PASS] RM-profile Reduced motion: no moving animation starts or runs (profile)
+[PASS] RM-search Reduced motion: no moving animation starts or runs (search)
+[FAIL] RM-dlg Reduced motion: no moving animation starts or runs (dlg)
+         -> [{"moving":[],"count":0,"all":2,"reveal":"none","url":"\/index.php\/[omesso]\/roles\/10"},{"count":2,"all":5,"moving":["transition transform [transform] BUTTON.rw-btn rw-btn--danger 120ms d0","transition transform [transform] BUTTON.rw-btn rw-btn--danger 120ms d0"],"url":"\/index.php\/[omesso]\/roles\/10"}]
+[FAIL] RM-cell Reduced motion: no moving animation starts or runs (cell)
+         -> [{"moving":[],"count":0,"all":8,"reveal":"none","url":"\/index.php\/[omesso]\/roles\/10"},{"count":2,"all":11,"moving":["transition transform [transform] BUTTON.rw-cell rw-cell--changed 120ms d0","transition transform [transform] BUTTON.rw-cell rw-cell--changed 120ms d0"],"url":"\/index.php\/[omesso]\/roles\/10"}]
+[PASS] RM-toast Reduced motion: no moving animation starts or runs (toast)
+[PASS] RM-cmd Reduced motion: no moving animation starts or runs (cmd)
+[PASS] RM-count Reduced motion: the figures show their value at once (no intermediate value ever written, first look = final)
+[INFO] calibration, values written during the count with motion: 156 e.g. ["1242=1,242","12358=12,358","2345=2,345","1112=1,112","1242=-129","12358=-1,324"]
+[PASS] RM-dialog Reduced motion: 30ms after the click the confirm dialog is open, fully opaque and not scaled or moved
+[PASS] RM-search Reduced motion: the command search is open at once, not scaled
+[PASS] RM-vt  Reduced motion: no page hand-over (no view transition revealed)
+[PASS] RM-console Reduced motion: no JavaScript error other than the view transition
+[PASS] RM-toast Reduced motion: the save gives its success toast
+[INFO] CNT en: served ["1,242","12,359","2,345","1,113"] nojs ["1,242","12,359","2,345","1,113"] early ["1,242","12,359","2,345","1,113"] end ["1,242","12,359","2,345","1,113"] lang en
+[PASS] CNT-en Counters (en): at the end of the count each figure reads exactly as without JavaScript (four-digit figures with the en separator)
+[PASS] CNT-en-served Counters (en): the page without JavaScript shows the served text
+[PASS] CNT-en-console Counters (en): no JavaScript error
+[INFO] CNT en: 464 values written during three counts; out of range: ["1242=-136","12359=-1,414","2345=-274","1113=-134","1242=-127","12359=-1,295","2345=-251","1113=-122","1242=-175","12359=-1,792","2345=-346","1113=-167"]
+[FAIL] CNT-en-range Counters (en): while counting up, every value shown lies between 0 and the figure (three loads)
+         -> {"n":464,"out":["1242=-136","12359=-1,414","2345=-274","1113=-134","1242=-127","12359=-1,295","2345=-251","1113=-122","1242=-175","12359=-1,792","2345=-346","1113=-167"],"count":12}
+[INFO] CNT it: served ["1.242","12.360","2.345","1.113"] nojs ["1.242","12.360","2.345","1.113"] early ["1.242","12.360","2.345","1.113"] end ["1.242","12.360","2.345","1.113"] lang it
+[PASS] CNT-it Counters (it): at the end of the count each figure reads exactly as without JavaScript (four-digit figures with the it separator)
+[PASS] CNT-it-served Counters (it): the page without JavaScript shows the served text
+[PASS] CNT-it-console Counters (it): no JavaScript error
+[INFO] CNT it: 468 values written during three counts; out of range: ["1242=-58","12360=-631","2345=-130","1113=-66","1242=-148","12360=-1504","2345=-294","1113=-141","1242=-59","12360=-660","2345=-133","1113=-67"]
+[FAIL] CNT-it-range Counters (it): while counting up, every value shown lies between 0 and the figure (three loads)
+         -> {"n":468,"out":["1242=-58","12360=-631","2345=-130","1113=-66","1242=-148","12360=-1504","2345=-294","1113=-141","1242=-59","12360=-660","2345=-133","1113=-67"],"count":12}
+[INFO] browser dlg: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-15 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-15'
+[INFO] DLG role: {"0":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,132],"scrollY":0,"active":"BODY||RoleWarden\n\n        ","focusVisible":false},"mid":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":["background-color"],"h1":[304,132],"scrollY":0,"active":"BUTTON|rwCancelConfirm('confirm-delete-role')|Cancel","focusVisible":false},"m1":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,132],"scrollY":0,"active":"BUTTON|rwCancelConfirm('confirm-delete-role')|Cancel","focusVisible":false},"m2":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,132],"scrollY":0,"active":"BUTTON|rwConfirm('confirm-delete-role')|Delete","focusVisible":false},"k1":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,132],"scrollY":0,"active":"BUTTON|rwCancelConfirm('confirm-delete-role')|Cancel","focusVisible":true},"k2":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,132],"scrollY":0,"active":"BUTTON|rwConfirm('confirm-delete-role')|Delete","focusVisible":true}}
+[PASS] DLG-role-mouse Dialog confirm-delete-role: a click opens it; after the motion it is fully open (opacity 1, no scale or offset), the page under it has not moved
+[PASS] DLG-role-cancel Dialog confirm-delete-role: Cancel closes it and the focus is back on the button that opened it
+[PASS] DLG-role-key Dialog confirm-delete-role: Enter on the focused button opens it, Esc closes it, the focus returns to the button
+[INFO] DLG role confirm: [{"op":"mouse","tag":"role-confirm","value":{"x":875.546875,"y":487},"url":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/roles","status":200,"ce":2},null,null,[{"kind":"success","text":"Saved Role deleted.","mo":"","top":828,"bottom":876}]]
+[INFO] DLG user: {"0":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-957],"scrollY":1089,"active":"BODY||RoleWarden\n\n        ","focusVisible":false},"mid":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":["background-color"],"h1":[304,-957],"scrollY":1089,"active":"BUTTON|rwCancelConfirm('confirm-delete-user')|Cancel","focusVisible":false},"m1":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-957],"scrollY":1089,"active":"BUTTON|rwCancelConfirm('confirm-delete-user')|Cancel","focusVisible":false},"m2":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-957],"scrollY":1089,"active":"BUTTON|rwConfirm('confirm-delete-user')|Delete","focusVisible":false},"k1":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-957],"scrollY":1089,"active":"BUTTON|rwCancelConfirm('confirm-delete-user')|Cancel","focusVisible":true},"k2":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-957],"scrollY":1089,"active":"BUTTON|rwConfirm('confirm-delete-user')|Delete","focusVisible":true}}
+[PASS] DLG-user-mouse Dialog confirm-delete-user: a click opens it; after the motion it is fully open (opacity 1, no scale or offset), the page under it has not moved
+[PASS] DLG-user-cancel Dialog confirm-delete-user: Cancel closes it and the focus is back on the button that opened it
+[PASS] DLG-user-key Dialog confirm-delete-user: Enter on the focused button opens it, Esc closes it, the focus returns to the button
+[INFO] DLG user confirm: [{"op":"key","tag":"user-confirm","url":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users","status":200,"ce":3},"BUTTON|button","BUTTON|submit|Delete",[{"kind":"success","text":"Saved User deleted.","mo":"","top":828,"bottom":876}]]
+[INFO] DLG theme: {"0":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-820],"scrollY":952,"active":"BODY||RoleWarden\n\n        ","focusVisible":false},"mid":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":["background-color"],"h1":[304,-820],"scrollY":952,"active":"BUTTON|rwCancelConfirm('confirm-reset-theme')|Cancel","focusVisible":false},"m1":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-820],"scrollY":952,"active":"BUTTON|rwCancelConfirm('confirm-reset-theme')|Cancel","focusVisible":false},"m2":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-820],"scrollY":952,"active":"BUTTON|rwConfirm('confirm-reset-theme')|Reset theme","focusVisible":false},"k1":{"open":true,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-820],"scrollY":952,"active":"BUTTON|rwCancelConfirm('confirm-reset-theme')|Cancel","focusVisible":true},"k2":{"open":false,"opacity":"1","transform":"none","scale":"none","translate":"none","running":[],"h1":[304,-820],"scrollY":952,"active":"BUTTON|rwConfirm('confirm-reset-theme')|Reset theme","focusVisible":true}}
+[PASS] DLG-theme-mouse Dialog confirm-reset-theme: a click opens it; after the motion it is fully open (opacity 1, no scale or offset), the page under it has not moved
+[PASS] DLG-theme-cancel Dialog confirm-reset-theme: Cancel closes it and the focus is back on the button that opened it
+[PASS] DLG-theme-key Dialog confirm-reset-theme: Enter on the focused button opens it, Esc closes it, the focus returns to the button
+[INFO] DLG theme confirm: [{"op":"mouse","tag":"theme-confirm","value":{"x":854.6328125,"y":498},"url":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/appearance","status":200,"ce":4},null,null,[{"kind":"success","text":"Saved Theme reset to its starting values.","mo":"","top":828,"bottom":876}]]
+[PASS] DLG-role-done The confirmed role deletion (mouse) still works: the role is deleted and a success toast says so
+[PASS] DLG-user-done The confirmed user deletion (keyboard: Tab to Delete, Enter) still works: the user is deleted
+[PASS] DLG-theme-done The confirmed theme reset still works: the saved Clarity/Ink theme is gone
+[PASS] DLG-console Dialogs: no JavaScript error other than the view transition
+[INFO] SRCH: {"k1":{"open":true,"focusQ":true,"ad":"rw-cmd-o-0","sel":["rw-cmd-o-0"],"n":15,"hrefs":{"rw-cmd-o-0":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/","rw-cmd-o-1":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users","rw-cmd-o-2":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/roles","rw-cmd-o-3":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions","rw-cmd-o-4":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check","rw-cmd-o-5":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/activity"},"opacity":"1","transform":"none","scale":"none","active":"INPUT.","activeIsSearchLink":false},"k2":{"open":true,"focusQ":true,"ad":"rw-cmd-o-0","sel":["rw-cmd-o-0"],"n":10,"hrefs":{"rw-cmd-o-0":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.activate","rw-cmd-o-1":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.create","rw-cmd-o-2":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.delete","rw-cmd-o-3":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.edit","rw-cmd-o-4":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.import","rw-cmd-o-5":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.manage-admins"},"opacity":"1","transform":"none","scale":"none","active":"INPUT.","activeIsSearchLink":false},"k3":{"open":true,"focusQ":true,"ad":"rw-cmd-o-1","sel":["rw-cmd-o-1"],"n":10,"hrefs":{"rw-cmd-o-0":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.activate","rw-cmd-o-1":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.create","rw-cmd-o-2":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.delete","rw-cmd-o-3":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.edit","rw-cmd-o-4":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.import","rw-cmd-o-5":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.manage-admins"},"opacity":"1","transform":"none","scale":"none","active":"INPUT.","activeIsSearchLink":false},"k4":{"open":true,"focusQ":true,"ad":"rw-cmd-o-1","sel":["rw-cmd-o-1"],"n":10,"hrefs":{"rw-cmd-o-0":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.activate","rw-cmd-o-1":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.create","rw-cmd-o-2":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.delete","rw-cmd-o-3":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.edit","rw-cmd-o-4":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.import","rw-cmd-o-5":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.manage-admins"},"opacity":"1","transform":"none","scale":"none","active":"INPUT.","activeIsSearchLink":false},"k5":{"open":true,"focusQ":true,"ad":"rw-cmd-o-2","sel":["rw-cmd-o-2"],"n":10,"hrefs":{"rw-cmd-o-0":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.activate","rw-cmd-o-1":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.create","rw-cmd-o-2":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.delete","rw-cmd-o-3":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.edit","rw-cmd-o-4":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.import","rw-cmd-o-5":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.manage-admins"},"opacity":"1","transform":"none","scale":"none","active":"INPUT.","activeIsSearchLink":false},"en":{"op":"key","tag":"enter","url":"http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions\/check?permission=users.delete","status":200,"ce":2}}
+[PASS] SRCH-ctrlk Ctrl K opens the command search, fully grown, with the focus in the field
+[PASS] SRCH-move Down and Up move the highlighted result (aria-activedescendant and aria-selected follow)
+[PASS] SRCH-enter Enter opens the highlighted result
+[PASS] SRCH-link The sidebar search link opens it (mouse and Enter); Esc closes it and the focus returns to the link
+[PASS] SRCH-console Command search: no JavaScript error other than the view transition
+[INFO] MTX: {"P0":["roles.view","settings.view","users.view"],"c0":[{"pressed":"false","mark":"blank","changed":false},{"pressed":"true","mark":"rw-mark--role","changed":false},{"pressed":"false","mark":"blank","changed":false}],"c1":{"pressed":"true","mark":"rw-mark--role","changed":true},"bar1":"1 unsaved change to Mo-editor activity.view (id 18) Discard Save changes","c5":[{"pressed":"false","mark":"blank","changed":true},{"pressed":"true","mark":"rw-mark--role","changed":true}],"save":"T1:rw-toast rw-toast--success"}
+[PASS] MTX-click Role matrix: a click grants the cell (pressed, role mark, changed) and the bar counts 1 unsaved change; the cell is settled after the motion
+[PASS] MTX-back A second click puts the cell back (not changed, nothing unsaved)
+[PASS] MTX-discard Discard after two changes: every cell back to its saved state, nothing unsaved, no cell left mid-motion
+[PASS] MTX-rapid Three quick clicks on one cell end granted (odd number), consistent and settled
+[PASS] MTX-save Save: success toast, nothing unsaved, cells settled
+[PASS] MTX-db The database holds exactly the saved state (roles.create granted, settings.view revoked, nothing from the discarded clicks)
+[PASS] MTX-reload After reloading, every cell shows the database state, none changed or mid-motion
+[PASS] MTX-console Role matrix: no JavaScript error other than the view transition
+[INFO] OVR: {"O0":{"roles.view":1,"users.view":0},"O1":{"permissions.view":1,"roles.view":1},"QA":[{"pressed":null,"mark":"blank","changed":false},{"pressed":null,"mark":"rw-mark--grant","changed":true},{"pressed":null,"mark":"blank","changed":false},{"pressed":null,"mark":"rw-mark--grant","changed":true}],"QB":[{"pressed":null,"mark":"blank","changed":false},{"pressed":null,"mark":"blank","changed":false}],"uv":[{"pressed":null,"mark":"rw-mark--deny","changed":false},{"pressed":null,"mark":"blank","changed":true}],"save":"T1:rw-toast rw-toast--success"}
+[PASS] OVR-click Overrides: a click changes the cell (changed, new mark) and is settled after the motion
+[PASS] OVR-discard Discard puts every cell back, nothing unsaved, nothing mid-motion
+[PASS] OVR-save Save: success toast, nothing unsaved afterwards
+[PASS] OVR-db The database holds exactly the overrides the matrix showed when Save was pressed
+[PASS] OVR-reload After reloading every cell shows the database overrides, none changed or mid-motion
+[PASS] OVR-console Overrides: no JavaScript error other than the view transition
+[INFO] CUST: {"o0":["security","figures","signins","roles","changes","demo-documents"],"mid":{"keys":["security","signins","figures","roles","changes","demo-documents"],"tops":[285,344,370,429,477,525],"visualOk":true,"running":3,"active":"BUTTON|Move Key figures down","focusVisible":true,"outline":"solid 2px","open":true},"o1":{"keys":["security","signins","figures","roles","changes","demo-documents"],"tops":[285,333,381,429,477,525],"visualOk":true,"running":0,"active":"BUTTON|Move Key figures down","focusVisible":true,"outline":"solid 2px","open":true},"o2":["security","signins","roles","figures","changes","demo-documents"],"o3":{"keys":["security","signins","roles","changes","figures","demo-documents"],"tops":[234,282,330,378,426,474],"visualOk":true,"running":1,"active":"BUTTON|Move Latest permission changes up","focusVisible":false,"outline":"none 3px","open":true}}
+[PASS] CUST-key Customize: Enter on "down" moves the row one place; after the slide the rows stand in their order, the focus stays on the button and is visible
+[PASS] CUST-key2 A second Enter moves it again, the focus is still visible
+[PASS] CUST-mouse A click on "up" moves a row up, the rows stand in their new order on screen
+[PASS] CUST-save Save for me keeps the order shown: the stored order and the page after saving match the panel
+[PASS] CUST-console Customize: no JavaScript error other than the view transition
+[INFO] browser toast: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-20 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-20'
+[INFO] TST: {"timed":{"appeared":true,"kind":"rw-toast rw-toast--success","ms":5066},"p-new":"T1:rw-toast rw-toast--success","p-hover":[{"kind":"success","text":"Saved Changes saved.","mo":"T1","top":828,"bottom":876}],"p-after":[],"e-new":"T2:rw-toast rw-toast--error","e-8s":[{"kind":"error","text":"Error: Could not save this change. Reload the page and try again.","mo":"T2","top":814,"bottom":876}],"e-closed":[],"a":"T3:rw-toast rw-toast--success","b":"T4:rw-toast rw-toast--success","c":"T5:rw-toast rw-toast--error","three":[{"kind":"success","text":"Saved Changes saved.","mo":"T3","top":702,"bottom":750},{"kind":"success","text":"Saved Changes saved.","mo":"T4","top":758,"bottom":806},{"kind":"error","text":"Error: Could not save this change. Reload the page and try again.","mo":"T5","top":814,"bottom":876}],"two":[{"kind":"success","text":"Saved Changes saved.","mo":"T3","top":758,"bottom":806},{"kind":"error","text":"Error: Could not save this change. Reload the page and try again.","mo":"T5","top":814,"bottom":876}],"end":[{"kind":"error","text":"Error: Could not save this change. Reload the page and try again.","mo":"T5","top":814,"bottom":876}]}
+[PASS] TST-auto A success toast leaves by itself after about 5 s (4.5-6.5 s including its exit)
+[PASS] TST-pause With the pointer over the stack the timer stops (still there after 7.5 s); when the pointer leaves it goes
+[PASS] TST-error An error toast stays (still there after 8 s) until it is closed; closing removes it
+[INFO] toast ids: three=["T3","T4","T5"] two=["T3","T5"]
+[PASS] TST-order Three toasts (two successes, one error, newest at the bottom); closing the middle one leaves the other two in their order, stacked without overlap
+[PASS] TST-end Pointer away: the remaining success leaves, the error stays
+[PASS] TST-console Toasts: no JavaScript error other than the view transition and the blocked request
+[INFO] warning toast: no path of the panel produces one over HTTP (V1M1 limit); not tested
+[INFO] browser nojs: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-21 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-motion-production-r5\chrome-mo-21'
+[PASS] NOJS-dash Without JavaScript dash is complete: nothing transparent, clipped or scaled to nothing (276 texts, 0 rows)
+[PASS] JSEND-dash With JavaScript, 2.5 s after load, nothing in view of dash is left transparent or clipped
+[PASS] NOJS-users Without JavaScript users is complete: nothing transparent, clipped or scaled to nothing (149 texts, 21 rows)
+[PASS] JSEND-users With JavaScript, 2.5 s after load, nothing in view of users is left transparent or clipped
+[PASS] NOJS-roles Without JavaScript roles is complete: nothing transparent, clipped or scaled to nothing (124 texts, 12 rows)
+[PASS] JSEND-roles With JavaScript, 2.5 s after load, nothing in view of roles is left transparent or clipped
+[PASS] NOJS-role Without JavaScript role is complete: nothing transparent, clipped or scaled to nothing (106 texts, 2 rows)
+[PASS] JSEND-role With JavaScript, 2.5 s after load, nothing in view of role is left transparent or clipped
+[PASS] NOJS-user Without JavaScript user is complete: nothing transparent, clipped or scaled to nothing (93 texts, 7 rows)
+[PASS] JSEND-user With JavaScript, 2.5 s after load, nothing in view of user is left transparent or clipped
+[PASS] NOJS-perms Without JavaScript perms is complete: nothing transparent, clipped or scaled to nothing (314 texts, 47 rows)
+[PASS] JSEND-perms With JavaScript, 2.5 s after load, nothing in view of perms is left transparent or clipped
+[PASS] NOJS-check Without JavaScript check is complete: nothing transparent, clipped or scaled to nothing (67 texts, 4 rows)
+[PASS] JSEND-check With JavaScript, 2.5 s after load, nothing in view of check is left transparent or clipped
+[PASS] NOJS-activity Without JavaScript activity is complete: nothing transparent, clipped or scaled to nothing (240 texts, 26 rows)
+[PASS] JSEND-activity With JavaScript, 2.5 s after load, nothing in view of activity is left transparent or clipped
+[PASS] NOJS-settings Without JavaScript settings is complete: nothing transparent, clipped or scaled to nothing (77 texts, 8 rows)
+[PASS] JSEND-settings With JavaScript, 2.5 s after load, nothing in view of settings is left transparent or clipped
+[PASS] NOJS-appearance Without JavaScript appearance is complete: nothing transparent, clipped or scaled to nothing (88 texts, 11 rows)
+[PASS] JSEND-appearance With JavaScript, 2.5 s after load, nothing in view of appearance is left transparent or clipped
+[PASS] NOJS-profile Without JavaScript profile is complete: nothing transparent, clipped or scaled to nothing (32 texts, 2 rows)
+[PASS] JSEND-profile With JavaScript, 2.5 s after load, nothing in view of profile is left transparent or clipped
+[PASS] NOJS-search Without JavaScript search is complete: nothing transparent, clipped or scaled to nothing (37 texts, 0 rows)
+[PASS] JSEND-search With JavaScript, 2.5 s after load, nothing in view of search is left transparent or clipped
+[INFO] NOJS dashboard: {"counts":["1,241","12,367","2,345","1,121"],"charts":2,"sections":["Key figures","rw-dash-signins","rw-dash-heat","rw-dash-roles","rw-dash-changes","rw-dash-app-demo-documents"],"notice":["rw-dash-notice|2,345 failed sign-ins from 203.0.113.7 on 25 Oct, the lock threshold is 5. Revie"]}
+[PASS] NOJS-dash-content Without JavaScript the dashboard shows the four figures with their values, the charts and the security notice
+[PASS] LOG-5xx No answer >= 500, no SQL text, no PHP error on any HTTP page of the phase
+[PASS] LOG-app The application log has no WARNING/ERROR line
+[PASS] LOG-srv No PHP warning in the server log
+
+TOTAL: 120 PASS, 8 FAIL, 0 AMB
+FAIL VT-err No "Transition was aborted ... ViewTransition opt-in disabled" error when moving between pages of the panel
+FAIL NAV-vt Moving between pages runs a view transition (pagereveal carries one) in a browser with View Transitions (Chrome 155)
+FAIL RM-dash Reduced motion: no moving animation starts or runs (dash)
+FAIL RM-cust Reduced motion: no moving animation starts or runs (cust)
+FAIL RM-dlg Reduced motion: no moving animation starts or runs (dlg)
+FAIL RM-cell Reduced motion: no moving animation starts or runs (cell)
+FAIL CNT-en-range Counters (en): while counting up, every value shown lies between 0 and the figure (three loads)
+FAIL CNT-it-range Counters (it): while counting up, every value shown lies between 0 and the figure (three loads)
+b38e350 s1.motion.b38e350.production-r5: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=False (1 .env files deleted first)

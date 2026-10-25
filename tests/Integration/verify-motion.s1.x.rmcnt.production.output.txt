@@ -1,0 +1,68 @@
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase X from verify-motion.phase-x.php
+
+===== phase X =====
+
+== MOTION: motion across the panel (b38e350)
+[INFO] cache:clear rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-25 16:08:34 UTC+00:00 Cache cleared.
+[INFO] server pid=38568 on 127.0.0.1:8071 prefix=''
+[PASS] SET-1  Owner signs in over HTTP; the test data is in place (1,234 bulk users, 12,345 + 2,345 sign-ins, 1,111 changes)
+[INFO] served counters: [["1242","1,242"],["12346","12,346"],["2345","2,345"],["1111","1,111"]]
+[INFO] browser rm reduce: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-x6\chrome-mo-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-x6\chrome-mo-1'
+[INFO] browser rm calibration: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-x6\chrome-mo-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\mw-x6\chrome-mo-2'
+[PASS] RM-db  The two saves of the reduced-motion runs leave the role as it was (one grant, one revoke)
+[PASS] RM-calib Calibration: without the setting the recorder does see moving animations start on the dashboard
+[INFO] calibration: moving animations recorded at 15 of the sampled points without the setting
+[FAIL] RM-dash Reduced motion: no moving animation starts or runs (dash)
+         -> [{"moving":[],"count":0,"all":0,"reveal":"none","url":"\/index.php\/[omesso]"},{"count":1,"all":2,"moving":["transition transform [transform,transform] FORM.rw-dash-panel 320ms d0"],"url":"\/index.php\/[omesso]"}]
+[FAIL] RM-cust Reduced motion: no moving animation starts or runs (cust)
+         -> [{"moving":[],"count":0,"all":1,"reveal":"none","url":"\/index.php\/[omesso]"},{"count":2,"all":3,"moving":["transition transform [transform] SUMMARY.rw-btn rw-btn--secondary 120ms d0","transition transform [transform] SUMMARY.rw-btn rw-btn--secondary 120ms d0"],"url":"\/index.php\/[omesso]"}]
+[PASS] RM-users Reduced motion: no moving animation starts or runs (users)
+[PASS] RM-roles Reduced motion: no moving animation starts or runs (roles)
+[PASS] RM-permissions Reduced motion: no moving animation starts or runs (permissions)
+[PASS] RM-check Reduced motion: no moving animation starts or runs (check)
+[PASS] RM-activity Reduced motion: no moving animation starts or runs (activity)
+[PASS] RM-settings Reduced motion: no moving animation starts or runs (settings)
+[PASS] RM-appearance Reduced motion: no moving animation starts or runs (appearance)
+[PASS] RM-role Reduced motion: no moving animation starts or runs (role)
+[PASS] RM-user Reduced motion: no moving animation starts or runs (user)
+[PASS] RM-profile Reduced motion: no moving animation starts or runs (profile)
+[PASS] RM-search Reduced motion: no moving animation starts or runs (search)
+[FAIL] RM-dlg Reduced motion: no moving animation starts or runs (dlg)
+         -> [{"moving":[],"count":0,"all":2,"reveal":"none","url":"\/index.php\/[omesso]\/roles\/10"},{"count":2,"all":5,"moving":["transition transform [transform] BUTTON.rw-btn rw-btn--danger 120ms d0","transition transform [transform] BUTTON.rw-btn rw-btn--danger 120ms d0"],"url":"\/index.php\/[omesso]\/roles\/10"}]
+[FAIL] RM-cell Reduced motion: no moving animation starts or runs (cell)
+         -> [{"moving":[],"count":0,"all":8,"reveal":"none","url":"\/index.php\/[omesso]\/roles\/10"},{"count":2,"all":11,"moving":["transition transform [transform] BUTTON.rw-cell rw-cell--changed 120ms d0","transition transform [transform] BUTTON.rw-cell rw-cell--changed 120ms d0"],"url":"\/index.php\/[omesso]\/roles\/10"}]
+[PASS] RM-toast Reduced motion: no moving animation starts or runs (toast)
+[PASS] RM-cmd Reduced motion: no moving animation starts or runs (cmd)
+[PASS] RM-count Reduced motion: the figures show their value at once (no intermediate value ever written, first look = final)
+[INFO] calibration, values written during the count with motion: 156 e.g. ["1242=1,242","12348=12,348","2345=2,345","1112=1,112","1242=19","12348=133"]
+[PASS] RM-dialog Reduced motion: 30ms after the click the confirm dialog is open, fully opaque and not scaled or moved
+[PASS] RM-search Reduced motion: the command search is open at once, not scaled
+[PASS] RM-vt  Reduced motion: no page hand-over (no view transition revealed)
+[PASS] RM-console Reduced motion: no JavaScript error other than the view transition
+[PASS] RM-toast Reduced motion: the save gives its success toast
+[INFO] CNT en: served ["1,242","12,349","2,345","1,113"] nojs ["1,242","12,349","2,345","1,113"] early ["1,242","12,349","2,345","1,113"] end ["1,242","12,349","2,345","1,113"] lang en
+[PASS] CNT-en Counters (en): at the end of the count each figure reads exactly as without JavaScript (four-digit figures with the en separator)
+[PASS] CNT-en-served Counters (en): the page without JavaScript shows the served text
+[PASS] CNT-en-console Counters (en): no JavaScript error
+[INFO] CNT en: 464 values written during three counts; out of range: ["1242=-127","12349=-1,309","2345=-254","1113=-123","1113=-4","1242=-45","12349=-519","2345=-106","1113=-54"]
+[FAIL] CNT-en-range Counters (en): while counting up, every value shown lies between 0 and the figure (three loads)
+         -> {"n":464,"out":["1242=-127","12349=-1,309","2345=-254","1113=-123","1113=-4","1242=-45","12349=-519","2345=-106","1113=-54"],"count":9}
+[INFO] CNT it: served ["1.242","12.350","2.345","1.113"] nojs ["1.242","12.350","2.345","1.113"] early ["1.242","12.350","2.345","1.113"] end ["1.242","12.350","2.345","1.113"] lang it
+[PASS] CNT-it Counters (it): at the end of the count each figure reads exactly as without JavaScript (four-digit figures with the it separator)
+[PASS] CNT-it-served Counters (it): the page without JavaScript shows the served text
+[PASS] CNT-it-console Counters (it): no JavaScript error
+[INFO] CNT it: 464 values written during three counts; out of range: ["1242=-3","12350=-81","2345=-18","1113=-11","1242=-83","12350=-843","2345=-168","1113=-81","1242=-9","12350=-134","2345=-33","1113=-18"]
+[FAIL] CNT-it-range Counters (it): while counting up, every value shown lies between 0 and the figure (three loads)
+         -> {"n":464,"out":["1242=-3","12350=-81","2345=-18","1113=-11","1242=-83","12350=-843","2345=-168","1113=-81","1242=-9","12350=-134","2345=-33","1113=-18"],"count":12}
+
+TOTAL: 30 PASS, 6 FAIL, 0 AMB
+FAIL RM-dash Reduced motion: no moving animation starts or runs (dash)
+FAIL RM-cust Reduced motion: no moving animation starts or runs (cust)
+FAIL RM-dlg Reduced motion: no moving animation starts or runs (dlg)
+FAIL RM-cell Reduced motion: no moving animation starts or runs (cell)
+FAIL CNT-en-range Counters (en): while counting up, every value shown lies between 0 and the figure (three loads)
+FAIL CNT-it-range Counters (it): while counting up, every value shown lies between 0 and the figure (three loads)
+Test process exit: 1

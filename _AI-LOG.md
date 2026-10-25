@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude Code
+**Agente:** Claude Code (Opus)
+**Dalle:** 2026-10-25 17:10
+**Scope:** fix collaudo movimento D1-D5 (`resources/css/panel.css`, `src/Assets/js/panel.js`, viste del pannello)
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1348,3 +1348,37 @@ Formato di ogni voce:
 - Cosa ho fatto: movimento in tutto il pannello ("/impeccable animate overdrive", direzione "Overdrive pieno" scelta dall'utente, che cambia la regola Motion del design system). View Transitions tra pagine (barra e top bar ferme, contenuto che passa, evidenziazione della voce attiva che scorre con un FLIP tra documenti via sessionStorage); dialog e ricerca che crescono dal pulsante (`rwMorph`); righe a cascata; dashboard che si disegna (conteggio cifre, grafico a tendina, barre, mappa di calore a onda, quote e avviso); segni della matrice che si disegnano; Personalizza con FLIP; toast con barra del tempo e FLIP; riflesso sui pulsanti primari (`@property`); pressione 97%; titoli di sezione legati allo scroll. Tutto spento con `prefers-reduced-motion`. Verificato a vista con Chrome headless via CDP su una pagina di prova con CSS e JS veri (fotogrammi a tempi fissi): corretti in corso l'evidenziazione che copriva il testo, il contenuto che si sdoppiava nel morph dei dialog e le quote che si separavano.
 - Stato: completato, in attesa del Collaudatore ad Hoc.
 - Note per il prossimo: l'originale del design system su Claude va allineato dall'utente (sezione Motion e Toast). Lock rilasciato per il collaudo.
+
+### [2026-10-25 18:30] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: collaudo in nero del movimento del pannello su `b38e350`. Ho scritto solo `tests/Integration/verify-motion.*` (harness, suite, driver Chrome, fasi `motion`, `style` adattata e `x` sonda, uscite, fotogrammi) e `MOTION-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash `f7f37c04…e21e64` identico, 19 su 19).
+- Cosa ho fatto:
+  - Fase MOTION in development e production:
+    - errori in console nei 3 temi per le 3 barre;
+    - movimento ridotto, con un registratore di animazioni calibrato;
+    - cifre in en e it;
+    - dialog col mouse e con la tastiera;
+    - ricerca comandi;
+    - matrice e override, con controllo del database;
+    - Personalizza;
+    - toast (5 s, pausa, errore, ordine);
+    - pagine senza JavaScript;
+    - navigazione, rail e fotogrammi.
+  - Regressione in development: U5 CUST, U4 DASH, U3 SRCH, U1 NAV/RAIL/STYLE/ESC.
+- Stato: completato. **Esito FAIL**:
+  - MOTION 123/131 in development e 120/128 in production;
+  - CUST 151/152, con il FAIL dovuto a D1;
+  - DASH 258/258, SRCH 41/41;
+  - U1 196/196 con STYLE adattata alla nuova `.rw-side-pill` (154/196 senza).
+- Difetti:
+  - **D1** il passaggio tra pagine non avviene mai: `pagereveal` senza view transition, e ogni clic sulla barra lascia `Uncaught (in promise) InvalidStateError: Transition was aborted … ViewTransition opt-in disabled`. Le mie pagine di calibrazione la fanno nello stesso Chrome. È lo stesso errore che fa fallire U5 CUST JS-console.
+  - **D2** l'evidenziazione che scorre copre il testo delle voci, e anche quello della voce d'arrivo. Si vede nei fotogrammi a velocità reale e rallentati, in Paper, Ink e Charcoal.
+  - **D3** le cifre scrivono valori negativi all'inizio del conteggio (per esempio `-1,309`), in en e it, in tutti e due gli ambienti.
+  - **D4** con `prefers-reduced-motion` il `form.rw-dash-panel` ha ancora una transizione di `transform` di 320 ms.
+  - **D5** l'evidenziazione sta circa 0,8 s sulla voce nuova, poi torna sulla vecchia e scorre. È misurato con screenshot CDP, da confermare a occhio.
+- Ambiguita' di specifica (non decise):
+  - **A1** con il movimento ridotto resta la pressione al 97% (transizione di `transform` di 120 ms su pulsanti, summary e celle). Va deciso se è «movement».
+- Note per il prossimo:
+  - Il toast di avviso non è raggiungibile via HTTP, quindi non è testato.
+  - Restano nello scratchpad profili Chrome `mw-*` che il sandbox non lascia cancellare (EPERM), senza `.env`.
+  - Nessun processo residuo. Nessun commit.

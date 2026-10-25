@@ -1,0 +1,29 @@
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase X from verify-motion.phase-x.php
+
+===== phase X =====
+
+== X: probe (MOTION)
+[INFO] server pid=41852 on 127.0.0.1:8071 prefix=''
+[INFO] login owner ok=true
+[INFO] [omesso] -> 200  len=51491
+[INFO] [omesso]/users -> 200  len=19101
+[INFO] [omesso]/users/7 -> 200  len=66652
+[INFO] [omesso]/users/7/edit -> 200  len=13070
+[INFO] [omesso]/roles -> 200  len=27762
+[INFO] [omesso]/roles/10 -> 200  len=83773
+[INFO] [omesso]/roles/10/edit -> 200  len=13741
+[INFO] [omesso]/permissions -> 200  len=39037
+[INFO] [omesso]/permissions/check -> 200  len=16591
+[INFO] [omesso]/activity -> 200  len=16096
+[INFO] [omesso]/settings -> 200  len=22418
+[INFO] [omesso]/appearance -> 200  len=26851
+[INFO] [omesso]/profile -> 200  len=14974
+[INFO] [omesso]/search -> 200  len=20641
+[INFO] sidebar items: ["[omesso]","[omesso]\/users","[omesso]\/roles","[omesso]\/permissions","[omesso]\/permissions\/check","[omesso]\/activity","[omesso]\/settings","[omesso]\/appearance"]
+[INFO] browser errors: [[],["InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled [at http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users Uncaught (in promise)]","InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled [at http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/roles Uncaught (in promise)]","InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled [at http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/permissions Uncaught (in promise)]","InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled [at http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/settings Uncaught (in promise)]","InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled [at http:\/\/127.0.0.1:8071\/index.php\/[omesso]\/users Uncaught (in promise)]"],[],[]]
+
+TOTAL: 2 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

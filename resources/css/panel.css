@@ -697,11 +697,15 @@
      reduced-motion path; the shell (sidebar, top bar) never replays an entrance. */
 
   /* Page to page: the sidebar and top bar stay, the content hands over, and the active
-     item's highlight travels from the old item to the new one (rwPill in panel.js). */
-  .rw-side { view-transition-name: rw-side; }
+     item's highlight travels from the old item to the new one (rwPill in panel.js). The
+     opt-in itself is inline in the page head (rw_stylesheets): Chrome can read it from
+     this sheet too late when a deferred script is pending, and skip the transition.
+     The highlight sits under every item of the sidebar, so it never covers a label it
+     passes. */
+  .rw-side { view-transition-name: rw-side; isolation: isolate; }
   .rw-topbar { view-transition-name: rw-topbar; }
   .rw-content { view-transition-name: rw-main; }
-  .rw .rw-side-nav a { position: relative; isolation: isolate; }
+  .rw .rw-side-nav a { position: relative; }
   .rw .rw-side-nav a[aria-current="page"]:has(> .rw-side-pill) { background: transparent; }
   .rw-side-pill { position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--sb-act-bg); }
 
@@ -716,16 +720,20 @@
   .rw-bar, .rw-ledger.rw-settings tr .rw-m-num, .rw-ledger.rw-settings tr .rw-note { transition: background-color var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out); }
 
   /* Overlays: the customize panel and tooltips arrive, the backdrops fade. */
-  .rw-dash-panel, .rw-tip { transform-origin: top right; transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-slow) var(--ease-expo); }
+  .rw-dash-panel, .rw-tip { transform-origin: top right; transition: opacity var(--motion-base) var(--ease-out); }
   .rw-cmd::backdrop, dialog.rw-confirm::backdrop { transition: background-color var(--motion-slow) var(--ease-out), overlay var(--motion-slow) allow-discrete, display var(--motion-slow) allow-discrete; }
   @starting-style {
-    .rw-dash-panel, .rw-tip { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    .rw-dash-panel, .rw-tip { opacity: 0; }
     .rw-cmd[open]::backdrop, dialog.rw-confirm[open]::backdrop { background-color: transparent; }
   }
-  /* Where dialogs cannot morph from their button (no view transitions), they still arrive. */
-  @supports not (view-transition-name: none) {
-    .rw-cmd, dialog.rw-confirm { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-slow) var(--ease-expo); }
-    @starting-style { .rw-cmd[open], dialog.rw-confirm[open] { opacity: 0; transform: translateY(8px) scale(0.98); } }
+  @media (prefers-reduced-motion: no-preference) {
+    .rw-dash-panel, .rw-tip { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-slow) var(--ease-expo); }
+    @starting-style { .rw-dash-panel, .rw-tip { transform: translateY(-6px) scale(0.98); } }
+    /* Where dialogs cannot morph from their button (no view transitions), they still arrive. */
+    @supports not (view-transition-name: none) {
+      .rw-cmd, dialog.rw-confirm { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-slow) var(--ease-expo); }
+      @starting-style { .rw-cmd[open], dialog.rw-confirm[open] { opacity: 0; transform: translateY(8px) scale(0.98); } }
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -788,9 +796,6 @@
 /* Registered so the primary button's sheen can travel (CSS cannot interpolate an untyped one). */
 @property --rw-sheen { syntax: "<percentage>"; inherits: false; initial-value: -40%; }
 
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
-}
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--motion-base); }
 ::view-transition-old(rw-main) { animation: rw-page-out var(--motion-fast) var(--ease-out) both; }
 ::view-transition-new(rw-main) { animation: rw-page-in var(--motion-slow) var(--ease-expo) both; }

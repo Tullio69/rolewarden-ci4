@@ -15,6 +15,15 @@ function rwReducedMotion() {
 }
 
 /**
+ * Runs `fn` once the page is parsed. Deferred, panel.js runs then and blocks the
+ * first render (layouts/panel.php), so motion starts from the very first frame.
+ */
+function rwOnReady(fn) {
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+  else fn();
+}
+
+/**
  * Runs `change` (opening or closing a dialog) as a view transition in which `from`
  * turns into `to`: a dialog grows out of the button that opened it and goes back
  * into it. Without view transitions, or with reduced motion, it just runs `change`.
@@ -55,14 +64,17 @@ function rwSlide(elements, before) {
  */
 function rwCountUp() {
   if (rwReducedMotion()) return;
-  const format = new Intl.NumberFormat(document.documentElement.lang || undefined);
+  // Grouped like the server's text, four-digit figures included.
+  const format = new Intl.NumberFormat(document.documentElement.lang || undefined, { useGrouping: 'always' });
   document.querySelectorAll('[data-rw-count]').forEach((el) => {
     const target = Number(el.dataset.rwCount);
     const text = el.textContent;
     if (!(target > 1)) return;
     el.style.minWidth = el.getBoundingClientRect().width + 'px';
-    const start = performance.now();
+    let start = null;
     const step = (now) => {
+      // From the first frame's own time: performance.now() can run ahead of it.
+      start ??= now;
       const p = Math.min((now - start) / 640, 1);
       el.textContent = p < 1 ? format.format(Math.round(target * (1 - 2 ** (-10 * p)))) : text;
       if (p < 1) requestAnimationFrame(step);
@@ -72,19 +84,20 @@ function rwCountUp() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', rwCountUp);
+rwOnReady(rwCountUp);
 
 /**
  * The sidebar's active highlight travels from the item of the page left to the item
- * of the page opened: the old position is kept in sessionStorage when the page goes,
- * and the new highlight slides from there (a FLIP across two documents).
+ * of the page opened: the old position and item are kept in sessionStorage when the
+ * page goes, and the new highlight slides from there (a FLIP across two documents).
+ * The two labels change colour with it, so neither is ever unreadable on its way.
  */
 const RW_PILL_KEY = 'rw-pill';
 
 window.addEventListener('pagehide', () => {
   const pill = document.querySelector('.rw-side-pill');
   try {
-    if (pill) sessionStorage.setItem(RW_PILL_KEY, String(pill.getBoundingClientRect().top));
+    if (pill) sessionStorage.setItem(RW_PILL_KEY, JSON.stringify({ top: pill.getBoundingClientRect().top, href: pill.parentElement.getAttribute('href') }));
     else sessionStorage.removeItem(RW_PILL_KEY);
   } catch (e) {
     // storage blocked: the highlight simply appears in place
@@ -94,18 +107,23 @@ window.addEventListener('pagehide', () => {
 function rwPill() {
   let from = null;
   try {
-    from = sessionStorage.getItem(RW_PILL_KEY);
+    from = JSON.parse(sessionStorage.getItem(RW_PILL_KEY));
     sessionStorage.removeItem(RW_PILL_KEY);
   } catch (e) {
     return;
   }
   const pill = document.querySelector('.rw-side-pill');
-  if (from === null || !pill || rwReducedMotion()) return;
-  const dy = Number(from) - pill.getBoundingClientRect().top;
-  if (dy) pill.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 420, easing: RW_EASE_EXPO });
+  if (!from || !pill || rwReducedMotion()) return;
+  const dy = from.top - pill.getBoundingClientRect().top;
+  if (!dy) return;
+  const timing = { duration: 420, easing: RW_EASE_EXPO };
+  pill.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], timing);
+  pill.parentElement.animate([{ color: 'var(--sb-ink)' }, {}], timing);
+  const old = [...document.querySelectorAll('.rw-side-nav a')].find((a) => a.getAttribute('href') === from.href);
+  if (old) old.animate([{ color: 'var(--sb-act-fg)' }, {}], timing);
 }
 
-document.addEventListener('DOMContentLoaded', rwPill);
+rwOnReady(rwPill);
 
 /** Shows a toast from anywhere on the page: rwToast('error', 'Could not save this change.'). */
 function rwToast(type, message) {

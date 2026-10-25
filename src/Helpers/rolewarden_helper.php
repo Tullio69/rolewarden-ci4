@@ -72,6 +72,10 @@ if (! function_exists('rw_stylesheets')) {
     {
         $css = __DIR__ . '/../Assets/css/panel.css';
         $html = '<link rel="stylesheet" href="' . esc(site_url('rolewarden/assets/css/panel.css') . '?v=' . (string) @filemtime($css)) . '">';
+        // Moving between pages is a view transition. The opt-in is inline: read from
+        // panel.css, Chrome can miss it while panel.js is still pending and skip it.
+        $html .= '
+  <style>@media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }</style>';
         $overrides = RoleWarden\Settings\Theme::css(RoleWarden\Settings\Theme::current());
 
         $hostSheet = config('RoleWarden')->themeStylesheet ?? null;

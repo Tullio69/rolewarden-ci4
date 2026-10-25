@@ -43,7 +43,7 @@ RoleWarden is an admin panel for roles and permissions in CodeIgniter 4 apps. It
 - Lists and tables arrive row after row. The dashboard draws itself once per visit: key figures count up, the sign-in line and its area wipe in from the left, failures grow from the baseline, the heat map lights up hour by hour, the role shares and the security notice wipe in.
 - Feedback: controls give way to 97% when pressed; a primary button's sheen crosses it once on hover; a matrix cell draws its new mark and lands its change dot; a checked box ticks; the unsaved bar's dot rings twice; a reordered dashboard block slides to its place and glows; the rule that decides on Check a permission is marked; on sign-in the rule under the heading draws before the rows land; section titles of long pages settle as they scroll in.
 - Never moving: the sidebar and top bar never replay an entrance from page to page.
-- `prefers-reduced-motion: reduce`: no movement, no cascade, no drawing, no count, no page hand-over, no morph; colour and background changes stay, and so does the backdrop's fade.
+- `prefers-reduced-motion: reduce`: no movement, no cascade, no drawing, no count, no page hand-over, no morph; colour and background changes stay, and so do the backdrop's fade and the 97% give of a pressed control (feedback to the touch, not movement; decided 2026-10-25, A1).
 - Toast and the user's status keep their own rules (see Toast and UserStatus).
 
 ## Themes

@@ -47,6 +47,8 @@ for a block of your own: `src/Dashboard/DocumentsBlock.php` and its view
 `src/Views/dashboard/documents.php`. The demo registers it through CodeIgniter's
 auto-discovery, in `src/Config/Registrar.php`, so no line of your application changes; in your
 own application list your blocks in `$dashboardBlocks` of `app/Config/RoleWarden.php`.
+While the demo is wired but not installed (before `demo:install`, after `demo:uninstall`), a
+super admin, who passes every check, still sees the block, asking to run `demo:install`.
 
 ## Showcase mode
 

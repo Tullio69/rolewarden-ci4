@@ -15,7 +15,7 @@
  * @var array<string, mixed>|null  $buckets
  * @var array<string, mixed>|null  $roles
  * @var array<string, mixed>|null  $changes
- * @var array<string, array{block: RoleWarden\Dashboard\Block, data: array<string, mixed>}> $app the application's blocks shown
+ * @var array<string, array{block: RoleWarden\Dashboard\Block, body: string|null}> $app the application's blocks shown
  * @var array<string, mixed>       $customize see dashboard/customize
  */
 
@@ -60,7 +60,7 @@ $letter = 'A';
 <div class="rw-dash">
 <?php foreach ($flow as $block) : ?>
   <?php if (isset($app[$block])) : ?>
-    <?= view('RoleWarden\Views\dashboard\blocks\app', ['block' => $app[$block]['block'], 'data' => $app[$block]['data'] + ['period' => $period, 'userId' => (int) auth()->id()], 'letter' => $letter]) ?>
+    <?= view('RoleWarden\Views\dashboard\blocks\app', ['block' => $app[$block]['block'], 'body' => $app[$block]['body'], 'letter' => $letter]) ?>
   <?php else : ?>
     <?= view('RoleWarden\Views\dashboard\blocks\\' . $block, $data + ['letter' => $letter]) ?>
   <?php endif ?>

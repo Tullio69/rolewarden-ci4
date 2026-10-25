@@ -1,12 +1,12 @@
 <?php
 /**
  * Shell of a dashboard block of the application (RoleWarden\Dashboard\Block):
- * the module draws the section, its letter and the title, the block's own
- * view draws the body with what data() returned, plus $period and $userId,
- * in a renderer of its own so it sees nothing of the other blocks.
+ * the module draws the section, its letter and the title around the body the
+ * block's own view rendered (DashboardController::body()), or says the block
+ * could not be loaded when it threw.
  *
  * @var RoleWarden\Dashboard\Block $block
- * @var array<string, mixed>       $data
+ * @var string|null                $body
  * @var string                     $letter
  */
 
@@ -18,6 +18,10 @@ $id = 'rw-dash-app-' . $block->key();
     <h2 id="<?= esc($id, 'attr') ?>"><?= esc($block->title()) ?></h2>
   </div>
   <div class="rw-dash-body">
-    <?= Config\Services::renderer(null, null, false)->setData($data, 'raw')->render($block->view(), null, false) ?>
+    <?php if ($body === null) : ?>
+      <p class="rw-note"><?= esc(lang('RoleWarden.panel.dashboard.customize.failed')) ?></p>
+    <?php else : ?>
+      <?= $body ?>
+    <?php endif ?>
   </div>
 </section>

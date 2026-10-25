@@ -159,6 +159,7 @@ return [
                 'reset' => 'La tua dashboard segue di nuovo il predefinito.',
                 'invalid' => 'Non è stato possibile salvare questa disposizione. Ricarica la pagina e riprova.',
                 'empty' => 'Tutti i blocchi sono nascosti. Apri Personalizza per mostrarli di nuovo.',
+                'failed' => "Non è stato possibile caricare questo blocco. L'errore è nel log dell'applicazione.",
                 'blocks' => [
                     'security' => 'Avviso di sicurezza',
                     'figures' => 'Cifre chiave',

@@ -159,6 +159,7 @@ return [
                 'reset' => 'Your dashboard follows the default again.',
                 'invalid' => 'This dashboard layout could not be saved. Reload the page and try again.',
                 'empty' => 'Every block is hidden. Open Customize to show them again.',
+                'failed' => 'This block could not be loaded. The error is in the application log.',
                 'blocks' => [
                     'security' => 'Security notice',
                     'figures' => 'Key figures',

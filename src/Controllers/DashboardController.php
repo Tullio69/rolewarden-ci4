@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace RoleWarden\Controllers;
 
+use CodeIgniter\Config\Services;
 use CodeIgniter\HTTP\RedirectResponse;
 use RoleWarden\Account\ActivityLog;
+use RoleWarden\Dashboard\Block;
 use RoleWarden\Dashboard\Dashboard;
 use RoleWarden\Dashboard\Layout;
 use RoleWarden\Settings\Sidebar;
+use Throwable;
 
 /**
  * The dashboard, the panel's first page: the module's five blocks and the
@@ -43,7 +46,7 @@ class DashboardController extends BaseController
 
         foreach ($registered as $key => $block) {
             if ($shows($key)) {
-                $app[$key] = ['block' => $block, 'data' => $block->data($period, $userId)];
+                $app[$key] = ['block' => $block, 'body' => self::body($block, $period, $userId)];
             }
         }
 
@@ -135,6 +138,34 @@ class DashboardController extends BaseController
         $permissions = Dashboard::BLOCKS + array_map(static fn ($block): string => $block->permission(), $registered);
 
         return array_keys(array_filter($permissions, static fn (string $permission): bool => can($permission)));
+    }
+
+    /**
+     * An application block's body: its view with what data() returned, plus
+     * $period and $userId, in a renderer of its own so it sees nothing of the
+     * other blocks. Null when data() or the view throws: the error is logged
+     * and the rest of the dashboard still opens.
+     *
+     * @param array<string, mixed> $period
+     */
+    private static function body(Block $block, array $period, int $userId): ?string
+    {
+        $buffers = ob_get_level();
+
+        try {
+            return Services::renderer(null, null, false)
+                ->setData($block->data($period, $userId) + ['period' => $period, 'userId' => $userId], 'raw')
+                ->render($block->view(), null, false);
+        } catch (Throwable $e) {
+            // CodeIgniter's view leaves its output buffer open when the view throws.
+            while (ob_get_level() > $buffers) {
+                ob_end_clean();
+            }
+
+            log_message('error', 'RoleWarden: dashboard block "{key}" failed: {message}', ['key' => $block->key(), 'message' => $e->getMessage()]);
+
+            return null;
+        }
     }
 
     /**

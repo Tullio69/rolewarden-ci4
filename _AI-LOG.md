@@ -1324,3 +1324,10 @@ Formato di ogni voce:
 - Note per il prossimo:
   - Osservazione: uno stato sconosciuto scritto direttamente in tabella compare come chiave grezza `Demo.statuses.*`, escapata.
   - `../rolewarden-app-test` non e' stata toccata. Nessun processo residuo. Nessun commit.
+
+### [2026-10-25 14:40] - Claude (Claude Code)
+- Tipo: fix
+- Scope: `demo/src/Dashboard/DocumentsBlock.php` (b2c23a1), `src/Controllers/DashboardController.php` (nuovo `body()`), `src/Views/dashboard/blocks/app.php` (ora riceve `body`), `src/Views/dashboard/index.php`, `src/Language/{en,it}/RoleWarden.php`, `docs/SPEC.md`, `documentation/api.html`, `demo/README.md`
+- Cosa ho fatto: collaudo del blocco demo. D1 corretto nel blocco (controlla la tabella, non il file d'installazione; stati sconosciuti scartati). A1 e A2 decise dall'utente con le scelte raccomandate: A1, il modulo isola un blocco dell'applicazione il cui `data()` o la cui view lanciano (errore nel log, nota al posto del corpo, buffer chiusi, resto della dashboard aperto); A2, il super admin vede il blocco con l'invito a `demo:install` finche' la demo e' collegata, scritto nel README.
+- Stato: completato, in attesa della riverifica del Collaudatore ad Hoc.
+- Note per il prossimo: 90 test unitari, PHPStan e smoke test di isolamento verdi. Lock rilasciato per il collaudo.

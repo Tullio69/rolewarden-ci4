@@ -39,7 +39,8 @@ version may require changes on your side, listed under "Upgrading". After any up
   notice can be hidden but always comes first.
 - **Dashboard blocks of your own**: a class extending `RoleWarden\Dashboard\Block`, listed in
   the new `$dashboardBlocks` of `Config\RoleWarden`, with its key, title, permission, view
-  and data. Stable for every 1.x release; see the API reference.
+  and data. Stable for every 1.x release; see the API reference. The demo app adds one,
+  **Demo documents**, to copy from.
 
 ### Changed
 - The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.

@@ -39,6 +39,15 @@ It creates the `demo_documents` table, the permissions `documents.view`, `docume
 password is `demo.password` from `.env`; without it, one is generated and printed once.
 Open `/demo`.
 
+## Dashboard block
+
+The demo adds a block to RoleWarden's dashboard, **Demo documents**: documents by status and
+those written in the dashboard's period, for whoever holds `documents.view`. It is the model
+for a block of your own: `src/Dashboard/DocumentsBlock.php` and its view
+`src/Views/dashboard/documents.php`. The demo registers it through CodeIgniter's
+auto-discovery, in `src/Config/Registrar.php`, so no line of your application changes; in your
+own application list your blocks in `$dashboardBlocks` of `app/Config/RoleWarden.php`.
+
 ## Showcase mode
 
 For a public demo or a product video: a bar at the top switches the session between the

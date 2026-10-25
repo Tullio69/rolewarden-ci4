@@ -167,6 +167,7 @@ final class OrdersBlock extends Block
 <pre><code>&lt;p class="rw-dash-val"&gt;&lt;b&gt;&lt;?= esc(number_format($total)) ?&gt;&lt;/b&gt;&lt;/p&gt;
 &lt;p class="rw-note"&gt;&lt;?= esc(lang('App.dashboard.ordersNote', [$period['days']])) ?&gt;&lt;/p&gt;</code></pre>
     <p>New blocks come after the module's until someone reorders them. A class that is missing, does not extend <code>Block</code>, or has a key that is malformed, already taken or one of the module's (<code>security</code>, <code>figures</code>, <code>signins</code>, <code>roles</code>, <code>changes</code>) is left out and written to the log, and the dashboard still opens.</p>
+    <p>The demo app has one to copy: <code>demo/src/Dashboard/DocumentsBlock.php</code>, with its view in <code>demo/src/Views/dashboard/documents.php</code>.</p>
 
     <h2 id="events">Events</h2>
     <h3><code>rolewarden.activity</code></h3>

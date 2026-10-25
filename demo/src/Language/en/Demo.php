@@ -37,4 +37,10 @@ return [
     'deleted' => 'Document deleted.',
     'notDraft' => 'Only a draft can be submitted.',
     'notSubmitted' => 'Only a submitted document can be approved.',
+    'dashboard' => [
+        'title' => 'Demo documents',
+        'written' => '{0, plural, =0{No document} one{# document} other{# documents}} written in the last {1} days.',
+        'open' => 'Open the documents',
+        'notInstalled' => 'Run php spark demo:install to fill this block.',
+    ],
 ];

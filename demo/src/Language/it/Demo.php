@@ -37,4 +37,10 @@ return [
     'deleted' => 'Documento eliminato.',
     'notDraft' => 'Si può inviare solo una bozza.',
     'notSubmitted' => 'Si può approvare solo un documento inviato.',
+    'dashboard' => [
+        'title' => 'Documenti della demo',
+        'written' => '{0, plural, =0{Nessun documento scritto} one{# documento scritto} other{# documenti scritti}} negli ultimi {1} giorni.',
+        'open' => 'Apri i documenti',
+        'notInstalled' => 'Esegui php spark demo:install per riempire questo blocco.',
+    ],
 ];

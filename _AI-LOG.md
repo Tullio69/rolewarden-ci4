@@ -1266,3 +1266,16 @@ Formato di ogni voce:
 - Cosa ho fatto: ambiguita' U5 A1-A3 decise dall'utente con le scelte raccomandate. A1: un `?period=` non offerto vale il periodo salvato. A2: con tutti i blocchi nascosti la pagina mostra un messaggio (`rw-dash-empty`, stringa `panel.dashboard.customize.empty`) che rimanda a Personalizza. A3: comportamento attuale confermato (i blocchi che chi salva il globale non vede tengono posizione relativa e stato), scritto in SPEC.
 - Stato: completato, in attesa della riverifica del Collaudatore ad Hoc su A1-A2 piu' CUST.
 - Note per il prossimo: 89 test unitari e PHPStan verdi. Originali su Claude (specifica) da allineare a cura dell'utente. Lock rilasciato per il collaudo.
+
+### [2026-10-25 13:40] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica in nero della U5 su `cf007ae`, dopo le decisioni dell'utente su A1-A3 (SPEC U5, *Risoluzione*). Ho scritto solo `tests/Integration/verify-u5.phase-cust.php` (controlli A1, A2, A3 adattati e nuovi), le uscite `verify-u5.*` e la sezione «Riverifica su cf007ae (A1-A3)» di `U5-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash `f7f37c04…e21e64` identico).
+- Cosa ho fatto:
+  - A1: un `?period=` non offerto vale il periodo salvato, oppure quello globale, oppure 30.
+  - A2: con tutti i blocchi nascosti compare il messaggio che rimanda a Personalizza, in en e in it, e manca quando almeno un blocco e' visibile.
+  - A3: nel globale, i blocchi che chi salva non vede tengono ordine relativo e stato, compreso un blocco nascosto.
+  - CUST in development e production, poi U4 DASH in development e production, una suite alla volta.
+- Stato: completato. **Esito PASS, 801/801**: CUST 142/142 e 142/142, DASH 258/258 e 259/259. **U5 approvata.** Difetti: nessuno. A1-A3 chiuse come decise.
+- Note per il prossimo:
+  - Nuova ambiguita' **A4**, non bloccante e non decisa. Dopo il salvataggio globale di g l'ordine relativo dei blocchi che g non vede resta, ma i blocchi di g finiscono subito dopo `security`, e `roles` passa da prima a dopo di loro. La SPEC non dice se «posizione relativa» valga anche rispetto ai blocchi di chi salva.
+  - Nessun processo residuo. Nessun commit.

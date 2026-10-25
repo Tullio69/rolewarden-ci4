@@ -70,3 +70,16 @@ ALL DONE 12:18:50
 === u1.production 12:19:06
 exit=0 u1.production 12:23:25
 ALL DONE 12:23:25
+--- riverifica cf007ae (A1-A3)
+=== cust.development 12:56:02
+exit=0 cust.development 12:58:35
+ALL DONE 12:58:35
+=== cust.production 12:58:55
+exit=0 cust.production 13:00:38
+ALL DONE 13:00:38
+=== dash.development 13:00:47
+exit=0 dash.development 13:02:34
+ALL DONE 13:02:34
+=== dash.production 13:02:37
+exit=0 dash.production 13:04:08
+ALL DONE 13:04:08

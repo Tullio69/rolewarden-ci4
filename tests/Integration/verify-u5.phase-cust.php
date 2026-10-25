@@ -107,6 +107,13 @@ function lay(Client $c, array $order, array $shown, $period, string $scope, stri
 function rows_layout(): array { return q("SELECT `class`, `key`, `value`, `type`, context FROM settings WHERE `key` LIKE '%ashboard%' ORDER BY context"); }
 function row_for(?string $ctx): ?array { foreach (rows_layout() as $r) if ($r['context'] === $ctx) return $r; return null; }
 function n_updated(): int { return (int) q1("SELECT COUNT(*) FROM acl_activity_log WHERE action='settings.updated'"); }
+/** A3: the blocks the saver does not see keep their relative order and their shown/hidden state in the global default. */
+function a3(array $before, array $after, array $seen): array
+{
+    $sub = fn (array $c) => array_values(array_filter($c['rows'], fn ($r) => ! in_array($r['key'], $seen, true)));
+    $b = array_map(fn ($r) => [$r['key'], $r['shown']], $sub($before)); $a = array_map(fn ($r) => [$r['key'], $r['shown']], $sub($after));
+    return ['ok' => $b === $a, 'before' => $b, 'after' => $a];
+}
 function pos_of(array $o, string $k): int { $i = array_search($k, $o, true); return $i === false ? -1 : $i; }
 function dget(Client $c, string $tag, string $q = ''): string { return G($c, 'rolewarden' . $q, $tag); }
 function toast_has(string $h, string $msg): bool { return str_contains($h, $msg) || str_contains($h, substr(json_encode($msg), 1, -1)) || str_contains(html_entity_decode($h, ENT_QUOTES | ENT_HTML5, 'UTF-8'), $msg) || str_contains(html_entity_decode($h, ENT_QUOTES | ENT_HTML5, 'UTF-8'), substr(json_encode($msg), 1, -1)); }
@@ -197,7 +204,12 @@ check('ME-6', 'Stored with Settings in context user:{id} (key dashboardLayout), 
 info('ME stored: ' . json_encode($r1));
 info('ME settings.updated entries after a save for me: ' . (n_updated() - $n0));
 foreach ([90, 30] as $p) { $hp = dget($CL['v1'], "me v1 ?$p", "?period=$p"); check("ME-q$p", "?period=$p wins over the saved 7 (page and block data)", pressed($hp) === $p && (probe($hp, 'orders')['days'] ?? '') === (string) $p, (string) pressed($hp)); }
-foreach (['365', 'abc', '-7', ''] as $p) { $hp = dget($CL['v1'], "me v1 ?$p", '?period=' . rawurlencode($p)); check('ME-qh-' . md5($p), "?period=" . json_encode($p) . ': 200 with a period of 7, 30 or 90', $CL['v1']->status === 200 && in_array(pressed($hp), [7, 30, 90], true), json_encode([$CL['v1']->status, pressed($hp)])); info("?period=" . json_encode($p) . ' with a saved 7 gives ' . pressed($hp)); }
+// A1 decided (SPEC U5, Risoluzione): a value not offered (not 7, 30 or 90) is ignored and the saved period applies
+foreach (['365', 'abc', '-7', '', '0', '14', '1e1', 'NUL'] as $p) { $hp = dget($CL['v1'], "me v1 ?$p", '?period=' . ($p === 'NUL' ? '%00' : rawurlencode($p))); check('ME-qh-' . md5($p), "A1: ?period=" . json_encode($p) . ' is not offered: the saved 7 applies (page and block data)', $CL['v1']->status === 200 && pressed($hp) === 7 && (probe($hp, 'orders')['days'] ?? '') === '7', json_encode([$CL['v1']->status, pressed($hp), probe($hp, 'orders')['days'] ?? null])); }
+$hp = dget($CL['v1'], 'me v1 ?period[]', '?period%5B%5D=30');
+check('ME-qh-arr', 'A1: ?period[]=30 (an array) is not offered: the saved 7 applies', $CL['v1']->status === 200 && pressed($hp) === 7, json_encode([$CL['v1']->status, pressed($hp)]));
+$hp = dget($CL['v2'], 'me v2 ?abc', '?period=abc');
+check('ME-qh-none', 'A1: without any saved period (v2, no global yet) a value not offered gives the stock 30', $CL['v2']->status === 200 && pressed($hp) === 30, (string) pressed($hp));
 
 // ================================================================= GLB: global default (admin)
 $n0 = n_updated();
@@ -214,6 +226,8 @@ check('GLB-logview', 'The activity log shows it (200, no raw field names)', $CL[
 info('GLB activity text: ' . short(substr(text_of($hl), (int) strpos(text_of($hl), 'settings')), 600));
 $h2 = dget($CL['v2'], 'glb v2');
 check('GLB-v2', 'v2 (no choice) follows the global default: its blocks in the global order, signins n/a, Orders at the tail, 90 days', render_order($h2) === ['security', 'roles', 'figures', 'changes', 'u5-orders'] && pressed($h2) === 90, json_encode([render_order($h2), pressed($h2)]));
+$hp = dget($CL['v2'], 'glb v2 ?365', '?period=365');
+check('GLB-qh', 'A1: v2 follows the global 90 days: ?period=365 is ignored and 90 applies; ?period=7 still wins', pressed($hp) === 90 && pressed(dget($CL['v2'], 'glb v2 ?7', '?period=7')) === 7, (string) pressed($hp));
 $ho = dget($CL['own'], 'glb own');
 check('GLB-own', 'The super admin (no choice) follows it: signins hidden, application blocks at the tail in their order, 90 days', render_order($ho) === ['security', 'roles', 'figures', 'changes', 'u5-orders', 'u5stock2'] && pressed($ho) === 90, json_encode([render_order($ho), pressed($ho)]));
 check('GLB-own-panel', 'Hidden by the default, signins stays in the super admin panel, unchecked, so it can be turned back on', in_array('signins', cust($ho)['keys'] ?? [], true) && ! in_array('signins', shownk(cust($ho)), true), json_encode(cust($ho)['rows'] ?? null));
@@ -233,7 +247,13 @@ check('FORGE-own', 'The forged request did not touch v1 own row either', row_for
 check('FORGE-v2', 'v2 still sees the global default of admin', render_order(dget($CL['v2'], 'forge v2')) === ['security', 'roles', 'figures', 'changes', 'u5-orders'] && pressed($CL['v2']->body) === 90, '');
 
 // ================================================================= VIS: a global save touches only the blocks the saver sees
+$GB = cust(dget($CL['own'], 'vis own before'));   // the super admin has no choice yet: its panel lists the whole global order
 lay($CL['g'], ['signins', 'figures'], ['signins', 'figures'], 30, 'global', 'g global 1');
+$GA = cust(dget($CL['own'], 'vis own after'));
+$x = a3($GB, $GA, ['figures', 'signins']);
+check('A3-1', 'A3: after g saves, the blocks g cannot see keep their relative order and their shown/hidden state (global order in the super admin panel)', $x['ok'], json_encode($x));
+check('A3-1g', 'A3: the blocks g sees follow g order (signins before figures) and state (both shown)', pos_of($GA['keys'], 'signins') < pos_of($GA['keys'], 'figures') && count(array_intersect(['signins', 'figures'], shownk($GA))) === 2, json_encode($GA['keys']));
+info('A3 global order before g: ' . json_encode($GB['keys']) . ' after: ' . json_encode($GA['keys']));
 check('VIS-1st', 'g (settings.update) saves a global default', in_array($CL['g']->status, [302, 303], true), (string) $CL['g']->status);
 $h2 = dget($CL['v2'], 'vis v2');
 $o2 = render_order($h2);
@@ -241,7 +261,10 @@ check('VIS-v2', 'Blocks g cannot see keep their state: v2 still has security fir
 $ho = dget($CL['own'], 'vis own'); $oo = render_order($ho);
 check('VIS-own', 'What g saw changed: signins shown again and before figures (super admin view)', pos_of($oo, 'signins') >= 0 && pos_of($oo, 'signins') < pos_of($oo, 'figures'), json_encode($oo));
 info('VIS global order after g, as the super admin sees it: ' . json_encode($oo));
+$GB = cust(dget($CL['own'], 'vis own before 2'));
 lay($CL['g'], ['signins', 'figures'], ['signins'], 30, 'global', 'g global 2');
+$x = a3($GB, cust(dget($CL['own'], 'vis own after 2')), ['figures', 'signins']);
+check('A3-2', 'A3: g hiding figures leaves order and state of the blocks g cannot see unchanged', $x['ok'], json_encode($x));
 $o2 = render_order(dget($CL['v2'], 'vis v2 b'));
 check('VIS-hide', 'g hides figures for everyone; roles, changes, security and Orders (not seen by g) stay shown for v2', $o2 === array_values(array_diff($o2, ['figures'])) && ! in_array('figures', $o2, true) && count(array_intersect(['security', 'roles', 'changes', 'u5-orders'], $o2)) === 4, json_encode($o2));
 
@@ -255,6 +278,16 @@ check('RST-2', 'v1 follows the global default again (no figures, security first,
 $rr = row_for("user:$V1");
 check('RST-3', 'v1 own row removed or emptied', $rr === null || in_array(trim((string) $rr['value']), ['', 'null', 'a:0:{}', '[]', 'N;'], true), json_encode($rr));
 check('RST-4', 'Back to the default does not touch the global default', row_for(null) !== null, '');
+// A3: a block hidden in the global default, which the saver cannot see, stays hidden
+lay($CL['adm'], ['security', 'signins', 'roles', 'figures', 'changes'], ['security', 'signins', 'figures', 'changes'], 30, 'global', 'adm global hides roles');
+$GB = cust(dget($CL['own'], 'a3 own before'));
+lay($CL['g'], ['figures', 'signins'], ['figures', 'signins'], 30, 'global', 'g global 3');
+$GA = cust(dget($CL['own'], 'a3 own after'));
+$x = a3($GB, $GA, ['figures', 'signins']);
+check('A3-3', 'A3: roles, hidden by admin in the global default and unseen by g, stays hidden and in place after g saves', $x['ok'] && ! in_array('roles', shownk($GA), true), json_encode($x));
+$o2 = render_order(dget($CL['v2'], 'a3 v2'));
+check('A3-3v', 'A3: so v2 (no choice) still does not get roles, and gets figures', ! in_array('roles', $o2, true) && in_array('figures', $o2, true), json_encode($o2));
+check('A3-3g', 'A3: g order applied to the blocks g sees (figures before signins)', pos_of($GA['keys'], 'figures') < pos_of($GA['keys'], 'signins'), json_encode($GA['keys']));
 
 // ================================================================= PIN: the security notice stays first
 foreach ([['figures', 'signins', 'security', 'roles', 'changes', 'u5-orders', 'u5stock2'], ['figures', 'signins', 'roles', 'changes', 'u5-orders', 'u5stock2', 'security'], ['u5stock2', 'figures', 'signins', 'roles', 'changes', 'u5-orders']] as $i => $ord) {
@@ -421,6 +454,18 @@ lay($CL['v1'], $cv['keys'], [], 30, 'me', 'none hidden');
 $sn = $CL['v1']->status;
 $hn = dget($CL['v1'], 'none after');
 check('NOJS-none', 'Every block unchecked: no 5xx, the page opens and Customize stays reachable to undo it', $sn < 500 && $CL['v1']->status === 200 && cust($hn) !== null, json_encode([$sn, $CL['v1']->status, render_order($hn)]));
+// A2 decided: the page says every block is hidden and points to Customize
+$emptyEn = (string) ($find($EN, 'customize')['empty'] ?? ''); $emptyIt = (string) ($find($IT, 'customize')['empty'] ?? '');
+check('A2-en', 'A2: with every block hidden the page renders no block and says "' . $emptyEn . '"', $emptyEn !== '' && render_order($hn) === [] && str_contains(text_of($hn), $emptyEn), short(text_of($hn), 300));
+$xp = dom($hn);
+$msgNode = null; foreach ($xp->query("//main//*") as $n) if (str_contains(norm5($n->textContent), $emptyEn)) $msgNode = $n;   // the deepest element holding the message
+info('A2 message markup: ' . ($msgNode ? short($msgNode->ownerDocument->saveHTML($msgNode->parentNode), 600) : 'not found'));
+check('A2-place', 'A2: the message stands in the dashboard, outside the Customize panel', $msgNode !== null && $xp->query('ancestor::details', $msgNode)->length === 0, '');
+check('A2-not', 'A2: the message is absent when at least one block shows', ! str_contains(text_of(dget($CL['v2'], 'a2 v2')), $emptyEn), '');
+postform($CL['v1'], 'rolewarden/profile', '#profile/language$#', ['language' => 'it'], 'v1 lang it');
+$hni = dget($CL['v1'], 'none after it');
+check('A2-it', 'A2: in Italian the message reads "' . $emptyIt . '", without the English one', $emptyIt !== '' && $emptyIt !== $emptyEn && str_contains(text_of($hni), $emptyIt) && ! str_contains(text_of($hni), $emptyEn) && render_order($hni) === [], short(text_of($hni), 300));
+postform($CL['v1'], 'rolewarden/profile', '#profile/language$#', ['language' => 'en'], 'v1 lang en');
 info('NOJS every block unchecked renders ' . json_encode(render_order($hn)) . ', panel ' . json_encode(shownk(cust($hn))));
 lay($CL['v1'], [], [], null, 'reset', 'none reset');
 

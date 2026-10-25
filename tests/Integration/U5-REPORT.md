@@ -172,3 +172,58 @@ Driver: `verify-u5.all.sh` con `RW_V8_NEW=89971ed` e `RW_U5_RUN=-v2`. Ho eseguit
 - **Ambiente:**
   - database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u5.environment.txt`), Mailpit vuoto, nessun processo residuo;
   - le cartelle di lavoro sono state rimosse; l'ultima, `u5r-u2-development-v2`, era rimasta vuota e l'ho cancellata a mano.
+
+## Riverifica su cf007ae (A1-A3)
+
+**Collaudatore ad Hoc (Claude), 2026-10-25, commit `cf007ae` (decisioni dell'utente su A1–A3, SPEC U5, voce *Risoluzione*). Esito: PASS. U5 è approvata. A1–A3 sono chiuse come decise; resta una nuova ambiguità minore, A4, non bloccante.**
+
+Ho seguito le stesse regole di lettura dei giri precedenti. In più ho letto solo la voce *Risoluzione* della SPEC e la nuova stringa `customize.empty` dei file di lingua, solo per la traduzione. Del commit conosco solo il `--stat`.
+
+Ho eseguito una suite alla volta, attendendo ogni volta che i suoi processi fossero chiusi (`RW_U5_RUN=-v3`).
+
+| Suite | development | production |
+| --- | --- | --- |
+| U5 CUST (adattata ad A1–A3) | **142/142** | **142/142** |
+| U4 DASH (regressione della dashboard) | **258/258** | **259/259** (in più SQL-prod) |
+
+**Totale:** 801/801.
+
+### Controlli adattati e nuovi in `verify-u5.phase-cust.php`
+
+Rispetto ai 125 controlli del giro su 89971ed, ce ne sono 4 più restrittivi e 17 nuovi.
+
+- **A1, periodo non offerto → periodo salvato:**
+  - ME-qh-* (adattati, 4 più 4 nuovi): con 7 giorni salvati, `?period=` uguale a `365`, `abc`, `-7`, vuoto, `0`, `14`, `1e1` o NUL apre 7 giorni, nella pagina e nei dati del blocco.
+  - ME-qh-arr (nuovo): `?period[]=30` apre 7.
+  - ME-qh-none (nuovo): senza nessun periodo salvato vale il 30 di serie.
+  - GLB-qh (nuovo): chi segue il globale di 90 giorni apre 90 con `?period=365`, e `?period=7` vince ancora.
+  - Su 09b9159 lo stesso caso dava 30, quindi i controlli distinguono il comportamento nuovo.
+- **A2, tutti i blocchi nascosti:**
+  - A2-en: nessun blocco reso e il testo «Every block is hidden. Open Customize to show them again.».
+  - A2-place: il messaggio sta nella dashboard, fuori dal pannello Personalizza.
+  - A2-not: il messaggio manca quando almeno un blocco è visibile.
+  - A2-it: in italiano «Tutti i blocchi sono nascosti. Apri Personalizza per mostrarli di nuovo.», senza il testo inglese.
+- **A3, globale e blocchi che chi salva non vede.** L'ordine completo del globale si legge dal pannello del super admin, che non ha una scelta propria.
+  - A3-1 e A3-2: dopo due salvataggi globali di g, che vede solo figures e signins, i blocchi che g non vede hanno lo stesso ordine relativo e lo stesso stato.
+  - A3-1g: i due blocchi che g vede seguono l'ordine e lo stato di g.
+  - A3-3, A3-3v, A3-3g: admin nasconde `roles` nel globale; quando g salva, `roles`, che g non vede, resta nascosto e al suo posto tra gli altri, e v2 non lo riceve.
+- Tutti gli altri controlli di CUST passano come nel giro su 89971ed, compresi D1–D3.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità nuove (da decidere, non decise qui)
+
+- **A4 — "Posizione relativa" rispetto a chi?** Il globale prima del salvataggio di g era `security, roles, figures, signins, changes, u5-orders, u5stock2`; dopo è `security, signins, figures, roles, changes, u5-orders, u5stock2`.
+  - L'ordine relativo dei blocchi che g non vede resta: security, roles, changes, … È quello che ho verificato (A3-1).
+  - Ma `roles` è passato da prima di figures a dopo i blocchi di g: i blocchi di g sono stati messi subito dopo `security`, invece di occupare i posti che figures e signins avevano.
+  - La SPEC dice «tengono la loro posizione relativa nell'ordine». Non è chiaro se intenda l'ordine relativo tra loro (rispettato) o anche la posizione rispetto ai blocchi di chi salva (non rispettata).
+  - Non è bloccante.
+
+### Ambiente
+
+- Database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u5.environment.txt`), Mailpit vuoto.
+- Nessun processo residuo, cartelle di lavoro rimosse.
+- Memoria libera tra 2,3 e 2,8 GB, nessuna interruzione.
+

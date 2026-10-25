@@ -7,10 +7,11 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase CUST =====
 
 == CUST: dashboard customization and application blocks (U5)
+[PASS] SET-nodemo ADAPTED: the demo uninstalled and unwired from the copy app before the phase
 [PASS] SET-mig The application adds u5orders.view and u5stock.view with a migration as documented (exit 0, both present)
 [PASS] SET-adm Model: admin holds settings.update and the five dashboard.*, not the application permissions
 [PASS] SET-v1 Model: u5-viewer has no settings.update
-[INFO] server pid=41292 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=19172 on 127.0.0.1:8071 prefix=''
 [PASS] SET-login All seven accounts sign in
 [PASS] DEF-own Nobody has chosen: the super admin sees the stock order, application blocks after the five (security,figures,signins,roles,changes,u5-orders,u5stock2), 30 days
 [PASS] DEF-panel Customize is a secondary button (summary) next to the period, opening a POST form
@@ -164,7 +165,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] NOJS-save The no-JS submission saves show/hide and the period (changes hidden, 90 days)
 [PASS] NOJS-none Every block unchecked: no 5xx, the page opens and Customize stays reachable to undo it
 [PASS] A2-en  A2: with every block hidden the page renders no block and says "Every block is hidden. Open Customize to show them again."
-[INFO] A2 message markup: <main class="rw-content"> <!-- DEBUG-VIEW START 5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\u5w-cust-development-v4\modfull\src\Views\partials\flash.php --> <div class="rw-toasts" aria-live="polite" x-data='rwToasts({"messages":[{"type":"success","message":"Your dashboard is saved."}],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}})' true false> <template x-for="toast in items" :key="toast.id"> <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :r...
+[INFO] A2 message markup: <main class="rw-content"> <!-- DEBUG-VIEW START 5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\u5w-cust-development-v5\modfull\src\Views\partials\flash.php --> <div class="rw-toasts" aria-live="polite" x-data='rwToasts({"messages":[{"type":"success","message":"Your dashboard is saved."}],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}})' true false> <template x-for="toast in items" :key="toast.id"> <div class="rw-toast" :class="'rw-toast--' + toast.type + (toast.leaving ? ' is-leaving' : '')" :r...
 [PASS] A2-place A2: the message stands in the dashboard, outside the Customize panel
 [PASS] A2-not A2: the message is absent when at least one block shows
 [PASS] A2-it  A2: in Italian the message reads "Tutti i blocchi sono nascosti. Apri Personalizza per mostrarli di nuovo.", without the English one
@@ -186,6 +187,6 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] SCH-2  Fresh installs of 29a5df6 (U4) and 09b9159 (U5) have the same tables and the same CREATE TABLE
 [INFO] SCH tables: acl_activity_log,acl_permissions,acl_role_permissions,acl_roles,acl_sessions,acl_user_permissions,acl_user_roles,auth_groups_users,auth_identities,auth_logins,auth_permissions_users,auth_remember_tokens,auth_token_logins,migrations,settings,users
 
-TOTAL: 151 PASS, 0 FAIL, 0 AMB
-2fb290d s1.cust.2fb290d.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+TOTAL: 152 PASS, 0 FAIL, 0 AMB
+0c136e6 s1.cust.0c136e6.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (2 .env files deleted first)

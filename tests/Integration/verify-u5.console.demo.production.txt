@@ -1,0 +1,85 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: production
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase DEMO from verify-u5.phase-demo.php
+
+===== phase DEMO =====
+
+== DEMO: the demo dashboard block (U5)
+[PASS] PRE-wire The copy app is wired as the README says: RoleWardenDemo in $psr4 and DemoRoutes::register, no app/Config/RoleWarden.php, no app Registrar
+[INFO] PRE writable files with the demo installed: ["[omesso]\/demo-installed"]
+[PASS] PRE-uni demo:uninstall of the harness demo (exit 0)
+[INFO] PRE writable files after demo:uninstall: []
+[PASS] PRE-clean Fresh installation without the demo: no demo_documents table, no documents.* permission
+[INFO] server pid=25164 on 127.0.0.1:8071 prefix=''
+[PASS] PRE-200 Before demo:install the super admin opens the dashboard: 200, no error text, no SQL text
+[PASS] PRE-log Before demo:install: no WARNING/ERROR line in the log (no query on a missing table)
+[INFO] PRE the super admin sees the block: {"title":"Demo documents","text":"E Demo documents Run php spark demo:install to fill this block."}
+[PASS] PRE-block Before demo:install the block, if shown, holds no figures read from a table (no status figures)
+[INFO] PRE admin (documents.view does not exist yet): block null
+[PASS] PRE-adm Before demo:install admin opens the dashboard (200) without the block, documents.view not being held
+[PASS] INS    php spark demo:install (exit 0) creates demo_documents and the documents.* permissions
+[INFO] server pid=37172 on 127.0.0.1:8071 prefix=''
+[PASS] VIS-owner owner (documents.view held): the block shows (no 5xx)
+[PASS] VIS-reader reader (documents.view held): the block shows (no 5xx)
+[INFO] VIS reader dashboard: 200  order ["demo-documents"]
+[PASS] VIS-author author (documents.view held): the block shows (no 5xx)
+[PASS] VIS-approver approver (documents.view held): the block shows (no 5xx)
+[PASS] VIS-admin admin (documents.view not held): the block does not show (no 5xx)
+[PASS] VIS-plain plain (documents.view not held): the block does not show (no 5xx)
+[PASS] VIS-figs figs (documents.view not held): the block does not show (no 5xx)
+[INFO] VIS figs dashboard: 200  order ["figures"]
+[PASS] VIS-model Model: Reader, Author and Approver hold documents.view; admin, plain and the figures-only user do not
+[PASS] VIS-sec The block sits in a module section with a letter and the title "Demo documents"
+[PASS] VIS-cust It is a row of the reader Customize panel
+[INFO] NUM seed table by status: {"approved":2,"draft":1,"submitted":1}, written 7/30/90: [1,2,3]
+[PASS] NUM-seed-7-st seed, 7 days: documents by status = the table ({"Draft":1,"Submitted":1,"Approved":2})
+[PASS] NUM-seed-7-w seed, 7 days: the note gives the documents written in the period (1)
+[PASS] NUM-seed-30-st seed, 30 days: documents by status = the table ({"Draft":1,"Submitted":1,"Approved":2})
+[PASS] NUM-seed-30-w seed, 30 days: the note gives the documents written in the period (2)
+[PASS] NUM-seed-90-st seed, 90 days: documents by status = the table ({"Draft":1,"Submitted":1,"Approved":2})
+[PASS] NUM-seed-90-w seed, 90 days: the note gives the documents written in the period (3)
+[INFO] ACT create form: {"action":"http:\/\/127.0.0.1:8071\/index.php\/demo","fields":["csrf_test_name","title","body"]}
+[PASS] ACT-create The author creates a document from the demo (one more row)
+[PASS] ACT-approve The approver approves the submitted document from the demo
+[INFO] ACT approved doc: [{"id":2,"status":"approved","created_at":"2026-10-05 12:51:43","approved_at":"2026-10-25 12:51:52","updated_at":"2026-10-25 12:51:52"}]
+[INFO] NUM after table by status: {"approved":3,"draft":2}, written 7/30/90: [2,3,4]
+[PASS] NUM-after-7-st after, 7 days: documents by status = the table ({"Draft":2,"Submitted":0,"Approved":3})
+[PASS] NUM-after-7-w after, 7 days: the note gives the documents written in the period (2)
+[PASS] NUM-after-30-st after, 30 days: documents by status = the table ({"Draft":2,"Submitted":0,"Approved":3})
+[PASS] NUM-after-30-w after, 30 days: the note gives the documents written in the period (3)
+[PASS] NUM-after-90-st after, 90 days: documents by status = the table ({"Draft":2,"Submitted":0,"Approved":3})
+[PASS] NUM-after-90-w after, 90 days: the note gives the documents written in the period (4)
+[PASS] CUS-order Moved up in Customize, the demo block renders first (right after the notice, when there is one)
+[PASS] CUS-hide Unchecked, the demo block is not rendered and stays in the panel unchecked
+[PASS] CUS-reset Back to the default: the demo block shows again, after the module blocks
+[PASS] LANG-en In English: title, status labels and note, no raw language key
+[PASS] LANG-it In Italian: the block reads in Italian (no English word of the block, no raw key) with the same numbers
+[INFO] LANG it text: A Documenti della demo Bozza2 Inviato0 Approvato3 3 documenti scritti negli ultimi 30 giorni. Apri i documenti
+[PASS] LANG-it-cust In Italian the panel row of the block is the Italian title
+[PASS] ESC-1  A row with a hostile status and title: the page opens, nothing of it unescaped in the block
+[INFO] ESC block with a hostile status: figs {"Draft":2,"Submitted":0,"Approved":3,"Demo.statuses.<b>x<\/b>&\"":1} note 4 documents written in the last 30 days. Open the documents
+[PASS] ESC-2  No hostile string unescaped anywhere on the dashboard
+[PASS] UNI-0  php spark demo:uninstall (exit 0): table and documents.* gone
+[INFO] server pid=35920 on 127.0.0.1:8071 prefix=''
+[PASS] UNI-200 After demo:uninstall the super admin opens the dashboard: 200, no error text, no SQL text
+[PASS] UNI-log After demo:uninstall: no WARNING/ERROR line in the log
+[PASS] UNI-nofig After demo:uninstall the block, if still shown, reads no table (no status figures)
+[INFO] UNI super admin block after uninstall: {"title":"Demo documents","text":"E Demo documents Run php spark demo:install to fill this block.","inPanel":true}
+[PASS] UNI-adm After demo:uninstall admin opens the dashboard without the block
+[INFO] server pid=23384 on 127.0.0.1:8071 prefix=''
+[FAIL] ROB-1  Demo installed, demo_documents missing: the super admin still opens the dashboard (no 5xx, no SQL text)
+         -> [500,["ERROR - 2026-10-25 12:52:04 --> Table '[omesso]_test.demo_documents' doesn't exist","CRITICAL - 2026-10-25 12:52:04 --> CodeIgniter\\Database\\Exceptions\\DatabaseException: Table '[omesso]_test.demo_documents' doesn't exist"]]
+[FAIL] ROB-2  Demo installed, demo_documents missing: the block does not query the missing table (no SQL error in the log)
+         -> ["ERROR - 2026-10-25 12:52:04 --> Table '[omesso]_test.demo_documents' doesn't exist","CRITICAL - 2026-10-25 12:52:04 --> CodeIgniter\\Database\\Exceptions\\DatabaseException: Table '[omesso]_test.demo_documents' doesn't exist"]
+[INFO] ROB demo:uninstall with the table gone: rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-25 12:52:05 UTC+00:00 Demo removed: its table, roles, permissions, accounts and settings are gone. Now delete the demo folder and its two lines in app/Config (see the demo README).
+[PASS] LOG-5xx No answer >= 500, no SQL text, no PHP error on any page of the phase
+[PASS] LOG-srv No PHP warning in the server logs
+[PASS] LOG-app No WARNING/ERROR line in the application log over the phase (CSRF refusals and the ROB case aside)
+
+TOTAL: 50 PASS, 2 FAIL, 0 AMB
+FAIL ROB-1 Demo installed, demo_documents missing: the super admin still opens the dashboard (no 5xx, no SQL text)
+FAIL ROB-2 Demo installed, demo_documents missing: the block does not query the missing table (no SQL error in the log)
+0c136e6 s1.demo.0c136e6.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=True (1 .env files deleted first)

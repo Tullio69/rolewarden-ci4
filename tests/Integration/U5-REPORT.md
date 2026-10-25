@@ -284,3 +284,81 @@ Nessuna nuova.
 - Nessun processo residuo, cartelle di lavoro rimosse.
 - Memoria libera tra 1,2 e 3,1 GB, nessuna interruzione.
 
+## Blocco della demo su 0c136e6
+
+**Collaudatore ad Hoc (Claude), 2026-10-25, commit `0c136e6` (blocco d'esempio "Demo documents"). Esito: FAIL. Un difetto, D1: un caso limite che fa cadere tutta la dashboard. Due ambiguità da decidere, A1 e A2.**
+
+Ho letto solo:
+- `demo/README.md`, sezioni "Install", "Dashboard block" e "Remove";
+- `documentation/api.html#dashboard-blocks`;
+- `CHANGELOG.md`.
+
+Non ho aperto `demo/src` né il codice del modulo. Del commit conosco solo il `--stat`.
+
+| Suite | development | production |
+| --- | --- | --- |
+| U5 DEMO (`verify-u5.phase-demo.php`) | **50/52** (FAIL: D1 ×2) | **50/52**, uguale |
+| U5 CUST (regressione, adattata) | **152/152** | non richiesta |
+
+### Come
+
+- **App di prova:** la copia usa e getta di `../rolewarden-app-test`. È già collegata come dice il README: `'RoleWardenDemo' => …/demo/src` in `$psr4` e `DemoRoutes::register($routes)` dopo la riga del modulo. Nessun'altra riga, nessun `app/Config/RoleWarden.php`, nessun Registrar dell'app (PRE-wire). Il blocco non è registrato a mano.
+- **Stato "prima di demo:install":** l'harness installa la demo all'avvio. La fase la toglie con `demo:uninstall`, che cancella anche il file `writable/rolewarden/demo-installed`, e verifica che non restino né la tabella né i `documents.*`.
+- **Uscite:** `verify-u5.console.demo.{development,production}.txt` e `verify-u5.s1.demo.0c136e6.*`. Il nome della fase segue l'harness (`verify-u5.phase-demo.php`).
+
+### Cosa passa (in tutti e due gli ambienti)
+
+- **Prima di `demo:install`:**
+  - il super admin apre la dashboard: 200, nessun errore, nessuna riga WARNING o ERROR nel log;
+  - il blocco compare al super admin con «Run php spark demo:install to fill this block.», senza cifre e senza query;
+  - admin non lo vede.
+- **Dopo `demo:install`:**
+  - **Chi lo vede:** Reader, Author, Approver e super admin; admin, `user` e un utente con solo `dashboard.figures` no. Reader, che non ha nessun `dashboard.*`, apre la dashboard con il solo blocco della demo.
+  - **Sezione:** è una sezione del modulo con lettera e titolo "Demo documents", e ha la sua riga nel pannello Personalizza.
+- **Numeri.** I documenti seme li ho portati a 0, 20, 60 e 100 giorni di età (`created_at`).
+  - Per stato: Draft, Submitted e Approved sono uguali a `GROUP BY status`, in 7, 30 e 90 giorni.
+  - Nel periodo: i «documents written in the last N days» sono uguali ai `created_at` nel periodo della SPEC (1, 2, 3).
+  - Dopo che l'author crea un documento e l'approver ne approva uno dalla demo: per stato `{draft 2, submitted 0, approved 3}`, nel periodo 2, 3, 4. Il documento approvato, di 20 giorni, non entra nei 7 giorni: «scritto» vuol dire creato.
+- **Personalizza:** il blocco si porta in testa (subito dopo l'avviso), si nasconde restando nel pannello deselezionato e torna con "Torna al predefinito", in coda dopo i blocchi del modulo.
+- **Lingue:** in inglese nessuna chiave grezza. In italiano «Documenti della demo», «Bozza / Inviato / Approvato», «N documenti scritti negli ultimi 30 giorni», «Apri i documenti», con gli stessi numeri e senza parole inglesi; la riga del pannello ha il titolo italiano.
+- **Escape:** una riga con titolo `<script>…` e stato `<b>x</b>&"` scritta direttamente in tabella non esce mai senza escape, né nel blocco né nella pagina.
+- **Dopo `demo:uninstall`:**
+  - la dashboard si apre (200), senza righe di errore nel log;
+  - admin non vede il blocco;
+  - **il super admin lo vede ancora**: «Run php spark demo:install to fill this block.», senza cifre, con la sua riga nel pannello. Resta finché la cartella e le due righe del README restano collegate.
+- **Nessuna risposta ≥ 500** e nessun warning PHP in tutta la fase, tranne il caso di D1.
+
+### Difetti
+
+**D1 — Demo segnata come installata ma senza la tabella `demo_documents`: tutta la dashboard dà 500** (ROB-1, ROB-2).
+
+- **Riproduzione:** `php spark demo:install`, poi `DROP TABLE demo_documents` (per esempio un database ripristinato senza la tabella, mentre resta `writable/rolewarden/demo-installed`), poi aprire `/rolewarden` come super admin.
+- **Cosa succede:** risposta 500 in development e in production. Nel log `ERROR … Table 'rolewarden_test.demo_documents' doesn't exist` e `CRITICAL … DatabaseException`.
+- **Come l'ho trovato:** al primo giro, ricreando il database con il file della demo ancora presente, la dashboard dava 500 con lo stesso errore.
+- **Perché è un difetto:**
+  - prompt punto 1: «Il blocco, se compare, non deve interrogare una tabella che non esiste»;
+  - un blocco d'esempio che fa cadere la pagina d'ingresso del pannello, per tutti quelli che lo vedono, non è un modello da copiare;
+  - `demo:uninstall` in quello stato funziona (exit 0).
+
+### Ambiguità (da decidere, non decise qui)
+
+- **A1 — Eccezione in un blocco dell'applicazione.** La SPEC e api.html dicono che una classe mancante, che non estende `Block` o con una chiave non valida viene scartata e scritta nel log, «and the dashboard still opens». Non dicono cosa succede se `data()` o la view di un blocco valido lancia un'eccezione. Oggi la dashboard intera dà 500 (vedi D1). Va deciso se il modulo debba scartare quel blocco e scriverlo nel log come per le classi non valide, o se tocchi al blocco proteggersi.
+- **A2 — Il blocco della demo per il super admin senza demo installata.** Prima di `demo:install` e dopo `demo:uninstall` il super admin vede "Demo documents" con l'invito a lanciare `demo:install`. Gli altri utenti non lo vedono, perché `documents.view` non esiste. Il README dice che `demo:uninstall` «removes everything the demo added». Il blocco resta finché non si tolgono la cartella e le due righe, come il README chiede subito dopo. Non è chiaro se il blocco debba sparire già a demo disinstallata.
+
+**Osservazioni, non bloccanti:**
+
+- Uno stato fuori dai tre della demo, scritto direttamente in tabella, compare con l'etichetta grezza `Demo.statuses.<valore>`, escapata. Non succede usando la demo.
+- Nella pagina `/demo` il super admin legge «Your document permissions 0». È fuori dal blocco e non l'ho approfondito.
+
+### Regressione U5 CUST (development)
+
+- **Senza adattamento:** 138/151 (`verify-u5.console.cust.development.0c136e6.unadapted.txt`). I 13 FAIL vengono tutti dal blocco "Demo documents", che ora entra negli elenchi esatti dei blocchi del super admin (DEF, ME-5, GLB-own, PIN-me, A4-base, A4-me-stock, ADD). Sono un adattamento del test, non regressioni.
+- **Adattamento** (`SET-nodemo`): all'inizio della fase la demo viene disinstallata e scollegata dalla copia dell'app (le due righe del README). Lo schema di partenza si rilegge dopo, senza la tabella della demo.
+- **Esito:** 152/152.
+
+### Ambiente
+
+- Database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u5.environment.txt`), Mailpit vuoto.
+- L'app di prova `../rolewarden-app-test` non è stata toccata: ogni esecuzione lavora su una copia nello scratchpad, poi rimossa.
+- Nessun processo residuo.
+

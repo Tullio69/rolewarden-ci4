@@ -99,3 +99,25 @@ ALL DONE 13:41:19
 === dash.production 13:41:24
 exit=0 dash.production 13:43:04
 ALL DONE 13:43:04
+--- demo block 0c136e6
+=== demo.development 13:47:48
+exit=255 demo.development 13:48:19
+ALL DONE 13:48:19
+=== demo.development 13:48:57
+exit=0 demo.development 13:49:48
+ALL DONE 13:49:48
+=== demo.development 13:50:15
+exit=1 demo.development 13:51:10
+ALL DONE 13:51:11
+=== demo.production 13:51:20
+exit=1 demo.production 13:52:10
+ALL DONE 13:52:10
+=== cust.development 13:52:23
+exit=1 cust.development 13:54:41
+ALL DONE 13:54:41
+=== cust.development 13:55:00
+exit=1 cust.development 13:57:24
+ALL DONE 13:57:24
+=== cust.development 13:57:38
+exit=0 cust.development 13:59:54
+ALL DONE 13:59:54

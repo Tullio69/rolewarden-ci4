@@ -1305,3 +1305,22 @@ Formato di ogni voce:
 - Cosa ho fatto: blocco d'esempio della demo "Demo documents" (chiave `demo-documents`, permesso `documents.view`): documenti per stato e scritti nel periodo; registrato con un Registrar CI4 (auto-discovery), senza righe nell'app; prima di `demo:install` mostra un avviso invece di interrogare la tabella.
 - Stato: completato, in attesa del collaudo del blocco demo.
 - Note per il prossimo: smoke test di resa en/it passato; query e auto-discovery da collaudare in un'app reale.
+
+### [2026-10-25 15:10] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: collaudo in nero del blocco d'esempio della demo (U5) su `0c136e6`. Ho scritto solo `tests/Integration/verify-u5.phase-demo.php` (nuova), `verify-u5.phase-cust.php` (adattamento `SET-nodemo`), `verify-u5.all.sh` (passo `demo`), le uscite `verify-u5.*` e la sezione «Blocco della demo su 0c136e6» di `U5-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash `f7f37c04…e21e64` identico).
+- Cosa ho fatto:
+  - Fase DEMO in development e production, sull'app di prova collegata come dice il README, senza registrare il blocco a mano.
+  - Controlli: prima di `demo:install`; chi vede il blocco; numeri per stato e nel periodo per 7/30/90 giorni, prima e dopo aver creato e approvato un documento dalla demo; Personalizza; lingue en/it; escape; dopo `demo:uninstall`; demo installata senza la sua tabella.
+  - Poi CUST in development come regressione.
+- Stato: completato. **Esito FAIL.**
+  - DEMO 50/52 in development e in production.
+  - CUST 152/152 adattata (138/151 non adattata, tutti i FAIL dovuti al blocco della demo negli elenchi esatti).
+- Difetti:
+  - **D1** con la demo segnata come installata (`writable/rolewarden/demo-installed`) ma senza la tabella `demo_documents`, `/rolewarden` da' 500 a chi vede il blocco, e nel log c'e' `Table … demo_documents doesn't exist`. Succede in development e in production (ROB-1, ROB-2).
+- Ambiguita' di specifica (non decise):
+  - **A1** cosa fa il modulo quando `data()` o la view di un blocco valido lancia un'eccezione: la SPEC copre solo le classi non valide;
+  - **A2** prima di `demo:install` e dopo `demo:uninstall` il super admin vede ancora "Demo documents" con l'invito a installare, finche' la demo resta collegata.
+- Note per il prossimo:
+  - Osservazione: uno stato sconosciuto scritto direttamente in tabella compare come chiave grezza `Demo.statuses.*`, escapata.
+  - `../rolewarden-app-test` non e' stata toccata. Nessun processo residuo. Nessun commit.

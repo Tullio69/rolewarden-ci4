@@ -21,6 +21,7 @@ want() { [ -z "$STEPS" ] || [[ " $STEPS " == *" $1 "* ]]; }
 STEPS="$*"
 R=${RW_U5_RUN:-}
 for e in development production; do
+  want "demo.$e" && RW_V8B_ENV=$e RW_V8B_WORK="$RW_U4_SCRATCH/u5w-demo-$e$R" step "demo.$e" python verify-u5.suite.py s1 "demo.$RW_V8_NEW.$e" DEMO
   want "cust.$e" && RW_V8B_ENV=$e RW_V8B_WORK="$RW_U4_SCRATCH/u5w-cust-$e$R" step "cust.$e" python verify-u5.suite.py s1 "cust.$RW_V8_NEW.$e" CUST
 done
 for e in development production; do

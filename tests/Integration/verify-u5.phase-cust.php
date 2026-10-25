@@ -135,6 +135,17 @@ function pos_of(array $o, string $k): int { $i = array_search($k, $o, true); ret
 function dget(Client $c, string $tag, string $q = ''): string { return G($c, 'rolewarden' . $q, $tag); }
 function toast_has(string $h, string $msg): bool { return str_contains($h, $msg) || str_contains($h, substr(json_encode($msg), 1, -1)) || str_contains(html_entity_decode($h, ENT_QUOTES | ENT_HTML5, 'UTF-8'), $msg) || str_contains(html_entity_decode($h, ENT_QUOTES | ENT_HTML5, 'UTF-8'), substr(json_encode($msg), 1, -1)); }
 
+// ADAPTED (demo block, 0c136e6): the demo package adds its own dashboard block (Demo documents) through a Registrar, which
+// the super admin sees even when the demo is not installed. The harness wires and installs the demo for every phase, so
+// this phase removes it first (demo:uninstall, then the two wiring lines of the README), to keep its exact block lists.
+$o = sp8($APP, ['demo:uninstall']);
+file_put_contents("$APP/app/Config/Autoload.php", preg_replace("/^\s*'RoleWardenDemo'\s*=>.*
+/m", '', file_get_contents("$APP/app/Config/Autoload.php")));
+file_put_contents("$APP/app/Config/Routes.php", preg_replace("/^.*RoleWardenDemo.*
+/m", '', file_get_contents("$APP/app/Config/Routes.php")));
+check('SET-nodemo', 'ADAPTED: the demo uninstalled and unwired from the copy app before the phase', rc($o) === 0 && ! str_contains(file_get_contents("$APP/app/Config/Autoload.php") . file_get_contents("$APP/app/Config/Routes.php"), 'RoleWardenDemo'), short($o));
+$SCHEMA_START = schema_now();   // ADAPTED: the schema compared at the end is the one without the demo table
+
 // ================================================================= setup: permissions and blocks of the application
 u5_migration($APP);
 $o = sp8($APP, ['migrate', '-n', 'App']);

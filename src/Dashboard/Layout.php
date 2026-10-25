@@ -87,6 +87,28 @@ final class Layout
     }
 
     /**
+     * The saved order with the user's blocks put in their new order, each
+     * among the slots the user's blocks held: blocks out of their sight stay
+     * where they are.
+     *
+     * @param list<string> $current the order before saving, every known key
+     * @param list<string> $mine    the user's blocks, in their new order
+     *
+     * @return list<string>
+     */
+    public static function reorder(array $current, array $mine): array
+    {
+        $queue = $mine;
+        $order = [];
+
+        foreach ($current as $key) {
+            $order[] = in_array($key, $mine, true) ? array_shift($queue) : $key;
+        }
+
+        return array_merge($order, $queue);
+    }
+
+    /**
      * Saves a layout for $userId, or as the global default when null.
      *
      * @param array{order: list<string>, hidden: list<string>, period: int} $layout

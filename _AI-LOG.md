@@ -1279,3 +1279,10 @@ Formato di ogni voce:
 - Note per il prossimo:
   - Nuova ambiguita' **A4**, non bloccante e non decisa. Dopo il salvataggio globale di g l'ordine relativo dei blocchi che g non vede resta, ma i blocchi di g finiscono subito dopo `security`, e `roles` passa da prima a dopo di loro. La SPEC non dice se «posizione relativa» valga anche rispetto ai blocchi di chi salva.
   - Nessun processo residuo. Nessun commit.
+
+### [2026-10-25 13:10] - Claude (Claude Code)
+- Tipo: fix
+- Scope: `src/Dashboard/Layout.php` (nuovo `Layout::reorder()`), `src/Controllers/DashboardController.php`, `tests/Unit/Dashboard/LayoutTest.php`, `docs/SPEC.md`
+- Cosa ho fatto: ambiguita' A4 decisa dall'utente con la scelta raccomandata. Salvando (per me o globale), i blocchi che chi salva non vede restano nei loro posti; i suoi si riordinano solo tra i posti che occupavano. Lock preso e rilasciato in questa sessione breve.
+- Stato: completato, in attesa della riverifica del Collaudatore ad Hoc (CUST e DASH).
+- Note per il prossimo: 90 test unitari e PHPStan verdi. Blocco d'esempio della demo: l'utente ha scelto "solo in locale", senza push del modulo e senza toccare il `composer.lock` committato della demo.

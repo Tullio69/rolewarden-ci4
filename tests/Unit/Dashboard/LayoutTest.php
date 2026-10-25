@@ -27,6 +27,14 @@ final class LayoutTest extends TestCase
         $this->assertSame(7, $layout['period']);
     }
 
+    public function testReorderingKeepsBlocksOutOfSightInTheirSlots(): void
+    {
+        $this->assertSame(
+            ['security', 'roles', 'signins', 'figures', 'changes', 'sales'],
+            Layout::reorder(['security', 'roles', 'figures', 'signins', 'changes', 'sales'], ['signins', 'figures']),
+        );
+    }
+
     public function testTheSecurityNoticeAlwaysComesFirstButCanBeHidden(): void
     {
         $layout = Layout::resolve(['order' => ['roles', 'security', 'figures'], 'hidden' => ['security']], self::KNOWN);

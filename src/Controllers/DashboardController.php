@@ -104,7 +104,7 @@ class DashboardController extends BaseController
         $current = $scope === 'global' ? Layout::global() : Layout::for($userId);
         // Blocks out of the user's sight keep what the layout already says about them.
         $hidden = array_merge(array_diff($order, $shown), array_diff($current['hidden'], $allowed));
-        $layout = ['order' => array_merge($order, array_values(array_diff($current['order'], $order))), 'hidden' => array_values($hidden), 'period' => $period];
+        $layout = ['order' => Layout::reorder($current['order'], $order), 'hidden' => array_values($hidden), 'period' => $period];
 
         if ($scope === 'global') {
             $after = Layout::resolve($layout, Layout::known());

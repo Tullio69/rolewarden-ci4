@@ -1,0 +1,175 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase CUST from verify-u5.phase-cust.php
+
+===== phase CUST =====
+
+== CUST: dashboard customization and application blocks (U5)
+[PASS] SET-mig The application adds u5orders.view and u5stock.view with a migration as documented (exit 0, both present)
+[PASS] SET-adm Model: admin holds settings.update and the five dashboard.*, not the application permissions
+[PASS] SET-v1 Model: u5-viewer has no settings.update
+[INFO] server pid=29944 on 127.0.0.1:8071 prefix=''
+[PASS] SET-login All seven accounts sign in
+[PASS] DEF-own Nobody has chosen: the super admin sees the stock order, application blocks after the five (security,figures,signins,roles,changes,u5-orders,u5stock2), 30 days
+[PASS] DEF-panel Customize is a secondary button (summary) next to the period, opening a POST form
+[PASS] DEF-rows One row per block the super admin sees, in the page order, all checked
+[PASS] DEF-pin The security notice row is pinned: no up/down buttons, the others have two
+[PASS] DEF-scope-own Three actions for settings.update: Save for me, Save as default for everyone, Back to the default
+[PASS] DEF-period The panel ends with the opening period, 7/30/90, 30 selected
+[PASS] DEF-labels Rows are labelled with the block names (EN) and the application titles
+[PASS] DEF-v1 u5-viewer: the blocks of its permissions only, stock order, and the panel lists only those
+[PASS] DEF-scope-v1 Without settings.update the global action is not rendered (only me and reset)
+[PASS] DEF-w  Override negative on u5orders.view: no Orders block, not in the panel
+[PASS] DEF-g  u5-global (figures, signins, settings.update): only those two, no security row, global action rendered
+[PASS] DEF-adm admin: the five module blocks, no application block
+[PASS] APP-sec The application block sits in a section drawn by the module, with a letter and its title()
+[PASS] APP-data The view receives what data() returns (marker, userId and period it got)
+[PASS] APP-uid The view receives $userId = the signed-in user (v1 = 7)
+[PASS] APP-period The view receives $period: days 30, from 00:00 of 29 days ago, to now, prevFrom 30 days earlier, 30 dates
+[PASS] APP-stock A block without data(): its view still gets $period and $userId (owner = 1)
+[FAIL] APP-isol A block without data() receives no data of another block (contract: data() plus $period and $userId)
+         -> {"marker":"ORD-DATA","gotUser":"1","vars":"blocks,period,name,hour,security,figures,buckets,roles,changes,app,customize,global,greeting,range,flow,at,half,letter,block,data,marker,gotUser,gotDays,hostile,userId"}
+[INFO] APP vars seen by the Orders view: blocks,period,name,hour,security,figures,buckets,roles,changes,app,customize,global,greeting,range,flow,at,half,letter,block,data,marker,gotUser,gotDays,hostile,userId | by the Stock view: blocks,period,name,hour,security,figures,buckets,roles,changes,app,customize,global,greeting,range,flow,at,half,letter,block,data,marker,gotUser,gotDays,hostile,userId
+[PASS] APP-esc The module escapes the title() of an application block in the section heading
+[PASS] APP-letters Letters run A, B, C... over the sections in render order, the application blocks included
+[PASS] APP-perm-own The super admin sees both application blocks; admin (no permission) sees none of their titles
+[PASS] ME-1   Save for me: a redirect back to the dashboard with the toast "Your dashboard is saved."
+[PASS] ME-2   v1 now sees its order without Who holds which role, and 7 days without ?period=
+[PASS] ME-3   v1 panel shows its choice: order, roles unchecked, period 7
+[PASS] ME-4   v2 (same role, no choice) keeps the stock dashboard, 30 days
+[PASS] ME-5   The super admin keeps the stock dashboard
+[PASS] ME-6   Stored with Settings in context user:{id} (key dashboardLayout), no global row
+[INFO] ME stored: {"class":"Config\\RoleWarden","key":"dashboardLayout","value":"a:3:{s:5:\"order\";a:7:{i:0;s:8:\"security\";i:1;s:7:\"changes\";i:2;s:9:\"u5-orders\";i:3;s:7:\"figures\";i:4;s:5:\"roles\";i:5;s:7:\"signins\";i:6;s:8:\"u5stock2\";}s:6:\"hidden\";a:1:{i:0;s:5:\"roles\";}s:6:\"period\";i:7;}","type":"array","context":"user:7"}
+[INFO] ME settings.updated entries after a save for me: 0
+[PASS] ME-q90 ?period=90 wins over the saved 7 (page and block data)
+[PASS] ME-q30 ?period=30 wins over the saved 7 (page and block data)
+[PASS] ME-qh-9be40cee5b0eee1462c82c6964087ff9 ?period="365": 200 with a period of 7, 30 or 90
+[INFO] ?period="365" with a saved 7 gives 30
+[PASS] ME-qh-900150983cd24fb0d6963f7d28e17f72 ?period="abc": 200 with a period of 7, 30 or 90
+[INFO] ?period="abc" with a saved 7 gives 30
+[PASS] ME-qh-74687a12d3915d3c4d83f1af7b3683d5 ?period="-7": 200 with a period of 7, 30 or 90
+[INFO] ?period="-7" with a saved 7 gives 30
+[PASS] ME-qh-d41d8cd98f00b204e9800998ecf8427e ?period="": 200 with a period of 7, 30 or 90
+[INFO] ?period="" with a saved 7 gives 7
+[PASS] GLB-1  Save as default for everyone by admin: redirect and toast
+[PASS] GLB-row Stored with Settings, global (context NULL)
+[INFO] GLB stored: {"class":"Config\\RoleWarden","key":"dashboardLayout","value":"a:3:{s:5:\"order\";a:7:{i:0;s:8:\"security\";i:1;s:5:\"roles\";i:2;s:7:\"figures\";i:3;s:7:\"signins\";i:4;s:7:\"changes\";i:5;s:9:\"u5-orders\";i:6;s:8:\"u5stock2\";}s:6:\"hidden\";a:1:{i:0;s:7:\"signins\";}s:6:\"period\";i:90;}","type":"array","context":null}
+[PASS] GLB-log The global save is one activity entry settings.updated by admin
+[PASS] GLB-logview The activity log shows it (200, no raw field names)
+[INFO] GLB activity text: settings, and every sign-in attempt, newest first. Entries1 User Action Any action Signed in Failed sign-in User created User imported User registered User edited Password set by an admin User activated User deactivated User deleted Role assigned Role revoked Permission granted to user Permission denied to user User override removed Role created Role edited Role deleted Permission added to role Permission removed from role Settings changed Password changed Session signed out Remembered browser forgotten All other sessions signed out Appearance changed Signed out From To Clear filters Filter Wh...
+[PASS] GLB-v2 v2 (no choice) follows the global default: its blocks in the global order, signins n/a, Orders at the tail, 90 days
+[PASS] GLB-own The super admin (no choice) follows it: signins hidden, application blocks at the tail in their order, 90 days
+[PASS] GLB-own-panel Hidden by the default, signins stays in the super admin panel, unchecked, so it can be turned back on
+[PASS] GLB-v1 v1 keeps its own choice
+[PASS] GLB-g  g (figures, signins) follows it: figures only, 90 days
+[PASS] GLB-adm admin itself has no own row and follows the default
+[PASS] FORGE-v1 Forged scope=global by v1 (no settings.update): refused without a 5xx, the global default unchanged, no settings.updated
+[INFO] FORGE v1 answer: 303 http://127.0.0.1:8071/index.php
+[PASS] FORGE-w Forged scope=global by w (no settings.update): refused without a 5xx, the global default unchanged, no settings.updated
+[INFO] FORGE w answer: 303 http://127.0.0.1:8071/index.php
+[PASS] FORGE-own The forged request did not touch v1 own row either
+[PASS] FORGE-v2 v2 still sees the global default of admin
+[PASS] VIS-1st g (settings.update) saves a global default
+[PASS] VIS-v2 Blocks g cannot see keep their state: v2 still has security first, roles before changes, Orders last; 30 days
+[PASS] VIS-own What g saw changed: signins shown again and before figures (super admin view)
+[INFO] VIS global order after g, as the super admin sees it: ["security","signins","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] VIS-hide g hides figures for everyone; roles, changes, security and Orders (not seen by g) stay shown for v2
+[PASS] RST-1  Back to the default: redirect and toast "Your dashboard follows the default again."
+[PASS] RST-2  v1 follows the global default again (no figures, security first, roles before changes, Orders last, 30 days)
+[PASS] RST-3  v1 own row removed or emptied
+[PASS] RST-4  Back to the default does not touch the global default
+[PASS] PIN-me0 Forged order ["figures","signins","security","roles","changes","u5-orders","u5stock2"]: the notice still renders first
+[PASS] PIN-me1 Forged order ["figures","signins","roles","changes","u5-orders","u5stock2","security"]: the notice still renders first
+[PASS] PIN-me2 Forged order ["u5stock2","figures","signins","roles","changes","u5-orders"]: the notice still renders first
+[PASS] PIN-hide The notice can be hidden: not rendered, its row unchecked and still listed
+[PASS] PIN-show Shown again
+[PASS] PIN-glb A global default with the notice in the middle: it still renders first for v2
+[PASS] PIN-panel In the panel the pinned row stays first whatever was saved
+[INFO] VIS2 stored rows: [{"class":"Config\\RoleWarden","key":"dashboardLayout","value":"a:3:{s:5:\"order\";a:7:{i:0;s:8:\"security\";i:1;s:7:\"figures\";i:2;s:5:\"roles\";i:3;s:7:\"changes\";i:4;s:9:\"u5-orders\";i:5;s:7:\"signins\";i:6;s:8:\"u5stock2\";}s:6:\"hidden\";a:0:{}s:6:\"period\";i:30;}","type":"array","context":"user:8"},{"class":"Config\\RoleWarden","key":"dashboardLayout","value":"a:3:{s:5:\"order\";a:7:{i:0;s:8:\"security\";i:1;s:7:\"figures\";i:2;s:5:\"roles\";i:3;s:7:\"changes\";i:4;s:9:\"u5-orders\";i:5;s:7:\"signins\";i:6;s:8:\"u5stock2\";}s:6:\"hidden\";a:0:{}s:6:\"period\";i:30;}","type":"array","context":"user:9"}]
+[PASS] VIS2-v2 Once v2 may see Stock, it comes at the tail, not where the forged order put it
+[PASS] VIS2-v3 Once v3 may see Stock, it is shown (the forged hiding was not stored), at the tail
+[PASS] HOS-f90bd83860ed1eb8734c8301c8eefcff Hostile POST (unknown keys): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS unknown keys: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 7 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-824135f56ad2ea6e23b81ad7c0bde569 Hostile POST (period 365): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS period 365: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 7 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-fc930cbeefbaff941373002c0ba0cbfd Hostile POST (period abc): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS period abc: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 7 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-07a4f16317070a5fbc064d34090d6d51 Hostile POST (period -7): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS period -7: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 7 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-d646713b224a07a99917c05fa17abdae Hostile POST (period array): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS period array: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 7 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-348257c74d9f69f6643fc2f9926084c8 Hostile POST (order string): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS order string: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[FAIL] HOS-be976a98e93d727cb88a36f361b9256c Hostile POST (nested arrays): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+         -> [500,200,30,"a:3:{s:5:\"order\";a:7:{i:0;s:8:\"security\";i:1;s:7:\"figures\";i:2;s:5:\"roles\";i:3;s:7:\"changes\";i:4;s:9:\"u5-orders\";i:5;s:8:\"u5stock2\";i:6;s:7:\"signins\";}s:6:\"hidden\";a:0:{}s:6:\"period\";i:30;}"]
+[INFO] HOS nested arrays: answer 500  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-0442b6dc1f1a1e6952e444161ce536e2 Hostile POST (no fields): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS no fields: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-a8842b4630120e4d81646e74a4dfbab2 Hostile POST (scope evil): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS scope evil: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-0878ec18c71a89a1c86f71d634097079 Hostile POST (scope missing): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS scope missing: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-b7cf27ffe6ea83cdcf8af2ef29de9285 Hostile POST (huge): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS huge: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-2aa566d014a64a1a5224306607a13036 Hostile POST (nul byte): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS nul byte: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[INFO] HOS log: CRITICAL - 2026-10-25 10:06:36 --> ErrorException: Array to string conversion | [Method: POST, Route: [omesso]/dashboard/layout] | in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\u5w-cust-development-d\modfull\src\Controllers\DashboardController.php on line 100. | 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'Array to string conversion', 'C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-[omesso]-ci4\\02c51942-865e-4afd-9f77-3ffd0bc0ec21\\scratchpad\\u5w-cust-development-d\\modfull\\src\\Controllers\\DashboardController.php', 100) | 2 [internal function]: strval([...]) | 3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\u5w-cust-development-d\modfull\src\Controllers\DashboardController.php(100): array_map('strval', [...]) | 4 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\DashboardController->layout() | 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\DashboardController))
+[PASS] HOS-evil scope=evil (repeated) leaves every layout row as it was
+[PASS] HOS-glob v2 forging scope=global changes nothing global
+[PASS] CSRF-glb POST without the CSRF token (admin, global) is refused and saves nothing
+[PASS] CSRF-me POST without the CSRF token (v2, me) is refused and saves nothing
+[PASS] ACC-anon A guest POST is sent to sign in and saves nothing
+[PASS] ACC-get GET on the save address is not a page (no 2xx, no 5xx)
+[INFO] ACC user without dashboard.*: POST me -> 403  row=null
+[PASS] ACC-nodash A user without any dashboard.* posting: no 5xx
+[PASS] ADD-0  Only Orders registered: the super admin saved Orders second
+[PASS] ADD-1  Stock registered after the save: it renders at the tail, shown
+[PASS] ADD-2  And it comes last in the panel, checked
+[INFO] ADD registration order swapped (Stock, Orders): super admin order ["security","u5-orders","figures","signins","roles","changes","u5stock2"]
+[PASS] BAD-1  With nine invalid registrations the dashboard still opens (200, no error text)
+[PASS] BAD-2  The valid blocks render; none of the invalid ones (titles absent from page and panel)
+[PASS] BAD-3  The module blocks are untouched: one figures strip, one notice, the order as before
+[PASS] BAD-4  The first registration of key u5-orders keeps it (the duplicate is the one left out)
+[PASS] BAD-log Every invalid class is written to the log by name
+[PASS] BAD-v2 For another user too the page opens with the valid blocks only
+[PASS] BAD-save Saving with invalid blocks registered works (no 5xx) and names none of them
+[PASS] A5-1   Three locked emails: one line names all three, the address line stays apart (two lines)
+[PASS] A5-2   The address line comes first, the emails after
+[PASS] LANG-keys The customize strings have the same keys in en and it (19), none empty, none left in English
+[PASS] LANG-fields The activity field names of the layout exist in both languages, translated
+[PASS] LANG-it In Italian the panel reads Personalizza, Salva per me, Salva come predefinito per tutti, Torna al predefinito, with the block names in Italian
+[PASS] LANG-it-en No English customize string left on the Italian page
+[PASS] LANG-it-aria Up/down labels in Italian
+[PASS] LANG-it-toast The toast of a save is in Italian
+[PASS] LANG-it-toast2 The toast of Back to the default is in Italian
+[PASS] NOJS-cloak Without JavaScript the up/down buttons stay hidden (x-cloak on their wrapper, a [x-cloak] rule in the served CSS)
+[PASS] NOJS-save The no-JS submission saves show/hide and the period (changes hidden, 90 days)
+[PASS] NOJS-none Every block unchecked: no 5xx, the page opens and Customize stays reachable to undo it
+[INFO] NOJS every block unchecked renders [], panel []
+[INFO] JS: {"state0":{"keys":["security","figures","roles","changes","u5-orders"],"buttons":[[],[{"disabled":true,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":true,"visible":true}]]},"m1":{"keys":["security","roles","figures","changes","u5-orders"],"active":"BUTTON|Move Key figures down","sameButton":true,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":false},"m2":{"keys":["security","roles","figures","u5-orders","changes"],"active":"BUTTON|Move U5 Orders block up","sameButton":true,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":false},"m3":{"keys":["security","roles","figures","changes","u5-orders"],"active":"BODY|","sameButton":false,"focusVisible":false,"outline":"none 3px rgb(23, 25, 28)","shadow":"none","disabled":true},"state1":{"keys":["security","roles","figures","changes","u5-orders"],"buttons":[[],[{"disabled":true,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":true,"visible":true}]]},"after":["rw-dash-changes","rw-dash-app-u5-orders"],"console":[],"errors":[]}
+[PASS] JS-0   With JavaScript the up/down buttons show; the first movable row cannot go up, the last cannot go down
+[PASS] JS-down Down moves the row one place down
+[PASS] JS-focus After a move the focus stays on the pressed button and is visible
+[PASS] JS-up  Up moves the row one place up
+[FAIL] JS-edge Moving a row to the last place: the focus is not lost (it stays on a visible control of the panel)
+         -> {"keys":["security","roles","figures","changes","u5-orders"],"active":"BODY|","sameButton":false,"focusVisible":false,"outline":"none 3px rgb(23, 25, 28)","shadow":"none","disabled":true}
+[PASS] JS-pin The pinned security row never moves
+[PASS] JS-save Save for me after the moves: the page renders the new order, roles hidden, 7 days
+[PASS] JS-console No JavaScript error in the console
+[FAIL] LOG-5xx No answer >= 500, no SQL text, no PHP error on any page of the phase
+         -> ["POST layout hos nested arrays 500"]
+[FAIL] LOG-app The application log has no WARNING/ERROR line other than the invalid blocks and the CSRF refusals of this phase
+         -> ["CRITICAL - 2026-10-25 10:06:36 --> ErrorException: Array to string conversion"]
+[PASS] LOG-srv No PHP warning in the server log
+[PASS] SCH-1  No table appeared or changed during the phase
+[PASS] SCH-2  Fresh installs of 29a5df6 (U4) and 09b9159 (U5) have the same tables and the same CREATE TABLE
+[INFO] SCH tables: acl_activity_log,acl_permissions,acl_role_permissions,acl_roles,acl_sessions,acl_user_permissions,acl_user_roles,auth_groups_users,auth_identities,auth_logins,auth_permissions_users,auth_remember_tokens,auth_token_logins,migrations,settings,users
+
+TOTAL: 119 PASS, 5 FAIL, 0 AMB
+FAIL APP-isol A block without data() receives no data of another block (contract: data() plus $period and $userId)
+FAIL HOS-be976a98e93d727cb88a36f361b9256c Hostile POST (nested arrays): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+FAIL JS-edge Moving a row to the last place: the focus is not lost (it stays on a visible control of the panel)
+FAIL LOG-5xx No answer >= 500, no SQL text, no PHP error on any page of the phase
+FAIL LOG-app The application log has no WARNING/ERROR line other than the invalid blocks and the CSRF refusals of this phase
+Test process exit: 1

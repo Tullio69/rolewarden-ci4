@@ -1216,3 +1216,28 @@ Formato di ogni voce:
 - Cosa ho fatto: decisioni dell'utente del 2026-10-25 scritte in SPEC: API come classe astratta `RoleWarden\Dashboard\Block` registrata in `$dashboardBlocks`; pannello "Personalizza" sulla dashboard (mostra/nascondi, su/giu', periodo; "Salva per me", "Torna al predefinito", "Salva come predefinito per tutti" con `settings.update`, registrato come `settings.updated`); avviso di sicurezza nascondibile ma sempre in cima; A5 chiusa, le email bloccate restano una riga. Settings `RoleWarden.dashboardLayout` globale e `user:{id}`. 89 test unitari OK, PHPStan e php-cs-fixer puliti sui file toccati.
 - Stato: completato, in attesa del collaudo del Collaudatore ad Hoc
 - Note per il prossimo: il rifiuto di `scope=global` senza `settings.update` segue il filtro `can:` del modulo (redirect con errore), non un 403. Il blocco d'esempio della demo va nel repo `rolewarden-demo` dopo il collaudo. Gli originali su Claude (specifica e design system) vanno allineati. Docker Desktop era spento durante la sessione: nessuna prova su database prima del collaudo.
+
+### [2026-10-25 11:45] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: collaudo in nero della U5 (personalizzazione e blocchi) su `09b9159`. Ho scritto solo `tests/Integration/verify-u5.*` e `tests/Integration/U5-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash `f7f37c04…e21e64` identico).
+- Cosa ho fatto:
+  - Fase CUST in development e production. I blocchi dell'applicazione sono registrati solo nella copia dell'app di prova (migrazione dei permessi come da api.html, `app/Config/RoleWarden.php`, due blocchi validi e nove non validi), poi rimossi.
+  - Controlli: scelte per utente, predefinito globale e `settings.updated`, POST globale forgiata, "Torna al predefinito", `?period=`, avviso in cima, salvataggio solo sui blocchi visibili, valori ostili, CSRF, form senza JS, su/giu' e fuoco in Chrome headless, lingue, A5, schema contro `29a5df6`.
+  - Regressione: U4 DASH e UPG.
+- Stato: completato con regressione parziale. **Esito FAIL, U5 non approvata.**
+  - CUST: 119/124 in development e 119/124 in production.
+  - Regressione in development: U4 DASH 258/258, UPG 29/29.
+- Difetti:
+  - **D1** la view di un blocco dell'applicazione riceve anche i dati del modulo e degli altri blocchi, oltre a `data()`, `$period` e `$userId` (APP-isol).
+  - **D2** una POST di layout con array annidati (`order[a][b]=…`) da' 500, «Array to string conversion» (HOS, LOG-5xx, LOG-app).
+  - **D3** con su/giu', quando una riga arriva all'ultimo posto il pulsante si disabilita e il fuoco torna a `BODY` (JS-edge).
+  - Riproduzioni in `U5-REPORT.md`.
+- Ambiguita' di specifica (non decise):
+  - **A1** `?period=` non valido con un periodo salvato apre 30 giorni, non il salvato;
+  - **A2** con tutti i blocchi nascosti la dashboard resta vuota, salvo il pannello;
+  - **A3** non e' definita la posizione dei blocchi che chi salva il globale non vede (osservato: l'ordine relativo resta).
+- Note per il prossimo:
+  - La regressione e' stata interrotta dall'host per memoria insufficiente. U3 development non e' valida (spark `rc=-1073741502`, snapshot ripristinato a mano con hash identico).
+  - U2 e U1 development e le regressioni in production non sono state eseguite: ogni passo si e' fermato prima di toccare il database.
+  - Da rilanciare uno alla volta con `verify-u5.all.sh`, solo su richiesta.
+  - Nessun commit.

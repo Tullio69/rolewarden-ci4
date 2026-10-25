@@ -7,7 +7,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase DASH =====
 
 == DASH: dashboard (U4)
-[INFO] server pid=32960 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=23584 on 127.0.0.1:8071 prefix=''
 [INFO] auth_logins rows written: 914
 [PASS] D-login The super admin signs in
 [PASS] D-200  /rolewarden answers 200 with the dashboard for the super admin
@@ -84,7 +84,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] roles note: 34 users, 15 roles ; percents: ["23%","17%","14%","14%","31%"] ; roles details: 1
 [PASS] N30-C1 30 days: the latest five permission changes of the period, newest first (actor, subject)
 [PASS] N30-C2 30 days: "View all 37" opens the activity log filtered on the period (2026-09-26 to 2026-10-25)
-[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 25 Oct, 12:00 02 v8badmin revoked roles.view from Recent1 25 Oct, 12:00 03 v8badmin granted Recent2 roles.view 25 Oct, 12:00 04 The system denied Recent3 roles.view 25 Oct, 12:00 05 v8badmin cleared the override of roles.view for Recent4 25 Oct, 12:00 ; view-all query: {"from":"2026-09-26","to":"2026-10-25"}
+[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 25 Oct, 12:39 02 v8badmin revoked roles.view from Recent1 25 Oct, 12:38 03 v8badmin granted Recent2 roles.view 25 Oct, 12:38 04 The system denied Recent3 roles.view 25 Oct, 12:38 05 v8badmin cleared the override of roles.view for Recent4 25 Oct, 12:38 ; view-all query: {"from":"2026-09-26","to":"2026-10-25"}
 [PASS] N30-noSec 30 days: no security notice when no address reaches the threshold in a day and no email is locked
 [PASS] N30-C3 30 days: the View all link opens (200)
 [PASS] N90-0  90 days: 200, period 90 pressed, no PHP error, no SQL text
@@ -290,15 +290,15 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] LOGIN-2 With login => 'rolewarden' (CHANGELOG) sign-in lands on the dashboard (200)
 [PASS] LOGIN-3 Same setting, a user without dashboard.* goes on to the first screen it can see
 [INFO] after sign-in from /[omesso]?period=7: http://127.0.0.1:8071/index.php/[omesso]
-[INFO] server pid=32088 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=40880 on 127.0.0.1:8071 prefix=''
 [INFO] TZ: last day of the table ["Mon 26 Oct",1,0] ; today in Kiritimati: Mon 26 Oct ; range 20 Oct to 26 Oct 2026
 [PASS] TZ-1   With appTimezone Pacific/Kiritimati the last day of the period is today in that time zone
-[INFO] server pid=37820 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=36060 on 127.0.0.1:8071 prefix=''
 [PASS] LOG-1  No response of this phase has status >= 500, PHP error text or SQL text
 [INFO] log lines written by the SQL-error probe: []
 [PASS] LOG-2  No WARNING/NOTICE/DEPRECATED/ERROR/CRITICAL line in the application log (threshold 9)
 [PASS] LOG-3  No PHP warning, notice or deprecation in the server output
 
 TOTAL: 258 PASS, 0 FAIL, 0 AMB
-cf007ae s1.dash.cf007ae.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+2fb290d s1.dash.2fb290d.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

@@ -1286,3 +1286,22 @@ Formato di ogni voce:
 - Cosa ho fatto: ambiguita' A4 decisa dall'utente con la scelta raccomandata. Salvando (per me o globale), i blocchi che chi salva non vede restano nei loro posti; i suoi si riordinano solo tra i posti che occupavano. Lock preso e rilasciato in questa sessione breve.
 - Stato: completato, in attesa della riverifica del Collaudatore ad Hoc (CUST e DASH).
 - Note per il prossimo: 90 test unitari e PHPStan verdi. Blocco d'esempio della demo: l'utente ha scelto "solo in locale", senza push del modulo e senza toccare il `composer.lock` committato della demo.
+
+### [2026-10-25 14:30] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica in nero della U5 su `2fb290d`, dopo la decisione dell'utente su A4 (SPEC U5, *Risoluzione*). Ho scritto solo `tests/Integration/verify-u5.phase-cust.php` (9 controlli A4 nuovi e LANG-it adattato), le uscite `verify-u5.*` e la sezione «Riverifica su 2fb290d (A4)» di `U5-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash `f7f37c04…e21e64` identico).
+- Cosa ho fatto:
+  - La regola A4: salvando, i blocchi che chi salva non vede restano nei loro posti e nel loro stato, e i suoi si riordinano solo tra i posti che occupavano.
+  - L'ho verificata confrontando la riga di Settings prima e dopo ogni salvataggio, letta con query dirette, con l'atteso calcolato nella fase. Casi coperti: il globale salvato da g (tre casi, compreso un blocco nascosto tra quelli di g) e "Salva per me" di v4, partendo da un globale con Stock e signins in mezzo.
+  - CUST in development e production, poi U4 DASH in development e production, una suite alla volta.
+- Stato: completato. **Esito PASS, 819/819**: CUST 151/151 e 151/151, DASH 258/258 e 259/259. **U5 approvata.** A4 chiusa come decisa. Difetti: nessuno. Ambiguita' nuove: nessuna.
+- Note per il prossimo:
+  - Osservazione non bloccante: un super admin che salva un ordine con l'avviso non in testa lo trova registrato in testa, coerente con l'avviso fisso.
+  - Nessun processo residuo. Nessun commit.
+
+### [2026-10-25 13:30] - Claude (Claude Code)
+- Tipo: feature
+- Scope: `demo/src/Dashboard/DocumentsBlock.php`, `demo/src/Config/Registrar.php`, `demo/src/Views/dashboard/documents.php`, `demo/src/Language/{en,it}/Demo.php`, `demo/README.md`, `documentation/api.html`, `CHANGELOG.md` (commit 0c136e6, fatto mentre il collaudatore teneva il lock su scope non sovrapposto)
+- Cosa ho fatto: blocco d'esempio della demo "Demo documents" (chiave `demo-documents`, permesso `documents.view`): documenti per stato e scritti nel periodo; registrato con un Registrar CI4 (auto-discovery), senza righe nell'app; prima di `demo:install` mostra un avviso invece di interrogare la tabella.
+- Stato: completato, in attesa del collaudo del blocco demo.
+- Note per il prossimo: smoke test di resa en/it passato; query e auto-discovery da collaudare in un'app reale.

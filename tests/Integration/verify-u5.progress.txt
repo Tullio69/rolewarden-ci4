@@ -83,3 +83,19 @@ ALL DONE 13:02:34
 === dash.production 13:02:37
 exit=0 dash.production 13:04:08
 ALL DONE 13:04:08
+--- riverifica 2fb290d (A4)
+=== cust.development 13:30:10
+exit=1 cust.development 13:33:36
+ALL DONE 13:33:36
+=== cust.development 13:34:08
+exit=0 cust.development 13:36:38
+ALL DONE 13:36:38
+=== cust.production 13:36:59
+exit=0 cust.production 13:39:05
+ALL DONE 13:39:05
+=== dash.development 13:39:14
+exit=0 dash.development 13:41:19
+ALL DONE 13:41:19
+=== dash.production 13:41:24
+exit=0 dash.production 13:43:04
+ALL DONE 13:43:04

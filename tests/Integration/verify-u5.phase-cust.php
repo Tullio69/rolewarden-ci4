@@ -107,6 +107,23 @@ function lay(Client $c, array $order, array $shown, $period, string $scope, stri
 function rows_layout(): array { return q("SELECT `class`, `key`, `value`, `type`, context FROM settings WHERE `key` LIKE '%ashboard%' ORDER BY context"); }
 function row_for(?string $ctx): ?array { foreach (rows_layout() as $r) if ($r['context'] === $ctx) return $r; return null; }
 function n_updated(): int { return (int) q1("SELECT COUNT(*) FROM acl_activity_log WHERE action='settings.updated'"); }
+/** A stored layout (Settings row, serialized array): ['order' => [...], 'hidden' => [...], 'period' => n], null when absent. */
+function stored(?string $ctx): ?array { $r = row_for($ctx); if (! $r) return null; $v = @unserialize((string) $r['value'], ['allowed_classes' => false]); return is_array($v) ? $v : null; }
+/**
+ * A3/A4 decided (SPEC U5, Risoluzione): saving, the blocks the saver does not see stay in their slots and keep their state;
+ * the saver's blocks are reordered only among the slots they held. $base = the layout the save starts from.
+ */
+function a4_expect(array $base, array $seen, array $order, array $shown): array
+{
+    $mine = array_values(array_filter($order, fn ($k) => in_array($k, $seen, true)));
+    $o = $base['order']; $j = 0;
+    foreach ($o as $i => $k) if (in_array($k, $seen, true)) $o[$i] = $mine[$j++] ?? $k;
+    $hidden = array_values(array_filter($base['hidden'] ?? [], fn ($k) => ! in_array($k, $seen, true)));
+    foreach ($seen as $k) if (! in_array($k, $shown, true)) $hidden[] = $k;
+    sort($hidden);
+    return ['order' => $o, 'hidden' => $hidden];
+}
+function a4_ok(?array $got, array $exp): bool { if (! $got) return false; $h = $got['hidden'] ?? []; sort($h); return array_values($got['order'] ?? []) === $exp['order'] && $h === $exp['hidden']; }
 /** A3: the blocks the saver does not see keep their relative order and their shown/hidden state in the global default. */
 function a3(array $before, array $after, array $seen): array
 {
@@ -248,9 +265,14 @@ check('FORGE-v2', 'v2 still sees the global default of admin', render_order(dget
 
 // ================================================================= VIS: a global save touches only the blocks the saver sees
 $GB = cust(dget($CL['own'], 'vis own before'));   // the super admin has no choice yet: its panel lists the whole global order
+$SB = stored(null);
 lay($CL['g'], ['signins', 'figures'], ['signins', 'figures'], 30, 'global', 'g global 1');
 $GA = cust(dget($CL['own'], 'vis own after'));
 $x = a3($GB, $GA, ['figures', 'signins']);
+$EX = a4_expect($SB, ['figures', 'signins'], ['signins', 'figures'], ['signins', 'figures']);
+check('A4-g1', 'A4: g (sees figures, signins) saves the global [signins, figures]: the others stay in their slots, g blocks swap within theirs (' . implode(',', $EX['order']) . ')', a4_ok(stored(null), $EX), json_encode(['before' => $SB, 'after' => stored(null), 'expected' => $EX]));
+$oo = render_order(dget($CL['own'], 'vis own a4'));
+check('A4-g1r', 'A4: the super admin (no choice) renders that order (notice first)', $oo === array_values(array_filter(array_merge(['security'], array_diff($EX['order'], ['security'])), fn ($k) => ! in_array($k, $EX['hidden'], true))), json_encode([$oo, $EX]));
 check('A3-1', 'A3: after g saves, the blocks g cannot see keep their relative order and their shown/hidden state (global order in the super admin panel)', $x['ok'], json_encode($x));
 check('A3-1g', 'A3: the blocks g sees follow g order (signins before figures) and state (both shown)', pos_of($GA['keys'], 'signins') < pos_of($GA['keys'], 'figures') && count(array_intersect(['signins', 'figures'], shownk($GA))) === 2, json_encode($GA['keys']));
 info('A3 global order before g: ' . json_encode($GB['keys']) . ' after: ' . json_encode($GA['keys']));
@@ -262,7 +284,10 @@ $ho = dget($CL['own'], 'vis own'); $oo = render_order($ho);
 check('VIS-own', 'What g saw changed: signins shown again and before figures (super admin view)', pos_of($oo, 'signins') >= 0 && pos_of($oo, 'signins') < pos_of($oo, 'figures'), json_encode($oo));
 info('VIS global order after g, as the super admin sees it: ' . json_encode($oo));
 $GB = cust(dget($CL['own'], 'vis own before 2'));
+$SB = stored(null);
 lay($CL['g'], ['signins', 'figures'], ['signins'], 30, 'global', 'g global 2');
+$EX = a4_expect($SB, ['figures', 'signins'], ['signins', 'figures'], ['signins']);
+check('A4-g2', 'A4: g saving the same order and hiding figures moves nothing; only figures becomes hidden', a4_ok(stored(null), $EX) && $SB['order'] === array_values(stored(null)['order'] ?? []), json_encode(['before' => $SB, 'after' => stored(null), 'expected' => $EX]));
 $x = a3($GB, cust(dget($CL['own'], 'vis own after 2')), ['figures', 'signins']);
 check('A3-2', 'A3: g hiding figures leaves order and state of the blocks g cannot see unchanged', $x['ok'], json_encode($x));
 $o2 = render_order(dget($CL['v2'], 'vis v2 b'));
@@ -281,7 +306,10 @@ check('RST-4', 'Back to the default does not touch the global default', row_for(
 // A3: a block hidden in the global default, which the saver cannot see, stays hidden
 lay($CL['adm'], ['security', 'signins', 'roles', 'figures', 'changes'], ['security', 'signins', 'figures', 'changes'], 30, 'global', 'adm global hides roles');
 $GB = cust(dget($CL['own'], 'a3 own before'));
+$SB = stored(null);
 lay($CL['g'], ['figures', 'signins'], ['figures', 'signins'], 30, 'global', 'g global 3');
+$EX = a4_expect($SB, ['figures', 'signins'], ['figures', 'signins'], ['figures', 'signins']);
+check('A4-g3', 'A4: admin had put roles between g blocks (signins, roles, figures); g saving [figures, signins] keeps roles in its slot and hidden: ' . implode(',', $EX['order']), a4_ok(stored(null), $EX), json_encode(['before' => $SB, 'after' => stored(null), 'expected' => $EX]));
 $GA = cust(dget($CL['own'], 'a3 own after'));
 $x = a3($GB, $GA, ['figures', 'signins']);
 check('A3-3', 'A3: roles, hidden by admin in the global default and unseen by g, stays hidden and in place after g saves', $x['ok'] && ! in_array('roles', shownk($GA), true), json_encode($x));
@@ -316,6 +344,28 @@ sp8($APP, ['cache:clear']);   // the override is written straight to the table: 
 $o2 = render_order(dget($CL['v2'], 'vis2 v2')); $o3 = render_order(dget($CL['v3'], 'vis2 v3'));
 check('VIS2-v2', 'Once v2 may see Stock, it comes at the tail, not where the forged order put it', end($o2) === 'u5stock2' && ($o2[0] ?? '') === 'security', json_encode($o2));
 check('VIS2-v3', 'Once v3 may see Stock, it is shown (the forged hiding was not stored), at the tail', end($o3) === 'u5stock2', json_encode($o3));
+
+// ================================================================= A4 for "Save for me": a user who sees few blocks, starting from a global default
+$O2 = mkuser('own2@u5.test', 'super-admin');
+$V4 = mkuser('v4@u5.test', 'u5-viewer');
+[$CL['own2'], $ok2] = u1login('u5-own2', 'own2@u5.test');
+[$CL['v4'], $ok4] = u1login('u5-v4', 'v4@u5.test');
+// a second super admin (sees everything, no own choice) saves a global default with Stock and signins between the others
+lay($CL['own2'], ['figures', 'u5stock2', 'signins', 'roles', 'security', 'changes', 'u5-orders'], ['figures', 'u5stock2', 'roles', 'security', 'changes', 'u5-orders'], 30, 'global', 'own2 global a4');
+$SB = stored(null);
+check('A4-base', 'A4: the super admin saves the whole order as given, the pinned notice stored first (it sees every block)', ($SB['order'] ?? null) === ['security', 'figures', 'u5stock2', 'signins', 'roles', 'changes', 'u5-orders'] && ($SB['hidden'] ?? null) === ['signins'], json_encode($SB));
+$seen4 = ['security', 'figures', 'roles', 'changes', 'u5-orders'];
+lay($CL['v4'], ['security', 'u5-orders', 'changes', 'roles', 'figures'], ['security', 'u5-orders', 'roles', 'figures'], 30, 'me', 'v4 me a4');
+$EX = a4_expect($SB, $seen4, ['security', 'u5-orders', 'changes', 'roles', 'figures'], ['security', 'u5-orders', 'roles', 'figures']);
+check('A4-me', 'A4, Save for me: Stock and signins (unseen by v4) stay in their slots and state, v4 blocks fill the slots they held: ' . implode(',', $EX['order']), a4_ok(stored("user:$V4"), $EX), json_encode(['base' => $SB, 'got' => stored("user:$V4"), 'expected' => $EX]));
+check('A4-me-glob', 'A4: the global default is untouched by the save for me', stored(null) == $SB, '');
+$o4 = render_order(dget($CL['v4'], 'v4 a4 page'));
+check('A4-me-r', 'A4: v4 renders its order (notice first, changes hidden)', $o4 === ['security', 'u5-orders', 'roles', 'figures'], json_encode($o4));
+q('INSERT INTO acl_user_permissions (user_id, permission_id, granted, created_at, updated_at) VALUES (?,?,?,?,?)', [$V4, perm_id('u5stock.view'), 1, date('Y-m-d H:i:s'), date('Y-m-d H:i:s')]);
+sp8($APP, ['cache:clear']);
+$o4 = render_order(dget($CL['v4'], 'v4 a4 stock'));
+$exp4 = array_values(array_filter($EX['order'], fn ($k) => $k !== 'signins' && ! in_array($k, $EX['hidden'], true)));
+check('A4-me-stock', 'A4: once v4 may see Stock, it renders in the slot it kept (' . implode(',', $exp4) . '), not at the tail', $o4 === $exp4 && end($o4) !== 'u5stock2', json_encode([$o4, $exp4]));
 
 // ================================================================= HOS: hostile POST
 $snap = fn () => json_encode(rows_layout());
@@ -427,7 +477,7 @@ postform($CL['own'], 'rolewarden/profile', '#profile/language$#', ['language' =>
 $hi = dget($CL['own'], 'lang it page');
 $ci2 = cust($hi);
 $enLeft = array_values(array_filter(array_merge(array_values($ce)), fn ($s) => ! str_contains($s, '{') && str_contains(text_of($hi), $s)));
-check('LANG-it', 'In Italian the panel reads Personalizza, Salva per me, Salva come predefinito per tutti, Torna al predefinito, with the block names in Italian', $ci2 && $ci2['summary'] === $ci['open'] && str_contains(text_of($hi), $ci['saveMine']) && str_contains(text_of($hi), $ci['saveGlobal']) && str_contains(text_of($hi), $ci['restore']) && array_slice(array_column($ci2['rows'], 'label'), 0, 5) === [$ci['blocks.security'], $ci['blocks.figures'], $ci['blocks.signins'], $ci['blocks.roles'], $ci['blocks.changes']], json_encode([$ci2['summary'] ?? null, array_column($ci2['rows'] ?? [], 'label')]));
+check('LANG-it', 'In Italian the panel reads Personalizza, Salva per me, Salva come predefinito per tutti, Torna al predefinito, with the block names in Italian', $ci2 && $ci2['summary'] === $ci['open'] && str_contains(text_of($hi), $ci['saveMine']) && str_contains(text_of($hi), $ci['saveGlobal']) && str_contains(text_of($hi), $ci['restore']) && count(array_filter($ci2['rows'], fn ($r) => in_array($r['key'], MODKEYS, true) && $r['label'] === $ci['blocks.' . $r['key']])) === 5, json_encode([$ci2['summary'] ?? null, array_column($ci2['rows'] ?? [], 'label')]));
 check('LANG-it-en', 'No English customize string left on the Italian page', $enLeft === [], json_encode($enLeft));
 check('LANG-it-aria', 'Up/down labels in Italian', str_contains(html_entity_decode($hi, ENT_QUOTES | ENT_HTML5, 'UTF-8'), str_replace('{0}', $ci['blocks.figures'], $ci['up'])), '');
 lay($CL['own'], $DEF_ALL, $DEF_ALL, 30, 'me', 'it save');

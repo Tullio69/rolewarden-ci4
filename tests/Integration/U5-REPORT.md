@@ -227,3 +227,60 @@ Nessuno.
 - Nessun processo residuo, cartelle di lavoro rimosse.
 - Memoria libera tra 2,3 e 2,8 GB, nessuna interruzione.
 
+## Riverifica su 2fb290d (A4)
+
+**Collaudatore ad Hoc (Claude), 2026-10-25, commit `2fb290d` (A4 decisa dall'utente, SPEC U5, voce *Risoluzione*). Esito: PASS. U5 è approvata. A4 è chiusa come decisa.**
+
+Ho seguito le stesse regole di lettura dei giri precedenti. In più ho letto solo la voce *Risoluzione* della SPEC. Del commit conosco solo il `--stat`.
+
+Ho eseguito una suite alla volta, attendendo ogni volta che i suoi processi fossero chiusi (`RW_U5_RUN=-v4`).
+
+| Suite | development | production |
+| --- | --- | --- |
+| U5 CUST (adattata ad A4) | **151/151** | **151/151** |
+| U4 DASH (regressione della dashboard) | **258/258** | **259/259** (in più SQL-prod) |
+
+**Totale:** 819/819.
+
+### Regola verificata
+
+Salvando, i blocchi che chi salva non vede restano nei loro posti e nel loro stato; i blocchi di chi salva si riordinano solo tra i posti che occupavano. Vale sia per "Salva per me" sia per il globale.
+
+L'atteso lo calcolo nella fase (`a4_expect`) a partire dalla riga di Settings letta con una query diretta, prima del salvataggio. Poi lo confronto con la riga scritta dopo: ordine esatto e insieme dei blocchi nascosti.
+
+### Controlli nuovi in `verify-u5.phase-cust.php` (9)
+
+- **Globale salvato da g**, che vede solo figures e signins (ripete il caso di g):
+  - **A4-g1:** prima `security, roles, figures, signins, changes, u5-orders, u5stock2`, con g che salva `[signins, figures]`. Dopo: `security, roles, signins, figures, changes, u5-orders, u5stock2`, cioè `roles` resta al secondo posto e i due blocchi di g si scambiano solo tra loro. Su `cf007ae` l'ordine era `security, signins, figures, roles, …`, quindi il controllo distingue il comportamento nuovo.
+  - **A4-g1r:** il super admin senza scelta propria rende quell'ordine.
+  - **A4-g2:** g nasconde figures salvando lo stesso ordine: nulla si sposta, cambia solo lo stato di figures.
+  - **A4-g3:** admin mette `roles`, che g non vede, tra i blocchi di g e lo nasconde (`signins, roles, figures`). Quando g salva `[figures, signins]`, `roles` resta in mezzo e nascosto: `security, figures, roles, signins, …`.
+- **"Salva per me"** di v4, che non vede signins né u5stock2, partendo da un globale salvato da un secondo super admin: `security, figures, u5stock2, signins, roles, changes, u5-orders`, con signins nascosto.
+  - **A4-base:** il globale è salvato così com'è; l'avviso fisso viene messo in testa.
+  - **A4-me:** v4 salva `[security, u5-orders, changes, roles, figures]` e nasconde changes. Nella sua riga `user:{id}` c'è `security, u5-orders, u5stock2, signins, changes, roles, figures`, con nascosti signins (conservato) e changes.
+  - **A4-me-glob:** il globale non cambia.
+  - **A4-me-r:** v4 rende `security, u5-orders, roles, figures`.
+  - **A4-me-stock:** quando v4 ottiene `u5stock.view`, Stock compare al posto che aveva conservato, `security, u5-orders, u5stock2, roles, figures`, e non in coda.
+
+### Controlli adattati
+
+- **LANG-it:** confronta l'etichetta italiana di ogni blocco del modulo per chiave e non più per posizione. Con il nuovo globale di A4 nel pannello Stock sta tra i blocchi del modulo, quindi la posizione non vale più.
+- Il vecchio confronto «ordine relativo» di A3 (A3-1, A3-2, A3-3) resta e passa: è implicato dalla regola A4.
+- Tutti gli altri controlli passano come su `cf007ae`.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità
+
+Nessuna nuova.
+
+**Osservazione, non bloccante:** quando un super admin salva un ordine con l'avviso di sicurezza non in testa, la riga lo registra in testa. È coerente con l'avviso fisso («sta sempre in cima»).
+
+### Ambiente
+
+- Database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u5.environment.txt`), Mailpit vuoto.
+- Nessun processo residuo, cartelle di lavoro rimosse.
+- Memoria libera tra 1,2 e 3,1 GB, nessuna interruzione.
+

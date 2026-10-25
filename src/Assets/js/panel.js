@@ -88,16 +88,22 @@ rwOnReady(rwCountUp);
 
 /**
  * The sidebar's active highlight travels from the item of the page left to the item
- * of the page opened: the old position and item are kept in sessionStorage when the
- * page goes, and the new highlight slides from there (a FLIP across two documents).
- * The two labels change colour with it, so neither is ever unreadable on its way.
+ * of the page opened: the old position is kept in sessionStorage when the page goes,
+ * and the new highlight slides from there (a FLIP across two documents). On the dark
+ * sidebars it travels as a faint tint (--sb-pill-travel), so every label it passes
+ * stays readable, and turns solid as it lands, when the new label takes its colour.
  */
 const RW_PILL_KEY = 'rw-pill';
+
+/** The highlight's top within the sidebar, so a scrolled page does not shift it. */
+function rwPillTop(pill) {
+  return pill.getBoundingClientRect().top - pill.closest('.rw-side').getBoundingClientRect().top;
+}
 
 window.addEventListener('pagehide', () => {
   const pill = document.querySelector('.rw-side-pill');
   try {
-    if (pill) sessionStorage.setItem(RW_PILL_KEY, JSON.stringify({ top: pill.getBoundingClientRect().top, href: pill.parentElement.getAttribute('href') }));
+    if (pill) sessionStorage.setItem(RW_PILL_KEY, String(rwPillTop(pill)));
     else sessionStorage.removeItem(RW_PILL_KEY);
   } catch (e) {
     // storage blocked: the highlight simply appears in place
@@ -107,20 +113,21 @@ window.addEventListener('pagehide', () => {
 function rwPill() {
   let from = null;
   try {
-    from = JSON.parse(sessionStorage.getItem(RW_PILL_KEY));
+    from = sessionStorage.getItem(RW_PILL_KEY);
     sessionStorage.removeItem(RW_PILL_KEY);
   } catch (e) {
     return;
   }
   const pill = document.querySelector('.rw-side-pill');
-  if (!from || !pill || rwReducedMotion()) return;
-  const dy = from.top - pill.getBoundingClientRect().top;
+  if (from === null || !pill || rwReducedMotion()) return;
+  const dy = Number(from) - rwPillTop(pill);
   if (!dy) return;
-  const timing = { duration: 420, easing: RW_EASE_EXPO };
-  pill.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], timing);
-  pill.parentElement.animate([{ color: 'var(--sb-ink)' }, {}], timing);
-  const old = [...document.querySelectorAll('.rw-side-nav a')].find((a) => a.getAttribute('href') === from.href);
-  if (old) old.animate([{ color: 'var(--sb-act-fg)' }, {}], timing);
+  const duration = 420;
+  pill.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration, easing: RW_EASE_EXPO });
+  // By 65% the expo slide has all but landed: the tint turns solid, then the label flips.
+  const faint = Number(getComputedStyle(pill).getPropertyValue('--sb-pill-travel')) || 1;
+  pill.animate([{ opacity: faint }, { opacity: faint, offset: 0.65 }, { opacity: 1, offset: 0.8 }, { opacity: 1 }], { duration });
+  pill.parentElement.animate([{ color: 'var(--sb-ink)' }, { color: 'var(--sb-ink)', offset: 0.8 }, { color: 'var(--sb-act-fg)', offset: 0.8 }, { color: 'var(--sb-act-fg)' }], { duration });
 }
 
 rwOnReady(rwPill);

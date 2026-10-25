@@ -708,6 +708,10 @@
   .rw .rw-side-nav a { position: relative; }
   .rw .rw-side-nav a[aria-current="page"]:has(> .rw-side-pill) { background: transparent; }
   .rw-side-pill { position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--sb-act-bg); }
+  /* How solid the highlight is while it travels: on the dark sidebars a solid one would
+     leave the light labels it passes unreadable, so it goes as a faint tint. */
+  .rw-side { --sb-pill-travel: 1; }
+  .rw-side[data-sidebar="ink"], .rw-side[data-sidebar="charcoal"] { --sb-pill-travel: 0.3; }
 
   /* A pressed control gives way under the pointer. */
   .rw-btn, .rw-page, .rw-mode button, .rw-cell { transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out); }

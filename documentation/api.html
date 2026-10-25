@@ -117,6 +117,57 @@ $rolewarden-&gt;explain($userId, 'invoices.approve');                  // why: s
 service('rolewarden')-&gt;forgetRole($roleId);       // after changing a role, its permissions or its parent</code></pre>
     <p>Assigning a role through <code>(new \RoleWarden\Models\UserRoles())-&gt;assign($userId, $roleId)</code> does it for you.</p>
 
+    <h2 id="dashboard-blocks">Dashboard blocks of your own</h2>
+    <p>Add a block to the dashboard with a class that extends <code>RoleWarden\Dashboard\Block</code>. The block shows only to those who hold its permission, and each user hides and reorders it in the Customize panel like the five blocks of the module. RoleWarden draws the section, its letter and the title; your view draws the body. This API stays the same for every 1.x release.</p>
+<pre><code>&lt;?php
+
+namespace App\Dashboard;
+
+use RoleWarden\Dashboard\Block;
+
+final class OrdersBlock extends Block
+{
+    public function key(): string
+    {
+        return 'orders'; // lowercase letters, digits and dashes, unique
+    }
+
+    public function title(): string
+    {
+        return lang('App.dashboard.orders');
+    }
+
+    public function permission(): string
+    {
+        return 'orders.view'; // add it like any permission of yours
+    }
+
+    public function view(): string
+    {
+        return 'App\Views\dashboard\orders';
+    }
+
+    // Read only when the block is shown. $period['from'] and $period['to'] are
+    // 'Y-m-d H:i:s' in the application's time zone; $period['days'] is 7, 30 or 90.
+    public function data(array $period, int $userId): array
+    {
+        return [
+            'total' =&gt; db_connect()-&gt;table('orders')
+                -&gt;where('created_at &gt;=', $period['from'])
+                -&gt;where('created_at &lt;=', $period['to'])
+                -&gt;countAllResults(),
+        ];
+    }
+}</code></pre>
+    <p>Register it in <code>app/Config/RoleWarden.php</code>:</p>
+<pre><code>public array $dashboardBlocks = [
+    \App\Dashboard\OrdersBlock::class,
+];</code></pre>
+    <p>The view, <code>app/Views/dashboard/orders.php</code>, receives what <code>data()</code> returns plus <code>$period</code> and <code>$userId</code>. Escape what you print and use the panel's classes, so the block follows the theme:</p>
+<pre><code>&lt;p class="rw-dash-val"&gt;&lt;b&gt;&lt;?= esc(number_format($total)) ?&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p class="rw-note"&gt;&lt;?= esc(lang('App.dashboard.ordersNote', [$period['days']])) ?&gt;&lt;/p&gt;</code></pre>
+    <p>New blocks come after the module's until someone reorders them. A class that is missing, does not extend <code>Block</code>, or has a key that is malformed, already taken or one of the module's (<code>security</code>, <code>figures</code>, <code>signins</code>, <code>roles</code>, <code>changes</code>) is left out and written to the log, and the dashboard still opens.</p>
+
     <h2 id="events">Events</h2>
     <h3><code>rolewarden.activity</code></h3>
     <p>Fires for every entry written to the activity log, with the row:</p>

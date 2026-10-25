@@ -37,6 +37,41 @@ final class Dashboard
     public const SHARES = 4;
 
     /**
+     * The application's blocks from Config\RoleWarden::$dashboardBlocks, by
+     * key. A class that is missing, doesn't extend Block or has a key that is
+     * malformed, taken or a module block's is left out and logged.
+     *
+     * @param list<string>|null $classes null reads the configuration
+     *
+     * @return array<string, Block>
+     */
+    public static function registered(?array $classes = null): array
+    {
+        $found = [];
+
+        foreach ($classes ?? config('RoleWarden')->dashboardBlocks as $class) {
+            if (! is_string($class) || ! class_exists($class) || ! is_subclass_of($class, Block::class)) {
+                log_message('error', 'RoleWarden: dashboard block {class} is not a class extending ' . Block::class . '.', ['class' => is_string($class) ? $class : gettype($class)]);
+
+                continue;
+            }
+
+            $block = new $class();
+            $key = $block->key();
+
+            if (preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $key) !== 1 || isset(self::BLOCKS[$key]) || isset($found[$key])) {
+                log_message('error', 'RoleWarden: dashboard block {class} has a key that is malformed or taken: {key}.', ['class' => $class, 'key' => $key]);
+
+                continue;
+            }
+
+            $found[$key] = $block;
+        }
+
+        return $found;
+    }
+
+    /**
      * The period of $days calendar days ending now, today included, and the
      * same number of days before it, as 'Y-m-d H:i:s' in the application's
      * time zone. The current period runs from its first midnight to now; the

@@ -88,6 +88,15 @@ class RoleWarden extends BaseConfig
     public ?string $themeStylesheet = null;
 
     /**
+     * Dashboard blocks of the host application, each a class extending
+     * RoleWarden\Dashboard\Block, e.g. [\App\Dashboard\SalesBlock::class].
+     * They follow the five blocks of the module until someone reorders them.
+     *
+     * @var list<class-string<\RoleWarden\Dashboard\Block>>
+     */
+    public array $dashboardBlocks = [];
+
+    /**
      * Full name of a module table, e.g. table('roles') => 'acl_roles'.
      */
     public function table(string $name): string

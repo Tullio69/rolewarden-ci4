@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('rwUserMatrix', rwUserMatrixController);
   Alpine.data('rwAppearance', rwAppearanceController);
   Alpine.data('rwSearch', rwSearchController);
+  Alpine.data('rwDashboard', rwDashboardController);
 });
 
 /** Shows a toast from anywhere on the page: rwToast('error', 'Could not save this change.'). */
@@ -590,6 +591,31 @@ function rwSearchController(config) {
 }
 
 /** #rgb, #rrggbb or rgb(...) as #rrggbb (computed custom properties keep what was written). */
+/**
+ * Dashboard customize panel (views/dashboard/customize.php). Up and down swap
+ * a row with its neighbour by moving the neighbour, so the focused button stays
+ * put; the order posted is the rows' order. Nothing moves above a pinned row.
+ */
+function rwDashboardController() {
+  return {
+    moves: 0,
+    neighbour(row, step) {
+      return step < 0 ? row.previousElementSibling : row.nextElementSibling;
+    },
+    movable(row, step) {
+      this.moves; // re-evaluated after every move
+      const other = this.neighbour(row, step);
+      return other !== null && !other.hasAttribute('data-pinned');
+    },
+    move(row, step) {
+      if (!this.movable(row, step)) return;
+      const other = this.neighbour(row, step);
+      row.parentNode.insertBefore(other, step < 0 ? row.nextElementSibling : row);
+      this.moves++;
+    },
+  };
+}
+
 function rwHex(value) {
   if (/^#[0-9a-f]{6}$/i.test(value)) return value.toLowerCase();
   if (/^#[0-9a-f]{3}$/i.test(value)) return '#' + value.slice(1).split('').map((c) => c + c).join('').toLowerCase();

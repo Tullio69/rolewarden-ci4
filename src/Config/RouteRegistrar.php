@@ -31,6 +31,7 @@ class RouteRegistrar
             static function (RouteCollection $routes): void {
                 // The dashboard: each block checks its own dashboard.* permission; with none, the controller redirects.
                 $routes->get('/', 'DashboardController::index');
+                $routes->post('dashboard/layout', 'DashboardController::layout');
                 $routes->get('users', 'UsersController::index', ['filter' => 'can:users.view']);
                 $routes->get('users/create', 'UsersController::create', ['filter' => 'can:users.create']);
                 $routes->get('users/import', 'ImportController::form', ['filter' => 'can:users.import']);

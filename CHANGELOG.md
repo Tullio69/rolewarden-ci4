@@ -33,6 +33,13 @@ version may require changes on your side, listed under "Upgrading". After any up
   `dashboard.security`, `dashboard.roles`, `dashboard.changes`. Charts are SVG drawn on the
   server from the theme's colours, each with its numbers as a table. Whoever holds none of
   them is sent on to the first screen of the sidebar they can see.
+- **Customize the dashboard**: each user shows, hides and reorders the blocks they can see
+  and picks the period the page opens with; those with `settings.update` save a default for
+  everyone who has not chosen. Kept with the Settings library, no new table. The security
+  notice can be hidden but always comes first.
+- **Dashboard blocks of your own**: a class extending `RoleWarden\Dashboard\Block`, listed in
+  the new `$dashboardBlocks` of `Config\RoleWarden`, with its key, title, permission, view
+  and data. Stable for every 1.x release; see the API reference.
 
 ### Changed
 - The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.

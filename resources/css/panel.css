@@ -611,6 +611,19 @@
   .rw-dash-head h1 { margin-bottom: var(--space-1); }
   .rw-dash-period button { height: var(--size-control); padding: 0 var(--space-3); font-size: var(--text-md); }
   .rw-dash-period button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .rw-dash-tools { display: flex; align-items: center; gap: var(--space-3); }
+  .rw-dash-customize { position: relative; }
+  .rw-dash-customize > summary { list-style: none; }
+  .rw-dash-customize > summary::-webkit-details-marker { display: none; }
+  .rw-dash-customize > summary:focus-visible { outline: var(--focus-width) solid var(--focus); outline-offset: 2px; }
+  .rw-dash-panel { position: absolute; right: 0; top: calc(100% + var(--space-2)); z-index: 10; display: flex; flex-direction: column; gap: var(--space-3); width: min(360px, calc(100vw - 2 * var(--space-4))); padding: var(--space-5); background: var(--surface-raised); color: var(--ink); border: var(--rule-strong-width) solid var(--rule-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-float); }
+  .rw-dash-panel h2 { margin: 0; font: var(--weight-title) var(--text-lg)/var(--leading-lg) var(--font-title); }
+  .rw-dash-order { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; border-top: var(--rule-width) solid var(--rule); }
+  .rw-dash-order > li { display: flex; align-items: center; gap: var(--space-2); min-height: var(--size-row-lg); border-bottom: var(--rule-width) solid var(--rule); }
+  .rw-dash-show { flex: 1; display: flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+  .rw-dash-move { display: inline-flex; }
+  .rw-dash-move .rw-btn { height: var(--size-control-sm); }
+  .rw-dash-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .rw-dash-notice { display: flex; align-items: center; gap: var(--space-3); min-height: var(--size-row-lg); margin: var(--space-4) 0 0 var(--gutter); padding: var(--space-2) var(--space-3) var(--space-2) var(--space-4); background: var(--accent-tint); color: var(--ink); }
   .rw-dash-notice > svg { flex: none; color: var(--accent); }
   .rw-dash-notice > ul { flex: 1; margin: 0; padding: 0; list-style: none; }

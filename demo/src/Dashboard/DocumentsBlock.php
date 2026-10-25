@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace RoleWardenDemo\Dashboard;
 
 use RoleWarden\Dashboard\Block;
-use RoleWardenDemo\DemoInstaller;
 use RoleWardenDemo\Models\DocumentModel;
 
 /**
@@ -37,8 +36,8 @@ final class DocumentsBlock extends Block
 
     public function data(array $period, int $userId): array
     {
-        // A super admin passes every check, even before demo:install has made the table.
-        if (! DemoInstaller::installed()) {
+        // A super admin passes every check, even when demo:install has not made the table.
+        if (! db_connect()->tableExists(config('Demo')->table)) {
             return ['statuses' => [], 'written' => 0];
         }
 
@@ -46,7 +45,9 @@ final class DocumentsBlock extends Block
         $statuses = array_fill_keys(DocumentModel::STATUSES, 0);
 
         foreach ($model->select('status, COUNT(*) AS n')->groupBy('status')->get()->getResultArray() as $row) {
-            $statuses[$row['status']] = (int) $row['n'];
+            if (isset($statuses[$row['status']])) {
+                $statuses[$row['status']] = (int) $row['n'];
+            }
         }
 
         return [

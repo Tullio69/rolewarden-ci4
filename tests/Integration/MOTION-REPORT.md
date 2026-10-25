@@ -339,3 +339,57 @@ Uno alla volta, con più memoria libera. In rv5 ne erano liberi circa 2,6 GB su 
 - Nessun `.env` residuo (quello della cartella di production l'ho cancellato a mano) e nessun processo di test residuo.
 - Le cartelle di lavoro di rv4 e rv5 sono svuotate, tranne i profili Chrome `chrome-mo-*` (EPERM).
 - Nessun commit.
+
+## Riverifica su 933154b (rv6)
+
+**Collaudatore ad Hoc (Claude), 2026-10-25. Esito: INCOMPLETO, nessuna approvazione del movimento.**
+
+MOTION in development è stata eseguita per intero: 135/139. I 4 FAIL sono tutti NAV-d2 e nessuno è un'etichetta illeggibile: in nessun fotogramma giudicato un'etichetta scende sotto 3:1. Falliscono perché lo strumento corretto dopo rv5 giudica troppo pochi fotogrammi per decidere. MOTION in production è stata interrotta da Claude Code per memoria bassa dopo 94 PASS e 0 FAIL, prima del blocco D2/D5. Come previsto, non l'ho rilanciata e non ho eseguito la regressione.
+
+### Conteggi per fase e ambiente
+
+| Fase | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| MOTION (`motion.development`) | development | **135/139**. FAIL: NAV-d2-paper, NAV-d2-ink, NAV-d2-ink-realtime, NAV-d2-charcoal, tutti per copertura insufficiente (sotto) | ripristinato dal runner, hash identico, Mailpit vuoto |
+| MOTION (`motion.production`) | production | **interrotto per memoria** dopo 94 PASS e 0 FAIL (ERR, VT-err, NAV per pagina, NAV-vt, NAV-rail, CNT en/it, RM ×25, DLG ×13, CUST e altri); non raggiunti D2, D5 e i fotogrammi | processi orfani fermati (python, 2 php, node), ripristinato a mano dal suo `snapshot.sql`, hash identico, Mailpit vuoto |
+| U5 CUST, U4 DASH, U3 SRCH, U1 (NAV, RAIL, STYLE, ESC) | development | **non eseguiti** (interruzione precedente) | - |
+
+Hash `f7f37c04…e21e64` verificato prima di cominciare e dopo ogni passo (`verify-motion.environment.txt`). Memoria libera: 4,8 GB all'inizio, 3,6 GB dopo l'interruzione.
+
+### D2: lo strumento corretto non basta a decidere
+
+Lo strumento ora giudica un fotogramma solo se la geometria letta subito prima e subito dopo lo screenshot coincide, e NAV-d2 chiede almeno 10 fotogrammi giudicati e almeno 5 misure sotto l'evidenziazione in movimento.
+
+| Tema | Fotogrammi | Giudicati | Misure sotto l'evidenziazione | Minimo lì | Sotto 3:1 |
+| --- | --- | --- | --- | --- | --- |
+| Paper (rallentato 10 volte) | 25 | 7 | 1 | 5,39:1 | nessuna |
+| Ink (rallentato 10 volte) | 25 | 8 | 2 | 4,22:1 | nessuna |
+| Ink, velocità reale | 41 | 33 | 0 | - | nessuna |
+| Charcoal (rallentato 10 volte) | 25 | 9 | 3 | 4,03:1 | nessuna |
+
+- La correzione elimina i falsi positivi di rv5 (nessuna misura a 1:1), ma scarta quasi tutti i fotogrammi in cui l'evidenziazione si muove: proprio quelli che servono. A velocità reale i fotogrammi stabili sono quelli prima e dopo il movimento, quindi nessuno ha un'etichetta sotto l'evidenziazione.
+- **Controllo a occhio** (`verify-motion.frames.development-rv6.*`): in `ink.08` (velatura su Activity), `charcoal.14` (velatura su SYSTEM e Settings), `paper.12` e `ink.24` (Settings evidenziata all'arrivo) tutte le etichette sono leggibili.
+- Conclusione: nessuna prova di difetto, ma D2 su 933154b **non è confermato dallo strumento**. Per confermarlo serve uno strumento che misuri anche i fotogrammi in movimento senza falsi positivi (per esempio leggendo la geometria nello stesso istante dello screenshot), oppure che si accetti il controllo a occhio. Non lo decido qui.
+
+### D5, D1, D3, D4 e A1 (development)
+
+- D5: scarto della partenza **0 px** in Paper, Ink, Charcoal e Ink a velocità reale; sempre monotono da y 204 (Users) a 442 (Settings). NAV-d5 PASS in tutti e quattro.
+- D1 (VT-err, NAV-vt: 8 su 8 view transition più quella dopo il login), D3 (CNT en 440 valori, it 444, nessuno fuori intervallo), D4 e A1 come decisa (RM): tutti PASS, anche nella parte di production eseguita.
+
+### Ambiguità
+
+Nessuna nuova. Resta da confermare la mia interpretazione: per «illeggibile» uso la soglia 3:1 del design system per gli elementi grandi o non testuali.
+
+### Cosa manca per chiudere
+
+1. Conferma di D2 con uno strumento che giudichi i fotogrammi in movimento (o decisione di accettare il controllo a occhio).
+2. `motion.production` completa.
+3. `cust.development`, `dash.development`, `u3.development`, `u1.development`.
+
+Con questa macchina la memoria non basta per più di un passo di fila: conviene eseguire ogni passo in una sessione separata, con il browser e le altre applicazioni chiusi.
+
+### Ambiente
+
+- Nessun `.env` residuo (quello di production l'ho cancellato a mano) e nessun processo di test residuo.
+- Le cartelle di lavoro di rv6 sono svuotate, tranne i profili Chrome `chrome-mo-*` (EPERM).
+- Nessun commit.

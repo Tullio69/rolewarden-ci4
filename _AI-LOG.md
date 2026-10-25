@@ -1441,3 +1441,19 @@ Formato di ogni voce:
   - ho cancellato il `.env` e la cartella di lavoro, tranne i profili Chrome (EPERM);
   - per chiudere, uno alla volta e con piu' memoria: `motion.development` (conferma di D2), `motion.production`, `cust.development`, `dash.development`, `u3.development`, `u1.development`;
   - nessun commit. Lock rilasciato.
+
+### [2026-10-25 23:40] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica in nero del movimento su 933154b (rv6). Ho scritto solo le uscite `-rv6` di `tests/Integration/verify-motion.*` (console, fotogrammi, `environment.txt`, `progress.txt`) e la sezione «Riverifica su 933154b (rv6)» di `MOTION-REPORT.md`. Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Hash verificato all'inizio: `f7f37c04…e21e64`.
+  - MOTION development: **135/139**. I 4 FAIL sono NAV-d2 (paper, ink, ink-realtime, charcoal) per copertura insufficiente, non per illeggibilita': nessuna etichetta sotto 3:1 nei fotogrammi giudicati (minimi 5,39, 4,22, 4,03:1), ma lo strumento corretto giudica solo 7-9 fotogrammi rallentati su 25, e a velocita' reale nessuno con un'etichetta sotto l'evidenziazione. A occhio tutte le etichette sono leggibili.
+  - D5 0 px in tutti e quattro i casi; D1, D3, D4 e A1: PASS.
+  - MOTION production: interrotta da Claude Code per memoria dopo 94 PASS e 0 FAIL, prima di D2/D5. Non l'ho rilanciata. Regressione non eseguita.
+- Stato: **parziale, nessuna approvazione** (esito INCOMPLETO, nessun difetto del prodotto trovato).
+- Ambiguita' di specifica: nessuna nuova. Soglia 3:1 per «illeggibile»: interpretazione mia, da confermare.
+- Note per il prossimo:
+  - dopo l'interruzione ho fermato i processi orfani (python, 2 php, node), ripristinato a mano dallo snapshot di production-rv6: hash identico, Mailpit vuoto; `.env` cancellato, cartelle di lavoro svuotate tranne i profili Chrome (EPERM);
+  - D2 va confermato con uno strumento che misuri i fotogrammi in movimento senza i falsi positivi di rv5, oppure va deciso se basta il controllo a occhio;
+  - restano `motion.production`, `cust.development`, `dash.development`, `u3.development`, `u1.development`, un passo per sessione;
+  - nessun commit. Lock rilasciato.

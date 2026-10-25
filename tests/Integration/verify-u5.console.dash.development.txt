@@ -7,7 +7,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 ===== phase DASH =====
 
 == DASH: dashboard (U4)
-[INFO] server pid=32576 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=29592 on 127.0.0.1:8071 prefix=''
 [INFO] auth_logins rows written: 914
 [PASS] D-login The super admin signs in
 [PASS] D-200  /rolewarden answers 200 with the dashboard for the super admin
@@ -20,17 +20,17 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N7-F1  7 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
 [INFO] N7 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
 [PASS] N7-F1d 7 days: the change of active users is the accounts created in the period among the non-deleted (+14)
-[PASS] N7-F2  7 days: sign-ins = auth_logins success=1 in the period (21)
-[PASS] N7-F2d 7 days: change of sign-ins on the previous 7 days, signed (-4)
-[PASS] N7-F3  7 days: failed sign-ins = success=0 in the period (9)
+[PASS] N7-F2  7 days: sign-ins = auth_logins success=1 in the period (19)
+[PASS] N7-F2d 7 days: change of sign-ins on the previous 7 days, signed (-6)
+[PASS] N7-F3  7 days: failed sign-ins = success=0 in the period (11)
 [PASS] N7-F2n 7 days: the sign-ins note names the peak day count (6)
 [PASS] N7-F3n 7 days: the failed note gives the previous period (12)
-[PASS] N7-F3d 7 days: change of failed sign-ins, signed (-3)
+[PASS] N7-F3d 7 days: change of failed sign-ins, signed (-1)
 [PASS] N7-F4  7 days: permission changes = the seven actions in the period (17)
 [PASS] N7-F4d 7 days: change of permission changes, signed (11)
 [PASS] N7-F4n 7 days: the note says how many are overrides (4)
-[PASS] N7-neg-bb59faaa3db40a4313f80f540df4ccc6 7 days: a negative change carries its minus sign (Sign-ins, 7 days: −4)
-[PASS] N7-neg-c7aa7571e9a6b8507e46f472a92cc35a 7 days: a negative change carries its minus sign (Failed, 7 days: −3)
+[PASS] N7-neg-bb59faaa3db40a4313f80f540df4ccc6 7 days: a negative change carries its minus sign (Sign-ins, 7 days: −6)
+[PASS] N7-neg-c7aa7571e9a6b8507e46f472a92cc35a 7 days: a negative change carries its minus sign (Failed, 7 days: −1)
 [PASS] N7-Facc 7 days: the first figure in accent, the others not
 [PASS] N7-S1  7 days: the table of sign-ins per day has the 7 calendar days, oldest first, with successful and failed per day = auth_logins
 [PASS] N7-S2  7 days: the legend totals are the period totals
@@ -56,16 +56,16 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N30-F1 30 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
 [INFO] N30 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
 [PASS] N30-F1d 30 days: the change of active users is the accounts created in the period among the non-deleted (+19)
-[PASS] N30-F2 30 days: sign-ins = auth_logins success=1 in the period (103)
-[PASS] N30-F2d 30 days: change of sign-ins on the previous 30 days, signed (-12)
-[PASS] N30-F3 30 days: failed sign-ins = success=0 in the period (39)
+[PASS] N30-F2 30 days: sign-ins = auth_logins success=1 in the period (101)
+[PASS] N30-F2d 30 days: change of sign-ins on the previous 30 days, signed (-14)
+[PASS] N30-F3 30 days: failed sign-ins = success=0 in the period (41)
 [PASS] N30-F2n 30 days: the sign-ins note names the peak day count (7)
 [PASS] N30-F3n 30 days: the failed note gives the previous period (36)
-[PASS] N30-F3d 30 days: change of failed sign-ins, signed (3)
+[PASS] N30-F3d 30 days: change of failed sign-ins, signed (5)
 [PASS] N30-F4 30 days: permission changes = the seven actions in the period (37)
 [PASS] N30-F4d 30 days: change of permission changes, signed (10)
 [PASS] N30-F4n 30 days: the note says how many are overrides (4)
-[PASS] N30-neg-82de8018da58761a652b7d4e88f1f4e0 30 days: a negative change carries its minus sign (Sign-ins, 30 days: −12)
+[PASS] N30-neg-82de8018da58761a652b7d4e88f1f4e0 30 days: a negative change carries its minus sign (Sign-ins, 30 days: −14)
 [PASS] N30-Facc 30 days: the first figure in accent, the others not
 [PASS] N30-S1 30 days: the table of sign-ins per day has the 30 calendar days, oldest first, with successful and failed per day = auth_logins
 [PASS] N30-S2 30 days: the legend totals are the period totals
@@ -84,7 +84,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] roles note: 34 users, 15 roles ; percents: ["23%","17%","14%","14%","31%"] ; roles details: 1
 [PASS] N30-C1 30 days: the latest five permission changes of the period, newest first (actor, subject)
 [PASS] N30-C2 30 days: "View all 37" opens the activity log filtered on the period (2026-09-26 to 2026-10-25)
-[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 25 Oct, 10:09 02 v8badmin revoked roles.view from Recent1 25 Oct, 10:09 03 v8badmin granted Recent2 roles.view 25 Oct, 10:09 04 The system denied Recent3 roles.view 25 Oct, 10:09 05 v8badmin cleared the override of roles.view for Recent4 25 Oct, 10:09 ; view-all query: {"from":"2026-09-26","to":"2026-10-25"}
+[INFO] changes block text: D Latest permission changes View all 37 01 v8badmin granted Recent0 roles.view 25 Oct, 10:34 02 v8badmin revoked roles.view from Recent1 25 Oct, 10:34 03 v8badmin granted Recent2 roles.view 25 Oct, 10:34 04 The system denied Recent3 roles.view 25 Oct, 10:34 05 v8badmin cleared the override of roles.view for Recent4 25 Oct, 10:34 ; view-all query: {"from":"2026-09-26","to":"2026-10-25"}
 [PASS] N30-noSec 30 days: no security notice when no address reaches the threshold in a day and no email is locked
 [PASS] N30-C3 30 days: the View all link opens (200)
 [PASS] N90-0  90 days: 200, period 90 pressed, no PHP error, no SQL text
@@ -93,16 +93,16 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N90-F1 90 days: active users = non-deleted with active=1 (32), note on the total of non-deleted (34)
 [INFO] N90 F1 note 'of 34 accounts, 94%' (share computed here: 94%)
 [PASS] N90-F1d 90 days: the change of active users is the accounts created in the period among the non-deleted (+26)
-[PASS] N90-F2 90 days: sign-ins = auth_logins success=1 in the period (315)
-[PASS] N90-F2d 90 days: change of sign-ins on the previous 90 days, signed (0)
-[PASS] N90-F3 90 days: failed sign-ins = success=0 in the period (113)
+[PASS] N90-F2 90 days: sign-ins = auth_logins success=1 in the period (313)
+[PASS] N90-F2d 90 days: change of sign-ins on the previous 90 days, signed (-2)
+[PASS] N90-F3 90 days: failed sign-ins = success=0 in the period (115)
 [PASS] N90-F2n 90 days: the sign-ins note names the peak day count (8)
 [PASS] N90-F3n 90 days: the failed note gives the previous period (94)
-[PASS] N90-F3d 90 days: change of failed sign-ins, signed (19)
-[PASS] N90-F4 90 days: permission changes = the seven actions in the period (78)
-[PASS] N90-F4d 90 days: change of permission changes, signed (51)
-[PASS] N90-F4n 90 days: the note says how many are overrides (31)
-[PASS] N90-zero-1c2cf13b8deb3bc0826b211d387c3736 90 days: a zero change reads 0 (Sign-ins, 90 days: 0)
+[PASS] N90-F3d 90 days: change of failed sign-ins, signed (21)
+[PASS] N90-F4 90 days: permission changes = the seven actions in the period (79)
+[PASS] N90-F4d 90 days: change of permission changes, signed (53)
+[PASS] N90-F4n 90 days: the note says how many are overrides (32)
+[PASS] N90-neg-1c2cf13b8deb3bc0826b211d387c3736 90 days: a negative change carries its minus sign (Sign-ins, 90 days: −2)
 [PASS] N90-Facc 90 days: the first figure in accent, the others not
 [PASS] N90-S1 90 days: the table of sign-ins per day has the 90 calendar days, oldest first, with successful and failed per day = auth_logins
 [PASS] N90-S2 90 days: the legend totals are the period totals
@@ -119,7 +119,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] N90-R3 90 days: A2, the numbers of users per role sit in a <details> under the bar (one row per share, none outside)
 [PASS] N90-R4 90 days: A2, on view only the legend of names, in the order of the shares, without numbers
 [PASS] N90-C1 90 days: the latest five permission changes of the period, newest first (actor, subject)
-[PASS] N90-C2 90 days: "View all 78" opens the activity log filtered on the period (2026-07-28 to 2026-10-25)
+[PASS] N90-C2 90 days: "View all 79" opens the activity log filtered on the period (2026-07-28 to 2026-10-25)
 [PASS] N90-noSec 90 days: no security notice when no address reaches the threshold in a day and no email is locked
 [PASS] N90-C3 90 days: the View all link opens (200)
 [PASS] SEC-a7 7 days: an address with 5 failed sign-ins (lockAttempts) on one day 3 days ago gives the notice
@@ -285,20 +285,20 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] LANG-1 Every dashboard string exists in English and in Italian (same keys, none empty)
 [PASS] LANG-2 No dashboard string left in English in the Italian file (except names and placeholders)
 [PASS] LANG-3 No English dashboard text in the Italian page (headings, notes, labels, tables, weekdays, months)
-[INFO] IT excerpt: × Buongiorno, v8bowner I tuoi accessi, a colpo d’occhio Dal 26 set al 25 ott 2026 7 giorni 30 giorni 90 giorni Personalizza Personalizza la dashboard Scegli i blocchi che vedi, il loro ordine e il periodo con cui si apre la pagina. Avviso di sicurezza Sempre in cima quando compare Cifre chiave ↑ ↓ Accessi ↑ ↓ Chi ha quale ruolo ↑ ↓ Ultime modifiche ai permessi ↑ ↓ Periodo all’apertura 7 giorni 30 giorni 90 giorni Salva per me Salva come predefinito per tutti Torna al predefinito 5 accessi falliti da 203.0.113.9 il 24 ott, la soglia di blocco è 5. Rivedi i tentativi Utenti attivi 51 +40 nuovi Account creati nel periodo su 55 account, 93% Accessi, 30 giorni 128 +13 Variazione sui 30 giorni precedenti picco di 30 il 25 ott Falliti, 30 giorni 44 +8 Variazione sui 30 giorni precedenti 36 nel periodo precedente Modifiche ai permessi 37 +10 Variazione sui 30 giorni precedenti 4 override utente tra queste A Accessi negli ultimi 30 giorni Riusciti 128 Falliti 44 50250 26 set3 ott11 ott18 ott25 ott Mostra i numeri GiornoRiuscitiFalliti sab 26 set62 dom 27 set72 lun 28 set31 mar 29 set51 mer 30 set31 gio 1 ott31 ven 2 ott50 sab 3 ott00 dom 4 ott20 lun 5 ott42 mar 6 ott40 mer 7 ott52 gio 8 ott01 ven 9 ott00 sab 10 ott32 dom 11 ott73 lun 12 ott21 mar 13 ott41 mer 14 ott72 gio 15 ott13 ven 16 ott72 sab 17 ott11 dom 18 ott32 lun 19 ott54 mar 20 ott00 mer 21 ott63 gio 22 ott31 ven 23 ott20 sab 24 ott05 dom 25 ott301 B Quando si accede di punta: dom 10:00 lunmarmergioven...
+[INFO] IT excerpt: × Buongiorno, v8bowner I tuoi accessi, a colpo d’occhio Dal 26 set al 25 ott 2026 7 giorni 30 giorni 90 giorni Personalizza Personalizza la dashboard Scegli i blocchi che vedi, il loro ordine e il periodo con cui si apre la pagina. Avviso di sicurezza Sempre in cima quando compare Cifre chiave ↑ ↓ Accessi ↑ ↓ Chi ha quale ruolo ↑ ↓ Ultime modifiche ai permessi ↑ ↓ Periodo all’apertura 7 giorni 30 giorni 90 giorni Salva per me Salva come predefinito per tutti Torna al predefinito 5 accessi falliti da 203.0.113.9 il 24 ott, la soglia di blocco è 5. Rivedi i tentativi Utenti attivi 51 +40 nuovi Account creati nel periodo su 55 account, 93% Accessi, 30 giorni 126 +11 Variazione sui 30 giorni precedenti picco di 28 il 25 ott Falliti, 30 giorni 46 +10 Variazione sui 30 giorni precedenti 36 nel periodo precedente Modifiche ai permessi 37 +10 Variazione sui 30 giorni precedenti 4 override utente tra queste A Accessi negli ultimi 30 giorni Riusciti 126 Falliti 46 50250 26 set3 ott11 ott18 ott25 ott Mostra i numeri GiornoRiuscitiFalliti sab 26 set62 dom 27 set72 lun 28 set31 mar 29 set51 mer 30 set31 gio 1 ott31 ven 2 ott50 sab 3 ott00 dom 4 ott20 lun 5 ott42 mar 6 ott40 mer 7 ott52 gio 8 ott01 ven 9 ott00 sab 10 ott32 dom 11 ott73 lun 12 ott21 mar 13 ott41 mer 14 ott72 gio 15 ott13 ven 16 ott72 sab 17 ott11 dom 18 ott32 lun 19 ott54 mar 20 ott00 mer 21 ott63 gio 22 ott31 ven 23 ott20 sab 24 ott05 dom 25 ott283 B Quando si accede di punta: dom 10:00 lunmarmergiove...
 [PASS] LOGIN-1 With the 1.0 Auth.php (login => rolewarden/users) sign-in still lands on Users
 [PASS] LOGIN-2 With login => 'rolewarden' (CHANGELOG) sign-in lands on the dashboard (200)
 [PASS] LOGIN-3 Same setting, a user without dashboard.* goes on to the first screen it can see
 [INFO] after sign-in from /[omesso]?period=7: http://127.0.0.1:8071/index.php/[omesso]
-[INFO] server pid=35940 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=35536 on 127.0.0.1:8071 prefix=''
 [INFO] TZ: last day of the table ["Mon 26 Oct",1,0] ; today in Kiritimati: Mon 26 Oct ; range 20 Oct to 26 Oct 2026
 [PASS] TZ-1   With appTimezone Pacific/Kiritimati the last day of the period is today in that time zone
-[INFO] server pid=8816 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=17644 on 127.0.0.1:8071 prefix=''
 [PASS] LOG-1  No response of this phase has status >= 500, PHP error text or SQL text
 [INFO] log lines written by the SQL-error probe: []
 [PASS] LOG-2  No WARNING/NOTICE/DEPRECATED/ERROR/CRITICAL line in the application log (threshold 9)
 [PASS] LOG-3  No PHP warning, notice or deprecation in the server output
 
 TOTAL: 258 PASS, 0 FAIL, 0 AMB
-09b9159 s1.dash.09b9159.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+89971ed s1.dash.89971ed.development: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (1 .env files deleted first)

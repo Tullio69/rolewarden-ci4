@@ -1241,3 +1241,21 @@ Formato di ogni voce:
   - U2 e U1 development e le regressioni in production non sono state eseguite: ogni passo si e' fermato prima di toccare il database.
   - Da rilanciare uno alla volta con `verify-u5.all.sh`, solo su richiesta.
   - Nessun commit.
+
+### [2026-10-25 12:50] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica in nero della U5 su `89971ed` dopo D1-D3. Ho scritto solo `tests/Integration/verify-u5.*` (in `verify-u5.phase-cust.php` il nuovo controllo JS-edge-up, piu' le nuove uscite) e la sezione «Riverifica su 89971ed» di `U5-REPORT.md`. Database `rolewarden_test`, ripristinato e confrontato a ogni esecuzione (hash `f7f37c04…e21e64` identico).
+- Cosa ho fatto: CUST in development e production, poi la regressione una suite alla volta (U4 DASH, U4 UPG, U3, U2, U1; development e poi production per ciascuna), aspettando ogni volta che i processi fossero chiusi. Memoria libera tra 2,8 e 3,2 GB, nessuna interruzione.
+- Stato: completato. **Esito PASS, 1616/1616. D1, D2, D3 chiusi; U5 approvata quanto ai difetti.**
+  - CUST 125/125 e 125/125
+  - DASH 258/258 e 259/259
+  - UPG 29/29 e 29/29
+  - U3 41/41 e 41/41
+  - U2 129/129 e 129/129
+  - U1 226/226 e 226/226
+- Ambiguita' di specifica: **A1-A3 ancora aperte**, osservate invariate e non decise:
+  - A1: un `?period=` non valido con un periodo salvato apre 30 giorni;
+  - A2: con tutti i blocchi nascosti resta solo il pannello;
+  - A3: la posizione dei blocchi che chi salva il globale non vede non e' definita.
+  Nessuna ambiguita' nuova.
+- Note per il prossimo: nessun processo residuo, scratchpad pulito. Nessun commit.

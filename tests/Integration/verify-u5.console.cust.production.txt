@@ -10,7 +10,7 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] SET-mig The application adds u5orders.view and u5stock.view with a migration as documented (exit 0, both present)
 [PASS] SET-adm Model: admin holds settings.update and the five dashboard.*, not the application permissions
 [PASS] SET-v1 Model: u5-viewer has no settings.update
-[INFO] server pid=34876 on 127.0.0.1:8071 prefix=''
+[INFO] server pid=23784 on 127.0.0.1:8071 prefix=''
 [PASS] SET-login All seven accounts sign in
 [PASS] DEF-own Nobody has chosen: the super admin sees the stock order, application blocks after the five (security,figures,signins,roles,changes,u5-orders,u5stock2), 30 days
 [PASS] DEF-panel Customize is a secondary button (summary) next to the period, opening a POST form
@@ -29,9 +29,8 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] APP-uid The view receives $userId = the signed-in user (v1 = 7)
 [PASS] APP-period The view receives $period: days 30, from 00:00 of 29 days ago, to now, prevFrom 30 days earlier, 30 dates
 [PASS] APP-stock A block without data(): its view still gets $period and $userId (owner = 1)
-[FAIL] APP-isol A block without data() receives no data of another block (contract: data() plus $period and $userId)
-         -> {"marker":"ORD-DATA","gotUser":"1","vars":"blocks,period,name,hour,security,figures,buckets,roles,changes,app,customize,global,greeting,range,flow,at,half,letter,block,data,marker,gotUser,gotDays,hostile,userId"}
-[INFO] APP vars seen by the Orders view: blocks,period,name,hour,security,figures,buckets,roles,changes,app,customize,global,greeting,range,flow,at,half,letter,block,data,marker,gotUser,gotDays,hostile,userId | by the Stock view: blocks,period,name,hour,security,figures,buckets,roles,changes,app,customize,global,greeting,range,flow,at,half,letter,block,data,marker,gotUser,gotDays,hostile,userId
+[PASS] APP-isol A block without data() receives no data of another block (contract: data() plus $period and $userId)
+[INFO] APP vars seen by the Orders view: marker,gotUser,gotDays,hostile,period,userId | by the Stock view: period,userId
 [PASS] APP-esc The module escapes the title() of an application block in the section heading
 [PASS] APP-letters Letters run A, B, C... over the sections in render order, the application blocks included
 [PASS] APP-perm-own The super admin sees both application blocks; admin (no permission) sees none of their titles
@@ -102,9 +101,8 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] HOS period array: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 7 order ["security","figures","roles","changes","u5-orders","u5stock2"]
 [PASS] HOS-348257c74d9f69f6643fc2f9926084c8 Hostile POST (order string): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
 [INFO] HOS order string: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
-[FAIL] HOS-be976a98e93d727cb88a36f361b9256c Hostile POST (nested arrays): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
-         -> [500,200,30,"a:3:{s:5:\"order\";a:7:{i:0;s:8:\"security\";i:1;s:7:\"figures\";i:2;s:5:\"roles\";i:3;s:7:\"changes\";i:4;s:9:\"u5-orders\";i:5;s:8:\"u5stock2\";i:6;s:7:\"signins\";}s:6:\"hidden\";a:0:{}s:6:\"period\";i:30;}"]
-[INFO] HOS nested arrays: answer 500  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
+[PASS] HOS-be976a98e93d727cb88a36f361b9256c Hostile POST (nested arrays): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
+[INFO] HOS nested arrays: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
 [PASS] HOS-0442b6dc1f1a1e6952e444161ce536e2 Hostile POST (no fields): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
 [INFO] HOS no fields: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
 [PASS] HOS-a8842b4630120e4d81646e74a4dfbab2 Hostile POST (scope evil): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
@@ -115,7 +113,6 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [INFO] HOS huge: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","roles","changes","u5-orders","u5stock2"]
 [PASS] HOS-2aa566d014a64a1a5224306607a13036 Hostile POST (nul byte): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
 [INFO] HOS nul byte: answer 303  -> stored a:3:{s:5:"order";a:7:{i:0;s:8:"security";i:1;s:7:"figures";i:2;s:5:"roles";i:3;s:7:"changes";i:4;s:9:"u5-orders";i:5;s:8:"u5stock2";i:6;s:7:"signins";}s:6:"hidd... period 30 order ["security","figures","roles","changes","u5-orders","u5stock2"]
-[INFO] HOS log: CRITICAL - 2026-10-25 10:08:23 --> ErrorException: Array to string conversion | [Method: POST, Route: [omesso]/dashboard/layout] | in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\u5w-cust-production-d\modfull\src\Controllers\DashboardController.php on line 100. | 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'Array to string conversion', 'C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-[omesso]-ci4\\02c51942-865e-4afd-9f77-3ffd0bc0ec21\\scratchpad\\u5w-cust-production-d\\modfull\\src\\Controllers\\DashboardController.php', 100) | 2 [internal function]: strval([...]) | 3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\02c51942-865e-4afd-9f77-3ffd0bc0ec21\scratchpad\u5w-cust-production-d\modfull\src\Controllers\DashboardController.php(100): array_map('strval', [...]) | 4 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\DashboardController->layout() | 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\DashboardController))
 [PASS] HOS-evil scope=evil (repeated) leaves every layout row as it was
 [PASS] HOS-glob v2 forging scope=global changes nothing global
 [PASS] CSRF-glb POST without the CSRF token (admin, global) is refused and saves nothing
@@ -148,30 +145,23 @@ Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e6
 [PASS] NOJS-save The no-JS submission saves show/hide and the period (changes hidden, 90 days)
 [PASS] NOJS-none Every block unchecked: no 5xx, the page opens and Customize stays reachable to undo it
 [INFO] NOJS every block unchecked renders [], panel []
-[INFO] JS: {"state0":{"keys":["security","figures","roles","changes","u5-orders"],"buttons":[[],[{"disabled":true,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":true,"visible":true}]]},"m1":{"keys":["security","roles","figures","changes","u5-orders"],"active":"BUTTON|Move Key figures down","sameButton":true,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":false},"m2":{"keys":["security","roles","figures","u5-orders","changes"],"active":"BUTTON|Move U5 Orders block up","sameButton":true,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":false},"m3":{"keys":["security","roles","figures","changes","u5-orders"],"active":"BODY|","sameButton":false,"focusVisible":false,"outline":"none 3px rgb(23, 25, 28)","shadow":"none","disabled":true},"state1":{"keys":["security","roles","figures","changes","u5-orders"],"buttons":[[],[{"disabled":true,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":true,"visible":true}]]},"after":["rw-dash-changes","rw-dash-app-u5-orders"],"console":[],"errors":[]}
+[INFO] JS: {"state0":{"keys":["security","figures","roles","changes","u5-orders"],"buttons":[[],[{"disabled":true,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":true,"visible":true}]]},"m1":{"keys":["security","roles","figures","changes","u5-orders"],"active":"BUTTON|Move Key figures down","sameButton":true,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":false},"m2":{"keys":["security","roles","figures","u5-orders","changes"],"active":"BUTTON|Move U5 Orders block up","sameButton":true,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":false},"m3":{"keys":["security","roles","figures","changes","u5-orders"],"active":"BUTTON|Move U5 Orders block up","sameButton":false,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":true},"m4":{"keys":["security","figures","roles","changes","u5-orders"],"active":"BUTTON|Move Key figures down","sameButton":false,"focusVisible":true,"outline":"solid 2px rgb(30, 78, 166)","shadow":"none","disabled":true},"state1":{"keys":["security","figures","roles","changes","u5-orders"],"buttons":[[],[{"disabled":true,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":false,"visible":true}],[{"disabled":false,"visible":true},{"disabled":true,"visible":true}]]},"after":["rw-dash-changes","rw-dash-app-u5-orders"],"console":[],"errors":[]}
 [PASS] JS-0   With JavaScript the up/down buttons show; the first movable row cannot go up, the last cannot go down
 [PASS] JS-down Down moves the row one place down
 [PASS] JS-focus After a move the focus stays on the pressed button and is visible
 [PASS] JS-up  Up moves the row one place up
-[FAIL] JS-edge Moving a row to the last place: the focus is not lost (it stays on a visible control of the panel)
-         -> {"keys":["security","roles","figures","changes","u5-orders"],"active":"BODY|","sameButton":false,"focusVisible":false,"outline":"none 3px rgb(23, 25, 28)","shadow":"none","disabled":true}
+[PASS] JS-edge Moving a row to the last place: the focus is not lost (it stays on a visible control of the panel)
+[PASS] JS-edge-up Moving a row to the first movable place: the focus is not lost either
 [PASS] JS-pin The pinned security row never moves
 [PASS] JS-save Save for me after the moves: the page renders the new order, roles hidden, 7 days
 [PASS] JS-console No JavaScript error in the console
-[FAIL] LOG-5xx No answer >= 500, no SQL text, no PHP error on any page of the phase
-         -> ["POST layout hos nested arrays 500"]
-[FAIL] LOG-app The application log has no WARNING/ERROR line other than the invalid blocks and the CSRF refusals of this phase
-         -> ["CRITICAL - 2026-10-25 10:08:23 --> ErrorException: Array to string conversion"]
+[PASS] LOG-5xx No answer >= 500, no SQL text, no PHP error on any page of the phase
+[PASS] LOG-app The application log has no WARNING/ERROR line other than the invalid blocks and the CSRF refusals of this phase
 [PASS] LOG-srv No PHP warning in the server log
 [PASS] SCH-1  No table appeared or changed during the phase
 [PASS] SCH-2  Fresh installs of 29a5df6 (U4) and 09b9159 (U5) have the same tables and the same CREATE TABLE
 [INFO] SCH tables: acl_activity_log,acl_permissions,acl_role_permissions,acl_roles,acl_sessions,acl_user_permissions,acl_user_roles,auth_groups_users,auth_identities,auth_logins,auth_permissions_users,auth_remember_tokens,auth_token_logins,migrations,settings,users
 
-TOTAL: 119 PASS, 5 FAIL, 0 AMB
-FAIL APP-isol A block without data() receives no data of another block (contract: data() plus $period and $userId)
-FAIL HOS-be976a98e93d727cb88a36f361b9256c Hostile POST (nested arrays): no 5xx, the dashboard opens with 7/30/90, nothing hostile stored
-FAIL JS-edge Moving a row to the last place: the focus is not lost (it stays on a visible control of the panel)
-FAIL LOG-5xx No answer >= 500, no SQL text, no PHP error on any page of the phase
-FAIL LOG-app The application log has no WARNING/ERROR line other than the invalid blocks and the CSRF refusals of this phase
-09b9159 s1.cust.09b9159.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+TOTAL: 125 PASS, 0 FAIL, 0 AMB
+89971ed s1.cust.89971ed.production: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
 Work folder removed=True (2 .env files deleted first)

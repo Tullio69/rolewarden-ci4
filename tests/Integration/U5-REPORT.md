@@ -137,3 +137,38 @@ Non ho aperto controller, model, view, `Layout.php`, `Dashboard.php`, `panel.js`
   - Anche il ripristino finale dello snapshot è fallito (exit 3221225794). L'ho rifatto a mano dallo snapshot della corsa: hash identico, riga in `verify-u5.environment.txt`. La cartella di lavoro è stata rimossa, `.env` per primo.
 - **U2 e U1 development, e tutto production tranne CUST: non eseguiti.** Il driver orfano è ripartito sul database non ripristinato, ma ogni passo si è fermato prima di iniziare, perché lo snapshot non riusciva (exit 4). Il database non è stato toccato. Le uscite sono `*.aborted-no-snapshot.txt`.
 - **Da rilanciare, su richiesta, quando c'è memoria.** Uno alla volta: `bash verify-u5.all.sh u3.development`, poi `u2.development`, `u1.development`, `dash.production`, `upg.production`, `u3.production`, `u2.production`, `u1.production`, con `RW_U5_RUN` diverso a ogni giro.
+
+## Riverifica su 89971ed
+
+**Collaudatore ad Hoc (Claude), 2026-10-25, commit `89971ed` (correzione di D1–D3). Esito: PASS. D1, D2 e D3 sono chiusi. U5 è approvata per quanto riguarda i difetti; A1–A3 restano aperte e vanno decise.**
+
+Ho seguito le stesse regole di lettura del primo giro. Del commit conosco solo il `--stat`.
+
+Driver: `verify-u5.all.sh` con `RW_V8_NEW=89971ed` e `RW_U5_RUN=-v2`. Ho eseguito una suite alla volta, attendendo ogni volta che i suoi processi fossero chiusi (`scratchpad/u5step.sh`). Ordine: CUST, poi U4 DASH, U4 UPG, U3, U2, U1, ciascuna prima in development e poi in production. La memoria libera è rimasta tra 2,8 e 3,2 GB, e nessuna uscita ha `rc=-1073741502`.
+
+| Suite | development | production |
+| --- | --- | --- |
+| U5 CUST | **125/125** | **125/125** |
+| U4 DASH | **258/258** | **259/259** (in più SQL-prod) |
+| U4 UPG | **29/29** | **29/29** |
+| U3 SRCH (copia adattata U4) | **41/41** | **41/41** |
+| U2 CHK, ST | **129/129** | **129/129** |
+| U1 NAV…ESC (copie adattate U4) | **226/226** | **226/226** |
+
+**Totale:** 1616/1616.
+
+- **D1 chiuso (APP-isol).** La view di Orders vede solo `marker, gotUser, gotDays, hostile, period, userId`, cioè `data()` più `$period` e `$userId`. La view di Stock, che non ha `data()`, vede solo `period, userId`.
+- **D2 chiuso (HOS «nested arrays», LOG-5xx, LOG-app).** La POST con `order[a][b]=…` riceve 303 e non salva nulla. Nessuna risposta ≥ 500, e nel log non c'è più `Array to string conversion`.
+- **D3 chiuso (JS-edge).** Quando una riga arriva all'ultimo posto, il fuoco resta su un pulsante visibile del pannello, con `:focus-visible`. **Controllo nuovo, JS-edge-up:** lo stesso vale salendo al primo posto spostabile. Rispetto al primo giro CUST ha 125 controlli invece di 124, e il controllo in più è questo.
+- **Nessuna regressione:**
+  - tutti gli altri controlli CUST passano come nel primo giro;
+  - U4 DASH e UPG, U3, U2 e U1 passano in tutti e due gli ambienti;
+  - la regressione interrotta nel primo giro è ora completa.
+- **Ambiguità (non decise):** A1–A3 restano aperte, come descritte sopra. Il commit non le tocca. Le ho osservate tutte e tre anche su `89971ed`:
+  - un `?period=` non valido con 7 salvati apre 30;
+  - con tutti i blocchi nascosti resta solo il pannello;
+  - l'ordine relativo dei blocchi che chi salva non vede resta.
+  Non ne sono emerse di nuove.
+- **Ambiente:**
+  - database identico allo snapshot `f7f37c04…e21e64` prima e dopo ogni esecuzione (`verify-u5.environment.txt`), Mailpit vuoto, nessun processo residuo;
+  - le cartelle di lavoro sono state rimosse; l'ultima, `u5r-u2-development-v2`, era rimasta vuota e l'ho cancellata a mano.

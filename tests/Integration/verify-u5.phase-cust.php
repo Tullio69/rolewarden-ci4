@@ -443,13 +443,14 @@ $r = u1browser([
     ['op' => 'eval', 'expr' => $jsMove('figures', 'down'), 'tag' => 'm1'],
     ['op' => 'eval', 'expr' => $jsMove('u5-orders', 'up'), 'tag' => 'm2'],
     ['op' => 'eval', 'expr' => $jsMove('u5-orders', 'down'), 'tag' => 'm3'],
+    ['op' => 'eval', 'expr' => $jsMove('figures', 'up'), 'tag' => 'm4'],
     ['op' => 'eval', 'expr' => $jsState, 'tag' => 'state1'],
     ['op' => 'eval', 'expr' => "(() => { document.querySelector('input[name=\"shown[]\"][value=\"roles\"]').checked = false; document.querySelector('select[name=period]').value = '7'; return true; })()", 'tag' => 'uncheck'],
     ['op' => 'click', 'selector' => 'details.rw-dash-customize button[name=scope][value=me]', 'nav' => true, 'tag' => 'save'],
     ['op' => 'eval', 'expr' => "[...document.querySelectorAll('section[aria-labelledby]')].map(s => s.getAttribute('aria-labelledby'))", 'tag' => 'after'],
 ], 'js v1');
 $s0 = bval($r, 'state0'); $m1 = bval($r, 'm1'); $m2 = bval($r, 'm2'); $m3 = bval($r, 'm3'); $s1 = bval($r, 'state1');
-info('JS: ' . json_encode(['state0' => $s0, 'm1' => $m1, 'm2' => $m2, 'm3' => $m3, 'state1' => $s1, 'after' => bval($r, 'after'), 'console' => $r['consoleErrors'] ?? null, 'errors' => $r['errors'] ?? null]));
+info('JS: ' . json_encode(['state0' => $s0, 'm1' => $m1, 'm2' => $m2, 'm3' => $m3, 'm4' => bval($r, 'm4'), 'state1' => $s1, 'after' => bval($r, 'after'), 'console' => $r['consoleErrors'] ?? null, 'errors' => $r['errors'] ?? null]));
 $k0 = $s0['keys'] ?? [];
 check('JS-0', 'With JavaScript the up/down buttons show; the first movable row cannot go up, the last cannot go down', $s0 && ($s0['buttons'][1][0]['disabled'] ?? null) === true && ($s0['buttons'][count($k0) - 1][1]['disabled'] ?? null) === true && ($s0['buttons'][1][0]['visible'] ?? false) && ($s0['buttons'][2][1]['disabled'] ?? null) === false, json_encode($s0));
 $exp1 = $k0; if ($k0) { $i = array_search('figures', $exp1, true); [$exp1[$i], $exp1[$i + 1]] = [$exp1[$i + 1], $exp1[$i]]; }
@@ -458,6 +459,8 @@ check('JS-focus', 'After a move the focus stays on the pressed button and is vis
 $exp2 = $exp1; $i = array_search('u5-orders', $exp2, true); if ($i > 1) [$exp2[$i], $exp2[$i - 1]] = [$exp2[$i - 1], $exp2[$i]];
 check('JS-up', 'Up moves the row one place up', ($m2['keys'] ?? null) === $exp2 && ($m2['sameButton'] ?? false), json_encode([$m2['keys'] ?? null, $exp2]));
 check('JS-edge', 'Moving a row to the last place: the focus is not lost (it stays on a visible control of the panel)', $m3 && $m3['active'] !== 'BODY|' && ($m3['focusVisible'] ?? false), json_encode($m3));
+$m4 = bval($r, 'm4');
+check('JS-edge-up', 'Moving a row to the first movable place: the focus is not lost either', $m4 && ($m4['keys'][1] ?? '') === 'figures' && $m4['active'] !== 'BODY|' && ($m4['focusVisible'] ?? false), json_encode($m4));
 check('JS-pin', 'The pinned security row never moves', ($s1['keys'][0] ?? '') === 'security', json_encode($s1['keys'] ?? null));
 $after = bval($r, 'after') ?? [];
 $h1 = dget($CL['v1'], 'js after http');

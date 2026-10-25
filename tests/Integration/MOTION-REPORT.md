@@ -194,3 +194,67 @@ Non ho aperto `resources/css`, `src/Assets`, le view, i controller né i test un
 - Nessun processo residuo: i php, node e chrome presenti sono anteriori alla sessione.
 - **Rimasti nello scratchpad** alcuni profili Chrome delle cartelle `mw-*`, che il sandbox non lascia cancellare (EPERM su file `LOCK`/`LOG` del profilo). Non contengono `.env` né credenziali: i `.env` sono stati cancellati per primi a ogni esecuzione. Vanno tolti a mano.
 - `../rolewarden-app-test` non è stata toccata. Nessun commit.
+
+## Riverifica su 933154b (con i giri su a790b3a)
+
+**Collaudatore ad Hoc (Claude), 2026-10-25. Esito: INCOMPLETO, nessuna approvazione.**
+
+Su 933154b la fase MOTION in development dà 138 PASS e 1 FAIL. Quel FAIL è un errore del mio strumento, corretto dopo: il giro di conferma (rv4) è stato interrotto. Production e regressione non sono state eseguite, perché la macchina ha poca memoria: Claude Code ha interrotto due giri (rv2 e rv4) e, come prevede, non li ho rilanciati da solo.
+
+### Giri
+
+| Giro | Commit | Ambiente | Esito | Database |
+| --- | --- | --- | --- | --- |
+| rv1 | a790b3a | development | 127/135. Dei 7 FAIL dello strumento poi corretto: 3 RM (la regex di A1 non accettava classi con spazi), 1 ERR-console-ink (EBUSY sul profilo Chrome), 3 NAV-d5 (posizione letta dopo uno screenshot in ritardo di 800 ms). Più NAV-d5-realtime, chiuso dal registro di rv2. | ripristinato dal runner, hash identico |
+| rv2 | a790b3a | development | prove complete, 132/139, poi interrotto per memoria prima del ripristino. FAIL: NAV-d2 ×3 (difetto vero), NAV-d5 ×4 (tolleranza mia di 2 px) | ripristinato a mano dal suo `snapshot.sql`, hash identico |
+| rv3 | 933154b | development | **138/139**. L'unico FAIL, NAV-d2-charcoal, è dello strumento (vedi D2) | ripristinato dal runner, hash identico |
+| rv4 | 933154b | development | interrotto per memoria all'avvio. Ho fermato i processi orfani | ripristinato a mano, hash identico, Mailpit vuoto |
+
+Hash di riferimento sempre `f7f37c04…e21e64` (`verify-motion.environment.txt`).
+
+### D1-D5 e A1
+
+- **D1 corretto** (rv1, rv3):
+  - nessun `InvalidStateError` nei 9 giri dei temi;
+  - `pagereveal` porta una view transition su tutte le 8 navigazioni dalla barra e dopo il form di login (VT-err, NAV-vt).
+- **D2 corretto su 933154b** (rv3, a meno della conferma di rv4).
+  - **Come lo misuro:** la sonda a pillola rossa di rv2 non serve più. Rende opaca anche una velatura, quindi non distingue un'etichetta coperta da una visibile sopra la velatura. L'ho sostituita con una misura di leggibilità sui fotogrammi veri, senza toccare la pagina:
+    - per ogni riga di pixel di ogni etichetta della barra, il contrasto WCAG fra l'inchiostro e il colore di fondo della riga;
+    - separatamente per la parte sotto l'evidenziazione e per quella fuori;
+    - contano solo le righe che hanno inchiostro quando l'etichetta è libera;
+    - soglia 3:1.
+  - **Calibrazione:** sul fotogramma 05 di rv1 (a790b3a, Ink) l'intestazione SECURITY sotto l'evidenziazione misura 1,04:1, cioè coperta, ed è rilevata.
+  - **Su 933154b**, Paper, Ink e Charcoal rallentati 10 volte (25 fotogrammi ciascuno) e Ink a velocità reale (41 fotogrammi):
+    - nessuna etichetta sotto 3:1 in Paper, Ink e Ink a velocità reale;
+    - minimo sotto l'evidenziazione: Paper 5,07:1, Ink 4,19:1, Ink a velocità reale 7,9:1, Charcoal 4,04:1.
+  - **L'unico rilievo** (Charcoal, 1527 ms, «Security below 1,05:1») è un falso positivo. Erano righe sotto la linea di base di una scritta maiuscola, senza inchiostro; a occhio SECURITY resta leggibile sopra la velatura in tutti i fotogrammi (`verify-motion.frames.development-rv3.charcoal.*.png`). La regola delle righe con inchiostro corregge questo errore e regge la calibrazione, ma il giro di conferma (rv4) è stato interrotto.
+  - **Su a790b3a (rv2) D2 c'era ancora:** Settings coperta all'arrivo nei tre temi, SECURITY in Ink, Permissions in Charcoal.
+- **D3 corretto:** in en e it nessun valore negativo; ogni valore intermedio è raggruppato come il testo finale (rv1, rv3: 436 valori in en e 424 in it).
+- **D4 corretto:** nessuna transizione di `transform` su Personalizza con il movimento ridotto (RM-dash).
+- **D5 corretto:**
+  - secondo il registro `requestAnimationFrame` della pagina, dal primo fotogramma della pagina nuova l'evidenziazione parte da Users e scende sempre verso Settings;
+  - nei tre temi e a velocità reale, su a790b3a e su 933154b;
+  - la tolleranza ora è metà dell'altezza della voce;
+  - su a790b3a la partenza era 8 px sopra la posizione a riposo. Su 933154b il controllo passa, ma lo scarto esatto non è stampato (lo stampa la versione dello strumento di rv4).
+- **A1 chiusa come decisa:** con il movimento ridotto restano solo transizioni di `transform` di 120 ms su SUMMARY, BUTTON e cella premuti (RM-cust, RM-dlg, RM-cell). Nient'altro si muove.
+
+### Cosa manca per chiudere
+
+1. MOTION in development su 933154b con lo strumento definitivo (conferma di D2).
+2. MOTION in production.
+3. Regressione in development: U5 CUST, U4 DASH, U3 SRCH, U1 (NAV, RAIL, STYLE adattata, ESC).
+
+Uno alla volta, con memoria sufficiente: `RW_V8_NEW=933154b RW_MOTION_RUN=-rv5 bash verify-motion.all.sh motion.development` (poi `motion.production`, poi `cust.development dash.development u3.development u1.development`).
+
+### Ambiguità
+
+Nessuna nuova.
+
+**Interpretazione mia, da confermare:** per «illeggibile» uso la soglia 3:1 del design system per gli elementi grandi o non testuali. Nel caso peggiore, 4,04:1, i valori misurati sono comunque sopra.
+
+### Ambiente
+
+- Database identico allo snapshot dopo ogni giro, anche dopo le due interruzioni (ripristino a mano registrato in `verify-motion.environment.txt`).
+- Mailpit vuoto, nessun `.env` e nessun processo residuo.
+- Restano nello scratchpad i profili Chrome di `mw-motion-development-rv1…rv4`, bloccati da EPERM.
+- Nessun commit.

@@ -26,3 +26,15 @@ exit=1 motion.production 18:16:13
 === u1.development 18:16:14
 exit=0 u1.development 18:21:10
 ALL DONE 18:21:10
+=== motion.development 18:46:26
+exit=1 motion.development 19:09:30
+ALL DONE 19:09:30
+=== motion.development 19:13:30
+exit=1 motion.development 19:38:27
+ALL DONE 19:38:27
+=== motion.development 19:44:11
+exit=1 motion.development 20:07:26
+ALL DONE 20:07:26
+=== motion.development 20:08:39
+exit=127 motion.development 20:09:39
+ALL DONE 20:09:39

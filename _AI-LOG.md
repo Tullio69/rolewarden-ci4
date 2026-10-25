@@ -1396,3 +1396,27 @@ Formato di ogni voce:
 - Stato: completato, riverifica del Collaudatore ad Hoc lanciata su a790b3a
 - Note per il prossimo: l'originale del design system su Claude va allineato (Motion, Toast, A1).
 
+### [2026-10-25 20:25] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: riverifica in nero del movimento su a790b3a e su 933154b. Ho scritto solo `tests/Integration/verify-motion.*` (fase motion aggiornata, uscite `-rv1`…`-rv4`, fotogrammi) e la sezione «Riverifica su 933154b» di `MOTION-REPORT.md`. Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Fase MOTION in development:
+    - rv1 e rv2 su a790b3a;
+    - rv3 su 933154b: 138/139, con l'unico FAIL dovuto al mio strumento, poi corretto.
+  - Strumento:
+    - A1 come decisa;
+    - raggruppamento delle cifre per D3;
+    - D5 dal registro `requestAnimationFrame` della pagina, con tolleranza di metà voce;
+    - D2 misurato come contrasto di ogni etichetta sui fotogrammi veri, al posto della sonda rossa, che non distingueva la velatura.
+- Stato: **parziale, nessuna approvazione** (esito INCOMPLETO). Due giri (rv2, rv4) interrotti da Claude Code per memoria bassa; non li ho rilanciati da solo. Non sono state eseguite MOTION in production e la regressione (U5 CUST, U4 DASH, U3 SRCH, U1).
+- Esiti per difetto:
+  - D1, D3, D4, D5: corretti;
+  - A1: chiusa come decisa;
+  - D2: ancora presente su a790b3a, corretto su 933154b secondo rv3, in attesa della conferma con lo strumento definitivo.
+- Ambiguita' di specifica: nessuna nuova. Soglia 3:1 per «illeggibile»: interpretazione mia, scritta nel report.
+- Note per il prossimo:
+  - dopo le interruzioni ho ripristinato a mano `rolewarden_test` dagli snapshot di rv2 e rv4: hash `f7f37c04…e21e64` identico, Mailpit vuoto;
+  - nessun `.env` e nessun processo residuo; restano profili Chrome `mw-motion-development-rv1…rv4` nello scratchpad (EPERM);
+  - per chiudere: `RW_MOTION_RUN=-rv5`, prima `motion.development`, poi `motion.production`, poi la regressione, uno alla volta e con memoria libera;
+  - nessun commit. Lock rilasciato.
+

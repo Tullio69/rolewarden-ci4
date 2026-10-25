@@ -1,0 +1,12 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase MOTION from verify-motion.phase-motion.php
+
+===== phase MOTION =====
+
+== MOTION: motion across the panel (933154b)
+[INFO] cache:clear rc=0 CodeIgniter v4.7.4 Command Line Tool - Server Time: 2026-10-25 19:09:02 UTC+00:00 Cache cleared.
+[INFO] server pid=39988 on 127.0.0.1:8071 prefix=''
+[PASS] SET-1  Owner signs in over HTTP; the test data is in place (1,234 bulk users, 12,345 + 2,345 sign-ins, 1,111 changes)
+[INFO] served counters: [["1242","1,242"],["12346","12,346"],["2345","2,345"],["1111","1,111"]]

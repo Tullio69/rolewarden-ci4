@@ -13,7 +13,7 @@ step() { # label, command...
   left=$(powershell -NoProfile -Command "(Get-CimInstance Win32_Process | Where-Object { (\$_.Name -in 'php.exe','python.exe','node.exe' -and \$_.CommandLine -match 'verify-|8071') -or (\$_.Name -eq 'chrome.exe' -and \$_.CommandLine -match 'mw-|mr-') }).Count")
   if [ "${left:-0}" != "0" ]; then echo "STOP before $l: $left leftover processes" >> "$P"; exit 3; fi
   echo "=== $l $(date +%H:%M:%S)" >> "$P"
-  "$@" > "verify-motion.console.$l.txt" 2>&1
+  "$@" > "verify-motion.console.$l$R.txt" 2>&1
   echo "exit=$? $l $(date +%H:%M:%S)" >> "$P"
 }
 want() { [ -z "$STEPS" ] || [[ " $STEPS " == *" $1 "* ]]; }

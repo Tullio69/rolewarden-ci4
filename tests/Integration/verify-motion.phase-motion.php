@@ -1,6 +1,6 @@
 <?php
 /**
- * MOTION phase (Collaudatore ad Hoc, Claude): motion across the panel (commit b38e350) in black box, over HTTP, direct
+ * MOTION phase (Collaudatore ad Hoc, Claude): motion across the panel (commit b38e350; re-verification on a790b3a, RW_V8_NEW) in black box, over HTTP, direct
  * queries on rolewarden_test and headless Chrome (verify-motion.browser.mjs, Chrome DevTools Protocol).
  * Sources of the assertions: docs/design-system/README.md (Motion, rewritten 2026-10-25), components/Toast/README.md,
  * components/UserStatus/README.md and CommandSearch/README.md, CHANGELOG.md (Motion under Changed), the prompt of the
@@ -12,10 +12,11 @@
  */
 require_once __DIR__ . '/verify-u1.lib.php';
 date_default_timezone_set('UTC');
-echo "\n== MOTION: motion across the panel (b38e350)\n";
+echo "\n== MOTION: motion across the panel (" . (getenv('RW_V8_NEW') ?: '?') . ")\n";
 $S0 = count($GLOBALS['SEEN']);
 $ENVN = getenv('RW_V8B_ENV') ?: 'development';
 $OUTP = __DIR__ . '/verify-motion.';
+$RUN = getenv('RW_MOTION_RUN') ?: '';
 
 /** One Chrome job with the motion driver; returns the decoded result. */
 function mb(array $steps, string $tag, int $timeout = 400000, int $settle = 300): array
@@ -202,7 +203,79 @@ check('VT-err', 'No "Transition was aborted ... ViewTransition opt-in disabled" 
 theme_save($own, ['base' => 'console', 'sidebar' => ''], 'theme back');
 
 // ================================================================= NAV: active item, pill, view transition, rail, frames
-$steps = [['op' => 'initscript', 'source' => INIT], mo_login(), ['op' => 'goto', 'url' => U1BASE . 'rolewarden/activity', 'tag' => 'nav-start']];
+const PILLX = "(() => { const p = document.querySelector('aside .rw-side-pill'); if (!p) return null; const r = p.getBoundingClientRect(); return { y: Math.round(r.y), h: Math.round(r.height), tf: getComputedStyle(p).transform, url: location.pathname }; })()";
+/** D5: from the first animation frame of the new page (/settings, in-page requestAnimationFrame log) the pill starts on the Users item it left (within half its height of where it rested) and moves only downwards (Users is above Settings). */
+function slide_ok($log, $users): array
+{
+    $ys = is_array($log) ? $log : [];
+    $uy = is_array($users) ? $users['y'] : null; $uh = is_array($users) ? (int) $users['h'] : 0;
+    if ($uy === null || count($ys) < 3) return [false, json_encode(['users' => $users, 'frames' => $ys])];
+    $mono = true; for ($i = 1; $i < count($ys); $i++) if ($ys[$i][1] < $ys[$i - 1][1] - 1) $mono = false;
+    $last = end($ys)[1]; $dy = $ys[0][1] - $uy;
+    return [abs($dy) <= max(4, $uh / 2) && $mono && $last - $uy > 50, json_encode(['usersY' => $uy, 'firstFrameOnNewPage' => $ys[0], 'startOffsetPx' => $dy, 'last' => $last, 'monotonic' => $mono, 'frames' => count($ys), 'ys' => array_slice($ys, 0, 20)])];
+}
+// in-page log of the pill's position at every animation frame of each document, from its first frame
+const PILLLOG = "(() => { const log = []; window.__pillLog = log; const t0 = performance.now(); const tick = () => { const p = document.querySelector('aside .rw-side-pill'); if (p) { const r = p.getBoundingClientRect(); log.push([Math.round(performance.now()), Math.round(r.y)]); } if (performance.now() - t0 < 9000) requestAnimationFrame(tick); }; requestAnimationFrame(tick); })();";
+// every visible text of the sidebar with the box of its line, and the pill's box
+const LABELS = <<<'JS'
+(() => { const p = document.querySelector('aside .rw-side-pill'); const pr = p ? p.getBoundingClientRect() : null; const labels = [];
+  const w = document.createTreeWalker(document.querySelector('aside'), NodeFilter.SHOW_TEXT); let n;
+  while ((n = w.nextNode())) { if (!n.textContent.trim() || (p && p.contains(n))) continue; const pe = n.parentElement; if (pe.closest('.rw-visually-hidden, [hidden], kbd, input')) continue; const cs = getComputedStyle(pe); if (cs.visibility === 'hidden' || cs.display === 'none') continue;
+    const rg = document.createRange(); rg.selectNodeContents(n); const r = rg.getBoundingClientRect(); if (r.width < 4 || r.bottom < 0 || r.top > 560) continue;
+    labels.push({ t: n.textContent.trim().slice(0, 30), r: [r.x, r.y, r.right, r.bottom].map(Math.round) }); }
+  return { pill: pr ? [pr.x, pr.y, pr.right, pr.bottom].map(Math.round) : null, labels, url: location.pathname }; })()
+JS;
+/**
+ * D2 legibility, measured on the real frames (no probe on the page). In each pixel row of a label the background is the row's
+ * most frequent colour and the ink its pixel of highest WCAG contrast against it. Rows count only where the label has ink: rows
+ * whose contrast reaches 3:1 in a frame where the pill does not touch the label (reference). A label is split into its part under
+ * the pill and its parts outside; each part with at least 2 inked rows is judged by its best inked row, and is reported below 3:1
+ * (covered, or unreadable over the tint). So a label above a faint tint passes, one under an opaque pill does not.
+ */
+function label_legibility(array $frames): array
+{
+    $lum = function (int $c): float { $f = function ($v) { $v /= 255; return $v <= 0.03928 ? $v / 12.92 : (($v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * $f(($c >> 16) & 255) + 0.7152 * $f(($c >> 8) & 255) + 0.0722 * $f($c & 255); };
+    $rows = function ($im, int $x0, int $x1, int $y0, int $y1) use ($lum): array { $W = imagesx($im); $H = imagesy($im); $out = [];
+        for ($y = max(0, $y0); $y < min($H, $y1); $y++) { $cnt = []; $px = [];
+            for ($x = max(0, $x0); $x < min($W, $x1); $x++) { $c = imagecolorat($im, $x, $y) & 0xFFFFFF; $px[] = $c; $cnt[$c] = ($cnt[$c] ?? 0) + 1; }
+            if (! $px) continue; arsort($cnt); $bg = $lum((int) array_key_first($cnt)); $mx = 1.0;
+            foreach (array_unique($px) as $c) { $l = $lum($c); $cr = (max($l, $bg) + 0.05) / (min($l, $bg) + 0.05); if ($cr > $mx) $mx = $cr; }
+            $out[$y] = $mx; }
+        return $out; };
+    $touch = fn ($pl, $r) => $pl && $pl[1] < $r[3] && $pl[3] > $r[1] && $pl[0] < $r[2] && $pl[2] > $r[0];
+    // reference: inked row offsets of each label, from frames where the pill does not touch it
+    $ink = [];
+    foreach ($frames as $f) { $v = $f['v'] ?? null; if (! is_array($v) || ! is_file($f['path'] ?? '')) continue; $im = imagecreatefrompng($f['path']); if (! $im) continue;
+        foreach ($v['labels'] as $l) { if ($touch($v['pill'], $l['r'])) continue; foreach ($rows($im, $l['r'][0], $l['r'][2], $l['r'][1], $l['r'][3]) as $y => $c) if ($c >= 3.0) $ink[$l['t']][$y - $l['r'][1]] = true; }
+        imagedestroy($im); }
+    $low = []; $nOver = 0; $nAll = 0; $minOver = 99.0; $noRef = [];
+    foreach ($frames as $f) {
+        $v = $f['v'] ?? null; if (! is_array($v) || ! is_file($f['path'] ?? '')) continue;
+        $im = imagecreatefrompng($f['path']); if (! $im) continue;
+        foreach ($v['labels'] as $l) {
+            [$x0, $y0, $x1, $y1] = $l['r']; $pl = $v['pill'];
+            if (! isset($ink[$l['t']])) { $noRef[$l['t']] = true; continue; }
+            $segs = [];
+            if ($touch($pl, $l['r'])) {
+                $iy0 = max($y0, $pl[1] + 2); $iy1 = min($y1, $pl[3] - 2);
+                $segs['under'] = [max($x0, $pl[0] + 6), min($x1, $pl[2] - 6), $iy0, $iy1];
+                $segs['above'] = [$x0, $x1, $y0, $iy0 - 2];
+                $segs['below'] = [$x0, $x1, $iy1 + 2, $y1];
+            } else $segs['clear'] = [$x0, $x1, $y0, $y1];
+            foreach ($segs as $k => $sg) {
+                if ($sg[1] - $sg[0] < 4 || $sg[3] <= $sg[2]) continue;
+                $rc = array_filter($rows($im, ...$sg), fn ($c, $y) => isset($ink[$l['t']][$y - $y0]), ARRAY_FILTER_USE_BOTH);
+                if (count($rc) < 2) continue;
+                $c = round(max($rc), 2); $nAll++;
+                if ($k === 'under') { $nOver++; $minOver = min($minOver, $c); }
+                if ($c < 3.0) $low[] = $f['at'] . 'ms ' . $l['t'] . " $k $c:1"; }
+        }
+        imagedestroy($im);
+    }
+    if ($noRef) info('D2: labels never clear of the pill (no reference, not judged): ' . json_encode(array_keys($noRef)));
+    return [$low, $nOver, $nAll, $minOver];
+}
+$steps = [['op' => 'initscript', 'source' => INIT], mo_login(), ['op' => 'eval', 'expr' => "({ url: location.pathname, reveal: window.__rwReveal || null })", 'tag' => 'login-reveal'], ['op' => 'goto', 'url' => U1BASE . 'rolewarden/activity', 'tag' => 'nav-start']];
 foreach ($SIDE as $sp) { $steps[] = ['op' => 'mouse', 'selector' => $sideSel($sp), 'click' => true, 'nav' => true, 'tag' => "go $sp"]; $steps[] = ['op' => 'wait', 'ms' => 900]; $steps[] = ['op' => 'eval', 'expr' => NAV, 'tag' => "nav $sp"]; }
 // rail
 $steps[] = ['op' => 'mouse', 'selector' => 'aside form[action$="/rolewarden/sidebar"] button', 'click' => true, 'nav' => true, 'tag' => 'rail-on'];
@@ -221,34 +294,40 @@ foreach ($SIDE as $sp) {
     $okCur = $v && count($v['current']) === 1 && str_ends_with($v['current'][0], $want);
     check("NAV-$sp", "Sidebar click on $sp: that item alone is current, the highlight sits inside it, settled, and no item text is covered", $okCur && $v['pills'] === 1 && $v['pillIn'] && $v['inside'] && $v['covered'] === [] && ($v['pillRunning'] ?? 1) === 0, json_encode($v));
 }
-info('pagereveal on sidebar navigations: ' . implode(',', $vtSeen));
+info('pagereveal on sidebar navigations: ' . implode(',', $vtSeen) . '; after the login form: ' . json_encode(bval($r, 'login-reveal')));
 check('NAV-vt', 'Moving between pages runs a view transition (pagereveal carries one) in a browser with View Transitions (Chrome 155)', ! in_array('none', $vtSeen, true) && ! in_array('?', $vtSeen, true), implode(',', $vtSeen));
 $r0 = bval($r, 'rail-0'); $r1 = bval($r, 'rail rolewarden/roles'); $r2 = bval($r, 'rail rolewarden/settings'); $rx = bval($r, 'rail-x');
 check('NAV-rail', 'Rail: collapsing works, navigation in the rail keeps one current item with the highlight inside it, expanding again works', ($r0['rail'] ?? false) && ($r1['rail'] ?? false) && str_ends_with($r1['current'][0] ?? '', '/rolewarden/roles') && ($r1['pillIn'] ?? false) && ($r1['inside'] ?? false) && str_ends_with($r2['current'][0] ?? '', '/rolewarden/settings') && ($r2['pillIn'] ?? false) && ($r2['inside'] ?? false) && ($rx && ! $rx['rail']), json_encode([$r0, $r1, $r2, $rx]));
 check('NAV-console', 'No JavaScript error other than the view transition during the navigation and the rail', jerr_other($r) === [], json_encode(jerr_other($r)));
 q("DELETE FROM settings WHERE `key` LIKE '%ollapse%' OR `key` LIKE '%rail%'");
 
-// frames: animations slowed ten times, a sidebar click captured every 150ms, in the three sidebars (development only)
+// frames: animations slowed ten times, a sidebar click captured every 150 ms, in the three sidebars, plus Ink at real speed
+// (development only). D2: every label's legibility measured on the real frames; D5: in-page requestAnimationFrame log.
 if ($ENVN === 'development') {
-    $fr = [];
     foreach (['' => 'paper', 'ink' => 'ink', 'charcoal' => 'charcoal'] as $sb => $sbn) {
         theme_save($own, ['base' => 'console', 'sidebar' => $sb], "frames theme $sbn");
-        $times = []; for ($t = 0; $t <= 3300; $t += 300) $times[] = $t;
-        $r = mb([mo_login(), ['op' => 'goto', 'url' => U1BASE . 'rolewarden/users', 'tag' => 'f0'], ['op' => 'wait', 'ms' => 800], ['op' => 'rate', 'value' => 0.1],
-            ['op' => 'frames', 'selector' => $sideSel('rolewarden/settings'), 'times' => $times, 'clip' => ['x' => 0, 'y' => 0, 'width' => 260, 'height' => 560], 'path' => $OUTP . "frames.$ENVN.$sbn.%d.png",
-                'expr' => "(() => { const p = document.querySelector('aside .rw-side-pill'); if (!p) return null; const r = p.getBoundingClientRect(); return { y: Math.round(r.y), h: Math.round(r.height), tf: getComputedStyle(p).transform, run: p.getAnimations().map(a => a.playState).join(','), url: location.pathname }; })()", 'tag' => 'frames'],
-            ['op' => 'rate', 'value' => 1], ['op' => 'wait', 'ms' => 1500], ['op' => 'eval', 'expr' => NAV, 'tag' => 'after']], "frames $sbn");
+        $times = []; for ($t = 0; $t <= 3600; $t += 150) $times[] = $t;
+        $r = mb([['op' => 'initscript', 'source' => PILLLOG], mo_login(), ['op' => 'goto', 'url' => U1BASE . 'rolewarden/users', 'tag' => 'f0'], ['op' => 'wait', 'ms' => 800], ['op' => 'eval', 'expr' => PILLX, 'tag' => 'users-pill'], ['op' => 'rate', 'value' => 0.1],
+            ['op' => 'frames', 'selector' => $sideSel('rolewarden/settings'), 'times' => $times, 'clip' => ['x' => 0, 'y' => 0, 'width' => 260, 'height' => 560], 'path' => $OUTP . "frames.$ENVN$RUN.$sbn.%d.png", 'expr' => LABELS, 'tag' => 'frames'],
+            ['op' => 'rate', 'value' => 1], ['op' => 'wait', 'ms' => 1500], ['op' => 'eval', 'expr' => 'window.__pillLog || null', 'tag' => 'plog'], ['op' => 'eval', 'expr' => NAV, 'tag' => 'after']], "frames $sbn");
+        $jobs = [$sbn => $r];
         if ($sbn === 'ink') {
-            $t2 = []; for ($t = 0; $t <= 1000; $t += 40) $t2[] = $t;
-            $r2 = mb([mo_login(), ['op' => 'goto', 'url' => U1BASE . 'rolewarden/users', 'tag' => 'f0'], ['op' => 'wait', 'ms' => 800],
-                ['op' => 'frames', 'selector' => $sideSel('rolewarden/settings'), 'times' => $t2, 'clip' => ['x' => 0, 'y' => 0, 'width' => 260, 'height' => 560], 'path' => $OUTP . "frames.$ENVN.ink-realtime.%d.png",
-                    'expr' => "(() => { const p = document.querySelector('aside .rw-side-pill'); if (!p) return null; const r = p.getBoundingClientRect(); return { y: Math.round(r.y), tf: getComputedStyle(p).transform, url: location.pathname }; })()", 'tag' => 'frames']], 'frames ink realtime');
-            info('frames ink at real speed: ' . json_encode(array_map(fn ($f) => [$f['at'], $f['v']], bval($r2, 'frames') ?: [])));
+            $t2 = []; for ($t = 0; $t <= 1600; $t += 40) $t2[] = $t;
+            $jobs['ink-realtime'] = mb([['op' => 'initscript', 'source' => PILLLOG], mo_login(), ['op' => 'goto', 'url' => U1BASE . 'rolewarden/users', 'tag' => 'f0'], ['op' => 'wait', 'ms' => 800], ['op' => 'eval', 'expr' => PILLX, 'tag' => 'users-pill'],
+                ['op' => 'frames', 'selector' => $sideSel('rolewarden/settings'), 'times' => $t2, 'clip' => ['x' => 0, 'y' => 0, 'width' => 260, 'height' => 560], 'path' => $OUTP . "frames.$ENVN$RUN.ink-realtime.%d.png", 'expr' => LABELS, 'tag' => 'frames'],
+                ['op' => 'wait', 'ms' => 1000], ['op' => 'eval', 'expr' => 'window.__pillLog || null', 'tag' => 'plog']], 'frames ink realtime');
         }
-        $fr[$sbn] = array_map(fn ($f) => [$f['at'], $f['v']], bval($r, 'frames') ?: []);
-        info("frames $sbn: " . json_encode($fr[$sbn]));
+        foreach ($jobs as $jn => $jr) {
+            $frames = bval($jr, 'frames') ?: [];
+            [$low, $nOver, $nAll, $minOver] = label_legibility($frames);
+            info("D2 $jn: " . count($frames) . " frames, $nAll label measures, $nOver of them under the moving highlight (lowest contrast there " . $minOver . ':1); below 3:1: ' . json_encode(array_slice($low, 0, 20)));
+            check("NAV-d2-$jn", "Sidebar click Users -> Settings ($jn): in every frame every sidebar label, those the highlight crosses and the one it lands on included, stays legible (contrast of its glyphs on what lies behind them at least 3:1)", count($frames) >= 10 && $nOver >= 5 && $low === [], json_encode(['frames' => count($frames), 'measures' => $nAll, 'underPill' => $nOver, 'minUnderPill' => $minOver, 'low' => array_slice($low, 0, 20), 'n' => count($low)]));
+            [$ok5, $why5] = slide_ok(bval($jr, 'plog'), bval($jr, 'users-pill'));
+            info("D5 $jn: $why5");
+            check("NAV-d5-$jn", "Sidebar click Users -> Settings ($jn): from the first animation frame of the new page the highlight starts on the item left (Users) and only moves towards Settings", $ok5, $why5);
+        }
         $a = bval($r, 'after');
-        check("NAV-frames-$sbn", "Frames of a sidebar click captured in $sbn (looked at by eye, see the report); the highlight ends inside Settings", count($fr[$sbn]) === count($times) && ($a['pillIn'] ?? false) && ($a['inside'] ?? false), json_encode($a));
+        check("NAV-frames-$sbn", "Frames of a sidebar click captured in $sbn (also looked at by eye, see the report); the highlight ends inside Settings", count(bval($r, 'frames') ?: []) === count($times) && ($a['pillIn'] ?? false) && ($a['inside'] ?? false) && ($a['covered'] ?? ['x']) === [], json_encode($a));
     }
     theme_save($own, ['base' => 'console', 'sidebar' => ''], 'theme back 2');
 }
@@ -309,7 +388,12 @@ $cn = 0; foreach ($rc['steps'] as $st) if (str_starts_with((string) ($st['tag'] 
 info("calibration: moving animations recorded at $cn of the sampled points without the setting");
 foreach (array_merge(['dash', 'cust'], array_keys(array_diff_key($pagesRM, ['dash' => 1])), ['dlg', 'cell', 'toast', 'cmd']) as $k) {
     $v = bval($r, "mv $k"); $e = bval($r, "ev $k");
-    check("RM-$k", "Reduced motion: no moving animation starts or runs ($k)", is_array($v) && $v['count'] === 0 && is_array($e) && $e['count'] === 0, json_encode([$v, $e]));
+    // A1 (decided 2026-10-25): the 97% give of a pressed control stays; a transform transition (<= 200 ms) on a button, summary or link is allowed, nothing else
+    $press = fn ($x) => (bool) preg_match('/^(transition )?transform \[transform(,transform)*\] (BUTTON|SUMMARY|A)\.[^\[\]]*? (\d+)ms d\S+$/', $x, $pm) && (int) $pm[4] <= 200;
+    $left = function ($x) use ($press) { if (! is_array($x)) return null; $ex = array_values(array_filter($x['moving'], $press)); return ['count' => $x['count'] - count($ex), 'press' => $ex]; };
+    $lv = $left($v); $le = $left($e);
+    if (($lv['press'] ?? []) || ($le['press'] ?? [])) info("RM-$k: press transitions allowed by A1: " . json_encode(array_merge($lv['press'] ?? [], $le['press'] ?? [])));
+    check("RM-$k", "Reduced motion: no moving animation starts or runs ($k); only the press transform is allowed (A1, decided)", is_array($lv) && $lv['count'] === 0 && is_array($le) && $le['count'] === 0, json_encode([$v, $e]));
 }
 $s0 = bval($r, 'seen0'); $s1 = bval($r, 'seen1');
 $finals = array_map(fn ($x) => $x, $s1['now'] ?? []);
@@ -346,10 +430,11 @@ foreach (['en', 'it'] as $lg) {
     check("CNT-$lg-served", "Counters ($lg): the page without JavaScript shows the served text", is_array($nj) && array_map('html_entity_decode', $m[1]) === $nj, json_encode([$m[1], $nj]));
     check("CNT-$lg-console", "Counters ($lg): no JavaScript error", jerr_other($r) === [], json_encode(jerr_other($r)));
     // every value the count writes stays between 0 and the figure (the figures count up)
+    $grp = $lg === 'en' ? '/^\d{1,3}(,\d{3})*$/' : '/^\d{1,3}(\.\d{3})*$/';
     $out = []; $nvals = 0; $num = fn ($t) => (float) str_replace([',', '.', ' ', "\u{2212}"], ['', '', '', '-'], $t);
-    foreach (['seen-1', 'seen-2', 'seen-3'] as $sk) foreach ((bval($r, $sk)['seen'] ?? []) as $e) { [$fin, $txt] = explode('=', $e, 2) + [1 => '']; $nvals++; $v = $num($txt); if ($v < 0 || $v > (float) $fin || ! preg_match('/^-?[\d.,]+$/u', str_replace("\u{2212}", '-', $txt))) $out[] = $e; }
+    foreach (['seen-1', 'seen-2', 'seen-3'] as $sk) foreach ((bval($r, $sk)['seen'] ?? []) as $e) { [$fin, $txt] = explode('=', $e, 2) + [1 => '']; $nvals++; $v = $num($txt); if ($v < 0 || $v > (float) $fin || ! preg_match($grp, $txt)) $out[] = $e; }
     info("CNT $lg: $nvals values written during three counts; out of range: " . json_encode(array_slice($out, 0, 12)));
-    check("CNT-$lg-range", "Counters ($lg): while counting up, every value shown lies between 0 and the figure (three loads)", $nvals > 20 && $out === [], json_encode(['n' => $nvals, 'out' => array_slice($out, 0, 12), 'count' => count($out)]));
+    check("CNT-$lg-range", "Counters ($lg): while counting up, every value shown lies between 0 and the figure and is grouped like the final text (three loads)", $nvals > 20 && $out === [], json_encode(['n' => $nvals, 'out' => array_slice($out, 0, 12), 'count' => count($out)]));
 }
 postform($own, 'rolewarden/profile', '#rolewarden/profile/language$#', ['language' => 'en'], 'lang en');
 

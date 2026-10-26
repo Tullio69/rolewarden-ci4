@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Collaudatore ad Hoc (Claude, subagente)
-**Agente:** Claude
-**Dalle:** 2026-10-26 00:27
-**Scope:** passo motion.development del movimento su 933154b (rv7); scrive solo in tests/Integration/ e _AI-LOG.md; DB solo rolewarden_test
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1475,3 +1475,10 @@ Formato di ogni voce:
 - Cosa ho fatto: inventario verificato sul codice della 1.0.0 (commit 6313215), scheda prodotto CodeCanyon in HTML semplice (nome, tagline, descrizione, feature laterali, FAQ, changelog, metadati, prezzo), piano screenshot e immagine di anteprima 590x300.
 - Stato: completato
 - Note per il prossimo: lavorato sul repo GitHub, non sul repo locale (computer non raggiungibile): le tappe U1-U4 della 1.1 non sono nei testi. Voci [DA VERIFICARE] elencate in fondo a `inventario.md` (PHP 8.5, DB diversi da MySQL, browser minimi, prima immagine 1.0 vs 1.1, testo licenza Envato). La memoria di progetto parlava di JWT/2FA/OAuth/webhook: sono AuthConnect, non Rolewarden, e non compaiono in scheda. Lock: In lavorazione nessuno.
+
+### [2026-10-26 19:05] - Claude
+- Tipo: setup
+- Scope: merge di `origin/main` (80d7b99) in `main`, commit `e9933dc`; `_AI-LOG.md`; `tests/Integration/verify-motion.environment.txt`; database solo `rolewarden_test`
+- Cosa ho fatto: risolto il conflitto in `_AI-LOG.md` tenendo le voci di entrambi i lati. Il passo `motion.development` rv7 su 933154b si era fermato alle 00:31 dopo SET-1 ed ERR-console, senza report e con il lock ancora preso; la causa non è registrata (Docker trovato spento in serata). `rolewarden_test` aveva ancora le 17 tabelle della run: ripristinato dal suo `snapshot.sql` (hash `f7f37c04…e21e64`) con `verify-v4.snapshot.php restore`, hash riverificato identico, Mailpit vuoto, nessun processo php residuo. Committate le uscite parziali `-rv7` del passo.
+- Stato: completato. Il passo `motion.development` resta **da rifare**: le uscite rv7 sono parziali e non valgono come esito.
+- Note per il prossimo: il movimento non è ancora approvato (restano `motion.development`, `cust.development`, `dash.development`, `u3.development`, `u1.development`). `tests/Integration/verify-v5.work/` (profili Chrome, ~40 MB, non tracciato) è ancora da cancellare. Nessun push. Lock rilasciato.

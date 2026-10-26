@@ -1566,3 +1566,10 @@ Formato di ogni voce:
 - Difetti: nessuno.
 - Ambiguità di specifica: nessuna nuova; A-CUST-1 chiusa (decisa dall'utente).
 - Ambiente: hash `f7f37c04…e21e64` prima e dopo, identico (runner e controllo a mano); Mailpit vuoto prima e dopo; nessun processo residuo; `.env` cancellato, cartella di lavoro rimossa, nessun profilo EPERM; memoria libera alla partenza circa 3 GB. Lock preso e rilasciato. Nessun commit.
+
+### [2026-10-26 23:05] - Claude
+- Tipo: deploy
+- Scope: repo `../rolewarden-demo`, branch `staging` a `2d692b0` (`composer.lock` col modulo a `4be1a8d`); VPS staging.rolewarden.com. Nessun file del modulo.
+- Cosa ho fatto: con il via dell'utente, ho portato lo staging dalla 1.0.0 (`089bd3e`) al `main` del modulo con la 1.1 collaudata (`4be1a8d`, tutti i passi del movimento PASS su 933154b). Prima ho controllato i punti di "Upgrading" del CHANGELOG sulla demo: il redirect dopo il login resta `demo` per scelta della demo, non ci sono override di view né estensioni di `Resolver`. Commit e push di `staging`, poi `ops/deploy.sh staging` via SSH (`rolewarden-vps`). Applicate le migrazioni nuove `SidebarTodayOnUpdate` e `AddDashboardPermissions`, reset completato. Verifiche: modulo installato `4be1a8d`, `X-Robots-Tag` noindex e robots.txt invariati, manutenzione spenta. Login di admin@example.com riuscito; dashboard, utenti, ruoli, permessi, Check a permission, ricerca, attività, aspetto, impostazioni e la pagina dei documenti rispondono 200 senza errori; nessun errore nel log dopo il deploy.
+- Stato: completato. Demo pubblica (`main` del repo demo) ferma alla 1.0.0 (`9f9d0bc`).
+- Note per il prossimo: la HEAD sulla home risponde 404 anche sulla demo 1.0, mentre la GET risponde 200: è un comportamento già presente, non dipende da questo deploy. Il fast-forward di `main` e il deploy della demo si fanno solo su richiesta dell'utente. Lock rilasciato.

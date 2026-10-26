@@ -1482,3 +1482,16 @@ Formato di ogni voce:
 - Cosa ho fatto: risolto il conflitto in `_AI-LOG.md` tenendo le voci di entrambi i lati. Il passo `motion.development` rv7 su 933154b si era fermato alle 00:31 dopo SET-1 ed ERR-console, senza report e con il lock ancora preso; la causa non è registrata (Docker trovato spento in serata). `rolewarden_test` aveva ancora le 17 tabelle della run: ripristinato dal suo `snapshot.sql` (hash `f7f37c04…e21e64`) con `verify-v4.snapshot.php restore`, hash riverificato identico, Mailpit vuoto, nessun processo php residuo. Committate le uscite parziali `-rv7` del passo.
 - Stato: completato. Il passo `motion.development` resta **da rifare**: le uscite rv7 sono parziali e non valgono come esito.
 - Note per il prossimo: il movimento non è ancora approvato (restano `motion.development`, `cust.development`, `dash.development`, `u3.development`, `u1.development`). `tests/Integration/verify-v5.work/` (profili Chrome, ~40 MB, non tracciato) è ancora da cancellare. Nessun push. Lock rilasciato.
+
+### [2026-10-26 19:55] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: passo `motion.development` del movimento su 933154b (rv8), in nero. Scritto solo in `tests/Integration/` (uscite `-rv8`: console, output, server log, fotogrammi; `environment.txt`, `progress.txt`; sezione «Riverifica a passi su 933154b (rv8)» di `MOTION-REPORT.md`). Strumento non modificato. Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Prima di partire: hash `f7f37c04…e21e64` verificato, Mailpit vuoto, Docker attivo, nessun processo residuo, memoria libera circa 2,4 GB.
+  - `motion.development`: **139/139 PASS**, 0 FAIL, 0 AMB, passo completo (exit 0, 19:27-19:52).
+  - NAV-d2 con la sola regola dei 3:1: PASS in paper, ink, ink a velocita' reale e charcoal; nessuna etichetta giudicata sotto 3:1 (minimi sotto l'evidenziazione 5,39, 4,24, 4,03:1); copertura sotto soglia in tutti e quattro, come INFO.
+  - NAV-d5: PASS in tutti e quattro i casi.
+- Stato: **passo PASS**. Movimento non ancora approvato: restano `cust.development`, `dash.development`, `u3.development`, `u1.development`.
+- Difetti: nessuno.
+- Ambiguita' di specifica: nessuna nuova.
+- Note per il prossimo: hash identico prima e dopo (ripristino del runner), Mailpit vuoto, nessun processo residuo, `.env` cancellato; restano i profili `chrome-mo-*` (EPERM) in `work/mw-motion-development-rv8`. Nessun commit. Lock rilasciato.

@@ -403,3 +403,28 @@ Con questa macchina la memoria non basta per più di un passo di fila: conviene 
 | `motion.production` | production | **PASS, 128/128**, 0 FAIL, 0 AMB, passo completo (exit 0, 00:06-00:24). LOG-5xx, LOG-app, LOG-srv PASS. Nota: i blocchi dei fotogrammi (NAV-d2, NAV-d5) lo strumento li esegue solo in development, quindi in production non ci sono | hash `f7f37c04…e21e64` prima e dopo, ripristinato dal runner, identico, Mailpit vuoto; nessun processo residuo; `.env` cancellato, restano i profili `chrome-mo-*` (EPERM) |
 
 Restano da eseguire, uno per sessione: `motion.development` (NAV-d2 con il criterio deciso), `cust.development`, `dash.development`, `u3.development`, `u1.development`.
+
+## Riverifica a passi su 933154b (rv8)
+
+**Collaudatore ad Hoc (Claude), 2026-10-26, 19:27-19:52.** Rifà il passo `motion.development` di rv7, interrotto alle 00:31 dopo SET-1 ed ERR-console (uscite parziali `-rv7` lasciate intatte). Strumento invariato rispetto a rv7: NAV-d2 giudicato solo con la regola dei 3:1, la copertura è INFO.
+
+| Passo | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| `motion.development` | development | **PASS, 139/139**, 0 FAIL, 0 AMB, passo completo (exit 0). LOG-5xx, LOG-app, LOG-srv PASS | hash `f7f37c04…e21e64` prima e dopo, ripristinato dal runner, identico; Mailpit vuoto prima e dopo; nessun processo residuo (php, python, node, chrome); `.env` cancellato; restano i profili `chrome-mo-*` (EPERM) in `work/mw-motion-development-rv8` |
+
+### NAV-d2 e NAV-d5 (fotogrammi, solo development)
+
+| Sidebar | Fotogrammi giudicati | Misure sotto l'evidenziazione (INFO) | Contrasto minimo lì | Sotto 3:1 | NAV-d2 | NAV-d5 |
+| --- | --- | --- | --- | --- | --- | --- |
+| paper | 10 / 25 | 2 | 5,39:1 | nessuna | PASS | PASS |
+| ink | 17 / 25 | 2 | 4,24:1 | nessuna | PASS | PASS |
+| ink a velocità reale | 34 / 41 | 0 | - | nessuna | PASS | PASS |
+| charcoal | 7 / 25 | 1 | 4,03:1 | nessuna | PASS | PASS |
+
+Copertura sotto le soglie indicative dello strumento in tutti e quattro i casi: è INFO per decisione del 2026-10-26, non un esito. Fotogrammi salvati in `verify-motion.frames.development-rv8.*`.
+
+### Stato del movimento
+
+`motion.production` (rv7) e `motion.development` (rv8) sono PASS. Movimento non ancora approvato: restano, uno per sessione, `cust.development`, `dash.development`, `u3.development`, `u1.development`.
+
+Ambiguità di specifica: nessuna nuova. Memoria libera alla partenza circa 2,4 GB su 16 GB; la run non è stata interrotta.

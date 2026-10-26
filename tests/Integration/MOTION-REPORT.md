@@ -464,3 +464,27 @@ Nessun difetto attribuito al modulo in questo passo.
 ### Stato del movimento
 
 `motion.production` (rv7) e `motion.development` (rv8) sono PASS. `cust.development` (rv8) è **151/152, con l'unico FAIL legato ad A-CUST-1**. Restano, uno per sessione: `dash.development`, `u3.development`, `u1.development`. Memoria libera alla partenza circa 2,7 GB; nessuna interruzione.
+
+## Regressione a passi su 933154b (rv8): `dash.development`
+
+**Collaudatore ad Hoc (Claude), 2026-10-26, 21:25-21:28.** Passo di regressione U4 DASH in development, strumento invariato (`verify-u4.phase-dash.php` tramite `verify-motion.harness.php`), lanciato con `RW_V8_NEW=933154b RW_MOTION_RUN=-rv8 bash verify-motion.all.sh dash.development`.
+
+| Passo | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| `dash.development` | development | **PASS, 256/256**, 0 FAIL, 0 AMB, passo completo (exit 0, 21:25:54-21:27:48). LOG-1, LOG-2, LOG-3, TZ-1, LOGIN-* PASS | hash `f7f37c04…e21e64` prima e dopo, ripristinato dal runner, identico; Mailpit vuoto prima e dopo; nessun processo residuo (php, python, node, chrome); `.env` cancellato, cartella di lavoro rimossa (nessun profilo EPERM) |
+
+- **Perché 256 e non 258 come su b38e350:** i controlli `N*-neg-*` sono uno per ogni variazione negativa presente in pagina, e le variazioni dipendono dai dati generati rispetto alla data di oggi. Su b38e350 erano quattro (7 giorni: Sign-ins −6, Failed −1; 30: Sign-ins −14; 90: Sign-ins −2), qui due (30 giorni: Failed −1; 90: Sign-ins −9). Tutti gli altri identificativi coincidono. Non è una regressione.
+- Uscite: `verify-motion.console.dash.development-rv8.txt`, `verify-motion.s1.dash.933154b.development-rv8.*`.
+- Memoria libera alla partenza circa 3,3 GB; nessuna interruzione.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità di specifica
+
+Nessuna nuova. Resta aperta A-CUST-1 (passo `cust.development`).
+
+### Stato del movimento
+
+`motion.production` (rv7), `motion.development` (rv8) e `dash.development` (rv8) sono PASS; `cust.development` (rv8) è 151/152 in attesa di A-CUST-1. Restano, uno per sessione: `u3.development`, `u1.development`. Nessun commit.

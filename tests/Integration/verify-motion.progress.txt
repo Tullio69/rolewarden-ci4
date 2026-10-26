@@ -62,3 +62,6 @@ exit=1 cust.development 21:17:01
 ALL DONE 21:17:01
 === cvt.development-rv8 (probe) 21:18:46
 exit=1 cvt.development-rv8 21:21:53
+=== dash.development 21:25:54
+exit=0 dash.development 21:27:48
+ALL DONE 21:27:48

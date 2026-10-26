@@ -1519,3 +1519,15 @@ Formato di ogni voce:
   - nessun processo residuo, `.env` cancellati, cartelle di lavoro e calibrazione rimosse;
   - nessun profilo EPERM in questo passo.
   Nessun commit. Lock rilasciato.
+
+### [2026-10-26 21:28] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: passo di regressione `dash.development` (U4 DASH) del movimento su 933154b (rv8), in nero. Scritto solo in `tests/Integration/`: uscite `-rv8` (`verify-motion.console.dash.development-rv8.txt`, `verify-motion.s1.dash.933154b.development-rv8.*`), `environment.txt`, `progress.txt` e la sezione «Regressione a passi su 933154b (rv8): `dash.development`» di `MOTION-REPORT.md`. Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Prima di partire: hash `f7f37c04…e21e64` verificato, Mailpit vuoto, nessun processo residuo, circa 3,3 GB liberi.
+  - `dash.development`: **PASS, 256/256**, 0 FAIL, 0 AMB, passo completo (exit 0). Strumento invariato.
+  - 256 invece dei 258 di b38e350: i controlli `N*-neg-*` sono uno per variazione negativa in pagina e dipendono dai dati generati rispetto alla data (qui 2, allora 4). Tutti gli altri identificativi coincidono.
+- Stato: **passo PASS**. Movimento non ancora approvato: restano `u3.development`, `u1.development`; `cust.development` attende A-CUST-1.
+- Difetti: nessuno.
+- Ambiguita' di specifica: nessuna nuova (resta aperta A-CUST-1).
+- Note per il prossimo: hash identico prima e dopo (ripristino del runner), Mailpit vuoto, nessun processo residuo, `.env` cancellato, cartella di lavoro rimossa, nessun profilo EPERM. Nessun commit. Lock rilasciato.

@@ -989,3 +989,10 @@ Formato di ogni voce:
 - Cosa ho fatto: S3 PASS letto. O2 di S3 applicata con il via dell'utente: `proxy_set_header Host $host;` nell'esempio nginx (`089bd3e`); zip `1.0.0` ricostruiti, differenza dai collaudati solo quella riga e il riferimento al commit in `installed.php`. Push di `main`, tag annotato `v1.0.0` su `089bd3e` pushato. Staging e demo pubblica a `9f9d0bc` (modulo `089bd3e`): `main` del repo demo avanzato in fast-forward da `staging`, login e matrice in italiano provati sulla demo. Documentazione online su `https://www.rolewarden.com/docs/` dal tag: `panel.css` e font in `docs/assets/`, unico cambiamento il link del foglio di stile; la pagina statica di `www` non toccata.
 - Stato: completato. **Passo 3 chiuso.**
 - Note per il prossimo: la documentazione online si aggiorna a mano a ogni release (stessa copia dal tag). Restano O7 di S2 e O1 di S3 (avviso di `composer validate`, solo Packagist). Proposta su CLAUDE.md (errori SQL) in attesa dell'utente. Passo 4 nella chat commerciale.
+
+### [2026-10-26 18:40] - Claude (chat commerciale, sessione cloud su origin/main)
+- Tipo: docs
+- Scope: `docs/codecanyon/inventario.md`, `docs/codecanyon/scheda-prodotto.md`, `docs/codecanyon/screenshot.md`; nessun file in `src/`
+- Cosa ho fatto: inventario verificato sul codice della 1.0.0 (commit 6313215), scheda prodotto CodeCanyon in HTML semplice (nome, tagline, descrizione, feature laterali, FAQ, changelog, metadati, prezzo), piano screenshot e immagine di anteprima 590x300.
+- Stato: completato
+- Note per il prossimo: lavorato sul repo GitHub, non sul repo locale (computer non raggiungibile): le tappe U1-U4 della 1.1 non sono nei testi. Voci [DA VERIFICARE] elencate in fondo a `inventario.md` (PHP 8.5, DB diversi da MySQL, browser minimi, prima immagine 1.0 vs 1.1, testo licenza Envato). La memoria di progetto parlava di JWT/2FA/OAuth/webhook: sono AuthConnect, non Rolewarden, e non compaiono in scheda. Lock: In lavorazione nessuno.

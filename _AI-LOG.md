@@ -1468,3 +1468,10 @@ Formato di ogni voce:
 - Stato: **passo PASS**; movimento non ancora approvato (restano `motion.development`, `cust.development`, `dash.development`, `u3.development`, `u1.development`).
 - Ambiguita' di specifica: nessuna nuova.
 - Note per il prossimo: nessun processo residuo, `.env` cancellato, restano i profili `chrome-mo-*` (EPERM) in `work/mw-motion-production-rv7`. Nessun commit. Lock rilasciato.
+
+### [2026-10-26 18:40] - Claude (chat commerciale, sessione cloud su origin/main)
+- Tipo: docs
+- Scope: `docs/codecanyon/inventario.md`, `docs/codecanyon/scheda-prodotto.md`, `docs/codecanyon/screenshot.md`; nessun file in `src/`
+- Cosa ho fatto: inventario verificato sul codice della 1.0.0 (commit 6313215), scheda prodotto CodeCanyon in HTML semplice (nome, tagline, descrizione, feature laterali, FAQ, changelog, metadati, prezzo), piano screenshot e immagine di anteprima 590x300.
+- Stato: completato
+- Note per il prossimo: lavorato sul repo GitHub, non sul repo locale (computer non raggiungibile): le tappe U1-U4 della 1.1 non sono nei testi. Voci [DA VERIFICARE] elencate in fondo a `inventario.md` (PHP 8.5, DB diversi da MySQL, browser minimi, prima immagine 1.0 vs 1.1, testo licenza Envato). La memoria di progetto parlava di JWT/2FA/OAuth/webhook: sono AuthConnect, non Rolewarden, e non compaiono in scheda. Lock: In lavorazione nessuno.

@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Collaudatore ad Hoc (Claude, subagente)
+**Agente:** Claude
+**Dalle:** 2026-10-26 00:27
+**Scope:** passo motion.development del movimento su 933154b (rv7); scrive solo in tests/Integration/ e _AI-LOG.md; DB solo rolewarden_test
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 

@@ -1556,3 +1556,13 @@ Formato di ogni voce:
   - Resta il passo di regressione `u1.development`.
   - Ambiente: `rolewarden_test` hash `f7f37c04…e21e64` prima e dopo, identico (ripristinato dal runner e ricontrollato a mano). Mailpit vuoto prima e dopo; nessun processo residuo; `.env` cancellati e cartella di lavoro rimossa, nessun profilo EPERM; memoria libera alla partenza circa 3,3 GB.
   - Lock preso e rilasciato. Nessun commit.
+
+### [2026-10-26 21:59] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: regressione 1.1 motion, passo `u1.development` su 933154b (rv8), in nero. Scritti solo `tests/Integration/verify-motion.console.u1.development-rv8.txt`, `verify-motion.s1.u1.933154b.development-rv8.*`, `verify-motion.u1.style-*-rv8.png`, righe in `verify-motion.progress.txt` e `verify-motion.environment.txt`, la sezione in `MOTION-REPORT.md` e questa voce. Database solo `rolewarden_test`.
+- Cosa ho fatto: `RW_V8_NEW=933154b RW_MOTION_RUN=-rv8 bash verify-motion.all.sh u1.development` (21:52:14-21:57:27, exit 0), strumento invariato. **PASS, 196/196**, 0 FAIL, 0 AMB, passo completo. Le 196 righe di esito sono identiche a quelle del giro su b38e350 (r5). U1 non ha un controllo sulla console: il messaggio di A-CUST-1 non compare e la regola non è servita.
+- Gestione uscite: gli screenshot di STYLE, scritti dallo strumento senza suffisso, avevano sovrascritto quelli di b38e350. I nuovi sono ora `verify-motion.u1.style-*-rv8.png` (18), gli originali ripristinati da git.
+- Stato: **passo PASS. Tutti i passi su 933154b sono PASS** (motion.production rv7, motion.development rv8, dash/u3/u1.development rv8, cust.development rv9): non resta nessun passo di regressione; l'approvazione del movimento spetta a chi lancia.
+- Difetti: nessuno.
+- Ambiguità di specifica: nessuna nuova; A-CUST-1 chiusa (decisa dall'utente).
+- Ambiente: hash `f7f37c04…e21e64` prima e dopo, identico (runner e controllo a mano); Mailpit vuoto prima e dopo; nessun processo residuo; `.env` cancellato, cartella di lavoro rimossa, nessun profilo EPERM; memoria libera alla partenza circa 3 GB. Lock preso e rilasciato. Nessun commit.

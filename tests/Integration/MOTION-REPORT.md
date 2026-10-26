@@ -549,3 +549,30 @@ Sono PASS su 933154b:
 - `cust.development` (rv9).
 
 Resta `u1.development`. Memoria libera alla partenza circa 3,3 GB; nessuna interruzione.
+
+## Regressione a passi su 933154b (rv8): `u1.development`
+
+**Collaudatore ad Hoc (Claude), 2026-10-26, 21:52-21:58.** Passo di regressione U1 (NAV, RAIL, STYLE, ESC) in development, strumento invariato (NAV e RAIL dalle copie adattate di U4, STYLE da `verify-motion.phase-style.php`, ESC da `verify-u1.phase-esc.php`, tramite `verify-motion.harness.php`), lanciato con `RW_V8_NEW=933154b RW_MOTION_RUN=-rv8 bash verify-motion.all.sh u1.development`.
+
+| Passo | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| `u1.development` | development | **PASS, 196/196**, 0 FAIL, 0 AMB, passo completo (exit 0, 21:52:14-21:57:27). E-5 (331 risposte: niente 5xx, SQL o errori PHP) ed E-6 (log dell'app) PASS | hash `f7f37c04…e21e64` prima e dopo, ripristinato dal runner, identico, ricontrollato a mano; Mailpit vuoto prima e dopo; nessun processo residuo (php, python, node, chrome); `.env` cancellato, cartella di lavoro rimossa (nessun profilo EPERM) |
+
+- **Confronto con b38e350 (r5):** le 196 righe di esito sono identiche, testo compreso (`diff` vuoto contro `verify-motion.s1.u1.b38e350.development-r5.output.txt`). Nessuna regressione.
+- **A-CUST-1:** U1 non ha un controllo sulla console JavaScript e il messaggio di Chrome sulla view transition non compare nelle uscite. La regola decisa non è servita, nessuna copia MOTION aggiunta.
+- **Screenshot di STYLE:** confrontati col contratto, non pixel per pixel. Voce attiva evidenziata, contatore leggibile sul proprio sfondo; i valori di colore e contrasto sono già verificati da S-* contro i token.
+- **Correzione di gestione delle uscite:** lo strumento scrive gli screenshot di STYLE senza il suffisso del giro e aveva sovrascritto quelli di b38e350. Ho copiato i nuovi in `verify-motion.u1.style-*-rv8.png` (18 file) e ripristinato da git gli originali, che restano invariati. Lo strumento non è stato modificato.
+- Uscite: `verify-motion.console.u1.development-rv8.txt`, `verify-motion.s1.u1.933154b.development-rv8.*`, `verify-motion.u1.style-*-rv8.png`.
+- Memoria libera alla partenza circa 3 GB; nessuna interruzione.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità di specifica
+
+Nessuna nuova. A-CUST-1 resta chiusa (decisa dall'utente il 2026-10-26).
+
+### Stato del movimento
+
+Sono PASS su 933154b tutti i passi: `motion.production` (rv7), `motion.development` (rv8), `dash.development` (rv8), `u3.development` (rv8), `cust.development` (rv9), `u1.development` (rv8). Non resta nessun passo di regressione. Nessun commit.

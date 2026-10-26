@@ -57,3 +57,8 @@ ALL DONE 00:24:42
 === motion.development 19:27:04
 exit=0 motion.development 19:52:45
 ALL DONE 19:52:45
+=== cust.development 21:14:37
+exit=1 cust.development 21:17:01
+ALL DONE 21:17:01
+=== cvt.development-rv8 (probe) 21:18:46
+exit=1 cvt.development-rv8 21:21:53

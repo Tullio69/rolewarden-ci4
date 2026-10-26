@@ -1495,3 +1495,27 @@ Formato di ogni voce:
 - Difetti: nessuno.
 - Ambiguita' di specifica: nessuna nuova.
 - Note per il prossimo: hash identico prima e dopo (ripristino del runner), Mailpit vuoto, nessun processo residuo, `.env` cancellato; restano i profili `chrome-mo-*` (EPERM) in `work/mw-motion-development-rv8`. Nessun commit. Lock rilasciato.
+
+### [2026-10-26 21:23] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: passo di regressione `cust.development` (U5 CUST) del movimento su 933154b (rv8), in nero. Scritto solo in `tests/Integration/`:
+  - uscite `-rv8` (console e output di `cust` e della sonda `cvt`), `environment.txt`, `progress.txt`;
+  - la sonda esplorativa `verify-motion.phase-cvt.php`;
+  - la sezione «Regressione a passi su 933154b (rv8): `cust.development`» di `MOTION-REPORT.md`.
+  Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Prima di partire: hash `f7f37c04…e21e64` verificato, Mailpit vuoto, nessun processo residuo, circa 2,7 GB liberi.
+  - `cust.development`: **151/152**, 1 FAIL (JS-console), 0 AMB, passo completo.
+  - Il FAIL: una volta `InvalidStateError: Transition was aborted … ViewTransition opt-in disabled` (su b38e350 erano due). La sonda CVT, job per job, lo attribuisce al **form di login**: `v1@u5.test` atterra su `/index.php`, home dell'app fuori dal pannello. Personalizza e Save non aggiungono errori.
+  - Calibrazione in Chrome 155 headless con due pagine statiche senza script: da una pagina con opt-in a una senza, Chrome stampa lo stesso errore; da opt-in a opt-in, niente. Il messaggio quindi e' del browser all'uscita dal pannello.
+- Stato: **passo FAIL formale (151/152), nessun difetto attribuito al modulo; l'esito dipende da A-CUST-1**. Movimento non ancora approvato: restano `dash.development`, `u3.development`, `u1.development`.
+- Difetti: nessuno.
+- Ambiguita' di specifica (non decisa): **A-CUST-1**, uscita dal pannello verso una pagina senza opt-in, che lascia l'errore di Chrome in console. Le strade:
+  - si accetta: JS-console lo tratta come VT nel passo MOTION, e il passo e' PASS;
+  - oppure il modulo non deve chiedere la transizione verso pagine fuori dal pannello: allora e' un difetto.
+  Il design system non tratta il caso.
+- Note per il prossimo:
+  - hash identico prima e dopo entrambe le esecuzioni (ripristino del runner), Mailpit vuoto;
+  - nessun processo residuo, `.env` cancellati, cartelle di lavoro e calibrazione rimosse;
+  - nessun profilo EPERM in questo passo.
+  Nessun commit. Lock rilasciato.

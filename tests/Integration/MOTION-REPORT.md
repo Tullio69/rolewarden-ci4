@@ -428,3 +428,39 @@ Copertura sotto le soglie indicative dello strumento in tutti e quattro i casi: 
 `motion.production` (rv7) e `motion.development` (rv8) sono PASS. Movimento non ancora approvato: restano, uno per sessione, `cust.development`, `dash.development`, `u3.development`, `u1.development`.
 
 Ambiguità di specifica: nessuna nuova. Memoria libera alla partenza circa 2,4 GB su 16 GB; la run non è stata interrotta.
+
+## Regressione a passi su 933154b (rv8): `cust.development`
+
+**Collaudatore ad Hoc (Claude), 2026-10-26, 21:14-21:22.** Passo di regressione U5 CUST in development, strumento invariato (`verify-u5.phase-cust.php` tramite `verify-motion.harness.php`). Più una sonda esplorativa (CVT) e una calibrazione in Chrome, che servono solo ad attribuire l'unico FAIL e non sono un esito.
+
+| Passo | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| `cust.development` | development | **151/152**, 1 FAIL (JS-console), 0 AMB, passo completo (exit 1 per il FAIL, 21:14-21:17). LOG-5xx, LOG-app, LOG-srv, SCH-1, SCH-2 PASS | hash `f7f37c04…e21e64` prima e dopo, ripristinato dal runner, identico; Mailpit vuoto prima e dopo; nessun processo residuo (php, python, node, chrome); `.env` cancellati, cartella di lavoro rimossa (nessun profilo EPERM questa volta) |
+| sonda `cvt.development` | development | solo esplorazione (`verify-motion.phase-cvt.php`: copia della fase CUST più quattro job del browser; i controlli CUST della copia danno lo stesso 151/152 e non contano) | hash identico prima e dopo, Mailpit vuoto, cartella rimossa |
+
+### L'unico FAIL: JS-console
+
+- In console: `InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled`, **una volta** (su b38e350 erano due, una per navigazione: è il D1 di allora).
+- **Da dove viene (sonda CVT):** il job JS di CUST fa login di `v1@u5.test`, apertura della dashboard, spostamenti e «Save for me». Contando l'errore job per job:
+  - solo login: 1; login + dashboard: 1; login + dashboard + Save: 1; con due Save: 1.
+  - Quindi l'errore nasce **dal form di login**, non da Personalizza né dal salvataggio. Il Save (POST e redirect) non aggiunge errori.
+- **Perché nel movimento non si vede:** dopo il login `v1@u5.test` atterra su `/index.php`, la home dell'app di prova, fuori dal pannello. L'owner del passo MOTION atterra invece in `/rolewarden/users`, dentro il pannello, con la view transition (`pagereveal` = vt, VT-err PASS in rv8).
+- **Calibrazione (Chrome 155 headless, stesso driver `verify-u1.browser.mjs`, due pagine statiche mie sulla 8072, nessuno script):**
+  - pagina con `@view-transition { navigation: auto; }` → pagina **senza** opt-in: lo stesso identico errore in console;
+  - pagina con opt-in → pagina con opt-in: nessun errore.
+  - Quindi il messaggio è di Chrome: compare ogni volta che si lascia una pagina con opt-in per una pagina senza. Qui la pagina di partenza è il login del pannello, quella di arrivo è dell'app.
+- **Il resto di CUST** (blocchi, scelte per utente e predefinito, su/giù con fuoco visibile, pinned, Save, senza JavaScript, lingue, A2, log, schema) passa come su b38e350.
+
+### Difetti
+
+Nessun difetto attribuito al modulo in questo passo.
+
+### Ambiguità di specifica (da decidere, non decise qui)
+
+- **A-CUST-1:** il passaggio dal pannello a una pagina **fuori dal pannello** (qui il login che porta alla home dell'app, ma vale anche per qualunque link che esce dal pannello) lascia in console l'errore di Chrome sulla view transition abortita. Il design system dice solo «Page to page (View Transitions) … Browsers without view transitions change page as before» e non tratta l'uscita dal pannello. Il controllo U5 JS-console chiede «nessun errore JavaScript in console» e su db68a26 passava. Va deciso se:
+  - è accettabile, perché è un messaggio del browser e la pagina d'arrivo è dell'acquirente. Allora JS-console va trattato come VT nel passo MOTION, cioè senza contare questo messaggio, e il passo è PASS;
+  - oppure il modulo non deve lasciarlo, per esempio non chiedendo la transizione quando la destinazione è fuori dal pannello. Allora è un difetto da correggere.
+
+### Stato del movimento
+
+`motion.production` (rv7) e `motion.development` (rv8) sono PASS. `cust.development` (rv8) è **151/152, con l'unico FAIL legato ad A-CUST-1**. Restano, uno per sessione: `dash.development`, `u3.development`, `u1.development`. Memoria libera alla partenza circa 2,7 GB; nessuna interruzione.

@@ -1540,3 +1540,19 @@ Formato di ogni voce:
 - Difetti: nessuno
 - Ambiguità di specifica: nessuna nuova; resta aperta A-CUST-1 (non decisa)
 - Ambiente: `rolewarden_test` hash `f7f37c04…e21e64` prima e dopo, identico (ripristinato dal runner); Mailpit vuoto prima e dopo; nessun processo residuo; `.env` cancellato e cartella di lavoro rimossa, nessun profilo EPERM; memoria libera alla partenza circa 3,4 GB. Lock preso e rilasciato. Nessun commit
+
+### [2026-10-26 21:50] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: `tests/Integration/verify-motion.phase-cust.php` (nuovo), `tests/Integration/verify-motion.console.cust.development-rv9.txt`, `verify-motion.s1.cust.933154b.development-rv9.output.txt`, `verify-motion.s1.cust.933154b.development-rv9.server-CUST.log` (ignorato da git), `verify-motion.progress.txt`, `verify-motion.environment.txt`, `tests/Integration/MOTION-REPORT.md` (sezione rv9 di `cust.development`)
+- Cosa ho fatto:
+  - Riverifica in nero del passo di regressione `cust.development` su 933154b (rv9), dopo la decisione dell'utente su A-CUST-1.
+  - Decisione (2026-10-26): A-CUST-1 è accettata. Il messaggio di Chrome `InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled` compare quando si esce dal pannello verso una pagina senza opt-in, per esempio la home dell'app dopo il login, e non è un difetto del modulo.
+  - Modifica allo strumento: nuova copia MOTION `verify-motion.phase-cust.php`. `verify-u5.phase-cust.php` resta invariato e il loader del harness sceglie la copia per prima. JS-console ignora solo quel messaggio, per uguaglianza esatta, e lo conta in un INFO. Ogni altro errore JavaScript resta un FAIL.
+  - Esito: **PASS, 152/152**, 0 FAIL, 0 AMB, passo completo. JS-console PASS con un solo messaggio ignorato. Gli altri controlli hanno gli stessi id ed esiti di rv8.
+- Stato: completato
+- Note per il prossimo:
+  - Difetti: nessuno.
+  - A-CUST-1 è chiusa come decisa dall'utente. Nessuna nuova ambiguità.
+  - Resta il passo di regressione `u1.development`.
+  - Ambiente: `rolewarden_test` hash `f7f37c04…e21e64` prima e dopo, identico (ripristinato dal runner e ricontrollato a mano). Mailpit vuoto prima e dopo; nessun processo residuo; `.env` cancellati e cartella di lavoro rimossa, nessun profilo EPERM; memoria libera alla partenza circa 3,3 GB.
+  - Lock preso e rilasciato. Nessun commit.

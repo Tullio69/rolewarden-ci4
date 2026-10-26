@@ -512,3 +512,40 @@ Nessuna nuova. Resta aperta A-CUST-1 (passo `cust.development`).
 ### Stato del movimento
 
 `motion.production` (rv7), `motion.development` (rv8), `dash.development` (rv8) e `u3.development` (rv8) sono PASS; `cust.development` (rv8) è 151/152 in attesa di A-CUST-1. Resta, in una sessione a parte: `u1.development`. Nessun commit.
+
+## Riverifica a passi su 933154b (rv9): `cust.development` dopo la decisione su A-CUST-1
+
+**Collaudatore ad Hoc (Claude), 2026-10-26, 21:45-21:50** (run 21:46:02-21:48:34). Rifà il passo `cust.development` di rv8 (151/152) con lo strumento corretto come deciso dall'utente. Uscite `-rv9`, quelle `-rv8` lasciate intatte.
+
+**Decisione dell'utente (2026-10-26) su A-CUST-1: accettata.** Quando si esce dal pannello verso una pagina senza opt-in alle view transition, per esempio la home dell'app dopo il login, Chrome scrive in console `InvalidStateError: Transition was aborted because of invalid state. ViewTransition opt-in disabled`. Non è un difetto del modulo.
+
+**Modifica allo strumento.** Nuovo file `verify-motion.phase-cust.php`. È una copia di `verify-u5.phase-cust.php`, che resta invariato perché lo strumento di U5 non si tocca. Il loader del harness la sceglie per prima (`phase CUST from verify-motion.phase-cust.php`). L'unica differenza è il controllo JS-console:
+- non conta il messaggio sopra, confrontato per uguaglianza esatta dopo trim, come fa VT nel passo MOTION;
+- ogni altro messaggio in `consoleErrors` resta un FAIL, e così ogni errore del driver (`errors`);
+- un INFO riporta quante volte il messaggio è stato ignorato.
+
+| Passo | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| `cust.development` | development | **PASS, 152/152**, 0 FAIL, 0 AMB, passo completo (exit 0). LOG-5xx, LOG-app, LOG-srv, SCH-1, SCH-2 PASS | hash `f7f37c04…e21e64` prima e dopo: ripristinato dal runner, identico, ricontrollato a mano dopo la run. Mailpit vuoto prima e dopo; nessun processo residuo (php, python, node, chrome); `.env` cancellati e cartella di lavoro rimossa, nessun profilo EPERM |
+
+- **JS-console:** in console c'è un solo messaggio, quello deciso (INFO: 1 ignorato), ed `errors` è vuoto. Il controllo passa.
+- **Gli altri controlli:** stessi id e stessi esiti di rv8. Il confronto riga per riga cambia solo JS-console, da FAIL a PASS.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità di specifica
+
+A-CUST-1 è **chiusa: decisa dall'utente il 2026-10-26** (accettata). Nessuna nuova.
+
+### Stato del movimento
+
+Sono PASS su 933154b:
+- `motion.production` (rv7);
+- `motion.development` (rv8);
+- `dash.development` (rv8);
+- `u3.development` (rv8);
+- `cust.development` (rv9).
+
+Resta `u1.development`. Memoria libera alla partenza circa 3,3 GB; nessuna interruzione.

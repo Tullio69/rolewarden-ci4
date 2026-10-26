@@ -1531,3 +1531,12 @@ Formato di ogni voce:
 - Difetti: nessuno.
 - Ambiguita' di specifica: nessuna nuova (resta aperta A-CUST-1).
 - Note per il prossimo: hash identico prima e dopo (ripristino del runner), Mailpit vuoto, nessun processo residuo, `.env` cancellato, cartella di lavoro rimossa, nessun profilo EPERM. Nessun commit. Lock rilasciato.
+
+### [2026-10-26 21:45] - Collaudatore ad Hoc (Claude)
+- Tipo: review
+- Scope: regressione 1.1 motion, passo `u3.development` su 933154b (rv8); scritti solo `tests/Integration/verify-motion.console.u3.development-rv8.txt`, `tests/Integration/verify-motion.s1.u3.933154b.development-rv8.*`, righe in `verify-motion.progress.txt` e `verify-motion.environment.txt`, sezione in `tests/Integration/MOTION-REPORT.md`, questa voce
+- Cosa ho fatto: collaudo in nero del passo U3 SRCH in development con lo strumento invariato (`RW_V8_NEW=933154b RW_MOTION_RUN=-rv8 bash verify-motion.all.sh u3.development`, 21:29:57-21:43:13, exit 0). **PASS, 41/41**, 0 FAIL, 0 AMB, passo completo; stessi 41 identificativi ed esiti del giro su b38e350
+- Stato: completato. Approvazione del movimento: non ancora, resta `u1.development` (una sessione a parte) e A-CUST-1 aperta su `cust.development`
+- Difetti: nessuno
+- Ambiguità di specifica: nessuna nuova; resta aperta A-CUST-1 (non decisa)
+- Ambiente: `rolewarden_test` hash `f7f37c04…e21e64` prima e dopo, identico (ripristinato dal runner); Mailpit vuoto prima e dopo; nessun processo residuo; `.env` cancellato e cartella di lavoro rimossa, nessun profilo EPERM; memoria libera alla partenza circa 3,4 GB. Lock preso e rilasciato. Nessun commit

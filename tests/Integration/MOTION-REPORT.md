@@ -488,3 +488,27 @@ Nessuna nuova. Resta aperta A-CUST-1 (passo `cust.development`).
 ### Stato del movimento
 
 `motion.production` (rv7), `motion.development` (rv8) e `dash.development` (rv8) sono PASS; `cust.development` (rv8) è 151/152 in attesa di A-CUST-1. Restano, uno per sessione: `u3.development`, `u1.development`. Nessun commit.
+
+## Regressione a passi su 933154b (rv8): `u3.development`
+
+**Collaudatore ad Hoc (Claude), 2026-10-26, 21:29-21:43.** Passo di regressione U3 SRCH in development, strumento invariato (`verify-u3.phase-srch.php` tramite `verify-motion.harness.php`), lanciato con `RW_V8_NEW=933154b RW_MOTION_RUN=-rv8 bash verify-motion.all.sh u3.development`.
+
+| Passo | Ambiente | Esito | Database |
+| --- | --- | --- | --- |
+| `u3.development` | development | **PASS, 41/41**, 0 FAIL, 0 AMB, passo completo (exit 0, 21:29:57-21:43:13). REACH, RE-rev, RE-5, ID-*, ACT-*, RO-*, H-*, L-*, K-1, K-2 PASS | hash `f7f37c04…e21e64` prima e dopo, ripristinato dal runner, identico; Mailpit vuoto prima e dopo; nessun processo residuo (php, python, node, chrome); `.env` cancellato, cartella di lavoro rimossa (nessun profilo EPERM) |
+
+- Stessi 41 identificativi di controllo, con lo stesso esito, del giro su b38e350 (`verify-motion.s1.u3.b38e350.development-r3.output.txt`): nessuna regressione.
+- Uscite: `verify-motion.console.u3.development-rv8.txt`, `verify-motion.s1.u3.933154b.development-rv8.*`.
+- Memoria libera alla partenza circa 3,4 GB; nessuna interruzione.
+
+### Difetti
+
+Nessuno.
+
+### Ambiguità di specifica
+
+Nessuna nuova. Resta aperta A-CUST-1 (passo `cust.development`).
+
+### Stato del movimento
+
+`motion.production` (rv7), `motion.development` (rv8), `dash.development` (rv8) e `u3.development` (rv8) sono PASS; `cust.development` (rv8) è 151/152 in attesa di A-CUST-1. Resta, in una sessione a parte: `u1.development`. Nessun commit.

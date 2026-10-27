@@ -1580,3 +1580,10 @@ Formato di ogni voce:
 - Cosa ho fatto: su richiesta dell'utente ho promosso la demo pubblica dalla 1.0.0 (`9f9d0bc`) alla 1.1 (modulo `4be1a8d`), già verificata sullo staging. `git merge --ff-only staging` su `main`, push, poi `ops/deploy.sh demo` via SSH (`rolewarden-vps`). Applicate le migrazioni `SidebarTodayOnUpdate` e `AddDashboardPermissions`, reset completato. Verifiche: checkout `2d692b0`, modulo installato `4be1a8d`, home e robots.txt 200, `X-Robots-Tag` noindex invariato. Login di admin@example.com riuscito; dashboard, utenti, ruoli, permessi, Check a permission, attività, aspetto, impostazioni e /demo rispondono 200 senza errori. Nel log del 26 solo due `BadRequestException` delle 15:53 (URI con `*`), di prima del deploy.
 - Stato: completato. Staging e demo pubblica allineati a `2d692b0`.
 - Note per il prossimo: lock rilasciato.
+
+### [2026-10-27 21:43] - Claude
+- Tipo: review
+- Scope: `docs/codecanyon/audit.md` (nuovo), `.regista.json` (nuovo), `.gitattributes` (export-ignore di `.regista.json`)
+- Cosa ho fatto: audit contro la checklist CodeCanyon (passo 1 della roadmap del Regista) su `main`. 90 test unitari OK su PHP 8.3.11, `composer audit` pulito, licenze di terzi coerenti con l'app zip 1.0.0, nessun CDN, nessun residuo di debug, CSRF e query parametrizzate ok, zip modulo pulito.
+- Stato: completato
+- Note per il prossimo: da correggere: lock non allineato a composer.json (`composer update --lock`), 3 errori PHPStan in `src` (RolesController:173, UsersController:50, SignInThrottle:54), `composer analyse` fallisce perche' analizza `tests/Integration`; la 1.1 non e' passata su PHP 8.4/8.5. Decisione dell'utente: release 1.1.0 (composer dice 1.0.0, CHANGELOG Unreleased). `tests/Integration/verify-v5.work/` non tracciata, non toccata. Lock rilasciato.

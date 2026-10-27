@@ -1,10 +1,15 @@
-# Scheda prodotto CodeCanyon - RoleWarden 1.0.0
+# Scheda prodotto CodeCanyon - RoleWarden 1.1.0
 
 Note per Fabio (italiano). Tutto ciò che segue nei blocchi HTML è il testo da incollare su
 CodeCanyon, in inglese, nel sottoinsieme di tag che la piattaforma accetta (p, h2, h3, ul,
 li, strong, a). Ogni affermazione è coperta da `inventario.md`. I link demo e documentazione
 sono placeholder tra parentesi quadre: sostituiscili con quelli definitivi. Le parti
 marcate [DA VERIFICARE] vanno chiuse prima dell'invio.
+
+Ripassata sulla 1.1 il 2026-10-27 (commit `7e3730a`): dashboard, barra laterale, verifica
+permesso, ricerca comandi, movimento, blocchi della dashboard. Le nuove voci sono verificate
+nel codice (rotte in `src/Config/RouteRegistrar.php`, `src/Dashboard/Block.php`,
+`Resolver::explain`, migrazione `AddDashboardPermissions`) e coincidono con il CHANGELOG.
 
 ---
 
@@ -71,14 +76,28 @@ Move roles and permissions out of AuthGroups.php and into the database, with an 
 <li>Hooks on Shield's <strong>register</strong>, <strong>login</strong>, <strong>failedLogin</strong> and <strong>logout</strong> events, wired automatically.</li>
 </ul>
 
+<h3>Dashboard</h3>
+<ul>
+<li>Key figures for 7, 30 or 90 days: active users, sign-ins, failed sign-ins and permission changes, each with its change on the previous period.</li>
+<li>Sign-ins over time and by weekday and hour, users per role, the latest permission changes, and a security notice when an address reaches the lock threshold or an email is locked.</li>
+<li>Every block has its own permission; whoever holds none lands on the first screen they can see.</li>
+<li>Each user shows, hides and reorders their blocks; an administrator saves a default for everyone else.</li>
+<li>Charts are SVG drawn on the server in the theme's colours, each with its numbers as a table.</li>
+<li>Blocks of your own: one class extending <strong>RoleWarden\Dashboard\Block</strong>, listed in the config, stable for every 1.x release.</li>
+</ul>
+
 <h3>Admin panel</h3>
 <ul>
+<li>Sidebar grouped into Access, Security and System, each item shown only to those who hold its permission, with counters and a Today panel of the day's sign-ins; collapsible to a rail of icons.</li>
+<li>Command search with Ctrl K (Cmd K on macOS): screens, actions and permission identifiers, only those the signed-in user may reach, filtered on the server.</li>
+<li>Check a permission: who holds it and why (role and its parents, override, super admin), and for one user the outcome with the rule that decides it.</li>
 <li>Users: search, filter by role and status, sort, paginate; create, edit, activate, deactivate, delete; assign and revoke roles; grant or deny single permissions from the user's own matrix.</li>
 <li>Roles: create, edit, delete (soft), parent role, super admin flag, and a permission matrix per role that marks what is not granted yet and says how to grant it.</li>
 <li>Permissions: every permission grouped by area, with the roles that grant it.</li>
 <li>Guard rails: no inheritance cycles, system roles and permissions cannot be deleted, a role with children cannot be deleted, the application can never be left without an active super admin, an admin cannot lock themselves out of role management.</li>
 <li>Settings screen: default role for new users, session lifetime, remember-me, lock after failed sign-ins, sign-in attempts per IP, activity log retention. Stored with CodeIgniter's Settings library.</li>
 <li>Toasts for the outcome of every action.</li>
+<li>Motion that shows what changed: pages hand over with the sidebar's highlight sliding, dialogs grow out of their button, matrix cells and lists show their changes. All of it off under the system's reduced-motion setting.</li>
 </ul>
 
 <h3>Accounts, sessions and sign-in limits</h3>
@@ -108,6 +127,7 @@ Move roles and permissions out of AuthGroups.php and into the database, with an 
 <h3>Themes and appearance</h3>
 <ul>
 <li>Three themes, Console (dense), Clarity (airy) and Contrast (high contrast), each in light and dark; every user picks light, dark or system from the top bar.</li>
+<li>Three sidebar styles: Paper (light), Ink and Charcoal (dark in both modes).</li>
 <li>Appearance screen with live preview: starting theme, background, text and accent colours for light and dark, corner radius, density, with a WCAG AA contrast check on every text colour.</li>
 <li>The result is a theme file in your application's <strong>writable/</strong> folder, downloadable and versionable; a theme file under <strong>app/Config/</strong> wins and locks the screen.</li>
 <li>Add a fourth theme or your own components through a stylesheet of your application; a design guide documents every token with its value in each theme.</li>
@@ -138,7 +158,7 @@ Move roles and permissions out of AuthGroups.php and into the database, with an 
 
 <h2>What is included</h2>
 <ul>
-<li><strong>The module</strong> (rolewarden-module): source, 14 migrations, seeder, config, views, English and Italian language files, compiled CSS and JS, IBM Plex fonts.</li>
+<li><strong>The module</strong> (rolewarden-module): source, 16 migrations, seeder, config, views, English and Italian language files, compiled CSS and JS, IBM Plex fonts.</li>
 <li><strong>The complete application</strong> (rolewarden-app): CodeIgniter 4, Shield, CodeIgniter's translations and the module, already wired, <strong>vendor/</strong> included, opening on the browser installer. For servers without Composer.</li>
 <li><strong>The demo application</strong> (rolewarden-demo): a small document register with three roles (Reader, Author, Approver) that shows permissions at work and is the pattern to copy for your own screens. Installed and removed with <strong>php spark demo:install</strong> / <strong>demo:uninstall</strong>.</li>
 <li><strong>HTML documentation</strong>: installation, configuration, Shield integration, API reference, view overrides, design guide, troubleshooting.</li>
@@ -160,7 +180,7 @@ Move roles and permissions out of AuthGroups.php and into the database, with an 
 </ul>
 
 <h2>Roadmap</h2>
-<p>Planned for later versions, not in 1.0: two-factor authentication, social sign-in, API tokens managed from the panel, a notification centre, user invitations by email, user impersonation for support. No dates are promised; buyers of 1.x receive the 1.x updates.</p>
+<p>Planned for later versions, not in 1.1: two-factor authentication, social sign-in, API tokens managed from the panel, a notification centre, user invitations by email, user impersonation for support. No dates are promised; buyers of 1.x receive the 1.x updates.</p>
 ```
 
 Nota: la sezione Roadmap è coerente con la decisione del 24/10 (impersonazione e starter
@@ -176,12 +196,12 @@ nulla di ciò che precede dipende da esso.
 <li>Role inheritance and per-user grant/deny overrides</li>
 <li>Drop-in: $user->can(), can: route filter, view helpers</li>
 <li>Reversible import of existing Shield groups</li>
+<li>Dashboard with per-permission blocks and blocks of your own</li>
+<li>Command search and a Check a permission screen</li>
 <li>Users: search, filters, CSV import with preview</li>
 <li>Sessions list with revoke, sign-in throttling and email lock</li>
 <li>Activity log with filters and a one-year default retention</li>
-<li>Security emails on new device, password change, lockout</li>
 <li>Three themes, light and dark, live theme customiser</li>
-<li>English and Italian, one file per extra language</li>
 <li>Browser installer and a complete app zip without Composer</li>
 </ul>
 ```
@@ -205,7 +225,7 @@ nulla di ciò che precede dipende da esso.
 <p>Yes, without editing the module. Colours, corner radius and density are set from the Appearance screen and saved in a theme file of your application; a fourth theme or extra components go in a stylesheet of yours. Any view is replaced by copying it to app/Views/overrides/RoleWarden/Views/, CodeIgniter's standard mechanism. Updates never overwrite your changes.</p>
 
 <h3>Is it multi-tenant?</h3>
-<p>No. Roles and permissions are global to the application in 1.0. Scoping by organisation is not supported.</p>
+<p>No. Roles and permissions are global to the application in 1.x. Scoping by organisation is not supported.</p>
 
 <h3>Which databases are supported?</h3>
 <p>MySQL and MariaDB with InnoDB. The installer requires the mysqli extension. Other engines are not tested and not supported.</p>
@@ -214,7 +234,7 @@ nulla di ciò che precede dipende da esso.
 <p>No. The CSS is compiled with Tailwind and shipped in the package, Alpine.js is bundled. You install PHP files and run migrations, nothing else.</p>
 
 <h3>What about two-factor authentication, social login or API tokens?</h3>
-<p>Not in 1.0. They are planned for later versions. Shield's own features in those areas keep working as documented by Shield, but RoleWarden does not add screens for them yet.</p>
+<p>Not in 1.1. They are planned for later versions. Shield's own features in those areas keep working as documented by Shield, but RoleWarden does not add screens for them yet.</p>
 
 <h3>Which licence do I need?</h3>
 <p>A Regular Licence per end product that is free for its users (for example a client's back office). An Extended Licence if the end product is sold or charges its users. CodeCanyon's licence terms apply.</p>
@@ -226,16 +246,20 @@ ufficiale aggiornata prima di pubblicare.
 
 ## 6. Changelog iniziale
 
+La prima versione su CodeCanyon è la 1.1.0: chi compra non ha mai avuto la 1.0.0, quindi il
+changelog della scheda parte da qui. La data va fissata al rilascio. [DA VERIFICARE]
+
 ```html
-<h3>1.0.0 - 2026-10-18</h3>
-<p>First release.</p>
+<h3>1.1.0 - [RELEASE_DATE]</h3>
+<p>First release on CodeCanyon.</p>
 <ul>
 <li>Roles and permissions in the database, with inheritance and per-user overrides; fixed resolution order with a deactivated user denied everything and a user denial beating super admin.</li>
 <li>Shield integration: user model and entity, can: route filter, can(), can_any(), can_all() and permissions() helpers; import of existing Shield groups.</li>
-<li>Admin panel: users, roles, permission matrix, user overrides, settings, profile, sessions, activity log, appearance, CSV import.</li>
+<li>Admin panel: dashboard, users, roles, permission matrix, user overrides, check a permission, command search, settings, profile, sessions, activity log, appearance, CSV import.</li>
+<li>Dashboard blocks with their own permissions, per-user layout and a public API for blocks of your own.</li>
 <li>Sign-in throttling per IP and lock per email on top of Shield.</li>
 <li>Security emails on new device, password change and lockout; rolewarden.mail and rolewarden.activity events.</li>
-<li>Three themes in light and dark, theme customiser with contrast check, design guide.</li>
+<li>Three themes in light and dark, three sidebar styles, theme customiser with contrast check, design guide.</li>
 <li>English and Italian.</li>
 <li>Browser installer, complete application zip, demo application, HTML documentation.</li>
 </ul>
@@ -255,8 +279,8 @@ codeigniter, codeigniter 4, ci4, shield, rbac, roles, permissions, access contro
 ```
 
 **Versioni da dichiarare nel form:**
-- Software version / PHP: 8.3, 8.4 (8.5 solo se confermi il test: vedi [DA VERIFICARE] 1
-  dell'inventario)
+- Software version / PHP: 8.3, 8.4, 8.5. La 1.0 è collaudata su tutte e tre (S2); per la
+  1.1 decide l'esito del collaudo R1 [DA VERIFICARE]
 - Compatible with: CodeIgniter 4.7.4+ (scrivilo nel testo, il form non ha un campo
   dedicato per CI4)
 - Database: MySQL 8 / MariaDB 10.x [DA VERIFICARE] versione minima effettivamente provata;

@@ -4,9 +4,9 @@ Base di verifica: commit `6313215` su `origin/main` (tag v1.0.0, 2026-10-18). Og
 sotto è stata letta nel codice, non nel README. Le note per Fabio sono in italiano; i testi
 della scheda stanno in `scheda-prodotto.md`.
 
-Nota di contesto: il lavoro della v1.1 (barra, verifica permesso, ricerca comandi, dashboard)
-vive solo nel repo locale e non è su GitHub, quindi NON compare in questo inventario né nella
-scheda. Se la scheda deve uscire con la 1.1.0, va rifatta una passata su quelle tappe.
+Ripasso sulla 1.1 (2026-10-27, commit `7e3730a` su `main`): le funzionalità della 1.1 sono
+nella sezione "Novità della 1.1" qui sotto, lette nel codice come le altre. I conteggi della
+sezione 3 sono aggiornati. Esito dell'audit tecnico in `audit.md`.
 
 ## 1. Funzionalità implementate (con file che le realizza)
 
@@ -32,6 +32,32 @@ scheda. Se la scheda deve uscire con la 1.1.0, va rifatta una passata su quelle 
   `roles.assign` viene fermato.
 - Contratti `AuthorizationStore`, `ProtectionStore`, `Cache` in
   `src/Authorization/Contracts/`; adapter CI4 in `src/Adapters/DatabaseStore.php`.
+
+### Novità della 1.1
+- Dashboard su `/rolewarden`: cifre chiave, accessi nel tempo e per giorno e ora, avviso di
+  sicurezza, utenti per ruolo, ultime modifiche ai permessi, su 7, 30 o 90 giorni. Un permesso
+  per blocco (`dashboard.figures`, `dashboard.signins`, `dashboard.security`,
+  `dashboard.roles`, `dashboard.changes`, migrazione
+  `2026-10-21-100001_AddDashboardPermissions.php`); chi non ne ha nessuno va alla prima
+  schermata che può vedere. `src/Controllers/DashboardController.php`, `src/Dashboard/*`,
+  `src/Views/dashboard/*`
+- Personalizzazione della dashboard per utente e predefinito globale con `settings.update`
+  (rotta `dashboard/layout`, libreria Settings, nessuna tabella nuova).
+  `src/Dashboard/Layout.php`
+- API dei blocchi: classe astratta `RoleWarden\Dashboard\Block` (`key`, `title`,
+  `permission`, `view`, dati), registrata in `Config\RoleWarden::$dashboardBlocks`. La demo ne
+  aggiunge uno. `src/Dashboard/Block.php`, `src/Config/RoleWarden.php`
+- Barra laterale a gruppi con contatori, pannello Today e riduzione a icone, in una view
+  propria. `src/Views/partials/sidebar.php`, rotta `sidebar`
+- Tre stili della barra (Paper, Ink, Charcoal) nel personalizzatore, salvati nel file di
+  tema. `src/Controllers/AppearanceController.php`
+- Verifica permesso (`permissions/check`, filtro `can:permissions.view`) e
+  `Resolver::explain($userId, $slug)`. `src/Controllers/PermissionsController.php`,
+  `src/Authorization/Resolver.php`
+- Ricerca comandi (Ctrl K / Cmd K, pagina `/rolewarden/search` senza JavaScript), filtrata
+  sul server. `src/Controllers/SearchController.php`
+- Movimento del pannello, spento con la riduzione del movimento del sistema.
+  `src/Assets/js/panel.js`, `src/Assets/css/panel.css`
 
 ### Integrazione con Shield
 - Entity `RoleWarden\Entities\User` estende quella di Shield: `can()`, `hasPermission()`,
@@ -103,7 +129,7 @@ scheda. Se la scheda deve uscire con la 1.1.0, va rifatta una passata su quelle 
   attivi, password hashate da Shield già in anteprima, anteprima valida 30 minuti, file di
   esempio scaricabile. `src/Users/CsvImport.php`, `src/Users/UserImport.php`,
   `src/Controllers/ImportController.php`
-- Lingue: inglese e italiano (555 chiavi in `src/Language/en/RoleWarden.php`), scelta per
+- Lingue: inglese e italiano (694 chiavi in `src/Language/en/RoleWarden.php`, 694 in italiano, conteggio del 2026-10-27), scelta per
   utente dalla barra o dal profilo, `$languages` per limitare l'offerta, lingua aggiuntiva
   = un file in `app/Language/{locale}/`. `src/Filters/PanelLanguage.php`,
   `src/Settings/UserLanguage.php`
@@ -148,7 +174,7 @@ scheda. Se la scheda deve uscire con la 1.1.0, va rifatta una passata su quelle 
 
 ## 3. Cosa è incluso nel pacchetto
 Tre zip prodotti da `bin/build-package` (esclusioni in `.gitattributes`):
-- `rolewarden-module-x.y.z.zip`: `src/` (14 migrazioni, 1 seeder, config, 11 controller,
+- `rolewarden-module-x.y.z.zip`: `src/` (16 migrazioni, 1 seeder, config, 12 controller più `BaseController`,
   viste, helper, filtri, 2 lingue, asset compilati con font IBM Plex), `documentation/`
   (8 pagine HTML: index, installation, configuration, shield, api, views, design-guide,
   troubleshooting), README, CHANGELOG, THIRD-PARTY-LICENSES, composer.json.
@@ -178,17 +204,15 @@ Dalla matrice di `docs/SPEC.md` e dalla roadmap: tutto quanto segue non ha codic
 - Passkey WebAuthn, push web, Slack/Telegram, permessi a livello di campo, multi-tenant,
   webhook, export GDPR (v2.0)
 - Creazione permessi dal pannello: non prevista per scelta di design (si fa via migrazione)
-- Dashboard, barra nuova, ricerca comandi, verifica permesso (U1-U4 della v1.1): solo in
-  locale, non su GitHub
 - Nota per la memoria del progetto: la voce "JWT+session, TOTP/email 2FA, OAuth social
   login, webhooks, admin SPA" descrive il vecchio AuthConnect, non il codice di Rolewarden.
 
 ## [DA VERIFICARE] riepilogo
-1. PHP 8.5 davvero testata (README lo dice, nessun test nel repo lo prova).
+1. PHP 8.5: collaudata sulla 1.0 in S2 (8.3, 8.4 e 8.5 in Docker, `tests/Integration/S2-REPORT.md`); per la 1.1 è in corso il collaudo R1.
 2. Database diversi da MySQL/MariaDB: non testati, non dichiarare.
 3. Browser minimi: Tailwind v4 e Alpine 3 richiedono browser moderni (indicativamente
    Chrome/Edge 111+, Firefox 128+, Safari 16.4+); nessun test di compatibilità nel repo.
-4. La prima immagine della scheda era prevista sulla dashboard della 1.1 (decisione
-   24/10): con il codice su GitHub la prima schermata disponibile è la matrice permessi.
+4. Prima immagine della scheda sulla dashboard della 1.1 (decisione 24/10): ora possibile,
+   la 1.1 è su GitHub. Da aggiornare `screenshot.md`, che descrive ancora la 1.0.0.
 5. Prezzo: $29/$99 deciso il 18/10 e confermato qui; i 3-4 item analoghi "da analizzare
    ancora" di `docs/COMMERCIALE.md` non risultano analizzati nel repo.

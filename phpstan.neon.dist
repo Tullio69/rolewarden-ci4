@@ -12,4 +12,5 @@ parameters:
         analyseAndScan:
             - src/Views/*
             - src/Language/*
+            - tests/Integration/*
     treatPhpDocTypesAsCertain: false

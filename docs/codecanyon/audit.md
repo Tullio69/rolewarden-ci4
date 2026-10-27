@@ -15,9 +15,9 @@ Legenda: **OK**, **DA CORREGGERE**, **DECISIONE** (di Fabio).
 | Test unitari su PHP minimo | `vendor/bin/phpunit` su PHP 8.3.11: 90 test, 2954 asserzioni, OK | OK |
 | PHP 8.4 e 8.5 | collaudo S2 del 2026-10-18 (`_AI-LOG.md`): app e modulo su php 8.3/8.4/8.5 in Docker, log puliti con `error_reporting -1`. La regressione della 1.1 è stata fatta solo sul PHP dell'host (8.3) | DA CORREGGERE: ripetere una passata 8.5 sulla 1.1 prima di dichiarare "tested up to 8.5" |
 | CI4 e Shield | lock: framework v4.7.4, shield v1.4.1, settings v2.4.0, coerenti con `^4.7.4` e `^1.4` | OK |
-| `composer validate` | "lock file is not up to date with composer.json": il lock è fermo a `eb7e3ae`, il campo `version` è stato aggiunto dopo (`5974036`) | DA CORREGGERE: `composer update --lock` (solo hash, nessun pacchetto cambia) |
+| `composer validate` | "lock file is not up to date": il campo `version` è stato aggiunto dopo l'ultimo `composer update`. `composer.lock` è in `.gitignore`, quindi il problema riguardava solo la copia locale e non chi installa | OK, corretto il 2026-10-27 con `composer update --lock` (nessun pacchetto cambiato) |
 | Versione dichiarata | `composer.json` `"version": "1.0.0"`; CHANGELOG con la 1.1 sotto `[Unreleased]`; unico tag `v1.0.0`; `build/` solo zip 1.0.0 | DECISIONE: numero e data della release (1.1.0), poi bump, CHANGELOG, tag e `bin/build-package 1.1.0` |
-| PHPStan (livello 5) su `src` | 3 errori: `RolesController.php:173` catch morto di `ProtectionException`; `UsersController.php:50` confronto `!== null` sempre vero; `SignInThrottle.php:54` `after()` con ritorno `void` incompatibile con `FilterInterface` | DA CORREGGERE: piccoli, nessuno blocca l'esecuzione, ma un revisore Envato con PHPStan li vede |
+| PHPStan (livello 5) su `src` (corretto il 2026-10-27) | 3 errori: `RolesController.php:173` catch morto di `ProtectionException`; `UsersController.php:50` confronto `!== null` sempre vero; `SignInThrottle.php:54` `after()` con ritorno `void` incompatibile con `FilterInterface` | DA CORREGGERE: piccoli, nessuno blocca l'esecuzione, ma un revisore Envato con PHPStan li vede |
 | PHPStan su tutto il progetto | `composer analyse` analizza anche `tests/Integration` (script di collaudo, più di 1000 errori) e quindi fallisce | DA CORREGGERE: escludere `tests/Integration` in `phpstan.neon.dist` così `composer analyse` torna un segnale utile (gli script non vanno nei pacchetti) |
 
 ## 2. Licenza
@@ -66,7 +66,7 @@ Legenda: **OK**, **DA CORREGGERE**, **DECISIONE** (di Fabio).
 
 ## Azioni proposte (passi Intervento)
 
-1. `composer update --lock` e correzione dei 3 errori PHPStan in `src`, con `tests/Integration` escluso da `phpstan.neon.dist`.
+1. Fatto il 2026-10-27: lock riallineato in locale, 3 errori PHPStan corretti, `tests/Integration` escluso; `composer analyse` pulito.
 2. Passata PHP 8.5 (e 8.4) sulla 1.1 con il collaudatore ad Hoc.
 3. Decisione sulla release 1.1.0: bump, CHANGELOG datato, tag, zip.
 4. Ripasso di `inventario.md` e `scheda-prodotto.md` sulla 1.1.

@@ -47,7 +47,7 @@ class UsersController extends BaseController
             )->groupEnd();
         }
 
-        if ($roleId !== null && $roleId !== '') {
+        if ($roleId !== '') {
             $memberIds = array_column(
                 db_connect()->table(config('RoleWarden')->table('user_roles'))
                     ->select('user_id')->where('role_id', (int) $roleId)->get()->getResultArray(),

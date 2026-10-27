@@ -6,6 +6,7 @@ namespace RoleWarden\Models;
 
 use CodeIgniter\Model;
 use InvalidArgumentException;
+use RoleWarden\Authorization\ProtectionException;
 
 /**
  * Roles with the write-side protections and cache invalidation attached.
@@ -28,6 +29,16 @@ class RoleModel extends Model
     {
         $this->table = config('RoleWarden')->table('roles');
         parent::__construct();
+    }
+
+    /**
+     * Declared so callers may catch what the beforeUpdate guard throws.
+     *
+     * @throws ProtectionException
+     */
+    public function update($id = null, $row = null): bool
+    {
+        return parent::update($id, $row);
     }
 
     /**

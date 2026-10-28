@@ -1,0 +1,9 @@
+=== motion.development 20:29:53
+exit=255 motion.development 20:30:34
+ALL DONE 20:30:34
+=== RESUMPTION: v7lib fix (--entrypoint php), rerun 20:33:36
+=== motion.development 20:33:37
+exit=255 motion.development 20:34:18
+ALL DONE 20:34:18
+=== RESUMPTION: v7lib sidecar r1-fwd, rerun 20:36:03
+=== motion.development 20:36:04

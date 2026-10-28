@@ -1,0 +1,114 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+$ docker run -d --name r1-web --network r1-net -p 127.0.0.1:8091:80 r1-col-php:8.3  -> rc=0 
+$ docker cp C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/2d524776-b03f-4ba6-9b1b-8fe01e709557/scratchpad/r1/work/app-1.1.0-rc.r1.tar r1-web:/tmp/app.tar  -> rc=0 
+$ docker cp E:/progetti_lavoro/ASP/rolewarden-ci4/tests/Integration/verify-r1.docker/root.conf r1-web:/etc/apache2/sites-available/000-default.conf  -> rc=0 
+$ docker exec r1-web sh -c mkdir -p /var/www/app && tar -xf /tmp/app.tar -C /var/www/app && rm /tmp/app.tar && chown -R www-data:www-data /var/www/app && apache2ctl -k graceful  -> rc=0 
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.30.5.2. Set the 'ServerName' directive globally to suppress this message
+[INFO] S3 v83prod: base=http://localhost:8091/ container=r1-web phases=I,U,E,D,S,B,L env=production mode=app
+
+== I: installer (http://localhost:8091/)
+[PASS] I01    Home before installation leads to the installer, inside the address of the application
+[PASS] I02    Installer answers 200 with the requirements all met on this server
+[INFO] requirements: PHP 8.3.0 or later (this server: 8.3.36) ok | PHP extension intl ok | PHP extension mbstring ok | PHP extension json ok | PHP extension mysqli ok | Folder writable/ writable by the web server ok | File .env writable by the web server ok
+[PASS] I03    Installer stylesheet loads from inside the application address
+[PASS] I04    Setup code written in writable/rolewarden/install-code.txt
+[PASS] I05    Right code opens the database step; the proposed address is the one the installer was opened at
+[PASS] I06    .env written by the installer with app.baseURL = proposed address and the database settings
+[PASS] I06b   CI_ENVIRONMENT after the installer is the expected one (production)
+[PASS] I06c   Database step page without SQL or driver detail
+[PASS] I07    Tables step: Settings, Shield and RoleWarden tables and the system roles
+[PASS] I08    First super admin created; lock written; setup code deleted
+[PASS] I09    Installer pages: no link, form or redirect outside http://localhost:8091/
+[PASS] I10    Installer refuses to run again (Already installed, no form)
+
+== U: panel in use
+[PASS] U01    The super admin signs in; Shield redirects inside the application
+[INFO] 1.1 screens added to the list: [omesso], [omesso]/search?q=user, Check a permission at [omesso]/permissions/check
+[PASS] U02    Every panel screen answers 200 with no SQL, PHP error or warning on screen
+[PASS] U03    No link, asset, form or script URL of the 18 screens points outside http://localhost:8091/
+[PASS] U04    Panel CSS, JS and the fonts referenced by the CSS load (200) from inside the address
+[PASS] U05    Users: a user created from the panel (Shield user, active)
+[INFO] role form fields: ["csrf_test_name","slug","name","is_super_admin","parent_id","description"]
+[PASS] U06    Roles: a role created from the panel
+[PASS] U07    Matrix: granting a permission to the role from its page is saved
+[PASS] U08    Users: the role is assigned to the user from the user page
+[PASS] U09    Override: the role grants the screen (200), a negative override denies it, clearing it restores it
+[INFO] deactivated user: [omesso]/users 302, own profile 200
+[PASS] U10    Users: deactivating denies the user a screen the role grants, at the next request; reactivating restores it
+[INFO] settings fields: {"csrf_test_name":"hidden","lock_attempts":"number","lock_minutes":"number","sign_in_rate":"number","session_lifetime":"select","remember_length":"select","default_role":"select","activity_retention":"select","sidebar_today":"select"}
+[INFO] settings after save: {"messages":[{"type":"success","message":"Settings saved."}],"kinds":{"success":"Saved","warning":"Warning:","error":"Error:"}}
+[PASS] U11    Settings: a value changed with the Settings form is stored; redirect inside the application
+[PASS] U12    Activity: the log lists what was just done (role created, role assigned)
+[PASS] U13    Language switch: back to the same page inside the application, now in Italian
+
+== E: security emails
+[PASS] E01    Password changed from the profile: an email to the user
+[PASS] E02    Sign-in from a device never used: an email to the user
+[PASS] E03    Lock after failed sign-ins: an email to the user and an alert to a holder of security.alerts
+[INFO] links in the emails: ["http:\/\/localhost:8091\/index.php\/[omesso]\/activity?user=lock%40s3.test","http:\/\/localhost:8091\/index.php\/[omesso]\/sessions"]
+[PASS] E04    Every link in the security emails points inside http://localhost:8091/
+[PASS] E05    No SQL or PHP error text in any email
+
+== D: demo app
+[PASS] D01    php spark demo:install in the application (exit 0)
+[PASS] D02    The demo answers to the reader, links and forms inside the application
+[PASS] D03    The author writes a document; redirect inside the application
+[PASS] D05    php spark demo:uninstall (exit 0): demo table and accounts gone
+
+== S: CSRF, escaping, password hashes, no SQL on screen
+[INFO] distinct POST forms seen: 30 ["\/[omesso]\/install","\/index.php\/login","\/index.php\/[omesso]\/sidebar","\/index.php\/[omesso]\/profile\/language","\/index.php\/[omesso]\/appearance\/mode","\/index.php\/[omesso]\/users","\/index.php\/[omesso]\/users\/import\/preview","\/index.php\/[omesso]\/users\/{id}\/roles","\/index.php\/[omesso]\/users\/{id}\/sessions\/revoke-all","\/index.php\/[omesso]\/users\/{id}","\/index.php\/[omesso]\/roles","\/index.php\/[omesso]\/roles\/{id}","\/index.php\/[omesso]\/settings","\/index.php\/[omesso]\/appearance","\/index.php\/[omesso]\/appearance\/reset","\/index.php\/[omesso]\/profile\/password","\/index.php\/[omesso]\/sessions\/revoke-all","\/index.php\/[omesso]\/dashboard\/layout","\/index.php\/[omesso]\/roles\/{id}\/delete","\/index.php\/[omesso]\/users\/{id}\/deactivate","\/index.php\/[omesso]\/users\/{id}\/delete","\/index.php\/[omesso]\/users\/{id}\/roles\/{id}\/revoke","\/index.php\/[omesso]\/users\/{id}\/sessions\/{id}\/revoke","\/index.php\/[omesso]\/users\/{id}\/activate","\/index.php\/demo","\/index.php\/demo\/{id}\/submit","\/index.php\/demo\/{id}","\/index.php\/[omesso]\/sessions\/{id}\/revoke","\/index.php\/register","\/index.php\/login\/magic-link"]
+[PASS] S01    Every POST form on every page seen carries the CSRF token field
+[INFO] answers without token: /[omesso]/install:303 /index.php/login:303 /index.php/[omesso]/sidebar:303 /index.php/[omesso]/profile/language:303 /index.php/[omesso]/appearance/mode:303 /index.php/[omesso]/users:303 /index.php/[omesso]/users/import/preview:303 /index.php/[omesso]/users/{id}/roles:303 /index.php/[omesso]/users/{id}/sessions/revoke-all:303 /index.php/[omesso]/users/{id}:303 /index.php/[omesso]/roles:303 /index.php/[omesso]/roles/{id}:303 /index.php/[omesso]/settings:303 /index.php/[omesso]/appearance:303 /index.php/[omesso]/appearance/reset:303 /index.php/[omesso]/profile/password:303 /index.php/[omesso]/sessions/revoke-all:303 /index.php/[omesso]/dashboard/layout:303 /index.php/[omesso]/roles/{id}/delete:303 /index.php/[omesso]/users/{id}/deactivate:303 /index.php/[omesso]/users/{id}/delete:303 /index.php/[omesso]/users/{id}/roles/{id}/revoke:303 /index.php/[omesso]/users/{id}/sessions/{id}/revoke:303 /index.php/[omesso]/users/{id}/activate:303 /index.php/demo:303 /index.php/demo/{id}/submit:303 /index.php/demo/{id}:303 /index.php/[omesso]/sessions/{id}/revoke:303 /index.php/register:303 /index.php/login/magic-link:303
+[PASS] S02    Every POST form submitted without a token, or with a wrong one, is refused and changes nothing (30 forms, plus the AJAX endpoints)
+[PASS] S03    Markup written in role name and description, username and a demo document is escaped on every page (en, it) and in the activity log
+[INFO] username after the markup edit: "s2user'><svg onload=alert(33)>" (Shield may refuse it)
+[PASS] S04    Every stored password is a Shield hash (Config\Auth: PASSWORD_DEFAULT, cost 12), installer, panel, profile and demo accounts alike
+[PASS] S05    Odd input on 39 routes (quotes, huge or negative ids, arrays, path traversal on assets): no SQL text, PHP error or setting on screen
+[PASS] S05b   Odd input never makes the application answer 500
+
+== B: role protection messages, users list by role, rw-signin with the Settings thresholds
+[PASS] B00    The super admin signs in for phase B (redirect inside, dashboard by default)
+[INFO] B create R1 Parent: form {"csrf_test_name":"hidden","slug":"text","name":"text","is_super_admin":"checkbox","parent_id":"select","description":"textarea"} action "http:\/\/localhost:8091\/index.php\/[omesso]\/roles" -> 303 http://localhost:8091/index.php/[omesso]/roles 
+[INFO] B create R1 Child: form {"csrf_test_name":"hidden","slug":"text","name":"text","is_super_admin":"checkbox","parent_id":"select","description":"textarea"} action "http:\/\/localhost:8091\/index.php\/[omesso]\/roles" -> 303 http://localhost:8091/index.php/[omesso]/roles 
+[INFO] B create R1 Grandchild: form {"csrf_test_name":"hidden","slug":"text","name":"text","is_super_admin":"checkbox","parent_id":"select","description":"textarea"} action "http:\/\/localhost:8091\/index.php\/[omesso]\/roles" -> 303 http://localhost:8091/index.php/[omesso]/roles 
+[INFO] B roles: [{"id":12,"parent_id":null},{"id":13,"parent_id":12},{"id":14,"parent_id":13}]
+[PASS] B10    Setup: three roles in a chain Parent <- Child <- Grandchild created from the panel
+[INFO] B role edit form fields: {"csrf_test_name":"hidden","name":"text","is_super_admin":"checkbox","parent_id":"select","description":"textarea"}; answer to the POST 303 http://localhost:8091/index.php/[omesso]/roles/12/edit
+[PASS] B11    Edit: Parent made a child of its own grandchild -> the protection's message on the page, no error page
+[PASS] B12    Nothing saved: Parent still without a parent
+[PASS] B13    Edit: a role made its own parent -> the same message, no error page, nothing saved
+[PASS] B14    A valid edit still saves (Grandchild moved to the top level and renamed): the protection does not refuse everything
+[INFO] B super admin roles: [{"id":1,"slug":"super-admin","is_system":1}]; active users holding one: 1
+[INFO] B super admin role edit form: {"csrf_test_name":"hidden","name":"text","is_super_admin":"checkbox","parent_id":"select","description":"textarea"} super field(s) ["is_super_admin"]; answer 303 http://localhost:8091/index.php/[omesso]/roles/1/edit
+[PASS] B20    Precondition: one super admin role, held by an active super admin
+[PASS] B21    Edit: the flag taken off the last super admin role -> the protection's message on the page, no error page
+[PASS] B22    Nothing saved: the role is still super admin and the owner still reaches a super-admin-only screen
+[PASS] B23    With two super admin roles, taking the flag off one of them is accepted (the guard is about the last one)
+[INFO] B users filter form: action "http:\/\/localhost:8091\/index.php\/[omesso]\/users" fields {"q":"","sort":"desc","role":"","status":""} role options {"":"Any role","2":"Admin","13":"R1 Child","14":"R1 Grandchild moved","12":"R1 Parent","11":"S2 <script>alert(\"s2x\")<\/script>","4":"S2 Editors","1":"Super admin","3":"User"}
+[PASS] B30    Users list without filter: 200, every user listed (3)
+[PASS] B31    Users list filtered by each role offered (8): 200, exactly the users holding that role (database)
+[PASS] B32    Users list with the role filter submitted empty (the form as it comes): 200, every user, no error
+[PASS] B33    Users list with only `role=` in the address: 200, every user, no error
+[INFO] B users list with values not offered (status, users listed): ["999999: 200 0","no-such-role: 200 0","0: 200 0","-1: 200 0","x'y: 200 0","a[]: 200 0","array: 200 3"]
+[PASS] B34    Users list with a role value not offered (unknown id or slug, quote, array): no 500, no SQL or PHP error on screen
+[INFO] B settings fields: {"csrf_test_name":"hidden","lock_attempts":"number","lock_minutes":"number","sign_in_rate":"number","session_lifetime":"select","remember_length":"select","default_role":"select","activity_retention":"select","sidebar_today":"select"} current {"lock_attempts":"5","lock_minutes":"15","sign_in_rate":"100"} options {"attempts":"free","minutes":"free","rate":"free"}
+[INFO] B lock thresholds chosen in the Settings screen: 3 attempts, 7 minutes; answer 303; stored [{"key":"lockAttempts","value":"3"},{"key":"lockMinutes","value":"7"},{"key":"signInRate","value":"100"}]
+[PASS] B40    Settings screen: lock after N failures and lock duration saved with the screen's own form
+[PASS] B41    Below the threshold: 2 failures, then the right password signs in (the screen's N = 3, not a lower value)
+[PASS] B42    At the threshold: after 3 failures since the last success, the right password is refused with the lock message
+[PASS] B43    The lock message names the duration chosen in the Settings screen (7 minutes)
+[PASS] B44    An email that is not registered is locked the same way after 3 failures (same message: no hint that it does not exist)
+[INFO] B per-address limit chosen in the Settings screen: 5 per minute; answer 303; stored [{"key":"signInRate","value":"5"}]
+[INFO] B per-address limit sequence (attempt:status, R = limit message): ["1:303","2:303","3:303","4:303","5:303","6:303R","7:303R","owner:303R"]
+[PASS] B45    Per-address limit from the Settings screen (5 per minute): attempts beyond it get the limit message, no error page
+[PASS] B46    Past the per-address limit even the right password of the super admin is refused with the same message
+
+== L: logs (error_reporting -1)
+[PASS] L01    Application log (threshold 9): no WARNING, NOTICE, DEPRECATED, ERROR or CRITICAL line beyond the refusals the suite provoked
+[PASS] L02    PHP error log of the server (error_reporting = -1, log_errors = On): empty
+[PASS] L03    Apache error log and container output: no PHP warning, notice, deprecation or fatal error
+[PASS] L04    No 500 answer and no SQL or PHP error text in any of the 414 answers of the run
+[PASS] L05    Every redirect of the run stays inside http://localhost:8091/ (132 redirects)
+
+TOTAL: 67 PASS, 0 FAIL, 0 AMB
+7e3730a v83prod.v83prod: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True containers_removed=True

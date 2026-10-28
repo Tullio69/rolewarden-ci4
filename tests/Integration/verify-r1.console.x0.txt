@@ -1,0 +1,50 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+$ docker run -d --name r1-web --network r1-net -p 127.0.0.1:8091:80 r1-col-php:8.5  -> rc=0 
+$ docker cp C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/2d524776-b03f-4ba6-9b1b-8fe01e709557/scratchpad/r1/work/app-1.1.0-rc.r1.tar r1-web:/tmp/app.tar  -> rc=0 
+$ docker cp E:/progetti_lavoro/ASP/rolewarden-ci4/tests/Integration/verify-r1.docker/root.conf r1-web:/etc/apache2/sites-available/000-default.conf  -> rc=0 
+$ docker exec r1-web sh -c mkdir -p /var/www/app && tar -xf /tmp/app.tar -C /var/www/app && rm /tmp/app.tar && chown -R www-data:www-data /var/www/app && apache2ctl -k graceful  -> rc=0 
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.30.5.2. Set the 'ServerName' directive globally to suppress this message
+$ docker run -d --name r1-proxy --network r1-net --ip 172.30.5.10 -p 127.0.0.1:8443:443 nginx:alpine  -> rc=0 
+$ docker exec r1-proxy mkdir -p /etc/nginx/r1  -> rc=0 
+$ docker cp C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/2d524776-b03f-4ba6-9b1b-8fe01e709557/scratchpad/r1/work/cert.pem r1-proxy:/etc/nginx/r1/cert.pem  -> rc=0 
+$ docker cp C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/2d524776-b03f-4ba6-9b1b-8fe01e709557/scratchpad/r1/work/key.pem r1-proxy:/etc/nginx/r1/key.pem  -> rc=0 
+$ docker cp E:/progetti_lavoro/ASP/rolewarden-ci4/tests/Integration/verify-r1.docker/nginx.conf r1-proxy:/etc/nginx/conf.d/default.conf  -> rc=0 
+$ docker exec r1-proxy nginx -s reload  -> rc=0 
+[INFO] S3 x0: base=https://localhost:8443/ container=r1-web phases=I,X0,L env=production mode=app
+
+== I: installer (https://localhost:8443/)
+[PASS] I01    Home before installation leads to the installer, inside the address of the application
+[PASS] I02    Installer answers 200 with the requirements all met on this server
+[INFO] requirements: PHP 8.3.0 or later (this server: 8.5.12) ok | PHP extension intl ok | PHP extension mbstring ok | PHP extension json ok | PHP extension mysqli ok | Folder writable/ writable by the web server ok | File .env writable by the web server ok
+[PASS] I03    Installer stylesheet loads from inside the application address
+[PASS] I04    Setup code written in writable/rolewarden/install-code.txt
+[PASS] I05    Right code opens the database step; the proposed address is the one the installer was opened at
+[PASS] I06    .env written by the installer with app.baseURL = proposed address and the database settings
+[PASS] I06b   CI_ENVIRONMENT after the installer is the expected one (production)
+[PASS] I06c   Database step page without SQL or driver detail
+[PASS] I07    Tables step: Settings, Shield and RoleWarden tables and the system roles
+[PASS] I08    First super admin created; lock written; setup code deleted
+[PASS] I09    Installer pages: no link, form or redirect outside https://localhost:8443/
+[PASS] I10    Installer refuses to run again (Already installed, no form)
+
+== X0: behind nginx (HTTPS terminated, X-Forwarded-For / X-Forwarded-Proto), $proxyIPs not set
+[INFO] X0 Set-Cookie headers: ["ci_session=4993bed9e887f29cf716d1a2b761e3f2; expires=Wed, 28 Oct 2026 00:06:58 GMT; Max-Age=7200; path=\/; HttpOnly; SameSite=Lax","ci_session=deleted; expires=Thu, 01 Jan 1970 00:00:01 GMT; Max-Age=0; path=\/; HttpOnly","ci_session=53220bb02cea2afd8f5fb1b90fb8b214; expires=Wed, 28 Oct 2026 00:06:58 GMT; Max-Age=7200; path=\/; HttpOnly; SameSite=Lax","remember=89b9cfc3e98db6e1459fb521%3Ae9f9293b9069de0d24a945542931d1c28c66baec; expires=Thu, 26 Nov 2026 22:06:58 GMT; Max-Age=2592000; path=\/; HttpOnly; SameSite=Lax"]
+[INFO] X0 baseURL proposed by the installer behind the proxy (no $proxyIPs): http://localhost:8443/ / written: https://localhost:8443/
+[INFO] X0 redirect after sign-in: https://localhost:8443/index.php/[omesso]; cookies Secure: no
+[INFO] X0 IP seen: auth_logins=172.30.5.10 acl_sessions=172.30.5.10 activity=; sessions page shows 203.0.113.10: no
+[INFO] X0 settings fields: {"csrf_test_name":"hidden","lock_attempts":"number","lock_minutes":"number","sign_in_rate":"number","session_lifetime":"select","remember_length":"select","default_role":"select","activity_retention":"select","sidebar_today":"select"} -> per-address field: sign_in_rate
+[INFO] X0 sign-in rate setting: [{"key":"signInRate","value":"5"}]
+[INFO] X0 visitor A (198.51.100.21) attempts: ["303","303","303","303","303","303L","right-password:refused"]; visitor B (198.51.100.22) signs in: no 303 
+[INFO] X0 addresses in auth_logins: ["172.30.5.10"]
+[PASS] X001   Without $proxyIPs (documented consequence): every visitor has the proxy's address
+[PASS] X002   Without $proxyIPs (documented consequence): the per-IP limit counts everyone together, visitor B is stopped too
+
+== L: logs (error_reporting -1)
+[PASS] L01    Application log (threshold 9): no WARNING, NOTICE, DEPRECATED, ERROR or CRITICAL line beyond the refusals the suite provoked
+[PASS] L02    PHP error log of the server (error_reporting = -1, log_errors = On): empty
+[PASS] L03    Apache error log and container output: no PHP warning, notice, deprecation or fatal error
+[PASS] L04    No 500 answer and no SQL or PHP error text in any of the 39 answers of the run
+[PASS] L05    Every redirect of the run stays inside https://localhost:8443/ (11 redirects)
+
+TOTAL: 19 PASS, 0 FAIL, 0 AMB
+7e3730a x0.x0: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True containers_removed=True

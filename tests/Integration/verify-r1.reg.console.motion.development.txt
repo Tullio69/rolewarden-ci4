@@ -1,0 +1,20 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase MOTION from verify-motion.phase-motion.php
+
+===== phase MOTION =====
+
+== MOTION: motion across the panel (7e3730a)
+[INFO] cache:clear rc=0 CodeIgniter v4.7.5 Command Line Tool - Server Time: 2026-10-28 19:36:55 UTC+00:00 Cache cleared.
+[INFO] server r1-srv (r1-col-php:8.5) on 127.0.0.1:8071 prefix='' docroot /w/app/public
+[PASS] SET-1  Owner signs in over HTTP; the test data is in place (1,234 bulk users, 12,345 + 2,345 sign-ins, 1,111 changes)
+[INFO] served counters: [["1242","1,242"],["12346","12,346"],["2345","2,345"],["1111","1,111"]]
+[INFO] browser err console/paper driver errors: login: timeout waiting Page.loadEventFired | console-paper-start: timeout waiting Page.loadEventFired | console-paper-[omesso]/settings: timeout waiting Page.loadEventFired | console-paper-[omesso]/appearance: timeout waiting Page.loadEventFired | console-paper-role: timeout waiting Page.loadEventFired | console-paper-user: timeout waiting Page.loadEventFired | console-paper-profile: timeout waiting Page.loadEventFired | console-paper-search: timeout waiting Page.loadEventFired | console-paper-role2: timeout waiting Page.loadEventFired
+[INFO] browser err console/paper: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\2d524776-b03f-4ba6-9b1b-8fe01e709557\scratchpad\r1\rw-r1-motion-development\chrome-mo-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\2d524776-b03f-4ba6-9b1b-8fe01e709557\scratchpad\r1\rw-r1-motion-development\chrome-mo-1'
+[FAIL] ERR-console-paper No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme console, sidebar paper
+         -> {"theme":{"base":"console","radius":null,"density":null,"sidebar":null,"colors":{"light":[],"dark":[]}},"errors":[],"driver":["login: timeout waiting Page.loadEventFired","console-paper-start: timeout waiting Page.loadEventFired","console-paper-[omesso]\/settings: timeout waiting Page.loadEventFired","console-paper-[omesso]\/appearance: timeout waiting Page.loadEventFired","console-paper-role: timeout waiting Page.loadEventFired","console-paper-user: timeout waiting Page.loadEventFired","console-paper-profile: timeout waiting Page.loadEventFired","console-paper-search: timeout waiting Page.loadEventFired","console-paper-role2: timeout waiting Page.loadEventFired"],"navOk":false}
+[INFO] browser err console/ink: no result: 
+[FAIL] ERR-console-ink No JavaScript error (other than the view transition, see VT-err) on the 12 pages, theme console, sidebar ink
+         -> {"theme":{"base":"console","radius":null,"density":null,"sidebar":"ink","colors":{"light":[],"dark":[]}},"errors":["no result"],"driver":["no result"],"navOk":false}

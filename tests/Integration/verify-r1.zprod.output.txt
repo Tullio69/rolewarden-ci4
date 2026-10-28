@@ -1,0 +1,35 @@
+R1 scenario zprod: {'php': '8.5', 'conf': 'root', 'base': 'http://localhost:8091/', 'env': 'production', 'phases': 'I,Z,L', 'owndb': True}
+[INFO] S3 zprod: base=http://localhost:8091/ container=r1-web phases=I,Z,L env=production mode=app
+
+== I: installer (http://localhost:8091/)
+[PASS] I01    Home before installation leads to the installer, inside the address of the application
+[PASS] I02    Installer answers 200 with the requirements all met on this server
+[INFO] requirements: PHP 8.3.0 or later (this server: 8.5.12) ok | PHP extension intl ok | PHP extension mbstring ok | PHP extension json ok | PHP extension mysqli ok | Folder writable/ writable by the web server ok | File .env writable by the web server ok
+[PASS] I03    Installer stylesheet loads from inside the application address
+[PASS] I04    Setup code written in writable/rolewarden/install-code.txt
+[PASS] I05    Right code opens the database step; the proposed address is the one the installer was opened at
+[PASS] I06    .env written by the installer with app.baseURL = proposed address and the database settings
+[PASS] I06b   CI_ENVIRONMENT after the installer is the expected one (production)
+[PASS] I06c   Database step page without SQL or driver detail
+[PASS] I07    Tables step: Settings, Shield and RoleWarden tables and the system roles
+[PASS] I08    First super admin created; lock written; setup code deleted
+[PASS] I09    Installer pages: no link, form or redirect outside http://localhost:8091/
+[PASS] I10    Installer refuses to run again (Already installed, no form)
+
+== Z: database switched off in the middle of use (r1-db)
+[PASS] Z00    Before: signed in, 17 POST forms collected
+[INFO] database container stopped: rc=0
+[INFO] answers with the database off: [omesso]/users:500 [omesso]/users:500 [omesso]/users/create:500 [omesso]/users/create:500 [omesso]/users/import:500 [omesso]/users/import:500 [omesso]/users/1:500 [omesso]/users/1:500 [omesso]/users/1/edit:500 [omesso]/users/1/edit:500 [omesso]/roles:500 [omesso]/roles:500 [omesso]/roles/create:500 [omesso]/roles/create:500 [omesso]/roles/2:500 [omesso]/roles/2:500 [omesso]/roles/2/edit:500 [omesso]/roles/2/edit:500 [omesso]/permissions:500 [omesso]/permissions:500 [omesso]/settings:500 [omesso]/settings:500 [omesso]/activity:500 [omesso]/activity:500 [omesso]/appearance:500 [omesso]/appearance:500 [omesso]/profile:500 [omesso]/profile:500 [omesso]/sessions:500 [omesso]/sessions:500 [omesso]:500 [omesso]:500 [omesso]/search?q=user:500 [omesso]/search?q=user:500 :302 :302 login:500 login:500 register:500 register:500 [omesso]/install:403 [omesso]/install:403 demo:500 demo:500 demo/create:500 demo/create:500 logout:500 logout:500 POST /index.php/[omesso]/sidebar:500 POST /index.php/[omesso]/profile/language:303 POST /index.php/[omesso]/appearance/mode:303 POST /index.php/[omesso]/users:303 POST /index.php/[omesso]/users/import/preview:303 POST /index.php/[omesso]/users/1/roles:303 POST /index.php/[omesso]/users/1/sessions/revoke-all:303 POST /index.php/[omesso]/users/1:303 POST /index.php/[omesso]/roles:303 POST /index.php/[omesso]/roles/2:303 POST /index.php/[omesso]/settings:303 POST /index.php/[omesso]/appearance:303 POST /index.php/[omesso]/appearance/reset:303 POST /index.php/[omesso]/profile/password:303 POST /index.php/[omesso]/sessions/revoke-all:303 POST /index.php/[omesso]/dashboard/layout:303 POST /index.php/demo/3/submit:500 POST login:303
+[PASS] Z01    Database off: no SQL, driver, host or PHP error text on any page or form answer (66 requests)
+[PASS] Z02    The failure is written to writable/logs
+[PASS] Z03    Database back: the application works again without intervention
+
+== L: logs (error_reporting -1)
+[PASS] L01    Application log (threshold 9): no WARNING, NOTICE, DEPRECATED, ERROR or CRITICAL line beyond the refusals the suite provoked
+[PASS] L02    PHP error log of the server (error_reporting = -1, log_errors = On): empty
+[PASS] L03    Apache error log and container output: no PHP warning, notice, deprecation or fatal error
+[PASS] L04    No 500 answer and no SQL or PHP error text in any of the 106 answers of the run
+[PASS] L05    Every redirect of the run stays inside http://localhost:8091/ (22 redirects)
+
+TOTAL: 21 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

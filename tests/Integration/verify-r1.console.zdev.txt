@@ -1,0 +1,43 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+$ docker run -d --name r1-web --network r1-net -p 127.0.0.1:8091:80 r1-col-php:8.5  -> rc=0 
+$ docker cp C:/Users/fabio/AppData/Local/Temp/claude/E--progetti-lavoro-ASP-rolewarden-ci4/2d524776-b03f-4ba6-9b1b-8fe01e709557/scratchpad/r1/work/app-1.1.0-rc.r1.tar r1-web:/tmp/app.tar  -> rc=0 
+$ docker cp E:/progetti_lavoro/ASP/rolewarden-ci4/tests/Integration/verify-r1.docker/root.conf r1-web:/etc/apache2/sites-available/000-default.conf  -> rc=0 
+$ docker exec r1-web sh -c mkdir -p /var/www/app && tar -xf /tmp/app.tar -C /var/www/app && rm /tmp/app.tar && printf 'CI_ENVIRONMENT = development\n' > /var/www/app/.env && chown -R www-data:www-data /  -> rc=0 
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.30.5.2. Set the 'ServerName' directive globally to suppress this message
+[INFO] S3 zdev: base=http://localhost:8091/ container=r1-web phases=I,Z,L env=development mode=app
+
+== I: installer (http://localhost:8091/)
+[PASS] I01    Home before installation leads to the installer, inside the address of the application
+[PASS] I02    Installer answers 200 with the requirements all met on this server
+[INFO] requirements: PHP 8.3.0 or later (this server: 8.5.12) ok | PHP extension intl ok | PHP extension mbstring ok | PHP extension json ok | PHP extension mysqli ok | Folder writable/ writable by the web server ok | File .env writable by the web server ok
+[PASS] I03    Installer stylesheet loads from inside the application address
+[PASS] I04    Setup code written in writable/rolewarden/install-code.txt
+[PASS] I05    Right code opens the database step; the proposed address is the one the installer was opened at
+[PASS] I06    .env written by the installer with app.baseURL = proposed address and the database settings
+[PASS] I06b   CI_ENVIRONMENT after the installer is the expected one (development)
+[PASS] I06c   Database step page without SQL or driver detail
+[PASS] I07    Tables step: Settings, Shield and RoleWarden tables and the system roles
+[PASS] I08    First super admin created; lock written; setup code deleted
+[PASS] I09    Installer pages: no link, form or redirect outside http://localhost:8091/
+[PASS] I10    Installer refuses to run again (Already installed, no form)
+
+== Z: database switched off in the middle of use (r1-db)
+[PASS] Z00    Before: signed in, 17 POST forms collected
+[INFO] database container stopped: rc=0
+[INFO] answers with the database off: [omesso]/users:500 [omesso]/users:500 [omesso]/users/create:500 [omesso]/users/create:500 [omesso]/users/import:500 [omesso]/users/import:500 [omesso]/users/1:500 [omesso]/users/1:500 [omesso]/users/1/edit:500 [omesso]/users/1/edit:500 [omesso]/roles:500 [omesso]/roles:500 [omesso]/roles/create:500 [omesso]/roles/create:500 [omesso]/roles/2:500 [omesso]/roles/2:500 [omesso]/roles/2/edit:500 [omesso]/roles/2/edit:500 [omesso]/permissions:500 [omesso]/permissions:500 [omesso]/settings:500 [omesso]/settings:500 [omesso]/activity:500 [omesso]/activity:500 [omesso]/appearance:500 [omesso]/appearance:500 [omesso]/profile:500 [omesso]/profile:500 [omesso]/sessions:500 [omesso]/sessions:500 [omesso]:500 [omesso]:500 [omesso]/search?q=user:500 [omesso]/search?q=user:500 :500 :500 login:500 login:500 register:500 register:500 [omesso]/install:500 [omesso]/install:500 demo:500 demo:500 demo/create:500 demo/create:500 logout:500 logout:500 POST /index.php/[omesso]/sidebar:500 POST /index.php/[omesso]/profile/language:403 POST /index.php/[omesso]/appearance/mode:403 POST /index.php/[omesso]/users:403 POST /index.php/[omesso]/users/import/preview:403 POST /index.php/[omesso]/users/1/roles:403 POST /index.php/[omesso]/users/1/sessions/revoke-all:403 POST /index.php/[omesso]/users/1:403 POST /index.php/[omesso]/roles:403 POST /index.php/[omesso]/roles/2:403 POST /index.php/[omesso]/settings:403 POST /index.php/[omesso]/appearance:403 POST /index.php/[omesso]/appearance/reset:403 POST /index.php/[omesso]/profile/password:403 POST /index.php/[omesso]/sessions/revoke-all:403 POST /index.php/[omesso]/dashboard/layout:403 POST /index.php/demo/3/submit:500 POST login:403
+[INFO] R1 resumption: Z01 answers with leaks 66, of which outside the CodeIgniter development debug page (SPEC, outcomes of S2): 0 []
+[FAIL] Z01    Database off: no SQL, driver, host or PHP error text on any page or form answer (66 requests)
+         -> ["GET [omesso]\/users 500 Displayed at 19:22:36 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users 500 Displayed at 19:22:41 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/create 500 Displayed at 19:22:49 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/create 500 Displayed at 19:22:53 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/import 500 Displayed at 19:23:01 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/import 500 Displayed at 19:23:06 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/1 500 Displayed at 19:23:14 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/1 500 Displayed at 19:23:18 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/1\/edit 500 Displayed at 19:23:26 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ...","GET [omesso]\/users\/1\/edit 500 Displayed at 19:23:31 \u2014 PHP: 8.5.12 \u2014 CodeIgniter: 4.7.5 -- Environment: development CodeIgniter\\Database\\Exceptions\\DatabaseException Unable to connect to the database. Main connection [MySQLi]: ..."]
+[PASS] Z02    The failure is written to writable/logs
+[PASS] Z03    Database back: the application works again without intervention
+
+== L: logs (error_reporting -1)
+[PASS] L01    Application log (threshold 9): no WARNING, NOTICE, DEPRECATED, ERROR or CRITICAL line beyond the refusals the suite provoked
+[PASS] L02    PHP error log of the server (error_reporting = -1, log_errors = On): empty
+[PASS] L03    Apache error log and container output: no PHP warning, notice, deprecation or fatal error
+[PASS] L04    No 500 answer and no SQL or PHP error text in any of the 106 answers of the run
+[PASS] L05    Every redirect of the run stays inside http://localhost:8091/ (4 redirects)
+
+TOTAL: 20 PASS, 1 FAIL, 0 AMB
+FAIL Z01 Database off: no SQL, driver, host or PHP error text on any page or form answer (66 requests)
+7e3730a zdev.zdev: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True containers_removed=True

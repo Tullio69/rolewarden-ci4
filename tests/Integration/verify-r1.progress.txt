@@ -1,0 +1,57 @@
+=== v83 22:47:00
+exit=1 v83 22:50:10 TOTAL: 84 PASS, 1 FAIL, 0 AMB
+=== v84 22:50:10
+exit=1 v84 22:53:21 TOTAL: 84 PASS, 1 FAIL, 0 AMB
+=== v85 22:53:21
+exit=1 v85 22:56:32 TOTAL: 84 PASS, 1 FAIL, 0 AMB
+=== v83prod 22:56:32
+exit=0 v83prod 22:59:02 TOTAL: 67 PASS, 0 FAIL, 0 AMB
+=== v84prod 22:59:02
+exit=0 v84prod 23:01:33 TOTAL: 67 PASS, 0 FAIL, 0 AMB
+=== v85prod 23:01:33
+exit=0 v85prod 23:04:02 TOTAL: 67 PASS, 0 FAIL, 0 AMB
+=== sub 23:04:02
+exit=0 sub 23:05:20 TOTAL: 62 PASS, 0 FAIL, 0 AMB
+=== alias 23:05:20
+exit=0 alias 23:05:53 TOTAL: 30 PASS, 0 FAIL, 0 AMB
+=== x2 23:05:53
+exit=1 x2 23:06:44 TOTAL: 40 PASS, 3 FAIL, 0 AMB
+=== x0 23:06:44
+exit=0 x0 23:07:07 TOTAL: 19 PASS, 0 FAIL, 0 AMB
+=== zdev 23:07:07
+exit=1 zdev 23:14:10 TOTAL: 20 PASS, 1 FAIL, 0 AMB
+=== zprod 23:14:10
+exit=0 zprod 23:21:01 TOTAL: 21 PASS, 0 FAIL, 0 AMB
+=== zprod83 23:21:01
+exit=0 zprod83 23:27:53 TOTAL: 21 PASS, 0 FAIL, 0 AMB
+=== m474p83 23:27:53
+exit=1 m474p83 23:29:32 TOTAL: 9 PASS, 35 FAIL, 0 AMB
+=== m474p85 23:29:32
+=== RESUMPTION 2026-10-28 19:54:39 (tool fixes: module-app.sh owner address, T01 evidence regex)
+=== t85 19:54:54
+exit=1 t85 19:55:58 TOTAL: 38 PASS, 1 FAIL, 0 AMB
+=== x2 19:55:58
+exit=0 x2 19:56:52 TOTAL: 43 PASS, 0 FAIL, 0 AMB
+=== m474p83 19:56:52
+exit=0 m474p83 19:58:19 TOTAL: 46 PASS, 0 FAIL, 0 AMB
+=== m474p85 19:58:19
+exit=0 m474p85 19:59:49 TOTAL: 53 PASS, 0 FAIL, 0 AMB
+=== m475p83 19:59:49
+exit=0 m475p83 20:01:16 TOTAL: 53 PASS, 0 FAIL, 0 AMB
+=== m475p84 20:01:16
+exit=0 m475p84 20:02:45 TOTAL: 46 PASS, 0 FAIL, 0 AMB
+=== m475p85 20:02:45
+exit=0 m475p85 20:04:28 TOTAL: 46 PASS, 0 FAIL, 0 AMB
+=== zdev 20:04:28
+exit=1 zdev 20:11:36 TOTAL: 20 PASS, 1 FAIL, 0 AMB
+ALL DONE 20:11:36
+=== RESUMPTION rerun after T01 date-filter fix and Z01 info line 20:12:04
+=== v83 20:12:04
+exit=0 v83 20:15:24 TOTAL: 85 PASS, 0 FAIL, 0 AMB
+=== v84 20:15:24
+exit=0 v84 20:18:45 TOTAL: 85 PASS, 0 FAIL, 0 AMB
+=== v85 20:18:45
+exit=0 v85 20:21:59 TOTAL: 85 PASS, 0 FAIL, 0 AMB
+=== zdev 20:21:59
+exit=1 zdev 20:29:05 TOTAL: 20 PASS, 1 FAIL, 0 AMB
+ALL DONE 20:29:06

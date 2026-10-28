@@ -1587,3 +1587,35 @@ Formato di ogni voce:
 - Cosa ho fatto: audit contro la checklist CodeCanyon (passo 1 della roadmap del Regista) su `main`. 90 test unitari OK su PHP 8.3.11, `composer audit` pulito, licenze di terzi coerenti con l'app zip 1.0.0, nessun CDN, nessun residuo di debug, CSRF e query parametrizzate ok, zip modulo pulito.
 - Stato: completato
 - Note per il prossimo: da correggere: lock non allineato a composer.json (`composer update --lock`), 3 errori PHPStan in `src` (RolesController:173, UsersController:50, SignInThrottle:54), `composer analyse` fallisce perche' analizza `tests/Integration`; la 1.1 non e' passata su PHP 8.4/8.5. Decisione dell'utente: release 1.1.0 (composer dice 1.0.0, CHANGELOG Unreleased). `tests/Integration/verify-v5.work/` non tracciata, non toccata. Lock rilasciato.
+
+### [2026-10-28 20:55] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: review
+- Scope: tappa R1, cancello di pubblicazione della 1.1.0 su `7e3730a` (ripresa della sessione interrotta il 2026-10-27 alle 23:29). Scritti solo `tests/Integration/verify-r1.*`, `tests/Integration/verify-r1.docker/*`, `tests/Integration/R1-REPORT.md` e questa voce. Database solo `rolewarden_test`.
+- Cosa ho fatto:
+  - Rimesso in ordine l'ambiente lasciato dall'interruzione: `rolewarden_test` non era vuoto ed è stato ripristinato dallo snapshot di `m474p85` (hash di riferimento); container `r1-web` rimosso dopo averne salvato il log.
+  - Completati gli scenari mancanti e rieseguiti quelli con FAIL. Risultati: v83, v84 e v85 85/85; v8xprod 67/67; sub 62/62; alias 30/30; x2 43/43; x0 19/19; zprod e zprod83 21/21; m474p83 46/46; m474p85 53/53; m475p83 53/53; m475p84 e m475p85 46/46; pacchetti 31/31; zdev 20/21.
+  - I tre comportamenti dopo `4be1a8d` (protezione dei ruoli, lista utenti per ruolo anche col filtro vuoto, `rw-signin` con le soglie delle Impostazioni) sono PASS ovunque.
+- Natura dei FAIL del 27:
+  - m474p83: difetto dello strumento (indirizzo del proprietario in `module-app.sh`).
+  - T01 "set" su v83, v84 e v85: difetto dello strumento. "set" è settembre abbreviato sull'asse della dashboard, e il filtro delle date non lo riconosceva.
+  - x2: ambiente. Il gateway della rete Docker veniva restituito vuoto; nella riesecuzione senza modifiche è PASS.
+  - zdev Z01: atteso per la decisione "Esiti di S2" della SPEC (in development la pagina di debug di CodeIgniter può mostrare l'errore del database). Il conteggio INFO dà 66 risposte su 66 sulla pagina di debug di development, 0 altrove.
+- Regressione U1-U5 e motion su PHP 8.5 + CI 4.7.5: **non eseguita**.
+  - Corretti due difetti dello strumento in `verify-r1.v7lib.php`: `--entrypoint php`, e il container `r1-fwd` per raggiungere database e Mailpit.
+  - L'app servita dal bind mount di Windows risponde in 2-8 s per richiesta e Chrome va in timeout; `motion.development` è stato fermato a 10 minuti. È un limite dello strumento, non un esito sul modulo.
+- Stato: **punti 1-4 PASS, punto 5 non eseguito; non approvabile così com'è.** Decide chi lancia se accettare la copertura PHP 8.5 data dalla matrice HTTP oppure far rifare la regressione con l'app copiata dentro il container o con un PHP 8.5 nativo. Dettagli in `tests/Integration/R1-REPORT.md`.
+- Difetti del modulo: nessuno.
+- Ambiguità di specifica: nessuna nuova. Già nota dall'audit: `composer.json` dichiara ancora `1.0.0` e il CHANGELOG non ha una voce 1.1.0.
+- Ambiente:
+  - `rolewarden_test`: hash `f7f37c04…e21e64` prima e dopo ogni scenario e a fine collaudo.
+  - Mailpit vuoto. Container `r1-*` rimossi, rete `r1-net` rimossa (le immagini `r1-col-php:8.3/8.4/8.5` restano).
+  - Worktree `r1/wt` rimosso e `git worktree prune` eseguito; `build/*-1.0.0.zip` invariati.
+  - Cartella r1 della scratch cancellata tranne un profilo Chrome bloccato (EPERM, file del sandbox di un altro SID; nessun `.env`, nessuna credenziale).
+  - Nessun commit. Sezione del lock non toccata.
+
+### [2026-10-28 21:00] - Claude
+- Tipo: review
+- Scope: `tests/Integration/` (output R1), `_AI-LOG.md`
+- Cosa ho fatto: ho fatto ripartire il collaudo R1, che si era interrotto il 27/10, e ne ho letto il report. I punti 1-4 sono PASS su 7e3730a, nessun difetto del modulo. Il punto 5 (regressione U1-U5 e motion su PHP 8.5 con CI 4.7.5) non è stato eseguito per la lentezza del bind mount Docker su Windows.
+- Stato: completato
+- Note per il prossimo: decisione dell'utente del 2026-10-28: la copertura attuale basta per 8.5 + 4.7.5. Vale come copertura la matrice HTTP (v85, v85prod, sub, x2, m475p85) più la regressione 1.1 già PASS su PHP 8.3 (MOTION-REPORT). R1 è quindi approvata. Resta la preparazione del rilascio 1.1.0 (versione in composer.json, sezione 1.1.0 nel CHANGELOG). Lock rilasciato.

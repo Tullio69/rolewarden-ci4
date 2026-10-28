@@ -75,14 +75,19 @@ foreach ($permissions as $p) {
 
 <?php if ($verdict !== null && $user !== null) : ?>
   <div class="rw-section-title"><span class="rw-section-n">A</span><h2><?= lang('RoleWarden.panel.check.outcome') ?></h2></div>
-  <p class="rw-check-block">
-    <strong><?= lang('RoleWarden.panel.check.' . ($verdict['allowed'] ? 'allowed' : 'denied'), [$userLink($user), '<code class="rw-mono">' . esc($slug) . '</code>']) ?></strong>
+  <p class="rw-check-block rw-verdict">
+    <?php if ($verdict['allowed']) : ?>
+      <svg class="rw-mark rw-mark--role" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+    <?php else : ?>
+      <svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg>
+    <?php endif ?>
+    <span><?= lang('RoleWarden.panel.check.' . ($verdict['allowed'] ? 'allowed' : 'denied'), [$userLink($user), '<code class="rw-mono">' . esc($slug) . '</code>']) ?></span>
   </p>
   <h3 class="rw-check-block rw-header"><?= lang('RoleWarden.panel.check.precedence') ?></h3>
   <ol class="rw-check-block rw-check-rules">
     <?php foreach ($rules as $rule) : ?>
       <li<?= $rule === $verdict['rule'] ? ' aria-current="true"' : '' ?>>
-        <?= $rule === $verdict['rule'] ? '<strong>' : '' ?><?= lang('RoleWarden.panel.check.rules.' . $rule) ?><?= $rule === $verdict['rule'] ? '</strong> <span class="rw-note">' . lang('RoleWarden.panel.check.decides') . '</span>' : '' ?>
+        <?= $rule === $verdict['rule'] ? '<strong>' : '' ?><?= lang('RoleWarden.panel.check.rules.' . $rule) ?><?= $rule === $verdict['rule'] ? '</strong> <span class="rw-check-decides">' . lang('RoleWarden.panel.check.decides') . '</span>' : '' ?>
       </li>
     <?php endforeach ?>
   </ol>

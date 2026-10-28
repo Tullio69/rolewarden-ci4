@@ -52,7 +52,7 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
 ?>
 <div class="rw-page-head">
   <div>
-    <div class="rw-header">RoleWarden</div>
+    <div class="rw-header"><?= lang('RoleWarden.panel.nav.groups.system') ?></div>
     <h1><?= lang('RoleWarden.panel.appearance.title') ?></h1>
     <p><?= lang('RoleWarden.panel.appearance.intro') ?></p>
     <?php if ($pinned) : ?><p class="rw-note"><?= lang('RoleWarden.panel.appearance.pinnedNote') ?></p><?php endif ?>
@@ -81,7 +81,7 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
   </div>
 
   <div class="rw-section-title"><span class="rw-section-n">A</span><h2><?= lang('RoleWarden.panel.appearance.sectionTheme') ?></h2></div>
-  <table class="rw-ledger rw-settings">
+  <table class="rw-ledger rw-settings rw-settings--full">
     <tbody>
       <?php $i = 0; foreach (Theme::bases() as $base => $label) : ?>
         <tr>
@@ -99,7 +99,7 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
   <?= $error('base') ?>
 
   <div class="rw-section-title"><span class="rw-section-n">B</span><h2><?= lang('RoleWarden.panel.appearance.sectionColors') ?></h2></div>
-  <table class="rw-ledger rw-settings rw-appearance-colors">
+  <table class="rw-ledger rw-settings rw-settings--full rw-appearance-colors">
     <thead>
       <tr><th class="rw-m-num"></th><th class="rw-l-key"></th><th class="rw-header"><?= lang('RoleWarden.panel.appearance.light') ?></th><th class="rw-header"><?= lang('RoleWarden.panel.appearance.dark') ?></th></tr>
     </thead>
@@ -131,7 +131,7 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
   <p class="rw-hint rw-note"><?= lang('RoleWarden.panel.appearance.derivedHint') ?></p>
 
   <div class="rw-section-title"><span class="rw-section-n">C</span><h2><?= lang('RoleWarden.panel.appearance.sectionShape') ?></h2></div>
-  <table class="rw-ledger rw-settings">
+  <table class="rw-ledger rw-settings rw-settings--full">
     <tbody>
       <tr>
         <td class="rw-m-num">01</td>
@@ -199,7 +199,7 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
 
 <?php if (! $pinned) : ?>
   <div class="rw-section-title"><span class="rw-section-n">E</span><h2><?= lang('RoleWarden.panel.appearance.sectionReset') ?></h2></div>
-  <table class="rw-ledger">
+  <table class="rw-ledger rw-settings rw-settings--full">
     <tbody>
       <tr>
         <td class="rw-m-num"></td>

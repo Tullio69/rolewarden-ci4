@@ -86,7 +86,7 @@ $sortHref = site_url('rolewarden/users') . '?' . http_build_query(array_filter([
         <td class="rw-m-num"><?= str_pad((string) ($startNum + $i + 1), 2, '0', STR_PAD_LEFT) ?></td>
         <td class="rw-c-name"><a href="<?= esc(site_url('rolewarden/users/' . $user->id)) ?>"><?= esc($user->username ?? '—') ?></a></td>
         <td class="rw-c-email"><?= esc($user->email) ?></td>
-        <td class="rw-c-roles"><?php foreach ($roleNames[$user->id] ?? [] as $roleName) : ?><span class="rw-role"><?= esc($roleName) ?></span><?php endforeach ?></td>
+        <td class="rw-c-roles"><?php foreach ($roleNames[$user->id] ?? [] as $roleName) : ?><span class="rw-role"><?= esc($roleName) ?></span><?php endforeach ?><?php if (($roleNames[$user->id] ?? []) === []) : ?><span class="rw-faint"><?= lang('RoleWarden.panel.users.noRole') ?></span><?php endif ?></td>
         <td class="rw-c-status">
           <?php if ($user->active) : ?>
             <span class="rw-status"><?= lang('RoleWarden.panel.users.active') ?></span>

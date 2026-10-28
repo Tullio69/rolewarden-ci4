@@ -40,10 +40,19 @@ $describe = static function (?string $json) use ($fieldLabel): string {
     $parts = [];
 
     foreach ($details as $field => $value) {
-        $show = static fn ($v): string => $v === null || $v === '' ? '—' : (string) $v;
+        // A permission slug (area.action) keeps the identifier face it has everywhere else.
+        $show = static function ($v): string {
+            if ($v === null || $v === '') {
+                return '—';
+            }
+
+            return preg_match('/^[a-z][a-z0-9_-]*\.[a-z][a-z0-9_-]*$/', (string) $v) === 1
+                ? '<code class="rw-mono">' . esc((string) $v) . '</code>'
+                : esc((string) $v);
+        };
         $parts[] = is_array($value) && count($value) === 2
-            ? esc($fieldLabel((string) $field)) . ': ' . esc($show($value[0])) . ' &rarr; ' . esc($show($value[1]))
-            : esc($fieldLabel((string) $field)) . ': ' . esc($show(is_array($value) ? json_encode($value) : $value));
+            ? esc($fieldLabel((string) $field)) . ': ' . $show($value[0]) . ' &rarr; ' . $show($value[1])
+            : esc($fieldLabel((string) $field)) . ': ' . $show(is_array($value) ? json_encode($value) : $value);
     }
 
     return implode('<br>', $parts);
@@ -51,7 +60,7 @@ $describe = static function (?string $json) use ($fieldLabel): string {
 ?>
 <div class="rw-page-head">
   <div>
-    <div class="rw-header">RoleWarden</div>
+    <div class="rw-header"><?= lang('RoleWarden.panel.nav.groups.security') ?></div>
     <h1><?= lang('RoleWarden.panel.activity.title') ?></h1>
     <p><?= lang('RoleWarden.panel.activity.intro') ?></p>
   </div>
@@ -117,7 +126,7 @@ $describe = static function (?string $json) use ($fieldLabel): string {
         <td class="rw-m-num"><?= str_pad((string) ($start + $i + 1), 2, '0', STR_PAD_LEFT) ?></td>
         <td style="white-space:nowrap"><?= esc(Time::parse((string) $row['at'])->toLocalizedString('d MMM y, HH:mm')) ?></td>
         <td><?= $row['actor_label'] !== null ? esc((string) $row['actor_label']) : '<span class="rw-muted">' . lang('RoleWarden.panel.activity.system') . '</span>' ?></td>
-        <td><span<?= $row['action'] === 'auth.failed' ? ' class="rw-muted"' : '' ?>><?= esc($actionLabel((string) $row['action'])) ?></span></td>
+        <td><?php if ($row['action'] === 'auth.failed') : ?><span class="rw-act-failed"><svg class="rw-mark rw-mark--deny" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.5 3.5 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M1.5 10.5h17" stroke="currentColor" stroke-width="1.8"/></svg><?= esc($actionLabel((string) $row['action'])) ?></span><?php else : ?><?= esc($actionLabel((string) $row['action'])) ?><?php endif ?></td>
         <td><?= $object ?></td>
         <td class="rw-muted"><?= $describe($row['details']) ?></td>
         <td class="rw-anno"><span class="rw-note"><?= esc((string) ($row['ip_address'] ?? '')) ?></span></td>

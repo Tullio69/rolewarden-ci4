@@ -213,6 +213,7 @@ class UsersController extends BaseController
             'availableRoles' => $availableRoles,
             'matrix' => $matrix,
             'overrideCount' => $overrideCount,
+            'isSuperAdmin' => in_array(1, array_map(static fn (array $role): int => (int) $role['is_super_admin'], $assignedRoles), true),
             'lastSuperAdminRoleId' => $lastSuperAdminRoleId,
             'lockedRoles' => $lockedRoles,
             'isSelf' => (int) auth()->id() === $id,
@@ -400,7 +401,7 @@ class UsersController extends BaseController
     /**
      * @param array<string, mixed> $role
      *
-     * @return array{id: int, name: string, parentChain: list<string>, ownCount: int, inheritedCount: int}
+     * @return array{id: int, name: string, parentChain: list<string>, ownCount: int, inheritedCount: int, isSuper: bool}
      */
     private function roleSummary(array $role): array
     {
@@ -440,6 +441,7 @@ class UsersController extends BaseController
             'parentChain' => $parentChain,
             'ownCount' => $ownCount,
             'inheritedCount' => count($inheritedPermissionIds),
+            'isSuper' => (int) $role['is_super_admin'] === 1,
         ];
     }
 

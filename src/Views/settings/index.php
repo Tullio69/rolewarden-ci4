@@ -91,7 +91,7 @@ $logNote = lang('RoleWarden.panel.settings.entries', [$logEntries]);
 ?>
 <div class="rw-page-head">
   <div>
-    <div class="rw-header">RoleWarden</div>
+    <div class="rw-header"><?= lang('RoleWarden.panel.nav.groups.system') ?></div>
     <h1><?= lang('RoleWarden.panel.settings.title') ?></h1>
     <p><?= lang('RoleWarden.panel.settings.intro') ?></p>
     <?php if (! $canUpdate) : ?><p class="rw-note"><?= lang('RoleWarden.panel.settings.readOnly') ?></p><?php endif ?>

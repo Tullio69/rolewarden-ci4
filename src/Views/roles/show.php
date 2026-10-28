@@ -8,6 +8,7 @@ $matrixConfig = [
     'rows' => $rows,
 ];
 $canEdit = can('roles.update');
+$matrixClass = count($actions) > 8 ? 'rw-matrix rw-matrix--dense' : 'rw-matrix';
 ?>
 <div class="rw-page-head">
   <div>
@@ -24,7 +25,7 @@ $canEdit = can('roles.update');
 
 <div class="rw-toolbar">
   <div class="rw-field">
-    <label class="rw-label" for="role-jump"><?= lang('RoleWarden.panel.roles.name') ?></label>
+    <label class="rw-label" for="role-jump"><?= lang('RoleWarden.panel.roles.jump') ?></label>
     <select class="rw-select" id="role-jump" onchange="if(this.value) window.location = this.value">
       <?php foreach ($allRoles as $option) : ?>
         <option value="<?= esc(site_url('rolewarden/roles/' . $option['id'])) ?>"<?= (int) $option['id'] === (int) $role['id'] ? ' selected' : '' ?>><?= esc($option['name']) ?></option>
@@ -68,7 +69,7 @@ $canEdit = can('roles.update');
 
     <p class="rw-matrix-help rw-note"><?= lang('RoleWarden.panel.roles.matrixHelp') ?></p>
 
-    <table class="rw-matrix">
+    <table class="<?= $matrixClass ?>">
       <thead>
         <tr>
           <th class="rw-m-num" scope="col"></th>
@@ -76,7 +77,7 @@ $canEdit = can('roles.update');
           <?php foreach ($actions as $action) : ?>
             <th class="rw-m-act" scope="col">
               <div class="rw-colhead">
-                <span class="rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></span>
+                <span class="rw-header rw-m-vlabel"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></span>
                 <input type="checkbox" class="rw-check" :checked="triState(rows.map(r => key(r.area, '<?= esc($action, 'js') ?>'))).checked" :indeterminate.prop="triState(rows.map(r => key(r.area, '<?= esc($action, 'js') ?>'))).indeterminate" @change="toggleColumn('<?= esc($action, 'js') ?>', $event.target.checked)" aria-label="<?= esc(sprintf(lang('RoleWarden.panel.roles.grantColumn'), RoleWarden\Models\SeededText::action($action))) ?>">
               </div>
             </th>
@@ -122,12 +123,12 @@ $canEdit = can('roles.update');
     </table>
   </div>
 <?php else : ?>
-  <table class="rw-matrix">
+  <table class="<?= $matrixClass ?>">
     <thead>
       <tr>
         <th class="rw-m-num" scope="col"></th>
         <th class="rw-m-area rw-header" scope="col"><?= lang('RoleWarden.panel.roles.area') ?></th>
-        <?php foreach ($actions as $action) : ?><th class="rw-m-act rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></th><?php endforeach ?>
+        <?php foreach ($actions as $action) : ?><th class="rw-m-act" scope="col"><span class="rw-header rw-m-vlabel"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></span></th><?php endforeach ?>
       </tr>
     </thead>
     <tbody>

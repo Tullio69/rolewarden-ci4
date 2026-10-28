@@ -7,6 +7,7 @@ $matrixConfig = [
     'rows' => $matrix['rows'],
 ];
 $displayName = (string) ($user->username ?? $user->email);
+$matrixClass = count($matrix['actions']) > 8 ? 'rw-matrix rw-matrix--dense' : 'rw-matrix';
 $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($lastSuperAdminRoleId !== null ? lang('RoleWarden.protection.lastSuperAdmin') : null);
 ?>
 <div class="rw-page-head">
@@ -36,7 +37,7 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
           <b><?= esc($summary['name']) ?></b>
           <?php if ($summary['parentChain'] !== []) : ?><small><?= esc(lang('RoleWarden.panel.users.inheritsFrom') . ' ' . implode(', then ', $summary['parentChain'])) ?></small><?php endif ?>
         </th>
-        <td class="rw-l-value rw-muted"><?= esc(lang('RoleWarden.panel.users.permissionsSummary', [$summary['ownCount'], $summary['inheritedCount']])) ?></td>
+        <td class="rw-l-value rw-muted"><?= $summary['isSuper'] ? lang('RoleWarden.panel.users.allPermissions') : esc(lang('RoleWarden.panel.users.permissionsSummary', [$summary['ownCount'], $summary['inheritedCount']])) ?></td>
         <td class="rw-l-ctl">
           <a class="rw-btn rw-btn--ghost rw-btn--sm" href="<?= esc(site_url('rolewarden/roles/' . $summary['id'])) ?>"><?= lang('RoleWarden.panel.roles.permissionsAction') ?></a>
           <?php if (can('roles.assign')) : ?>
@@ -76,6 +77,9 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
 </table>
 
 <div class="rw-section-title"><span class="rw-section-n">B</span><h2><?= lang('RoleWarden.panel.users.effectivePermissions') ?></h2></div>
+<?php if ($isSuperAdmin) : ?>
+  <p class="rw-super-note"><?= esc(sprintf(lang('RoleWarden.panel.users.superAdminNote'), $displayName)) ?></p>
+<?php endif ?>
 <?php if (can('permissions.override')) : ?>
   <div x-data="rwUserMatrix(<?= esc(json_encode($matrixConfig, JSON_HEX_APOS | JSON_HEX_QUOT), 'attr') ?>)">
     <div class="rw-matrix-tools">
@@ -105,12 +109,12 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
       </div>
     </div>
 
-    <table class="rw-matrix">
+    <table class="<?= $matrixClass ?>">
       <thead>
         <tr>
           <th class="rw-m-num" scope="col"></th>
           <th class="rw-m-area rw-header" scope="col"><?= lang('RoleWarden.panel.roles.area') ?></th>
-          <?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></th><?php endforeach ?>
+          <?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act" scope="col"><span class="rw-header rw-m-vlabel"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></span></th><?php endforeach ?>
           <th class="rw-m-anno rw-m-anno--wide" scope="col" style="color:var(--ink-faint)"><?= lang('RoleWarden.panel.notes') ?></th>
         </tr>
       </thead>
@@ -133,8 +137,8 @@ $lockReason = $isSelf ? lang('RoleWarden.panel.users.cannotDisableSelf') : ($las
     </table>
   </div>
 <?php else : ?>
-  <table class="rw-matrix">
-    <thead><tr><th class="rw-m-num"></th><th class="rw-m-area rw-header"><?= lang('RoleWarden.panel.roles.area') ?></th><?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act rw-header"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></th><?php endforeach ?></tr></thead>
+  <table class="<?= $matrixClass ?>">
+    <thead><tr><th class="rw-m-num"></th><th class="rw-m-area rw-header"><?= lang('RoleWarden.panel.roles.area') ?></th><?php foreach ($matrix['actions'] as $action) : ?><th class="rw-m-act" scope="col"><span class="rw-header rw-m-vlabel"><?= esc(RoleWarden\Models\SeededText::action($action)) ?></span></th><?php endforeach ?></tr></thead>
     <tbody>
       <?php foreach ($matrix['rows'] as $i => $row) : ?>
         <tr>

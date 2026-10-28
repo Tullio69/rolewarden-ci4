@@ -15,7 +15,22 @@ nel codice (rotte in `src/Config/RouteRegistrar.php`, `src/Dashboard/Block.php`,
 
 ## 1. Nome item
 
-Scelto (58 caratteri):
+[PROPOSTA DA APPROVARE, 2026-10-28] Dall'analisi dei concorrenti (`concorrenti.md`): gli
+item più venduti vincono la ricerca "codeigniter user management" perché hanno "User
+Management" e "Admin Panel" nel titolo, e nessuno nomina Shield. Proposta (78 caratteri):
+
+```
+RoleWarden - CodeIgniter 4 Shield Roles, Permissions & User Management Panel
+```
+
+Alternative dalla ricerca:
+
+```
+RoleWarden - CodeIgniter 4 Roles & Permissions Admin Panel for Shield
+RoleWarden - CI4 Shield Admin Panel: Roles, Permissions, User Management & Activity Log
+```
+
+Scelta precedente (58 caratteri):
 
 ```
 RoleWarden - Roles & Permissions Panel for CodeIgniter 4
@@ -278,9 +293,15 @@ framework. Alternativa: PHP Scripts > Loaders and Uploaders no; evitare "Social 
 codeigniter, codeigniter 4, ci4, shield, rbac, roles, permissions, access control, authorization, admin panel, user management, acl, activity log, session management, csv import, tailwind, alpinejs, php 8
 ```
 
+[PROPOSTA DA APPROVARE, 2026-10-28] Tag ricorrenti nei concorrenti più venduti che mancano
+qui: `user roles and permissions`, `authentication`, `login`, `secure`. Se il form limita il
+numero di tag, togliere per primi `tailwind`, `alpinejs`, `csv import` (nessun acquirente
+cerca così) e tenere `shield`, che nessun concorrente usa. Il limite del form va visto in
+fase di upload.
+
 **Versioni da dichiarare nel form:**
-- Software version / PHP: 8.3, 8.4, 8.5. La 1.0 è collaudata su tutte e tre (S2); per la
-  1.1 decide l'esito del collaudo R1 [DA VERIFICARE]
+- Software version / PHP: 8.3, 8.4, 8.5. Collaudate sulla 1.0 (S2) e sulla 1.1 (R1 PASS il
+  2026-10-28, `tests/Integration/R1-REPORT.md`)
 - Compatible with: CodeIgniter 4.7.4+ (scrivilo nel testo, il form non ha un campo
   dedicato per CI4)
 - Database: MySQL 8 / MariaDB 10.x [DA VERIFICARE] versione minima effettivamente provata;
@@ -290,7 +311,10 @@ codeigniter, codeigniter 4, ci4, shield, rbac, roles, permissions, access contro
   versioni minime precise (indicativamente Chrome/Edge 111+, Firefox 128+, Safari 16.4+)
 - Files included: PHP, HTML, CSS, JS
 
-**Prezzo suggerito:** Regular $29 (poi $35), Extended $99, come deciso il 18/10.
+**Prezzo suggerito:** Regular $29 (poi $35), Extended $99, come deciso il 18/10, confermato
+dall'analisi dei concorrenti del 28/10 (`concorrenti.md`): gli item CI4 regular stanno tra
+$16 e $39, WebGuard (applicazione completa con SSO e 2FA) è a $39/$149; rialzo a $35 dopo
+circa 20 recensioni sopra 4.5.
 Motivazione: l'unico item CI4 analogo in vetrina (Ion Auth + Argon, $16/$65) vende prezzo
 d'impulso con recensioni sui bug e nessuna doc; RoleWarden si distingue per permessi
 granulari, base Shield ufficiale, modulo drop-in e documentazione, quindi non deve inseguirlo

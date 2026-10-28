@@ -1,131 +1,123 @@
-# Piano screenshot e immagine di anteprima - RoleWarden 1.0.0
+# Piano screenshot e immagine di anteprima - RoleWarden 1.1.0
 
-Note per Fabio. Ogni screenshot nomina una schermata che esiste nel codice della 1.0.0
-(rotte in `src/Config/RouteRegistrar.php`). Le didascalie da sovrapporre sono in inglese,
-le istruzioni in italiano. Formati Envato: anteprima 590x300, miniatura 80x80, screenshot
-a piacere ma tutti della stessa larghezza (consiglio 1440x900, Console chiaro per la
-maggior parte, qualche variante scura e Clarity/Contrast per mostrare i temi).
+Note per Fabio. Ogni screenshot riprende una schermata che esiste nella 1.1 (rotte in
+`src/Config/RouteRegistrar.php`). Le didascalie da sovrapporre sono in inglese, le
+istruzioni in italiano. Scaletta decisa il 2026-10-28: 8 immagini, la dashboard per prima
+(decisione del 24/10, confermata il 28/10).
 
-Dove farli: staging (`staging.rolewarden.com`) o un'app di prova locale con la demo
-installata (`php spark demo:install`) e la modalità showcase spenta. Browser a 1440 di
-larghezza, zoom 100%, nessuna estensione visibile, cursore fuori dall'inquadratura.
+Formati Envato: anteprima 590x300, miniatura 80x80, screenshot tutti della stessa
+larghezza: 1440x900, tema Console chiaro salvo dove indicato.
 
-## Immagine di anteprima 590x300
+## Come si scattano
 
-Concetto: un "registro" (ledger) di permessi, come la pagina stampata di un libro mastro.
-Niente mockup del browser, niente screenshot rimpicciolito illeggibile: il messaggio deve
-leggersi in un secondo nella griglia di CodeCanyon.
+- App di prova locale (`../rolewarden-app-test`) con il modulo di `main`, **in production**
+  (`CI_ENVIRONMENT = production`): niente debug toolbar di CodeIgniter.
+- Chrome headless a 1440x900, `--lang=en-US` (i campi data di Activity seguono la lingua del
+  browser), zoom 100%, movimento ridotto (`prefers-reduced-motion: reduce`) per avere ogni
+  elemento già al suo posto. Lo script è `shoot.mjs` della sessione del 28/10: va portato in
+  `bin/` o tenuto fuori dal pacchetto, decisione da prendere.
+- Pannello in inglese (EN nella barra in alto), modalità chiara salvata dall'utente che
+  scatta, tranne lo screenshot 8.
+- Showcase della demo spento (la barra di cambio account non deve comparire).
 
-Composizione (sfondo `--surface` Console chiaro, graphite-25, bordo sottile `--rule`):
-- Colonna sinistra (circa 55% della larghezza), allineata a una linea di base:
-  - Riga 1, IBM Plex Mono 11px maiuscoletto, colore `--ink-muted`: `CODEIGNITER 4 · SHIELD`
-  - Riga 2, IBM Plex Serif 400, 40px, `--ink`: `RoleWarden`
-  - Riga 3, IBM Plex Sans 500, 17px, `--ink-muted`, su due righe:
-    `Roles & permissions in the database,`
-    `with an admin panel. Built on Shield.`
-  - Riga 4, tre "timbri" in linea, IBM Plex Mono 12px, bordo 1px `--rule-strong`,
-    raggio piccolo: `PHP 8.3+` `CI 4.7.4+` `Shield 1.4+`
-- Colonna destra (circa 45%): un frammento della matrice permessi, ritagliato e leggibile,
-  disegnato a mano (non screenshot): 4 righe x 3 colonne. Intestazioni colonna in Plex
-  Sans 500 (`Reader`, `Author`, `Approver`), identificatori riga in Plex Mono
-  (`documents.view`, `documents.create`, `documents.approve`, `documents.delete`), celle con
-  il segno di spunta verde `--granted` su fondo `--granted-tint` dove concesso e un trattino
-  `--ink-faint` dove no. Sulla cella `documents.delete` / `Author` un segno rosso `--denied`
-  su `--denied-tint` con l'etichetta mono `override` sotto: è l'unico elemento rosso e
-  racconta la feature degli override.
-- Angolo in basso a destra, Plex Mono 10px `--ink-faint`: `v1.0.0`.
-- Niente gradienti, niente ombre, un solo accento (ink blue `--accent`) usato solo per
-  sottolineare la parola `Shield` nella riga 3.
+## Dati da preparare (prima di ogni scatto)
 
-Miniatura 80x80: solo il monogramma `RW` in Plex Serif su fondo `--accent` ink blue, testo
-bianco `--on-accent`. [DA VERIFICARE] se esiste già un logo deciso in chat commerciale; in
-caso contrario questo è coerente con il resto.
+Partire da un database pulito, mai da quello di sviluppo:
+
+1. Installazione come da `documentation/installation.html` (migrazioni di Settings, Shield
+   e RoleWarden, `RoleWardenSeeder`, oppure l'installer da browser), poi `php spark demo:install`
+   (ruoli Reader, Author con padre Reader, Approver con padre Author; permessi
+   `documents.*`; tre account; documenti di esempio). Il blocco "Demo documents" della
+   dashboard non deve più dire "Run php spark demo:install".
+2. Un super admin con un nome credibile, ad esempio `Maya Lindqvist`, non "admin".
+3. 10-12 utenti con nomi realistici e ruoli misti, importati con l'import CSV (genera anche
+   le righe `user.imported` del log): due disattivati, uno senza ruolo (mostra "No role").
+   Nessun ruolo duplicato.
+4. Override su `author@example.com`: nega `documents.delete` (rosso barrato), concedi
+   `users.view` (cerchio verde).
+5. Attività degli ultimi 30 giorni: login riusciti da più utenti in giorni e ore diversi
+   (riempie grafico e mappa oraria), 3-4 login falliti, una modifica alle impostazioni,
+   assegnazioni di ruolo, concessioni e revoche di permessi. Le righe `auth.login` vengono
+   da `auth_logins` di Shield: servono login veri, oppure righe inserite con date
+   all'indietro solo nel database di prova.
+6. Tema: Console, nessuna personalizzazione salvata, barra Paper.
 
 ## Screenshot, in ordine
 
-Ogni voce: schermata e rotta; dati da avere a schermo; didascalia da sovrapporre (banda in
-alto, Plex Sans 500, 20px, `--ink` su `--surface-raised`, mai sopra i dati); cosa evidenziare
-(riquadro 2px `--accent`, raggio 4px, oppure niente).
+Ogni voce: schermata e rotta; cosa deve vedersi; didascalia (banda in alto, Plex Sans 500,
+20px, `--ink` su `--surface-raised`, mai sopra i dati); cosa evidenziare (riquadro 2px
+`--accent`, raggio 4px, oppure niente).
 
-1. **Matrice permessi di un ruolo** - `/rolewarden/roles/{id}` del ruolo `Author` della
-   demo. Dati: permessi `documents.*` e `users.view` con alcune spunte; almeno una riga con
-   il segno di ereditarietà (la legenda in cima alla matrice lo spiega, il riepilogo dice
-   "N own + M inherited permissions") per far vedere l'eredità da Reader; una voce non
-   concessa con il suggerimento su come concederla. Didascalia: `One matrix per role. Inherited
-   permissions are marked, missing ones tell you how to grant them.` Evidenziare: la cella
-   ereditata.
-2. **Dettaglio utente con override** - `/rolewarden/users/{id}` di `author@example.com`.
-   Dati: ruolo Author assegnato, matrice utente con `documents.delete` negato (override
-   rosso) e `users.view` concesso (override verde), sessioni attive in fondo. Didascalia:
-   `Grant or deny a single permission to one user. A denial beats every role, super admin
-   included.` Evidenziare: le due celle di override.
-3. **Elenco utenti** - `/rolewarden/users?role=…&status=active`. Dati: 12-15 utenti con
-   nomi credibili (nessun "test1"), ruoli misti, due disattivati visibili se togli il
-   filtro; filtro per ruolo applicato, barra di ricerca vuota, paginazione a 2 pagine.
-   Didascalia: `Search, filter by role and status, sort. Create, activate, deactivate,
-   import.` Evidenziare: i filtri.
-4. **Elenco ruoli** - `/rolewarden/roles`. Dati: `super-admin`, `admin`, `user` di sistema
-   più Reader, Author (parent Reader), Approver (parent Author) e un ruolo in più, ad esempio
-   `Support`, per mostrare la gerarchia; marcatori di sistema visibili. Didascalia: `Roles
-   inherit from a parent. System roles cannot be deleted.` Evidenziare: colonna del padre.
-5. **Log attività con filtri** - `/rolewarden/activity?action=…`. Dati: almeno 20 righe
-   miste: `role.updated`, `user.role_assigned`, `user.deactivated`, `settings.updated`,
-   `auth.login` fallito e riuscito, `user.imported`; filtro per periodo "ultimi 7 giorni"
-   applicato. Didascalia: `Every change from the panel and every sign-in attempt, filtered
-   by user, action and period.` Evidenziare: una riga di tentativo fallito.
-6. **Impostazioni** - `/rolewarden/settings`. Dati: ruolo predefinito `user`, sessione
-   2 ore, remember me attivo, blocco dopo 5 tentativi per 15 minuti, 10 tentativi al minuto
-   per IP, conservazione 1 anno. Didascalia: `Default role, session lifetime, remember-me,
-   lockout and rate limits, log retention. No config file edits.` Evidenziare: niente.
-7. **Sessioni dell'utente** - `/rolewarden/sessions` dell'admin. Dati: 3 sessioni (desktop
-   Windows/Chrome, iPhone/Safari, Linux/Firefox) con IP diversi e "last seen" diversi, una
-   marcata come corrente, un browser "ricordato". Didascalia: `Every browser signed in to an
-   account. Sign out one, all, or forget a remembered device.` Evidenziare: il pulsante
-   "sign out all".
-8. **Import CSV, anteprima** - `/rolewarden/users/import` dopo l'upload. Dati: file di
-   10 righe con 1 riga in errore (email già usata) così si vede che il file viene rifiutato
-   con l'errore sulla riga; oppure due screenshot, uno con errore e uno valido pronto alla
-   conferma. Didascalia: `CSV import with a row-by-row preview: nothing is written unless
-   every row is valid.` Evidenziare: la riga in errore.
-9. **Personalizzatore tema** - `/rolewarden/appearance`. Dati: tema Clarity selezionato,
-   accento cambiato, un colore di testo che fa scattare l'avviso WCAG AA (così si vede il
-   controllo), anteprima live visibile accanto. Didascalia: `Three themes, light and dark.
-   Live customiser with a WCAG AA contrast check. Saved as a file of your app.` Evidenziare:
-   l'avviso di contrasto.
-10. **Login e tema scuro Contrast** - Shield login restyled (`/login`) in Contrast scuro,
-    oppure la matrice del punto 1 in Console scuro. Dati: campo email precompilato
-    `admin@example.com`. Didascalia: `Restyled Shield sign-in. Registration and recovery
-    stay Shield's own.` Evidenziare: niente.
+1. **Dashboard** - `/rolewarden`, periodo 30 giorni. Cifre chiave piene, grafico degli
+   accessi con picchi e qualche fallimento, mappa oraria, utenti per ruolo con 4-5 ruoli,
+   ultime modifiche ai permessi (leggono "granted documents.view to Reader"). Didascalia:
+   `See who signs in, who holds which role and what changed, on one screen.` Evidenziare:
+   niente.
+2. **Matrice di un ruolo** - `/rolewarden/roles/{id}` di `Author`. Con più di 8 azioni la
+   matrice è densa (etichette verticali): deve entrare intera a 1440. Righe `documents` con
+   spunte proprie e segni di ereditarietà da Reader. Didascalia: `One matrix per role.
+   Inherited permissions are marked; select a whole row or column at once.` Evidenziare:
+   una cella ereditata.
+3. **Dettaglio utente con override** - `/rolewarden/users/{id}` di `author@example.com`.
+   Ruolo Author, matrice con `documents.delete` negato (rosso) e `users.view` concesso
+   (verde). Didascalia: `Grant or deny a single permission to one user. A denial beats
+   every role, super admin included.` Evidenziare: le due celle di override.
+4. **Check a permission** -
+   `/rolewarden/permissions/check?permission=documents.delete&user=author@example.com`.
+   Verdetto negato col segno rosso, regola "A denial on this user" marcata DECIDES, sotto
+   l'elenco di chi ha il permesso e perché. Didascalia: `Ask why: who holds a permission,
+   and which rule decides for one user.` Evidenziare: la regola che decide.
+5. **Elenco utenti** - `/rolewarden/users`. 10-12 utenti, ruoli misti, un "No role", due
+   disattivati, filtro per ruolo visibile. Didascalia: `Search, filter by role and status,
+   sort. Create, activate, deactivate, import from CSV.` Evidenziare: i filtri.
+6. **Activity** - `/rolewarden/activity`, ultimi 7 giorni. Almeno 15 righe miste, con 2-3
+   login falliti (segno rosso) e slug dei permessi in mono. Didascalia: `Every change from
+   the panel and every sign-in attempt, filtered by user, action and period.` Evidenziare:
+   un login fallito.
+7. **Appearance** - `/rolewarden/appearance`. Tema Clarity selezionato, barra Ink, accento
+   cambiato con il controllo WCAG che segnala un colore illeggibile, anteprima D visibile.
+   Non salvare: lo scatto è sullo stato non salvato. Didascalia: `Three themes, light and
+   dark, three sidebar styles. Live customiser with a WCAG AA contrast check.`
+   Evidenziare: l'avviso di contrasto.
+8. **Ricerca comandi, tema scuro** - Ctrl K sopra la dashboard in modalità scura, query
+   `docu`: permessi `documents.*` con "who can do this", pagine e azioni. Didascalia:
+   `Ctrl K finds pages, users, roles and permissions, filtered by what you may do.`
+   Evidenziare: niente.
 
-Opzionale 11: **Installer** `/rolewarden/install` al passo dei requisiti, tutti verdi. Va
-fatto su un'app vergine: didascalia `Browser installer: requirements, setup code, database,
-first super admin.` Utile per il video più che per la scheda.
+Riserve, se servono 10 immagini: Impostazioni (blocco dopo 5 tentativi, limite per
+indirizzo, conservazione del log), Sessioni dell'utente, Import CSV con anteprima, Login
+Shield ristilizzato in tema Contrast scuro.
 
-Opzionale 12: **Elenco permessi** `/rolewarden/permissions` con i ruoli che concedono
-ciascuno: sostituisce il 4 se vuoi tenere 10 immagini.
+## Immagine di anteprima 590x300
 
-## Pagine e stati da preparare prima
+Da fare in Claude Design, sul design system RoleWarden. Concetto: un "registro" (ledger)
+di permessi, come la pagina stampata di un libro mastro. Niente mockup del browser, niente
+screenshot rimpicciolito illeggibile: il messaggio deve leggersi in un secondo nella
+griglia di CodeCanyon.
 
-- App con `demo:install` eseguito (ruoli Reader/Author/Approver, 5 permessi
-  `documents.*`, 3 account). Showcase spento.
-- Un ruolo extra (`Support`, padre `user`) e 12-15 utenti con nomi realistici e ruoli misti;
-  2 disattivati. Si possono creare con l'import CSV, che popola anche il log con
-  `user.imported`.
-- Override su `author@example.com`: nega `documents.delete`, concedi `users.view`.
-- Log attività: generare almeno 20 righe con azioni diverse negli ultimi 7 giorni, inclusi
-  2-3 login falliti (sbagliare la password da un browser in incognito) e un lock se vuoi
-  mostrare l'email di sicurezza. Le righe `auth.login` arrivano da `auth_logins` di Shield,
-  quindi vanno fatti login veri.
-- Sessioni: accedere con lo stesso account da 3 browser/dispositivi diversi, uno con
-  "remember me".
-- Impostazioni salvate una volta (genera `settings.updated` nel log).
-- Tema: salvare una personalizzazione su Clarity, poi `appearance/reset` prima degli
-  screenshot in Console, così il resto resta sul tema di default.
-- Lingua: tutti gli screenshot in inglese; uno solo in italiano è opzionale, per la
-  didascalia `English and Italian included`.
-- Emails: se vuoi uno screenshot dell'email "new sign-in", configura `fromEmail` e un
-  Mailpit/Mailhog locale: i template sono in `src/Views/emails/`.
-- [DA VERIFICARE] la decisione del 24/10 metteva la dashboard della 1.1 come prima
-  immagine: con la 1.0.0 la prima immagine è la matrice (punto 1), coerente con
-  `docs/COMMERCIALE.md`. Se la scheda esce con la 1.1.0, aggiungere la dashboard in testa e
-  rifare la barra in tutti gli screenshot.
+Composizione (sfondo `--surface` Console chiaro, bordo sottile `--rule`):
+- Colonna sinistra (circa 55%), allineata a una linea di base:
+  - Riga 1, IBM Plex Mono 11px maiuscoletto, `--ink-muted`: `CODEIGNITER 4 · SHIELD`
+  - Riga 2, IBM Plex Serif 400, 40px, `--ink`: `RoleWarden`
+  - Riga 3, IBM Plex Sans 500, 17px, `--ink-muted`, su due righe:
+    `Roles & permissions in the database,` / `with an admin panel. Built on Shield.`
+  - Riga 4, tre "timbri" in linea, Plex Mono 12px, bordo 1px `--rule-strong`, raggio
+    piccolo: `PHP 8.3–8.5` `CI 4.7.4+` `Shield 1.4+`
+- Colonna destra (circa 45%): frammento della matrice disegnato a mano (non screenshot),
+  4 righe x 3 colonne: intestazioni `Reader`, `Author`, `Approver` in Plex Sans 500, righe
+  `documents.view`, `documents.create`, `documents.approve`, `documents.delete` in Plex
+  Mono; spunta `--granted` su `--granted-tint` dove concesso, trattino `--ink-faint` dove
+  no. Sulla cella `documents.delete` / `Author` il segno rosso `--denied` su
+  `--denied-tint` con l'etichetta mono `override`: l'unico elemento rosso.
+- In basso a destra, Plex Mono 10px `--ink-faint`: `v1.1.0`.
+- Niente gradienti, niente ombre, un solo accento (`--accent`) per sottolineare `Shield`.
+
+Miniatura 80x80: monogramma `RW` in Plex Serif su `--accent`, testo `--on-accent`.
+[DA VERIFICARE] il logo non è ancora deciso: questo monogramma vale finché non c'è.
+
+## Tavole con didascalia
+
+Gli 8 screenshot vanno montati in Claude Design come tavole 1440 di larghezza con la banda
+della didascalia in alto (alta circa 64px, testo come sopra) e lo screenshot sotto, senza
+cornici di browser. Gli evidenziatori sono rettangoli 2px `--accent` raggio 4px, mai
+frecce.

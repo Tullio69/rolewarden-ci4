@@ -58,7 +58,7 @@ $colorNames = ['surface' => lang('RoleWarden.panel.appearance.surface'), 'ink' =
     <?php if ($pinned) : ?><p class="rw-note"><?= lang('RoleWarden.panel.appearance.pinnedNote') ?></p><?php endif ?>
   </div>
   <dl class="rw-facts">
-    <div><dt><?= lang('RoleWarden.panel.appearance.savedIn') ?></dt><dd><code class="rw-mono"><?= esc($pinned ? 'app/Config/RoleWarden/theme.json' : 'writable/rolewarden/theme.json') ?></code></dd></div>
+    <div><dt><?= lang('RoleWarden.panel.appearance.savedIn') ?></dt><dd><code class="rw-mono"><?= str_replace('/', '/<wbr>', esc($pinned ? 'app/Config/RoleWarden/theme.json' : 'writable/rolewarden/theme.json')) ?></code></dd></div>
     <div><dt><?= lang('RoleWarden.panel.appearance.file') ?></dt><dd><a href="<?= esc(site_url('rolewarden/appearance/download')) ?>"><?= lang('RoleWarden.panel.appearance.download') ?></a></dd></div>
   </dl>
 </div>

@@ -1,0 +1,151 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase NAV from verify-u4.phase-nav.adapted.php
+
+===== phase NAV =====
+
+== NAV: items, permissions, groups, aria-current
+[INFO] server pid=16504 on 127.0.0.1:8071 prefix=''
+[PASS] N-owner-1 owner: the sidebar renders exactly the items of the permissions held (rolewarden,activity,appearance,permissions,check,roles,settings,users)
+[PASS] N-owner-2 owner: no empty group, no disabled or link-less item
+[PASS] N-owner-3 owner: group headers among Overview/Access/Security/System, in that order
+[PASS] N-owner-4 owner: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-admin-1 admin: the sidebar renders exactly the items of the permissions held (rolewarden,activity,appearance,permissions,check,roles,settings,users)
+[PASS] N-admin-2 admin: no empty group, no disabled or link-less item
+[PASS] N-admin-3 admin: group headers among Overview/Access/Security/System, in that order
+[PASS] N-admin-4 admin: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-plain-1 plain: the sidebar renders exactly the items of the permissions held ()
+[PASS] N-plain-2 plain: no empty group, no disabled or link-less item
+[PASS] N-plain-3 plain: group headers among Overview/Access/Security/System, in that order
+[PASS] N-plain-4 plain: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:users.view-1 r:users.view: the sidebar renders exactly the items of the permissions held (users)
+[PASS] N-r:users.view-2 r:users.view: no empty group, no disabled or link-less item
+[PASS] N-r:users.view-3 r:users.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:users.view-4 r:users.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:roles.view-1 r:roles.view: the sidebar renders exactly the items of the permissions held (roles)
+[PASS] N-r:roles.view-2 r:roles.view: no empty group, no disabled or link-less item
+[PASS] N-r:roles.view-3 r:roles.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:roles.view-4 r:roles.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:permissions.view-1 r:permissions.view: the sidebar renders exactly the items of the permissions held (permissions,check)
+[PASS] N-r:permissions.view-2 r:permissions.view: no empty group, no disabled or link-less item
+[PASS] N-r:permissions.view-3 r:permissions.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:permissions.view-4 r:permissions.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:activity.view-1 r:activity.view: the sidebar renders exactly the items of the permissions held (activity)
+[PASS] N-r:activity.view-2 r:activity.view: no empty group, no disabled or link-less item
+[PASS] N-r:activity.view-3 r:activity.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:activity.view-4 r:activity.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:settings.view-1 r:settings.view: the sidebar renders exactly the items of the permissions held (settings)
+[PASS] N-r:settings.view-2 r:settings.view: no empty group, no disabled or link-less item
+[PASS] N-r:settings.view-3 r:settings.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:settings.view-4 r:settings.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:appearance.update-1 r:appearance.update: the sidebar renders exactly the items of the permissions held (appearance)
+[PASS] N-r:appearance.update-2 r:appearance.update: no empty group, no disabled or link-less item
+[PASS] N-r:appearance.update-3 r:appearance.update: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:appearance.update-4 r:appearance.update: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:create-import-1 r:create-import: the sidebar renders exactly the items of the permissions held ()
+[PASS] N-r:create-import-2 r:create-import: no empty group, no disabled or link-less item
+[PASS] N-r:create-import-3 r:create-import: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:create-import-4 r:create-import: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:mixed-1 r:mixed: the sidebar renders exactly the items of the permissions held (settings,users)
+[PASS] N-r:mixed-2 r:mixed: no empty group, no disabled or link-less item
+[PASS] N-r:mixed-3 r:mixed: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:mixed-4 r:mixed: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-child-role-1 child-role: the sidebar renders exactly the items of the permissions held (activity)
+[PASS] N-child-role-2 child-role: no empty group, no disabled or link-less item
+[PASS] N-child-role-3 child-role: group headers among Overview/Access/Security/System, in that order
+[PASS] N-child-role-4 child-role: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-admin-deny-1 admin-deny: the sidebar renders exactly the items of the permissions held (rolewarden,appearance,permissions,check,roles,settings)
+[PASS] N-admin-deny-2 admin-deny: no empty group, no disabled or link-less item
+[PASS] N-admin-deny-3 admin-deny: group headers among Overview/Access/Security/System, in that order
+[PASS] N-admin-deny-4 admin-deny: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-super-deny-1 super-deny: the sidebar renders exactly the items of the permissions held (rolewarden,activity,permissions,check,roles,users)
+[PASS] N-super-deny-2 super-deny: no empty group, no disabled or link-less item
+[PASS] N-super-deny-3 super-deny: group headers among Overview/Access/Security/System, in that order
+[PASS] N-super-deny-4 super-deny: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-user-grant-1 user-grant: the sidebar renders exactly the items of the permissions held (roles,settings)
+[PASS] N-user-grant-2 user-grant: no empty group, no disabled or link-less item
+[PASS] N-user-grant-3 user-grant: group headers among Overview/Access/Security/System, in that order
+[PASS] N-user-grant-4 user-grant: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-grant-deny-child-1 grant-deny-child: the sidebar renders exactly the items of the permissions held (permissions,check)
+[PASS] N-grant-deny-child-2 grant-deny-child: no empty group, no disabled or link-less item
+[PASS] N-grant-deny-child-3 grant-deny-child: group headers among Overview/Access/Security/System, in that order
+[PASS] N-grant-deny-child-4 grant-deny-child: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-all  No item outside the documented screens (Users, Roles, Permissions, Activity, Settings, Appearance) for any account
+[INFO] owner groups: {"Overview":["[omesso]"],"Access":["users","roles","permissions","check"],"Security":["activity"],"System":["settings","appearance"]}
+[PASS] N-grp  Owner: Access holds Users, Roles, Permissions; Security the Activity log; System Settings and Appearance; no Overview group without an item (Dashboard enters with U4)
+[INFO] aria-current below the lists: {"[omesso]\/users\/2":[200,["[omesso]\/users=page"]],"[omesso]\/users\/create":[200,["[omesso]\/users=page"]],"[omesso]\/users\/import":[200,["[omesso]\/users=page"]],"[omesso]\/users\/2\/edit":[200,["[omesso]\/users=page"]],"[omesso]\/roles\/2":[200,["[omesso]\/roles=page"]],"[omesso]\/roles\/create":[200,["[omesso]\/roles=page"]],"[omesso]\/roles\/2\/edit":[200,["[omesso]\/roles=page"]],"[omesso]\/profile":[200,[]],"[omesso]\/sessions":[200,[]]}
+[PASS] N-sub  Pages below a list (detail, edit, create, import) and Profile/Sessions: at most one item marked current, and only the parent section
+[INFO] deactivated admin: login ok=true profile 200 items []
+[PASS] N-off  A deactivated account with the admin role gets no sidebar item (signed in or not)
+[INFO] deactivate through the panel: 303, users.active=0
+[PASS] N-mid  Deactivated from the panel while signed in: the next page shows no item
+[INFO] role deleted from the panel: 303; deleted_at="2026-10-28 22:09:59"; assignment left=1
+[PASS] N-del  After its only role is deleted from the panel, the user sees exactly the items the server still opens for him
+[PASS] N-clean NAV pages: no 5xx, no SQL or PHP error text
+[INFO] phase CNT from verify-u1.phase-cnt.php
+
+===== phase CNT =====
+
+== CNT: counters
+[INFO] server pid=19228 on 127.0.0.1:8071 prefix=''
+[PASS] C-1    Users and Permissions counters and the Users screen header equal direct queries (start; Roles apart in C-2r)
+[INFO] user deleted from the panel: 303, deleted_at="2026-10-28 22:10:06", row still there=1
+[INFO] role deleted from the panel: 303, deleted_at="2026-10-28 22:10:06"
+[PASS] C-2    After a deactivation, a deleted user and a new permission: Users and Permissions counters and the Users header still equal the queries (deleted users left out, deactivated counted)
+[INFO] Roles screen rows: 18; roles not deleted: 18; with the deleted ones: 20; Roles counter: 18
+[PASS] C-2r   After a role deleted from the panel the Roles counter equals the roles not deleted (and the rows of the Roles screen)
+[PASS] C-3    Another account (admin) sees the same figures
+[PASS] C-4    Before the first opening of the log there is no Activity counter, whatever the log holds (4 entries, 0 failed sign-ins)
+[INFO] after the first opening: {"id":8,"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-28 22:10:12","type":"string","context":"user:25","created_at":"2026-10-28 22:10:12","updated_at":"2026-10-28 22:10:12"}
+[PASS] C-5    Right after opening the log the counter is absent (nothing new)
+[INFO] since 2026-10-28 22:10:12: log entries by others 2 (actions ["settings.updated","settings.updated"]), by the holder 1, failed sign-ins 4, successful 1
+[INFO] activity counter shown: {"path":"[omesso]\/activity","text":"Activity","count":"6 new","countClass":"rw-side-count rw-side-count--hot","current":"","title":"","aria":"","group":"Security"}
+[PASS] C-6    Activity counter = log entries by others + failed sign-ins since the last opening (2 + 4); the holder's own entries (1) and successful sign-ins (1) not counted
+[PASS] C-6b   The counter is a figure the holder can act on (digits, "new" chip marked for attention)
+[PASS] C-7    Each user has his own: another admin, who never opened the log, has no counter while the holder has one
+[PASS] C-8    Another user's opening does not touch the holder's counter
+[PASS] C-9    Opening the log (here with a filter) resets the counter
+[PASS] C-10   After the reset a single failed sign-in shows as 1
+[PASS] C-11   Without activity.view: no Activity item, so no counter
+[PASS] C-clean CNT pages: no 5xx, no SQL or PHP error text
+[INFO] phase TODAY from verify-u1.phase-today.php
+
+===== phase TODAY =====
+
+== TODAY: panel, figures, switch
+[INFO] server pid=18820 on 127.0.0.1:8071 prefix=''
+[INFO] auth_logins planted for today {"0":[2,1],"7":[3,0],"14":[1,2]}, current UTC hour 22
+[INFO] Today shown: {"text":"Today 35 sign-ins, 9 failed","b":"35","svgRole":"img","svgAria":"Sign-ins by hour today, busiest 22:00 with 29","svgView":"","points":[[0,26.2],[7.7,28],[15.3,28],[23,28],[30.6,28],[38.3,28],[45.9,28],[53.6,25.3],[61.2,28],[68.9,28],[76.5,28],[84.2,28],[91.8,28],[99.5,28],[107.1,27.1],[114.8,28],[122.4,28],[130.1,28],[137.7,28],[145.4,28],[153,28],[160.7,28],[168.3,2],[176,28]]} expected {"ok":35,"fail":9}
+[PASS] T-1    Today: sign-ins of today (35) and failed ones (9) as in auth_logins; yesterday's left out
+[INFO] hourly successful [2,0,0,0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,29,0] all attempts [3,0,0,0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0,0,0,0,35,0] y=[26.2,28,28,28,28,28,28,25.3,28,28,28,28,28,28,27.1,28,28,28,28,28,28,28,2,28] matches successful=true all=false
+[PASS] T-2    Hourly line: 24 points, one per hour, heights proportional to the successful sign-ins of each hour
+[PASS] T-3    Line with role=img and a label naming its sense (busiest hour 22:00 with 29)
+[PASS] T-4    Today only for those holding activity.view (role, inheritance, super admin), never without it or with it denied
+[INFO] switch off: HTTP 303 -> http://127.0.0.1:8071/index.php/[omesso]/settings; settings rows [{"class":"RoleWarden\\Config\\RoleWarden","value":"0","type":"boolean","context":null}]
+[INFO] log entries after the switch: [{"action":"settings.updated","details":"{\"sidebar_today\":[true,false]}"}]
+[PASS] T-5    Settings: the switch is saved (Hidden) by a holder of settings.update and the page shows it
+[PASS] T-6    The change is in the activity log (one entry naming the setting)
+[PASS] T-7    Switched off: Today disappears for everyone who could see it
+[INFO] settings.view only: settings page 200, editable form with the switch: true
+[PASS] T-8    Without settings.update the switch is refused (stays Hidden)
+[PASS] T-9    A value other than Shown/Hidden is refused and a POST without the CSRF token is refused (403, or the production redirect): the switch stays Hidden
+[PASS] T-10   Switched on again: back for everyone with activity.view, still not for the others
+[PASS] T-clean TODAY pages: no 5xx, no SQL or PHP error text
+[INFO] phase LANG from verify-u4.phase-lang.adapted.php
+
+===== phase LANG =====
+
+== LANG: English and Italian
+[INFO] server pid=4900 on 127.0.0.1:8071 prefix=''
+[INFO] EN {"aside":"Main","group0":"Overview","group1":"Access","group2":"Security","group3":"System","item:[omesso]":"Dashboard","item:[omesso]\/users":"Users","item:[omesso]\/roles":"Roles","item:[omesso]\/permissions":"Permissions","item:[omesso]\/permissions\/check":"Check a permission","item:[omesso]\/activity":"Activity","item:[omesso]\/settings":"Settings","item:[omesso]\/appearance":"Appearance","tog-aria":"Collapse the sidebar","tog-title":"Collapse the sidebar","today-label":"Today","today-note":"sign-ins, # failed","today-svg":"Sign-ins by hour today, busiest # with #","rail-tog-aria":"Expand the sidebar","rail-tog-title":"Expand the sidebar","settings-label0":"Today in the sidebar","settings-help0":"Sign-ins and failures of the day, for those who can see the activity log.","settings-opt0":"Shown","settings-opt1":"Hidden","settings-section":"Panel","appearance-label0":"Sidebar","appearance-help0":"Paper is the light sidebar; Ink and Charcoal are dark in light and dark mode alike.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Shape"}
+[INFO] IT {"aside":"Principale","group0":"Panoramica","group1":"Accesso","group2":"Sicurezza","group3":"Sistema","item:[omesso]":"Dashboard","item:[omesso]\/users":"Utenti","item:[omesso]\/roles":"Ruoli","item:[omesso]\/permissions":"Permessi","item:[omesso]\/permissions\/check":"Verifica permesso","item:[omesso]\/activity":"Attività","item:[omesso]\/settings":"Impostazioni","item:[omesso]\/appearance":"Aspetto","tog-aria":"Comprimi la barra laterale","tog-title":"Comprimi la barra laterale","today-label":"Oggi","today-note":"accessi, # falliti","today-svg":"Accessi di oggi per ora, il massimo alle # con #","rail-tog-aria":"Espandi la barra laterale","rail-tog-title":"Espandi la barra laterale","settings-label0":"Oggi nella barra laterale","settings-help0":"Accessi e tentativi falliti del giorno, per chi può vedere il log attività.","settings-opt0":"Visibile","settings-opt1":"Nascosto","settings-section":"Pannello","appearance-label0":"Barra laterale","appearance-help0":"Paper è la barra chiara; Ink e Charcoal sono scure sia in chiaro sia in scuro.","appearance-opt0":"Paper","appearance-opt1":"Ink","appearance-opt2":"Charcoal","appearance-section":"Forma"}
+[PASS] L-1    Every new string of the sidebar, the Today panel, the toggle (both states), the Settings switch and the Appearance style row has its Italian text
+[PASS] L-2    None of those English strings appears as a word in the text, labels or tooltips of the Italian pages (Users, Settings, Appearance, Activity, Profile; Paper, Ink, Charcoal excepted)
+[PASS] L-3    The style names stay Paper, Ink and Charcoal in Italian
+[INFO] L-4 excerpts: {"en today":["2:11 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 28 Oct 2026","2:11 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 28 Oct 2026","2:10 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 08 28 Oct 2026"],"it today":["v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: → 1 127.0.0.1 04 28 ott 2026","v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: 1 → 127.0.0.1 05 28 ott 2026","v8badmin Impostazioni cambiate Settings Oggi nella barra laterale: → 1 127.0.0.1 08 28 ott 2026"],"en sidebar":[" v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 28 Oct "," v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 28 Oct "],"it sidebar":["11 v8badmin Aspetto cambiato Appearance Barra laterale: ink → — 127.0.0.1 02 28 ott ","11 v8badmin Aspetto cambiato Appearance Barra laterale: — → ink 127.0.0.1 03 28 ott "],"en head":"01 28 Oct 2026, 22:11 v8badmin Appearance changed Appearance Sidebar: ink → — 127.0.0.1 02 28 Oct 2026, 22:11 v8badmin Appearance changed Appearance Sidebar: — → ink 127.0.0.1 03 28 Oct 2026, 22:11 v8badmin Settings changed Settings Today in the sidebar: → 1 127.0.0.1 04 28 Oct 2026, 22:11 v8badmin Settings changed Settings Today in the sidebar: 1 → 127.0.0.1 05 28 Oct 2026, 22:11 admin@v8b.test S"}
+[PASS] L-4    The activity log names the two new fields in each language (Today in the sidebar / Oggi nella barra laterale, Sidebar / Barra laterale)
+[PASS] L-clean LANG pages: no 5xx, no SQL or PHP error text
+
+TOTAL: 103 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

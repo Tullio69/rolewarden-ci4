@@ -1,0 +1,83 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase NAV from verify-u4.phase-nav.adapted.php
+
+===== phase NAV =====
+
+== NAV: items, permissions, groups, aria-current
+[INFO] server pid=3696 on 127.0.0.1:8071 prefix=''
+[PASS] N-owner-1 owner: the sidebar renders exactly the items of the permissions held (rolewarden,activity,appearance,permissions,check,roles,settings,users)
+[PASS] N-owner-2 owner: no empty group, no disabled or link-less item
+[PASS] N-owner-3 owner: group headers among Overview/Access/Security/System, in that order
+[PASS] N-owner-4 owner: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-admin-1 admin: the sidebar renders exactly the items of the permissions held (rolewarden,activity,appearance,permissions,check,roles,settings,users)
+[PASS] N-admin-2 admin: no empty group, no disabled or link-less item
+[PASS] N-admin-3 admin: group headers among Overview/Access/Security/System, in that order
+[PASS] N-admin-4 admin: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-plain-1 plain: the sidebar renders exactly the items of the permissions held ()
+[PASS] N-plain-2 plain: no empty group, no disabled or link-less item
+[PASS] N-plain-3 plain: group headers among Overview/Access/Security/System, in that order
+[PASS] N-plain-4 plain: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:users.view-1 r:users.view: the sidebar renders exactly the items of the permissions held (users)
+[PASS] N-r:users.view-2 r:users.view: no empty group, no disabled or link-less item
+[PASS] N-r:users.view-3 r:users.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:users.view-4 r:users.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:roles.view-1 r:roles.view: the sidebar renders exactly the items of the permissions held (roles)
+[PASS] N-r:roles.view-2 r:roles.view: no empty group, no disabled or link-less item
+[PASS] N-r:roles.view-3 r:roles.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:roles.view-4 r:roles.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:permissions.view-1 r:permissions.view: the sidebar renders exactly the items of the permissions held (permissions,check)
+[PASS] N-r:permissions.view-2 r:permissions.view: no empty group, no disabled or link-less item
+[PASS] N-r:permissions.view-3 r:permissions.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:permissions.view-4 r:permissions.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:activity.view-1 r:activity.view: the sidebar renders exactly the items of the permissions held (activity)
+[PASS] N-r:activity.view-2 r:activity.view: no empty group, no disabled or link-less item
+[PASS] N-r:activity.view-3 r:activity.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:activity.view-4 r:activity.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:settings.view-1 r:settings.view: the sidebar renders exactly the items of the permissions held (settings)
+[PASS] N-r:settings.view-2 r:settings.view: no empty group, no disabled or link-less item
+[PASS] N-r:settings.view-3 r:settings.view: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:settings.view-4 r:settings.view: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:appearance.update-1 r:appearance.update: the sidebar renders exactly the items of the permissions held (appearance)
+[PASS] N-r:appearance.update-2 r:appearance.update: no empty group, no disabled or link-less item
+[PASS] N-r:appearance.update-3 r:appearance.update: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:appearance.update-4 r:appearance.update: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:create-import-1 r:create-import: the sidebar renders exactly the items of the permissions held ()
+[PASS] N-r:create-import-2 r:create-import: no empty group, no disabled or link-less item
+[PASS] N-r:create-import-3 r:create-import: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:create-import-4 r:create-import: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-r:mixed-1 r:mixed: the sidebar renders exactly the items of the permissions held (settings,users)
+[PASS] N-r:mixed-2 r:mixed: no empty group, no disabled or link-less item
+[PASS] N-r:mixed-3 r:mixed: group headers among Overview/Access/Security/System, in that order
+[PASS] N-r:mixed-4 r:mixed: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-child-role-1 child-role: the sidebar renders exactly the items of the permissions held (activity)
+[PASS] N-child-role-2 child-role: no empty group, no disabled or link-less item
+[PASS] N-child-role-3 child-role: group headers among Overview/Access/Security/System, in that order
+[PASS] N-child-role-4 child-role: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-admin-deny-1 admin-deny: the sidebar renders exactly the items of the permissions held (rolewarden,appearance,permissions,check,roles,settings)
+[PASS] N-admin-deny-2 admin-deny: no empty group, no disabled or link-less item
+[PASS] N-admin-deny-3 admin-deny: group headers among Overview/Access/Security/System, in that order
+[PASS] N-admin-deny-4 admin-deny: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-super-deny-1 super-deny: the sidebar renders exactly the items of the permissions held (rolewarden,activity,permissions,check,roles,users)
+[PASS] N-super-deny-2 super-deny: no empty group, no disabled or link-less item
+[PASS] N-super-deny-3 super-deny: group headers among Overview/Access/Security/System, in that order
+[PASS] N-super-deny-4 super-deny: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-user-grant-1 user-grant: the sidebar renders exactly the items of the permissions held (roles,settings)
+[PASS] N-user-grant-2 user-grant: no empty group, no disabled or link-less item
+[PASS] N-user-grant-3 user-grant: group headers among Overview/Access/Security/System, in that order
+[PASS] N-user-grant-4 user-grant: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-grant-deny-child-1 grant-deny-child: the sidebar renders exactly the items of the permissions held (permissions,check)
+[PASS] N-grant-deny-child-2 grant-deny-child: no empty group, no disabled or link-less item
+[PASS] N-grant-deny-child-3 grant-deny-child: group headers among Overview/Access/Security/System, in that order
+[PASS] N-grant-deny-child-4 grant-deny-child: each shown item opens its screen with aria-current="page" on that item only; each hidden one is refused
+[PASS] N-all  No item outside the documented screens (Users, Roles, Permissions, Activity, Settings, Appearance) for any account
+[INFO] owner groups: {"Overview":["[omesso]"],"Access":["users","roles","permissions","check"],"Security":["activity"],"System":["settings","appearance"]}
+[PASS] N-grp  Owner: Access holds Users, Roles, Permissions; Security the Activity log; System Settings and Appearance; no Overview group without an item (Dashboard enters with U4)
+[INFO] aria-current below the lists: {"[omesso]\/users\/2":[200,["[omesso]\/users=page"]],"[omesso]\/users\/create":[200,["[omesso]\/users=page"]],"[omesso]\/users\/import":[200,["[omesso]\/users=page"]],"[omesso]\/users\/2\/edit":[200,["[omesso]\/users=page"]],"[omesso]\/roles\/2":[200,["[omesso]\/roles=page"]],"[omesso]\/roles\/create":[200,["[omesso]\/roles=page"]],"[omesso]\/roles\/2\/edit":[200,["[omesso]\/roles=page"]],"[omesso]\/profile":[200,[]],"[omesso]\/sessions":[200,[]]}
+[PASS] N-sub  Pages below a list (detail, edit, create, import) and Profile/Sessions: at most one item marked current, and only the parent section
+[INFO] deactivated admin: login ok=true profile 200 items []
+[PASS] N-off  A deactivated account with the admin role gets no sidebar item (signed in or not)
+[INFO] deactivate through the panel: 303, users.active=0
+[PASS] N-mid  Deactivated from the panel while signed in: the next page shows no item
+[INFO] role deleted from the panel: 303; deleted_at="2026-10-28 22:12:57"; assignment left=1

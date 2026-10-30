@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** chiusura SHOT, fix V-7 (Appearance "Saved in"), poi screenshot CodeCanyon 1.1 (passo 4)
+**Agente:** Claude
+**Dalle:** 2026-10-30 07:30
+**Scope:** resources/css/panel.css, src/Assets/css/panel.css, docs/SPEC.md, tests/Integration/; poi docs/codecanyon/ e app di prova locale
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1619,3 +1619,42 @@ Formato di ogni voce:
 - Cosa ho fatto: ho fatto ripartire il collaudo R1, che si era interrotto il 27/10, e ne ho letto il report. I punti 1-4 sono PASS su 7e3730a, nessun difetto del modulo. Il punto 5 (regressione U1-U5 e motion su PHP 8.5 con CI 4.7.5) non è stato eseguito per la lentezza del bind mount Docker su Windows.
 - Stato: completato
 - Note per il prossimo: decisione dell'utente del 2026-10-28: la copertura attuale basta per 8.5 + 4.7.5. Vale come copertura la matrice HTTP (v85, v85prod, sub, x2, m475p85) più la regressione 1.1 già PASS su PHP 8.3 (MOTION-REPORT). R1 è quindi approvata. Resta la preparazione del rilascio 1.1.0 (versione in composer.json, sezione 1.1.0 nel CHANGELOG). Lock rilasciato.
+
+### [2026-10-29 21:30] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: collaudo
+- Scope: `tests/Integration/` (`verify-shot.*`, `SHOT-REPORT.md`, output), `_AI-LOG.md`
+- Cosa ho fatto: ho ripreso e chiuso il collaudo SHOT di `782fb64` (padre `603a94c`), che si era interrotto il 28/10 durante u1a.
+  - Ripresa dell'ambiente: Docker era spento e l'ho avviato. `rolewarden_test` non era vuoto (u1a non aveva fatto il ripristino) e l'ho ripristinato dallo snapshot fino all'hash di riferimento.
+  - Ho eseguito u1a r2 (196/196), u3 r2 (41/41) e motion r2, r3, r4.
+  - Ho rieseguito shot.b come r3 e r4: le correzioni di V-7 e K-3 erano state salvate dopo il run r2 e non erano mai state eseguite.
+- Esito: **PASS con riserva; non approvabile senza decisione di chi lancia.** Nessun difetto del modulo.
+  - Altri step validi: shot.parent 14/14; shot.a 16/16; dash 256/256; cust 152/152; u2 129/129; u1b 103/103; x 2/2.
+  - shot.b r4 103/110: 5 FAIL di V-7, che è un'ambiguità, e 2 FAIL dovuti all'ambiente (MX-F11 e A11Y-5, PASS in r2 il 28).
+  - motion: 129, 133 e 133 su 139; sull'unione dei tre run, 137/137 PASS.
+- Ambiente degradato il 29/10: Windows esaurisce i buffer dei socket (`net::ERR_NO_BUFFER_SPACE` in Chrome, WSAENOBUFS nel log dell'app).
+  - Tutti i FAIL di motion e di shot.b r3/r4, V-7 escluso, nascono da una risorsa non caricata (`panel.js`, `alpine.min.js`, `panel.css`, font).
+  - Lo prova `verify-shot.phase-motion.php`: copia identica con una sola riga INFO per gli errori di rete; nessun verdetto cambiato.
+  - Decide chi lancia: accettare l'unione dei run, oppure far ripetere motion e shot.b dopo un riavvio di Windows. Il riavvio libera anche i tre socket orfani in LISTENING su 8071 con PID 0.
+- Difetti del modulo: nessuno.
+- Ambiguità di specifica (non decise):
+  - Username numerico uguale all'id di un altro utente nella verifica di un permesso: il modulo osservato fa vincere l'id, la specifica non lo dice.
+  - V-7: il percorso di "Saved in" in Appearance esce di 3 px (en) e di 11 px (it) dal margine destro della page head, ed è visibile a occhio. La definizione di fatto chiede solo sezioni allineate e niente a capo, entrambi PASS.
+- Correzioni dello strumento: elencate con il motivo in `tests/Integration/SHOT-REPORT.md`.
+- Ambiente a fine collaudo:
+  - `rolewarden_test`: hash `f7f37c04…e21e64` prima e dopo ogni run e a fine collaudo.
+  - Mailpit vuoto.
+  - Worktree `shot/wt` e `shot/wt-parent` rimossi e `git worktree prune` eseguito.
+  - Nessun processo del collaudo attivo. Container `rolewarden-*` lasciati accesi.
+  - Restano nella scratch del 28 solo profili Chrome non cancellabili (EPERM): nessun `.env`, nessuna credenziale.
+  - Nessun commit. Sezione del lock non toccata.
+
+### [2026-10-30 07:30] - Claude
+- Tipo: review
+- Scope: `_AI-LOG.md`, esito del collaudo SHOT
+- Cosa ho fatto: ho letto il report SHOT e riportato all'utente le decisioni aperte.
+- Stato: completato
+- Note per il prossimo: decisioni dell'utente del 2026-10-30:
+  - I FAIL da `ERR_NO_BUFFER_SPACE` sono dovuti all'ambiente: vale l'unione dei run di motion (137/137) e shot.b r2 per MX-F11 e A11Y-5.
+  - V-7 va corretto (il percorso "Saved in" non deve uscire dalla page head), con una riverifica dopo.
+  - Username numerico uguale all'id di un altro utente nella verifica di un permesso: vince l'id. Lo documenta la SPEC.
+  - SHOT è approvato, a condizione che la riverifica di V-7 sia PASS.

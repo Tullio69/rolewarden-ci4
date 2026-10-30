@@ -1,0 +1,31 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase SHOT from verify-shot.phase-shot.php
+
+===== phase SHOT =====
+
+== SHOT: panel polish (commit, 782fb64)
+[INFO] server pid=29120 on 127.0.0.1:8071 prefix=''
+[INFO] users: owner=1 admin=2 plain=3 sa-html=7 sa-deny=8 norole=9; role Approver=9
+[PASS] PRE-1  A failed sign-in is recorded (auth_logins success=0)
+[PASS] MX-F1  Role matrix at rest: "All changes saved.", Save changes disabled, no cell changed
+[PASS] MX-F2  Clicking users.view grants it (aria-pressed true, changed), bar "1 unsaved change to Approver users.view", note "1 changed", Save enabled
+[PASS] MX-F3  The "view" column box grants view on every editable area (all pressed) and the bar counts more changes
+[PASS] MX-F4  Discard returns every cell to the saved state and the bar to "All changes saved."
+[PASS] MX-F5  The Sessions row box grants every editable action on Sessions; bar "N unsaved changes to Approver"
+[PASS] MX-F6  Save changes gives a success toast and the bar returns to "All changes saved."
+[PASS] MX-F7  The database holds exactly what was saved (sessions.revoke, sessions.view on Approver) and the reloaded matrix shows it
+[PASS] MX-F8  Cell tooltip names the permission and its state ("users.view · Not granted")
+[PASS] MX-F9  User override: clicking a role grant on the admin marks it denied for the user, bar "1 unsaved change to v8badmin’s overrides", Save overrides gives success and the database holds the denial
+[PASS] MX-F10 User override: clicking an empty cell on the plain user grants it for the user and Save overrides stores it
+[PASS] MX-F11 No JavaScript error in the matrix interactions
+[INFO] browser views-en-light: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.a\chrome-sh-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.a\chrome-sh-2'
+[INFO] browser views-en-dark: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.a\chrome-sh-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.a\chrome-sh-3'
+[INFO] browser cmd: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.a\chrome-sh-4 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.a\chrome-sh-4'
+[INFO] part a: measures written to verify-shot.measure.commit.a.json
+[PASS] LOG-1a Part a: no HTTP response >= 500, no SQL text, no PHP error (2)
+[PASS] LOG-2a Part a: no WARNING/ERROR/CRITICAL line in the application log
+
+TOTAL: 16 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

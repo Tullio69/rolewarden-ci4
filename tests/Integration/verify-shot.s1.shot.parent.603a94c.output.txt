@@ -1,0 +1,37 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase SHOT from verify-shot.phase-shot.php
+
+===== phase SHOT =====
+
+== SHOT: panel polish (parent, 603a94c)
+[INFO] server pid=23704 on 127.0.0.1:8071 prefix=''
+[INFO] users: owner=1 admin=2 plain=3 sa-html=7 sa-deny=8 norole=9; role Approver=9
+[PASS] PRE-1  A failed sign-in is recorded (auth_logins success=0)
+[PASS] MX-F1  Role matrix at rest: "All changes saved.", Save changes disabled, no cell changed
+[PASS] MX-F2  Clicking users.view grants it (aria-pressed true, changed), bar "1 unsaved change to Approver users.view", note "1 changed", Save enabled
+[PASS] MX-F3  The "view" column box grants view on every editable area (all pressed) and the bar counts more changes
+[PASS] MX-F4  Discard returns every cell to the saved state and the bar to "All changes saved."
+[PASS] MX-F5  The Sessions row box grants every editable action on Sessions; bar "N unsaved changes to Approver"
+[PASS] MX-F6  Save changes gives a success toast and the bar returns to "All changes saved."
+[PASS] MX-F7  The database holds exactly what was saved (sessions.revoke, sessions.view on Approver) and the reloaded matrix shows it
+[PASS] MX-F8  Cell tooltip names the permission and its state ("users.view · Not granted")
+[FAIL] MX-F9  User override: clicking a role grant on the admin marks it denied for the user, bar "1 unsaved change to v8badmin’s overrides", Save overrides gives success and the database holds the denial
+         -> ["1 unsaved change to v8badmin’s overrides Discard Save overrides",{"pressed":null,"mark":"rw-mark--deny","changed":true},"rw-toast rw-toast--success | Saved Changes saved. ×"]
+[FAIL] MX-F10 User override: clicking an empty cell on the plain user grants it for the user and Save overrides stores it
+         -> [{"pressed":null,"mark":"rw-mark--grant","changed":true},"rw-toast rw-toast--success | Saved Changes saved. ×"]
+[PASS] MX-F11 No JavaScript error in the matrix interactions
+[INFO] browser views-en-light: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-2'
+[INFO] browser views-en-dark: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-3'
+[INFO] browser cmd: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-4 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-4'
+[INFO] browser views-it-light: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-5 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-5'
+[INFO] browser views-it-dark: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-6 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.parent\chrome-sh-6'
+[INFO] eight-or-fewer: 8 actions left: view, access, update, create, delete, override, assign, revoke
+[INFO] measures written: verify-shot.measure.parent.json
+[INFO] parent run: measures only, no checks
+
+TOTAL: 12 PASS, 2 FAIL, 0 AMB
+FAIL MX-F9 User override: clicking a role grant on the admin marks it denied for the user, bar "1 unsaved change to v8badmin’s overrides", Save overrides gives success and the database holds the denial
+FAIL MX-F10 User override: clicking an empty cell on the plain user grants it for the user and Save overrides stores it
+Test process exit: 1

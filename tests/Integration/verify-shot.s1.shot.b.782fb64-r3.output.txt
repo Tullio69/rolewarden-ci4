@@ -1,0 +1,152 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase SHOT from verify-shot.phase-shot.php
+
+===== phase SHOT =====
+
+== SHOT: panel polish (commit, 782fb64)
+[INFO] server pid=23148 on 127.0.0.1:8071 prefix=''
+[INFO] users: owner=1 admin=2 plain=3 sa-html=7 sa-deny=8 norole=9; role Approver=9
+[PASS] PRE-1  A failed sign-in is recorded (auth_logins success=0)
+[PASS] MX-F1  Role matrix at rest: "All changes saved.", Save changes disabled, no cell changed
+[PASS] MX-F2  Clicking users.view grants it (aria-pressed true, changed), bar "1 unsaved change to Approver users.view", note "1 changed", Save enabled
+[PASS] MX-F3  The "view" column box grants view on every editable area (all pressed) and the bar counts more changes
+[PASS] MX-F4  Discard returns every cell to the saved state and the bar to "All changes saved."
+[PASS] MX-F5  The Sessions row box grants every editable action on Sessions; bar "N unsaved changes to Approver"
+[PASS] MX-F6  Save changes gives a success toast and the bar returns to "All changes saved."
+[PASS] MX-F7  The database holds exactly what was saved (sessions.revoke, sessions.view on Approver) and the reloaded matrix shows it
+[PASS] MX-F8  Cell tooltip names the permission and its state ("users.view · Not granted")
+[PASS] MX-F9  User override: clicking a role grant on the admin marks it denied for the user, bar "1 unsaved change to v8badmin’s overrides", Save overrides gives success and the database holds the denial
+[PASS] MX-F10 User override: clicking an empty cell on the plain user grants it for the user and Save overrides stores it
+[FAIL] MX-F11 No JavaScript error in the matrix interactions
+         -> [["network: Failed to load resource: net::ERR_NO_BUFFER_SPACE http://127.0.0.1:8071/favicon.ico","network: Failed to load resource: net::ERR_NO_BUFFER_SPACE http://127.0.0.1:8071/index.php/[omesso]/assets/fonts/ibm-plex-sans-400.woff2"],[]]
+[INFO] browser views-it-light: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.b-r3\chrome-sh-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.b-r3\chrome-sh-2'
+[INFO] browser views-it-dark driver errors: m-role-1440-dark: eval: TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'. at cs (<anonymous>:3:24) at <anonymous>:13:97 at <anonymous>:88:3 | m-user-sa-1440-dark: eval: TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'. at cs (<anonymous>:3:24) at <anonymous>:13:97 at <anonymous>:88:3 | m-user-admin-1440-dark: eval: TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'. at cs (<anonymous>:3:24) at <anonymous>:13:97 at <anonymous>:88:3 | m-check-granted-1440-dark: eval: TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'. at cs (<anonymous>:3:24) at <anonymous>:13:97 at <anonymous>:88:3 | m-check-denied-144...
+[INFO] browser views-it-dark: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.b-r3\chrome-sh-3 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-shot.b-r3\chrome-sh-3'
+[INFO] eight-or-fewer: 8 actions left: view, access, update, create, delete, override, assign, revoke
+[INFO] measures written: verify-shot.measure.commit.json
+[PASS] PRE-2  The Italian pages are served in Italian (html lang) and the English ones in English
+[PASS] MX-1-role role at 1440x900, sidebar open: more than 8 actions (20), the matrix is marked dense and every column is inside the content area (no cell past the right edge)
+[PASS] MX-2-role role at 1440: no horizontal scroll (page scrollWidth <= viewport, no scrolling container in main)
+[PASS] MX-3-role role at 1440: every action label is vertical (taller than wide) and not cut
+[PASS] MX-4-role-1440 role at 1440px: the Notes column is hidden
+[PASS] MX-4-role-1599 role at 1599px: the Notes column is hidden
+[PASS] MX-4-role-1600 role at 1600px: the Notes column is shown
+[PASS] MX-4-role-1920 role at 1920px: the Notes column is shown
+[PASS] MX-5-role-dark role at 1440 in dark mode: same fit (no cell outside, no horizontal scroll)
+[PASS] MX-6-role-it role at 1440 in Italian: no cell outside, no horizontal scroll, labels vertical and not cut
+[PASS] MX-7-role-1600 role at 1600: no cell outside, no horizontal scroll with the Notes column back
+[PASS] MX-1-user-admin user-admin at 1440x900, sidebar open: more than 8 actions (20), the matrix is marked dense and every column is inside the content area (no cell past the right edge)
+[PASS] MX-2-user-admin user-admin at 1440: no horizontal scroll (page scrollWidth <= viewport, no scrolling container in main)
+[PASS] MX-3-user-admin user-admin at 1440: every action label is vertical (taller than wide) and not cut
+[PASS] MX-4-user-admin-1440 user-admin at 1440px: the Notes column is hidden
+[PASS] MX-4-user-admin-1599 user-admin at 1599px: the Notes column is hidden
+[PASS] MX-4-user-admin-1600 user-admin at 1600px: the Notes column is shown
+[PASS] MX-4-user-admin-1920 user-admin at 1920px: the Notes column is shown
+[PASS] MX-5-user-admin-dark user-admin at 1440 in dark mode: same fit (no cell outside, no horizontal scroll)
+[PASS] MX-6-user-admin-it user-admin at 1440 in Italian: no cell outside, no horizontal scroll, labels vertical and not cut
+[PASS] MX-7-user-admin-1600 user-admin at 1600: no cell outside, no horizontal scroll with the Notes column back
+[PASS] MX-8   Accessible names of the matrix controls: every cell has its tooltip, column boxes "Grant <action> on every area", row boxes "Grant every action on <area>"
+[PASS] MX-9   Chrome computes a non-empty accessible name for every button and checkbox of the role page (69)
+[PASS] MX-10-role role with 8 actions or fewer (8): not dense, labels horizontal (wider than tall); widths compared with the parent in MX-11
+[PASS] MX-11-role role with 8 actions or fewer: same layout as the parent 603a94c (column widths, label orientation, Notes column at 1440)
+[PASS] MX-10-user-admin user-admin with 8 actions or fewer (8): not dense, labels horizontal (wider than tall); widths compared with the parent in MX-11
+[PASS] MX-11-user-admin user-admin with 8 actions or fewer: same layout as the parent 603a94c (column widths, label orientation, Notes column at 1440)
+[PASS] SA-1   Super admin user, Roles: the Super admin row reads "All permissions, as super admin" (no "own + inherited" count)
+[PASS] SA-2   Same in Italian: "Tutti i permessi, come super admin"
+[PASS] SA-3   Above the matrix: "<name> is a super admin and holds every permission, except the ones denied for this user below. …", with the name escaped (shown as text, no <i> element)
+[PASS] SA-4   The sentence exists in Italian (translated, with the name, above the matrix)
+[PASS] SA-5   A user without a super admin role (admin): the role row still reads "N own + M inherited permissions" and no super admin sentence
+[PASS] SA-6   Admin user, Roles text identical to the parent 603a94c (nothing changed for a non super admin)
+[PASS] CK-1-en-light Granted verdict (en, light): a mark in the granted colour (green), a single check stroke
+[PASS] CK-2-en-light Verdict denied (override on admin) (en, light): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+[PASS] CK-2s-en-light Verdict denied (override on a super admin) (en, light): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+[PASS] CK-3-en-light The rule that decides carries the label "decides" in the accent (text or fill), on one rule only
+[PASS] CK-4-en-light The deciding rule is the right one: role (granted to v8bowner? no: super admin), user denial for admin and for the denied super admin
+[PASS] CK-1-en-dark Granted verdict (en, dark): a mark in the granted colour (green), a single check stroke
+[PASS] CK-2-en-dark Verdict denied (override on admin) (en, dark): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+[PASS] CK-2s-en-dark Verdict denied (override on a super admin) (en, dark): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+[PASS] CK-3-en-dark The rule that decides carries the label "decides" in the accent (text or fill), on one rule only
+[PASS] CK-4-en-dark The deciding rule is the right one: role (granted to v8bowner? no: super admin), user denial for admin and for the denied super admin
+[PASS] CK-1-it-light Granted verdict (it, light): a mark in the granted colour (green), a single check stroke
+[PASS] CK-2-it-light Verdict denied (override on admin) (it, light): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+[PASS] CK-2s-it-light Verdict denied (override on a super admin) (it, light): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+[PASS] CK-3-it-light The rule that decides carries the label "…" in the accent (text or fill), on one rule only
+[PASS] CK-4-it-light The deciding rule is the right one: role (granted to v8bowner? no: super admin), user denial for admin and for the denied super admin
+[FAIL] CK-1-it-dark Granted verdict (it, dark): a mark in the granted colour (green), a single check stroke
+         -> [null,null,null,null]
+[FAIL] CK-2-it-dark Verdict denied (override on admin) (it, dark): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+         -> [null,null,null,null]
+[FAIL] CK-2s-it-dark Verdict denied (override on a super admin) (it, dark): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+         -> [null,null,null,null]
+[FAIL] CK-3-it-dark The rule that decides carries the label "…" in the accent (text or fill), on one rule only
+         -> [null,null]
+[FAIL] CK-4-it-dark The deciding rule is the right one: role (granted to v8bowner? no: super admin), user denial for admin and for the denied super admin
+         -> [null,null,null]
+[PASS] CK-5   Who holds it: every row's Notes link reads "Explain" and points to Check a permission for that row's user (2 rows)
+[PASS] CK-6   Same in Italian: "Spiega"
+[PASS] CK-7   Each Explain link opens (200) the outcome for that user, who holds users.delete
+[PASS] CK-8   The verdict text is larger than on the parent 603a94c
+[PASS] K-1    Ctrl K in dark mode opens the search, focus in the field
+[PASS] K-2    Dark mode: the backdrop darkens the page visibly (backdrop colour rgba(0, 0, 0, 0.66), page area luminance before/after 0.044/0.0062 = 1.67:1)
+[INFO] K before/after: backdrop parent=rgba(23, 25, 28, 0.45) now=rgba(0, 0, 0, 0.66)
+[PASS] K-3    Dark: the field shows focus once: the only indicators in the focus colour are the bottom rule of the field row (border and inset line on the same edge), no outline on the field
+[PASS] K-3l   Light: same, one focus indicator at the bottom of the field row
+[PASS] K-4    Typing filters, Down moves the highlight (aria-activedescendant and aria-selected), all by keyboard
+[PASS] K-5    Esc closes the search
+[PASS] K-6    The sidebar search is reachable and opens with Enter; typing, Down and Enter open a result
+[PASS] K-7    Tab reaches the sidebar search link (it is the first stop after the end of the page wraps), with a visible focus
+[PASS] ACT-1  Failed sign-in row: the action in full ink (the ink token, not muted) with the denied mark
+[PASS] ACT-1d Same in dark mode
+[PASS] ACT-2  Permission slugs in the Details column are in monospace (4 found)
+[PASS] ACT-3  Eyebrows: Activity "Security", Appearance and Settings "System"
+[PASS] ACT-4  Eyebrows in Italian: "Sicurezza" and "Sistema"
+[PASS] DB-1   The sign-ins chart is lower than on the parent 603a94c (180px against 240px)
+[PASS] DB-2   Under the dashboard header there is one rule only (distinct horizontal rules from the header to 70px below it)
+[PASS] DB-3   Latest permission changes read "<who> granted <slug> to <subject>" and "<who> denied <slug> to <subject>"
+[PASS] DB-4   In Italian: "<chi> ha concesso <slug> a <soggetto>" (and the denial translated too)
+[PASS] V-1    Users list: a user without roles shows "No role"
+[PASS] V-1it  Users list in Italian: the same cell is translated (not empty, not English)
+[PASS] V-2    Role page: the selector is labelled "Role"
+[INFO] V-2 Italian label: {"label":"Ruolo"}
+[PASS] V-3-light Disabled primary "Save changes" (light): a sober outline, not a faded accent (no accent fill, full opacity, a visible border not in accent)
+[PASS] V-3-dark Disabled primary "Save changes" (dark): a sober outline, not a faded accent (no accent fill, full opacity, a visible border not in accent)
+[PASS] V-4    Appearance: the section titles share one right edge (1352)
+[PASS] V-5    Appearance: "Saved in" and its path do not wrap (one line box each)
+[PASS] V-6-it-1600 Appearance it at 1600px: same right edge for the sections and no wrap of "Saved in"
+[PASS] V-6-en-1600 Appearance en at 1600px: same right edge for the sections and no wrap of "Saved in"
+[PASS] V-6-it-1440 Appearance it at 1440px: same right edge for the sections and no wrap of "Salvato in"
+[FAIL] V-7-en-1440 Appearance en at 1440px: the "Saved in" path stays inside the right margin of the page head (path right 1395px, margin 1392px)
+         -> {"0":{"codeRight":1395,"ddRight":1395,"dlRight":1392,"ruleRight":1352,"rowsRight":[1395,1392],"ddOverflow":false,"dt":"Saved in","dd":"writable/[omesso]/theme.json","ddRects":1,"ddH":18,"codeH":17,"lh":18,"ws":"normal","dtRects":1,"dtH":18,"dtLh":18},"parent":{"dt":"Saved in","dd":"writable/[omesso]/theme.json","ddRects":1,"ddH":18,"codeH":17,"lh":18,"ws":"normal","dtRects":1,"dtH":36,"dtLh":18}}
+[FAIL] V-7-en-1600 Appearance en at 1600px: the "Saved in" path stays inside the right margin of the page head (path right 1554px, margin 1552px)
+         -> {"0":{"codeRight":1554,"ddRight":1554,"dlRight":1552,"ruleRight":1512,"rowsRight":[1554,1552],"ddOverflow":false,"dt":"Saved in","dd":"writable/[omesso]/theme.json","ddRects":1,"ddH":19,"codeH":17,"lh":18,"ws":"normal","dtRects":1,"dtH":18,"dtLh":18},"parent":null}
+[FAIL] V-7-en-1920 Appearance en at 1920px: the "Saved in" path stays inside the right margin of the page head (path right 1875px, margin 1872px)
+         -> {"0":{"codeRight":1875,"ddRight":1875,"dlRight":1872,"ruleRight":1832,"rowsRight":[1875,1872],"ddOverflow":false,"dt":"Saved in","dd":"writable/[omesso]/theme.json","ddRects":1,"ddH":18,"codeH":17,"lh":18,"ws":"normal","dtRects":1,"dtH":18,"dtLh":18},"parent":null}
+[FAIL] V-7-it-1440 Appearance it at 1440px: the "Saved in" path stays inside the right margin of the page head (path right 1403px, margin 1392px)
+         -> {"0":{"codeRight":1403,"ddRight":1403,"dlRight":1392,"ruleRight":1352,"rowsRight":[1403,1392],"ddOverflow":false,"dt":"Salvato in","dd":"writable/[omesso]/theme.json","ddRects":1,"ddH":18,"codeH":17,"lh":18,"ws":"normal","dtRects":1,"dtH":18,"dtLh":18},"parent":null}
+[FAIL] V-7-it-1600 Appearance it at 1600px: the "Saved in" path stays inside the right margin of the page head (path right 1563px, margin 1552px)
+         -> {"0":{"codeRight":1563,"ddRight":1563,"dlRight":1552,"ruleRight":1512,"rowsRight":[1563,1552],"ddOverflow":false,"dt":"Salvato in","dd":"writable/[omesso]/theme.json","ddRects":1,"ddH":18,"codeH":17,"lh":18,"ws":"normal","dtRects":1,"dtH":18,"dtLh":18},"parent":null}
+[PASS] A11Y-1 Contrast AA (4.5:1) of every visible text on the 11 views, light and dark (22 audits)
+[PASS] A11Y-2 Every button, link, box, field and select of the 11 views has a non-empty accessible name (Chrome AX tree)
+[PASS] A11Y-3 Focus visible: each Tab stop on the role matrix from the last column box (14) and on Check a permission (8) matches :focus-visible with a 2px outline (or ring); 1 stop(s) outside the document
+[PASS] A11Y-4 The matrix cells are reached by Tab
+[FAIL] A11Y-5 No JavaScript error or console error in any browser job (9 jobs)
+         -> {"mtx":["network: Failed to load resource: net::ERR_NO_BUFFER_SPACE http://127.0.0.1:8071/favicon.ico","network: Failed to load resource: net::ERR_NO_BUFFER_SPACE http://127.0.0.1:8071/index.php/[omesso]/assets/fonts/ibm-plex-sans-400.woff2"],"views-it-light":["network: Failed to load resource: net::ERR_NO_BUFFER_SPACE http://127.0.0.1:8071/index.php?debugbar_time=1793301421.221336","network: Failed to load resource: net::ERR_NO_BUFFER_SPACE http://127.0.0.1:8071/index.php?debugbar_time=1793301427.688744","network: Failed to load resource: net::ERR_NO_BUFFER_SPACE http://127.0.0.1:8071/index.php/[omesso]/assets/fonts/ibm-plex-sans-700.woff2","network: Failed to load resource: net::ERR_NO...
+[PASS] LOG-1  No HTTP response >= 500, no SQL text, no PHP error in the bodies of this phase (12)
+[PASS] LOG-2  No WARNING/ERROR/CRITICAL line in the application log
+
+TOTAL: 98 PASS, 12 FAIL, 0 AMB
+FAIL MX-F11 No JavaScript error in the matrix interactions
+FAIL CK-1-it-dark Granted verdict (it, dark): a mark in the granted colour (green), a single check stroke
+FAIL CK-2-it-dark Verdict denied (override on admin) (it, dark): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+FAIL CK-2s-it-dark Verdict denied (override on a super admin) (it, dark): a mark in the denied colour (red), a check with a strike (more than one stroke), different from the granted one
+FAIL CK-3-it-dark The rule that decides carries the label "…" in the accent (text or fill), on one rule only
+FAIL CK-4-it-dark The deciding rule is the right one: role (granted to v8bowner? no: super admin), user denial for admin and for the denied super admin
+FAIL V-7-en-1440 Appearance en at 1440px: the "Saved in" path stays inside the right margin of the page head (path right 1395px, margin 1392px)
+FAIL V-7-en-1600 Appearance en at 1600px: the "Saved in" path stays inside the right margin of the page head (path right 1554px, margin 1552px)
+FAIL V-7-en-1920 Appearance en at 1920px: the "Saved in" path stays inside the right margin of the page head (path right 1875px, margin 1872px)
+FAIL V-7-it-1440 Appearance it at 1440px: the "Saved in" path stays inside the right margin of the page head (path right 1403px, margin 1392px)
+FAIL V-7-it-1600 Appearance it at 1600px: the "Saved in" path stays inside the right margin of the page head (path right 1563px, margin 1552px)
+FAIL A11Y-5 No JavaScript error or console error in any browser job (9 jobs)
+Test process exit: 1

@@ -1,0 +1,67 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase CNT from verify-u1.phase-cnt.php
+
+===== phase CNT =====
+
+== CNT: counters
+[INFO] server pid=11176 on 127.0.0.1:8071 prefix=''
+[PASS] C-1    Users and Permissions counters and the Users screen header equal direct queries (start; Roles apart in C-2r)
+[INFO] user deleted from the panel: 303, deleted_at="2026-10-28 22:07:16", row still there=1
+[INFO] role deleted from the panel: 303, deleted_at="2026-10-28 22:07:16"
+[PASS] C-2    After a deactivation, a deleted user and a new permission: Users and Permissions counters and the Users header still equal the queries (deleted users left out, deactivated counted)
+[INFO] Roles screen rows: 9; roles not deleted: 9; with the deleted ones: 10; Roles counter: 9
+[PASS] C-2r   After a role deleted from the panel the Roles counter equals the roles not deleted (and the rows of the Roles screen)
+[PASS] C-3    Another account (admin) sees the same figures
+[PASS] C-4    Before the first opening of the log there is no Activity counter, whatever the log holds (2 entries, 0 failed sign-ins)
+[INFO] after the first opening: {"id":3,"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-28 22:07:22","type":"string","context":"user:9","created_at":"2026-10-28 22:07:22","updated_at":"2026-10-28 22:07:22"}
+[PASS] C-5    Right after opening the log the counter is absent (nothing new)
+[INFO] since 2026-10-28 22:07:22: log entries by others 2 (actions ["settings.updated","settings.updated"]), by the holder 1, failed sign-ins 4, successful 1
+[INFO] activity counter shown: {"path":"[omesso]\/activity","text":"Activity","count":"6 new","countClass":"rw-side-count rw-side-count--hot","current":"","title":"","aria":"","group":"Security"}
+[PASS] C-6    Activity counter = log entries by others + failed sign-ins since the last opening (2 + 4); the holder's own entries (1) and successful sign-ins (1) not counted
+[PASS] C-6b   The counter is a figure the holder can act on (digits, "new" chip marked for attention)
+[PASS] C-7    Each user has his own: another admin, who never opened the log, has no counter while the holder has one
+[PASS] C-8    Another user's opening does not touch the holder's counter
+[PASS] C-9    Opening the log (here with a filter) resets the counter
+[PASS] C-10   After the reset a single failed sign-in shows as 1
+[FAIL] C-11   Without activity.view: no Activity item, so no counter
+         -> 
+[PASS] C-clean CNT pages: no 5xx, no SQL or PHP error text
+[INFO] phase TODAY from verify-u1.phase-today.php
+
+===== phase TODAY =====
+
+== TODAY: panel, figures, switch
+[INFO] server pid=19412 on 127.0.0.1:8071 prefix=''
+[INFO] auth_logins planted for today {"0":[2,1],"7":[3,0],"14":[1,2]}, current UTC hour 22
+[INFO] Today shown: {"text":"Today 12 sign-ins, 10 failed","b":"12","svgRole":"img","svgAria":"Sign-ins by hour today, busiest 22:00 with 6","svgView":"","points":[[0,19.3],[7.7,28],[15.3,28],[23,28],[30.6,28],[38.3,28],[45.9,28],[53.6,15],[61.2,28],[68.9,28],[76.5,28],[84.2,28],[91.8,28],[99.5,28],[107.1,23.7],[114.8,28],[122.4,28],[130.1,28],[137.7,28],[145.4,28],[153,28],[160.7,28],[168.3,2],[176,28]]} expected {"ok":12,"fail":10}
+[PASS] T-1    Today: sign-ins of today (12) and failed ones (10) as in auth_logins; yesterday's left out
+[INFO] hourly successful [2,0,0,0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,6,0] all attempts [3,0,0,0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0,0,0,0,13,0] y=[19.3,28,28,28,28,28,28,15,28,28,28,28,28,28,23.7,28,28,28,28,28,28,28,2,28] matches successful=true all=false
+[PASS] T-2    Hourly line: 24 points, one per hour, heights proportional to the successful sign-ins of each hour
+[PASS] T-3    Line with role=img and a label naming its sense (busiest hour 22:00 with 6)
+[FAIL] T-4    Today only for those holding activity.view (role, inheritance, super admin), never without it or with it denied
+         -> ["activity.view role no login","inherited activity.view no login","users.view only no login","settings.view only no login","admin, activity.view denied no login","user + granted roles\/settings no login","super admin with denials no login","inherited but denied no login"]
+[INFO] switch off: HTTP 303 -> http://127.0.0.1:8071/index.php/[omesso]/settings; settings rows [{"class":"RoleWarden\\Config\\RoleWarden","value":"0","type":"boolean","context":null}]
+[INFO] log entries after the switch: [{"action":"settings.updated","details":"{\"sidebar_today\":[true,false]}"}]
+[PASS] T-5    Settings: the switch is saved (Hidden) by a holder of settings.update and the page shows it
+[PASS] T-6    The change is in the activity log (one entry naming the setting)
+PHP Warning:  Undefined array key "activity.view role" in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php on line 95
+
+Warning: Undefined array key "activity.view role" in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php on line 95
+PHP Fatal error:  Uncaught TypeError: today_of(): Argument #1 ($c) must be of type Client, null given, called in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php on line 95 and defined in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php:50
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php(95): today_of(NULL, 'today off activ...')
+#1 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-shot.harness.php(178): require('C:\\Users\\fabio\\...')
+#2 {main}
+  thrown in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php on line 50
+
+Fatal error: Uncaught TypeError: today_of(): Argument #1 ($c) must be of type Client, null given, called in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php on line 95 and defined in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php:50
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php(95): today_of(NULL, 'today off activ...')
+#1 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-shot.harness.php(178): require('C:\\Users\\fabio\\...')
+#2 {main}
+  thrown in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\1475d35b-565c-41d6-a8f7-8d576131315d\scratchpad\shot\sh-work-u1b\verify-shot.phase-today.php on line 50
+782fb64 s1.u1b.782fb64: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=True (1 .env files deleted first)

@@ -1,0 +1,26 @@
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase SHOTX from verify-shot.phase-shotx.php
+
+===== phase SHOTX =====
+
+== SHOTX: exploration
+[INFO] server pid=24324 on 127.0.0.1:8071 prefix=''
+[INFO] owner login ok
+[INFO] dashboard: [omesso] -> 200 85407 bytes
+[INFO] users: [omesso]/users -> 200 49787 bytes
+[INFO] roles: [omesso]/roles -> 200 57028 bytes
+[INFO] role-admin: [omesso]/roles/2 -> 200 114256 bytes
+[INFO] role-other: [omesso]/roles/9 -> 200 114850 bytes
+[INFO] user-owner: [omesso]/users/1 -> 200 99194 bytes
+[INFO] user-admin: [omesso]/users/2 -> 200 98943 bytes
+[INFO] user-plain: [omesso]/users/3 -> 200 98692 bytes
+[INFO] permissions: [omesso]/permissions -> 200 69795 bytes
+[INFO] check-granted: [omesso]/permissions/check?permission=users.delete&user=2 -> 200 50559 bytes
+[INFO] activity: [omesso]/activity -> 200 47401 bytes
+[INFO] appearance: [omesso]/appearance -> 200 57841 bytes
+[INFO] settings: [omesso]/settings -> 200 53248 bytes
+
+TOTAL: 2 PASS, 0 FAIL, 0 AMB
+Test process exit: 0

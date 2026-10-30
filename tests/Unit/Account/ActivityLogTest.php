@@ -35,4 +35,13 @@ final class ActivityLogTest extends TestCase
     {
         $this->assertNull(ActivityLog::cutoff(0, time()));
     }
+
+    public function testPeriodFilterIgnoresImpossibleDates(): void
+    {
+        $conditions = new \ReflectionMethod(ActivityLog::class, 'conditions');
+        $filter = static fn (array $filters): array => $conditions->invoke(null, $filters, 'at', 'a', 'al', 's', 'sl');
+
+        $this->assertSame([['at >= ?', 'at <= ?'], ['2026-02-28 00:00:00', '2026-02-28 23:59:59']], $filter(['from' => '2026-02-28', 'to' => '2026-02-28']));
+        $this->assertSame([[], []], $filter(['from' => '2026-13-45', 'to' => '2026-02-30']));
+    }
 }

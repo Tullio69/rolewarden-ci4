@@ -186,7 +186,8 @@ final class ActivityLog
         foreach (['from' => ['>=', ' 00:00:00'], 'to' => ['<=', ' 23:59:59']] as $key => [$op, $time]) {
             $day = $filters[$key] ?? '';
 
-            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $day) === 1) {
+            // An impossible date (2026-02-30) is ignored like any other junk: strict MySQL rejects it.
+            if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $day, $m) === 1 && checkdate((int) $m[2], (int) $m[3], (int) $m[1])) {
                 $where[] = "{$at} {$op} ?";
                 $binds[] = $day . $time;
             }

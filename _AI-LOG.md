@@ -1689,3 +1689,13 @@ Formato di ogni voce:
 - Script: `shoot.mjs` (Chrome headless via CDP) e `appearance.js`, copiati accanto agli screenshot. La cartella `docs/` è export-ignore, quindi lo script non finisce nel pacchetto. Resta aperta la decisione se spostarlo in `bin/`.
 - Ambiente: il `.env` dell'app di prova è ripristinato (`rolewarden`, development), la cache è svuotata e il server è fermo.
 - Prossimo: immagine di anteprima 590x300 e tavole con didascalia in Claude Design; prep del rilascio 1.1.0.
+
+### [2026-10-30 22:00] - Claude
+- Tipo: docs
+- Scope: `docs/codecanyon/scheda-prodotto.md`, canvas Claude Design "RoleWarden CodeCanyon" (fuori repo)
+- Fatto: canvas con anteprima 590x300, miniatura 80x80 e 8 tavole con didascalia ed evidenziatori, sul design system RoleWarden. Nella scheda prodotto sono chiusi tutti i [DA VERIFICARE]:
+  - licenza riscritta sui testi Envato ufficiali;
+  - data del changelog fissata al rilascio, insieme al CHANGELOG;
+  - categoria PHP Scripts > Miscellaneous;
+  - database dichiarato "tested on MariaDB 11.8" (MySQL 8 mai provato);
+  - browser minimi presi da Tailwind v4: Chrome/Edge 111+, Firefox 128+, Safari 16.4+.

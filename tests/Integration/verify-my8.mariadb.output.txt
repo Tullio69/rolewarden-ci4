@@ -1,0 +1,38 @@
+[INFO] MY8 mariadb: server 11.8.9-MariaDB-ubu2404 container [omesso]-db phases A,X,Z
+[INFO] sql_mode=STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION charset=utf8mb4 collation=utf8mb4_general_ci
+
+== A: installation by hand (installation.html#migrations)
+[PASS] A01    php spark migrate -n CodeIgniter\Settings (exit 0, no error in the output)
+[PASS] A02    php spark migrate -n CodeIgniter\Shield (exit 0, no error in the output)
+[PASS] A03    php spark migrate -n RoleWarden (exit 0, no error in the output)
+[PASS] A04    php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (exit 0, no error in the output)
+[INFO] migrations: [{"namespace":"CodeIgniter\\Settings","batch":1,"n":3},{"namespace":"CodeIgniter\\Shield","batch":2,"n":1},{"namespace":"RoleWarden","batch":3,"n":16}]
+[PASS] A05    Three batches: Settings, Shield and RoleWarden each in a batch of its own
+[PASS] A06    Tables of Settings, Shield and RoleWarden present (SPEC "Modello dati", v1.0 tables)
+[PASS] A07    Seeder: system roles (super-admin, admin) and the permissions, admin holding them
+[PASS] A08    php spark demo:install (exit 0): demo table, three accounts, sample documents
+[PASS] A09    First super admin by hand: shield:user create/activate and the documented INSERT
+[INFO] migrations after demo:install: [{"namespace":"CodeIgniter\\Settings","batch":1,"n":3},{"namespace":"CodeIgniter\\Shield","batch":2,"n":1},{"namespace":"RoleWarden","batch":3,"n":16},{"namespace":"RoleWardenDemo","batch":4,"n":1}]
+[INFO] server pid=22776 on 127.0.0.1:8072 prefix=''
+[PASS] A10    Installed by hand: the super admin signs in and the main screens answer 200 without SQL or PHP errors
+[PASS] A11    Demo: the reader signs in and the demo answers 200
+
+== X: production (CI_ENVIRONMENT = production): no SQL on screen
+[INFO] server pid=32912 on 127.0.0.1:8072 prefix=''
+[PASS] X00    Production: the super admin signs in
+[PASS] X01    Production: every screen (24) answers 200 without SQL or PHP errors
+[INFO] odd input: [["[omesso]\/users?sort=%27;DROP",200,false],["[omesso]\/users?role=abc&status=%27x",200,false],["[omesso]\/users?q=%27%20OR%201%3D1%20--%20%5C",200,false],["[omesso]\/users?page=-5",200,false],["[omesso]\/users?page=99999",200,false],["[omesso]\/activity?user=x%27%20OR%20%271",200,false],["[omesso]\/activity?action=%27%3B%20--",200,false],["[omesso]?period=abc",200,false],["[omesso]\/permissions\/check?permission=x%27&user=1%20OR%201",200,false],["[omesso]\/users\/99999999",404,false],["[omesso]\/roles\/99999999",404,false],["[omesso]\/users\/abc",404,false]]
+[PASS] X02    Production: odd query strings and missing ids: no 500, no SQL on screen
+[INFO] activity with dates typed by hand: [["from=2026-13-45",200,false],["to=2026-02-30",200,false],["from=abc&to=xyz",200,false],["from=2026-10-01&to=2026-10-31",200,false]]
+[PASS] X02b   Production: Activity filter with an impossible date in the address (2026-13-45, 2026-02-30, abc): no 500, no SQL on screen
+[INFO] values the database could refuse (status, SQL on screen): long role [303,false], duplicate slug [303,false,1], duplicate user [303,false], long user [303,false], long role stored: 1
+[PASS] X03    Production: too long values and duplicate unique keys (role slug, user email/username) refused without 500 or SQL on screen; no second "admin"
+[PASS] X06    Production: no response of the phase shows SQL, driver details or PHP errors (54 responses)
+
+== Z: writable/logs of the run
+[INFO] log lines of A/RB kept aside: 0
+[INFO] log lines by level: {"DEBUG":68,"INFO":4}; provoked connection errors: 0
+[INFO] other WARNING/ERROR lines (email to the closed SMTP port excluded): []
+[PASS] Z01    writable/logs: no SQL error of any kind (syntax, ONLY_FULL_GROUP_BY, collations, strict values, keys) in the whole run
+
+TOTAL mariadb: 18 checks, 18 PASS, 0 FAIL, 0 ambiguities

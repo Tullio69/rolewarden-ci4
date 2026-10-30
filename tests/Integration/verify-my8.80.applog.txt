@@ -1,0 +1,825 @@
+DEBUG - 2026-10-30 21:32:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:32:48 --> Error connecting to the database: mysqli_sql_exception: Access denied for user 'rwapp'@'172.17.0.1' (using password: YES) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('127.0.0.1', 'rwapp', Object(SensitiveParameterValue), 'rolewarden_test', 3318, '', 0)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Install\Installer.php(143): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\InstallController.php(95): RoleWarden\Install\Installer::canConnect(Array)
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\InstallController.php(45): RoleWarden\Controllers\InstallController->saveDatabase()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(974): RoleWarden\Controllers\InstallController->index()
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\InstallController))
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#12 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user '****'@'172.17.0.1' (using password: YES) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Install\Installer.php(143): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\InstallController.php(95): RoleWarden\Install\Installer::canConnect(Array)
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\InstallController.php(45): RoleWarden\Controllers\InstallController->saveDatabase()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(974): RoleWarden\Controllers\InstallController->index()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\InstallController))
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#10 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#11 {main}
+ERROR - 2026-10-30 21:32:48 --> RoleWarden installer: database connection failed: Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user '****'@'172.17.0.1' (using password: YES)
+DEBUG - 2026-10-30 21:32:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:32:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:01 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:02 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:03 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:05 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:09 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:11 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:13 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:15 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:16 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:19 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:21 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:22 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:23 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:25 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:26 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:33:31 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:9 (Impossibile stabilire la connessione. Risposta non corretta della parte connessa dopo l'intervallo di tempo oppure mancata risposta dall'host collegato) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php:1836
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): Un...', 'C:\\Users\\fabio\\...', 1836)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1836): fsockopen('127.0.0.1', 9, NULL, NULL, 2)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1749): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1634): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1528): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\SecurityMail.php(152): CodeIgniter\Email\Email->send(false)
+#6 [internal function]: RoleWarden\Account\SecurityMail::flush()
+#7 {main}
+ERROR - 2026-10-30 21:33:31 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-10-30 21:33:31 --> 
+ERROR - 2026-10-30 21:33:31 --> RoleWarden: security email to owner@my8.test not sent.
+DEBUG - 2026-10-30 21:33:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:38 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:38 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:38 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:39 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:39 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:40 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:40 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:40 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:45 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:50 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:54 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:56 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:33:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:33:58 --> CSRF token verified.
+DEBUG - 2026-10-30 21:33:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:00 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:01 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:06 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:34:12 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:9 (Impossibile stabilire la connessione. Risposta non corretta della parte connessa dopo l'intervallo di tempo oppure mancata risposta dall'host collegato) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php:1836
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): Un...', 'C:\\Users\\fabio\\...', 1836)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1836): fsockopen('127.0.0.1', 9, NULL, NULL, 2)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1749): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1634): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1528): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\SecurityMail.php(152): CodeIgniter\Email\Email->send(false)
+#6 [internal function]: RoleWarden\Account\SecurityMail::flush()
+#7 {main}
+ERROR - 2026-10-30 21:34:12 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-10-30 21:34:12 --> 
+ERROR - 2026-10-30 21:34:12 --> RoleWarden: security email to reader@example.com not sent.
+DEBUG - 2026-10-30 21:34:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:17 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:18 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:34:24 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:9 (Impossibile stabilire la connessione. Risposta non corretta della parte connessa dopo l'intervallo di tempo oppure mancata risposta dall'host collegato) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php:1836
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): Un...', 'C:\\Users\\fabio\\...', 1836)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1836): fsockopen('127.0.0.1', 9, NULL, NULL, 2)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1749): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1634): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1528): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\SecurityMail.php(152): CodeIgniter\Email\Email->send(false)
+#6 [internal function]: RoleWarden\Account\SecurityMail::flush()
+#7 {main}
+ERROR - 2026-10-30 21:34:24 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-10-30 21:34:24 --> 
+ERROR - 2026-10-30 21:34:24 --> RoleWarden: security email to lock@my8.test not sent.
+ERROR - 2026-10-30 21:34:26 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:9 (Impossibile stabilire la connessione. Risposta non corretta della parte connessa dopo l'intervallo di tempo oppure mancata risposta dall'host collegato) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php:1836
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): Un...', 'C:\\Users\\fabio\\...', 1836)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1836): fsockopen('127.0.0.1', 9, NULL, NULL, 2)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1749): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1634): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1528): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\SecurityMail.php(152): CodeIgniter\Email\Email->send(false)
+#6 [internal function]: RoleWarden\Account\SecurityMail::flush()
+#7 {main}
+ERROR - 2026-10-30 21:34:26 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-10-30 21:34:26 --> 
+ERROR - 2026-10-30 21:34:26 --> RoleWarden: security email to owner@my8.test not sent.
+ERROR - 2026-10-30 21:34:28 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:9 (Impossibile stabilire la connessione. Risposta non corretta della parte connessa dopo l'intervallo di tempo oppure mancata risposta dall'host collegato) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php:1836
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): Un...', 'C:\\Users\\fabio\\...', 1836)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1836): fsockopen('127.0.0.1', 9, NULL, NULL, 2)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1749): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1634): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1528): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\SecurityMail.php(152): CodeIgniter\Email\Email->send(false)
+#6 [internal function]: RoleWarden\Account\SecurityMail::flush()
+#7 {main}
+ERROR - 2026-10-30 21:34:28 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-10-30 21:34:28 --> 
+ERROR - 2026-10-30 21:34:28 --> RoleWarden: security email to sa2@my8.test not sent.
+DEBUG - 2026-10-30 21:34:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:34:33 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:9 (Impossibile stabilire la connessione. Risposta non corretta della parte connessa dopo l'intervallo di tempo oppure mancata risposta dall'host collegato) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php:1836
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): Un...', 'C:\\Users\\fabio\\...', 1836)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1836): fsockopen('127.0.0.1', 9, NULL, NULL, 2)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1749): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1634): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1528): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\SecurityMail.php(152): CodeIgniter\Email\Email->send(false)
+#6 [internal function]: RoleWarden\Account\SecurityMail::flush()
+#7 {main}
+ERROR - 2026-10-30 21:34:33 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-10-30 21:34:33 --> 
+ERROR - 2026-10-30 21:34:33 --> RoleWarden: security email to user1@my8.test not sent.
+DEBUG - 2026-10-30 21:34:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:34:36 --> Email: sendWithSmtp threw ErrorException: fsockopen(): Unable to connect to 127.0.0.1:9 (Impossibile stabilire la connessione. Risposta non corretta della parte connessa dopo l'intervallo di tempo oppure mancata risposta dall'host collegato) in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php:1836
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): Un...', 'C:\\Users\\fabio\\...', 1836)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1836): fsockopen('127.0.0.1', 9, NULL, NULL, 2)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1749): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1634): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Email\Email.php(1528): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\SecurityMail.php(152): CodeIgniter\Email\Email->send(false)
+#6 [internal function]: RoleWarden\Account\SecurityMail::flush()
+#7 {main}
+ERROR - 2026-10-30 21:34:36 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-10-30 21:34:36 --> 
+ERROR - 2026-10-30 21:34:36 --> RoleWarden: security email to user1@my8.test not sent.
+DEBUG - 2026-10-30 21:34:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:37 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:39 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:51 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:56 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:57 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:58 --> CSRF token verified.
+DEBUG - 2026-10-30 21:34:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:34:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:34:59 --> CSRF token verified.
+DEBUG - 2026-10-30 21:35:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:35:02 --> CSRF token verified.
+DEBUG - 2026-10-30 21:35:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:35:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:35:10 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:14 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:16 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:18 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:20 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:21 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:23 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:24 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:25 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:26 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:28 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:33 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:36 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:38 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:36:39 --> CSRF token verified.
+DEBUG - 2026-10-30 21:36:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:36:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:37:00 --> Incorrect DATETIME value: '2026-13-45 00:00:00'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t')
+ 4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= ?)) t', [...])
+ 5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 6 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+CRITICAL - 2026-10-30 21:37:00 --> CodeIgniter\Database\Exceptions\DatabaseException: Incorrect DATETIME value: '2026-13-45 00:00:00'
+[Method: GET, Route: rolewarden/activity]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= ?)) t', [...])
+ 2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 3 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+CRITICAL - 2026-10-30 21:37:00 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Incorrect DATETIME value: '2026-13-45 00:00:00'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t')
+ 3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= ?)) t', [...])
+ 4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 5 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+CRITICAL - 2026-10-30 21:37:00 --> [Caused by] mysqli_sql_exception: Incorrect DATETIME value: '2026-13-45 00:00:00'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= \'2026-13-45 00:00:00\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= \'2026-13-45 00:00:00\')) t')
+ 4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at >= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date >= ?)) t', [...])
+ 5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 6 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+DEBUG - 2026-10-30 21:37:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:37:00 --> Incorrect DATETIME value: '2026-02-30 23:59:59'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t')
+ 4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= ?)) t', [...])
+ 5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 6 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+CRITICAL - 2026-10-30 21:37:00 --> CodeIgniter\Database\Exceptions\DatabaseException: Incorrect DATETIME value: '2026-02-30 23:59:59'
+[Method: GET, Route: rolewarden/activity]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= ?)) t', [...])
+ 2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 3 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+CRITICAL - 2026-10-30 21:37:00 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Incorrect DATETIME value: '2026-02-30 23:59:59'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t')
+ 3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= ?)) t', [...])
+ 4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 5 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+CRITICAL - 2026-10-30 21:37:00 --> [Caused by] mysqli_sql_exception: Incorrect DATETIME value: '2026-02-30 23:59:59'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= \'2026-02-30 23:59:59\') UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= \'2026-02-30 23:59:59\')) t')
+ 4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\ActivityLog.php(148): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS n FROM ((SELECT \'log\' AS source, id, created_at AS at, actor_id, actor_label, action, subject_type, subject_id, subject_label, details, ip_address FROM acl_activity_log WHERE created_at <= ?) UNION ALL (SELECT \'login\' AS source, id, date AS at, user_id AS actor_id, identifier AS actor_label, CASE WHEN success = 1 THEN \'auth.login\' ELSE \'auth.failed\' END AS action, \'user\' AS subject_type, user_id AS subject_id, identifier AS subject_label, NULL AS details, ip_address FROM auth_logins WHERE date <= ?)) t', [...])
+ 5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Controllers\ActivityController.php(36): RoleWarden\Account\ActivityLog::page([...], 1, 25)
+ 6 SYSTEMPATH\CodeIgniter.php(974): RoleWarden\Controllers\ActivityController->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(RoleWarden\Controllers\ActivityController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+DEBUG - 2026-10-30 21:37:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:37:02 --> CSRF token verified.
+DEBUG - 2026-10-30 21:37:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:37:03 --> CSRF token verified.
+DEBUG - 2026-10-30 21:37:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:37:04 --> CSRF token verified.
+DEBUG - 2026-10-30 21:37:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-10-30 21:37:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2026-10-30 21:37:06 --> CSRF token verified.
+DEBUG - 2026-10-30 21:37:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-10-30 21:37:12 --> Error connecting to the database: mysqli_sql_exception: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('127.0.0.1', 'rwapp', Object(SensitiveParameterValue), 'rolewarden_test', 3318, '', 0)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(NULL)
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', NULL)
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Helpers\setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionCon...')
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(742): setting('Auth.sessionCon...')
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+#10 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+#11 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+#12 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+#13 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Controllers\LoginController.php(33): CodeIgniter\Shield\Auth->__call('loggedIn', Array)
+#14 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(974): CodeIgniter\Shield\Controllers\LoginController->loginView()
+#15 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(CodeIgniter\Shield\Controllers\LoginController))
+#16 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#17 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#18 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#19 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#20 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#21 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(NULL)
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', NULL)
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Helpers\setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionCon...')
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(742): setting('Auth.sessionCon...')
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+#10 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+#11 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+#12 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Controllers\LoginController.php(33): CodeIgniter\Shield\Auth->__call('loggedIn', Array)
+#13 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(974): CodeIgniter\Shield\Controllers\LoginController->loginView()
+#14 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(CodeIgniter\Shield\Controllers\LoginController))
+#15 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#16 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#17 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#18 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#19 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#20 {main}
+CRITICAL - 2026-10-30 21:37:12 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione
+[Method: GET, Route: login]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 3 VENDORPATH\codeigniter4\settings\src\Handlers\DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 4 VENDORPATH\codeigniter4\settings\src\Handlers\DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 5 VENDORPATH\codeigniter4\settings\src\Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 6 VENDORPATH\codeigniter4\settings\src\Helpers\setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 7 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(742): setting('Auth.sessionConfig')
+ 8 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+ 9 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+10 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+11 VENDORPATH\codeigniter4\shield\src\Auth.php(202): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+12 VENDORPATH\codeigniter4\shield\src\Controllers\LoginController.php(33): CodeIgniter\Shield\Auth->__call('loggedIn', [])
+13 SYSTEMPATH\CodeIgniter.php(974): CodeIgniter\Shield\Controllers\LoginController->loginView()
+14 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(CodeIgniter\Shield\Controllers\LoginController))
+15 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+16 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+17 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+18 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+19 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+ERROR - 2026-10-30 21:37:15 --> Error connecting to the database: mysqli_sql_exception: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('127.0.0.1', 'rwapp', Object(SensitiveParameterValue), 'rolewarden_test', 3318, '', 0)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(1706): CodeIgniter\Database\BaseConnection->query('SHOW TABLES FRO...')
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(1726): CodeIgniter\Database\BaseConnection->listTables()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\Sessions.php(316): CodeIgniter\Database\BaseConnection->tableExists('acl_sessions')
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\Sessions.php(41): RoleWarden\Account\Sessions::ready()
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Config\Events.php(29): RoleWarden\Account\Sessions::track()
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Events\Events.php(152): CodeIgniter\Events\Events::RoleWarden\Config\{closure}()
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(348): CodeIgniter\Events\Events::trigger('pre_system')
+#10 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(1706): CodeIgniter\Database\BaseConnection->query('SHOW TABLES FRO...')
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(1726): CodeIgniter\Database\BaseConnection->listTables()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\Sessions.php(316): CodeIgniter\Database\BaseConnection->tableExists('acl_sessions')
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Account\Sessions.php(41): RoleWarden\Account\Sessions::ready()
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\wt\src\Config\Events.php(29): RoleWarden\Account\Sessions::track()
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Events\Events.php(152): CodeIgniter\Events\Events::RoleWarden\Config\{closure}()
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(348): CodeIgniter\Events\Events::trigger('pre_system')
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#10 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#13 {main}
+ERROR - 2026-10-30 21:37:17 --> Error connecting to the database: mysqli_sql_exception: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('127.0.0.1', 'rwapp', Object(SensitiveParameterValue), 'rolewarden_test', 3318, '', 0)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(NULL)
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', NULL)
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Helpers\setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionCon...')
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(742): setting('Auth.sessionCon...')
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+#10 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+#11 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+#12 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Filters\SessionAuth.php(54): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+#13 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Filters\Filters.php(241): CodeIgniter\Shield\Filters\SessionAuth->before(Object(CodeIgniter\HTTP\IncomingRequest), NULL)
+#14 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore(Array)
+#15 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(488): CodeIgniter\Filters\Filters->run('rolewarden/user...', 'before')
+#16 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#17 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#18 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#19 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#20 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#21 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione in C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Handlers\DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(NULL)
+#5 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', NULL)
+#6 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\settings\src\Helpers\setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionCon...')
+#7 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(742): setting('Auth.sessionCon...')
+#8 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+#9 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+#10 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Authentication\Authenticators\Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+#11 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\shield\src\Filters\SessionAuth.php(54): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+#12 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Filters\Filters.php(241): CodeIgniter\Shield\Filters\SessionAuth->before(Object(CodeIgniter\HTTP\IncomingRequest), NULL)
+#13 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore(Array)
+#14 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(488): CodeIgniter\Filters\Filters->run('rolewarden/user...', 'before')
+#15 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#16 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#17 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#18 C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-rolewarden-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\my8\app\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#19 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\...')
+#20 {main}
+CRITICAL - 2026-10-30 21:37:17 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Impossibile stabilire la connessione. Rifiuto persistente del computer di destinazione
+[Method: GET, Route: rolewarden/users]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `settings`
+WHERE `context` IS NULL', [], false)
+ 3 VENDORPATH\codeigniter4\settings\src\Handlers\DatabaseHandler.php(276): CodeIgniter\Database\BaseBuilder->get()
+ 4 VENDORPATH\codeigniter4\settings\src\Handlers\DatabaseHandler.php(56): CodeIgniter\Settings\Handlers\DatabaseHandler->hydrate(null)
+ 5 VENDORPATH\codeigniter4\settings\src\Settings.php(62): CodeIgniter\Settings\Handlers\DatabaseHandler->has('Config\\Auth', 'sessionConfig', null)
+ 6 VENDORPATH\codeigniter4\settings\src\Helpers\setting_helper.php(27): CodeIgniter\Settings\Settings->get('Auth.sessionConfig')
+ 7 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(742): setting('Auth.sessionConfig')
+ 8 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(760): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserInfo()
+ 9 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(422): CodeIgniter\Shield\Authentication\Authenticators\Session->getSessionUserKey('id')
+10 VENDORPATH\codeigniter4\shield\src\Authentication\Authenticators\Session.php(406): CodeIgniter\Shield\Authentication\Authenticators\Session->checkUserState()
+11 VENDORPATH\codeigniter4\shield\src\Filters\SessionAuth.php(54): CodeIgniter\Shield\Authentication\Authenticators\Session->loggedIn()
+12 SYSTEMPATH\Filters\Filters.php(241): CodeIgniter\Shield\Filters\SessionAuth->before(Object(CodeIgniter\HTTP\IncomingRequest), null)
+13 SYSTEMPATH\Filters\Filters.php(221): CodeIgniter\Filters\Filters->runBefore([...])
+14 SYSTEMPATH\CodeIgniter.php(488): CodeIgniter\Filters\Filters->run('rolewarden/users', 'before')
+15 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+16 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+17 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+18 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+19 E:\progetti_lavoro\ASP\rolewarden-ci4\tests\Integration\verify-v7.router.php(24): require('C:\\Users\\fabio\\AppData\\Local\\Temp\\claude\\E--progetti-lavoro-ASP-rolewarden-ci4\\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\\scratchpad\\my8\\app\\public\\index.php')
+DEBUG - 2026-10-30 21:37:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

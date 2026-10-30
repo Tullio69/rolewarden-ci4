@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** collaudo MY8 (compatibilità MySQL 8) dal Collaudatore ad Hoc
+**Agente:** Claude
+**Dalle:** 2026-10-30 22:10
+**Scope:** tests/Integration/ (verify-my8.*, MY8-REPORT.md), container Docker temporaneo MySQL 8 sulla 3318, app di prova locale
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1699,3 +1699,36 @@ Formato di ogni voce:
   - categoria PHP Scripts > Miscellaneous;
   - database dichiarato "tested on MariaDB 11.8" (MySQL 8 mai provato);
   - browser minimi presi da Tailwind v4: Chrome/Edge 111+, Firefox 128+, Safari 16.4+.
+
+### [2026-10-30 22:50] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: collaudo
+- Scope: tappa MY8 (compatibilità MySQL 8) su `22bfc01`. Scritti solo `tests/Integration/verify-my8.*`, `tests/Integration/MY8-REPORT.md` e questa voce.
+- Cosa ho fatto: collaudo in nero su container temporanei `mysql:8.4` e `mysql:8.0` (porta 3318, configurazione di serie dell'immagine: `ONLY_FULL_GROUP_BY` e strict attivi, `utf8mb4_0900_ai_ci`, utente con `caching_sha2_password`). Ho usato una copia di `../rolewarden-app-test` collegata a un worktree del commit. Verificato:
+  - installazione a mano (tre lotti, seeder, `demo:install`) e installer da browser;
+  - rollback del lotto di RoleWarden;
+  - pannello in uso, verificato con query: dashboard, utenti, import CSV, ruoli e matrice, override e precedenza, Check a permission, ricerca, activity, impostazioni, sessioni, appearance, filtro `can:` ed helper;
+  - integrità: charset, chiavi esterne e cascade, testo non ASCII;
+  - production a database fermo;
+  - confronto su MariaDB.
+- Esito: **FAIL**, un difetto del modulo specifico di MySQL.
+  - MySQL 8.4.13: 89/91, nel run r2. Il run r1 aveva 2 FAIL in più per un difetto dello strumento, poi corretto.
+  - MySQL 8.0.39: 89/91.
+  - MariaDB 11.8.9 (confronto): 18/18.
+  - Tutto il resto è PASS. Nessun errore `ONLY_FULL_GROUP_BY` o di collation.
+- Difetto D1: `/rolewarden/activity?from=2026-13-45` (o `to=2026-02-30`) risponde 500 su MySQL 8. Su MariaDB risponde 200.
+  - Nel log: `Incorrect DATETIME value: '2026-13-45 00:00:00'` (DatabaseException, mysqli_sql_exception).
+  - In production non mostra SQL a schermo.
+- Stato: **non approvabile così com'è.** Dopo la correzione di D1 serve la riverifica di X02b e Z01 su 8.4 e 8.0 (`bash verify-my8.run.sh 84|80`, con `MY8_WORK` = cartella con la copia dell'app). Il resto della frase "MySQL or MariaDB with InnoDB" regge.
+- Ambiguità di specifica (non decise):
+  1. Nessun limite di lunghezza per slug, nome e descrizione dei ruoli e per lo username: valori di 300+ caratteri sono accettati e salvati, uguale su MariaDB.
+  2. Username con accenti o emoji accettati (regole di Shield).
+  3. Utente senza `dashboard.*` ma con il permesso di un blocco dell'app: vede la dashboard con quel blocco. La SPEC U4 dice che va rimandato alla prima voce della barra.
+- Ambiente:
+  - container `rolewarden-my8-*` e i loro volumi rimossi (restano le immagini mysql:8.4/8.0);
+  - worktree rimosso e `git worktree prune` eseguito;
+  - `../rolewarden-app-test` mai modificata: hash di `.env`, `composer.json`, `composer.lock`, symlink e `writable/rolewarden` identici;
+  - copia dell'app cancellata;
+  - MariaDB `rolewarden_test`: hash `f7f37c04…e21e64` prima e dopo, ripristino esatto;
+  - Mailpit non toccato;
+  - nessuna credenziale nei file;
+  - nessun commit, lock non toccato.

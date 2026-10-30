@@ -158,3 +158,48 @@ con le modalità strict tolte dalla connessione di CodeIgniter (`strictOn = fals
 - Riusa `verify-v7.router.php`, `verify-v6.browser.mjs` e `verify-v4.snapshot.php` senza modificarli.
 - Output: `verify-my8.{84,80,84-r1,mariadb}.output.txt`, `.applog.txt`, `.container.log`, `.server.log`,
   `.b-dev-probe.log` ed `environment.txt`.
+
+## Riverifica su ee4f9d9 (r2, incompleta per ambiente)
+
+Commit collaudato: `ee4f9d9` (correzione di D1), in un worktree separato, con una copia dell'app di prova collegata.
+
+**Esito: NON CONCLUSO.** Nessun verdetto su D1 e nessun verdetto di regressione. Il motivo è l'ambiente, non il modulo.
+
+- **MySQL 8.4.13**, suite completa `A,RB,B,P,I,X,Z` (`verify-my8.84-r2.output.txt`). Il processo che lanciava la suite
+  è stato fermato da Claude Code per memoria di sistema quasi esaurita, intorno alla fase P (P16). Il collaudo è andato
+  avanti senza il suo lanciatore fino alla fase I, poi si è interrotto con "server did not start", prima delle fasi X e Z.
+  - Eseguiti: A01-A11, RB1-RB5, B02-B09, P00-P41, I01-I04.
+  - PASS tutti, tranne P16, P17 e P36. Sono i tre passi da browser (Chrome headless) eseguiti mentre il sistema era senza
+    memoria.
+    - P16/P17: alla seconda pressione di "Save" la matrice risponde "The action you requested is not allowed". Manca
+      `users.manage-admins`.
+    - P36: il browser non ha restituito output.
+  - Li classifico come **ambiente, non confermati come difetti**. Su 22bfc01 erano PASS su 8.0 e su 8.4 r2. Vanno
+    rieseguiti a memoria libera.
+  - Fasi **X e Z non eseguite**: X02b (D1), il nuovo X02c/X02d e Z01 restano da verificare.
+- **MySQL 8.0**: non avviato. Il lanciatore chiedeva di non ripartire da soli dopo un arresto per memoria.
+- **Nuove date per D1**: non provate. Le prove sono già nello strumento, non eseguite: X02c, con `2026-02-29`,
+  `2026-04-31`, `0000-00-00`, `2026-13-45` e `2026-02-30` sia in `from` sia in `to`, e X02d, con le date valide
+  `2028-02-29` e `2024-02-29`. Per ogni data annotano:
+  - stato HTTP;
+  - SQL a schermo;
+  - valore mostrato nel campo;
+  - "Entries" contro la pagina senza filtro, per dire se il filtro è applicato o ignorato;
+  - righe SQL aggiunte al log.
+
+Modifiche allo strumento:
+- `verify-my8.phase-ix.php`: aggiunti X02c e X02d.
+- `verify-my8.run.sh`: variabile facoltativa `MY8_LABEL` per gli output `-r2`.
+
+Per riprendere: `MY8_LABEL=84-r2 bash verify-my8.run.sh 84`, poi `MY8_LABEL=80-r2 bash verify-my8.run.sh 80`.
+Prima chiudere altre applicazioni pesanti.
+
+Ambiente a fine sessione:
+- Container `rolewarden-my8-84`: risulta ucciso e distrutto alle 22:56. Non è stato rimosso da questa sessione e
+  `verify-my8.84-r2.container.log` non c'è. Nessun container `rolewarden-my8-*` rimasto e nessun volume nuovo: gli unici
+  volumi orfani sono precedenti, del 15/10 o più vecchi.
+- Worktree rimosso e `git worktree prune` eseguito. Copia dell'app e cookie jar cancellati.
+- `../rolewarden-app-test`: hash dell'albero (escluso `vendor/rolewarden`) `2b060284…3bab83` prima e dopo, giunzione
+  invariata.
+- MariaDB `rolewarden_test` (3317) e `rolewarden` non toccati.
+- Nessuna credenziale nei file.

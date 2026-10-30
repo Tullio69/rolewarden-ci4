@@ -9,6 +9,7 @@ set -u
 cd "$(dirname "$0")" || exit 1
 V=${1:?84 or 80}
 PH=${2:-A,RB,B,P,I,X,Z}
+L=${MY8_LABEL:-$V}   # output label, e.g. MY8_LABEL=84-r2 for a re-run
 : "${MY8_WORK:?}"
 CT=rolewarden-my8-$V
 IMG=mysql:${V:0:1}.${V:1:1}
@@ -22,8 +23,8 @@ for i in $(seq 1 90); do
   docker logs "$CT" 2>&1 | grep -q "ready for connections.*port: 3306" && break; sleep 2
 done
 sleep 3
-php -d memory_limit=1G verify-my8.php phases="$PH" label="$V" > "verify-my8.$V.output.txt" 2>&1
+php -d memory_limit=1G verify-my8.php phases="$PH" label="$L" > "verify-my8.$L.output.txt" 2>&1
 RC=$?
-docker logs "$CT" > "verify-my8.$V.container.log" 2>&1
+docker logs "$CT" > "verify-my8.$L.container.log" 2>&1
 docker rm -f -v "$CT" >/dev/null
-echo "exit=$RC container_removed=$(docker ps -a --format '{{.Names}}' | grep -cx "$CT" | sed 's/^0$/yes/') $(grep -E '^TOTAL' "verify-my8.$V.output.txt")"
+echo "exit=$RC container_removed=$(docker ps -a --format '{{.Names}}' | grep -cx "$CT" | sed 's/^0$/yes/') $(grep -E '^TOTAL' "verify-my8.$L.output.txt")"

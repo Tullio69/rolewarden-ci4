@@ -1732,3 +1732,28 @@ Formato di ogni voce:
   - Mailpit non toccato;
   - nessuna credenziale nei file;
   - nessun commit, lock non toccato.
+
+### [2026-10-30 23:00] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: collaudo
+- Scope: riverifica MY8 su `ee4f9d9` (correzione D1). Scritti solo:
+  - `tests/Integration/verify-my8.phase-ix.php`: X02c e X02d, altre date impossibili e bisestili valide;
+  - `tests/Integration/verify-my8.run.sh`: `MY8_LABEL`;
+  - `verify-my8.84-r2.*`;
+  - la sezione "Riverifica su ee4f9d9" in `MY8-REPORT.md`;
+  - questa voce.
+- Esito: **NON CONCLUSO per ambiente.** Nessun PASS o FAIL su D1.
+  - Su MySQL 8.4.13 il lanciatore è stato fermato da Claude Code per memoria di sistema quasi esaurita. La suite è
+    arrivata fino alla fase I: A, RB, B, P e I tutti PASS tranne P16, P17 e P36, passi da browser sotto pressione di
+    memoria, da rieseguire. Poi "server did not start".
+  - Le fasi X e Z (X02b, X02c, X02d, Z01) non sono state eseguite.
+  - MySQL 8.0 non avviato.
+- Stato di approvazione: **non approvabile, verifica da ripetere** a memoria libera:
+  `MY8_LABEL=84-r2 bash verify-my8.run.sh 84`, poi `80`.
+- Ambiguità di specifica: nessuna nuova.
+- Ambiente:
+  - container 8.4 risulta distrutto alle 22:56, senza volumi rimasti;
+  - worktree rimosso e prune eseguito;
+  - copia dell'app cancellata;
+  - hash di `../rolewarden-app-test` identico prima e dopo;
+  - MariaDB non toccato;
+  - nessun commit, lock non toccato.

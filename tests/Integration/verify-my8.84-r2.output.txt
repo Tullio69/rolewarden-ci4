@@ -1,0 +1,111 @@
+[INFO] MY8 84-r2: server 8.4.13 container rolewarden-my8-84 phases A,RB,B,P,I,X,Z
+[INFO] sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION charset=utf8mb4 collation=utf8mb4_0900_ai_ci
+
+== A: installation by hand (installation.html#migrations)
+[PASS] A01    php spark migrate -n CodeIgniter\Settings (exit 0, no error in the output)
+[PASS] A02    php spark migrate -n CodeIgniter\Shield (exit 0, no error in the output)
+[PASS] A03    php spark migrate -n RoleWarden (exit 0, no error in the output)
+[PASS] A04    php spark db:seed RoleWarden\Database\Seeds\RoleWardenSeeder (exit 0, no error in the output)
+[INFO] migrations: [{"namespace":"CodeIgniter\\Settings","batch":1,"n":3},{"namespace":"CodeIgniter\\Shield","batch":2,"n":1},{"namespace":"RoleWarden","batch":3,"n":16}]
+[PASS] A05    Three batches: Settings, Shield and RoleWarden each in a batch of its own
+[PASS] A06    Tables of Settings, Shield and RoleWarden present (SPEC "Modello dati", v1.0 tables)
+[PASS] A07    Seeder: system roles (super-admin, admin) and the permissions, admin holding them
+[PASS] A08    php spark demo:install (exit 0): demo table, three accounts, sample documents
+[PASS] A09    First super admin by hand: shield:user create/activate and the documented INSERT
+[INFO] migrations after demo:install: [{"namespace":"CodeIgniter\\Settings","batch":1,"n":3},{"namespace":"CodeIgniter\\Shield","batch":2,"n":1},{"namespace":"RoleWarden","batch":3,"n":16},{"namespace":"RoleWardenDemo","batch":4,"n":1}]
+[INFO] server pid=21952 on 127.0.0.1:8072 prefix=''
+[PASS] A10    Installed by hand: the super admin signs in and the main screens answer 200 without SQL or PHP errors
+[PASS] A11    Demo: the reader signs in and the demo answers 200
+
+== RB: rollback of RoleWarden's batch (installation.html, Removing the module)
+[INFO] RoleWarden batch 3; batches after it: {"4":["RoleWardenDemo"]}
+[PASS] RB1    migrate:rollback -b 2 (exit 0) removes every acl_ table
+[PASS] RB2    Shield and Settings untouched: tables, users and identities identical
+[PASS] RB3    Migrations table: no RoleWarden row left, Shield and Settings rows kept
+[PASS] RB4    migrate -n RoleWarden and the seeder again (exit 0): tables and system roles back
+[INFO] server pid=2356 on 127.0.0.1:8072 prefix=''
+[PASS] RB5    After applying again the super admin signs in and the panel answers
+[INFO] migrations after RB: [{"namespace":"CodeIgniter\\Settings","batch":1,"n":3},{"namespace":"CodeIgniter\\Shield","batch":2,"n":1},{"namespace":"RoleWarden","batch":3,"n":16}]
+
+== B: browser installer on an empty database (installation.html#installer)
+[INFO] server pid=31080 on 127.0.0.1:8072 prefix=''
+[INFO] installer in development before any database: 500 (troubleshooting.html: 500 is the documented symptom)
+[PASS] B02    Installer answers 200 with the requirements met
+[PASS] B03    Setup code accepted: database step
+[PASS] B04    Wrong database password: refused, no database details on screen
+[PASS] B05    Database step with the MySQL 8 user (default authentication plugin): connection accepted, .env written
+[INFO] installer migrations: [{"namespace":"CodeIgniter\\Settings","batch":1,"n":3},{"namespace":"CodeIgniter\\Shield","batch":2,"n":1},{"namespace":"RoleWarden","batch":3,"n":16}]
+[PASS] B06    Tables step: Settings, Shield and RoleWarden tables and the system roles, no SQL on screen
+[PASS] B07    First super admin created (active, super-admin role); lock written; setup code deleted
+[PASS] B08    Installer refuses to run again
+[PASS] B09    php spark demo:install after the installer (exit 0)
+
+== P: the panel in use (super admin and a limited user)
+[INFO] server pid=8848 on 127.0.0.1:8072 prefix=''
+[PASS] P00    The super admin signs in
+[PASS] P01-7  Dashboard 7 days: 200, the five blocks, sign-ins/failed/active users equal to the queries on auth_logins and users
+[PASS] P01-30 Dashboard 30 days: 200, the five blocks, sign-ins/failed/active users equal to the queries on auth_logins and users
+[PASS] P01-90 Dashboard 90 days: 200 without SQL or PHP errors
+[PASS] P02    Users: created from the panel (Shield user, active, identity)
+[PASS] P03    Users: edited (username saved in users)
+[PASS] P04    Users: search "my8user" lists exactly the matching users
+[PASS] P04b   Users: "%" is searched as text (SPEC A4): no row, no error
+[PASS] P05    Users: role filter (Reader) lists the users holding the role, as in acl_user_roles
+[PASS] P07    Users: deactivated (users.active = 0) and listed by the Inactive filter only
+[PASS] P08    Users: activated again (users.active = 1), listed by the Active filter
+[INFO] deleted user row: [{"id":7,"deleted_at":"2026-10-30 21:52:31"}], identities left: 1, roles left: 0
+[PASS] P09    Users: deleted from the panel (row gone or soft-deleted) and no longer listed
+[PASS] P10    Import: the preview lists the 3 rows, nothing written yet, confirm offered
+[PASS] P11    Import confirmed: 3 active users, roles from the file, user.imported in the log, the password of the file signs in
+[PASS] P12    Import: a file with an email already registered is refused whole (no confirm, nothing written, no SQL on screen)
+[PASS] P13    Roles: created with a parent (acl_roles.parent_id = Reader)
+[PASS] P14    Roles: edited (name, description, parent Author)
+[PASS] P14b   Roles: a cycle (Reader under MY8 Editors 2, which inherits from Reader) is refused, nothing saved, no SQL on screen
+[PASS] P15    Matrix, single cell: granted then removed (acl_role_permissions)
+[INFO] matrix browser: [["login",200,null],["role",200,null],["row users","Grant every action on Users",null],["save row","clicked 708ms ",null],["role again",200,null],["column create","Grant create on every area",null],["save column","clicked 707ms Error: The action you requested is not allowed. \u00d7",null]] console=[]
+[FAIL] P16    Matrix, whole row "users" with the row control and Save: every users.* permission granted to the role
+         -> {"direct":["users.activate","users.create","users.delete","users.edit","users.import","users.update","users.view"],"missing":["users.manage-admins"]}
+[FAIL] P17    Matrix, whole column "create" with the column control and Save: every *.create permission granted (roles.create among them, directly)
+         -> {"create":["documents.create","roles.create","users.create"],"direct":["users.activate","users.create","users.delete","users.edit","users.import","users.update","users.view"],"save":["clicked 707ms Error: The action you requested is not allowed. \u00d7"]}
+[PASS] P18    Users: role assigned from the user page (acl_user_roles)
+[INFO] limited user dashboard: RoleWarden Search or run a command Ctrl K Search screens, actions and permissions Esc Up and down to moveEnter to openResults show only what you may do Access Users 9 Dashboard EN IT System Light Dark...
+[PASS] P19    Limited user: Users (granted by the role) 200; Roles (not granted) refused; dashboard without dashboard.* shows none of the five blocks of the module
+[PASS] P20    Overrides: a grant opens Roles, a denial closes Users although the role grants it (acl_user_permissions)
+[PASS] P21    Check a permission (user by id): users.view denied, the denial on the user decides
+[PASS] P22    Precedence: a denial on a super admin beats the super admin role (Roles refused, Users open); Check a permission (by username) agrees
+[PASS] P22b   Check a permission (by email): the super admin rule decides for users.view
+[PASS] P23    Overrides: clearing the denial gives the screen back at the next request
+[PASS] P24    Check a permission without a user: who holds users.view lists user 1 through MY8 Editors 2
+[PASS] P25    can: filter on an application route: guest to sign in, holder 200, non-holder turned away
+[PASS] P26    Helpers can/can_any/can_all/permissions() in a controller agree with the roles and overrides of the user
+[PASS] P27    Command search: users.view found for the super admin; the limited user is not offered Settings
+[PASS] P28    Activity: action filter (Role created) counts as acl_activity_log
+[PASS] P29    Activity: user + action filter counts as acl_activity_log
+[PASS] P30    Activity: failed sign-ins on one day (period filter) counted from auth_logins
+[INFO] settings rows: [{"class":"RoleWardenDemo\\Config\\Demo","key":"showcaseUsers","value":"a:3:{i:0;i:2;i:1;i:3;i:2;i:4;}"},{"class":"RoleWarden\\Config\\RoleWarden","key":"activityPrunedOn","value":"2026-10-30"},{"class":"RoleWarden\\Config\\RoleWarden","key":"activitySeenAt","value":"2026-10-30 21:53:38"},{"class":"RoleWarden\\Config\\RoleWarden","key":"defaultRole","value":""},{"class":"RoleWarden\\Config\\RoleWarden","key":"sessionLifetime","value":"7200"},{"class":"Config\\Auth","key":"sessionConfig","value":"a:4:{s:5:\"field\";s:4:\"user\";s:16:\"allowRemembering\";b:1;s:18:\"rememberCookieName\";s:8:\"remember\";s:14:\"rememberLength\";i:2592000;}"},{"class":"RoleWarden\\Config\\RoleWarden","key":"lockAttempts","value":"3"},{"class":"RoleWarden\\Config\\RoleWarden","key":"lockMinutes","value":"15"},{"class":"RoleWarden\\Config\\RoleWarden","key":"signInRate","value":"100"},{"class":"RoleWarden\\Config\\RoleWarden","key":"activityRetentionDays","value":"365"},{"class":"RoleWarden\\Config\\RoleWarden","key":"sidebarToday","value":"1"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedAt","value":"2026-10-30 21:53:39"},{"class":"RoleWarden\\Config\\RoleWarden","key":"settingsChangedBy","value":"1"}]
+[PASS] P31    Settings saved (Settings library table), redirect without errors
+[PASS] P32    Lock after 3 failed sign-ins: the right password is refused; attempts counted in auth_logins
+[PASS] P33    Dashboard: the security notice appears and names the locked email
+[PASS] P34    Sessions: browser B signed out from the sessions screen (row gone in acl_sessions, B sent to sign in at its next request), A still open
+[PASS] P35    Sessions: "sign out everywhere else" leaves only this browser (the other browser of the user is signed out)
+[INFO] browser appearance errors: ["no output: "]
+[FAIL] P36    Appearance: the theme saved from the page (writable/rolewarden/theme.json, Clarity)
+         ->  [] console=[]
+[PASS] P37    Appearance: reset removes the saved theme
+[PASS] P38    Light/dark choice saved per user with Settings (context user:1)
+[PASS] P39    Roles: deleted from the panel (soft-deleted, SPEC deleted_at) and no longer listed
+[INFO] last_active order asc [["my8lock",null],["my8imp3",null],["my8imp2",null],["my8imp1",null],["my8user2",null],["demo-approver",null],["demo-author",null],["my8sa2","2026-10-30 21:53:26"],["demo-reader","2026-10-30 21:53:35"],["my8user1b","2026-10-30 21:54:03"],["my8owner","2026-10-30 21:54:10"]] desc ["my8owner","my8user1b","demo-reader","my8sa2","my8lock","my8imp3","my8imp2","my8imp1","my8user2","demo-approver","demo-author"]
+[PASS] P06    Users: sorting by Last active, asc and desc: same users, non-null last_active ascending / descending as in users.last_active
+[INFO] signInRate after saving 5 (the minimum of the form): 5
+[PASS] P40    Limit per address set to 5: beyond it even the right password is refused (setting stored)
+[PASS] P41    Phase P: no response with status 500, SQL text or PHP error (154 responses)
+
+== I: integrity (charset, collation, foreign keys, non-ASCII text)
+[INFO] tables: [{"t":"acl_activity_log","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"acl_permissions","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"acl_role_permissions","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"acl_roles","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"acl_sessions","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"acl_user_permissions","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"acl_user_roles","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"auth_groups_users","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"auth_identities","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"auth_logins","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"auth_permissions_users","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"auth_remember_tokens","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"auth_token_logins","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"demo_documents","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"migrations","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"settings","e":"InnoDB","c":"utf8mb4_general_ci"},{"t":"users","e":"InnoDB","c":"utf8mb4_general_ci"}]
+[PASS] I01    Every table is InnoDB
+[INFO] text columns by collation: {"utf8mb4_general_ci":48} (database default utf8mb4_0900_ai_ci)
+[PASS] I02    Every table and text column is utf8mb4
+[INFO] foreign keys: ["acl_activity_log.actor_id -> users.id ON DELETE SET NULL","acl_role_permissions.permission_id -> acl_permissions.id ON DELETE CASCADE","acl_role_permissions.role_id -> acl_roles.id ON DELETE CASCADE","acl_roles.parent_id -> acl_roles.id ON DELETE SET NULL","acl_sessions.user_id -> users.id ON DELETE CASCADE","acl_user_permissions.permission_id -> acl_permissions.id ON DELETE CASCADE","acl_user_permissions.user_id -> users.id ON DELETE CASCADE","acl_user_roles.role_id -> acl_roles.id ON DELETE CASCADE","acl_user_roles.user_id -> users.id ON DELETE CASCADE","auth_groups_users.user_id -> users.id ON DELETE CASCADE","auth_identities.user_id -> users.id ON DELETE CASCADE","auth_permissions_users.user_id -> users.id ON DELETE CASCADE","auth_remember_tokens.user_id -> users.id ON DELETE CASCADE","demo_documents.approved_by -> users.id ON DELETE SET NULL","demo_documents.owner_id -> users.id ON DELETE CASCADE"]
+[PASS] I03    Foreign keys as the SPEC says: acl_user_roles/acl_user_permissions/acl_sessions.user_id -> users CASCADE, acl_activity_log.actor_id SET NULL
+[PASS] I04    No orphan row on any foreign key after the panel in use
+server did not start

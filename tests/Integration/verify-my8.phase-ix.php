@@ -149,6 +149,25 @@ if (in_array('X', $PH, true)) {
     foreach (['from=2026-13-45', 'to=2026-02-30', 'from=abc&to=xyz', 'from=2026-10-01&to=2026-10-31'] as $qs) { G($own, "rolewarden/activity?$qs", "X date $qs"); $dres[] = [$qs, $own->status, leaks_sql($own->body)]; }
     info('activity with dates typed by hand: ' . json_encode($dres));
     check('X02b', 'Production: Activity filter with an impossible date in the address (2026-13-45, 2026-02-30, abc): no 500, no SQL on screen', ! array_filter($dres, fn ($r) => $r[1] >= 500 || $r[2]), json_encode($dres));
+    // r2 (D1 re-check on ee4f9d9): more impossible dates and valid leap days. For each: status, SQL on screen, the value
+    // echoed in the filter field, the "Entries" count against the unfiltered page (filter applied or ignored) and the SQL
+    // error lines the request added to writable/logs. Bounds chosen so that "applied" and "ignored" give different counts:
+    // every entry of the run is from 2026-08 or later, so to=<early 2026 date> applied gives 0, ignored gives the total.
+    $all0 = entries(G($own, 'rolewarden/activity', 'X d1 base'));
+    $d1 = [];
+    foreach (['to=2026-13-45', 'to=2026-02-30', 'to=2026-02-29', 'to=2026-04-31', 'to=0000-00-00', 'from=2026-02-29', 'from=2026-04-31', 'from=0000-00-00', 'from=2028-02-29', 'to=2028-02-29', 'to=2024-02-29'] as $qs) {
+        $l0 = count(sqlerr_lines());
+        $h = G($own, "rolewarden/activity?$qs", "X d1 $qs");
+        [$k, $v] = explode('=', $qs, 2);
+        $n = entries($h);
+        $f = form_with($h, $k);
+        $d1[] = ['q' => $qs, 'status' => $own->status, 'sql_on_screen' => leaks_sql($h), 'field' => $f['fields'][$k] ?? null, 'entries' => $n, 'unfiltered' => $all0, 'effect' => $n === null ? '?' : ($n === $all0 ? 'ignored/no-op' : 'applied'), 'new_sql_log_lines' => count(sqlerr_lines()) - $l0];
+    }
+    foreach ($d1 as $r) info('D1 ' . json_encode($r));
+    $by = []; foreach ($d1 as $r) $by[$r['q']] = $r;
+    $imp = ['to=2026-13-45', 'to=2026-02-30', 'to=2026-02-29', 'to=2026-04-31', 'to=0000-00-00', 'from=2026-02-29', 'from=2026-04-31', 'from=0000-00-00'];
+    check('X02c', 'Production: Activity with impossible dates (2026-13-45, 2026-02-30, 2026-02-29, 2026-04-31, 0000-00-00 as from and to): 200, no SQL on screen, no SQL line in the log; to=<impossible> does not narrow the list (filter ignored)', ! array_filter($imp, fn ($q) => $by[$q]['status'] !== 200 || $by[$q]['sql_on_screen'] || $by[$q]['new_sql_log_lines'] !== 0 || (str_starts_with($q, 'to=') && $by[$q]['entries'] !== $all0)), json_encode(array_map(fn ($q) => [$q, $by[$q]['status'], $by[$q]['entries'], $by[$q]['new_sql_log_lines']], $imp)));
+    check('X02d', 'Production: Activity with valid leap days: from=2028-02-29 applied (0 entries), to=2028-02-29 keeps all, to=2024-02-29 applied (0 entries); 200, no SQL in the log', $by['from=2028-02-29']['status'] === 200 && $by['from=2028-02-29']['entries'] === 0 && $by['to=2028-02-29']['entries'] === $all0 && $by['to=2024-02-29']['entries'] === 0 && $all0 > 0 && ! array_filter(['from=2028-02-29', 'to=2028-02-29', 'to=2024-02-29'], fn ($q) => $by[$q]['status'] !== 200 || $by[$q]['new_sql_log_lines'] !== 0), json_encode(array_map(fn ($q) => [$q, $by[$q]['status'], $by[$q]['entries'], $by[$q]['field']], ['from=2028-02-29', 'to=2028-02-29', 'to=2024-02-29'])) . " unfiltered $all0");
     // forms with values the database could refuse: too long, duplicate unique keys
     $long = str_repeat('é', 300);
     $fr = form_with(G($own, 'rolewarden/roles/create', 'X role form'), 'name');

@@ -4,7 +4,7 @@ Note per Fabio (italiano). Tutto ciò che segue nei blocchi HTML è il testo da 
 CodeCanyon, in inglese, nel sottoinsieme di tag che la piattaforma accetta (p, h2, h3, ul,
 li, strong, a). Ogni affermazione è coperta da `inventario.md`. I link demo e documentazione
 sono placeholder tra parentesi quadre: sostituiscili con quelli definitivi. Le parti
-marcate [DA VERIFICARE] vanno chiuse prima dell'invio.
+marcate [DA VERIFICARE] vanno chiuse prima dell'invio (tutte chiuse il 2026-10-30).
 
 Ripassata sulla 1.1 il 2026-10-27 (commit `7e3730a`): dashboard, barra laterale, verifica
 permesso, ricerca comandi, movimento, blocchi della dashboard. Le nuove voci sono verificate
@@ -167,7 +167,8 @@ Move roles and permissions out of AuthGroups.php and into the database, with an 
 <li>PHP 8.3 or later, with the <strong>intl</strong>, <strong>mbstring</strong>, <strong>json</strong> and <strong>mysqli</strong> extensions.</li>
 <li>CodeIgniter 4.7.4 or later (4.7 introduced the <strong>app/Views/overrides/</strong> folder the panel relies on).</li>
 <li>CodeIgniter Shield 1.4 or later within 1.x.</li>
-<li>MySQL or MariaDB with InnoDB.</li>
+<li>MySQL or MariaDB with InnoDB (tested on MariaDB 11.8).</li>
+<li>For the panel, a current browser: Chrome or Edge 111+, Firefox 128+, Safari 16.4+.</li>
 <li>Composer, unless you use the complete application zip.</li>
 </ul>
 
@@ -243,7 +244,7 @@ nulla di ciò che precede dipende da esso.
 <p>No. Roles and permissions are global to the application in 1.x. Scoping by organisation is not supported.</p>
 
 <h3>Which databases are supported?</h3>
-<p>MySQL and MariaDB with InnoDB. The installer requires the mysqli extension. Other engines are not tested and not supported.</p>
+<p>MySQL and MariaDB with InnoDB. Releases are tested on MariaDB 11.8. The installer requires the mysqli extension. Other engines are not tested and not supported.</p>
 
 <h3>Does it need Node, npm or a build step?</h3>
 <p>No. The CSS is compiled with Tailwind and shipped in the package, Alpine.js is bundled. You install PHP files and run migrations, nothing else.</p>
@@ -252,17 +253,19 @@ nulla di ciò che precede dipende da esso.
 <p>Not in 1.1. They are planned for later versions. Shield's own features in those areas keep working as documented by Shield, but RoleWarden does not add screens for them yet.</p>
 
 <h3>Which licence do I need?</h3>
-<p>A Regular Licence per end product that is free for its users (for example a client's back office). An Extended Licence if the end product is sold or charges its users. CodeCanyon's licence terms apply.</p>
+<p>A Regular Licence covers one end product whose end users are not charged (for example a client's back office). An Extended Licence covers one end product whose end users are charged, such as a paid SaaS. Each further end product needs its own licence. CodeCanyon's licence terms apply.</p>
 ```
 
-Nota [DA VERIFICARE]: la risposta sulla licenza riprende la regola standard Envato
-(Regular = utenti finali non paganti, Extended = prodotto venduto). Controlla la formulazione
-ufficiale aggiornata prima di pubblicare.
+Nota (verificata il 2026-10-30 sui testi ufficiali codecanyon.net/licenses/regular e
+/licenses/extended): Regular = un solo prodotto finale i cui utenti non pagano; Extended = un
+solo prodotto finale i cui utenti possono pagare. Ogni altro prodotto finale richiede una
+licenza nuova. La risposta è riscritta su questa formulazione.
 
 ## 6. Changelog iniziale
 
 La prima versione su CodeCanyon è la 1.1.0: chi compra non ha mai avuto la 1.0.0, quindi il
-changelog della scheda parte da qui. La data va fissata al rilascio. [DA VERIFICARE]
+changelog della scheda parte da qui. `[RELEASE_DATE]` si sostituisce il giorno del rilascio, insieme alla sezione 1.1.0 del
+CHANGELOG (passo "Prep rilascio 1.1.0"): stesso giorno in entrambi.
 
 ```html
 <h3>1.1.0 - [RELEASE_DATE]</h3>
@@ -285,8 +288,11 @@ changelog della scheda parte da qui. La data va fissata al rilascio. [DA VERIFIC
 **Categoria CodeCanyon proposta:** PHP Scripts > Miscellaneous (non esiste una
 sottocategoria CodeIgniter; "Miscellaneous" è dove stanno gli item RBAC/user management per
 framework. Alternativa: PHP Scripts > Loaders and Uploaders no; evitare "Social Networking").
-[DA VERIFICARE] in fase di upload quale sottocategoria mostra il form: se compare
-"PHP Scripts > Database Abstractions" o simili non è adatta.
+Verificato il 2026-10-30: PHP Scripts > Miscellaneous esiste
+(codecanyon.net/category/php-scripts/miscellaneous) e ospita già item di gestione utenti per
+framework. Non usare Membership (abbonamenti a pagamento) né Social Networking. Se al momento
+dell'upload il form offre una sottocategoria di autorizzazione o gestione utenti, quella ha la
+precedenza.
 
 **Tag (18):**
 ```
@@ -304,11 +310,12 @@ fase di upload.
   2026-10-28, `tests/Integration/R1-REPORT.md`)
 - Compatible with: CodeIgniter 4.7.4+ (scrivilo nel testo, il form non ha un campo
   dedicato per CI4)
-- Database: MySQL 8 / MariaDB 10.x [DA VERIFICARE] versione minima effettivamente provata;
-  il codice non la fissa, le foreign key richiedono InnoDB
-- Compatible browsers: Chrome, Firefox, Safari, Edge, versioni recenti. Tailwind v4 non
-  supporta browser vecchi: non spuntare IE né Opera legacy. [DA VERIFICARE] se vuoi dichiarare
-  versioni minime precise (indicativamente Chrome/Edge 111+, Firefox 128+, Safari 16.4+)
+- Database: MySQL o MariaDB con InnoDB, come dice la documentazione. Tutti i collaudi
+  (M1, M6, matrice MVP, V1, R1) girano su MariaDB 11.8.9 in Docker. MySQL 8 e MariaDB 10.x
+  non sono mai stati provati: nel testo si dichiara solo "tested on MariaDB 11.8".
+- Compatible browsers: Chrome, Firefox, Safari, Edge. Non spuntare IE né Opera legacy. Le
+  versioni minime sono quelle di Tailwind v4 (tailwindcss.com/docs/compatibility, verificato
+  il 2026-10-30): Chrome e Edge 111+, Firefox 128+, Safari 16.4+. Si dichiarano così nel testo.
 - Files included: PHP, HTML, CSS, JS
 
 **Prezzo suggerito:** Regular $29 (poi $35), Extended $99, come deciso il 18/10, confermato

@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** chiusura SHOT, fix V-7 (Appearance "Saved in"), poi screenshot CodeCanyon 1.1 (passo 4)
-**Agente:** Claude
-**Dalle:** 2026-10-30 07:30
-**Scope:** resources/css/panel.css, src/Assets/css/panel.css, docs/SPEC.md, tests/Integration/; poi docs/codecanyon/ e app di prova locale
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1679,3 +1679,13 @@ Formato di ogni voce:
   - Nessun `ERR_NO_BUFFER_SPACE`.
   - `V7-REPORT.md` e `verify-v7.*` erano già usati dalla tappa V7 Confezione: ho aggiunto una sezione in testa senza sovrascrivere nessun file.
   - Nessun commit.
+- Decisione dell'utente del 2026-10-30 sull'ambiguità V-5/V-6: il percorso di "Saved in" resta su due righe, a capo dopo la `/`. V-5/V-6 nella forma "una riga sola" sono superati. SHOT è approvato.
+
+### [2026-10-30 17:30] - Claude
+- Tipo: docs
+- Scope: `docs/codecanyon/screenshots/`, app di prova locale (database `rolewarden_shots`)
+- Fatto: gli 8 screenshot del piano `docs/codecanyon/screenshot.md`, a 1440x900, in inglese e in production, salvati in `docs/codecanyon/screenshots/`. Per la 3 e la 7 c'è anche la pagina intera, così il ritaglio si fa in Claude Design. L'utente ha approvato la 3, la 6 e la 7 così come sono.
+- Dati: database separato `rolewarden_shots`, mai quello di sviluppo. Contiene installazione e `demo:install`, la super admin Maya Lindqvist, 10 utenti importati da CSV (due disattivati, uno senza ruolo), gli override su author@example.com, modifiche a ruoli e impostazioni, e 30 giorni di accessi inseriti con date all'indietro. Il database resta per eventuali nuovi scatti.
+- Script: `shoot.mjs` (Chrome headless via CDP) e `appearance.js`, copiati accanto agli screenshot. La cartella `docs/` è export-ignore, quindi lo script non finisce nel pacchetto. Resta aperta la decisione se spostarlo in `bin/`.
+- Ambiente: il `.env` dell'app di prova è ripristinato (`rolewarden`, development), la cache è svuotata e il server è fermo.
+- Prossimo: immagine di anteprima 590x300 e tavole con didascalia in Claude Design; prep del rilascio 1.1.0.

@@ -1,0 +1,136 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase V7 from verify-v7.shotfix.phase-v7.php
+
+===== phase V7 =====
+
+== V7: SHOT V-7 recheck (commit, f38debd)
+[INFO] server pid=32900 on 127.0.0.1:8071 prefix=''
+[INFO] users: owner=1 admin=2; role Approver=9
+[INFO] theme files at start: writable=no app=no
+[INFO] browser open-en: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-commit-r2\chrome-v7-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-commit-r2\chrome-v7-1'
+[INFO] browser open-it: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-commit-r2\chrome-v7-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-commit-r2\chrome-v7-2'
+[INFO] app theme file written: 151 bytes
+[INFO] measures written: verify-v7.shotfix.measure.commit.json
+[PASS] V-7-open-en-1440-light Appearance (open) en 1440 light: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-open-en-1440-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-en-1440-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-open-en-1440-dark Appearance (open) en 1440 dark: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-open-en-1440-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-en-1440-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-open-en-1600-light Appearance (open) en 1600 light: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-open-en-1600-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-en-1600-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-open-en-1600-dark Appearance (open) en 1600 dark: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-open-en-1600-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-en-1600-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-open-it-1440-light Appearance (open) it 1440 light: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-open-it-1440-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-it-1440-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-open-it-1440-dark Appearance (open) it 1440 dark: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-open-it-1440-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-it-1440-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-open-it-1600-light Appearance (open) it 1600 light: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-open-it-1600-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-it-1600-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-open-it-1600-dark Appearance (open) it 1600 dark: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-open-it-1600-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-open-it-1600-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-en-1440-light Appearance (saved) en 1440 light: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-saved-en-1440-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-en-1440-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-en-1440-dark Appearance (saved) en 1440 dark: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-saved-en-1440-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-en-1440-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-en-1600-light Appearance (saved) en 1600 light: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-saved-en-1600-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-en-1600-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-en-1600-dark Appearance (saved) en 1600 dark: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-saved-en-1600-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-en-1600-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-it-1440-light Appearance (saved) it 1440 light: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-saved-it-1440-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-it-1440-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-it-1440-dark Appearance (saved) it 1440 dark: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-saved-it-1440-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-it-1440-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-it-1600-light Appearance (saved) it 1600 light: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-saved-it-1600-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-it-1600-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-saved-it-1600-dark Appearance (saved) it 1600 dark: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-saved-it-1600-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-saved-it-1600-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-en-1440-light Appearance (locked) en 1440 light: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-locked-en-1440-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-en-1440-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-en-1440-dark Appearance (locked) en 1440 dark: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-locked-en-1440-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-en-1440-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-en-1600-light Appearance (locked) en 1600 light: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-locked-en-1600-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-en-1600-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-en-1600-dark Appearance (locked) en 1600 dark: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-locked-en-1600-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-en-1600-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-it-1440-light Appearance (locked) it 1440 light: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-locked-it-1440-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-it-1440-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-it-1440-dark Appearance (locked) it 1440 dark: the "Saved in" path stays inside the right margin of the page head (path right 1392 px, dlRight 1392 px, tolerance 0.5)
+[PASS] V-7w-locked-it-1440-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-it-1440-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-it-1600-light Appearance (locked) it 1600 light: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-locked-it-1600-light The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-it-1600-light The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-7-locked-it-1600-dark Appearance (locked) it 1600 dark: the "Saved in" path stays inside the right margin of the page head (path right 1552 px, dlRight 1552 px, tolerance 0.5)
+[PASS] V-7w-locked-it-1600-dark The path wraps (2 line(s)) only inside the facts column: every line box between the dd left and the dl right, "Saved in" on one line, the dl inside the page head
+[PASS] V-7t-locked-it-1600-dark The "Theme file / Download" row: dt on one line, dt and dd tops aligned (2 px), the Download link on one line, visible and inside the dd and the facts column
+[PASS] V-4    Appearance: the section titles share one right edge (1352)
+[FAIL] V-5    SHOT V-5 as written: "Saved in" and its path do not wrap (one line box each), en 1440 light
+         -> {"codeRight":1392,"dlRight":1392,"ddRight":1392,"dt":"Saved in","dd":"writable/[omesso]/theme.json","ddRects":5,"codeLines":{"n":2,"minL":1235.98,"maxR":1392},"codeH":35,"lh":18,"dtLines":1,"dtRects":1}
+[FAIL] V-6-en-1440 SHOT V-6 as written: Appearance en at 1440px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+         -> [{"codeRight":1392,"dlRight":1392,"ddRight":1392,"dt":"Saved in","dd":"writable/[omesso]/theme.json","ddRects":5,"codeLines":{"n":2,"minL":1235.98,"maxR":1392},"codeH":35,"lh":18,"dtLines":1,"dtRects":1},[1352]]
+[FAIL] V-6-en-1600 SHOT V-6 as written: Appearance en at 1600px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+         -> [{"codeRight":1552,"dlRight":1552,"ddRight":1552,"dt":"Saved in","dd":"writable/[omesso]/theme.json","ddRects":5,"codeLines":{"n":2,"minL":1395.98,"maxR":1552},"codeH":35,"lh":18,"dtLines":1,"dtRects":1},[1512]]
+[FAIL] V-6-it-1440 SHOT V-6 as written: Appearance it at 1440px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+         -> [{"codeRight":1392,"dlRight":1392,"ddRight":1392,"dt":"Salvato in","dd":"writable/[omesso]/theme.json","ddRects":5,"codeLines":{"n":2,"minL":1235.98,"maxR":1392},"codeH":35,"lh":18,"dtLines":1,"dtRects":1},[1352]]
+[FAIL] V-6-it-1600 SHOT V-6 as written: Appearance it at 1600px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+         -> [{"codeRight":1552,"dlRight":1552,"ddRight":1552,"dt":"Salvato in","dd":"writable/[omesso]/theme.json","ddRects":5,"codeLines":{"n":2,"minL":1395.98,"maxR":1552},"codeH":35,"lh":18,"dtLines":1,"dtRects":1},[1512]]
+[PASS] ACT-3  Appearance eyebrow "System", in Italian "Sistema"
+[PASS] A11Y-1-light Appearance light: contrast AA (4.5:1) of every visible text
+[PASS] A11Y-1-dark Appearance dark: contrast AA (4.5:1) of every visible text
+[PASS] A11Y-2 Appearance: every button, link, field and select has a non-empty accessible name (29 nodes)
+[PASS] V-8    Appearance, all 24 cases: no horizontal scroll of the page and no element of the page head past its right edge
+[PASS] JS-1   No JavaScript error or console error in any browser job (7 jobs)
+[PASS] SAVE-1 Save theme from the browser (the real button): the page comes back on Appearance with a success message and writes writable/rolewarden/theme.json
+[PASS] SAVE-2 Save theme over HTTP with the page's form (CSRF token): redirect, the theme file is valid JSON
+[PASS] DL-1   Download: 200, JSON, as an attachment, the same content as the saved theme file
+[PASS] LOCK-1 Locked theme (app/Config/RoleWarden/theme.json): the panel names the application file and the file is not changed by a save
+[PASS] PH-dashboard-en-1440-light dashboard en 1440 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-dashboard-en-1440-dark dashboard en 1440 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-dashboard-en-1600-light dashboard en 1600 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-dashboard-en-1600-dark dashboard en 1600 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-dashboard-it-1440-light dashboard it 1440 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-dashboard-it-1440-dark dashboard it 1440 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-dashboard-it-1600-light dashboard it 1600 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-dashboard-it-1600-dark dashboard it 1600 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-en-1440-light role en 1440 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-en-1440-dark role en 1440 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-en-1600-light role en 1600 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-en-1600-dark role en 1600 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-it-1440-light role it 1440 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-it-1440-dark role it 1440 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-it-1600-light role it 1600 light: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] PH-role-it-1600-dark role it 1600 dark: page head and facts inside their margin, no new wrap in a dt, nothing new past main's edge (1 dl)
+[PASS] LOG-1  No HTTP response >= 500, no SQL text, no PHP error in the bodies of this phase (28)
+[PASS] LOG-2  No WARNING/ERROR/CRITICAL line in the application log
+
+TOTAL: 103 PASS, 5 FAIL, 0 AMB
+FAIL V-5 SHOT V-5 as written: "Saved in" and its path do not wrap (one line box each), en 1440 light
+FAIL V-6-en-1440 SHOT V-6 as written: Appearance en at 1440px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+FAIL V-6-en-1600 SHOT V-6 as written: Appearance en at 1600px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+FAIL V-6-it-1440 SHOT V-6 as written: Appearance it at 1440px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+FAIL V-6-it-1600 SHOT V-6 as written: Appearance it at 1600px, same right edge for the sections and no wrap of "Saved in" (dt and path one line box)
+f38debd s1.commit.f38debd-r2: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=False (1 .env files deleted first)

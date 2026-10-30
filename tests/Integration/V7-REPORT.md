@@ -1,5 +1,70 @@
 # V7 — Confezione: collaudo indipendente
 
+## Riverifica SHOT V-7 (fix `f38debd`) — 2026-10-30, Collaudatore ad Hoc (Claude)
+
+> Questa sezione **non** riguarda la tappa V7 "Confezione" qui sotto. Il prompt chiedeva di scrivere in `V7-REPORT.md` e `verify-v7.*`, nomi che quella tappa usa già. Per non sovrascrivere nulla ho aggiunto questa sezione in testa e ho chiamato gli strumenti `verify-v7.shotfix.*`. I nomi degli screenshot, `verify-v7.<caso>.png`, non collidono con file esistenti.
+
+**Esito: PASS. V-7 è risolto e non ho trovato difetti del modulo. SHOT è approvabile: la condizione posta dall'utente il 30/10 è soddisfatta. Chi lancia deve solo confermare che i 5 FAIL di V-5/V-6 sono asserzioni superate dalla correzione (vedi Ambiguità).**
+
+Ho collaudato il commit `f38debd` e il padre `885b018`, entrambi da worktree nella scratch. Collaudo in nero: HTTP, Chrome headless (CDP) e query su `rolewarden_test`. Non ho letto nessun file di `src/` o `resources/` né i test unitari.
+
+### Run
+
+| Run | Commit | Risultato | Note |
+|---|---|---|---|
+| parent | 885b018 | solo misure | Lo strumento riproduce le misure di SHOT r4: il percorso arriva a 1395/1555 (en) e 1403/1563 (it) contro un dlRight di 1392/1552. Con il tema bloccato lo sforamento era maggiore: 1411-1418 px, cioè 19-26 px oltre il margine |
+| commit | f38debd | 102/108 | A11Y-2 FAIL per un difetto dello strumento (il tag `x` era escluso dal filtro): corretto |
+| commit r2 | f38debd | **103/108** | Run valido. I 5 FAIL sono V-5/V-6 come scritti in SHOT (vedi Ambiguità) |
+
+Gli output stanno in `verify-v7.shotfix.s1.<label>.output.txt` e `verify-v7.shotfix.console.*.txt`. Le misure sono in `verify-v7.shotfix.measure.{parent,commit}.json`, le evidenze in `verify-v7.shotfix.environment.txt`.
+
+### Controlli (run r2)
+
+| Gruppo | PASS/FAIL | Cosa |
+|---|---|---|
+| V-7 | 24/0 | Il bordo destro del percorso è ≤ dlRight + 0,5 px. Matrice: 3 stati (nessun file, tema salvato in `writable/`, tema bloccato da `app/Config/RoleWarden/theme.json`) × en/it × 1440/1600 × chiaro/scuro. Ora codeRight coincide con dlRight (1392 e 1552) |
+| V-7w | 24/0 | Il percorso va a capo (2 righe) solo dentro la colonna dei fatti: ogni riga sta tra il bordo sinistro del dd e il bordo destro del dl. "Saved in"/"Salvato in" resta su una riga, il dd non ha overflow, il dl sta dentro la page head |
+| V-7t | 24/0 | Riga "Theme file / Download": la dt sta su una riga, dt e dd sono allineati in alto (entro 2 px), il link "Download"/"Scarica" sta su una riga, è visibile ed è dentro il dd e la colonna |
+| V-8 | 1/0 | In nessuno dei 24 casi c'è scroll orizzontale o un elemento della page head oltre il suo bordo destro |
+| V-4, ACT-3 | 2/0 | I titoli di sezione condividono il bordo destro; l'eyebrow è "System"/"Sistema" |
+| A11Y-1 | 2/0 | Contrasto AA di Appearance in chiaro e in scuro |
+| A11Y-2 | 1/0 | I 29 controlli di Appearance hanno un nome accessibile |
+| JS-1 | 1/0 | Nessun errore JS o di console nei 7 job del browser |
+| SAVE-1, SAVE-2 | 2/0 | Il tema si salva dal pulsante reale (toast di successo, scrive `writable/rolewarden/theme.json`) e dal form via HTTP con CSRF (redirect 303, JSON valido) |
+| DL-1 | 1/0 | Il download risponde 200, `application/json`, come attachment `theme.json`, con lo stesso contenuto del file salvato |
+| LOCK-1 | 1/0 | Con il file di tema dell'applicazione, la pagina mostra `app/Config/RoleWarden/theme.json` e un salvataggio non modifica il file |
+| PH | 16/0 | Dashboard e dettaglio del ruolo Approver, en/it × 1440/1600 × chiaro/scuro. Page head e dl restano dentro il margine. Rispetto al padre, nessuna dt va su più righe e nessun elemento nuovo esce dal bordo di main |
+| LOG | 2/0 | Nessuna risposta ≥ 500, nessun testo SQL, nessuna riga WARNING/ERROR nel log |
+| V-5, V-6 (come scritti in SHOT) | 0/5 | Il percorso ora occupa 2 righe (`writable/rolewarden/` + `theme.json`); SHOT chiedeva una riga sola. "Saved in" resta su una riga |
+| S01, S02 | 2/0 | Setup |
+
+Gli screenshot di Appearance sono `verify-v7.appearance-{open,saved,locked}.{1440,1600}.{light,dark}.{en,it}.png` (24); quelli di Dashboard e ruolo sono `verify-v7.{dashboard,role}.{1440,1600}.{light,dark}.{en,it}.png` (16). Ne ho controllati tre a occhio: bloccato it 1440 chiaro, open en 1600 scuro, ruolo it 1440. Il percorso va a capo dopo la barra, allineato a destra e dentro il margine; "Scarica"/"Download" è allineato al margine.
+
+### Difetti del modulo
+
+Nessuno.
+
+### Ambiguità di specifica (non decise)
+
+1. **V-5/V-6 di SHOT contro la nuova regola.** SHOT chiedeva che il percorso di "Saved in" non andasse a capo; il prompt di questa riverifica permette l'a capo dentro la colonna dei fatti. Con `f38debd` il percorso va **sempre** a capo su due righe, anche a 1600 px in inglese, dove a occhio la page head avrebbe spazio: la colonna dei fatti è larga circa 156 px. Chi lancia decide se V-5/V-6 sono superati, come presumo dal prompt, oppure se il percorso deve stare su una riga quando lo spazio c'è.
+2. **Tema bloccato.** Ho ottenuto il blocco copiando il file scaricato in `app/Config/RoleWarden/theme.json` dell'app di prova, come indica `documentation/views.html`. Altre modalità di blocco non le ho provate.
+
+### Ambiente
+
+- **Servizi.** Docker Desktop era spento e l'ho avviato io. `rolewarden-db` (3317), `rolewarden-mail` e `rolewarden-adminer` restano accesi.
+- **Errori di rete.** In questa sessione non sono comparsi né `ERR_NO_BUFFER_SPACE` né WSAENOBUFS.
+- **Database.** Hash di `rolewarden_test`:
+  - prima del collaudo: `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`;
+  - prima e dopo ciascuno dei 3 run: identico (`identical=True`);
+  - a fine collaudo: `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`.
+- **Mailpit.** Vuoto prima e dopo.
+- **Worktree.** `v7/wt` (f38debd) e `v7/wt-parent` (885b018) rimossi, `git worktree prune` eseguito: resta solo `main`.
+- **Processi e socket.** Non resta attivo nessun processo php, node o chrome del collaudo. Su 127.0.0.1:8071 ci sono solo connessioni TIME_WAIT in scadenza e tre socket LISTENING con PID 0: è la stessa anomalia del kernel vista in SHOT, senza processo, e la toglie un riavvio.
+- **Scratch.** In `.../scratchpad/v7/work-*` restano solo profili Chrome che non si possono cancellare (EPERM), come in SHOT e R1. Nessun `.env` e nessuna credenziale.
+- **Credenziali e repo.** Le credenziali del DB sono passate solo come variabili d'ambiente del processo. Nessun commit; lock di `_AI-LOG.md` non toccato.
+
+---
+
 ## Riverifica — 2026-10-07, Collaudatore ad Hoc (Claude), commit `2314cfb`, zip `build/*-1.0.0-rc.v7c.zip`
 
 **Esito: PASS. V7 approvata per il collaudo.** Ho verificato una per una, contro il comportamento servito, le correzioni dichiarate dall'autore (D1-D6), non contro il diff.

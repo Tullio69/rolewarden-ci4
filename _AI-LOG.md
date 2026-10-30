@@ -1658,3 +1658,24 @@ Formato di ogni voce:
   - V-7 va corretto (il percorso "Saved in" non deve uscire dalla page head), con una riverifica dopo.
   - Username numerico uguale all'id di un altro utente nella verifica di un permesso: vince l'id. Lo documenta la SPEC.
   - SHOT è approvato, a condizione che la riverifica di V-7 sia PASS.
+
+### [2026-10-30 08:20] - Claude (Collaudatore ad Hoc)
+- Tipo: review
+- Scope: `tests/Integration/` (`verify-v7.shotfix.*`, `verify-v7.*.png`, sezione in testa a `V7-REPORT.md`), app di prova copiata nella scratch, `rolewarden_test`
+- Cosa ho fatto: riverifica in nero di SHOT V-7 sul fix `f38debd` (padre `885b018`).
+  - Matrice V-7: 3 stati del tema (nessun file, salvato in writable, bloccato da `app/Config/RoleWarden/theme.json`) × en/it × 1440/1600 × chiaro/scuro, tolleranza 0,5 px su dlRight.
+  - Regressione di Appearance: asserzioni di shot.b, console, salvataggio e download del tema.
+  - Dashboard e dettaglio ruolo.
+- Stato: completato
+- Esito: **PASS**, 103/108 nel run r2.
+  - V-7, V-7w e V-7t: 72/72. Il percorso ora finisce esattamente su dlRight; sul padre sporgeva di 3-26 px, di più nel caso bloccato.
+  - Nessun difetto del modulo.
+  - I 5 FAIL sono V-5/V-6 di SHOT come scritti: il percorso ora va a capo su 2 righe dentro la colonna dei fatti, come permette il prompt.
+- Approvazione: SHOT è approvabile secondo la condizione dell'utente del 30/10. Resta da confermare che V-5/V-6 sono superati.
+- Ambiguità (non decise): il percorso va sempre a capo, anche a 1600 px dove sembra esserci spazio; V-5/V-6 superati o no.
+- Note per il prossimo:
+  - Hash di `rolewarden_test` prima e dopo: `f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64`.
+  - Worktree rimossi.
+  - Nessun `ERR_NO_BUFFER_SPACE`.
+  - `V7-REPORT.md` e `verify-v7.*` erano già usati dalla tappa V7 Confezione: ho aggiunto una sezione in testa senza sovrascrivere nessun file.
+  - Nessun commit.

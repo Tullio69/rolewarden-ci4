@@ -1,0 +1,21 @@
+Snapshot SHA256: f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64
+[INFO] CI_ENVIRONMENT of the copies: development
+[PASS] S01    Base install (Settings, Shield, RoleWarden migrations and seed) on rolewarden_test
+[PASS] S02    demo:install for the demo pages (exit 0)
+[INFO] phase V7 from verify-v7.shotfix.phase-v7.php
+
+===== phase V7 =====
+
+== V7: SHOT V-7 recheck (parent, 885b018)
+[INFO] server pid=20436 on 127.0.0.1:8071 prefix=''
+[INFO] users: owner=1 admin=2; role Approver=9
+[INFO] theme files at start: writable=no app=no
+[INFO] browser open-en: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-parent\chrome-v7-1 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-parent\chrome-v7-1'
+[INFO] browser open-it: profile not removed EPERM, Permission denied: \\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-parent\chrome-v7-2 '\\?\C:\Users\fabio\AppData\Local\Temp\claude\E--progetti-lavoro-ASP-[omesso]-ci4\ee1f281f-4f6f-462c-b6b8-1ff17ac9e4b1\scratchpad\v7\work-parent\chrome-v7-2'
+[INFO] app theme file written: 151 bytes
+[INFO] measures written: verify-v7.shotfix.measure.parent.json
+[INFO] parent run: measures only
+
+TOTAL: 2 PASS, 0 FAIL, 0 AMB
+885b018 s1.parent.885b018: before=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 after=f7f37c04ce251be86330196bed3e209bfeaff8fde5b8be79fd293aa09de21e64 identical=True mailpit_empty=True
+Work folder removed=False (1 .env files deleted first)

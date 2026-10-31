@@ -167,7 +167,7 @@ Move roles and permissions out of AuthGroups.php and into the database, with an 
 <li>PHP 8.3 or later, with the <strong>intl</strong>, <strong>mbstring</strong>, <strong>json</strong> and <strong>mysqli</strong> extensions.</li>
 <li>CodeIgniter 4.7.4 or later (4.7 introduced the <strong>app/Views/overrides/</strong> folder the panel relies on).</li>
 <li>CodeIgniter Shield 1.4 or later within 1.x.</li>
-<li>MySQL or MariaDB with InnoDB (tested on MariaDB 11.8).</li>
+<li>MySQL or MariaDB with InnoDB (tested on MariaDB 11.8, MySQL 8.0 and MySQL 8.4).</li>
 <li>For the panel, a current browser: Chrome or Edge 111+, Firefox 128+, Safari 16.4+.</li>
 <li>Composer, unless you use the complete application zip.</li>
 </ul>
@@ -244,7 +244,7 @@ nulla di ciò che precede dipende da esso.
 <p>No. Roles and permissions are global to the application in 1.x. Scoping by organisation is not supported.</p>
 
 <h3>Which databases are supported?</h3>
-<p>MySQL and MariaDB with InnoDB. Releases are tested on MariaDB 11.8. The installer requires the mysqli extension. Other engines are not tested and not supported.</p>
+<p>MySQL and MariaDB with InnoDB. Releases are tested on MariaDB 11.8, MySQL 8.0 and MySQL 8.4. The installer requires the mysqli extension. Other engines are not tested and not supported.</p>
 
 <h3>Does it need Node, npm or a build step?</h3>
 <p>No. The CSS is compiled with Tailwind and shipped in the package, Alpine.js is bundled. You install PHP files and run migrations, nothing else.</p>
@@ -311,8 +311,10 @@ fase di upload.
 - Compatible with: CodeIgniter 4.7.4+ (scrivilo nel testo, il form non ha un campo
   dedicato per CI4)
 - Database: MySQL o MariaDB con InnoDB, come dice la documentazione. Tutti i collaudi
-  (M1, M6, matrice MVP, V1, R1) girano su MariaDB 11.8.9 in Docker. MySQL 8 e MariaDB 10.x
-  non sono mai stati provati: nel testo si dichiara solo "tested on MariaDB 11.8".
+  (M1, M6, matrice MVP, V1, R1) girano su MariaDB 11.8.9 in Docker; MY8 (PASS il 2026-10-31 su
+  `ee4f9d9`, `tests/Integration/MY8-REPORT.md`) copre MySQL 8.0.39 e 8.4.13 con la configurazione di
+  serie. MariaDB 10.x non è mai stato provato: nel testo si dichiara "tested on MariaDB 11.8, MySQL
+  8.0 and MySQL 8.4".
 - Compatible browsers: Chrome, Firefox, Safari, Edge. Non spuntare IE né Opera legacy. Le
   versioni minime sono quelle di Tailwind v4 (tailwindcss.com/docs/compatibility, verificato
   il 2026-10-30): Chrome e Edge 111+, Firefox 128+, Safari 16.4+. Si dichiarano così nel testo.

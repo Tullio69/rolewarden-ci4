@@ -1,5 +1,58 @@
 # MY8 - RoleWarden su MySQL 8 (Collaudatore ad Hoc)
 
+## Riverifica r3 su ee4f9d9 (2026-10-31)
+
+Commit collaudato: `ee4f9d9` (correzione di D1), worktree staccato e copia di `../rolewarden-app-test` collegata, come
+nel collaudo originale. Suite completa `A,RB,B,P,I,X,Z`, un run alla volta, con la memoria controllata prima di ognuno.
+
+| Server | Controlli | PASS | FAIL | Output |
+|---|---|---|---|---|
+| MySQL 8.4.13 (`mysql:8.4`) | 93 | 93 | 0 | `verify-my8.84-r3.*` |
+| MySQL 8.0.39 (`mysql:8.0`) | 93 | 93 | 0 | `verify-my8.80-r2.*` |
+
+**Esito: PASS su entrambe le versioni.** I controlli sono 93 invece di 91 per X02c e X02d, aggiunti nella riverifica r2.
+
+D1, uguale su 8.4 e 8.0:
+- **X02b PASS**: `from=2026-13-45`, `to=2026-02-30`, `from=abc&to=xyz` e un periodo valido rispondono 200, senza SQL a
+  schermo.
+- **X02c PASS**: `2026-13-45`, `2026-02-30`, `2026-02-29`, `2026-04-31` e `0000-00-00`, sia in `from` sia in `to`:
+  - risposta 200;
+  - nessun SQL a schermo;
+  - 0 righe SQL nuove nel log;
+  - "Entries" 91 su 91: il filtro è ignorato.
+- **X02d PASS**: le date bisestili valide sono applicate:
+  - `from=2028-02-29` dà 0 voci;
+  - `to=2028-02-29` le tiene tutte (91);
+  - `to=2024-02-29` dà 0 voci.
+- **Z01 PASS**: nessun errore SQL nei log di tutto il run. Restano solo gli errori di connessione provocati apposta (B04,
+  X04).
+
+**P16, P17 e P36 PASS su entrambe le versioni.** P16 e P17 sono la matrice, per riga e per colonna; P36 è il tema salvato
+dalla pagina. Conferma che i FAIL di r2 erano ambiente.
+
+Nessuna regressione: tutte le altre fasi sono PASS come su `22bfc01`.
+
+**Stato di approvazione: approvabile.** D1 è corretto e la frase "MySQL or MariaDB with InnoDB" regge su MySQL 8.4 e 8.0
+con la configurazione di serie dell'immagine.
+
+Ambiguità di specifica: restano le tre del collaudo originale, sotto. In più un'osservazione nuova, non decisa: con una
+data impossibile il filtro è ignorato, ma il campo della pagina mostra ancora il valore scritto, per esempio `2026-13-45`.
+La SPEC non dice se il valore scartato vada tolto dal campo o segnalato. Un browser con `<input type="date">` mostra
+comunque il campo vuoto.
+
+Ambiente:
+- Docker Desktop era spento all'inizio della sessione e l'ho avviato io. Al riavvio ha rimesso su da solo i container con
+  restart policy (`rolewarden-db`, `rolewarden-mail`, `rolewarden-adminer`, `qrart-mysql`), che ho lasciato attivi.
+- Prima di ogni run ho aspettato almeno 1,8 GB di memoria disponibile.
+- Container `rolewarden-my8-84` e `rolewarden-my8-80` rimossi con i loro volumi. I volumi orfani rimasti sono precedenti,
+  del 15/10 o più vecchi.
+- Worktree rimosso, `git worktree prune` eseguito, copia dell'app cancellata.
+- Nessun processo php o Chrome headless del collaudo ancora attivo.
+- `../rolewarden-app-test`: hash dell'albero, escluso `vendor/rolewarden`, `2b060284…3bab83` prima e dopo; link invariato.
+- MariaDB `rolewarden_test` (3317), che il run non usa: hash del dump `0bba0ff5…7a0071` prima e dopo (il database è vuoto).
+  `rolewarden` non è stato toccato.
+- Nessuna credenziale nei file, nessun commit, lock non toccato.
+
 Commit collaudato: `22bfc01` su `main`, in un worktree separato (rimosso a fine collaudo).
 Domanda: la scheda CodeCanyon può dire "MySQL or MariaDB with InnoDB"? Finora ogni collaudo era su MariaDB 11.8.9.
 

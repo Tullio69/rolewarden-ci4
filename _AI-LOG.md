@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** collaudo MY8 (compatibilità MySQL 8) dal Collaudatore ad Hoc
-**Agente:** Claude
-**Dalle:** 2026-10-30 22:10
-**Scope:** tests/Integration/ (verify-my8.*, MY8-REPORT.md), container Docker temporaneo MySQL 8 sulla 3318, app di prova locale
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1757,3 +1757,34 @@ Formato di ogni voce:
   - hash di `../rolewarden-app-test` identico prima e dopo;
   - MariaDB non toccato;
   - nessun commit, lock non toccato.
+
+### [2026-10-31 10:35] - Collaudatore ad Hoc (Claude, subagente)
+- Tipo: collaudo
+- Scope: riverifica MY8 r3 su `ee4f9d9` (correzione D1). Scritti solo `tests/Integration/verify-my8.84-r3.*`, `tests/Integration/verify-my8.80-r2.*`, la sezione "Riverifica r3 su ee4f9d9" in testa a `MY8-REPORT.md` e questa voce. Strumento non modificato.
+- Esito: **PASS**, suite completa `A,RB,B,P,I,X,Z`.
+  - MySQL 8.4.13: 93/93.
+  - MySQL 8.0.39: 93/93.
+  - D1 corretto: X02b, X02c, X02d e Z01 PASS su entrambe. Con le date impossibili la risposta è 200, senza SQL a schermo né nel log, e il filtro è ignorato. Le date bisestili valide sono applicate.
+  - P16, P17 e P36 PASS su entrambe: i FAIL di r2 erano ambiente.
+- Stato di approvazione: **approvabile.** La frase "MySQL or MariaDB with InnoDB" regge.
+- Ambiguità di specifica: restano le tre del collaudo originale. Un'osservazione nuova, non decisa: con una data impossibile il filtro è ignorato, ma il campo mostra ancora il valore scritto (`2026-13-45`).
+- Ambiente:
+  - Docker Desktop era spento e l'ho avviato io. Al riavvio ha rimesso su i container con restart policy (`rolewarden-db`, `rolewarden-mail`, `rolewarden-adminer`, `qrart-mysql`), lasciati attivi.
+  - Run uno alla volta, ciascuno con almeno 1,8 GB disponibili alla partenza.
+  - Container `rolewarden-my8-*` e i loro volumi rimossi.
+  - Worktree rimosso e prune eseguito, copia dell'app cancellata.
+  - Nessun processo php o Chrome del collaudo ancora attivo.
+  - Hash di `../rolewarden-app-test` identico prima e dopo.
+  - MariaDB `rolewarden_test`: hash del dump identico prima e dopo. `rolewarden` non toccato.
+  - Nessuna credenziale nei file, nessun commit, lock non toccato.
+
+### [2026-10-31 11:00] - Claude
+- Tipo: review
+- Scope: `_AI-LOG.md`, `docs/codecanyon/scheda-prodotto.md`, esito della riverifica MY8 r3
+- Fatto: ho letto il report della riverifica r3 su `ee4f9d9`: PASS, 93/93 su MySQL 8.4.13 e su 8.0.39, D1 corretto.
+  MY8 è approvato. La scheda prodotto ora dichiara "tested on MariaDB 11.8, MySQL 8.0 and MySQL 8.4". Lock rilasciato.
+- Da decidere da parte dell'utente (ambiguità di specifica, non decise): lunghezza massima di slug, nomi e username;
+  username non ASCII; dashboard senza `dashboard.*` (SPEC U4); il campo del filtro Activity che, con una data impossibile,
+  mostra ancora il valore scritto.
+- Altro: in `.claude/brand-voice-guidelines.md` ci sono le linee guida di voce del brand, non committate.
+  `tests/Integration/verify-v5.work/` contiene solo profili Chrome rimasti dal 3/10: da cancellare.

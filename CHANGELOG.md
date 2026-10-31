@@ -5,7 +5,7 @@ Every change that matters to whoever installs or updates RoleWarden. Versions fo
 version may require changes on your side, listed under "Upgrading". After any update, run
 `php spark migrate -n RoleWarden`.
 
-## [Unreleased]
+## [1.1.0] - [RELEASE_DATE]
 
 ### Added
 - **Sidebar** in groups (Access, Security, System), each item shown only to those who hold
@@ -33,7 +33,7 @@ version may require changes on your side, listed under "Upgrading". After any up
   `dashboard.security`, `dashboard.roles`, `dashboard.changes`. Charts are SVG drawn on the
   server from the theme's colours, each with its numbers as a table. Whoever holds none of
   them is sent on to the first screen of the sidebar they can see.
-- **Customize the dashboard**: each user shows, hides and reorders the blocks they can see
+- **Customise the dashboard**: each user shows, hides and reorders the blocks they can see
   and picks the period the page opens with; those with `settings.update` save a default for
   everyone who has not chosen. Kept with the Settings library, no new table. The security
   notice can be hidden but always comes first.
@@ -46,7 +46,7 @@ version may require changes on your side, listed under "Upgrading". After any up
 - **Motion** across the panel, all of it off under the system's reduced-motion setting: pages hand
   over to each other with the sidebar's highlight sliding to the new item, dialogs grow out of
   their button, lists arrive row by row, the dashboard draws its figures and charts, and matrix
-  cells, toasts and the customize panel show what changed. Browsers without View Transitions
+  cells, toasts and the customise panel show what changed. Browsers without View Transitions
   change page as before.
 - The sidebar moved from `layouts/panel.php` to its own view, `partials/sidebar.php`.
 

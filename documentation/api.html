@@ -118,7 +118,7 @@ service('rolewarden')-&gt;forgetRole($roleId);       // after changing a role, i
     <p>Assigning a role through <code>(new \RoleWarden\Models\UserRoles())-&gt;assign($userId, $roleId)</code> does it for you.</p>
 
     <h2 id="dashboard-blocks">Dashboard blocks of your own</h2>
-    <p>Add a block to the dashboard with a class that extends <code>RoleWarden\Dashboard\Block</code>. The block shows only to those who hold its permission, and each user hides and reorders it in the Customize panel like the five blocks of the module. RoleWarden draws the section, its letter and the title; your view draws the body. This API stays the same for every 1.x release.</p>
+    <p>Add a block to the dashboard with a class that extends <code>RoleWarden\Dashboard\Block</code>. The block shows only to those who hold its permission, and each user hides and reorders it in the Customise panel like the five blocks of the module. RoleWarden draws the section, its letter and the title; your view draws the body. This API stays the same for every 1.x release.</p>
 <pre><code>&lt;?php
 
 namespace App\Dashboard;

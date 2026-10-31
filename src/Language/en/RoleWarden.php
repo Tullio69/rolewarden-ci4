@@ -144,8 +144,8 @@ return [
             'number' => '{0, number, integer}',
             'percent' => '{0}%',
             'customize' => [
-                'open' => 'Customize',
-                'title' => 'Customize the dashboard',
+                'open' => 'Customise',
+                'title' => 'Customise the dashboard',
                 'intro' => 'Choose the blocks you see, their order and the period the page opens with.',
                 'up' => 'Move {0} up',
                 'down' => 'Move {0} down',
@@ -158,7 +158,7 @@ return [
                 'savedGlobal' => 'The default dashboard is saved. It applies to everyone who has not made their own choice.',
                 'reset' => 'Your dashboard follows the default again.',
                 'invalid' => 'This dashboard layout could not be saved. Reload the page and try again.',
-                'empty' => 'Every block is hidden. Open Customize to show them again.',
+                'empty' => 'Every block is hidden. Open Customise to show them again.',
                 'failed' => 'This block could not be loaded. The error is in the application log.',
                 'blocks' => [
                     'security' => 'Security notice',

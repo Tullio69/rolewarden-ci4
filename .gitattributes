@@ -17,3 +17,6 @@
 /demo               export-ignore
 /.regista.json      export-ignore
 /.claude            export-ignore
+/assets              export-ignore
+/promo-video         export-ignore
+/renders             export-ignore

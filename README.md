@@ -359,7 +359,7 @@ the language of the person receiving it, not of whoever triggered it.
 - Table prefix `acl_`, configurable, deliberately distinct from Shield's `auth_`
 - Code checks permissions, never roles: `can('users.delete')`, never `hasRole('admin')`
 - Permission slugs follow `area.action`
-- No file inside this package is meant to be edited by the buyer; every customization
+- No file inside this package is meant to be edited by the buyer; every customisation
   belongs in the host application
 
 ## License

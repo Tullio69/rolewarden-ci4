@@ -1797,3 +1797,8 @@ Formato di ogni voce:
   aggiunti user roles and permissions, authentication, login e secure; tolti tailwind, alpinejs e csv import). Compilati i link della
   demo e della documentazione, oltre alle credenziali pubbliche della demo. Resta `[RELEASE_DATE]`.
 - Prossimo: prep del rilascio 1.1.0 (versione in `composer.json`, CHANGELOG, data nella scheda, documentazione online alla 1.1.0).
+
+### [2026-10-31 16:20] - Claude
+- Cosa ho fatto: prep rilascio 1.1.0, prima parte. `composer.json` a 1.1.0; nel CHANGELOG `[Unreleased]` diventa `[1.1.0] - [RELEASE_DATE]`. Ortografia britannica decisa da Fabio: "Customize" -> "Customise" nelle tre stringhe inglesi (`RoleWarden.php` 147, 148, 161), nel CHANGELOG, in `documentation/api.html` e "customisation" nel README. Chiavi di lingua, id e codice invariati, nessuna view pubblica toccata. `.gitattributes`: `/assets`, `/promo-video`, `/renders` in export-ignore (materiale del video promo, fuori dagli zip). PHPUnit 91/91 OK.
+- Decisione di Fabio: la data di rilascio si mette il giorno dell'invio a CodeCanyon, uguale in CHANGELOG e scheda (`[RELEASE_DATE]`).
+- Note per il prossimo: restano data, tag `v1.1.0`, zip (`bin/build-package 1.1.0` cancella `build/`: conservare prima gli zip 1.0.0), demo e staging alla 1.1.0, documentazione online alla 1.1.0. Lo screenshot `01-dashboard.png` mostra ancora il pulsante "Customize": da rifare o accettare. Lock rilasciato.

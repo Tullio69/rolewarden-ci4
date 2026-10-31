@@ -2,9 +2,11 @@
 
 Note per Fabio (italiano). Tutto ciò che segue nei blocchi HTML è il testo da incollare su
 CodeCanyon, in inglese, nel sottoinsieme di tag che la piattaforma accetta (p, h2, h3, ul,
-li, strong, a). Ogni affermazione è coperta da `inventario.md`. I link demo e documentazione
-sono placeholder tra parentesi quadre: sostituiscili con quelli definitivi. Le parti
-marcate [DA VERIFICARE] vanno chiuse prima dell'invio (tutte chiuse il 2026-10-30).
+li, strong, a). Ogni affermazione è coperta da `inventario.md`. Link e credenziali della
+demo compilati il 2026-10-31 (demo e documentazione rispondono 200). Resta solo
+`[RELEASE_DATE]`, da compilare al prep del rilascio. Le parti marcate [DA VERIFICARE] sono
+tutte chiuse dal 2026-10-30; titolo e tag approvati il 2026-10-31. Al rilascio la
+documentazione online va portata alla 1.1.0, perché la scheda dice che è la stessa del pacchetto.
 
 Ripassata sulla 1.1 il 2026-10-27 (commit `7e3730a`): dashboard, barra laterale, verifica
 permesso, ricerca comandi, movimento, blocchi della dashboard. Le nuove voci sono verificate
@@ -15,15 +17,15 @@ nel codice (rotte in `src/Config/RouteRegistrar.php`, `src/Dashboard/Block.php`,
 
 ## 1. Nome item
 
-[PROPOSTA DA APPROVARE, 2026-10-28] Dall'analisi dei concorrenti (`concorrenti.md`): gli
-item più venduti vincono la ricerca "codeigniter user management" perché hanno "User
-Management" e "Admin Panel" nel titolo, e nessuno nomina Shield. Proposta (78 caratteri):
+**Approvato da Fabio il 2026-10-31** (78 caratteri). Dall'analisi dei concorrenti
+(`concorrenti.md`): gli item più venduti vincono la ricerca "codeigniter user management" perché
+hanno "User Management" e "Admin Panel" nel titolo, e nessuno nomina Shield.
 
 ```
 RoleWarden - CodeIgniter 4 Shield Roles, Permissions & User Management Panel
 ```
 
-Alternative dalla ricerca:
+Alternative scartate, dalla ricerca:
 
 ```
 RoleWarden - CodeIgniter 4 Roles & Permissions Admin Panel for Shield
@@ -184,8 +186,8 @@ Move roles and permissions out of AuthGroups.php and into the database, with an 
 
 <h2>Demo and documentation</h2>
 <ul>
-<li>Live demo: <a href="[DEMO_URL]">[DEMO_URL]</a>. Data is reset every hour and no email leaves the demo. Sign in as <strong>[DEMO_ADMIN_EMAIL]</strong> / <strong>[DEMO_ADMIN_PASSWORD]</strong> for the full panel, or as the Reader, Author and Approver accounts of the demo app (credentials in the listing below the screenshots).</li>
-<li>Documentation: <a href="[DOCS_URL]">[DOCS_URL]</a>, the same HTML you find in the package.</li>
+<li>Live demo: <a href="https://demo.rolewarden.com/">https://demo.rolewarden.com/</a>. Data is reset every hour and no email leaves the demo. Sign in as <strong>admin@example.com</strong> / <strong>demo-admin-2026</strong> for the full panel, as <strong>viewer@example.com</strong> / <strong>demo-viewer-2026</strong> for the Viewer role, or as <strong>reader@example.com</strong>, <strong>author@example.com</strong> or <strong>approver@example.com</strong> / <strong>demo-docs-2026</strong> for the three roles of the demo app.</li>
+<li>Documentation: <a href="https://www.rolewarden.com/docs/">https://www.rolewarden.com/docs/</a>, the same HTML you find in the package.</li>
 </ul>
 
 <h2>Support and updates</h2>
@@ -294,16 +296,16 @@ framework. Non usare Membership (abbonamenti a pagamento) né Social Networking.
 dell'upload il form offre una sottocategoria di autorizzazione o gestione utenti, quella ha la
 precedenza.
 
-**Tag (18):**
+**Tag (19), approvati da Fabio il 2026-10-31:**
 ```
-codeigniter, codeigniter 4, ci4, shield, rbac, roles, permissions, access control, authorization, admin panel, user management, acl, activity log, session management, csv import, tailwind, alpinejs, php 8
+codeigniter, codeigniter 4, ci4, shield, rbac, roles, permissions, user roles and permissions, access control, authorization, authentication, login, secure, admin panel, user management, acl, activity log, session management, php 8
 ```
 
-[PROPOSTA DA APPROVARE, 2026-10-28] Tag ricorrenti nei concorrenti più venduti che mancano
-qui: `user roles and permissions`, `authentication`, `login`, `secure`. Se il form limita il
-numero di tag, togliere per primi `tailwind`, `alpinejs`, `csv import` (nessun acquirente
-cerca così) e tenere `shield`, che nessun concorrente usa. Il limite del form va visto in
-fase di upload.
+Rispetto alla proposta del 28/10: aggiunti `user roles and permissions`, `authentication`,
+`login`, `secure` (ricorrenti nei concorrenti più venduti); tolti `tailwind`, `alpinejs`,
+`csv import` (nessun acquirente cerca così). `shield` resta: nessun concorrente lo usa. Se il form
+ha un limite più basso, togliere per primi `secure`, `acl`, `ci4`. Il limite si vede in fase di
+upload.
 
 **Versioni da dichiarare nel form:**
 - Software version / PHP: 8.3, 8.4, 8.5. Collaudate sulla 1.0 (S2) e sulla 1.1 (R1 PASS il

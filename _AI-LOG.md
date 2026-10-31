@@ -1788,3 +1788,12 @@ Formato di ogni voce:
   mostra ancora il valore scritto.
 - Altro: in `.claude/brand-voice-guidelines.md` ci sono le linee guida di voce del brand, non committate.
   `tests/Integration/verify-v5.work/` contiene solo profili Chrome rimasti dal 3/10: da cancellare.
+
+### [2026-10-31 12:00] - Claude
+- Tipo: docs
+- Scope: `docs/codecanyon/scheda-prodotto.md`
+- Fatto: passo "Screenshot e testo della scheda prodotto" chiuso. Fabio ha approvato il canvas Claude Design (anteprima,
+  miniatura, 8 tavole), il titolo "RoleWarden - CodeIgniter 4 Shield Roles, Permissions & User Management Panel" e i tag (19:
+  aggiunti user roles and permissions, authentication, login e secure; tolti tailwind, alpinejs e csv import). Compilati i link della
+  demo e della documentazione, oltre alle credenziali pubbliche della demo. Resta `[RELEASE_DATE]`.
+- Prossimo: prep del rilascio 1.1.0 (versione in `composer.json`, CHANGELOG, data nella scheda, documentazione online alla 1.1.0).

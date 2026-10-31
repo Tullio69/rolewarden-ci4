@@ -16,3 +16,4 @@
 /.php-cs-fixer.dist.php export-ignore
 /demo               export-ignore
 /.regista.json      export-ignore
+/.claude            export-ignore

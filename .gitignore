@@ -19,3 +19,9 @@ phpstan.neon
 
 # Standalone Tailwind CLI downloaded by bin/build-css
 /bin/.cache/
+
+# Promo video (HyperFrames projects, sources and renders)
+/assets/
+/promo-video/
+/promo-video-9x16/
+/renders/

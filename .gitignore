@@ -25,3 +25,8 @@ phpstan.neon
 /promo-video/
 /promo-video-9x16/
 /renders/
+
+# Agent skills installed locally (HyperFrames)
+/.agents/
+/.claude/skills/
+/skills-lock.json

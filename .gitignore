@@ -24,6 +24,8 @@ phpstan.neon
 /assets/
 /promo-video/
 /promo-video-9x16/
+/promo-video-v2/
+/promo-video-v2-9x16/
 /renders/
 
 # Agent skills installed locally (HyperFrames)

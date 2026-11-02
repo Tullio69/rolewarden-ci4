@@ -1844,3 +1844,10 @@ Formato di ogni voce:
 - Cosa ho fatto: rilascio 1.1.0. Data decisa da Fabio: 2026-11-02, uguale in CHANGELOG e scheda (sezione 6). Commit di rilascio e tag annotato `v1.1.0`, push di `main` e del tag su GitHub. I tre zip (`bin/build-package 1.1.0`) costruiti da un clone pulito del tag nella sessione cloud (PHP 8.3, Composer) e copiati in `build/1.1.0/`; gli zip 1.0.0 restano in `build/1.0.0/`.
 - Stato: completato
 - Note per il prossimo: `bin/build-package` cancella tutta `build/`: prima di rilanciarlo in locale spostare altrove `build/1.0.0/` e `build/1.1.0/`. Restano: staging e documentazione online alla 1.1.0, prova di aggiornamento dallo zip 1.0.0 sull'app 1.1.0, screenshot `01-dashboard.png` con "Customize" (rifare o accettare), ricerca marchi EUIPO, invio a CodeCanyon.
+
+### [2026-11-02 22:45] - Claude (sessione cloud)
+- Tipo: release
+- Scope: `_AI-LOG.md`
+- Correzione della voce delle 22:00: `main` è su GitHub (`b02e4b6`), il tag `v1.1.0` no, perché il proxy della sessione cloud rifiuta il push dei tag. Il tag esiste in locale e va pushato dal PC: `git push origin main v1.1.0`.
+- Build: nella sessione cloud Composer non riusciva a scaricare le versioni dist (403) e ha installato i pacchetti da sorgente. In `vendor/` dello zip app ogni pacchetto è stato riportato alla forma dist con `git archive HEAD` del pacchetto (rispetta gli `export-ignore`, come gli zip di GitHub) e `installed.json` segna `dist`; numero di file per pacchetto identico allo zip 1.0.0. Prova d'avvio dello zip: `/` porta all'installer, l'installer risponde 200, `spark` vede i comandi della demo. Checksum in `build/1.1.0/SHA256SUMS`.
+- Nota: lo zip app contiene CodeIgniter **4.7.6** (uscita dopo i collaudi R1 su 4.7.4/4.7.5). Shield 1.4.1, Settings 2.4.0, Translations 4.7.4 invariati.

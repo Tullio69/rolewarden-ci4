@@ -1802,3 +1802,10 @@ Formato di ogni voce:
 - Cosa ho fatto: prep rilascio 1.1.0, prima parte. `composer.json` a 1.1.0; nel CHANGELOG `[Unreleased]` diventa `[1.1.0] - [RELEASE_DATE]`. Ortografia britannica decisa da Fabio: "Customize" -> "Customise" nelle tre stringhe inglesi (`RoleWarden.php` 147, 148, 161), nel CHANGELOG, in `documentation/api.html` e "customisation" nel README. Chiavi di lingua, id e codice invariati, nessuna view pubblica toccata. `.gitattributes`: `/assets`, `/promo-video`, `/renders` in export-ignore (materiale del video promo, fuori dagli zip). PHPUnit 91/91 OK.
 - Decisione di Fabio: la data di rilascio si mette il giorno dell'invio a CodeCanyon, uguale in CHANGELOG e scheda (`[RELEASE_DATE]`).
 - Note per il prossimo: restano data, tag `v1.1.0`, zip (`bin/build-package 1.1.0` cancella `build/`: conservare prima gli zip 1.0.0), demo e staging alla 1.1.0, documentazione online alla 1.1.0. Lo screenshot `01-dashboard.png` mostra ancora il pulsante "Customize": da rifare o accettare. Lock rilasciato.
+
+### [2026-11-02 13:00] - Claude
+- Tipo: docs
+- Scope: `docs/brand/` (nuovo), `docs/design-system/README.md`, `docs/codecanyon/screenshot.md`, `docs/BRIEF-v1.2.md` (nuovo); fuori da git: progetti `promo-video*/` e `renders/`
+- Cosa ho fatto: Warden Shield diventa il logo ufficiale (decisione di Fabio). Kit rigenerato con la scritta "RoleWarden" (prima "Rolewarden") e versionato in `docs/brand/`; tolti dai testi del kit 2FA, OAuth, JWT e webhook, residui di AuthConnect. Video promo 16:9 e 9:16 renderizzati di nuovo con la scritta corretta, -14 LUFS.
+- Stato: completato
+- Note per il prossimo: logo nel pannello, favicon e white-label (`$brandName`, `$brandMark`) rimandati alla 1.2 (`docs/BRIEF-v1.2.md`). Da decidere con Fabio quale anteprima 590x300 usare (canvas del 31/10 o kit). La riga sul logo va riportata anche nel design system originale su Claude. `tests/Integration/verify-v5.work/` non si cancella (accesso negato), va tolta a mano da amministratore.

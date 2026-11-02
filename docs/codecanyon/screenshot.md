@@ -112,8 +112,14 @@ Composizione (sfondo `--surface` Console chiaro, bordo sottile `--rule`):
 - In basso a destra, Plex Mono 10px `--ink-faint`: `v1.1.0`.
 - Niente gradienti, niente ombre, un solo accento (`--accent`) per sottolineare `Shield`.
 
-Miniatura 80x80: monogramma `RW` in Plex Serif su `--accent`, testo `--on-accent`.
-[DA VERIFICARE] il logo non è ancora deciso: questo monogramma vale finché non c'è.
+Miniatura 80x80: il marchio Warden Shield, logo ufficiale dal 2026-11-02, file
+`docs/brand/png/codecanyon/thumbnail-80.png`. Sostituisce il monogramma `RW` provvisorio.
+
+Il kit del logo (`docs/brand/`) contiene anche un'anteprima 590x300 alternativa
+(`png/codecanyon/inline-preview-590x300.png`, fondo navy, logo e tre righe), con testi
+riallineati alla scheda il 2026-11-02. Quale delle due va su CodeCanyon lo decide Fabio:
+la composizione sopra, approvata nel canvas del 2026-10-31, nomina il prodotto solo come
+testo e va aggiornata col logo se resta lei.
 
 ## Tavole con didascalia
 

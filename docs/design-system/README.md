@@ -136,7 +136,7 @@ Eight screens are drawn here, all on the same shell (sidebar `size-sidebar`, top
 
 - No icon font and no icon library. The five permission marks are inline SVG drawn with `currentColor` (see the PermissionMark component).
 - Interface glyphs (chevron, search, lock, and the navigation set: dashboard, users, roles, permissions, sessions, activity, check a permission, settings, appearance) are 16px inline SVG, 1.5px stroke, square caps, `currentColor`.
-- The logo is **Warden Shield** (official since 2026-11-02): a shield with a ledger margin and a serif R, next to the wordmark **RoleWarden** in IBM Plex Serif. Every variant, the rules on sizes and colours and the build script are in `docs/brand/`. Mark variants by size: full from 48px, medium 24-40px, small 20px and below. In 1.1 the panel still sets the product name as text in `title-section` in the sidebar; the mark in the sidebar, the favicon and the white-label options (the buyer's name and mark instead of ours) come with 1.2 (`docs/BRIEF-v1.2.md`).
+- The logo is **Keyhole Shield** (official since 2026-11-01, replacing the Warden Shield): a shield of three arcs of one circle, a geometric R with a keyhole through its bowl and, on the full mark, the ledger margin; next to the wordmark **RoleWarden** in IBM Plex Serif. Every variant, the rules on sizes and colours and the build script are in `docs/brand/`. Mark variants by size: full, with the ledger margin, from 48px; compact, without it, at 40px and below. In 1.1 the panel still sets the product name as text in `title-section` in the sidebar; the mark in the sidebar, the favicon and the white-label options (the buyer's name and mark instead of ours) come with 1.2 (`docs/BRIEF-v1.2.md`).
 
 ## Building with Tailwind and Alpine
 

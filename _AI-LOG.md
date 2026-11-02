@@ -1816,3 +1816,10 @@ Formato di ogni voce:
 - Cosa ho fatto: Fabio ha scelto l'anteprima 590x300 del kit del logo (`docs/brand/png/codecanyon/inline-preview-590x300.png`). La composizione a registro del canvas del 31/10 esce dal piano.
 - Stato: completato
 - Note per il prossimo: resta da riportare la regola del logo nel design system originale su Claude, poi il giorno dell'invio.
+
+### [2026-11-02 17:00] - Claude (sessione cloud)
+- Tipo: docs
+- Scope: `docs/brand/` (kit rigenerato), `docs/brand/README.md`, `docs/design-system/README.md`, `docs/codecanyon/screenshot.md`, `docs/BRIEF-v1.2.md`; fuori da git: `assets/rolewarden-brand/`, `promo-video*/`, `renders/`
+- Cosa ho fatto: correzione della voce delle 13:00. Il logo ufficiale è **Keyhole Shield**, scelto da Fabio il 2026-11-01 nella tela Claude Design "Rolewarden Logo Concepts" (tavola E), non Warden Shield. `build.py` ora disegna il Keyhole Shield con la geometria della tela (scudo di tre archi di un cerchio da 610, R geometrica con la serratura, margine a registro solo sul marchio completo); i file `medium` e `small` sono il marchio compatto, senza margine, come l'icona app e le favicon. Scritta "RoleWarden" invariata. Kit rigenerato (34 SVG e i PNG), confrontato con le favicon della tela. Testi corretti nei quattro documenti. Copiato lo stesso kit in `assets/rolewarden-brand/` al posto di quello del 31/10. Video promo 16:9 e 9:16: marchio sostituito nelle scene di apertura e chiusura mantenendo gli stessi id animati (lunghezze dei tratteggi aggiornate a 456 e 16), check hyperframes pulito, render rifatto e normalizzato a -14 LUFS.
+- Stato: completato
+- Note per il prossimo: la tela "Rolewarden Logo Concepts" scrive ancora "Rolewarden" nelle tavole del kit; il kit nel repo usa "RoleWarden". L'anteprima 590x300 e la miniatura 80x80 sono quelle del kit (docs/brand/png/codecanyon).

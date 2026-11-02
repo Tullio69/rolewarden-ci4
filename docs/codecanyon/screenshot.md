@@ -93,7 +93,7 @@ Shield ristilizzato in tema Contrast scuro.
 Scelta da Fabio il 2026-11-02: l'anteprima del kit del logo,
 `docs/brand/png/codecanyon/inline-preview-590x300.png` (sorgente
 `docs/brand/svg/codecanyon/inline-preview-590x300.svg`, generata da `docs/brand/build.py`).
-Fondo navy, logo Warden Shield con il nome, titolo `Roles and permissions` /
+Fondo navy, logo Keyhole Shield con il nome, titolo `Roles and permissions` /
 `for CodeIgniter 4 Shield` e tre righe numerate: `Roles and permissions in the database`,
 `Inheritance and per-user overrides`, `Admin panel built on Shield`. Si carica così com'è,
 senza passare da Claude Design. I testi si cambiano solo in `build.py`, e devono restare
@@ -102,7 +102,7 @@ coperti da `inventario.md`.
 Sostituisce la composizione a registro (ledger) del canvas del 2026-10-31, che nominava il
 prodotto solo come testo.
 
-Miniatura 80x80: il marchio Warden Shield, logo ufficiale dal 2026-11-02, file
+Miniatura 80x80: il marchio Keyhole Shield, logo ufficiale dal 2026-11-01, file
 `docs/brand/png/codecanyon/thumbnail-80.png`. Sostituisce il monogramma `RW` provvisorio.
 
 ## Tavole con didascalia

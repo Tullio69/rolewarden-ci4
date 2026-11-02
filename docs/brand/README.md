@@ -1,12 +1,12 @@
 # RoleWarden brand kit
 
-Official logo since 2026-11-02: **Warden Shield** (shield + ledger margin + serif R). The name is always written **RoleWarden**. Every letter is converted to outlines, so no font is needed to render these files.
+Official logo since 2026-11-01: **Keyhole Shield** (a shield of three arcs of one circle, a geometric R with a keyhole through its bowl, and the ledger margin on the full mark). It replaces the Warden Shield. The name is always written **RoleWarden**. Every letter is converted to outlines, so no font is needed to render these files.
 
 This folder is kept out of the package (`/docs` is `export-ignore`): it serves the listing, the demo, the promo material and the documentation site.
 
 ## Folders
 
-- `svg/logo/` - mark (full 48px+, medium 24-40px, small 20px and below), horizontal and stacked lockups, wordmark. Variants: `light`, `dark`, `mono-black`, `mono-white`.
+- `svg/logo/` - mark (full, with the ledger margin, 48px and up; compact, without it, 40px and below: the `medium` and `small` files are the compact mark), horizontal and stacked lockups, wordmark. Variants: `light`, `dark`, `mono-black`, `mono-white`.
 - `png/logo/` - the same lockups and the mark as high-resolution PNG.
 - `favicon/` - `favicon.ico` (16/32/48), `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-512-maskable.png`.
 - `png/codecanyon/` - thumbnail 80x80, inline preview 590x300.

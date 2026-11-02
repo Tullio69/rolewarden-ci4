@@ -1,4 +1,4 @@
-"""Build the RoleWarden brand kit (logo D "Warden Shield") as standalone SVG + PNG.
+"""Build the RoleWarden brand kit (logo E "Keyhole Shield") as standalone SVG + PNG.
 All text is converted to outlines, so files render identically without fonts installed."""
 import os, subprocess, sys
 from fontTools.ttLib import TTFont
@@ -47,21 +47,35 @@ C = dict(accent="#1e4ea6", accent_l="#93b2f0", navy="#0f1d3a", navy_r="#18294d",
          side_ink="#eef2fa", side_muted="#a9b6d1", ink="#17191c", ink_muted="#565b63", ink_faint="#62676f",
          surface="#fafaf9", sunk="#f2f2f0", rule="#e4e5e7", rule_s="#c8cace", white="#ffffff")
 
-SHIELD = "M32 3 L58 12 V34 C58 52 46 63 32 69 C18 63 6 52 6 34 V12 Z"
+# Keyhole Shield (chosen 2026-11-01). Geometry in its own design units, box 120.94 98 358.11 458:
+# the shield is three arcs of one 610 circle with top corners filleted at 21; the R's bowl an 89 circle,
+# its leg at 45 degrees; the keyhole a 34 circle (optically 36) punched through the R in the shield color.
+# The full mark adds the ledger margin (a rule with three row ticks); below 48px the compact mark drops it.
+KS_BOX = (120.94, 98.00, 358.11, 458.00)
+KS_SHIELD = ("M300.00,554.00 A610.00,610.00 0 0 0 477.05,142.69 A21.00,21.00 0 0 0 461.62,121.80 "
+             "A610.00,610.00 0 0 0 138.38,121.80 A21.00,21.00 0 0 0 122.95,142.69 A610.00,610.00 0 0 0 300.00,554.00 Z")
+KS_R = ['M214,186 H266 V364 H258 V412 H214 Z', 'M266,186 A89,89 0 0 1 266,364 H256 V186 Z',
+        'M264,334 L320.6,334 L398.6,412 L342.0,412 Z']
+KS_KEYHOLE = '<circle cx="284" cy="269" r="36"/><path d="M271,288.8 L297,288.8 L306,338 L262,338 Z"/>'
+KS_MARGIN = ('<rect x="168" y="98" width="8" height="458"/><rect x="152" y="163.0" width="16" height="6"/>'
+             '<rect x="152" y="217.0" width="16" height="6"/><rect x="152" y="271.0" width="16" height="6"/>')
+_clip_n = [0]
 
 def mark(variant="full", shield=C["accent"], line=C["accent_l"], letter=C["white"]):
-    """Mark in a 64x72 box. variant: full (>=48px), medium (24-40px), small (<=20px)."""
-    p = [f'<path fill="{shield}" d="{SHIELD}"/>']
+    """Mark in a 64x72 box (shield 72 tall, centred). variant: full (>=48px) keeps the ledger margin;
+    medium and small are the compact mark (40px and below)."""
+    bx, by, bw, bh = KS_BOX
+    s = 72 / bh
+    ox = (64 - bw * s) / 2
+    _clip_n[0] += 1
+    cid = f"ks{_clip_n[0]}"
+    p = [f'<g transform="translate({ox:.3f} 0) scale({s:.5f}) translate({-bx} {-by})">',
+         f'<defs><clipPath id="{cid}"><path d="{KS_SHIELD}"/></clipPath></defs>',
+         f'<path fill="{shield}" d="{KS_SHIELD}"/>']
     if variant == "full":
-        p.append(f'<g stroke="{line}" stroke-width="1.6" fill="none"><line x1="20" y1="12" x2="20" y2="59"/>'
-                 f'<line x1="12" y1="24" x2="16.5" y2="24"/><line x1="12" y1="35" x2="16.5" y2="35"/>'
-                 f'<line x1="12" y1="46" x2="16.5" y2="46"/></g>')
-        p.append(text_path("R", "serif400", 38, 39.5, 49, letter, "middle"))
-    elif variant == "medium":
-        p.append(f'<line x1="19" y1="12" x2="19" y2="58" stroke="{line}" stroke-width="3.2"/>')
-        p.append(text_path("R", "serif500", 44, 39, 51, letter, "middle"))
-    else:
-        p.append(text_path("R", "serif500", 50, 32, 54, letter, "middle"))
+        p.append(f'<g fill="{line}" clip-path="url(#{cid})">{KS_MARGIN}</g>')
+    p.append(f'<g fill="{letter}" clip-path="url(#{cid})">' + "".join(f'<path d="{d}"/>' for d in KS_R) + '</g>')
+    p.append(f'<g fill="{shield}">{KS_KEYHOLE}</g></g>')
     return "".join(p)
 
 def place(inner, x, y, scale):
@@ -109,7 +123,7 @@ def app_icon(size, maskable=False):
     rx = 0 if maskable else size * 0.22
     mh = size * (0.5 if maskable else 0.6)
     s = mh / 72
-    return svg(size, size, place(mark("full" if size >= 96 else "medium", C["accent_l"], C["navy"], C["navy"]),
+    return svg(size, size, place(mark("medium", C["accent_l"], C["navy"], C["navy"]),
                                  (size - 64 * s) / 2, (size - mh) / 2 + size * 0.01, s), C["navy"], rx)
 add("icons/app-icon.svg", app_icon(512))
 add("icons/app-icon-maskable.svg", app_icon(512, True))

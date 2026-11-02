@@ -1809,3 +1809,10 @@ Formato di ogni voce:
 - Cosa ho fatto: Warden Shield diventa il logo ufficiale (decisione di Fabio). Kit rigenerato con la scritta "RoleWarden" (prima "Rolewarden") e versionato in `docs/brand/`; tolti dai testi del kit 2FA, OAuth, JWT e webhook, residui di AuthConnect. Video promo 16:9 e 9:16 renderizzati di nuovo con la scritta corretta, -14 LUFS.
 - Stato: completato
 - Note per il prossimo: logo nel pannello, favicon e white-label (`$brandName`, `$brandMark`) rimandati alla 1.2 (`docs/BRIEF-v1.2.md`). Da decidere con Fabio quale anteprima 590x300 usare (canvas del 31/10 o kit). La riga sul logo va riportata anche nel design system originale su Claude. `tests/Integration/verify-v5.work/` non si cancella (accesso negato), va tolta a mano da amministratore.
+
+### 2026-11-02 14:00 - Claude
+- Tipo: docs
+- Scope: `docs/codecanyon/screenshot.md`
+- Cosa ho fatto: Fabio ha scelto l'anteprima 590x300 del kit del logo (`docs/brand/png/codecanyon/inline-preview-590x300.png`). La composizione a registro del canvas del 31/10 esce dal piano.
+- Stato: completato
+- Note per il prossimo: resta da riportare la regola del logo nel design system originale su Claude, poi il giorno dell'invio.

@@ -90,36 +90,20 @@ Shield ristilizzato in tema Contrast scuro.
 
 ## Immagine di anteprima 590x300
 
-Da fare in Claude Design, sul design system RoleWarden. Concetto: un "registro" (ledger)
-di permessi, come la pagina stampata di un libro mastro. Niente mockup del browser, niente
-screenshot rimpicciolito illeggibile: il messaggio deve leggersi in un secondo nella
-griglia di CodeCanyon.
+Scelta da Fabio il 2026-11-02: l'anteprima del kit del logo,
+`docs/brand/png/codecanyon/inline-preview-590x300.png` (sorgente
+`docs/brand/svg/codecanyon/inline-preview-590x300.svg`, generata da `docs/brand/build.py`).
+Fondo navy, logo Warden Shield con il nome, titolo `Roles and permissions` /
+`for CodeIgniter 4 Shield` e tre righe numerate: `Roles and permissions in the database`,
+`Inheritance and per-user overrides`, `Admin panel built on Shield`. Si carica così com'è,
+senza passare da Claude Design. I testi si cambiano solo in `build.py`, e devono restare
+coperti da `inventario.md`.
 
-Composizione (sfondo `--surface` Console chiaro, bordo sottile `--rule`):
-- Colonna sinistra (circa 55%), allineata a una linea di base:
-  - Riga 1, IBM Plex Mono 11px maiuscoletto, `--ink-muted`: `CODEIGNITER 4 · SHIELD`
-  - Riga 2, IBM Plex Serif 400, 40px, `--ink`: `RoleWarden`
-  - Riga 3, IBM Plex Sans 500, 17px, `--ink-muted`, su due righe:
-    `Roles & permissions in the database,` / `with an admin panel. Built on Shield.`
-  - Riga 4, tre "timbri" in linea, Plex Mono 12px, bordo 1px `--rule-strong`, raggio
-    piccolo: `PHP 8.3–8.5` `CI 4.7.4+` `Shield 1.4+`
-- Colonna destra (circa 45%): frammento della matrice disegnato a mano (non screenshot),
-  4 righe x 3 colonne: intestazioni `Reader`, `Author`, `Approver` in Plex Sans 500, righe
-  `documents.view`, `documents.create`, `documents.approve`, `documents.delete` in Plex
-  Mono; spunta `--granted` su `--granted-tint` dove concesso, trattino `--ink-faint` dove
-  no. Sulla cella `documents.delete` / `Author` il segno rosso `--denied` su
-  `--denied-tint` con l'etichetta mono `override`: l'unico elemento rosso.
-- In basso a destra, Plex Mono 10px `--ink-faint`: `v1.1.0`.
-- Niente gradienti, niente ombre, un solo accento (`--accent`) per sottolineare `Shield`.
+Sostituisce la composizione a registro (ledger) del canvas del 2026-10-31, che nominava il
+prodotto solo come testo.
 
 Miniatura 80x80: il marchio Warden Shield, logo ufficiale dal 2026-11-02, file
 `docs/brand/png/codecanyon/thumbnail-80.png`. Sostituisce il monogramma `RW` provvisorio.
-
-Il kit del logo (`docs/brand/`) contiene anche un'anteprima 590x300 alternativa
-(`png/codecanyon/inline-preview-590x300.png`, fondo navy, logo e tre righe), con testi
-riallineati alla scheda il 2026-11-02. Quale delle due va su CodeCanyon lo decide Fabio:
-la composizione sopra, approvata nel canvas del 2026-10-31, nomina il prodotto solo come
-testo e va aggiornata col logo se resta lei.
 
 ## Tavole con didascalia
 

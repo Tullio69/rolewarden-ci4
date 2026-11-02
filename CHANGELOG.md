@@ -5,7 +5,7 @@ Every change that matters to whoever installs or updates RoleWarden. Versions fo
 version may require changes on your side, listed under "Upgrading". After any update, run
 `php spark migrate -n RoleWarden`.
 
-## [1.1.0] - [RELEASE_DATE]
+## [1.1.0] - 2026-11-02
 
 ### Added
 - **Sidebar** in groups (Access, Security, System), each item shown only to those who hold

@@ -3,8 +3,8 @@
 Note per Fabio (italiano). Tutto ciò che segue nei blocchi HTML è il testo da incollare su
 CodeCanyon, in inglese, nel sottoinsieme di tag che la piattaforma accetta (p, h2, h3, ul,
 li, strong, a). Ogni affermazione è coperta da `inventario.md`. Link e credenziali della
-demo compilati il 2026-10-31 (demo e documentazione rispondono 200). Resta solo
-`[RELEASE_DATE]`, da compilare al prep del rilascio. Le parti marcate [DA VERIFICARE] sono
+demo compilati il 2026-10-31 (demo e documentazione rispondono 200). Data di rilascio
+compilata il 2026-11-02 (1.1.0), uguale al CHANGELOG. Le parti marcate [DA VERIFICARE] sono
 tutte chiuse dal 2026-10-30; titolo e tag approvati il 2026-10-31. Al rilascio la
 documentazione online va portata alla 1.1.0, perché la scheda dice che è la stessa del pacchetto.
 
@@ -270,7 +270,7 @@ changelog della scheda parte da qui. `[RELEASE_DATE]` si sostituisce il giorno d
 CHANGELOG (passo "Prep rilascio 1.1.0"): stesso giorno in entrambi.
 
 ```html
-<h3>1.1.0 - [RELEASE_DATE]</h3>
+<h3>1.1.0 - 2026-11-02</h3>
 <p>First release on CodeCanyon.</p>
 <ul>
 <li>Roles and permissions in the database, with inheritance and per-user overrides; fixed resolution order with a deactivated user denied everything and a user denial beating super admin.</li>

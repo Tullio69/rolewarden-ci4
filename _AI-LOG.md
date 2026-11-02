@@ -1837,3 +1837,10 @@ Formato di ogni voce:
 - Cosa ho fatto: aggiunto il parlato al video v2. Voce ElevenLabs "Brian" (premade, `nPczCjzI2devNBz1zQrb`), modello `eleven_multilingual_v2`, nove frasi in inglese in `assets/audio/vo/`. Scene ritemperate sulle frasi (opening 5,6 s, problem 9,6, panel 22,8 con una schermata per frase, features 10, closing 4,4; totale 52,4 s), barrature e righe delle funzioni sincronizzate sulle pause del parlato, musica circa 20 dB sotto la voce, mix finale a -14 LUFS. Check hyperframes pulito sui due formati. Le versioni senza voce restano in `renders/`.
 - Stato: completato
 - Note per il prossimo: la chiave ElevenLabs sta in `promo-video-v2/.elevenlabs-key` (cartella esclusa da git e dal pacchetto); ha il permesso di sintesi ma non `voices_read`. La riga 05 delle funzioni ("Dashboard and command search") non è nominata nel parlato.
+
+### [2026-11-02 22:00] - Claude (sessione cloud)
+- Tipo: release
+- Scope: `CHANGELOG.md`, `docs/codecanyon/scheda-prodotto.md`, `_AI-LOG.md`; tag `v1.1.0`; `build/1.1.0/`
+- Cosa ho fatto: rilascio 1.1.0. Data decisa da Fabio: 2026-11-02, uguale in CHANGELOG e scheda (sezione 6). Commit di rilascio e tag annotato `v1.1.0`, push di `main` e del tag su GitHub. I tre zip (`bin/build-package 1.1.0`) costruiti da un clone pulito del tag nella sessione cloud (PHP 8.3, Composer) e copiati in `build/1.1.0/`; gli zip 1.0.0 restano in `build/1.0.0/`.
+- Stato: completato
+- Note per il prossimo: `bin/build-package` cancella tutta `build/`: prima di rilanciarlo in locale spostare altrove `build/1.0.0/` e `build/1.1.0/`. Restano: staging e documentazione online alla 1.1.0, prova di aggiornamento dallo zip 1.0.0 sull'app 1.1.0, screenshot `01-dashboard.png` con "Customize" (rifare o accettare), ricerca marchi EUIPO, invio a CodeCanyon.

@@ -10,6 +10,7 @@ use RoleWarden\Account\ActivityLog;
 use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\Sessions;
 use RoleWarden\Install\Readiness;
+use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\DefaultRole;
 use RoleWarden\Settings\SavedValues;
 
@@ -22,6 +23,11 @@ Events::on('register', static function (User $user): void {
     $role = DefaultRole::role();
     ActivityLog::record('user.registered', 'user', (int) $user->id, ActivityLog::userLabel($user), $role !== null ? ['role' => $role['name']] : [], $user);
 });
+
+// model(Shield's UserModel) returns RoleWarden's when the host wired it as userProvider.
+// High priority: before the host's own listeners; spark has no pre_system, only pre_command.
+Events::on('pre_system', [UserModel::class, 'replaceShieldModel'], Events::PRIORITY_HIGH);
+Events::on('pre_command', [UserModel::class, 'replaceShieldModel'], Events::PRIORITY_HIGH);
 
 // Whether the module's tables exist is asked again on every request (worker mode keeps statics).
 Events::on('pre_system', [Readiness::class, 'forget']);

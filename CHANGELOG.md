@@ -15,8 +15,10 @@ version may require changes on your side, listed under "Upgrading". After any up
   `syncGroups()` on the user entity, and `UserModel::addToDefaultGroup()`, read and write
   RoleWarden roles instead of `auth_groups_users`. Each call is atomic and goes through the
   usual protections (last super admin, system roles). An unknown slug throws Shield's
-  `AuthorizationException` before anything is written. They work when the host loads users
-  through RoleWarden's `UserModel` (the configured user provider).
+  `AuthorizationException` before anything is written. With `Config\Auth::$userProvider` set to
+  RoleWarden's `UserModel` (or a subclass), `model(CodeIgniter\Shield\Models\UserModel::class)`
+  returns that model too, so they also work when the host loads users through Shield's model.
+  A direct `new CodeIgniter\Shield\Models\UserModel()` is not covered.
 - **Importing existing Shield groups** now reports every skipped group on the command line,
   with the users and permissions that are not carried over, and ends with a summary. The
   seeder no longer prints `Seeded:` during migrations. Setting `RoleWarden.importDeferred`

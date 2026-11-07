@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RoleWarden\Models;
 
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Shield\Entities\User as ShieldUser;
 use CodeIgniter\Shield\Models\UserModel as ShieldUserModel;
 use InvalidArgumentException;
@@ -22,6 +23,28 @@ class UserModel extends ShieldUserModel
     protected $beforeDelete = ['guardDelete'];
     protected $afterUpdate = ['saveEmailIdentity', 'forgetUsers'];
     protected $afterDelete = ['forgetUsers'];
+
+    /**
+     * When the host made this model Shield's userProvider, model(ShieldUserModel::class)
+     * returns it too, so users loaded through Shield's model get RoleWarden's entity.
+     * Covers model()/Factories only, not a direct `new ShieldUserModel()`.
+     * Called from Config/Events.php on pre_system (web) and pre_command (spark).
+     */
+    public static function replaceShieldModel(): void
+    {
+        $provider = config('Auth')->userProvider;
+
+        if (! is_a($provider, self::class, true)) {
+            return;
+        }
+
+        try {
+            Factories::define('models', ShieldUserModel::class, $provider);
+        } catch (InvalidArgumentException $e) {
+            // Something resolved Shield's model before us: keep the app running.
+            log_message('warning', 'RoleWarden: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Shield's version reads auth_groups_users; here the default is a RoleWarden role.

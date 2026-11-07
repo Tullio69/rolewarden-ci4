@@ -243,8 +243,12 @@ screens (profile and sessions) to people with panel access; unset means `all`.
 Shield's `addGroup()`, `removeGroup()` and `syncGroups()` on the user entity, and
 `UserModel::addToDefaultGroup()`, act on RoleWarden roles, not on `auth_groups_users`. Each
 call is atomic and keeps the protections (last super admin, system roles); an unknown slug
-throws Shield's `CodeIgniter\Shield\Authorization\AuthorizationException` before anything is written. They need the host to load users
-through RoleWarden's `UserModel`.
+throws Shield's `CodeIgniter\Shield\Authorization\AuthorizationException` before anything is written.
+With `$userProvider` set to RoleWarden's `UserModel` (or a subclass of it),
+`model(CodeIgniter\Shield\Models\UserModel::class)` returns that model too, so a host that
+loads users through Shield's model gets RoleWarden's entity with no change. This covers
+`model()` and `Factories` only: a direct `new CodeIgniter\Shield\Models\UserModel()` still
+returns Shield's entity.
 
 If the module is loaded but its tables are missing, the host keeps working with no roles and
 no permissions, group writes throw an error saying the module is not installed, and

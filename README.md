@@ -232,15 +232,18 @@ role), which the host app can change by extending that config class. When neithe
 setting nor that property has a value, the default is the host's `AuthGroups::$defaultGroup`
 if it names a RoleWarden role. An explicitly chosen "no role" stays no role.
 
-The same section holds the **panel role** (`RoleWarden.panelRole`, default `admin`): the
+The **panel role** is a Settings-library key, `RoleWarden.panelRole`, set outside the
+Settings screen (for example `setting('RoleWarden.panelRole', 'helpdesk-admin')`). It is the
 role that receives the module's new permissions when migrations and the seeder add them.
+Unset means `admin`; an empty string means no role receives them, so only the super admin
+sees them.
 **Who sees RoleWarden** (`RoleWarden.visibility`, `all` or `admins`) limits the account
-screens (profile, sessions, security) to people with panel access; unset means `all`.
+screens (profile and sessions) to people with panel access; unset means `all`.
 
 Shield's `addGroup()`, `removeGroup()` and `syncGroups()` on the user entity, and
 `UserModel::addToDefaultGroup()`, act on RoleWarden roles, not on `auth_groups_users`. Each
 call is atomic and keeps the protections (last super admin, system roles); an unknown slug
-throws `AuthorizationException` before anything is written. They need the host to load users
+throws Shield's `CodeIgniter\Shield\Authorization\AuthorizationException` before anything is written. They need the host to load users
 through RoleWarden's `UserModel`.
 
 If the module is loaded but its tables are missing, the host keeps working with no roles and

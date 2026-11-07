@@ -15,13 +15,14 @@ version may require changes on your side, listed under "Upgrading". After any up
   `syncGroups()` on the user entity, and `UserModel::addToDefaultGroup()`, read and write
   RoleWarden roles instead of `auth_groups_users`. Each call is atomic and goes through the
   usual protections (last super admin, system roles). An unknown slug throws Shield's
-  `AuthorizationException` before anything is written.
+  `AuthorizationException` before anything is written. They work when the host loads users
+  through RoleWarden's `UserModel` (the configured user provider).
 - **Importing existing Shield groups** now reports every skipped group on the command line,
   with the users and permissions that are not carried over, and ends with a summary. The
   seeder no longer prints `Seeded:` during migrations. Setting `RoleWarden.importDeferred`
   lets an installer take over the import: the migration skips it and leaves the groups alone.
 - **Who sees RoleWarden**, a setting (`RoleWarden.visibility`, `all` or `admins`) on the
-  Settings screen. With `admins`, the account screens (profile, sessions, security) of
+  Settings screen. With `admins`, the account screens (profile and sessions) of
   people without panel access answer 404.
 - **Module loaded, tables missing**: the host app keeps working (no roles, no permissions,
   nothing cached), group writes throw a clear error, and `/rolewarden` shows a "not installed

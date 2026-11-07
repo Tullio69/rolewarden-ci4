@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace RoleWarden\Models;
 
+use CodeIgniter\Shield\Entities\User as ShieldUser;
 use CodeIgniter\Shield\Models\UserModel as ShieldUserModel;
 use InvalidArgumentException;
 use RoleWarden\Entities\User;
+use RoleWarden\Settings\DefaultRole;
 
 /**
  * Set as Config\Auth::$userProvider in the host application. Deleting or
@@ -20,6 +22,14 @@ class UserModel extends ShieldUserModel
     protected $beforeDelete = ['guardDelete'];
     protected $afterUpdate = ['saveEmailIdentity', 'forgetUsers'];
     protected $afterDelete = ['forgetUsers'];
+
+    /**
+     * Shield's version reads auth_groups_users; here the default is a RoleWarden role.
+     */
+    public function addToDefaultGroup(ShieldUser $user): void
+    {
+        DefaultRole::assignTo((int) $user->id);
+    }
 
     /**
      * @param array<string, mixed> $data

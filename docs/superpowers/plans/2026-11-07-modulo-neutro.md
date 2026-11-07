@@ -250,3 +250,25 @@ Scelta mia, da confermare in revisione. La spec chiede "non ancora installato" i
   4. `php spark migrate -n RoleWarden` non deve mostrare righe `Seeded:` ripetute.
   5. Annotare l'esito nel registro `docs/rolewarden-install-log.md` dell'helpdesk.
 - [ ] **Step 4:** commit `docs: changelog e README per il modulo neutro`.
+
+### Task 9: il modello utenti di Shield chiesto dall'host restituisce le entità RoleWarden
+
+Aggiunto durante l'esecuzione (ruling del controller). La verifica sull'helpdesk ha mostrato che `App\Controllers\Admin\Users` carica gli utenti con `model(CodeIgniter\Shield\Models\UserModel::class)`. Riceve quindi entità Shield, e il suo `syncGroups()` scrive su `auth_groups_users`: il cambio di ruolo dall'host resta senza effetto (attrito 6b del collaudo, obiettivo 7 della spec).
+
+**Files:**
+- Modify: `src/Config/Events.php` oppure `src/Config/Registrar.php` (dove il modulo si aggancia all'avvio, prima del primo `model()`, sia nel ciclo web sia con spark)
+- Modify: `README.md` e `CHANGELOG.md` (togliere il vincolo "l'host deve caricare gli utenti con il UserModel di RoleWarden" e spiegare il nuovo comportamento e il suo limite)
+- Test: `tests/Integration/ShieldUserModelAliasTest.php`
+
+**Interfaces:**
+- Il modulo registra `CodeIgniter\Config\Factories::define('models', \CodeIgniter\Shield\Models\UserModel::class, \RoleWarden\Models\UserModel::class)`. Va fatto solo quando `config('Auth')->userProvider` è `RoleWarden\Models\UserModel` (o una sua sottoclasse), così un host che non ha cablato il provider non cambia comportamento.
+- Limite da documentare: copre `model()`/`Factories`, non un `new UserModel()` diretto.
+
+- [ ] **Step 1: test di integrazione.**
+  - `testShieldUserModelResolvesToRoleWardenModel`: con il provider cablato, `model(\CodeIgniter\Shield\Models\UserModel::class)` è un'istanza di `RoleWarden\Models\UserModel`.
+  - `testSyncGroupsThroughShieldModelWritesRoleWardenRoles`: un utente caricato con `model(ShieldUserModel)->findById($id)`, poi `syncGroups('operatore')`. `rolesOf === ['operatore']` e `auth_groups_users` resta vuota.
+  - `testNoAliasWithoutProvider`: con `userProvider` impostato al modello di Shield, `model(ShieldUserModel)` resta quello di Shield.
+- [ ] **Step 2:** eseguire i test. Atteso: FAIL.
+- [ ] **Step 3:** implementare e aggiornare README e CHANGELOG.
+- [ ] **Step 4:** suite completa. Atteso: PASS. Poi ripetere il controllo (c) del Task 8 sull'helpdesk: copiare `src/` in `modules/rolewarden/src` e chiamare `syncGroups` tramite il modello Shield. Annotare l'esito nel registro dell'helpdesk.
+- [ ] **Step 5:** commit `feat: il UserModel di Shield richiesto dall'host diventa quello di RoleWarden`.

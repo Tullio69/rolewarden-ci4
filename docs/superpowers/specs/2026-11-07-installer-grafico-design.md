@@ -89,19 +89,27 @@ Funziona già bene: i controlli `$user->can()` dell'host passano a RoleWarden se
 
 Il wizard deve essere raggiungibile appena il modulo è caricato, senza che l'host abbia ancora toccato `Routes.php` o `Auth.php`, e senza che il filtro `session` dell'host lo blocchi.
 
+I passi da 1 a 6 fanno solo domande e non scrivono niente. Il passo 7 applica tutto.
+
 1. **Requisiti:** riepilogo dei controlli già fatti nella fase 1.
 2. **Filtri dell'host:** l'installer rileva un filtro globale `session`, `group` o `permission` che coprirebbe `rolewarden/assets/*` o le rotte del modulo, mostra la riga di `app/Config/Filters.php` e propone l'eccezione con un'anteprima della modifica.
-3. **Tabelle:** migrazioni `-n RoleWarden` in un batch separato, poi il seed dei ruoli secondo la scelta del passo Ruoli. L'output non contiene righe ripetute e si chiude con un riepilogo.
-4. **Ruoli:** decisioni 3 e 4.
-5. **Ruolo per i nuovi iscritti:** decisione 6.
-6. **Super admin:** decisione 7.
-7. **Chi vede RoleWarden:** decisione 5.
-8. **Cablaggio:** `userProvider` in `Auth.php`, la riga di `RouteRegistrar` in `Routes.php`, e vista e redirect di login se previsti dalla scelta 7. Ogni modifica mostra l'anteprima prima di essere scritta.
-9. **Riepilogo:** l'elenco di cosa è stato fatto e quali file sono stati toccati. Il suggerimento di aggiungere un link al pannello nel menu dell'host. Il lock `installed.lock`.
+3. **Ruoli:** decisioni 3 e 4.
+4. **Ruolo per i nuovi iscritti:** decisione 6.
+5. **Super admin:** decisione 7.
+6. **Chi vede RoleWarden:** decisione 5.
+7. **Conferma e applica:** un riepilogo di tutte le scelte e le anteprime delle modifiche ai file. Alla conferma si eseguono, in quest'ordine:
+   1. migrazioni `-n RoleWarden` in un batch separato;
+   2. ruoli e import secondo le scelte;
+   3. super admin;
+   4. eccezione nei filtri;
+   5. cablaggio: `userProvider` in `Auth.php`, la riga di `RouteRegistrar` in `Routes.php`, e vista e redirect di login se previsti dal passo 6.
+
+   L'avanzamento si vede a schermo, senza righe ripetute.
+8. **Riepilogo:** l'elenco di cosa è stato fatto e quali file sono stati toccati. Il suggerimento di aggiungere un link al pannello nel menu dell'host. Il lock del flusso.
 
 L'ordine è voluto: le tabelle vengono prima del cablaggio, così l'app host funziona in ogni momento (anti-obiettivo 1).
 
-**Le domande vengono prima delle scritture** (scelta mia, dopo la revisione). I passi Ruoli, Nuovi iscritti, Super admin e Chi vede raccolgono solo le scelte: gruppi e assegnazioni si leggono da `AuthGroups` e da `auth_groups_users`, che esistono già prima delle migrazioni. Una volta confermate, il wizard applica tutto in quest'ordine: migrazioni, ruoli e import secondo le scelte, super admin, cablaggio.
+**Le domande vengono prima delle scritture** (scelta mia, dopo la revisione). Gruppi e assegnazioni si leggono da `AuthGroups` e da `auth_groups_users`, che esistono già prima delle migrazioni, quindi tutte le domande si possono fare senza toccare il database.
 - Sotto il wizard la migrazione `ImportAuthGroups` non importa niente, perché l'import lo fa il wizard con le scelte dell'utente. Il wizard lo segnala con un setting letto dalla migrazione.
 - Da CLI la migrazione resta com'è oggi, più l'avviso. `down()` continua a rimuovere per slug ciò che l'import ha creato.
 

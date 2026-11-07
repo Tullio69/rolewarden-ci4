@@ -228,9 +228,10 @@ Settings library, in the `settings` table Shield already uses. Its **Roles** sec
 holds the **default role for new users**. That role goes to everyone who
 registers through Shield and to everyone created from the panel. A super admin role cannot
 be the default. The starting value is `RoleWarden\Config\RoleWarden::$defaultRole` (`null`, no
-role), which the host app can change by extending that config class. When neither the
-setting nor that property has a value, the default is the host's `AuthGroups::$defaultGroup`
-if it names a RoleWarden role. An explicitly chosen "no role" stays no role.
+role), which the host app can change by extending that config class. While the setting has
+never been saved and that property is `null`, the default is the host's
+`AuthGroups::$defaultGroup` if it names a RoleWarden role. Saving the Settings screen stores
+the choice (`''` for "no role"), and from then on that fallback no longer applies.
 
 The **panel role** is a Settings-library key, `RoleWarden.panelRole`, set outside the
 Settings screen (for example `setting('RoleWarden.panelRole', 'helpdesk-admin')`). It is the
@@ -238,12 +239,17 @@ role that receives the module's new permissions when migrations and the seeder a
 Unset means `admin`; an empty string means no role receives them, so only the super admin
 sees them.
 **Who sees RoleWarden** (`RoleWarden.visibility`, `all` or `admins`) limits the account
-screens (profile and sessions) to people with panel access; unset means `all`.
+screens (profile and sessions) to people with panel access; unset means `all`. With `admins`,
+the others are sent from `/rolewarden` to Shield's `permission_denied` redirect, and their
+new sign-in email carries no sessions link.
 
 Shield's `addGroup()`, `removeGroup()` and `syncGroups()` on the user entity, and
 `UserModel::addToDefaultGroup()`, act on RoleWarden roles, not on `auth_groups_users`. Each
-call is atomic and keeps the protections (last super admin, system roles); an unknown slug
-throws Shield's `CodeIgniter\Shield\Authorization\AuthorizationException` before anything is written.
+call is atomic and keeps the protections (last super admin, system roles). In `addGroup()` and
+`syncGroups()` an unknown slug throws Shield's `CodeIgniter\Shield\Authorization\AuthorizationException`
+before anything is written; `removeGroup()` ignores it, as Shield does. These methods accept
+any RoleWarden role, `super-admin` included, and do not check who is calling: the host must
+decide who can reach the code that calls them.
 With `$userProvider` set to RoleWarden's `UserModel` (or a subclass of it),
 `model(CodeIgniter\Shield\Models\UserModel::class)` returns that model too, so a host that
 loads users through Shield's model gets RoleWarden's entity with no change. This covers

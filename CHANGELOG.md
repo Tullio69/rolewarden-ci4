@@ -14,8 +14,9 @@ version may require changes on your side, listed under "Upgrading". After any up
 - **Shield group methods act on RoleWarden roles**: `addGroup()`, `removeGroup()` and
   `syncGroups()` on the user entity, and `UserModel::addToDefaultGroup()`, read and write
   RoleWarden roles instead of `auth_groups_users`. Each call is atomic and goes through the
-  usual protections (last super admin, system roles). An unknown slug throws Shield's
-  `AuthorizationException` before anything is written. With `Config\Auth::$userProvider` set to
+  usual protections (last super admin, system roles). In `addGroup()` and `syncGroups()` an
+  unknown slug throws Shield's `AuthorizationException` before anything is written;
+  `removeGroup()` ignores it, as Shield does. With `Config\Auth::$userProvider` set to
   RoleWarden's `UserModel` (or a subclass), `model(CodeIgniter\Shield\Models\UserModel::class)`
   returns that model too, so they also work when the host loads users through Shield's model.
   A direct `new CodeIgniter\Shield\Models\UserModel()` is not covered.
@@ -25,21 +26,39 @@ version may require changes on your side, listed under "Upgrading". After any up
   lets an installer take over the import: the migration skips it and leaves the groups alone.
 - **Who sees RoleWarden**, a setting (`RoleWarden.visibility`, `all` or `admins`) on the
   Settings screen. With `admins`, the account screens (profile and sessions) of
-  people without panel access answer 404.
+  people without panel access answer 404; `/rolewarden` sends them to Shield's
+  `permission_denied` redirect, and their new sign-in email has no sessions link.
 - **Module loaded, tables missing**: the host app keeps working (no roles, no permissions,
   nothing cached), group writes throw a clear error, and `/rolewarden` shows a "not installed
   yet" page (HTTP 503) with a link to the installer.
 
 ### Changed
 - The default role for new users now falls back to the host's `AuthGroups::$defaultGroup`
-  when neither the setting nor `RoleWarden\Config\RoleWarden::$defaultRole` has a value. An
-  explicitly chosen "no role" stays no role.
+  when the setting has never been saved and `RoleWarden\Config\RoleWarden::$defaultRole` is
+  `null`. Saving the Settings screen stores the choice, `''` for "no role", and from then on
+  the fallback no longer applies.
 
-### Compatibility
-With the new settings unset, an existing 1.1.0 install behaves as before: panel role `admin`,
-visibility `all`. The one exception is the default-role fallback above: an app whose
-`$defaultGroup` names an existing RoleWarden role and which never chose a default role now
-gives that role to new users. Choose "no role" on the Settings screen to keep the old result.
+### Upgrading
+With the new settings unset, an existing 1.1.0 install keeps panel role `admin` and
+visibility `all`. What does change:
+
+- **Default role.** An app whose `$defaultGroup` names an existing RoleWarden role and which
+  has never saved the Settings screen now gives that role to new users. An install that has
+  saved the Settings screen at least once already stores `''` and is not affected. To keep
+  the old result, save the Settings screen with "no role".
+- **Shield's user model.** With `$userProvider` set to RoleWarden's `UserModel`,
+  `model(CodeIgniter\Shield\Models\UserModel::class)` returns RoleWarden's model, with its
+  guards: users must be written by primary key, and the last super admin cannot be
+  deactivated or deleted. `model('UserModel')` with the short name and
+  `new CodeIgniter\Shield\Models\UserModel()` are not covered by the alias.
+- **Group methods now write.** The host's `addGroup()` and `syncGroups()` calls, which had no
+  effect before, now change RoleWarden roles. `syncGroups('admin')` assigns the system role
+  `admin`, with every panel permission.
+- **Any role, `super-admin` included.** The group methods accept every RoleWarden role,
+  `super-admin` too. They do not check who is calling: the host decides who may reach the
+  code that calls them.
+- **`php spark shield:user addgroup`** writes RoleWarden roles, but Shield still validates the
+  group name against `Config\AuthGroups`.
 
 ## [1.1.0] - 2026-11-02
 

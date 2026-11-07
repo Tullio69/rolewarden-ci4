@@ -135,14 +135,82 @@ final class ShieldGroupMethodsTest extends DatabaseTestCase
 
     public function testCanReflectsTheChangeImmediately(): void
     {
-        $this->makeRole('operatore');
+        $roleId = $this->makeRole('operatore');
+        $now    = date('Y-m-d H:i:s');
+        $this->db->table(config('RoleWarden')->table('permissions'))->insert(['slug' => 'x.y', 'area' => 'x', 'is_system' => 0, 'created_at' => $now, 'updated_at' => $now]);
+        $this->db->table(config('RoleWarden')->table('role_permissions'))->insert(['role_id' => $roleId, 'permission_id' => (int) $this->db->insertID()]);
         $id = $this->makeUser('h@example.test');
         $u  = $this->user($id);
-        $this->assertFalse($u->inGroup('operatore'));
-        $this->assertFalse($u->can('x.y'));
+        $this->assertFalse($u->can('x.y')); // warms the resolver cache
 
         $u->addGroup('operatore');
 
-        $this->assertTrue($u->inGroup('operatore'));
+        $this->assertTrue($u->can('x.y'));
+    }
+
+    public function testSyncGroupsRollsBackWhenARevokeIsRefused(): void
+    {
+        $this->makeRole('boss', 1);
+        $this->makeRole('cliente');
+        $id = $this->makeUser('i@example.test');
+        $u  = $this->user($id);
+        $u->addGroup('cliente', 'boss');
+
+        try {
+            $u->syncGroups();
+            $this->fail('expected ProtectionException');
+        } catch (ProtectionException) {
+            $this->assertSame(['boss', 'cliente'], $this->rolesOf($id));
+        }
+    }
+
+    public function testRemoveGroupRollsBackWhenARevokeIsRefused(): void
+    {
+        $this->makeRole('boss', 1);
+        $this->makeRole('cliente');
+        $id = $this->makeUser('j@example.test');
+        $u  = $this->user($id);
+        $u->addGroup('cliente', 'boss');
+
+        try {
+            $u->removeGroup('cliente', 'boss');
+            $this->fail('expected ProtectionException');
+        } catch (ProtectionException) {
+            $this->assertSame(['boss', 'cliente'], $this->rolesOf($id));
+        }
+    }
+
+    public function testSyncGroupsCanSwapBetweenSuperAdminRoles(): void
+    {
+        $this->makeRole('boss1', 1);
+        $this->makeRole('boss2', 1);
+        $id = $this->makeUser('k@example.test');
+        $u  = $this->user($id);
+        $u->addGroup('boss1');
+
+        $u->syncGroups('boss2');
+
+        $this->assertSame(['boss2'], $this->rolesOf($id));
+    }
+
+    public function testSoftDeletedRoleIsAnUnknownGroup(): void
+    {
+        $roleId = $this->makeRole('vecchio');
+        model(\RoleWarden\Models\RoleModel::class)->delete($roleId);
+        $id = $this->makeUser('l@example.test');
+
+        $this->expectException(AuthorizationException::class);
+        $this->user($id)->addGroup('vecchio');
+    }
+
+    public function testAddToDefaultGroupWithoutDefaultRoleAssignsNothing(): void
+    {
+        helper('setting');
+        setting(DefaultRole::KEY, '');
+        $id = $this->makeUser('m@example.test');
+
+        model(UserModel::class)->addToDefaultGroup($this->user($id));
+
+        $this->assertSame([], $this->rolesOf($id));
     }
 }

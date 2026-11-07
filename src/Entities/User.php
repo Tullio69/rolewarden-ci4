@@ -46,38 +46,63 @@ class User extends ShieldUser
 
     public function addGroup(string ...$groups): static
     {
-        $roles = new UserRoles();
+        $ids = $this->roleIds($groups);
 
-        foreach ($this->roleIds($groups) as $roleId) {
-            $roles->assign((int) $this->id, $roleId);
-        }
-
-        return $this;
+        return $this->atomically(function (UserRoles $roles) use ($ids): void {
+            foreach ($ids as $roleId) {
+                $roles->assign((int) $this->id, $roleId);
+            }
+        });
     }
 
     public function removeGroup(string ...$groups): static
     {
-        $roles = new UserRoles();
+        $ids = $this->roleIds($groups);
 
-        foreach ($this->roleIds($groups) as $roleId) {
-            $roles->revoke((int) $this->id, $roleId);
-        }
-
-        return $this;
+        return $this->atomically(function (UserRoles $roles) use ($ids): void {
+            foreach ($ids as $roleId) {
+                $roles->revoke((int) $this->id, $roleId);
+            }
+        });
     }
 
+    /**
+     * Assigns first, then revokes the rest, so swapping between two super admin roles passes the
+     * last-super-admin protection; all in one transaction so a refusal leaves the roles untouched.
+     */
     public function syncGroups(string ...$groups): static
     {
         $want    = $this->roleIds($groups);
-        $roles   = new UserRoles();
-        $current = $this->roleIds($this->getGroups());
+        $extra   = array_diff($this->roleIds($this->getGroups()), $want);
 
-        foreach (array_diff($current, $want) as $roleId) {
-            $roles->revoke((int) $this->id, $roleId);
-        }
+        return $this->atomically(function (UserRoles $roles) use ($want, $extra): void {
+            foreach ($want as $roleId) {
+                $roles->assign((int) $this->id, $roleId);
+            }
 
-        foreach ($want as $roleId) {
-            $roles->assign((int) $this->id, $roleId);
+            foreach ($extra as $roleId) {
+                $roles->revoke((int) $this->id, $roleId);
+            }
+        });
+    }
+
+    /**
+     * @param callable(UserRoles): void $writes
+     */
+    private function atomically(callable $writes): static
+    {
+        $db = db_connect();
+        $db->transBegin();
+
+        try {
+            $writes(new UserRoles());
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
+            // The resolver cache may have been dropped mid-way; drop it again after the rollback.
+            service('rolewarden')->forgetUser((int) $this->id);
+
+            throw $e;
         }
 
         return $this;

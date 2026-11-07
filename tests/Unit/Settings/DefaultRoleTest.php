@@ -25,4 +25,13 @@ final class DefaultRoleTest extends TestCase
         $this->assertSame('defaultRoleSuperAdmin', DefaultRole::reject(['id' => 1, 'slug' => 'super-admin', 'is_super_admin' => 1]));
         $this->assertSame('defaultRoleSuperAdmin', DefaultRole::reject(['id' => 1, 'slug' => 'super-admin', 'is_super_admin' => '1']));
     }
+
+    public function testSlugFromFallsBackToTheHostGroupOnlyWhenNothingIsSet(): void
+    {
+        $this->assertSame('cliente', DefaultRole::slugFrom(null, null, 'cliente'));
+        $this->assertSame('', DefaultRole::slugFrom('', null, 'cliente'));
+        $this->assertSame('viewer', DefaultRole::slugFrom('viewer', null, 'cliente'));
+        $this->assertSame('author', DefaultRole::slugFrom(null, 'author', 'cliente'));
+        $this->assertSame('', DefaultRole::slugFrom(null, null, null));
+    }
 }

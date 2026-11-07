@@ -26,15 +26,26 @@ final class DefaultRole
     public static function role(): ?array
     {
         helper('setting');
-        $slug = setting(self::KEY);
+        $slug = self::slugFrom(setting(self::KEY), config('RoleWarden')->defaultRole, config('AuthGroups')->defaultGroup ?? null);
 
-        if (! is_string($slug) || $slug === '') {
+        if ($slug === '') {
             return null;
         }
 
         $role = model(RoleModel::class)->where('slug', $slug)->first();
 
         return self::reject($role) === null ? $role : null;
+    }
+
+    /**
+     * First set value among the stored setting, Config\RoleWarden::$defaultRole and the host's
+     * Shield default group. A stored '' is the panel's "no role" and inherits nothing.
+     */
+    public static function slugFrom(mixed $stored, ?string $configDefault, ?string $hostDefaultGroup): string
+    {
+        $slug = $stored ?? $configDefault ?? $hostDefaultGroup;
+
+        return is_string($slug) ? $slug : '';
     }
 
     /**

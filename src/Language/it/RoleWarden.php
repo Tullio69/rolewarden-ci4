@@ -100,6 +100,11 @@ return [
         'adminFailed' => 'Non è stato possibile creare l\'account: manca il ruolo super-admin. Ricarica la pagina ed esegui di nuovo il passo precedente.',
         'doneAs' => 'Accedi come {0}.',
         'signIn' => 'Accedi',
+        'import' => [
+            'skipped' => 'Gruppo "{0}" non importato: esiste già il ruolo "{0}". {1, plural, one{# utente perde} other{# utenti perdono}} {2, plural, one{# permesso} other{# permessi}}: concedili dal pannello (Ruoli).',
+            'skippedNoLoss' => 'Gruppo "{0}" non importato: esiste già il ruolo "{0}".',
+            'summary' => 'Importati: {0}. Saltati: {1}.',
+        ],
     ],
     'panel' => [
         'save' => 'Salva',

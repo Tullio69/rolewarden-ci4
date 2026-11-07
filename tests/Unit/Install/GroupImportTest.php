@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+namespace RoleWarden\Tests\Unit\Install;
+
+use CodeIgniter\Test\CIUnitTestCase;
+use RoleWarden\Install\GroupImport;
+
+final class GroupImportTest extends CIUnitTestCase
+{
+    private function plan(int $users = 1): array
+    {
+        return GroupImport::plan(
+            ['admin', 'operatore', 'cliente'],
+            ['admin' => 14, 'operatore' => 3],
+            ['admin' => $users, 'operatore' => 5],
+            ['admin', 'user', 'super-admin'],
+        );
+    }
+
+    public function testCollidingGroupIsSkippedWithCounts(): void
+    {
+        $plan = $this->plan();
+
+        $this->assertSame(['operatore', 'cliente'], $plan['import']);
+        $this->assertSame(['slug' => 'admin', 'users' => 1, 'permissions' => 14], $plan['skipped'][0]);
+    }
+
+    public function testReportItalian(): void
+    {
+        $this->assertSame([
+            'Gruppo "admin" non importato: esiste già il ruolo "admin". 1 utente perde 14 permessi: concedili dal pannello (Ruoli).',
+            'Importati: operatore, cliente. Saltati: admin.',
+        ], GroupImport::report($this->plan(), 'it'));
+    }
+
+    public function testReportPlural(): void
+    {
+        $this->assertStringContainsString('3 utenti perdono 14 permessi', GroupImport::report($this->plan(3), 'it')[0]);
+        $this->assertStringContainsString('3 users lose 14 permissions', GroupImport::report($this->plan(3), 'en')[0]);
+        $this->assertStringContainsString('1 user loses 14 permissions', GroupImport::report($this->plan(1), 'en')[0]);
+    }
+
+    public function testNoCollisionNoSkippedLine(): void
+    {
+        $plan = GroupImport::plan(['operatore'], [], [], ['admin']);
+
+        $this->assertSame([], $plan['skipped']);
+        $this->assertSame([], GroupImport::report($plan, 'it'));
+    }
+}

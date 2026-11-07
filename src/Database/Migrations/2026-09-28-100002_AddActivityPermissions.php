@@ -19,7 +19,7 @@ class AddActivityPermissions extends Migration
 
     public function up(): void
     {
-        config('Database')->seeder()->call(RoleWardenSeeder::class);
+        config('Database')->seeder()->setSilent(true)->call(RoleWardenSeeder::class);
         $this->forgetPanelRole();
     }
 

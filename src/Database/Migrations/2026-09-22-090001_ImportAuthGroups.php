@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace RoleWarden\Database\Migrations;
 
+use CodeIgniter\CLI\CLI;
 use CodeIgniter\Database\Migration;
 use RoleWarden\Database\Seeds\RoleWardenSeeder;
+use RoleWarden\Install\GroupImport;
 
 /**
  * Entry path for an app that already has Shield configured: reads the host's
@@ -42,28 +44,15 @@ class ImportAuthGroups extends Migration
 
     public function up(): void
     {
-        config('Database')->seeder()->call(RoleWardenSeeder::class);
+        config('Database')->seeder()->setSilent(true)->call(RoleWardenSeeder::class);
+
+        if (setting(GroupImport::DEFERRED) === true) {
+            return; // the installer wizard imports the groups
+        }
 
         $cfg = config('RoleWarden');
         $auth = config('AuthGroups');
         $now = date('Y-m-d H:i:s');
-
-        $roleIds = [];
-
-        foreach ($auth->groups as $slug => $info) {
-            $id = $this->insertNew($cfg->table('roles'), $slug, [
-                'name' => $info['title'] ?? $slug,
-                'description' => $info['description'] ?? null,
-                'is_system' => 0,
-                'is_super_admin' => 0,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
-
-            if ($id !== null) {
-                $roleIds[$slug] = $id;
-            }
-        }
 
         $permissionIds = [];
 
@@ -76,6 +65,36 @@ class ImportAuthGroups extends Migration
                 'area' => substr($slug, 0, strpos($slug, '.')),
                 'description' => $description,
                 'is_system' => 0,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+        }
+
+        $memberCounts = [];
+
+        foreach ($this->db->table('auth_groups_users')->select('`group`, COUNT(*) AS n')->groupBy('group')->get()->getResultArray() as $row) {
+            $memberCounts[$row['group']] = (int) $row['n'];
+        }
+
+        $matrixCounts = array_map(fn (array $p): int => count($this->expand($p, $permissionIds)), $auth->matrix);
+        $existing = array_column($this->db->table($cfg->table('roles'))->select('slug')->get()->getResultArray(), 'slug');
+        $plan = GroupImport::plan(array_keys($auth->groups), $matrixCounts, $memberCounts, $existing);
+
+        if (is_cli()) {
+            foreach (GroupImport::report($plan, service('request')->getLocale()) as $line) {
+                CLI::write($line, 'yellow');
+            }
+        }
+
+        $roleIds = [];
+
+        foreach ($plan['import'] as $slug) {
+            $info = $auth->groups[$slug];
+            $roleIds[$slug] = $this->insertNew($cfg->table('roles'), $slug, [
+                'name' => $info['title'] ?? $slug,
+                'description' => $info['description'] ?? null,
+                'is_system' => 0,
+                'is_super_admin' => 0,
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);

@@ -22,7 +22,7 @@ class AddDashboardPermissions extends Migration
 
     public function up(): void
     {
-        config('Database')->seeder()->call(RoleWardenSeeder::class);
+        config('Database')->seeder()->setSilent(true)->call(RoleWardenSeeder::class);
 
         $cfg = config('RoleWarden');
         $grants = $this->db->table($cfg->table('role_permissions'));

@@ -8,6 +8,8 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\Shield\Test\AuthenticationTesting;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Config\Factories;
+use CodeIgniter\Events\Events;
+use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\ActivityLog;
 use RoleWarden\Config\RouteRegistrar;
 use RoleWarden\Models\UserModel;
@@ -72,6 +74,42 @@ final class AccountVisibilityTest extends DatabaseTestCase
 
         // Not to rolewarden/profile, a 404 for them: with $redirects['login'] = 'rolewarden' every plain user lands here.
         $this->as($id)->get('rolewarden')->assertRedirectTo(config('Auth')->permissionDeniedRedirect());
+    }
+
+    public function testNewSignInMailLinksTheSessionsOnlyToWhoCanOpenThem(): void
+    {
+        $id = $this->makeUser('mail@example.com');
+        // The layout escapes the href for an attribute, so the link is checked through its label.
+        $this->assertStringContainsString(lang('RoleWarden.mail.reviewSessions'), $this->newSignInMail($id));
+
+        setting(Visibility::KEY, Visibility::ADMINS);
+        $html = $this->newSignInMail($id);
+
+        $this->assertStringNotContainsString(lang('RoleWarden.mail.reviewSessions'), $html);
+        $this->assertStringNotContainsString('<a href', $html);
+        $this->assertStringContainsString(esc(lang('RoleWarden.mail.newSignIn.notYouNoSessions')), $html);
+    }
+
+    /** The new sign-in email for $id, rendered as it would be sent; nothing is sent. */
+    private function newSignInMail(int $id): string
+    {
+        $this->db->table(config('Auth')->tables['logins'])->insert([
+            'ip_address' => '10.9.9.9', 'id_type' => 'email_password', 'identifier' => 'mail@example.com',
+            'user_id' => $id, 'date' => date('Y-m-d H:i:s', time() - 3600), 'success' => 1,
+        ]);
+        $messages = [];
+        $catch = static function (array $message) use (&$messages): bool {
+            $messages[] = $message;
+
+            return false;
+        };
+        SecurityMail::onLogin((new UserModel())->findById($id));
+        Events::on('rolewarden.mail', $catch, Events::PRIORITY_HIGH);
+        SecurityMail::flush();
+        Events::removeListener('rolewarden.mail', $catch);
+        $this->assertCount(1, $messages);
+
+        return view('RoleWarden\Views\emails\\' . $messages[0]['view'], $messages[0]['data']);
     }
 
     public function testAdminsModeShowsProfileToPanelRole(): void

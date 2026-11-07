@@ -29,6 +29,7 @@ return [
             'title' => 'Nuovo accesso al tuo account',
             'body' => 'Il tuo account è appena stato usato per accedere da un dispositivo o da un indirizzo mai usati prima.',
             'notYou' => 'Se l\'accesso era tuo, non devi fare nulla. Se non lo era, cambia subito la password e chiudi le sessioni che non riconosci.',
+            'notYouNoSessions' => 'Se non sei stato tu, cambia la password o avvisa un amministratore.',
         ],
         'passwordChanged' => [
             'subject' => 'La tua password di {0} è stata cambiata',

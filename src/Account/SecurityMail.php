@@ -11,6 +11,7 @@ use RoleWarden\Install\Readiness;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\SignIn;
 use RoleWarden\Settings\UserLanguage;
+use RoleWarden\Settings\Visibility;
 
 /**
  * Security emails (SPEC "Sistema di notifiche", v1.0): sign-in from a new
@@ -49,7 +50,8 @@ final class SecurityMail
         $device = self::device($userAgent);
 
         if (self::isNewAccess($ip, $device, $seen)) {
-            self::queue($user, 'newSignIn', 'new_sign_in', ['ip' => $ip, 'device' => $device, 'at' => time()]);
+            // The sessions link only for whom the screen opens: visibility "admins" hides it from plain users.
+            self::queue($user, 'newSignIn', 'new_sign_in', ['ip' => $ip, 'device' => $device, 'at' => time(), 'sessions' => Visibility::allowsUser((int) $user->id)]);
         }
     }
 

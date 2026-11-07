@@ -29,6 +29,7 @@ return [
             'title' => 'New sign-in to your account',
             'body' => 'Your account was just used to sign in from a device or address it has not used before.',
             'notYou' => 'If this was you, there is nothing to do. If it was not, change your password now and sign out the sessions you do not recognise.',
+            'notYouNoSessions' => 'If this wasn\'t you, change your password or tell an administrator.',
         ],
         'passwordChanged' => [
             'subject' => 'Your {0} password was changed',

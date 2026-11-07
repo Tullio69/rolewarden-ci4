@@ -56,9 +56,12 @@ class User extends ShieldUser
         });
     }
 
+    /**
+     * Unknown slugs are ignored, as in Shield: there is nothing to remove.
+     */
     public function removeGroup(string ...$groups): static
     {
-        $ids = $this->roleIds($groups);
+        $ids = $this->roleIds($groups, true);
 
         return $this->atomically(function (UserRoles $roles) use ($ids): void {
             foreach ($ids as $roleId) {
@@ -106,11 +109,15 @@ class User extends ShieldUser
             throw $e;
         }
 
+        // Dropped mid-way too, but a concurrent request may have cached the pre-commit roles since.
+        service('rolewarden')->forgetUser((int) $this->id);
+
         return $this;
     }
 
     /**
-     * Resolves every slug before any write, so an unknown one changes nothing.
+     * Resolves every slug before any write, so an unknown one changes nothing,
+     * or, with $skipUnknown, is left out.
      *
      * @param list<string> $slugs
      *
@@ -118,7 +125,7 @@ class User extends ShieldUser
      *
      * @throws AuthorizationException
      */
-    private function roleIds(array $slugs): array
+    private function roleIds(array $slugs, bool $skipUnknown = false): array
     {
         // No roles table yet: reads answer empty, but a write asked for cannot be done.
         if (! Readiness::tablesExist()) {
@@ -133,6 +140,10 @@ class User extends ShieldUser
 
         foreach ($slugs as $slug) {
             $role = model(RoleModel::class)->where('slug', strtolower($slug))->first();
+
+            if ($role === null && $skipUnknown) {
+                continue;
+            }
 
             if ($role === null) {
                 throw AuthorizationException::forUnknownGroup($slug);

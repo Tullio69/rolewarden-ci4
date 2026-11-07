@@ -76,6 +76,20 @@ final class ShieldGroupMethodsTest extends DatabaseTestCase
         $this->assertSame(['cliente'], $this->rolesOf($id));
     }
 
+    public function testRemoveGroupIgnoresUnknownGroups(): void
+    {
+        $this->makeRole('operatore');
+        $this->makeRole('cliente');
+        $id = $this->makeUser('n@example.test');
+        $u  = $this->user($id);
+        $u->addGroup('operatore', 'cliente');
+
+        // As in Shield: a group that does not exist is not there to remove.
+        $u->removeGroup('ghost', 'operatore');
+
+        $this->assertSame(['cliente'], $this->rolesOf($id));
+    }
+
     public function testUnknownGroupThrowsAndWritesNothing(): void
     {
         $this->makeRole('operatore');

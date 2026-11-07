@@ -5,6 +5,7 @@
  *
  * @var list<array<string, mixed>> $roles       roles that may be the default (no super admin)
  * @var string                     $defaultRole slug, '' for none
+ * @var string                     $visibility  Visibility::ALL or ADMINS
  * @var array<string, int>         $signIn      RoleWarden\Settings\SignIn::values()
  * @var int                        $retention   activity log retention in days, 0 = forever
  * @var int                        $logEntries
@@ -17,8 +18,9 @@
 
 use RoleWarden\Account\ActivityLog;
 use RoleWarden\Settings\SignIn;
+use RoleWarden\Settings\Visibility;
 
-$saved = ['default_role' => $defaultRole, 'activity_retention' => (string) $retention, 'sidebar_today' => $today ? '1' : '0'] + array_map('strval', $signIn);
+$saved = ['default_role' => $defaultRole, 'activity_retention' => (string) $retention, 'sidebar_today' => $today ? '1' : '0', 'visibility' => $visibility] + array_map('strval', $signIn);
 // After a rejected save the controls show what was posted, marked as changed.
 $shown = [];
 foreach ($saved as $key => $value) {
@@ -36,6 +38,7 @@ $settingsConfig = [
         'default_role' => lang('RoleWarden.panel.settings.defaultRole'),
         'activity_retention' => lang('RoleWarden.panel.settings.retention'),
         'sidebar_today' => lang('RoleWarden.panel.settings.today'),
+        'visibility' => lang('RoleWarden.panel.settings.visibility'),
     ],
     'labels' => ['one' => lang('RoleWarden.panel.settings.unsavedOne'), 'many' => lang('RoleWarden.panel.settings.unsavedMany')],
 ];
@@ -158,6 +161,21 @@ $logNote = lang('RoleWarden.panel.settings.entries', [$logEntries]);
         </td>
         <td class="rw-anno"><span class="rw-note" x-text="isChanged('default_role') ? '<?= $changedNote ?>' : ''"></span></td>
       </tr>
+      <tr :class="{ 'rw-changed': isChanged('visibility') }">
+        <td class="rw-m-num"><?= str_pad((string) (count($rows) + 2), 2, '0', STR_PAD_LEFT) ?></td>
+        <th class="rw-l-key" scope="row">
+          <label for="rw-visibility"><?= lang('RoleWarden.panel.settings.visibility') ?></label>
+          <small><?= lang('RoleWarden.panel.settings.visibilityHelp') ?></small>
+        </th>
+        <td class="rw-l-value">
+          <select class="rw-select" id="rw-visibility" name="visibility" x-model="cur.visibility"<?= $disabled ?>>
+            <?php foreach ([Visibility::ALL => 'visibilityAll', Visibility::ADMINS => 'visibilityAdmins'] as $value => $label) : ?>
+              <option value="<?= $value ?>"<?= $value === $shown['visibility'] ? ' selected' : '' ?>><?= lang('RoleWarden.panel.settings.' . $label) ?></option>
+            <?php endforeach ?>
+          </select>
+        </td>
+        <td class="rw-anno"><span class="rw-note" x-text="isChanged('visibility') ? '<?= $changedNote ?>' : ''"></span></td>
+      </tr>
     </tbody>
   </table>
 
@@ -165,7 +183,7 @@ $logNote = lang('RoleWarden.panel.settings.entries', [$logEntries]);
   <table class="rw-ledger rw-settings">
     <tbody>
       <tr :class="{ 'rw-changed': isChanged('activity_retention') }">
-        <td class="rw-m-num"><?= str_pad((string) (count($rows) + 2), 2, '0', STR_PAD_LEFT) ?></td>
+        <td class="rw-m-num"><?= str_pad((string) (count($rows) + 3), 2, '0', STR_PAD_LEFT) ?></td>
         <th class="rw-l-key" scope="row">
           <label for="rw-activity_retention"><?= lang('RoleWarden.panel.settings.retention') ?></label>
           <small><?= lang('RoleWarden.panel.settings.retentionHelp') ?></small>
@@ -187,7 +205,7 @@ $logNote = lang('RoleWarden.panel.settings.entries', [$logEntries]);
   <table class="rw-ledger rw-settings">
     <tbody>
       <tr :class="{ 'rw-changed': isChanged('sidebar_today') }">
-        <td class="rw-m-num"><?= str_pad((string) (count($rows) + 3), 2, '0', STR_PAD_LEFT) ?></td>
+        <td class="rw-m-num"><?= str_pad((string) (count($rows) + 4), 2, '0', STR_PAD_LEFT) ?></td>
         <th class="rw-l-key" scope="row">
           <label for="rw-sidebar_today"><?= lang('RoleWarden.panel.settings.today') ?></label>
           <small><?= lang('RoleWarden.panel.settings.todayHelp') ?></small>

@@ -53,15 +53,15 @@ class RouteRegistrar
                 $routes->post('users/(:num)/sessions/remembered/(:num)/revoke', 'AccountController::revokeUserRemembered/$1/$2', ['filter' => 'can:sessions.revoke']);
 
                 // The signed-in user's own account: no permission beyond being signed in.
-                $routes->get('profile', 'AccountController::profile');
-                $routes->post('profile/password', 'AccountController::password');
-                $routes->post('profile/language', 'AccountController::language');
-                $routes->get('sessions', 'AccountController::sessions');
+                $routes->get('profile', 'AccountController::profile', ['filter' => 'rw-account']);
+                $routes->post('profile/password', 'AccountController::password', ['filter' => 'rw-account']);
+                $routes->post('profile/language', 'AccountController::language', ['filter' => 'rw-account']);
+                $routes->get('sessions', 'AccountController::sessions', ['filter' => 'rw-account']);
                 // Command search: every result is filtered by the user's own permissions.
                 $routes->get('search', 'SearchController::index');
-                $routes->post('sessions/revoke-all', 'AccountController::revokeOwnAll');
-                $routes->post('sessions/(:num)/revoke', 'AccountController::revokeOwn/$1');
-                $routes->post('sessions/remembered/(:num)/revoke', 'AccountController::revokeOwnRemembered/$1');
+                $routes->post('sessions/revoke-all', 'AccountController::revokeOwnAll', ['filter' => 'rw-account']);
+                $routes->post('sessions/(:num)/revoke', 'AccountController::revokeOwn/$1', ['filter' => 'rw-account']);
+                $routes->post('sessions/remembered/(:num)/revoke', 'AccountController::revokeOwnRemembered/$1', ['filter' => 'rw-account']);
 
                 $routes->get('roles', 'RolesController::index', ['filter' => 'can:roles.view']);
                 $routes->get('roles/create', 'RolesController::create', ['filter' => 'can:roles.create']);

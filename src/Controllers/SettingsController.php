@@ -11,6 +11,7 @@ use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\DefaultRole;
 use RoleWarden\Settings\Sidebar;
 use RoleWarden\Settings\SignIn;
+use RoleWarden\Settings\Visibility;
 
 /**
  * Settings screen (docs/design-system/components/Settings). Values live in
@@ -34,6 +35,7 @@ class SettingsController extends BaseController
         return rw_panel('RoleWarden\Views\settings\index', [
             'roles' => model(RoleModel::class)->where('is_super_admin', 0)->orderBy('name')->findAll(),
             'defaultRole' => $defaultRole['slug'] ?? '',
+            'visibility' => Visibility::mode(),
             'signIn' => SignIn::values(),
             'retention' => (int) setting(self::RETENTION),
             'today' => Sidebar::showsToday(),
@@ -56,6 +58,7 @@ class SettingsController extends BaseController
         $rules = SignIn::rules() + [
             'activity_retention' => 'required|in_list[' . implode(',', SignIn::choices(ActivityLog::RETENTIONS, (int) setting(self::RETENTION))) . ']',
             'sidebar_today' => 'required|in_list[0,1]',
+            'visibility' => 'required|in_list[' . Visibility::ALL . ',' . Visibility::ADMINS . ']',
         ];
 
         if (! $this->validateData($post, $rules, $this->messages())) {
@@ -72,16 +75,17 @@ class SettingsController extends BaseController
             }
         }
 
-        $before = ['default_role' => DefaultRole::role()['slug'] ?? '', 'activity_retention' => (int) setting(self::RETENTION), 'sidebar_today' => Sidebar::showsToday()] + SignIn::values();
+        $before = ['default_role' => DefaultRole::role()['slug'] ?? '', 'activity_retention' => (int) setting(self::RETENTION), 'sidebar_today' => Sidebar::showsToday(), 'visibility' => Visibility::mode()] + SignIn::values();
 
         setting(DefaultRole::KEY, $slug);
         SignIn::save($post);
+        setting(Visibility::KEY, $post['visibility']);
         setting(self::RETENTION, (int) $post['activity_retention']);
         setting(Sidebar::TODAY, $post['sidebar_today'] === '1');
         setting(self::CHANGED_AT, date('Y-m-d H:i:s'));
         setting(self::CHANGED_BY, (int) auth()->id());
 
-        $changes = ActivityLog::diff($before, ['default_role' => $slug, 'activity_retention' => (int) $post['activity_retention'], 'sidebar_today' => $post['sidebar_today'] === '1'] + SignIn::values());
+        $changes = ActivityLog::diff($before, ['default_role' => $slug, 'activity_retention' => (int) $post['activity_retention'], 'sidebar_today' => $post['sidebar_today'] === '1', 'visibility' => $post['visibility']] + SignIn::values());
 
         if ($changes !== []) {
             ActivityLog::record('settings.updated', 'settings', null, lang('RoleWarden.panel.settings.title'), $changes);
@@ -99,7 +103,7 @@ class SettingsController extends BaseController
     {
         $messages = [];
 
-        foreach (['session_lifetime', 'remember_length', 'activity_retention', 'sidebar_today'] as $field) {
+        foreach (['session_lifetime', 'remember_length', 'activity_retention', 'sidebar_today', 'visibility'] as $field) {
             $messages[$field] = ['required' => lang('RoleWarden.panel.settings.choose'), 'in_list' => lang('RoleWarden.panel.settings.choose')];
         }
 

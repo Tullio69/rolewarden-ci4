@@ -11,13 +11,15 @@ use RoleWarden\Dashboard\Block;
 use RoleWarden\Dashboard\Dashboard;
 use RoleWarden\Dashboard\Layout;
 use RoleWarden\Settings\Sidebar;
+use RoleWarden\Settings\Visibility;
 use Throwable;
 
 /**
  * The dashboard, the panel's first page: the module's five blocks and the
  * application's, each rendered only for those who hold its permission, in
  * the order and with the period of the user's layout. Whoever can see none
- * lands on the first screen of the sidebar they can see.
+ * lands on the first screen of the sidebar they can see, or back on the host
+ * when they cannot see even their own profile.
  */
 class DashboardController extends BaseController
 {
@@ -28,7 +30,9 @@ class DashboardController extends BaseController
         $allowed = $this->allowed($registered);
 
         if ($allowed === []) {
-            $first = Sidebar::groups($userId)[0]['items'][0]['url'] ?? site_url('rolewarden/profile');
+            // Without the account screens (visibility "admins") there is nothing here for them: back to the host.
+            $fallback = Visibility::allowsUser($userId) ? site_url('rolewarden/profile') : config('Auth')->permissionDeniedRedirect();
+            $first = Sidebar::groups($userId)[0]['items'][0]['url'] ?? $fallback;
 
             return redirect()->to($first);
         }

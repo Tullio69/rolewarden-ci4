@@ -65,6 +65,15 @@ final class AccountVisibilityTest extends DatabaseTestCase
         $this->as($id)->get('rolewarden/profile');
     }
 
+    public function testAdminsModeSendsPlainUsersFromTheDashboardBackToTheHost(): void
+    {
+        setting(Visibility::KEY, Visibility::ADMINS);
+        $id = $this->makeUser('landing@example.com');
+
+        // Not to rolewarden/profile, a 404 for them: with $redirects['login'] = 'rolewarden' every plain user lands here.
+        $this->as($id)->get('rolewarden')->assertRedirectTo(config('Auth')->permissionDeniedRedirect());
+    }
+
     public function testAdminsModeShowsProfileToPanelRole(): void
     {
         setting(Visibility::KEY, Visibility::ADMINS);

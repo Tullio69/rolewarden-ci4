@@ -9,6 +9,7 @@ use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Account\ActivityLog;
 use RoleWarden\Account\SecurityMail;
 use RoleWarden\Account\Sessions;
+use RoleWarden\Install\Readiness;
 use RoleWarden\Settings\DefaultRole;
 use RoleWarden\Settings\SavedValues;
 
@@ -21,6 +22,9 @@ Events::on('register', static function (User $user): void {
     $role = DefaultRole::role();
     ActivityLog::record('user.registered', 'user', (int) $user->id, ActivityLog::userLabel($user), $role !== null ? ['role' => $role['name']] : [], $user);
 });
+
+// Whether the module's tables exist is asked again on every request (worker mode keeps statics).
+Events::on('pre_system', [Readiness::class, 'forget']);
 
 // Signed-in sessions (RoleWarden\Account\Sessions): pre_system runs before routing and
 // filters, so a revoked or idle session is signed out before anything checks it.

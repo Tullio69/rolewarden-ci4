@@ -51,6 +51,7 @@ return [
             'title' => 'RoleWarden non è ancora installato',
             'body' => 'Le tabelle del modulo non esistono ancora. Completa l\'installazione per usare il pannello.',
             'link' => 'Apri l\'installer',
+            'groups' => 'RoleWarden non è ancora installato: i gruppi non si possono modificare.',
         ],
         'title' => 'Installa RoleWarden',
         'overline' => 'Installazione · passo {0} di {1}',

@@ -120,8 +120,12 @@ class User extends ShieldUser
      */
     private function roleIds(array $slugs): array
     {
-        // No roles table yet: nothing to assign or revoke (and the reads answer empty).
+        // No roles table yet: reads answer empty, but a write asked for cannot be done.
         if (! Readiness::tablesExist()) {
+            if ($slugs !== []) {
+                throw new AuthorizationException(lang('RoleWarden.install.notInstalled.groups'));
+            }
+
             return [];
         }
 

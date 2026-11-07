@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace RoleWarden\Tests\Integration;
 
 use CodeIgniter\Config\Factories;
+use CodeIgniter\Shield\Authorization\AuthorizationException;
 use CodeIgniter\Config\Services;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Test\FeatureTestTrait;
 use Config\Database;
+use RoleWarden\Account\SecurityMail;
 use RoleWarden\Config\RouteRegistrar;
 use RoleWarden\Install\Readiness;
 use RoleWarden\Models\UserModel;
@@ -45,6 +47,8 @@ final class ReadinessTest extends DatabaseTestCase
             $this->restoreModuleTables();
         }
 
+        // Empty SecurityMail's queue here, so nothing is sent at PHPUnit's shutdown.
+        $this->flushMail();
         Readiness::forget();
         foreach (SignIn::NUMBERS as [$key]) {
             setting()->forget($key);
@@ -66,10 +70,25 @@ final class ReadinessTest extends DatabaseTestCase
         $this->assertFalse($user->hasPermission('users.view'));
         $this->assertSame([], $user->getGroups());
         $this->assertFalse($user->inGroup('admin'));
-        $user->addGroup('admin');
-        $user->syncGroups('user');
-        $user->removeGroup('admin');
+        // Nothing to resolve: still safe.
+        $user->syncGroups();
         $this->assertSame([], $user->getGroups());
+    }
+
+    public function testGroupWritesSayModuleIsNotInstalled(): void
+    {
+        $id = $this->makeUser('writes@example.com');
+        $this->dropModuleTables();
+        $user = (new UserModel())->findById($id);
+
+        foreach (['addGroup', 'removeGroup', 'syncGroups'] as $method) {
+            try {
+                $user->{$method}('admin');
+                $this->fail($method . ' did not throw');
+            } catch (AuthorizationException $e) {
+                $this->assertSame('RoleWarden is not installed yet: groups cannot be changed.', $e->getMessage());
+            }
+        }
     }
 
     public function testHostSignInPathDoesNotTouchMissingTables(): void
@@ -92,6 +111,8 @@ final class ReadinessTest extends DatabaseTestCase
             'user_id' => $id, 'date' => date('Y-m-d H:i:s'), 'success' => 0,
         ]);
         Events::trigger('failedLogin', ['email' => 'signin@example.com']);
+        // No admin can hold security.alerts yet; the account owner is still told.
+        $this->assertSame(['signin@example.com'], $this->flushMail());
 
         // The user model's callbacks: protection checks and cache invalidation.
         $users->update($id, ['active' => 0]);
@@ -149,6 +170,26 @@ final class ReadinessTest extends DatabaseTestCase
         $this->dropModuleTables();
 
         $this->assertNotSame(503, $this->get('rolewarden/install')->response()->getStatusCode());
+    }
+
+    /**
+     * Sends nothing: empties SecurityMail's queue through its "rolewarden.mail" hook.
+     *
+     * @return list<string> the recipients that were queued
+     */
+    private function flushMail(): array
+    {
+        $to = [];
+        $catch = static function (array $message) use (&$to): bool {
+            $to[] = $message['to'];
+
+            return false;
+        };
+        Events::on('rolewarden.mail', $catch, Events::PRIORITY_HIGH);
+        SecurityMail::flush();
+        Events::removeListener('rolewarden.mail', $catch);
+
+        return $to;
     }
 
     private function dropModuleTables(): void

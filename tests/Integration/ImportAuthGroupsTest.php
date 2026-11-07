@@ -59,5 +59,38 @@ final class ImportAuthGroupsTest extends DatabaseTestCase
 
         $this->assertNotNull($this->roleId('operatore'));
         $this->assertSame(['operatore'], $this->rolesOf($id));
+
+        $cfg = config('RoleWarden');
+        $granted = $this->db->table($cfg->table('role_permissions') . ' rp')->select('p.slug')
+            ->join($cfg->table('permissions') . ' p', 'p.id = rp.permission_id')
+            ->where('rp.role_id', $this->roleId('operatore'))->get()->getResultArray();
+        $this->assertSame(['ticket.view'], array_column($granted, 'slug'));
+    }
+
+    public function testCollidingGroupLeavesExistingRoleUntouched(): void
+    {
+        $auth              = config('AuthGroups');
+        $auth->groups      = ['admin' => ['title' => 'Host admin']];
+        $auth->permissions = ['ticket.view' => 'View', 'ticket.edit' => 'Edit'];
+        $auth->matrix      = ['admin' => ['ticket.*']];
+        Factories::injectMock('config', 'AuthGroups', $auth);
+
+        $id = $this->makeUser('boss@example.test');
+        $this->db->table('auth_groups_users')->insert(['user_id' => $id, 'group' => 'admin', 'created_at' => date('Y-m-d H:i:s')]);
+
+        $cfg    = config('RoleWarden');
+        $grants = fn (): int => $this->db->table($cfg->table('role_permissions'))->where('role_id', $this->roleId('admin'))->countAllResults();
+        $before = $grants();
+
+        (new ImportAuthGroups())->up();
+
+        $this->assertSame($before, $grants());
+        $this->assertSame([], $this->rolesOf($id));
+
+        $plan = GroupImport::plan(['admin'], ['admin' => 2], ['admin' => 1], ['admin']);
+        $this->assertSame(
+            ['Gruppo "admin" non importato: esiste già il ruolo "admin". 1 utente perde 2 permessi: concedili dal pannello (Ruoli).', 'Importati: . Saltati: admin.'],
+            GroupImport::report($plan, 'it'),
+        );
     }
 }

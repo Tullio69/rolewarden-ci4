@@ -13,7 +13,7 @@ final class GroupImport
     public const DEFERRED = 'RoleWarden.importDeferred';
 
     /**
-     * @param list<string>|array<string, mixed> $groups group slugs (list) or slug => info
+     * @param list<string> $groups group slugs
      * @param array<string, int> $matrixCounts permissions granted to each group
      * @param array<string, int> $memberCounts users in each group
      * @param list<string> $existingRoleSlugs
@@ -24,9 +24,7 @@ final class GroupImport
     {
         $plan = ['import' => [], 'skipped' => []];
 
-        foreach ($groups as $key => $value) {
-            $slug = is_string($key) ? $key : (string) $value;
-
+        foreach ($groups as $slug) {
             if (in_array($slug, $existingRoleSlugs, true)) {
                 $plan['skipped'][] = [
                     'slug' => $slug,

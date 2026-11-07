@@ -80,7 +80,7 @@ class ImportAuthGroups extends Migration
         $existing = array_column($this->db->table($cfg->table('roles'))->select('slug')->get()->getResultArray(), 'slug');
         $plan = GroupImport::plan(array_keys($auth->groups), $matrixCounts, $memberCounts, $existing);
 
-        if (is_cli()) {
+        if (is_cli() && ENVIRONMENT !== 'testing') {
             foreach (GroupImport::report($plan, service('request')->getLocale()) as $line) {
                 CLI::write($line, 'yellow');
             }

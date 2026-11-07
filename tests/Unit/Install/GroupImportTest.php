@@ -42,6 +42,16 @@ final class GroupImportTest extends CIUnitTestCase
         $this->assertStringContainsString('1 user loses 14 permissions', GroupImport::report($this->plan(1), 'en')[0]);
     }
 
+    public function testSkippedWithoutLossHasShortLine(): void
+    {
+        $plan = GroupImport::plan(['admin'], [], [], ['admin']);
+
+        $this->assertSame([
+            'Gruppo "admin" non importato: esiste già il ruolo "admin".',
+            'Importati: . Saltati: admin.',
+        ], GroupImport::report($plan, 'it'));
+    }
+
     public function testNoCollisionNoSkippedLine(): void
     {
         $plan = GroupImport::plan(['operatore'], [], [], ['admin']);

@@ -108,6 +108,7 @@ return [
         'signIn' => 'Sign in',
         'import' => [
             'skipped' => 'Group "{0}" not imported: the role "{0}" already exists. {1, plural, one{# user loses} other{# users lose}} {2, plural, one{# permission} other{# permissions}}: grant them from the panel (Roles).',
+            'skippedMembers' => 'Group "{0}" not imported: the role "{0}" already exists. {1, plural, one{# user will} other{# users will}} no longer be in that group.',
             'skippedNoLoss' => 'Group "{0}" not imported: the role "{0}" already exists.',
             'summary' => 'Imported: {0}. Skipped: {1}.',
         ],

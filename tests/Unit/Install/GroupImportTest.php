@@ -52,6 +52,16 @@ final class GroupImportTest extends CIUnitTestCase
         ], GroupImport::report($plan, 'it'));
     }
 
+    public function testSkippedWithMembersButNoPermissionsNamesTheMembers(): void
+    {
+        $plan = GroupImport::plan(['user'], [], ['user' => 3], ['user']);
+
+        $this->assertSame('Gruppo "user" non importato: esiste già il ruolo "user". 3 utenti non avranno più quel gruppo.', GroupImport::report($plan, 'it')[0]);
+        $this->assertSame('Group "user" not imported: the role "user" already exists. 3 users will no longer be in that group.', GroupImport::report($plan, 'en')[0]);
+        $this->assertStringContainsString('1 utente non avrà più quel gruppo.', GroupImport::report(GroupImport::plan(['user'], [], ['user' => 1], ['user']), 'it')[0]);
+        $this->assertStringContainsString('1 user will no longer be in that group.', GroupImport::report(GroupImport::plan(['user'], [], ['user' => 1], ['user']), 'en')[0]);
+    }
+
     public function testNoCollisionNoSkippedLine(): void
     {
         $plan = GroupImport::plan(['operatore'], [], [], ['admin']);

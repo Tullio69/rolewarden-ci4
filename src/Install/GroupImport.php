@@ -53,7 +53,8 @@ final class GroupImport
         $lines = [];
 
         foreach ($plan['skipped'] as $group) {
-            $key = $group['users'] > 0 && $group['permissions'] > 0 ? 'skipped' : 'skippedNoLoss';
+            // Members lose inGroup('<slug>') even when the group grants no permission.
+            $key = $group['users'] === 0 ? 'skippedNoLoss' : ($group['permissions'] > 0 ? 'skipped' : 'skippedMembers');
             $lines[] = lang("RoleWarden.install.import.{$key}", [$group['slug'], $group['users'], $group['permissions']], $locale);
         }
 

@@ -108,6 +108,7 @@ return [
         'signIn' => 'Accedi',
         'import' => [
             'skipped' => 'Gruppo "{0}" non importato: esiste già il ruolo "{0}". {1, plural, one{# utente perde} other{# utenti perdono}} {2, plural, one{# permesso} other{# permessi}}: concedili dal pannello (Ruoli).',
+            'skippedMembers' => 'Gruppo "{0}" non importato: esiste già il ruolo "{0}". {1, plural, one{# utente non avrà} other{# utenti non avranno}} più quel gruppo.',
             'skippedNoLoss' => 'Gruppo "{0}" non importato: esiste già il ruolo "{0}".',
             'summary' => 'Importati: {0}. Saltati: {1}.',
         ],

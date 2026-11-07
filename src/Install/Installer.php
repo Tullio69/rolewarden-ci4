@@ -258,6 +258,7 @@ final class Installer
             }
 
             Database::seeder()->call(RoleWardenSeeder::class);
+            Readiness::forget();
 
             return true;
         } catch (Throwable $e) {

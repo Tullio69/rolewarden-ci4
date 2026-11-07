@@ -25,9 +25,10 @@ class RouteRegistrar
         // The installer runs before anyone can sign in: no session filter, CSRF still checked.
         $routes->match(['GET', 'POST'], 'rolewarden/install', '\RoleWarden\Controllers\InstallController::index', ['filter' => 'csrf']);
 
+        // rw-ready first: before the migrations, every panel page says so and links the installer.
         $routes->group(
             'rolewarden',
-            ['namespace' => 'RoleWarden\Controllers', 'filter' => ['session', 'csrf', 'rw-language']],
+            ['namespace' => 'RoleWarden\Controllers', 'filter' => ['rw-ready', 'session', 'csrf', 'rw-language']],
             static function (RouteCollection $routes): void {
                 // The dashboard: each block checks its own dashboard.* permission; with none, the controller redirects.
                 $routes->get('/', 'DashboardController::index');

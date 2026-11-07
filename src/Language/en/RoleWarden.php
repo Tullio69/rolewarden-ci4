@@ -47,6 +47,11 @@ return [
         ],
     ],
     'install' => [
+        'notInstalled' => [
+            'title' => 'RoleWarden is not installed yet',
+            'body' => 'The module\'s tables do not exist yet. Finish the installation to use the panel.',
+            'link' => 'Open the installer',
+        ],
         'title' => 'Install RoleWarden',
         'overline' => 'Installation · step {0} of {1}',
         'requirementsTitle' => 'Server requirements',

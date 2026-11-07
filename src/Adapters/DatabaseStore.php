@@ -9,10 +9,13 @@ use Config\Database;
 use RoleWarden\Authorization\Contracts\AuthorizationStore;
 use RoleWarden\Authorization\Contracts\ProtectionStore;
 use RoleWarden\Config\RoleWarden;
+use RoleWarden\Install\Readiness;
 
 /**
  * CI4 database implementation of the store contract. Queries are built with
  * the query builder, so every value is bound. Soft-deleted roles are hidden.
+ * Before the module's migrations have run (Install\Readiness) every lookup on
+ * its tables answers empty: no roles, no permissions, nothing protected.
  */
 class DatabaseStore implements AuthorizationStore, ProtectionStore
 {
@@ -32,6 +35,10 @@ class DatabaseStore implements AuthorizationStore, ProtectionStore
 
     public function userOverrides(int $userId): array
     {
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         $rows = $this->db->table($this->t('user_permissions') . ' up')
             ->select('p.slug, up.granted')
             ->join($this->t('permissions') . ' p', 'p.id = up.permission_id')
@@ -49,6 +56,10 @@ class DatabaseStore implements AuthorizationStore, ProtectionStore
 
     public function userRoleIds(int $userId): array
     {
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         return $this->ids($this->db->table($this->t('user_roles') . ' ur')
             ->select('r.id')
             ->join($this->t('roles') . ' r', 'r.id = ur.role_id')
@@ -59,6 +70,10 @@ class DatabaseStore implements AuthorizationStore, ProtectionStore
 
     public function role(int $roleId): ?array
     {
+        if (! Readiness::tablesExist()) {
+            return null;
+        }
+
         $role = $this->db->table($this->t('roles'))->where('id', $roleId)->where('deleted_at', null)->get()->getRowArray();
 
         if ($role === null) {
@@ -80,28 +95,48 @@ class DatabaseStore implements AuthorizationStore, ProtectionStore
 
     public function childRoleIds(int $roleId): array
     {
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         return $this->ids($this->db->table($this->t('roles'))->select('id')
             ->where('parent_id', $roleId)->where('deleted_at', null)->get()->getResultArray());
     }
 
     public function userIdsWithRole(int $roleId): array
     {
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         return $this->ids($this->db->table($this->t('user_roles'))->select('user_id AS id')
             ->where('role_id', $roleId)->get()->getResultArray());
     }
 
     public function isSystemRole(int $roleId): bool
     {
+        if (! Readiness::tablesExist()) {
+            return false;
+        }
+
         return $this->db->table($this->t('roles'))->where('id', $roleId)->where('is_system', 1)->countAllResults() > 0;
     }
 
     public function isSystemPermission(string $slug): bool
     {
+        if (! Readiness::tablesExist()) {
+            return false;
+        }
+
         return $this->db->table($this->t('permissions'))->where('slug', $slug)->where('is_system', 1)->countAllResults() > 0;
     }
 
     public function activeSuperAdminIds(): array
     {
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         return $this->ids($this->db->table($this->t('user_roles') . ' ur')
             ->distinct()->select('u.id')
             ->join($this->t('roles') . ' r', 'r.id = ur.role_id')
@@ -117,6 +152,10 @@ class DatabaseStore implements AuthorizationStore, ProtectionStore
      */
     public function userRoleSlugs(int $userId): array
     {
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         return array_column($this->db->table($this->t('user_roles') . ' ur')
             ->select('r.slug')
             ->join($this->t('roles') . ' r', 'r.id = ur.role_id')

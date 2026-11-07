@@ -6,9 +6,12 @@ namespace RoleWarden\Adapters;
 
 use CodeIgniter\Cache\CacheInterface;
 use RoleWarden\Authorization\Contracts\Cache;
+use RoleWarden\Install\Readiness;
 
 /**
  * Resolver cache on top of the CI4 cache driver configured by the host.
+ * Unused while the module's tables are missing: the empty answers given then
+ * must not outlive the migrations, and a snapshot cached before a rollback must not answer.
  */
 class CiCache implements Cache
 {
@@ -18,6 +21,10 @@ class CiCache implements Cache
 
     public function get(string $key): ?array
     {
+        if (! Readiness::tablesExist()) {
+            return null;
+        }
+
         $value = $this->cache->get($this->safe($key));
 
         return is_array($value) ? $value : null;
@@ -25,6 +32,10 @@ class CiCache implements Cache
 
     public function set(string $key, array $value): void
     {
+        if (! Readiness::tablesExist()) {
+            return;
+        }
+
         $this->cache->save($this->safe($key), $value, 0);
     }
 

@@ -8,6 +8,7 @@ use RoleWarden\Filters\AccountVisibility;
 use RoleWarden\Filters\PanelLanguage;
 use RoleWarden\Filters\PermissionFilter;
 use RoleWarden\Filters\SignInThrottle;
+use RoleWarden\Filters\TablesReady;
 
 class Registrar
 {
@@ -20,7 +21,7 @@ class Registrar
     public static function Filters(): array
     {
         return [
-            'aliases' => ['can' => PermissionFilter::class, 'rw-signin' => SignInThrottle::class, 'rw-language' => PanelLanguage::class, 'rw-account' => AccountVisibility::class],
+            'aliases' => ['can' => PermissionFilter::class, 'rw-signin' => SignInThrottle::class, 'rw-language' => PanelLanguage::class, 'rw-account' => AccountVisibility::class, 'rw-ready' => TablesReady::class],
             'filters' => ['rw-signin' => ['before' => ['login']]],
         ];
     }

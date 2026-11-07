@@ -7,6 +7,7 @@ namespace RoleWarden\Account;
 use CodeIgniter\Events\Events;
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Shield\Entities\User;
+use RoleWarden\Install\Readiness;
 use RoleWarden\Models\UserModel;
 use RoleWarden\Settings\SignIn;
 use RoleWarden\Settings\UserLanguage;
@@ -198,6 +199,11 @@ final class SecurityMail
      */
     private static function alertRecipients(): array
     {
+        // Before the migrations nobody holds security.alerts; the account owner is still told.
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         $cfg = config('RoleWarden');
         $db = db_connect();
         $ids = array_unique(array_map('intval', array_merge(

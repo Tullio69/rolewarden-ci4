@@ -7,6 +7,7 @@ namespace RoleWarden\Entities;
 use CodeIgniter\Shield\Authorization\AuthorizationException;
 use CodeIgniter\Shield\Entities\User as ShieldUser;
 use RoleWarden\Adapters\DatabaseStore;
+use RoleWarden\Install\Readiness;
 use RoleWarden\Models\RoleModel;
 use RoleWarden\Models\UserRoles;
 
@@ -119,6 +120,11 @@ class User extends ShieldUser
      */
     private function roleIds(array $slugs): array
     {
+        // No roles table yet: nothing to assign or revoke (and the reads answer empty).
+        if (! Readiness::tablesExist()) {
+            return [];
+        }
+
         $ids = [];
 
         foreach ($slugs as $slug) {

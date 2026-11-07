@@ -6,6 +6,7 @@ namespace RoleWarden\Account;
 
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Events\Events;
+use RoleWarden\Install\Readiness;
 
 /**
  * The activity log: who changed what, on which object, when. Changes are
@@ -243,7 +244,8 @@ final class ActivityLog
      */
     public static function ready(): bool
     {
-        return self::$ready ??= db_connect()->tableExists(config('RoleWarden')->table('activity_log'));
+        // Readiness first: it never throws, even with no database to ask.
+        return Readiness::tablesExist() && (self::$ready ??= db_connect()->tableExists(config('RoleWarden')->table('activity_log')));
     }
 
     private static function table(): BaseBuilder

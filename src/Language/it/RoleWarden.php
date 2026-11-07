@@ -47,6 +47,11 @@ return [
         ],
     ],
     'install' => [
+        'notInstalled' => [
+            'title' => 'RoleWarden non è ancora installato',
+            'body' => 'Le tabelle del modulo non esistono ancora. Completa l\'installazione per usare il pannello.',
+            'link' => 'Apri l\'installer',
+        ],
         'title' => 'Installa RoleWarden',
         'overline' => 'Installazione · passo {0} di {1}',
         'requirementsTitle' => 'Requisiti del server',

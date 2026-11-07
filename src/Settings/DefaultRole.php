@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RoleWarden\Settings;
 
+use RoleWarden\Install\Readiness;
 use RoleWarden\Models\RoleModel;
 use RoleWarden\Models\UserRoles;
 
@@ -25,6 +26,11 @@ final class DefaultRole
      */
     public static function role(): ?array
     {
+        // Registration before the migrations: the new user simply gets no role.
+        if (! Readiness::tablesExist()) {
+            return null;
+        }
+
         helper('setting');
         $slug = self::slugFrom(setting(self::KEY), config('RoleWarden')->defaultRole, config('AuthGroups')->defaultGroup ?? null);
 

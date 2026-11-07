@@ -47,7 +47,10 @@ Funziona già bene: i controlli `$user->can()` dell'host passano a RoleWarden se
 - PHP 8.3+, CodeIgniter 4.7.4+, Shield `^1.4`, MySQL/MariaDB InnoDB: sono i requisiti attuali del README.
 - Senza composer, i vincoli di versione li deve controllare l'installer.
 - Nessun file del modulo va modificato da chi installa. Le personalizzazioni vivono nell'host (convenzione esistente).
-- Due lingue, inglese e italiano, come il resto del modulo.
+- **Due lingue, inglese e italiano** (decisione di Fabio: per ora bastano queste). Tutto l'installer deve essere traducibile senza toccare file del modulo:
+  - **Fase 2:** usa il normale sistema delle lingue, come il pannello. Una lingua nuova è `app/Language/{locale}/RoleWarden.php`, e le righe mancanti ricadono sull'inglese.
+  - **Fase 1:** non può usare il sistema delle lingue di CodeIgniter. I suoi testi stanno comunque nei file di lingua del modulo, in una sezione `setup`, che `rolewarden-setup.php` porta con sé e legge come array PHP. Se l'host ha già `app/Language/{locale}/RoleWarden.php`, il setup lo legge e lo unisce. Così c'è un'unica fonte di testi per setup, wizard e pannello.
+  - **Scelta della lingua:** si parte da quella del browser (`Accept-Language`) e un menu permette di cambiarla. La scelta passa dalla fase 1 alla fase 2.
 - Lo stile segue il design system del pannello (`docs/design-system/`, temi, token).
 - Sicurezza: codice monouso letto dal server (`writable/rolewarden/install-code.txt`), come nella decisione V7 di SPEC. CSRF attivo.
 

@@ -5,6 +5,39 @@ Every change that matters to whoever installs or updates RoleWarden. Versions fo
 version may require changes on your side, listed under "Upgrading". After any update, run
 `php spark migrate -n RoleWarden`.
 
+## [Unreleased]
+
+### Added
+- **Panel role**: the role that receives the module's new permissions is now the setting
+  `RoleWarden.panelRole` (default `admin`). New permissions added by migrations and by the
+  seeder go to it.
+- **Shield group methods act on RoleWarden roles**: `addGroup()`, `removeGroup()` and
+  `syncGroups()` on the user entity, and `UserModel::addToDefaultGroup()`, read and write
+  RoleWarden roles instead of `auth_groups_users`. Each call is atomic and goes through the
+  usual protections (last super admin, system roles). An unknown slug throws Shield's
+  `AuthorizationException` before anything is written.
+- **Importing existing Shield groups** now reports every skipped group on the command line,
+  with the users and permissions that are not carried over, and ends with a summary. The
+  seeder no longer prints `Seeded:` during migrations. Setting `RoleWarden.importDeferred`
+  lets an installer take over the import: the migration skips it and leaves the groups alone.
+- **Who sees RoleWarden**, a setting (`RoleWarden.visibility`, `all` or `admins`) on the
+  Settings screen. With `admins`, the account screens (profile, sessions, security) of
+  people without panel access answer 404.
+- **Module loaded, tables missing**: the host app keeps working (no roles, no permissions,
+  nothing cached), group writes throw a clear error, and `/rolewarden` shows a "not installed
+  yet" page (HTTP 503) with a link to the installer.
+
+### Changed
+- The default role for new users now falls back to the host's `AuthGroups::$defaultGroup`
+  when neither the setting nor `RoleWarden\Config\RoleWarden::$defaultRole` has a value. An
+  explicitly chosen "no role" stays no role.
+
+### Compatibility
+With the new settings unset, an existing 1.1.0 install behaves as before: panel role `admin`,
+visibility `all`. The one exception is the default-role fallback above: an app whose
+`$defaultGroup` names an existing RoleWarden role and which never chose a default role now
+gives that role to new users. Choose "no role" on the Settings screen to keep the old result.
+
 ## [1.1.0] - 2026-11-02
 
 ### Added

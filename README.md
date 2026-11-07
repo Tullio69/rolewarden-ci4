@@ -135,6 +135,11 @@ do. Skipped groups do not have their assignments imported either. Rolling back r
 exactly what the import created, by slug, and never touches a role or permission it
 did not create.
 
+Every skipped group is reported on the command line, with the users and permissions that
+are not carried over, and the run ends with a summary. The seeder is silent during
+migrations. An installer that wants to run the import itself sets the setting
+`RoleWarden.importDeferred` before migrating: the migration then leaves the groups alone.
+
 This migration runs the system seed itself before importing, because it and
 `RoleWardenSeeder` are two separate commands in the install steps above and the import's
 own collision check needs the system roles to already exist. Running
@@ -223,7 +228,24 @@ Settings library, in the `settings` table Shield already uses. Its **Roles** sec
 holds the **default role for new users**. That role goes to everyone who
 registers through Shield and to everyone created from the panel. A super admin role cannot
 be the default. The starting value is `RoleWarden\Config\RoleWarden::$defaultRole` (`null`, no
-role), which the host app can change by extending that config class.
+role), which the host app can change by extending that config class. When neither the
+setting nor that property has a value, the default is the host's `AuthGroups::$defaultGroup`
+if it names a RoleWarden role. An explicitly chosen "no role" stays no role.
+
+The same section holds the **panel role** (`RoleWarden.panelRole`, default `admin`): the
+role that receives the module's new permissions when migrations and the seeder add them.
+**Who sees RoleWarden** (`RoleWarden.visibility`, `all` or `admins`) limits the account
+screens (profile, sessions, security) to people with panel access; unset means `all`.
+
+Shield's `addGroup()`, `removeGroup()` and `syncGroups()` on the user entity, and
+`UserModel::addToDefaultGroup()`, act on RoleWarden roles, not on `auth_groups_users`. Each
+call is atomic and keeps the protections (last super admin, system roles); an unknown slug
+throws `AuthorizationException` before anything is written. They need the host to load users
+through RoleWarden's `UserModel`.
+
+If the module is loaded but its tables are missing, the host keeps working with no roles and
+no permissions, group writes throw an error saying the module is not installed, and
+`/rolewarden` shows a "not installed yet" page (503) linking to the installer.
 
 The registration hook lives in the module's `Config/Events.php`. CodeIgniter includes it by
 itself, as long as the host's `app/Config/Modules.php` keeps module discovery on for

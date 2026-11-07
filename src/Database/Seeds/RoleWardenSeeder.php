@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RoleWarden\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
+use RoleWarden\Settings\PanelRole;
 
 /**
  * Seeds the system roles and permissions. Safe to run more than once:
@@ -15,9 +16,6 @@ class RoleWardenSeeder extends Seeder
 {
     /** slug => is_super_admin; names and descriptions in Language/en/RoleWardenData.php */
     private const ROLES = ['super-admin' => 1, 'admin' => 0, 'user' => 0];
-
-    /** Roles that receive every seeded permission. */
-    private const ALL_PERMISSIONS_ROLES = ['admin'];
 
     public function run(): void
     {
@@ -53,39 +51,47 @@ class RoleWardenSeeder extends Seeder
             }
         }
 
-        // Only this seeder's own slugs: the table can hold more by the time this
-        // runs (the AuthGroups import adds its own), and those are not ours to grant.
-        $ownSlugs = [];
+        // A panel role created now gets every permission; an existing one only the
+        // permissions created now, so a grant the application revoked stays revoked.
+        $panelSlug = PanelRole::slug();
+        $roleId    = PanelRole::roleId();
+        $slugs     = ($newRoles[$panelSlug] ?? false) ? self::slugs() : $newSlugs;
+
+        if ($roleId === null || $slugs === []) {
+            return;
+        }
+
+        $permissionIds = array_column(
+            $this->db->table($cfg->table('permissions'))->select('id')->whereIn('slug', $slugs)->get()->getResultArray(),
+            'id',
+        );
+
+        foreach ($permissionIds as $permissionId) {
+            $pair = ['role_id' => $roleId, 'permission_id' => $permissionId];
+
+            if ($this->db->table($cfg->table('role_permissions'))->where($pair)->countAllResults() === 0) {
+                $this->db->table($cfg->table('role_permissions'))->insert($pair);
+            }
+        }
+    }
+
+    /**
+     * Only this seeder's own slugs: the table can hold more by the time it runs
+     * (the AuthGroups import adds its own), and those are not ours to grant.
+     *
+     * @return list<string>
+     */
+    public static function slugs(): array
+    {
+        $slugs = [];
 
         foreach (self::permissions() as $area => $actions) {
             foreach (array_keys($actions) as $action) {
-                $ownSlugs[] = "{$area}.{$action}";
+                $slugs[] = "{$area}.{$action}";
             }
         }
 
-        // A role created now gets every permission; an existing one only the
-        // permissions created now, so a grant the application revoked stays revoked.
-        foreach (self::ALL_PERMISSIONS_ROLES as $slug) {
-            $slugs = $newRoles[$slug] ? $ownSlugs : $newSlugs;
-
-            if ($slugs === []) {
-                continue;
-            }
-
-            $permissionIds = array_column(
-                $this->db->table($cfg->table('permissions'))->select('id')->whereIn('slug', $slugs)->get()->getResultArray(),
-                'id',
-            );
-            $roleId = $this->db->table($cfg->table('roles'))->select('id')->where('slug', $slug)->get()->getRow('id');
-
-            foreach ($permissionIds as $permissionId) {
-                $pair = ['role_id' => $roleId, 'permission_id' => $permissionId];
-
-                if ($this->db->table($cfg->table('role_permissions'))->where($pair)->countAllResults() === 0) {
-                    $this->db->table($cfg->table('role_permissions'))->insert($pair);
-                }
-            }
-        }
+        return $slugs;
     }
 
     /**

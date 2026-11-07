@@ -6,6 +6,7 @@ namespace RoleWarden\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 use RoleWarden\Database\Seeds\RoleWardenSeeder;
+use RoleWarden\Settings\PanelRole;
 
 /**
  * v1.1 upgrade path for the dashboard (SPEC, decisions of 2026-10-18 and
@@ -50,7 +51,7 @@ class AddDashboardPermissions extends Migration
             }
         }
 
-        $this->forget([...$roleIds, ...$this->adminId()], []);
+        $this->forget([...$roleIds, ...$this->panelRoleId()], []);
     }
 
     /**
@@ -87,10 +88,10 @@ class AddDashboardPermissions extends Migration
     }
 
     /** @return list<int> */
-    private function adminId(): array
+    private function panelRoleId(): array
     {
-        $roleId = $this->db->table(config('RoleWarden')->table('roles'))->select('id')->where('slug', 'admin')->get()->getRow('id');
+        $roleId = PanelRole::roleId();
 
-        return $roleId !== null ? [(int) $roleId] : [];
+        return $roleId !== null ? [$roleId] : [];
     }
 }

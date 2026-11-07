@@ -6,6 +6,7 @@ namespace RoleWarden\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 use RoleWarden\Database\Seeds\RoleWardenSeeder;
+use RoleWarden\Settings\PanelRole;
 
 /**
  * v1.0 upgrade path for V4, same as AddSettingsPermissions: adds the system
@@ -19,21 +20,21 @@ class AddSecurityPermissions extends Migration
     public function up(): void
     {
         config('Database')->seeder()->call(RoleWardenSeeder::class);
-        $this->forgetAdmin();
+        $this->forgetPanelRole();
     }
 
     public function down(): void
     {
         $this->db->table(config('RoleWarden')->table('permissions'))->whereIn('slug', self::SLUGS)->delete();
-        $this->forgetAdmin();
+        $this->forgetPanelRole();
     }
 
-    private function forgetAdmin(): void
+    private function forgetPanelRole(): void
     {
-        $roleId = $this->db->table(config('RoleWarden')->table('roles'))->select('id')->where('slug', 'admin')->get()->getRow('id');
+        $roleId = PanelRole::roleId();
 
         if ($roleId !== null) {
-            service('rolewarden')->forgetRole((int) $roleId);
+            service('rolewarden')->forgetRole($roleId);
         }
     }
 }

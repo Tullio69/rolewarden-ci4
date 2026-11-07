@@ -12,6 +12,14 @@ final class PanelRoleTest extends DatabaseTestCase
 {
     private const SLUG = 'dashboard.figures';
 
+    protected function tearDown(): void
+    {
+        // Settings caches the value across tests: a leaked '' leaves the panel role without permissions.
+        helper('setting');
+        setting()->forget(PanelRole::KEY);
+        parent::tearDown();
+    }
+
     private function permissionId(): int
     {
         return (int) $this->db->table(config('RoleWarden')->table('permissions'))->where('slug', self::SLUG)->get()->getRow()->id;

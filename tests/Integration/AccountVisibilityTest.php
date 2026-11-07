@@ -83,6 +83,8 @@ final class AccountVisibilityTest extends DatabaseTestCase
             'permission_id' => (int) $this->db->table(config('RoleWarden')->table('permissions'))->where('slug', 'users.view')->get()->getRow()->id,
             'granted'       => 1,
         ]);
+        // Written behind the resolver's back: drop its cached answer for this user.
+        service('rolewarden')->forgetUser($id);
 
         $this->as($id)->get('rolewarden/profile')->assertStatus(200);
     }

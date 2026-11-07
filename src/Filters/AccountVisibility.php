@@ -21,9 +21,12 @@ class AccountVisibility implements FilterInterface
         if (! Visibility::allowsUser((int) auth()->id())) {
             throw PageNotFoundException::forPageNotFound();
         }
+
+        return null;
     }
 
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null): void
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
+        return null;
     }
 }

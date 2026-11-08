@@ -293,6 +293,7 @@ class SetupController extends Controller
             case 'roles':
                 $data['groups']    = $this->groups();
                 $data['suggested'] = HostScan::suggestedMode($data['groups']);
+                $data['direct']    = HostScan::directPermissions();
                 break;
 
             case 'collisions':
@@ -314,6 +315,7 @@ class SetupController extends Controller
                 $data['users'] = array_column(HostScan::activeUsers(), null, 'id');
                 $data['files']  = Setup::filePlan($choices, $this->configDir());
                 $data['locked'] = Setup::started($state);
+                $data['direct'] = HostScan::directPermissions();
                 break;
         }
 

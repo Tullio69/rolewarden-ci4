@@ -12,6 +12,7 @@ use CodeIgniter\Test\TestResponse;
 use RoleWarden\Controllers\SetupController;
 use RoleWarden\Database\Seeds\RoleWardenSeeder;
 use RoleWarden\Install\GroupImport;
+use RoleWarden\Install\HostScan;
 use RoleWarden\Install\Installer;
 use RoleWarden\Install\SetupState;
 use RoleWarden\Models\UserModel;
@@ -225,6 +226,36 @@ final class SetupWizardTest extends DatabaseTestCase
 
         // Import resolves the same group in the collisions step.
         $this->assertSeeHtml($this->send(['step' => 'roles', 'mode' => 'import']), 'name="collisions[admin][action]"');
+    }
+
+    /** R17: permissions given to users directly in Shield are not imported; the roles step and the summary say so. */
+    public function testDirectShieldPermissionsWarned(): void
+    {
+        $this->assertSame(['users' => 0, 'permissions' => 0], HostScan::directPermissions());
+        $a   = $this->makeUser('a@example.test');
+        $b   = $this->makeUser('b@example.test');
+        $now = date('Y-m-d H:i:s');
+        $this->db->table('auth_permissions_users')->insertBatch([
+            ['user_id' => $a, 'permission' => 'tickets.create', 'created_at' => $now],
+            ['user_id' => $a, 'permission' => 'tickets.reply', 'created_at' => $now],
+            ['user_id' => $b, 'permission' => 'tickets.create', 'created_at' => $now],
+        ]);
+        $this->assertSame(['users' => 2, 'permissions' => 3], HostScan::directPermissions());
+        $warning = esc(lang('RoleWarden.setup.directPermissions', [2, 3]));
+
+        $this->send(['step' => 'code', 'code' => Installer::code()]);
+        $this->send(['step' => 'requirements']);
+        $roles = $this->send(['step' => 'filters']);
+        $this->assertSeeHtml($roles, 'name="step" value="roles"');
+        $this->assertSeeHtml($roles, $warning);
+
+        $this->send(['step' => 'roles', 'mode' => 'import']);
+        $this->send(['step' => 'collisions', 'collisions' => ['admin' => ['action' => 'skip']]]);
+        $this->send(['step' => 'newUsers', 'defaultRole' => 'cliente']);
+        $this->send(['step' => 'superAdmin', 'kind' => 'existing', 'id' => (string) $a]);
+        $confirm = $this->send(['step' => 'visibility', 'visibility' => 'admins']);
+        $this->assertSeeHtml($confirm, 'name="step" value="confirm"');
+        $this->assertSeeHtml($confirm, $warning);
     }
 
     /** Confirm applies; a failed run shows what to paste and resumes; the summary lists the files; then 403. */

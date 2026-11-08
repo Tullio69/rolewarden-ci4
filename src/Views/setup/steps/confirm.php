@@ -7,6 +7,7 @@
  *
  * @var array<int, array{id: int, username: string, email: string}> $users active users by id
  * @var list<array{file: string, diff: string, manual: bool}>       $files
+ * @var array{users: int, permissions: int}                          $direct Shield permissions given to single users
  */
 $mode = $choices['mode'] ?? '';
 $admin = is_array($choices['superAdmin'] ?? null) ? $choices['superAdmin'] : [];
@@ -49,6 +50,9 @@ $rows[$t('visibilityTitle')] = $t(($choices['visibility'] ?? '') === 'all' ? 'vi
       <dt><?= esc($label) ?></dt><dd><?= esc($value) ?></dd>
     <?php endforeach ?>
   </dl>
+  <?php if ($direct['permissions'] > 0) : ?>
+    <div class="rw-auth-alert"><?= esc($t('directPermissions', [$direct['users'], $direct['permissions']])) ?></div>
+  <?php endif ?>
 </div>
 <div class="rw-auth-row rw-install-block">
   <span class="rw-m-num"><?= $num() ?></span>

@@ -2,6 +2,7 @@
 /**
  * @var list<array{slug: string, title: string, users: int, permissions: int}> $groups
  * @var string                                                                  $suggested adapt|import
+ * @var array{users: int, permissions: int}                                     $direct    Shield permissions given to single users
  */
 $mode = $posted['mode'] ?? $choices['mode'] ?? $suggested;
 $panelRole = $posted['panelRole'] ?? $choices['panelRole'] ?? '';
@@ -23,6 +24,9 @@ $option = static function (string $value, string $label, string $hint) use ($mod
           <li><span class="rw-mono"><?= esc($g['slug']) ?></span><b><?= esc($t('groupCounts', [$g['users'], $g['permissions']])) ?></b></li>
         <?php endforeach ?>
       </ul>
+    <?php endif ?>
+    <?php if ($direct['permissions'] > 0) : ?>
+      <div class="rw-auth-alert"><?= esc($t('directPermissions', [$direct['users'], $direct['permissions']])) ?></div>
     <?php endif ?>
   </div>
 </div>

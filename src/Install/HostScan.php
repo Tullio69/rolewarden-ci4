@@ -88,6 +88,25 @@ final class HostScan
     }
 
     /**
+     * Permissions given to single users in Shield (auth_permissions_users). RoleWarden does
+     * not import them (R17): the wizard only warns. Zeros when the table does not exist.
+     *
+     * @return array{users: int, permissions: int}
+     */
+    public static function directPermissions(): array
+    {
+        $db = db_connect();
+
+        if (! $db->tableExists('auth_permissions_users', false)) {
+            return ['users' => 0, 'permissions' => 0];
+        }
+
+        $row = $db->table('auth_permissions_users')->select('COUNT(DISTINCT user_id) AS users, COUNT(*) AS permissions', false)->get()->getRowArray();
+
+        return ['users' => (int) ($row['users'] ?? 0), 'permissions' => (int) ($row['permissions'] ?? 0)];
+    }
+
+    /**
      * Slugs of RoleWarden's system roles already in the database (an earlier `spark migrate`
      * seeds them); empty while its tables do not exist.
      *

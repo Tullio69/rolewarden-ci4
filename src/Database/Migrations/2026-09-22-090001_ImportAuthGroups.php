@@ -45,7 +45,13 @@ class ImportAuthGroups extends Migration
         config('Database')->seeder()->setSilent(true)->call(RoleWardenSeeder::class);
 
         if (setting(GroupImport::DEFERRED) === true) {
-            return; // the installer wizard imports the groups
+            // The installer wizard imports the groups. Said aloud, so that an abandoned wizard
+            // followed by `spark migrate` does not skip the import silently.
+            if (is_cli() && ENVIRONMENT !== 'testing') {
+                CLI::write(GroupImport::deferredNotice(service('request')->getLocale()), 'yellow');
+            }
+
+            return;
         }
 
         $cfg = config('RoleWarden');

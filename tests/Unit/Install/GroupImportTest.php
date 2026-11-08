@@ -69,4 +69,12 @@ final class GroupImportTest extends CIUnitTestCase
         $this->assertSame([], $plan['skipped']);
         $this->assertSame([], GroupImport::report($plan, 'it'));
     }
+
+    /** The line the migration prints when the wizard has the import: an abandoned wizard is not silent. */
+    public function testDeferredNotice(): void
+    {
+        $this->assertStringContainsString('/rolewarden/setup', GroupImport::deferredNotice('en'));
+        $this->assertStringStartsWith('Shield groups not imported', GroupImport::deferredNotice('en'));
+        $this->assertStringStartsWith('Gruppi di Shield non importati', GroupImport::deferredNotice('it'));
+    }
 }

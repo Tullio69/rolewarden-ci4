@@ -180,6 +180,12 @@ final class GroupImport
         return $plan;
     }
 
+    /** What the migration prints when DEFERRED skips the import: the wizard does it on confirm. */
+    public static function deferredNotice(string $locale): string
+    {
+        return lang('RoleWarden.install.import.deferred', [], $locale);
+    }
+
     /**
      * @param array{import: list<string>, skipped: list<array{slug: string, users: int, permissions: int}>} $plan
      *

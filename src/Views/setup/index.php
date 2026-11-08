@@ -15,6 +15,7 @@
  * @var array<string, mixed>  $posted    the POST of a refused answer
  * @var string|null           $error
  * @var array{ok: bool, failedStep: ?string, messages: list<string>}|null $result a failed apply (confirm)
+ * @var bool                  $locked    an apply step is done: answers can no longer change
  */
 $t = static fn (string $key, array $args = []): string => lang('RoleWarden.setup.' . $key, $args);
 $n = 0;
@@ -39,6 +40,8 @@ $preview = static function (array $f) use ($t): string {
 };
 $steps = ['code' => 1, 'requirements' => 1, 'filters' => 2, 'roles' => 3, 'collisions' => 3, 'newUsers' => 4, 'superAdmin' => 5, 'visibility' => 6, 'confirm' => 7, 'done' => 7];
 $locale = service('language')->getLocale();
+// A saved answer that no longer holds (R12) cannot be applied again unchanged: only Back helps, unless answers are locked (R15).
+$answerInvalid = $result !== null && ! in_array($result['failedStep'], RoleWarden\Install\Setup::STEPS, true) && ! $locked;
 $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DIR__ . '/../../Assets/css/panel.css'));
 ?>
 <!doctype html>
@@ -90,8 +93,10 @@ $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DI
           <span class="rw-m-num"></span>
           <div>
             <div class="rw-setup-actions">
+              <?php if (! $answerInvalid) : ?>
               <button class="rw-btn rw-btn--primary" type="submit"<?= $step === 'requirements' && ! RoleWarden\Install\Installer::requirementsMet($checks) ? ' disabled' : '' ?>><?= esc($t($step !== 'confirm' ? 'continue' : (($result['messages'] ?? []) === [] ? 'apply' : (count($result['messages']) > 1 ? 'manualContinue' : 'retry')))) ?></button>
-              <?php if (! in_array($step, ['code', 'requirements'], true)) : ?>
+              <?php endif ?>
+              <?php if (! in_array($step, ['code', 'requirements'], true) && ! $locked) : ?>
                 <button class="rw-btn rw-btn--secondary" type="submit" name="back" value="1"><?= esc($t('back')) ?></button>
               <?php endif ?>
             </div>

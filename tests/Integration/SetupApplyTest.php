@@ -102,7 +102,7 @@ final class SetupApplyTest extends DatabaseTestCase
 
         $saved = SetupState::load();
         $this->assertTrue($saved->completed());
-        $this->assertSame(['Filters.php', 'Auth.php', 'Routes.php'], array_map(static fn (array $e): string => basename($e['path']), $saved->edits()));
+        $this->assertSame(['Filters.php', 'Routes.php', 'Auth.php'], array_map(static fn (array $e): string => basename($e['path']), $saved->edits()));
         $this->assertFileDoesNotExist(Installer::codeFile());
     }
 
@@ -168,6 +168,56 @@ final class SetupApplyTest extends DatabaseTestCase
 
         $this->assertTrue($second['ok']);
         $this->assertSame(['Filters.php', 'Routes.php'], array_map(static fn (array $e): string => basename($e['path']), SetupState::load()->edits()));
+    }
+
+    /** R16: Auth.php (login view, redirect to the panel) is never changed while Routes.php still lacks the registrar. */
+    public function testWiringStopsBeforeAuthWhileRoutesNeedsHand(): void
+    {
+        $auth = md5_file($this->dir . 'Auth.php');
+        chmod($this->dir . 'Routes.php', 0444);
+        $state = $this->state(['visibility' => 'all', 'superAdmin' => ['kind' => 'existing', 'id' => $this->boss]]);
+
+        $first = Setup::apply($state, $this->helpdesk(), $this->dir);
+
+        $this->assertSame('wiring', $first['failedStep']);
+        $text = implode("\n", $first['messages']);
+        $this->assertStringContainsString('app/Config/Routes.php', $text);
+        $this->assertStringNotContainsString('app/Config/Auth.php', $text);
+        $this->assertSame($auth, md5_file($this->dir . 'Auth.php'));
+        $this->assertFalse(SetupState::load()->done('wiring'));
+        $this->assertSame(['Filters.php'], array_map(static fn (array $e): string => basename($e['path']), SetupState::load()->edits()));
+
+        chmod($this->dir . 'Routes.php', 0666);
+        $this->assertTrue(Setup::apply(SetupState::load(), $this->helpdesk(), $this->dir)['ok']);
+        $this->assertTrue(ConfigEditor::hasLoginView($this->read('Auth.php')));
+        $this->assertTrue(ConfigEditor::hasLoginRedirect($this->read('Auth.php')));
+    }
+
+    /** A run that died after creating the new super admin but before saving the state: the user is reused. */
+    public function testNewSuperAdminFromDeadRunIsReused(): void
+    {
+        $hash = service('passwords')->hash('Wizard-Str0ng-Pass!');
+        $id   = $this->makeUser('chief@example.test');
+        $this->db->table('users')->where('id', $id)->update(['username' => 'chief']);
+        $users = $this->db->table('users')->countAllResults();
+
+        $result = Setup::apply($this->state(['superAdmin' => ['kind' => 'new', 'username' => 'chief', 'email' => 'chief@example.test', 'passwordHash' => $hash]]), $this->helpdesk(), $this->dir);
+
+        $this->assertTrue($result['ok']);
+        $this->assertSame($users, $this->db->table('users')->countAllResults());
+        $this->assertSame(['super-admin'], $this->rolesOf($id));
+        $this->assertSame(['kind' => 'new', 'username' => 'chief', 'email' => 'chief@example.test', 'id' => $id], SetupState::load()->choices()['superAdmin']);
+    }
+
+    /** The same email under another username is someone else: never taken over. */
+    public function testNewSuperAdminEmailOfAnotherUserFails(): void
+    {
+        $id = $this->makeUser('chief@example.test');
+
+        $result = Setup::apply($this->state(['superAdmin' => ['kind' => 'new', 'username' => 'chief', 'email' => 'chief@example.test', 'passwordHash' => 'x']]), $this->helpdesk(), $this->dir);
+
+        $this->assertSame('superAdmin', $result['failedStep']);
+        $this->assertSame([], $this->rolesOf($id));
     }
 
     /** The first host file is written only once the tables exist; until then the host is untouched. */

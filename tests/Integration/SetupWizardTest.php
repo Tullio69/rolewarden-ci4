@@ -228,6 +228,36 @@ final class SetupWizardTest extends DatabaseTestCase
         $this->get('rolewarden/setup')->assertStatus(403);
     }
 
+    /** R15: once an apply step is done, Back and answers are refused; no unused password hash is stored. */
+    public function testAnswersLockedAfterPartialApply(): void
+    {
+        $this->verified();
+        $this->send(['step' => 'roles', 'mode' => 'import']);
+        $this->send(['step' => 'collisions', 'collisions' => ['admin' => ['action' => 'rename', 'newSlug' => 'app-admin']]]);
+        $this->send(['step' => 'newUsers', 'defaultRole' => 'cliente']);
+        $this->send(['step' => 'superAdmin', 'kind' => 'new', 'username' => 'boss', 'email' => 'boss@example.test', 'password' => 'Wizard-Str0ng-Pass!', 'password_confirm' => 'Wizard-Str0ng-Pass!']);
+        $this->send(['step' => 'visibility', 'visibility' => 'admins']);
+        chmod($this->configDir . 'Filters.php', 0444);
+
+        $failed = $this->send(['step' => 'confirm']);
+        $this->assertTrue(SetupState::load()->done('superAdmin'));
+        $this->assertDontSeeHtml($failed, 'name="back"');
+        $choices = SetupState::load()->choices();
+
+        $back = $this->send(['step' => 'confirm', 'back' => '1']);
+        $this->assertSeeHtml($back, 'name="step" value="confirm"');
+        $this->assertSeeHtml($back, esc(lang('RoleWarden.setup.locked')));
+        $answer = $this->send([
+            'step' => 'superAdmin', 'kind' => 'new', 'username' => 'other', 'email' => 'other@example.test',
+            'password' => 'Wizard-Str0ng-Pass2!', 'password_confirm' => 'Wizard-Str0ng-Pass2!',
+        ]);
+        $this->assertSeeHtml($answer, esc(lang('RoleWarden.setup.locked')));
+        $this->send(['step' => 'visibility', 'visibility' => 'all']);
+
+        $this->assertSame($choices, SetupState::load()->choices());
+        $this->assertStringNotContainsString('passwordHash', (string) file_get_contents(SetupState::file()));
+    }
+
     public function testCompletedReturns403(): void
     {
         $state = new SetupState();

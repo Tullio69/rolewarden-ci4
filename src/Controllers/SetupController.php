@@ -83,6 +83,16 @@ class SetupController extends Controller
 
         $step = $this->current($state);
 
+        // R15: once an apply step is done the answers are locked; the run can only be continued.
+        if (Setup::started($state)) {
+            $step = 'confirm';
+            session()->set(self::STEP, $step);
+
+            if (isset($post['back']) || ($posted !== 'confirm' && in_array($posted, self::STEPS, true))) {
+                return $this->show($step, $state, ['step' => lang('RoleWarden.setup.locked')]);
+            }
+        }
+
         if ($posted === $step) {
             if (isset($post['back'])) {
                 $step = $this->move($state, $step, -1);
@@ -301,7 +311,8 @@ class SetupController extends Controller
 
             case 'confirm':
                 $data['users'] = array_column(HostScan::activeUsers(), null, 'id');
-                $data['files'] = Setup::filePlan($choices, $this->configDir());
+                $data['files']  = Setup::filePlan($choices, $this->configDir());
+                $data['locked'] = Setup::started($state);
                 break;
         }
 
@@ -414,6 +425,6 @@ class SetupController extends Controller
     /** @param array<string, mixed> $data */
     private function page(string $step, array $data = []): string
     {
-        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null, 'result' => null]);
+        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null, 'result' => null, 'locked' => false]);
     }
 }

@@ -44,7 +44,8 @@ final class Setup
         $invalid = self::invalidChoice($state, $authGroups);
 
         if ($invalid !== null) {
-            return self::fail($invalid, lang('RoleWarden.setup.invalidSaved', [lang('RoleWarden.setup.' . $invalid . 'Title')]));
+            // Once started, answers are locked (R15): the cause must be fixed in the application.
+            return self::fail($invalid, lang('RoleWarden.setup.' . (self::started($state) ? 'invalidLocked' : 'invalidSaved'), [lang('RoleWarden.setup.' . $invalid . 'Title')]));
         }
 
         foreach (self::STEPS as $step) {
@@ -87,6 +88,12 @@ final class Setup
         @unlink(Installer::codeFile()); // as Installer::finish()
 
         return ['ok' => true, 'failedStep' => null, 'messages' => []];
+    }
+
+    /** Whether any apply step is done: from then on the wizard's answers are locked (R15). */
+    public static function started(SetupState $state): bool
+    {
+        return array_filter(self::STEPS, $state->done(...)) !== [];
     }
 
     /**
@@ -245,11 +252,22 @@ final class Setup
         try {
             $db->transException(true)->transStart();
             $users = model(UserModel::class);
-            $user  = new User(['username' => $admin['username'], 'email' => $admin['email']]);
-            $user->setPasswordHash($admin['passwordHash']);
-            $users->save($user);
-            $id = (int) $users->getInsertID();
-            $users->activate($users->findById($id));
+            // An earlier run that died between creating the user and saving the state: reuse it.
+            $found = $users->findByCredentials(['email' => $admin['email']]);
+
+            if ($found !== null && $found->username !== $admin['username']) {
+                throw new RuntimeException('Another user already has the new super admin\'s email.');
+            }
+
+            if ($found === null) {
+                $user = new User(['username' => $admin['username'], 'email' => $admin['email']]);
+                $user->setPasswordHash($admin['passwordHash']);
+                $users->save($user);
+                $found = $users->findById((int) $users->getInsertID());
+            }
+
+            $id = (int) $found->id;
+            $users->activate($found);
             (new UserRoles())->assign($id, (int) $role['id']);
             $db->transComplete();
         } catch (Throwable $e) {
@@ -269,24 +287,21 @@ final class Setup
     /**
      * One ConfigEditor::apply per file with all its transforms (R5), the state saved after each.
      * A change already there needs nothing; one that cannot be made (file not writable, shape
-     * not recognised, syntax check failed) comes back as text to paste by hand.
+     * not recognised, syntax check failed) comes back as text to paste by hand, and the files
+     * after it are left alone.
      *
      * @param array<string, list<array{Closure, Closure, string}>> $files
      *
-     * @return list<string> "app/Config/<file>" and the text to paste, per file left to do by hand
+     * @return list<string> empty, or "app/Config/<file>" and the text to paste for the first file left to do by hand
      */
     private static function edit(SetupState $state, string $dir, array $files): array
     {
-        $manual = [];
-
         foreach ($files as $file => $transforms) {
             $path   = $dir . $file;
             $before = @file_get_contents($path);
 
             if ($before === false) {
-                $manual[] = 'app/Config/' . $file . "\n" . implode("\n", array_column($transforms, 2));
-
-                continue;
+                return ['app/Config/' . $file . "\n" . implode("\n", array_column($transforms, 2))];
             }
 
             [$after, $missing] = self::chain($before, $transforms);
@@ -299,12 +314,14 @@ final class Setup
                 }
             }
 
+            // R16: stop at the first file left to do by hand, so a later one is never changed
+            // on top of it (Auth's login redirect without Routes' registrar would 404).
             if ($missing !== []) {
-                $manual[] = 'app/Config/' . $file . "\n" . implode("\n", $missing);
+                return ['app/Config/' . $file . "\n" . implode("\n", $missing)];
             }
         }
 
-        return $manual;
+        return [];
     }
 
     /**
@@ -352,8 +369,9 @@ final class Setup
                 static fn (string $c): bool => ConfigEditor::hasFilterExcept($c, self::EXCEPTS) || ConfigEditor::globalFilterExcepts($c) === null,
                 "'except' => ['" . implode("', '", self::EXCEPTS) . "']",
             ]],
-            'Auth.php' => $auth,
+            // Routes before Auth (R16): the provider, login view and redirect point at routes that must exist.
             'Routes.php' => [[ConfigEditor::withRouteRegistrar(...), ConfigEditor::hasRouteRegistrar(...), '\RoleWarden\Config\RouteRegistrar::register($routes);']],
+            'Auth.php' => $auth,
         ];
     }
 

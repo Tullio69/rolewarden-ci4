@@ -220,6 +220,8 @@ return [
         'applyFailed' => 'La configurazione si è fermata a "{0}". I passi precedenti sono fatti e restano fatti; i dettagli sono nel log dell\'applicazione. Risolta la causa, applica di nuovo per riprendere.',
         'applyManual' => 'La configurazione si è fermata a "{0}": i file qui sotto non si possono modificare in automatico. Fai ogni modifica a mano, poi scegli "Ho modificato i file, continua".',
         'restoreFailed' => '{0} è rimasto con un contenuto non valido e non è stato possibile riscriverlo. Copia a mano l\'originale da {1}, poi applica di nuovo.',
+        'invalidLocked' => 'La risposta a "{0}" non vale più per questa applicazione. L\'installazione è già iniziata, quindi le risposte non si possono più cambiare: risolvi la causa nell\'applicazione (per esempio riattiva l\'utente scelto), poi applica di nuovo.',
+        'locked' => 'L\'installazione è già iniziata, quindi le risposte non si possono più cambiare. Si può solo proseguire: applica di nuovo.',
         'manualContinue' => 'Ho modificato i file, continua',
         'retry' => 'Applica di nuovo',
         'doneTitle' => 'RoleWarden è configurato',

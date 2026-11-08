@@ -104,16 +104,16 @@ Nothing else is needed before opening the wizard: its route is in the module's o
 `src/Config/Routes.php`, which CodeIgniter's route discovery includes by itself (keep
 `routes` discovery on in `app/Config/Modules.php`, the default).
 
-The first six steps only ask and show previews: they write nothing to the database, to the
-host's files or to the settings. Only the last step, **Confirm and apply**, writes. The
+Every step before the last only asks and shows previews: it writes nothing to the database,
+to the host's files or to the settings. Only the last step, **Confirm and apply**, writes. The
 answers are kept in `writable/rolewarden/install-manifest.json`, so a closed browser or an
 expired session resumes at the first unanswered question (after the setup code again).
 
 1. **Setup code.** The code saved in `writable/rolewarden/install-code.txt`, as for the
    browser installer: only someone who can read the server's files can go on. It is asked
    even when someone is already signed in to the application.
-2. **Server requirements.** The same checks as the browser installer; a missing one blocks
-   the wizard until it is fixed.
+2. **Server requirements.** The same checks as the browser installer, except the `.env`
+   one; a missing one blocks the wizard until it is fixed.
 3. **Filters.** If `app/Config/Filters.php` applies a `session`, `group` or `permission`
    filter to every page, RoleWarden's stylesheets and this wizard need to be exceptions to
    it (`rolewarden/assets/*`, `rolewarden/theme.css`, `rolewarden/setup*`). The step shows
@@ -126,7 +126,12 @@ expired session resumes at the first unanswered question (after the setup code a
    `AuthGroups` has no groups or only Shield's stock ones (`superadmin`, `admin`,
    `developer`, `user`, `beta`), Adapt otherwise. With Import, a group named like one of
    RoleWarden's roles gets a step of its own: merge it into that role, import it under
-   another name, or skip it (the step says which users and permissions are lost).
+   another name, or skip it (the step says which users and permissions are lost). Adapt is
+   refused for a group named `super-admin`, or named like a system role already in the
+   database (an earlier `spark migrate` creates `admin` and `user`): choose Import for it.
+   Permissions given to single users in Shield (`auth_permissions_users`) are not imported:
+   the step and the summary count them, and those users lose them unless you give them a
+   role or a user override.
 5. **Role for new sign-ups.** Prefilled from `AuthGroups::$defaultGroup`.
 6. **Super admin.** An existing active user, or a new account checked with Shield's own
    username, email and password rules. The new password is never saved in clear: only
@@ -140,14 +145,19 @@ expired session resumes at the first unanswered question (after the setup code a
 in this order: database tables (Settings, Shield and RoleWarden migrations), roles, super
 admin, the filter exception, and last the wiring: `app/Config/Routes.php` gets the
 `RouteRegistrar` line, and only once that line is there `app/Config/Auth.php` gets the user
-provider (plus the login view and redirect with *All users*). Nothing is written into a
-config file that could break the application before the tables exist. Once this step has
-started the answers are locked: the wizard can only continue or retry.
+provider (plus the login view and redirect with *All users*). Only Shield's own
+`UserModel` is replaced: if `$userProvider` names a model of your application, the wizard
+leaves it and asks you to make that model extend `\RoleWarden\Models\UserModel`. Nothing is
+written into a config file that could break the application before the tables exist. Once
+this step has started the answers are locked: the wizard can only continue or retry. The
+super admin alone can still be chosen again until its own step is done.
 
-Every host file it changes gets a backup of the original, `<file>.rolewarden-bak` (made at
-the first write and never overwritten), a syntax check after writing (an invalid file is put
-back from the backup) and an entry in `install-manifest.json` with the path, the content
-before and after, and the date. The final page lists the changed files.
+Every host file it changes gets a syntax check before writing (content that does not parse
+is never written), a backup of the original, `<file>.rolewarden-bak` (made at the first
+write and never overwritten), a write through a temporary file renamed over the original,
+`php -l` as a further check where the server can run it (a file it rejects is put back) and
+an entry in `install-manifest.json` with the path, the content before and after, and the
+date. The final page lists the changed files.
 
 **If a file cannot be changed** (not writable, missing, or written in a shape the wizard does
 not recognise), the step stops at that file and shows the exact text to paste and where.
@@ -155,6 +165,14 @@ Make the change by hand, then choose **I edited the files, continue**: the wizar
 file again and goes on. Steps already done are not repeated. When a step fails for any other
 reason, the screen names the step and the details go to `writable/logs/`, never to the page;
 fix the cause and apply again.
+
+**If the wizard is stuck.** Before any apply step is done, deleting
+`writable/rolewarden/install-manifest.json` starts the questions over. Once a step is done,
+do not delete it: it records what was applied and the host files changed, and without it the
+wizard asks every question again and could apply different answers on top of what is done. Fix the cause the screen names (the
+details are in `writable/logs/`) and apply again, or finish by hand with
+[Wiring the admin panel](#wiring-the-admin-panel), comparing each changed file with its
+`.rolewarden-bak`.
 
 At the end the setup code is deleted and the wizard answers 403. Add a link to `/rolewarden`
 in your application's menu. If the user provider changed, sign out and in again.

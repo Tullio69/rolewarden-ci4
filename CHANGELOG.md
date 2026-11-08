@@ -17,11 +17,16 @@ version may require changes on your side, listed under "Upgrading". After any up
   new sign-ups, the super admin (existing user or a new one, whose password is kept only as
   Shield's hash until the account exists) and who sees RoleWarden. Nothing is written until
   "Confirm and apply", which runs migrations, roles, super admin, the filter exception and
-  the wiring (Routes.php first, Auth.php only after it), in that order. Each host file gets a
-  `.rolewarden-bak` backup of the original, a syntax check and an entry in
-  `writable/rolewarden/install-manifest.json`; a file it cannot change stops the step with the
-  text to paste by hand. Once applying has started the answers are locked; a run that stops
-  resumes where it stopped. When done, the setup code is deleted and the wizard answers 403.
+  the wiring (Routes.php first, Auth.php only after it), in that order. Each host file is
+  parsed before it is written (content that does not parse is never written), gets a
+  `.rolewarden-bak` backup of the original, is written through a temporary file renamed over
+  it, and gets an entry in `writable/rolewarden/install-manifest.json`; a file it cannot
+  change stops the step with the text to paste by hand. Only Shield's own `UserModel` is
+  replaced as user provider: a model of the application's own is left to the owner, who
+  makes it extend RoleWarden's. Permissions given to single users in Shield are not
+  imported: the wizard counts them and warns. Once applying has started the answers are
+  locked, except the super admin until its own step is done; a run that stops resumes where
+  it stopped. When done, the setup code is deleted and the wizard answers 403.
 - **`RoleWarden.seedDefaultRoles`**: set to `false`, the seeder creates only `super-admin`,
   not `admin` and `user` (used by the wizard's "adapt" mode).
 - **Panel role**: the role that receives the module's new permissions is now the setting

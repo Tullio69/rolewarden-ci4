@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- Codester preview image source. Render: see docs/codester/README.md. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Plex Serif; src: url(../../src/Assets/fonts/ibm-plex-serif-400.woff2); font-weight: 400; }
+  @font-face { font-family: Plex Sans; src: url(../../src/Assets/fonts/ibm-plex-sans-400.woff2); font-weight: 400; }
+  @font-face { font-family: Plex Sans; src: url(../../src/Assets/fonts/ibm-plex-sans-500.woff2); font-weight: 500; }
+  @font-face { font-family: Plex Mono; src: url(../../src/Assets/fonts/ibm-plex-mono-400.woff2); font-weight: 400; }
+  html, body { margin: 0; }
+  body { width: 1600px; height: 800px; overflow: hidden; background: #0f1d3a; color: #eef2fa; font-family: Plex Sans, sans-serif; position: relative; }
+  .copy { position: absolute; left: 88px; top: 72px; width: 690px; }
+  .logo { height: 60px; display: block; }
+  .rule { height: 3px; background: #eef2fa; margin: 34px 0 38px; }
+  h1 { font: 400 54px/1.14 Plex Serif, serif; margin: 0; letter-spacing: -.5px; }
+  h1 span { color: #93b2f0; display: block; }
+  ul { list-style: none; margin: 38px 0 0; padding: 0; }
+  li { display: flex; align-items: baseline; gap: 26px; padding: 13px 0; border-bottom: 1px solid #2a3a5c; font-size: 23px; }
+  li b { font: 400 16px Plex Mono, monospace; color: #8b9bbd; width: 26px; flex: none; }
+  li em { font-style: normal; font-size: 15px; font-weight: 500; color: #0f1d3a; background: #93b2f0; border-radius: 4px; padding: 2px 8px; margin-left: 10px; position: relative; top: -2px; }
+  .shot { position: absolute; left: 812px; top: 112px; width: 1010px; border-radius: 10px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(147,178,240,.25); }
+  .shot img { display: block; width: 100%; }
+  .shot.back { left: 900px; top: 470px; width: 760px; }
+</style>
+</head>
+<body>
+  <div class="copy">
+    <img class="logo" src="../../assets/rolewarden-brand/svg/logo/lockup-horizontal-dark.svg" alt="RoleWarden">
+    <div class="rule"></div>
+    <h1>Roles and permissions<span>for CodeIgniter 4 Shield</span></h1>
+    <ul>
+      <li><b>01</b>Roles and permissions in the database</li>
+      <li><b>02</b>Inheritance and per-user overrides</li>
+      <li><b>03</b>Admin panel built on Shield</li>
+      <li><b>04</b>Setup wizard for existing apps<em>NEW</em></li>
+    </ul>
+  </div>
+  <div class="shot"><img src="../codecanyon/screenshots/01-dashboard.png" alt=""></div>
+  <div class="shot back"><img src="screenshots/10-wizard-confirm.png" alt=""></div>
+</body>
+</html>

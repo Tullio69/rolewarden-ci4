@@ -1,7 +1,9 @@
 <?php
 /**
  * Every choice and every file change, before anything is written. The button posts
- * step=confirm to this same page; applying is Task 7's.
+ * step=confirm to this same page, which runs Setup::apply. After a failed run
+ * the reason is shown first, with the text to paste for each file left to do by
+ * hand; posting again resumes.
  *
  * @var array<int, array{id: int, username: string, email: string}> $users active users by id
  * @var list<array{file: string, diff: string, manual: bool}>       $files
@@ -29,6 +31,17 @@ $rows[$t('superAdminTitle')] = ($admin['kind'] ?? null) === 'existing'
     : $t('summaryNew', [(string) ($admin['email'] ?? '')]);
 $rows[$t('visibilityTitle')] = $t(($choices['visibility'] ?? '') === 'all' ? 'visibilityAll' : 'visibilityAdmins');
 ?>
+<?php if (($result['messages'] ?? []) !== []) : ?>
+  <div class="rw-auth-row rw-install-block">
+    <span class="rw-m-num"></span>
+    <div class="rw-field">
+      <div class="rw-auth-alert" role="alert"><b><?= esc(lang('RoleWarden.panel.toast.error')) ?></b> <?= esc($result['messages'][0]) ?></div>
+      <?php foreach (array_slice($result['messages'], 1) as $text) : ?>
+        <pre class="rw-setup-diff" tabindex="0"><?= esc($text) ?></pre>
+      <?php endforeach ?>
+    </div>
+  </div>
+<?php endif ?>
 <div class="rw-auth-row rw-install-block">
   <span class="rw-m-num"><?= $num() ?></span>
   <dl class="rw-setup-summary">

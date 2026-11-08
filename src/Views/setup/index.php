@@ -14,6 +14,7 @@
  * @var array<string, string> $errors    field => message
  * @var array<string, mixed>  $posted    the POST of a refused answer
  * @var string|null           $error
+ * @var array{ok: bool, failedStep: ?string, messages: list<string>}|null $result a failed apply (confirm)
  */
 $t = static fn (string $key, array $args = []): string => lang('RoleWarden.setup.' . $key, $args);
 $n = 0;
@@ -36,7 +37,7 @@ $preview = static function (array $f) use ($t): string {
 
     return '<span class="rw-label">' . esc($t('fileChange', [$f['file']])) . '</span><pre class="rw-setup-diff" tabindex="0">' . esc($f['diff']) . '</pre>';
 };
-$steps = ['code' => 1, 'requirements' => 1, 'filters' => 2, 'roles' => 3, 'collisions' => 3, 'newUsers' => 4, 'superAdmin' => 5, 'visibility' => 6, 'confirm' => 7];
+$steps = ['code' => 1, 'requirements' => 1, 'filters' => 2, 'roles' => 3, 'collisions' => 3, 'newUsers' => 4, 'superAdmin' => 5, 'visibility' => 6, 'confirm' => 7, 'done' => 7];
 $locale = service('language')->getLocale();
 $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DIR__ . '/../../Assets/css/panel.css'));
 ?>
@@ -73,7 +74,9 @@ $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DI
       </div>
     </div>
 
-    <?php if ($step === 'completed') : ?>
+    <?php if ($step === 'done') : ?>
+      <?php include __DIR__ . '/steps/done.php' ?>
+    <?php elseif ($step === 'completed') : ?>
       <div class="rw-auth-row rw-auth-submit">
         <span class="rw-m-num"></span>
         <div><a class="rw-btn rw-btn--primary" href="<?= esc(site_url('login'), 'attr') ?>"><?= esc(lang('RoleWarden.install.signIn')) ?></a></div>
@@ -87,7 +90,7 @@ $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DI
           <span class="rw-m-num"></span>
           <div>
             <div class="rw-setup-actions">
-              <button class="rw-btn rw-btn--primary" type="submit"<?= $step === 'requirements' && ! RoleWarden\Install\Installer::requirementsMet($checks) ? ' disabled' : '' ?>><?= esc($t($step === 'confirm' ? 'apply' : 'continue')) ?></button>
+              <button class="rw-btn rw-btn--primary" type="submit"<?= $step === 'requirements' && ! RoleWarden\Install\Installer::requirementsMet($checks) ? ' disabled' : '' ?>><?= esc($t($step !== 'confirm' ? 'continue' : (($result['messages'] ?? []) === [] ? 'apply' : (count($result['messages']) > 1 ? 'manualContinue' : 'retry')))) ?></button>
               <?php if (! in_array($step, ['code', 'requirements'], true)) : ?>
                 <button class="rw-btn rw-btn--secondary" type="submit" name="back" value="1"><?= esc($t('back')) ?></button>
               <?php endif ?>

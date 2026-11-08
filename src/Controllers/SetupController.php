@@ -10,6 +10,7 @@ use CodeIgniter\Shield\Entities\User;
 use RoleWarden\Install\ConfigEditor;
 use RoleWarden\Install\HostScan;
 use RoleWarden\Install\Installer;
+use RoleWarden\Install\Setup;
 use RoleWarden\Install\SetupState;
 use RoleWarden\Settings\UserLanguage;
 
@@ -18,7 +19,8 @@ use RoleWarden\Settings\UserLanguage;
  * /rolewarden/setup. Like InstallController it extends the plain controller
  * and touches neither auth() nor the Settings library: the module's tables
  * may not exist yet. Questions 1 to 6 write nothing but SetupState; only the
- * confirm step applies (Task 7).
+ * confirm step applies, through Setup::apply; a failed run is shown on the
+ * confirm page and a new POST resumes it.
  *
  * The current step lives in the session; without one (a new session) it is
  * the first question SetupState has no answer for. A POST only acts when its
@@ -32,7 +34,6 @@ class SetupController extends Controller
     private const LOCALE   = 'rw_setup_locale';
     private const STEPS    = ['requirements', 'filters', 'roles', 'collisions', 'newUsers', 'superAdmin', 'visibility', 'confirm'];
     private const SYSTEM   = ['super-admin', 'admin', 'user'];
-    private const EXCEPTS  = ['rolewarden/assets/*', 'rolewarden/theme.css', 'rolewarden/setup*'];
     private const SLUG     = '/^[a-z][a-z0-9-]*$/';
 
     private static ?string $configPath = null;
@@ -85,7 +86,17 @@ class SetupController extends Controller
         if ($posted === $step) {
             if (isset($post['back'])) {
                 $step = $this->move($state, $step, -1);
-            } elseif ($step !== 'confirm') { // confirm applies: Task 7
+            } elseif ($step === 'confirm') {
+                $result = Setup::apply($state, config('AuthGroups'), $this->configDir());
+
+                if ($result['ok']) {
+                    session()->remove([self::VERIFIED, self::STEP]);
+
+                    return $this->done($state);
+                }
+
+                return $this->show($step, $state, [], [], $result);
+            } else {
                 $errors = $this->answer($step, $state, $post);
 
                 if ($errors !== []) {
@@ -163,7 +174,7 @@ class SetupController extends Controller
                 return $errors;
 
             case 'newUsers':
-                if ($value('defaultRole') !== '' && ! in_array($value('defaultRole'), $this->resultingRoles($choices), true)) {
+                if ($value('defaultRole') !== '' && ! in_array($value('defaultRole'), Setup::resultingRoles($choices, config('AuthGroups')), true)) {
                     return ['defaultRole' => $invalid];
                 }
 
@@ -249,11 +260,12 @@ class SetupController extends Controller
     /**
      * @param array<string, string> $errors
      * @param array<string, mixed>  $posted what the failed POST sent, shown back
+     * @param array{ok: bool, failedStep: ?string, messages: list<string>}|null $result a failed Setup::apply
      */
-    private function show(string $step, SetupState $state, array $errors = [], array $posted = []): string
+    private function show(string $step, SetupState $state, array $errors = [], array $posted = [], ?array $result = null): string
     {
         $choices = $state->choices();
-        $data    = ['choices' => $choices, 'errors' => $errors, 'posted' => $posted];
+        $data    = ['choices' => $choices, 'errors' => $errors, 'posted' => $posted, 'result' => $result];
 
         switch ($step) {
             case 'requirements':
@@ -263,8 +275,8 @@ class SetupController extends Controller
             case 'filters':
                 $filters            = (string) @file_get_contents($this->configDir() . 'Filters.php');
                 $data['filter']     = ConfigEditor::globalFilterExcepts($filters);
-                $data['excepts']    = self::EXCEPTS;
-                $data['files']      = array_slice($this->filePlan($choices), 0, 1);
+                $data['excepts']    = Setup::EXCEPTS;
+                $data['files']      = array_slice(Setup::filePlan($choices, $this->configDir()), 0, 1);
                 break;
 
             case 'roles':
@@ -279,7 +291,7 @@ class SetupController extends Controller
             case 'newUsers':
                 $default         = HostScan::defaultGroup(config('AuthGroups')) ?? '';
                 $default         = ($choices['collisions'][$default]['action'] ?? null) === 'rename' ? $choices['collisions'][$default]['newSlug'] : $default;
-                $data['roles']   = $this->resultingRoles($choices);
+                $data['roles']   = Setup::resultingRoles($choices, config('AuthGroups'));
                 $data['current'] = array_key_exists('defaultRole', $choices) ? (string) $choices['defaultRole'] : (in_array($default, $data['roles'], true) ? $default : '');
                 break;
 
@@ -289,11 +301,22 @@ class SetupController extends Controller
 
             case 'confirm':
                 $data['users'] = array_column(HostScan::activeUsers(), null, 'id');
-                $data['files'] = $this->filePlan($choices);
+                $data['files'] = Setup::filePlan($choices, $this->configDir());
                 break;
         }
 
         return $this->page($step, $data);
+    }
+
+    /** The summary after a completed apply: the steps, the files changed, what is left to the owner. */
+    private function done(SetupState $state): string
+    {
+        $edits = $state->edits();
+
+        return $this->page('done', [
+            'edits' => $edits,
+            'providerChanged' => array_filter($edits, static fn (array $e): bool => ! ConfigEditor::hasUserProvider($e['before']) && ConfigEditor::hasUserProvider($e['after'])) !== [],
+        ]);
     }
 
     /** The session's step when it still applies, else the first unanswered question. */
@@ -355,79 +378,6 @@ class SetupController extends Controller
         return HostScan::collisions($this->groups(), self::SYSTEM);
     }
 
-    /**
-     * The roles the choices will leave, for the new sign-ups' role (never super-admin).
-     *
-     * @param array<string, mixed> $choices
-     *
-     * @return list<string>
-     */
-    private function resultingRoles(array $choices): array
-    {
-        $import = ($choices['mode'] ?? null) === 'import';
-        $roles  = $import ? ['admin', 'user'] : [];
-
-        foreach (array_column($this->groups(), 'slug') as $slug) {
-            $collision = $import ? ($choices['collisions'][$slug] ?? null) : null;
-            $roles[]   = match ($collision['action'] ?? null) {
-                'rename' => (string) $collision['newSlug'],
-                'skip' => '',
-                default => $slug,
-            };
-        }
-
-        return array_values(array_unique(array_diff($roles, ['', 'super-admin'])));
-    }
-
-    /**
-     * What the apply step will do to each host file: the unified diff, or manual when the file
-     * is missing or written in a way ConfigEditor does not recognise. Writes nothing.
-     *
-     * @param array<string, mixed> $choices
-     *
-     * @return list<array{file: string, diff: string, manual: bool}>
-     */
-    private function filePlan(array $choices): array
-    {
-        $auth = [[ConfigEditor::withUserProvider(...), ConfigEditor::hasUserProvider(...)]];
-
-        if (($choices['visibility'] ?? null) === 'all') {
-            $auth[] = [ConfigEditor::withLoginView(...), ConfigEditor::hasLoginView(...)];
-            $auth[] = [ConfigEditor::withLoginRedirect(...), ConfigEditor::hasLoginRedirect(...)];
-        }
-
-        $plan = [
-            'Filters.php' => [[
-                static fn (string $c): ?string => ConfigEditor::withFilterExcept($c, self::EXCEPTS),
-                // No global filter at all is not a failure: there is nothing to except.
-                static fn (string $c): bool => ConfigEditor::hasFilterExcept($c, self::EXCEPTS) || ConfigEditor::globalFilterExcepts($c) === null,
-            ]],
-            'Auth.php' => $auth,
-            'Routes.php' => [[ConfigEditor::withRouteRegistrar(...), ConfigEditor::hasRouteRegistrar(...)]],
-        ];
-        $out = [];
-
-        foreach ($plan as $file => $transforms) {
-            $before = @file_get_contents($this->configDir() . $file);
-            $after  = (string) $before;
-            $manual = $before === false;
-
-            foreach ($manual ? [] : $transforms as [$with, $has]) {
-                $new = $with($after);
-
-                if ($new !== null) {
-                    $after = $new;
-                } elseif (! $has($after)) {
-                    $manual = true;
-                }
-            }
-
-            $out[] = ['file' => 'app/Config/' . $file, 'diff' => ConfigEditor::preview((string) $before, $after), 'manual' => $manual];
-        }
-
-        return $out;
-    }
-
     private function configDir(): string
     {
         return self::$configPath ?? APPPATH . 'Config/';
@@ -464,6 +414,6 @@ class SetupController extends Controller
     /** @param array<string, mixed> $data */
     private function page(string $step, array $data = []): string
     {
-        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null]);
+        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null, 'result' => null]);
     }
 }

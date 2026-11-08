@@ -10,14 +10,20 @@ use CodeIgniter\Shield\Test\AuthenticationTesting;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Test\TestResponse;
 use RoleWarden\Controllers\SetupController;
+use RoleWarden\Database\Seeds\RoleWardenSeeder;
+use RoleWarden\Install\GroupImport;
 use RoleWarden\Install\Installer;
 use RoleWarden\Install\SetupState;
 use RoleWarden\Models\UserModel;
+use RoleWarden\Settings\DefaultRole;
+use RoleWarden\Settings\PanelRole;
+use RoleWarden\Settings\Visibility;
 use RoleWarden\Tests\_support\DatabaseTestCase;
 
 /**
- * The /rolewarden/setup wizard, questions 1 to 6: every answer lands in
+ * The /rolewarden/setup wizard. Questions 1 to 6: every answer lands in
  * SetupState, nothing else is written (no table, no host file, no setting).
+ * Confirm applies through Setup::apply (covered in depth by SetupApplyTest).
  */
 final class SetupWizardTest extends DatabaseTestCase
 {
@@ -49,7 +55,17 @@ final class SetupWizardTest extends DatabaseTestCase
     {
         SetupController::useConfigPath(null);
         @unlink(SetupState::file());
-        array_map('unlink', glob($this->configDir . '*') ?: []);
+        helper('setting');
+
+        foreach ([GroupImport::DEFERRED, RoleWardenSeeder::DEFAULT_ROLES_KEY, PanelRole::KEY, DefaultRole::KEY, Visibility::KEY] as $key) {
+            setting()->forget($key);
+        }
+
+        foreach (glob($this->configDir . '*') ?: [] as $file) {
+            chmod($file, 0666);
+            unlink($file);
+        }
+
         @rmdir($this->configDir);
 
         parent::tearDown();
@@ -124,8 +140,6 @@ final class SetupWizardTest extends DatabaseTestCase
         $this->assertSeeHtml($confirm, 'name="step" value="confirm"');
         $this->assertSeeHtml($confirm, 'RouteRegistrar::register($routes);');
         $this->assertSeeHtml($confirm, 'RoleWarden\Models\UserModel');
-        // Confirm is Task 7's: posting it here must not write either.
-        $this->assertSeeHtml($this->send(['step' => 'confirm']), 'name="step" value="confirm"');
 
         $this->assertSame($tables, $this->tables());
         $this->assertSame($settings, $this->db->table('settings')->countAllResults());
@@ -182,6 +196,36 @@ final class SetupWizardTest extends DatabaseTestCase
 
         $this->assertSeeHtml($this->send(['step' => 'superAdmin', 'kind' => 'existing', 'id' => (string) $active]), 'name="step" value="visibility"');
         $this->assertSame(['kind' => 'existing', 'id' => $active], SetupState::load()->choices()['superAdmin']);
+    }
+
+    /** Confirm applies; a failed run shows what to paste and resumes; the summary lists the files; then 403. */
+    public function testConfirmAppliesThenShowsSummary(): void
+    {
+        $this->verified();
+        $this->send(['step' => 'roles', 'mode' => 'import']);
+        $this->send(['step' => 'collisions', 'collisions' => ['admin' => ['action' => 'rename', 'newSlug' => 'app-admin']]]);
+        $this->send(['step' => 'newUsers', 'defaultRole' => 'cliente']);
+        $this->send(['step' => 'superAdmin', 'kind' => 'new', 'username' => 'boss', 'email' => 'boss@example.test', 'password' => 'Wizard-Str0ng-Pass!', 'password_confirm' => 'Wizard-Str0ng-Pass!']);
+        $this->send(['step' => 'visibility', 'visibility' => 'admins']);
+        chmod($this->configDir . 'Routes.php', 0444);
+
+        $failed = $this->send(['step' => 'confirm']);
+
+        $this->assertSeeHtml($failed, 'role="alert"');
+        $this->assertSeeHtml($failed, 'RouteRegistrar::register($routes);');
+        $this->assertSeeHtml($failed, esc(lang('RoleWarden.setup.manualContinue')));
+        $this->assertFalse(SetupState::load()->completed());
+
+        chmod($this->configDir . 'Routes.php', 0666);
+        $done = $this->send(['step' => 'confirm']);
+
+        $done->assertOK();
+        $this->assertSeeHtml($done, esc(lang('RoleWarden.setup.doneTitle')));
+        $this->assertSeeHtml($done, 'app/Config/Filters.php');
+        $this->assertSeeHtml($done, 'app/Config/Routes.php');
+        $this->assertSeeHtml($done, esc(lang('RoleWarden.setup.doneSignInAgain')));
+        $this->assertSame(1, $this->db->table('users')->where('username', 'boss')->countAllResults());
+        $this->get('rolewarden/setup')->assertStatus(403);
     }
 
     public function testCompletedReturns403(): void

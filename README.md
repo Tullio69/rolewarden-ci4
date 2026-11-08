@@ -50,7 +50,9 @@ RoleWarden ships as two zips, plus a demo app.
   and is loaded from there (`app/Config/Autoload.php`), so an update replaces that folder and
   nothing else.
 - **rolewarden-module-x.y.z.zip, the module alone.** For an existing CodeIgniter 4
-  application with Composer: add it as a Composer package, wire it as described under
+  application: load it (Composer, or `modules/rolewarden` with an Autoload line) and open
+  `/rolewarden/setup`, the [wizard](#installing-on-an-existing-application-wizard) that
+  migrates, maps your groups and wires the files for you. Or wire it as described under
   [Wiring the admin panel](#wiring-the-admin-panel), then either open the installer or run
   the commands under [Installing and rolling back the migrations](#installing-and-rolling-back-the-migrations).
 - **rolewarden-demo-x.y.z.zip, the demo app.** A small document register with three roles
@@ -84,6 +86,86 @@ active super admin, lock file or not. It never sends anything outside the server
 
 Security emails need a sender: set `email.fromEmail` (and the SMTP settings) in `.env`, or
 they are skipped with a line in the log.
+
+### Installing on an existing application (wizard)
+
+`/rolewarden/setup` adds RoleWarden to a CodeIgniter 4 application that already has Shield,
+users and its own groups. Load the module first, either as a Composer package or by copying
+it to `modules/rolewarden` and adding one line to `app/Config/Autoload.php`:
+
+```php
+public $psr4 = [
+    // ...
+    'RoleWarden' => ROOTPATH . 'modules/rolewarden/src',
+];
+```
+
+Nothing else is needed before opening the wizard: its route is in the module's own
+`src/Config/Routes.php`, which CodeIgniter's route discovery includes by itself (keep
+`routes` discovery on in `app/Config/Modules.php`, the default).
+
+The first six steps only ask and show previews: they write nothing to the database, to the
+host's files or to the settings. Only the last step, **Confirm and apply**, writes. The
+answers are kept in `writable/rolewarden/install-manifest.json`, so a closed browser or an
+expired session resumes at the first unanswered question (after the setup code again).
+
+1. **Setup code.** The code saved in `writable/rolewarden/install-code.txt`, as for the
+   browser installer: only someone who can read the server's files can go on. It is asked
+   even when someone is already signed in to the application.
+2. **Server requirements.** The same checks as the browser installer; a missing one blocks
+   the wizard until it is fixed.
+3. **Filters.** If `app/Config/Filters.php` applies a `session`, `group` or `permission`
+   filter to every page, RoleWarden's stylesheets and this wizard need to be exceptions to
+   it (`rolewarden/assets/*`, `rolewarden/theme.css`, `rolewarden/setup*`). The step shows
+   the filter, its current exceptions and the change. The panel itself still requires
+   signing in.
+4. **Roles.** *Adapt* keeps the application's groups as RoleWarden roles, with their users
+   and permissions, and adds only `super-admin`; you choose which of your roles manages the
+   panel (it receives the panel's permissions). *Import* adds RoleWarden's `super-admin`,
+   `admin` and `user` next to your groups. The wizard suggests Import when the application's
+   `AuthGroups` has no groups or only Shield's stock ones (`superadmin`, `admin`,
+   `developer`, `user`, `beta`), Adapt otherwise. With Import, a group named like one of
+   RoleWarden's roles gets a step of its own: merge it into that role, import it under
+   another name, or skip it (the step says which users and permissions are lost).
+5. **Role for new sign-ups.** Prefilled from `AuthGroups::$defaultGroup`.
+6. **Super admin.** An existing active user, or a new account checked with Shield's own
+   username, email and password rules. The new password is never saved in clear: only
+   Shield's hash is kept until the account is created, then removed.
+7. **Who sees RoleWarden.** *All users* (RoleWarden's sign-in screen, profile and sessions
+   for everyone) or *Only administrators* (the application keeps its own sign-in screen),
+   recommended for an application already in use. See
+   [Settings and the default role](#settings-and-the-default-role).
+
+**Confirm and apply** shows every answer and the exact change to each file, then applies it
+in this order: database tables (Settings, Shield and RoleWarden migrations), roles, super
+admin, the filter exception, and last the wiring: `app/Config/Routes.php` gets the
+`RouteRegistrar` line, and only once that line is there `app/Config/Auth.php` gets the user
+provider (plus the login view and redirect with *All users*). Nothing is written into a
+config file that could break the application before the tables exist. Once this step has
+started the answers are locked: the wizard can only continue or retry.
+
+Every host file it changes gets a backup of the original, `<file>.rolewarden-bak` (made at
+the first write and never overwritten), a syntax check after writing (an invalid file is put
+back from the backup) and an entry in `install-manifest.json` with the path, the content
+before and after, and the date. The final page lists the changed files.
+
+**If a file cannot be changed** (not writable, missing, or written in a shape the wizard does
+not recognise), the step stops at that file and shows the exact text to paste and where.
+Make the change by hand, then choose **I edited the files, continue**: the wizard checks the
+file again and goes on. Steps already done are not repeated. When a step fails for any other
+reason, the screen names the step and the details go to `writable/logs/`, never to the page;
+fix the cause and apply again.
+
+At the end the setup code is deleted and the wizard answers 403. Add a link to `/rolewarden`
+in your application's menu. If the user provider changed, sign out and in again.
+
+**A host with a global `session` filter.** Until the wizard has added its exception, such an
+application sends a visitor of `/rolewarden/setup` to its own login page. Sign in with any
+existing account and open `/rolewarden/setup` again: the setup code is still required, and
+the code page says so.
+
+To wire the module by hand instead, follow [Wiring the admin panel](#wiring-the-admin-panel)
+and [Installing and rolling back the migrations](#installing-and-rolling-back-the-migrations).
 
 ## Installing and rolling back the migrations
 

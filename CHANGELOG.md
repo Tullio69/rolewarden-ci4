@@ -8,6 +8,22 @@ version may require changes on your side, listed under "Upgrading". After any up
 ## [Unreleased]
 
 ### Added
+- **Install wizard for an existing application**, `/rolewarden/setup`. For a CodeIgniter 4
+  app that already has Shield, users and groups: load the module (Composer, or
+  `modules/rolewarden` with an Autoload line) and open the page; its route comes from the
+  module's own `Config/Routes.php`, so nothing has to be wired first. Behind the setup code
+  it asks about the server, the global filters, the roles (adapt your groups, or import
+  RoleWarden's next to them, with merge, rename or skip for same-named groups), the role for
+  new sign-ups, the super admin (existing user or a new one, whose password is kept only as
+  Shield's hash until the account exists) and who sees RoleWarden. Nothing is written until
+  "Confirm and apply", which runs migrations, roles, super admin, the filter exception and
+  the wiring (Routes.php first, Auth.php only after it), in that order. Each host file gets a
+  `.rolewarden-bak` backup of the original, a syntax check and an entry in
+  `writable/rolewarden/install-manifest.json`; a file it cannot change stops the step with the
+  text to paste by hand. Once applying has started the answers are locked; a run that stops
+  resumes where it stopped. When done, the setup code is deleted and the wizard answers 403.
+- **`RoleWarden.seedDefaultRoles`**: set to `false`, the seeder creates only `super-admin`,
+  not `admin` and `user` (used by the wizard's "adapt" mode).
 - **Panel role**: the role that receives the module's new permissions is now the setting
   `RoleWarden.panelRole` (default `admin`). New permissions added by migrations and by the
   seeder go to it.

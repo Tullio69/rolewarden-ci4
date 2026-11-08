@@ -59,6 +59,9 @@ final class HostScanTest extends TestCase
         $this->assertSame('adapt', HostScan::suggestedMode(HostScan::groups($this->helpdesk(), [])));
         $stock = [['slug' => 'user', 'title' => 'User', 'users' => 0, 'permissions' => 0], ['slug' => 'superadmin', 'title' => 'S', 'users' => 0, 'permissions' => 0]];
         $this->assertSame('import', HostScan::suggestedMode($stock));
+        $this->assertSame('import', HostScan::suggestedMode([]));
+        $all = array_map(static fn (string $s): array => ['slug' => $s], ['superadmin', 'admin', 'developer', 'user', 'beta']);
+        $this->assertSame('import', HostScan::suggestedMode($all));
     }
 
     public function testDefaultGroup(): void

@@ -10,6 +10,9 @@ namespace RoleWarden\Install;
  */
 final class HostScan
 {
+    /** Groups of Shield's own stock AuthGroups: a host with only these has nothing of its own to adapt. */
+    private const SHIELD_STOCK_GROUPS = ['superadmin', 'admin', 'developer', 'user', 'beta'];
+
     /**
      * @param array<string, int> $memberCounts users per group slug
      *
@@ -52,7 +55,7 @@ final class HostScan
      */
     public static function suggestedMode(array $groups): string
     {
-        return array_diff(array_column($groups, 'slug'), ['user', 'superadmin']) === [] ? 'import' : 'adapt';
+        return array_diff(array_column($groups, 'slug'), self::SHIELD_STOCK_GROUPS) === [] ? 'import' : 'adapt';
     }
 
     public static function defaultGroup(object $authGroups): ?string

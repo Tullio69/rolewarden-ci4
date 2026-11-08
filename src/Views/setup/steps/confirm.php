@@ -59,14 +59,16 @@ $rows[$t('visibilityTitle')] = $t(($choices['visibility'] ?? '') === 'all' ? 'vi
 <?php endif ?>
 <div class="rw-auth-row rw-install-block">
   <span class="rw-m-num"><?= $num() ?></span>
-  <dl class="rw-setup-summary">
-    <?php foreach ($rows as $label => $value) : ?>
-      <dt><?= esc($label) ?></dt><dd><?= esc($value) ?></dd>
-    <?php endforeach ?>
-  </dl>
-  <?php if ($direct['permissions'] > 0) : ?>
-    <div class="rw-auth-alert"><?= esc($t('directPermissions', [$direct['users'], $direct['permissions']])) ?></div>
-  <?php endif ?>
+  <div>
+    <dl class="rw-setup-summary">
+      <?php foreach ($rows as $label => $value) : ?>
+        <dt><?= esc($label) ?></dt><dd><?= esc($value) ?></dd>
+      <?php endforeach ?>
+    </dl>
+    <?php if ($direct['permissions'] > 0) : ?>
+      <div class="rw-auth-alert"><?= esc($t('directPermissions', [$direct['users'], $direct['permissions']])) ?></div>
+    <?php endif ?>
+  </div>
 </div>
 <div class="rw-auth-row rw-install-block">
   <span class="rw-m-num"><?= $num() ?></span>

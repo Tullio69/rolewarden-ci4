@@ -363,6 +363,30 @@ final class SetupWizardTest extends DatabaseTestCase
         $this->assertSame(['kind' => 'existing', 'id' => $last], SetupState::load()->choices()['superAdmin']);
     }
 
+    /** A database error on a question page or in apply's checks is logged; the page shows only a generic message. */
+    public function testDatabaseErrorShowsNoSql(): void
+    {
+        $this->verified();
+        $this->send(['step' => 'roles', 'mode' => 'import']);
+        $this->send(['step' => 'collisions', 'collisions' => ['admin' => ['action' => 'skip']]]);
+        $this->send(['step' => 'newUsers', 'defaultRole' => 'cliente']);
+        $this->send(['step' => 'superAdmin', 'kind' => 'existing', 'id' => (string) $this->makeUser('boss@example.test')]);
+        $this->db->query('RENAME TABLE ' . $this->db->prefixTable('users') . ' TO ' . $this->db->prefixTable('users_moved'));
+
+        try {
+            // The confirm page lists the users; the apply checks the chosen one (R12) before its own try.
+            foreach ([['step' => 'visibility', 'visibility' => 'admins'], ['step' => 'confirm']] as $post) {
+                $page = $this->send($post);
+                $page->assertStatus(500);
+                $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.scanFailedIntro')));
+                $this->assertDontSeeHtml($page, 'users_moved');
+                $this->assertDontSeeHtml($page, 'SELECT');
+            }
+        } finally {
+            $this->db->query('RENAME TABLE ' . $this->db->prefixTable('users_moved') . ' TO ' . $this->db->prefixTable('users'));
+        }
+    }
+
     public function testCompletedReturns403(): void
     {
         $state = new SetupState();

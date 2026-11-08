@@ -235,7 +235,8 @@ return [
         'providerManual' => 'Set public string $userProvider = \RoleWarden\Models\UserModel::class; If your application uses a user model of its own, the wizard does not replace it: keep it and make it extend \RoleWarden\Models\UserModel instead.',
         'directPermissions' => '{0, plural, one{# user has} other{# users have}} {1, plural, one{# permission} other{# permissions}} assigned directly in Shield. RoleWarden does not import them: after installation they lose them unless you give them a role or a user override.',
         'invalidReopen' => 'The answer to "{0}" no longer holds for this application. Go back to that step and choose again: the steps already done stay done.',
-        'scanFailed' => 'The wizard could not read the database of this application; the details are in the application log. Check the connection, then reload this page.',
+        'scanFailedTitle' => 'The database could not be read',
+        'scanFailedIntro' => 'The wizard could not read the database of this application; the details are in the application log. Check the connection, then reload this page.',
         'doneSignInAgain' => 'The user provider changed: sign out and sign in again to renew the current session.',
     ],
     'panel' => [

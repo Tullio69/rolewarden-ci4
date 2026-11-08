@@ -13,6 +13,7 @@ use RoleWarden\Install\Installer;
 use RoleWarden\Install\Setup;
 use RoleWarden\Install\SetupState;
 use RoleWarden\Settings\UserLanguage;
+use Throwable;
 
 /**
  * The install wizard for an application that already runs Shield, at
@@ -81,6 +82,25 @@ class SetupController extends Controller
             $state->save();
         }
 
+        try {
+            return $this->flow($state, $post, $posted);
+        } catch (Throwable $e) {
+            // Reading the host's database (HostScan, the apply's checks) failed: the detail,
+            // possibly SQL, goes to the log only, in every environment.
+            log_message('error', 'RoleWarden setup: {message}', ['message' => $e->getMessage()]);
+            $this->response->setStatusCode(500);
+
+            return $this->page('scanFailed');
+        }
+    }
+
+    /**
+     * The verified part: the current step, the answer or the apply.
+     *
+     * @param array<string, mixed> $post
+     */
+    private function flow(SetupState $state, array $post, string $posted): string
+    {
         $step = $this->current($state);
 
         // R15: once an apply step is done the answers are locked; the run can only be continued.

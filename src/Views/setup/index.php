@@ -73,7 +73,7 @@ $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DI
     <div class="rw-auth-row rw-auth-head">
       <span class="rw-m-num"></span>
       <div>
-        <?php if ($step !== 'completed') : ?><div class="rw-header"><?= esc($t('overline', [$steps[$step], 7])) ?></div><?php endif ?>
+        <?php if (! in_array($step, ['completed', 'scanFailed'], true)) : ?><div class="rw-header"><?= esc($t('overline', [$steps[$step], 7])) ?></div><?php endif ?>
         <h1><?= esc($t($step . 'Title')) ?></h1>
         <p><?= esc($t($step . 'Intro')) ?></p>
       </div>
@@ -86,7 +86,7 @@ $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DI
         <span class="rw-m-num"></span>
         <div><a class="rw-btn rw-btn--primary" href="<?= esc(site_url('login'), 'attr') ?>"><?= esc(lang('RoleWarden.install.signIn')) ?></a></div>
       </div>
-    <?php else : ?>
+    <?php elseif ($step !== 'scanFailed') : ?>
       <form class="rw-auth-form" method="post" action="" novalidate>
         <?= csrf_field() ?>
         <input type="hidden" name="step" value="<?= esc($step, 'attr') ?>">

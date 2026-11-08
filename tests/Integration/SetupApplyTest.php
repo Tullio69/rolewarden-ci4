@@ -170,6 +170,19 @@ final class SetupApplyTest extends DatabaseTestCase
         $this->assertSame(['Filters.php', 'Routes.php'], array_map(static fn (array $e): string => basename($e['path']), SetupState::load()->edits()));
     }
 
+    /** R18: a user model of the host's own is never replaced; the owner is told to make it extend RoleWarden's. */
+    public function testCustomUserProviderLeftToOwner(): void
+    {
+        file_put_contents($this->dir . 'Auth.php', str_replace('= UserModel::class;', '= \App\Models\Users::class;', $this->read('Auth.php')));
+        $auth = md5_file($this->dir . 'Auth.php');
+
+        $result = Setup::apply($this->state(['superAdmin' => ['kind' => 'existing', 'id' => $this->boss]]), $this->helpdesk(), $this->dir);
+
+        $this->assertSame('wiring', $result['failedStep']);
+        $this->assertStringContainsString(lang('RoleWarden.setup.providerManual'), implode("\n", $result['messages']));
+        $this->assertSame($auth, md5_file($this->dir . 'Auth.php'));
+    }
+
     /** R16: Auth.php (login view, redirect to the panel) is never changed while Routes.php still lacks the registrar. */
     public function testWiringStopsBeforeAuthWhileRoutesNeedsHand(): void
     {

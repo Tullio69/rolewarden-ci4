@@ -112,6 +112,7 @@ return [
             'skippedMembers' => 'Group "{0}" not imported: the role "{0}" already exists. {1, plural, one{# user will} other{# users will}} no longer be in that group.',
             'skippedNoLoss' => 'Group "{0}" not imported: the role "{0}" already exists.',
             'summary' => 'Imported: {0}. Skipped: {1}.',
+            'deferred' => 'Shield groups not imported: the setup wizard at /rolewarden/setup imports them when you confirm it. Finish the wizard to import them.',
         ],
     ],
     'setup' => [
@@ -231,6 +232,10 @@ return [
         'doneNoFiles' => 'No file needed a change.',
         'doneUnchecked' => '{0} (the syntax check could not run: check the file)',
         'doneLink' => 'Add a link to /rolewarden in your application\'s menu.',
+        'providerManual' => 'Set public string $userProvider = \RoleWarden\Models\UserModel::class; If your application uses a user model of its own, the wizard does not replace it: keep it and make it extend \RoleWarden\Models\UserModel instead.',
+        'directPermissions' => '{0, plural, one{# user has} other{# users have}} {1, plural, one{# permission} other{# permissions}} assigned directly in Shield. RoleWarden does not import them: after installation they lose them unless you give them a role or a user override.',
+        'invalidReopen' => 'The answer to "{0}" no longer holds for this application. Go back to that step and choose again: the steps already done stay done.',
+        'scanFailed' => 'The wizard could not read the database of this application; the details are in the application log. Check the connection, then reload this page.',
         'doneSignInAgain' => 'The user provider changed: sign out and sign in again to renew the current session.',
     ],
     'panel' => [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RoleWarden\Install;
 
 use Closure;
+use ParseError;
 use PhpToken;
 
 /**
@@ -20,6 +21,7 @@ final class ConfigEditor
 {
     private const GLOBAL_FILTERS = ['session', 'group', 'permission'];
     private const USER_PROVIDER  = 'RoleWarden\Models\UserModel';
+    private const SHIELD_USERS   = 'CodeIgniter\Shield\Models\UserModel';
     private const LOGIN_VIEW     = '\RoleWarden\Views\auth\login';
     private const LOGIN_REDIRECT = 'rolewarden';
     private const REGISTRAR      = '\RoleWarden\Config\RouteRegistrar::register($routes);';
@@ -95,12 +97,16 @@ final class ConfigEditor
         return self::insert($filtersPhp, [[self::end($t[$last['e']]), ','], [$anchor, implode(',', $lines)]]);
     }
 
+    /**
+     * Only Shield's own model is replaced (R18): a model of the host's own is left
+     * alone, and the manual text asks the owner to make it extend RoleWarden's.
+     */
     public static function withUserProvider(string $authPhp): ?string
     {
         $t = PhpToken::tokenize($authPhp);
         $v = self::property($t, 'userProvider');
 
-        if ($v === null || self::providerIsOurs($authPhp, $t, $v)) {
+        if ($v === null || self::providerClass($authPhp, $t, $v) !== self::SHIELD_USERS) {
             return null;
         }
 
@@ -135,7 +141,10 @@ final class ConfigEditor
         $t = PhpToken::tokenize($authPhp);
         $v = self::property($t, 'userProvider');
 
-        return $v !== null && self::providerIsOurs($authPhp, $t, $v);
+        $class = $v === null ? null : self::providerClass($authPhp, $t, $v);
+
+        // A host model that extends RoleWarden's counts as RoleWarden's.
+        return $class !== null && ($class === self::USER_PROVIDER || (class_exists($class) && is_subclass_of($class, self::USER_PROVIDER)));
     }
 
     public static function hasLoginView(string $authPhp): bool
@@ -148,9 +157,26 @@ final class ConfigEditor
         return self::entryIs($authPhp, 'redirects', 'login', self::LOGIN_REDIRECT) === true;
     }
 
+    /** A real `RouteRegistrar::register(` call: a commented-out one does not count. */
     public static function hasRouteRegistrar(string $routesPhp): bool
     {
-        return str_contains($routesPhp, 'RouteRegistrar::register(');
+        $t = PhpToken::tokenize($routesPhp);
+
+        foreach ($t as $i => $tok) {
+            if (! $tok->is([T_STRING, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED]) || ! preg_match('/(^|\\\\)RouteRegistrar$/', $tok->text)) {
+                continue;
+            }
+
+            $colons = self::next($t, $i, 1);
+            $method = $colons === null ? null : self::next($t, $colons, 1);
+            $paren  = $method === null ? null : self::next($t, $method, 1);
+
+            if ($paren !== null && $t[$colons]->is(T_DOUBLE_COLON) && strcasecmp($t[$method]->text, 'register') === 0 && $t[$paren]->text === '(') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function withRouteRegistrar(string $routesPhp): ?string
@@ -259,14 +285,22 @@ final class ConfigEditor
     }
 
     /**
-     * Backup to <path>.rolewarden-bak (only once: it keeps the pristine original,
-     * the log keeps every later `before`), write, syntax check. On a failed check
-     * the original content is written back and false returned; if even that fails,
-     * RestoreFailedException. The edit is logged only on success, with checked
-     * false when the check could not run.
+     * Syntax check in process first (R19): content that does not parse is never
+     * written. Then backup to <path>.rolewarden-bak (only once: it keeps the
+     * pristine original, the log keeps every later `before`), write through a
+     * temporary file in the same folder renamed over the original, and `php -l`
+     * as an extra check where a CLI binary can run. If that check fails the
+     * original content is written back and false returned; if even that fails,
+     * RestoreFailedException. The edit is logged only on success.
      */
     public static function apply(string $path, string $after, SetupState $state): bool
     {
+        try {
+            PhpToken::tokenize($after, TOKEN_PARSE);
+        } catch (ParseError) {
+            return false;
+        }
+
         $before = @file_get_contents($path);
         $backup = $path . '.rolewarden-bak';
 
@@ -274,7 +308,15 @@ final class ConfigEditor
             return false;
         }
 
-        $ok = @file_put_contents($path, $after) === false ? false : (self::$linter ?? self::lint(...))($path);
+        $temp = $path . '.' . bin2hex(random_bytes(4)) . '.tmp';
+
+        if (@file_put_contents($temp, $after) !== strlen($after) || ! @chmod($temp, fileperms($path) & 0777) || ! @rename($temp, $path)) {
+            @unlink($temp);
+
+            return false;
+        }
+
+        $ok = (self::$linter ?? self::lint(...))($path);
 
         if ($ok === false) {
             if (@file_put_contents($path, $before) !== strlen($before)) {
@@ -284,7 +326,8 @@ final class ConfigEditor
             return false;
         }
 
-        $state->recordEdit($path, $before, $after, $ok === true);
+        // Checked: the in-process parse passed, whether or not `php -l` could run.
+        $state->recordEdit($path, $before, $after, true);
 
         return true;
     }
@@ -367,11 +410,11 @@ final class ConfigEditor
      * @param list<PhpToken> $t
      * @param array{int, int} $v
      */
-    private static function providerIsOurs(string $php, array $t, array $v): bool
+    private static function providerClass(string $php, array $t, array $v): ?string
     {
         $start = $t[$v[0]]->pos;
 
-        return self::resolveClass($php, substr($php, $start, self::end($t[$v[1]]) - $start)) === self::USER_PROVIDER;
+        return self::resolveClass($php, substr($php, $start, self::end($t[$v[1]]) - $start));
     }
 
     /**

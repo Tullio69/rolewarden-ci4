@@ -355,7 +355,8 @@ final class Setup
      */
     private static function transforms(array $choices): array
     {
-        $auth = [[ConfigEditor::withUserProvider(...), ConfigEditor::hasUserProvider(...), 'public string $userProvider = \RoleWarden\Models\UserModel::class;']];
+        // R18: a user model of the host's own is not replaced; the text tells the owner to extend RoleWarden's.
+        $auth = [[ConfigEditor::withUserProvider(...), ConfigEditor::hasUserProvider(...), lang('RoleWarden.setup.providerManual')]];
 
         if (($choices['visibility'] ?? null) === 'all') {
             $auth[] = [ConfigEditor::withLoginView(...), ConfigEditor::hasLoginView(...), "\$views: 'login' => '\\RoleWarden\\Views\\auth\\login',"];

@@ -211,13 +211,34 @@ final class ConfigEditorTest extends TestCase
 
     public function testMultilinePropertyAndComments(): void
     {
-        $php = "<?php\nclass Auth {\n    // public string \$userProvider = Old::class;\n    public string \$userProvider =\n        /* legacy */ \\App\\Models\\Users::class;\n"
+        $php = "<?php\nclass Auth {\n    // public string \$userProvider = Old::class;\n    public string \$userProvider =\n        /* legacy */ \\CodeIgniter\\Shield\\Models\\UserModel::class;\n"
             . "    public function f(string \$userProvider = 'x') { \$userProvider = 1; }\n}\n";
 
         $this->assertSame(
-            str_replace('\\App\\Models\\Users::class', '\\RoleWarden\\Models\\UserModel::class', $php),
+            str_replace('\\CodeIgniter\\Shield\\Models\\UserModel::class', '\\RoleWarden\\Models\\UserModel::class', $php),
             ConfigEditor::withUserProvider($php),
         );
+    }
+
+    /** R18: only Shield's own model is replaced; a provider of the host's own is left to the owner. */
+    public function testCustomUserProviderIsNotReplaced(): void
+    {
+        $php = "<?php\nclass Auth {\n    public string \$userProvider = \\App\\Models\\Users::class;\n}\n";
+
+        $this->assertNull(ConfigEditor::withUserProvider($php));
+        $this->assertFalse(ConfigEditor::hasUserProvider($php));
+
+        // Once the owner makes that model extend RoleWarden's, the change counts as done.
+        $extends = "<?php\nclass Auth {\n    public string \$userProvider = \\RoleWarden\\Tests\\_support\\HostUserModel::class;\n}\n";
+        $this->assertNull(ConfigEditor::withUserProvider($extends));
+        $this->assertTrue(ConfigEditor::hasUserProvider($extends));
+    }
+
+    public function testAliasedShieldUserProviderIsReplaced(): void
+    {
+        $php = "<?php\nuse CodeIgniter\\Shield\\Models\\UserModel as ShieldUsers;\nclass Auth {\n    public string \$userProvider = ShieldUsers::class;\n}\n";
+
+        $this->assertSame(str_replace('= ShieldUsers::class', '= \\RoleWarden\\Models\\UserModel::class', $php), ConfigEditor::withUserProvider($php));
     }
 
     public function testMissingPropertyGivesNull(): void
@@ -240,6 +261,16 @@ final class ConfigEditorTest extends TestCase
         );
         self::assertLints((string) $after);
         $this->assertNull(ConfigEditor::withRouteRegistrar((string) $after));
+    }
+
+    public function testCommentedOutRouteRegistrarDoesNotCount(): void
+    {
+        $php = "<?php\n\nservice('auth')->routes(\$routes);\n// \\RoleWarden\\Config\\RouteRegistrar::register(\$routes);\n/* RouteRegistrar::register(\$routes); */\n";
+
+        $this->assertFalse(ConfigEditor::hasRouteRegistrar($php));
+        $after = ConfigEditor::withRouteRegistrar($php);
+        $this->assertSame(str_replace("routes(\$routes);\n", "routes(\$routes);\n\\RoleWarden\\Config\\RouteRegistrar::register(\$routes);\n", $php), $after);
+        $this->assertTrue(ConfigEditor::hasRouteRegistrar((string) $after));
     }
 
     public function testRouteRegistrarAtEndWhenShieldRoutesMissing(): void
@@ -312,7 +343,34 @@ final class ConfigEditorTest extends TestCase
         }
     }
 
-    public function testApplyUncheckedWhenLintCannotRun(): void
+    /** R19: content that does not parse never reaches the file, not even for a moment. */
+    public function testApplyRefusesInvalidPhpBeforeWriting(): void
+    {
+        $path = tempnam(sys_get_temp_dir(), 'rw-cfg');
+        file_put_contents($path, "<?php\n// v0\n");
+        $state = new SetupState();
+        $seen  = [];
+        ConfigEditor::useLinter(static function (string $p) use (&$seen): bool {
+            $seen[] = (string) file_get_contents($p);
+
+            return false;
+        });
+
+        try {
+            $this->assertFalse(ConfigEditor::apply($path, "<?php\nnope(;\n", $state));
+            $this->assertSame("<?php\n// v0\n", file_get_contents($path));
+            $this->assertSame([], $seen);
+            $this->assertSame([], $state->edits());
+            // Not even a backup or a temporary file is left behind.
+            $this->assertSame([basename($path)], array_values(array_map('basename', glob($path . '*') ?: [])));
+        } finally {
+            ConfigEditor::useLinter(null);
+            @unlink($path);
+            @unlink($path . '.rolewarden-bak');
+        }
+    }
+
+    public function testApplyCheckedWhenLintCannotRun(): void
     {
         $path = tempnam(sys_get_temp_dir(), 'rw-cfg');
         file_put_contents($path, "<?php\n");
@@ -321,7 +379,8 @@ final class ConfigEditorTest extends TestCase
 
         try {
             $this->assertTrue(ConfigEditor::apply($path, "<?php\n// x\n", $state));
-            $this->assertFalse($state->edits()[0]['checked']);
+            // R19: the in-process parse ran, so the edit counts as checked even without `php -l`.
+            $this->assertTrue($state->edits()[0]['checked']);
         } finally {
             ConfigEditor::useLinter(null);
             @unlink($path);
@@ -342,7 +401,7 @@ final class ConfigEditorTest extends TestCase
         });
 
         try {
-            ConfigEditor::apply($path, '<?php broken(', new SetupState());
+            ConfigEditor::apply($path, "<?php\n// y\n", new SetupState());
             $this->fail('expected RestoreFailedException');
         } catch (RestoreFailedException $e) {
             $this->assertSame([$path, $path . '.rolewarden-bak'], [$e->path, $e->backup]);

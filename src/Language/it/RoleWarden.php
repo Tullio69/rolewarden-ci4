@@ -112,6 +112,7 @@ return [
             'skippedMembers' => 'Gruppo "{0}" non importato: esiste già il ruolo "{0}". {1, plural, one{# utente non avrà} other{# utenti non avranno}} più quel gruppo.',
             'skippedNoLoss' => 'Gruppo "{0}" non importato: esiste già il ruolo "{0}".',
             'summary' => 'Importati: {0}. Saltati: {1}.',
+            'deferred' => 'Gruppi di Shield non importati: li importa il wizard di installazione su /rolewarden/setup quando lo confermi. Completa il wizard per importarli.',
         ],
     ],
     'setup' => [
@@ -231,6 +232,10 @@ return [
         'doneNoFiles' => 'Nessun file aveva bisogno di modifiche.',
         'doneUnchecked' => '{0} (il controllo di sintassi non è partito: verifica il file)',
         'doneLink' => 'Aggiungi un link a /rolewarden nel menu della tua applicazione.',
+        'providerManual' => 'Imposta public string $userProvider = \RoleWarden\Models\UserModel::class; Se la tua applicazione usa un modello utenti suo, il wizard non lo sostituisce: tienilo e fagli estendere \RoleWarden\Models\UserModel.',
+        'directPermissions' => '{0, plural, one{# utente ha} other{# utenti hanno}} {1, plural, one{# permesso assegnato} other{# permessi assegnati}} direttamente in Shield. RoleWarden non li importa: dopo l\'installazione li perdono, a meno che tu non dia loro un ruolo o un override utente.',
+        'invalidReopen' => 'La risposta a "{0}" non vale più per questa applicazione. Torna a quel passo e scegli di nuovo: i passi già fatti restano fatti.',
+        'scanFailed' => 'Il wizard non è riuscito a leggere il database di questa applicazione; i dettagli sono nel log dell\'applicazione. Controlla la connessione, poi ricarica questa pagina.',
         'doneSignInAgain' => 'Il provider degli utenti è cambiato: esci e accedi di nuovo per rinnovare la sessione corrente.',
     ],
     'panel' => [

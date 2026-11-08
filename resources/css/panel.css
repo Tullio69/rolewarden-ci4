@@ -516,7 +516,7 @@
 
   .rw-auth-screen { min-height: 100vh; display: grid; place-items: center; position: relative; }
   .rw-auth-sheet { width: 448px; }
-  .rw-auth-row { display: grid; grid-template-columns: var(--gutter) 1fr; align-items: start; }
+  .rw-auth-row { display: grid; grid-template-columns: var(--gutter) minmax(0, 1fr); align-items: start; }
   .rw-auth-row > .rw-m-num { padding: var(--space-0-5) var(--space-3) 0 0; text-align: right; font-size: var(--text-xs); line-height: var(--leading-xs); color: var(--ink-faint); }
   .rw-auth-head { padding-bottom: var(--space-6); border-bottom: var(--rule-strong-width) solid var(--rule-strong); }
   .rw-auth-head h1 { margin: var(--space-1) 0 var(--space-2); font: var(--weight-title) var(--text-2xl)/var(--leading-2xl) var(--font-title); letter-spacing: -.01em; color: var(--ink); }

@@ -14,6 +14,9 @@ use RoleWarden\Settings\PanelRole;
  */
 class RoleWardenSeeder extends Seeder
 {
+    /** Setting: false skips "admin" and "user" (unset means true). */
+    public const DEFAULT_ROLES_KEY = 'RoleWarden.seedDefaultRoles';
+
     /** slug => is_super_admin; names and descriptions in Language/en/RoleWardenData.php */
     private const ROLES = ['super-admin' => 1, 'admin' => 0, 'user' => 0];
 
@@ -22,9 +25,15 @@ class RoleWardenSeeder extends Seeder
         $cfg = config('RoleWarden');
         $now = date('Y-m-d H:i:s');
 
-        $newRoles = [];
+        helper('setting');
+        $seedDefaults = setting(self::DEFAULT_ROLES_KEY) !== false;
+        $newRoles     = [];
 
         foreach (self::ROLES as $slug => $isSuper) {
+            if (! $seedDefaults && ! $isSuper) {
+                continue;
+            }
+
             $newRoles[$slug] = $this->insertMissing($cfg->table('roles'), $slug, [
                 'name' => self::texts()['roles'][$slug]['name'],
                 'description' => self::texts()['roles'][$slug]['description'],

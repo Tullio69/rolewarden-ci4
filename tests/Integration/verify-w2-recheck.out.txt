@@ -1,0 +1,43 @@
+=== scenario recheck @ http://localhost:8091 (2026-11-08T17:06:11+00:00)
+[PASS] focus5:guest-redirected | guest -> 302 http://localhost:8091/index.php/login
+[PASS] code:shown-when-signed-in | signed-in alice sees step code
+[PASS] csrf:post-without-token-403 | POST without token -> 403
+[PASS] code:wrong-rejected | wrong code -> code
+[PASS] code:skip-ahead-refused | POST step=roles before code -> code
+[PASS] import:collisions-step | -> collisions (skip warning "2 users lose 8 permissions" present)
+[PASS] D1:duplicate-username-rejected | new user alice/zz@host.test -> step=superAdmin | A new userCreated when you confirm, with the password rules of your application. UsernameThe Username field must contain a unique value. Email Password Repeat the password Continue Back RoleWarden
+[PASS] D1:duplicate-email-rejected | new user newroot/alice@host.test -> step=superAdmin | A new userCreated when you confirm, with the password rules of your application. Username EmailThe Email Address field must contain a unique value. Password Repeat the password Continue Back RoleWarden
+[PASS] D1:duplicate-username-case-variant | new user ALICE/zz2@host.test -> step=superAdmin | A new userCreated when you confirm, with the password rules of your application. UsernameThe Username field must contain a unique value. Email Password Repeat the password Continue Back RoleWarden
+[PASS] D1:duplicate-both-email-uppercase | new user bob/BOB@HOST.TEST -> step=superAdmin | A new userCreated when you confirm, with the password rules of your application. UsernameThe Username field must contain a unique value. EmailThe Email Address field must contain a unique value. Password Repeat the password Continue Back RoleWarden
+[PASS] focus4:tampered-id-5 | -> superAdmin
+[PASS] focus4:tampered-id-6 | -> superAdmin
+[PASS] focus4:tampered-id-7 | -> superAdmin
+[PASS] focus4:tampered-id-999 | -> superAdmin
+[PASS] superAdmin:valid-new-accepted | -> visibility
+[PASS] confirm:reached | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Check your choices and the changes to your files. Nothing
+[PASS] no-writes:tables | tables before==after: yes
+[PASS] no-writes:host-files | changed host files: []
+[PASS] no-writes:writable-only-manifest | writable/rolewarden: ["install-code.txt","install-manifest.json"]
+[PASS] no-writes:settings | RoleWarden settings rows: 0
+[PASS] manifest:no-cleartext-password | superAdmin={"kind":"new","username":"newroot","email":"newroot@host.test"} hash? yes
+[PASS] resume:stops-at-filters | done=["migrations","roles","superAdmin"] edits=0 | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Part of the installation is already applied. Check your choices and the changes still to make, then continue. Error: Setup stopped at "Filter exception": the files below could not be changed automa
+[PASS] resume:host-files-untouched | host file hashes unchanged after failed apply
+[PASS] resume:superadmin-created-hash-removed | {"kind":"new","username":"newroot","email":"newroot@host.test","id":10}
+[PASS] D2:failure-response-no-false-claim | POST response: Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Part of the installation is already applied. Check your choices and the changes still to make, then continue. Error: Setup stopped at "Filter exception": the files below could not be changed automatically. Make each change by hand, then choose "I edited the files, continue". app/Config/Filters.php --- before +++ after @@ -73,7 +73,7 @@ public array $globals = [ 'before' => [ // 'honeypot', - 'session' => ['except' => ['login*', 'register', 'auth/a/*', 'logout']], + 'session' => ['except' => [
+[PASS] D2:get-after-failure-no-false-claim | GET: Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Part of the installation is already applied. Check your choices and the changes still to make, then continue. 01 Already applied Database tablesdone Rolesdone Super admindone 02 RolesImport RoleWarden's roles Group adminmerged into admin Group userskipped Role for new sign-upscliente Super adminnewroot@host.test (new user) Who sees RoleWardenOnly administrators 1 user has 1 permission assigned directly in Shield. RoleWarden does not import them: after installation they lose them unless you give them a role or a user override. 03 Changes to your files Change to app/Config/Filters.php--- before +++ after @@ -73,7 +73,7 @@ public array $globals = [ 'before' => [ // 'honeypot', - 'session' => ['except' => ['login*', 'register', 'auth/a/*', 'logout']], + 'session' => ['except' => ['login*', 
+[PASS] D2:get-after-failure-lists-done-steps | mentions "Already applied": yes
+[PASS] host-works-mid-install | {"user":"bob","class":"CodeIgniter\\Shield\\Entities\\User","provider":"CodeIgniter\\Shield\\Models\\UserModel","tickets.view":true,"tickets.close":true,"admin.reports":false,"users.view":false,"roles.view":false,"inGroupAdmin":false,"_panel":404}
+[PASS] resume:continue-without-fix-stays | done=["migrations","roles","superAdmin"]
+  back after start -> step='confirm' : Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Part of the installation is already applied. Check your choices and the changes still to make, then continue. 01 Already applied Database tablesdone Rolesdone Super admindone 02 RolesImport RoleWar
+[PASS] locked:answers-after-start | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Part of the installation is already applied. Check your choices and the changes still to make, then continue. 01 Already applied Database tablesdone Rolesdone Super admindone 02 RolesImport RoleWar
+[PASS] resume:completes | done=["migrations","roles","superAdmin","filters","wiring"] | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 RoleWarden is set up Every step was applied. This wizard is now closed. 01 Done Database tables Roles Super admin Filter exception Wiring into the application 02 Files changed (each has a .rolewarden-bak copy of the
+[PASS] resume:edits-only-real | ["Filters.php@2026-11-08T17:06:30+00:00","Routes.php@2026-11-08T17:06:30+00:00","Auth.php@2026-11-08T17:06:30+00:00"]
+[PASS] resume:no-duplicates | dup user_roles/role_perms/roles = 0/0/0
+DB roles: admin[33p:1,8],cliente[2p:3,4,5,6,7],operatore[4p:2],super-admin[0p:10],user[0p:]
+[PASS] import:merge-admin | admin=33:1,8
+[PASS] import:skip-user | user members=0
+[PASS] superAdmin:newroot | newroot is the single new user and super-admin
+[PASS] done:403 | -> 403
+[PASS] done:new-super-admin-opens-panel | {"user":"newroot","class":"RoleWarden\\Entities\\User","provider":"RoleWarden\\Models\\UserModel","tickets.view":true,"tickets.close":true,"admin.reports":true,"users.view":true,"roles.view":true,"inGroupAdmin":false,"_panel":200}
+[PASS] done:can-through-rolewarden | {"user":"ivan","class":"RoleWarden\\Entities\\User","provider":"RoleWarden\\Models\\UserModel","tickets.view":false,"tickets.close":false,"admin.reports":false,"users.view":false,"roles.view":false,"inGroupAdmin":false,"_panel":302}
+=== scenario recheck: ALL CHECKS PASS

@@ -1,0 +1,6 @@
+=== scenario odd-continue @ http://localhost:8093 (2026-11-08T16:45:34+00:00)
+  current step='code' : Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 1 of 7 Set up RoleWarden RoleWarden is added to this application step by step. Nothing is changed until the last step, where you confirm. To prove you manage the server, enter the setup code saved in a file on it. 01 Setup
+  after code -> confirm : Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Check your choices and the changes to your files. Nothing has been written yet. 01 RolesAdapt the roles already here Who will manage the paneladmin Role for new sign-upscliente Super adminalice (ex
+  after continue: Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 RoleWarden is set up Every step was applied. This wizard is now closed. 01 Done Database tables Roles Super admin Filter exception Wiring into the application 02 Files changed (each has a .rolewarden-bak copy of the original) app/Config/Filters.php app/Config/Routes.php 03 Add a link to /rolewarden in your application's menu. Sign in RoleWarden
+  done=["migrations","roles","superAdmin","filters","wiring"] completed_at=2026-11-08T16:45:37+00:00 edits=["Filters.php","Routes.php"]
+=== scenario odd-continue: ALL CHECKS PASS

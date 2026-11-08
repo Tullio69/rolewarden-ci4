@@ -1,0 +1,6 @@
+ERROR - 2026-11-08 16:33:53 --> RoleWarden setup: step superAdmin failed: Duplicate entry 'alice' for key 'username'
+ERROR - 2026-11-08 16:33:54 --> RoleWarden setup: step superAdmin failed: Duplicate entry 'alice' for key 'username'
+ERROR - 2026-11-08 16:33:55 --> RoleWarden setup: step superAdmin failed: Duplicate entry 'alice' for key 'username'
+ERROR - 2026-11-08 16:34:55 --> RoleWarden setup: step superAdmin failed: Another user already has the new super admin's email.
+ERROR - 2026-11-08 16:34:56 --> RoleWarden setup: step superAdmin failed: Another user already has the new super admin's email.
+ERROR - 2026-11-08 16:34:57 --> RoleWarden setup: step superAdmin failed: Another user already has the new super admin's email.

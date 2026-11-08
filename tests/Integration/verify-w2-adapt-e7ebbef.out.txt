@@ -1,0 +1,45 @@
+=== scenario adapt @ http://localhost:8091 (2026-11-08T16:40:41+00:00)
+[PASS] focus5:guest-redirected-to-host-login | GET /index.php/rolewarden/setup as guest -> 302 http://localhost:8091/index.php/login
+[PASS] lang:initial-from-browser-it | Accept-Language it -> Configura RoleWarden · RoleWarden Lingua English Italiano Applica Configurazione · passo 1 di 7 Configura RoleWarden RoleWarden viene aggiunto a questa applic
+[PASS] focus5:code-page-explains-signin | it text: 
+[PASS] lang:selector-switches-to-en | POST locale=en -> Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 1 of 7 Set up RoleWarden RoleWarden is added to this application step by step. Not
+[PASS] focus5:code-page-explains-signin-en | code page text contains the sign-in hint
+[PASS] code:skip-ahead-refused | POST step=roles before code -> page step=code
+[PASS] code:accepted | right code -> requirements
+[PASS] filters:preview-shown | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 2 of 7 Filters of your application Some filters of your application may block RoleWarden's pages. Nothing is written now: the change is applied at the end. 01 app/Config/Filters.php applies the "session" filter to every pa
+[PASS] roles:adapt-suggested-for-custom-groups | checked mode=adapt
+[PASS] adapt:no-collision-step | after roles(adapt) -> newUsers
+[PASS] back:keeps-choices | back -> step=roles mode=adapt panelRole=admin
+[PASS] newUsers:prefilled-defaultGroup | defaultRole=cliente options=[" | no role","admin | admin","operatore | operatore","cliente | cliente","user | user"]
+[PASS] superAdmin:only-active-listed | listed ids=[1,2,3,4,8,9] (5 inactive, 6 banned, 7 deleted)
+[PASS] focus4:tampered-id-5-rejected | POST id=5 -> step=superAdmin
+[PASS] focus4:tampered-id-6-rejected | POST id=6 -> step=superAdmin
+[PASS] focus4:tampered-id-7-rejected | POST id=7 -> step=superAdmin
+[PASS] focus4:tampered-id-999-rejected | POST id=999 -> step=superAdmin
+[PASS] focus4:tampered-id-0-rejected | POST id=0 -> step=superAdmin
+[PASS] focus4:tampered-id--1-rejected | POST id=-1 -> step=superAdmin
+[PASS] visibility:shown | id=1 -> visibility
+[PASS] confirm:shown-with-previews | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Check your choices and the changes to your files. Nothing has been written yet. 01 RolesAdapt the
+[PASS] no-writes:tables | tables before==after: yes
+[PASS] no-writes:host-files | changed host files: []
+[PASS] no-writes:writable-only-manifest | writable/rolewarden: ["install-code.txt","install-manifest.json"]
+[PASS] no-writes:settings | RoleWarden settings rows: 0
+[PASS] manifest:choices-saved | {"locale":"en","mode":"adapt","panelRole":"admin","collisions":[],"defaultRole":"cliente","superAdmin":{"kind":"existing","id":1},"visibility":"all"}
+[PASS] apply:completed | done=["migrations","roles","superAdmin","filters","wiring"] completed_at=2026-11-08T16:40:56+00:00 page=Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 RoleWarden is set up Every step was applied. This wizard is now closed. 01 Done Database tables Roles Super admin Filter exception Wiring into the application 02 Fil
+[PASS] apply:edits-logged | edits=["Filters.php@2026-11-08T16:40:55+00:00","Routes.php@2026-11-08T16:40:55+00:00","Auth.php@2026-11-08T16:40:56+00:00"]
+[PASS] apply:order-filters-routes-auth | edit order
+[PASS] backup:Filters | Filters.php.rolewarden-bak exists
+[PASS] backup:Routes | Routes.php.rolewarden-bak exists
+[PASS] backup:Auth | Auth.php.rolewarden-bak exists
+[PASS] code:deleted | install-code.txt removed
+[PASS] visibility-all:login-view-and-redirect | Auth.php views/redirects changed
+DB roles: admin[33p:1,8],cliente[2p:3,4,5,6,7],operatore[4p:2],super-admin[0p:1],user[1p:4,9]
+[PASS] adapt:no-system-user-role | 'user' exists only as host group (count=1)
+[PASS] adapt:panelRole-setting | panelRole=admin
+[PASS] adapt:admin-has-host-and-panel-perms | admin perms=33
+[PASS] superAdmin:alice-assigned | alice in super-admin
+[PASS] done:wizard-403 | GET /index.php/rolewarden/setup -> 403
+[PASS] done:panel-role-opens-panel | {"user":"alice","class":"RoleWarden\\Entities\\User","provider":"RoleWarden\\Models\\UserModel","tickets.view":true,"tickets.close":true,"admin.reports":true,"users.view":true,"roles.view":true,"inGroupAdmin":true,"_panel":200}
+[PASS] done:host-can-through-rolewarden | {"user":"bob","class":"RoleWarden\\Entities\\User","provider":"RoleWarden\\Models\\UserModel","tickets.view":true,"tickets.close":true,"admin.reports":false,"users.view":false,"roles.view":false,"inGroupAdmin":false,"_panel":302}
+[PASS] done:login-page-200 | GET /login -> 200
+=== scenario adapt: ALL CHECKS PASS

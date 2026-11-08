@@ -1,0 +1,20 @@
+=== scenario stock @ http://localhost:8092 (2026-11-08T16:42:54+00:00)
+[PASS] stock:wizard-open-for-guest-without-session-filter | GET -> 200
+[PASS] stock:filters-none | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 2 of 7 Filters of your application Some filters of your application may block RoleWarden's pages. Nothing is written now: the change is applied at the end. 01 No change needed: no global session, group or permission filter
+[PASS] focus1:import-suggested | checked mode=import | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 3 of 7 Roles RoleWarden keeps roles and permissions in the database. Choose how the groups of your application become roles. 01 Groups of your application superadmin0 users, 7 permissions admin2 users, 5 permissions developer1 user, 5 permissions user6 users, 0 permissions beta1 user, 1 permission 1 user has 1 permission assigned directly in Shield. RoleWarden does not import them: after installation they lose them unless you give them a role or a user override. 02 What to do with your groups Adapt the roles already hereYour groups stay and become RoleWarden roles, with their users and permissions. RoleWarden does not add its own admin and user roles; only super-admin is added. Who will manage the panel nobody (super admin only) Super Admin (superadmin) Admin (admin) Developer (developer) User (user) Beta User 
+[PASS] focus1:not-blocked | after import -> collisions radios=["collisions[admin][action]","collisions[user][action]"]
+[PASS] collisions:accepted | -> newUsers options=[" | no role","admin | admin","user | user","superadmin | superadmin","app-admin | app-admin","developer | developer","beta | beta"]
+[PASS] stock:confirm | Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 Confirm and apply Check your choices and the changes to your files. Nothing has been written yet. 01 RolesImport RoleWarden's roles Group adminimported as app-admin Group usermerged into user Role for new sign-upsuser Super adminalice (existing user) Who sees RoleWardenOnly administrators 1 user has 1 permission assigned directly in Shield. RoleWarden does not import them: after installation they lose them unless you give them a role or a user override. 02 Changes to your files app/Config/Filters.php: no chang
+[PASS] no-writes:tables | tables before==after: yes
+[PASS] no-writes:host-files | changed host files: []
+[PASS] no-writes:writable-only-manifest | writable/rolewarden: ["install-code.txt","install-manifest.json"]
+[PASS] no-writes:settings | RoleWarden settings rows: 0
+[PASS] stock:apply-completed | done=["migrations","roles","superAdmin","filters","wiring"] Set up RoleWarden · RoleWarden Language English Italiano Apply Setup · step 7 of 7 RoleWarden is set up Every step was applied. This wizard is now closed. 01 Done Database tables Roles Super admin Filter exception Wiring into the application 02 Files changed (each has a .rolewarden-bak copy of the
+[PASS] stock:no-filters-edit | edits=["Routes.php","Auth.php"]
+DB roles: admin[25p:],app-admin[5p:1,8],beta[1p:4],developer[5p:2],super-admin[0p:1],superadmin[7p:],user[0p:3,4,5,6,7,9]
+[PASS] rename:app-admin-has-host-perms-and-members | app-admin=5/1,8
+[PASS] rename:system-admin-untouched-members | system admin members=0
+[PASS] merge:user-members | user members=3,4,5,6,7,9
+[PASS] stock:done-403 | -> 403
+[PASS] stock:super-admin-opens-panel | {"user":"alice","class":"RoleWarden\\Entities\\User","provider":"RoleWarden\\Models\\UserModel","tickets.view":true,"tickets.close":true,"admin.reports":true,"users.view":true,"roles.view":true,"inGroupAdmin":false,"_panel":200}
+=== scenario stock: ALL CHECKS PASS

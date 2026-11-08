@@ -1851,3 +1851,42 @@ Formato di ogni voce:
 - Correzione della voce delle 22:00: `main` è su GitHub (`b02e4b6`), il tag `v1.1.0` no, perché il proxy della sessione cloud rifiuta il push dei tag. Il tag esiste in locale e va pushato dal PC: `git push origin main v1.1.0`.
 - Build: nella sessione cloud Composer non riusciva a scaricare le versioni dist (403) e ha installato i pacchetti da sorgente. In `vendor/` dello zip app ogni pacchetto è stato riportato alla forma dist con `git archive HEAD` del pacchetto (rispetta gli `export-ignore`, come gli zip di GitHub) e `installed.json` segna `dist`; numero di file per pacchetto identico allo zip 1.0.0. Prova d'avvio dello zip: `/` porta all'installer, l'installer risponde 200, `spark` vede i comandi della demo. Checksum in `build/1.1.0/SHA256SUMS`.
 - Nota: lo zip app contiene CodeIgniter **4.7.6** (uscita dopo i collaudi R1 su 4.7.4/4.7.5). Shield 1.4.1, Settings 2.4.0, Translations 4.7.4 invariati.
+
+### [2026-11-08 17:50] - Claude (Collaudatore ad Hoc, tappa W2)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-w2.php`, `verify-w2-lib.php`, `verify-w2-*.out.txt`, `verify-w2-manifest-*.json`, `verify-w2-odd-stop.html`, `verify-w2-s1-applog.txt`, `W2-REPORT.md`) e questa voce
+- Cosa ho fatto: collaudo in nero del wizard `/rolewarden/setup` al commit `e7ebbef`, senza aprire l'implementazione, su app nuove CI 4.7.6 + Shield ^1.4 nella scratchpad: host con gruppi propri e filtro `session` globale, host con gruppi di serie, host senza gruppi, host con provider proprio, riga RouteRegistrar commentata ed `except` stringa. Scenari: import (Unisci/Salta), import (rename/Unisci), adatta, ripresa con Filters.php in sola lettura, file non riconosciuto con "ho modificato a mano".
+- Esito: **FAIL**. Stato di approvazione: **non approvato**. Review Focus 1–5 tutti PASS.
+- Difetti:
+  - D1: il nuovo super admin con username o email già in uso viene accettato alle domande e fa fallire l'apply al passo "Super admin".
+  - D2: dopo un apply interrotto, la pagina di conferma dice "Nothing has been written yet." anche se migrazioni e ruoli sono già applicati.
+- Ambiguità di specifica (separate dai difetti, non decise):
+  - il conteggio del "Salta" non è netto: conta anche chi conserva il permesso tramite un altro gruppo;
+  - una riga RouteRegistrar commentata viene trattata come assente: il wizard aggiunge la riga, non dà istruzioni a mano;
+  - il passo Requisiti non controlla le versioni di CI e Shield;
+  - numerazione dei passi;
+  - gli utenti cancellati vengono importati nei ruoli.
+- DB: `rolewarden_test` ripristinato. Il dump è identico allo snapshot (SHA-256) e i CHECKSUM delle 16 tabelle sono uguali. `rolewarden` non toccato. Server fermati, app di prova solo nella scratchpad. Nessun commit.
+- Stato: completato
+- Note per il prossimo: dettagli ed evidenze in `tests/Integration/W2-REPORT.md`. Dopo le correzioni serve una riverifica di D1 e D2 (casi 12 e 15 del report).
+
+### [2026-11-08 18:15] - Claude (Collaudatore ad Hoc, riverifica W2)
+- Tipo: review
+- Scope: solo `tests/Integration/` (`verify-w2.php` con il nuovo scenario `recheck`, `verify-w2-recheck.out.txt`, `verify-w2-adapt.out.txt`, `verify-w2-adapt-e7ebbef.out.txt`, `verify-w2-manifest-r-*.json`, sezione "Riverifica su 610bca9" in `W2-REPORT.md`) e questa voce
+- Cosa ho fatto: riverifica in nero del commit `610bca9`. Modulo ripreso con `git archive` e host ricostruiti da zero.
+  - D1 e D2 riverificati con gli stessi passi del report.
+  - Regressione rapida: codice e CSRF, nessuna scrittura alle domande, import con collisioni, adatta completo, ripresa con Filters.php in sola lettura, 403 a fine flusso, nessun SQL a schermo.
+- Esito: **PASS**. Stato di approvazione: **approvato** dal collaudo.
+  - D1 corretto: username o email già in uso, anche con maiuscole diverse, vengono rifiutati al passo Super admin.
+  - D2 corretto: dopo un'interruzione la conferma dice "Part of the installation is already applied" ed elenca "Already applied" con i passi fatti.
+- Ambiguità di specifica: restano aperte le 5 del report (conteggio del Salta, riga RouteRegistrar commentata, versioni nei requisiti, numerazione dei passi, utenti cancellati importati).
+- DB: `rolewarden_test` ripristinato. Il dump è identico allo snapshot della riverifica (SHA-256) e i CHECKSUM delle 16 tabelle sono uguali. Server fermati, app di prova solo nella scratchpad. Nessun commit.
+- Stato: completato
+
+### [2026-11-08 18:25] - Claude (controller subagent-driven, piano 2)
+- Tipo: feature
+- Scope: `src/Install/` (SetupState, HostScan, ConfigEditor, RoleSetup, Setup, GroupImport), `src/Config/Routes.php`, `src/Controllers/SetupController.php`, `src/Views/setup/`, `src/Database/Seeds/RoleWardenSeeder.php`, migrazione ImportAuthGroups, file di lingua (sezione `setup`), CSS del pannello, test, README, CHANGELOG
+- Cosa ho fatto: eseguito il piano 2 (`docs/superpowers/plans/2026-11-08-wizard-installazione.md`) in modalità subagent-driven: 8 task, ognuno con revisione di specifica e qualità, revisione finale dell'intero ramo con un'ondata di correzioni, collaudo in nero del Collaudatore ad Hoc (W2: FAIL su D1/D2, corretti, riverifica PASS su 610bca9). Collaudo da zero sull'helpdesk (worktree 544b9eb, DB `helpdesk_wizard`, poi rimossi): tutto PASS. Suite 230 test verde in entrambi gli ordini, PHPStan pulito. Commit da 23eb847 a 610bca9 su `main`, non pushati.
+- Stato: completato
+- Note per il prossimo: restano per Fabio le 5 ambiguità di specifica del report W2 (conteggio del Salta non netto, riga RouteRegistrar commentata trattata come assente, requisiti senza controllo versioni CI4/Shield e scrittura `app/Config`/`modules/`, numerazione "step 1 of 7" doppia, membri cancellati/disattivati/bannati importati nei ruoli) e la decisione se importare i permessi diretti di Shield (`auth_permissions_users`) come override utente: oggi il wizard li segnala soltanto. Minori rimandati: la cartella `app/Config/` che deve essere scrivibile per la scrittura atomica, il confronto del provider sensibile alle maiuscole, i nomi delle tabelle Shield fissi in HostScan.
+

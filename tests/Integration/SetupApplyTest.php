@@ -280,6 +280,25 @@ final class SetupApplyTest extends DatabaseTestCase
         $this->assertNull(setting(GroupImport::DEFERRED));
     }
 
+    /** R20: once started, an invalid super admin sends back to its question (still open); a user past the first 200 is valid. */
+    public function testSuperAdminCheckedDirectlyAndReopened(): void
+    {
+        $now = date('Y-m-d H:i:s');
+        $this->db->table('users')->insertBatch(array_map(static fn (int $i): array => ['username' => 'bulk' . $i, 'active' => 1, 'created_at' => $now, 'updated_at' => $now], range(1, 201)));
+        $last = (int) $this->db->table('users')->selectMax('id')->get()->getRow()->id;
+
+        $this->assertTrue(Setup::apply($this->state(['superAdmin' => ['kind' => 'existing', 'id' => $last]]), $this->helpdesk(), $this->dir)['ok']);
+        $this->assertSame(['super-admin'], $this->rolesOf($last));
+
+        $this->db->table('users')->where('id', $this->boss)->update(['active' => 0]);
+        $state = $this->state(['superAdmin' => ['kind' => 'existing', 'id' => $this->boss]]);
+        $state->markDone('migrations');
+        $result = Setup::apply($state, $this->helpdesk(), $this->dir);
+
+        $this->assertSame('superAdmin', $result['failedStep']);
+        $this->assertSame(lang('RoleWarden.setup.invalidReopen', [lang('RoleWarden.setup.superAdminTitle')]), $result['messages'][0]);
+    }
+
     /** @param array<string, mixed> $extra */
     private function state(array $extra): SetupState
     {

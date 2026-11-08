@@ -318,6 +318,51 @@ final class SetupWizardTest extends DatabaseTestCase
         $this->assertStringNotContainsString('passwordHash', (string) file_get_contents(SetupState::file()));
     }
 
+    /** R20: the super admin can still be chosen again until its own apply step is done; the other answers stay locked. */
+    public function testSuperAdminReopenedUntilItsStepIsDone(): void
+    {
+        $first  = $this->makeUser('first@example.test');
+        $second = $this->makeUser('second@example.test');
+        $state  = new SetupState();
+
+        foreach (['locale' => 'en', 'mode' => 'import', 'panelRole' => '', 'collisions' => ['admin' => ['action' => 'skip']], 'defaultRole' => 'cliente', 'superAdmin' => ['kind' => 'existing', 'id' => $first], 'visibility' => 'admins'] as $key => $value) {
+            $state->setChoice($key, $value);
+        }
+
+        $state->markDone('migrations');
+        $state->save();
+
+        $confirm = $this->send(['step' => 'code', 'code' => Installer::code()]);
+        $this->assertSeeHtml($confirm, 'name="step" value="confirm"');
+        $this->assertSeeHtml($confirm, 'name="back"');
+
+        $this->assertSeeHtml($this->send(['step' => 'confirm', 'back' => '1']), 'name="step" value="superAdmin"');
+        $this->assertSeeHtml($this->send(['step' => 'superAdmin', 'back' => '1']), esc(lang('RoleWarden.setup.locked')));
+        $this->assertSeeHtml($this->send(['step' => 'superAdmin', 'kind' => 'existing', 'id' => (string) $second]), 'name="step" value="confirm"');
+        $this->assertSeeHtml($this->send(['step' => 'visibility', 'visibility' => 'all']), esc(lang('RoleWarden.setup.locked')));
+
+        $choices = SetupState::load()->choices();
+        $this->assertSame(['kind' => 'existing', 'id' => $second], $choices['superAdmin']);
+        $this->assertSame('admins', $choices['visibility']);
+    }
+
+    /** R20: an existing super admin is checked against the database, not against the first 200 users listed. */
+    public function testSuperAdminBeyondTheListAccepted(): void
+    {
+        $now = date('Y-m-d H:i:s');
+        $this->db->table('users')->insertBatch(array_map(static fn (int $i): array => ['username' => 'bulk' . $i, 'active' => 1, 'created_at' => $now, 'updated_at' => $now], range(1, 201)));
+        $last = (int) $this->db->table('users')->selectMax('id')->get()->getRow()->id;
+        $this->assertNotContains($last, array_column(HostScan::activeUsers(), 'id'));
+
+        $this->verified();
+        $this->send(['step' => 'roles', 'mode' => 'import']);
+        $this->send(['step' => 'collisions', 'collisions' => ['admin' => ['action' => 'skip']]]);
+        $this->send(['step' => 'newUsers', 'defaultRole' => 'cliente']);
+
+        $this->assertSeeHtml($this->send(['step' => 'superAdmin', 'kind' => 'existing', 'id' => (string) $last]), 'name="step" value="visibility"');
+        $this->assertSame(['kind' => 'existing', 'id' => $last], SetupState::load()->choices()['superAdmin']);
+    }
+
     public function testCompletedReturns403(): void
     {
         $state = new SetupState();

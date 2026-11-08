@@ -84,18 +84,23 @@ class SetupController extends Controller
         $step = $this->current($state);
 
         // R15: once an apply step is done the answers are locked; the run can only be continued.
-        if (Setup::started($state)) {
-            $step = 'confirm';
-            session()->set(self::STEP, $step);
+        // R20: the super admin alone stays open until its own step is done; Back and Continue
+        // then go straight between it and confirm.
+        $open = $this->open($state);
 
-            if (isset($post['back']) || ($posted !== 'confirm' && in_array($posted, self::STEPS, true))) {
+        if ($open !== self::STEPS) {
+            $step = in_array($step, $open, true) ? $step : 'confirm';
+            session()->set(self::STEP, $step);
+            $allowed = in_array($posted, $open, true) && (! isset($post['back']) || ($posted === 'confirm' && in_array('superAdmin', $open, true)));
+
+            if (in_array($posted, self::STEPS, true) && ! $allowed) {
                 return $this->show($step, $state, ['step' => lang('RoleWarden.setup.locked')]);
             }
         }
 
         if ($posted === $step) {
             if (isset($post['back'])) {
-                $step = $this->move($state, $step, -1);
+                $step = $open === self::STEPS ? $this->move($state, $step, -1) : $this->go('superAdmin');
             } elseif ($step === 'confirm') {
                 $result = Setup::apply($state, config('AuthGroups'), $this->configDir());
 
@@ -114,7 +119,7 @@ class SetupController extends Controller
                 }
 
                 $state->save();
-                $step = $this->move($state, $step, 1);
+                $step = $open === self::STEPS ? $this->move($state, $step, 1) : $this->go('confirm');
             }
         }
 
@@ -210,7 +215,8 @@ class SetupController extends Controller
     }
 
     /**
-     * An existing user must be one of HostScan::activeUsers (a forged id is refused). A new one
+     * An existing user must be able to sign in, checked in the database (HostScan::isActiveUser,
+     * R20: a forged id is refused, a user past the listed 200 is not). A new one
      * is checked with Shield's own rules, as InstallController does; only the hash is kept (R2).
      *
      * @param array<string, mixed> $post
@@ -224,7 +230,7 @@ class SetupController extends Controller
         if ($kind === 'existing') {
             $id = is_string($post['id'] ?? null) && ctype_digit($post['id']) ? (int) $post['id'] : 0;
 
-            if (! in_array($id, array_column(HostScan::activeUsers(), 'id'), true)) {
+            if (! HostScan::isActiveUser($id)) {
                 return ['id' => lang('RoleWarden.setup.invalidChoice')];
             }
 
@@ -308,13 +314,15 @@ class SetupController extends Controller
                 break;
 
             case 'superAdmin':
-                $data['users'] = HostScan::activeUsers();
+                $data['users']  = HostScan::activeUsers();
+                $data['locked'] = Setup::started($state);
                 break;
 
             case 'confirm':
                 $data['users'] = array_column(HostScan::activeUsers(), null, 'id');
                 $data['files']  = Setup::filePlan($choices, $this->configDir());
                 $data['locked'] = Setup::started($state);
+                $data['reopen'] = in_array('superAdmin', $this->open($state), true) && $data['locked'];
                 $data['direct'] = HostScan::directPermissions();
                 break;
         }
@@ -366,6 +374,23 @@ class SetupController extends Controller
         return $step !== 'collisions' || (($choices['mode'] ?? null) === 'import' && $this->collisions() !== []);
     }
 
+    /** @return list<string> the steps that can still be answered or posted */
+    private function open(SetupState $state): array
+    {
+        if (! Setup::started($state)) {
+            return self::STEPS;
+        }
+
+        return $state->done('superAdmin') ? ['confirm'] : ['superAdmin', 'confirm'];
+    }
+
+    private function go(string $step): string
+    {
+        session()->set(self::STEP, $step);
+
+        return $step;
+    }
+
     private function move(SetupState $state, string $step, int $by): string
     {
         $i = array_search($step, self::STEPS, true);
@@ -374,10 +399,7 @@ class SetupController extends Controller
             $i += $by;
         } while (isset(self::STEPS[$i]) && ! $this->applies(self::STEPS[$i], $state->choices()));
 
-        $step = self::STEPS[max(0, min($i, count(self::STEPS) - 1))];
-        session()->set(self::STEP, $step);
-
-        return $step;
+        return $this->go(self::STEPS[max(0, min($i, count(self::STEPS) - 1))]);
     }
 
     /** @return list<array{slug: string, title: string, users: int, permissions: int}> */
@@ -428,6 +450,6 @@ class SetupController extends Controller
     /** @param array<string, mixed> $data */
     private function page(string $step, array $data = []): string
     {
-        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null, 'result' => null, 'locked' => false]);
+        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null, 'result' => null, 'locked' => false, 'reopen' => false]);
     }
 }

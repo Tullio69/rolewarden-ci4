@@ -221,7 +221,7 @@ return [
         'applyFailed' => 'Setup stopped at "{0}". The steps before it are done and stay done; the details are in the application log. Once the cause is fixed, apply again to resume.',
         'applyManual' => 'Setup stopped at "{0}": the files below could not be changed automatically. Make each change by hand, then choose "I edited the files, continue".',
         'restoreFailed' => '{0} was left with invalid content and could not be written back. Copy the original back from {1} by hand, then apply again.',
-        'invalidLocked' => 'The answer to "{0}" no longer holds for this application. The installation has already started, so the answers can no longer change: fix the cause in the application (for example, reactivate the chosen user), then apply again.',
+        'invalidLocked' => 'The answer to "{0}" no longer holds for this application. The installation has already started, so the answers can no longer change: fix the cause in the application (for example, put back a group removed from AuthGroups), then apply again.',
         'locked' => 'The installation has already started, so the answers can no longer change. It can only be continued: apply again.',
         'manualContinue' => 'I edited the files, continue',
         'retry' => 'Apply again',

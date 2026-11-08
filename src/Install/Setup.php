@@ -45,7 +45,14 @@ final class Setup
 
         if ($invalid !== null) {
             // Once started, answers are locked (R15): the cause must be fixed in the application.
-            return self::fail($invalid, lang('RoleWarden.setup.' . (self::started($state) ? 'invalidLocked' : 'invalidSaved'), [lang('RoleWarden.setup.' . $invalid . 'Title')]));
+            // The super admin stays open until its own step is done (R20).
+            $key = match (true) {
+                ! self::started($state) => 'invalidSaved',
+                $invalid === 'superAdmin' => 'invalidReopen',
+                default => 'invalidLocked',
+            };
+
+            return self::fail($invalid, lang('RoleWarden.setup.' . $key, [lang('RoleWarden.setup.' . $invalid . 'Title')]));
         }
 
         foreach (self::STEPS as $step) {
@@ -180,7 +187,7 @@ final class Setup
         $admin = $c['superAdmin'] ?? null;
 
         if (! $state->done('superAdmin') && ! (is_array($admin) && match ($admin['kind'] ?? null) {
-            'existing' => in_array($admin['id'] ?? null, array_column(HostScan::activeUsers(), 'id'), true),
+            'existing' => is_int($admin['id'] ?? null) && HostScan::isActiveUser($admin['id']),
             'new' => is_string($admin['username'] ?? null) && is_string($admin['email'] ?? null) && is_string($admin['passwordHash'] ?? null) && $admin['passwordHash'] !== '',
             default => false,
         })) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace RoleWarden\Install;
 
+use CodeIgniter\Database\BaseBuilder;
+
 /**
  * Read-only analysis of the host app for the install wizard: its Shield groups,
  * their member counts and the users that could become super admin. Writes nothing.
@@ -144,12 +146,9 @@ final class HostScan
      */
     public static function activeUsers(int $limit = 200): array
     {
-        $rows = db_connect()->table('users u')
+        $rows = self::active()
             ->select('u.id, u.username, i.secret AS email')
             ->join('auth_identities i', "i.user_id = u.id AND i.type = 'email_password'", 'left')
-            ->where('u.active', 1)
-            ->where('u.deleted_at', null)
-            ->groupStart()->where('u.status', null)->orWhere('u.status !=', 'banned')->groupEnd()
             ->orderBy('u.id')
             ->limit($limit)
             ->get()->getResultArray();
@@ -159,5 +158,19 @@ final class HostScan
             'username' => (string) ($r['username'] ?? ''),
             'email' => (string) ($r['email'] ?? ''),
         ], $rows);
+    }
+
+    /** Whether the user can sign in, by the same criteria as activeUsers() but without its limit (R20). */
+    public static function isActiveUser(int $id): bool
+    {
+        return self::active()->where('u.id', $id)->countAllResults() > 0;
+    }
+
+    private static function active(): BaseBuilder
+    {
+        return db_connect()->table('users u')
+            ->where('u.active', 1)
+            ->where('u.deleted_at', null)
+            ->groupStart()->where('u.status', null)->orWhere('u.status !=', 'banned')->groupEnd();
     }
 }

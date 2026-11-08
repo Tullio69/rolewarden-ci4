@@ -14,9 +14,10 @@
  * @var array<string, string> $errors    field => message
  * @var array<string, mixed>  $posted    the POST of a refused answer
  * @var string|null           $error
- * @var array{ok: bool, failedStep: ?string, messages: list<string>}|null $result a failed apply (confirm)
+ * @var array{ok: bool, failedStep: ?string, invalid: bool, messages: list<string>}|null $result a failed apply (confirm)
  * @var bool                  $locked    an apply step is done: answers can no longer change
  * @var bool                  $reopen    locked, but the super admin can still be chosen again (R20)
+ * @var list<string>          $applied   apply steps already done (confirm)
  */
 $t = static fn (string $key, array $args = []): string => lang('RoleWarden.setup.' . $key, $args);
 $n = 0;
@@ -27,14 +28,14 @@ $errorFor = static function (string $field) use ($errors): string {
     return isset($errors[$field]) ? '<span class="rw-auth-err" id="rw-setup-' . esc($field, 'attr') . '-error">' . esc($errors[$field]) . '</span>' : '';
 };
 $invalid = static fn (string $field): string => isset($errors[$field]) ? ' aria-invalid="true" aria-describedby="rw-setup-' . esc($field, 'attr') . '-error"' : '';
-/** @param array{file: string, diff: string, manual: bool} $f */
+/** @param array{file: string, diff: string, manual: bool, applied: bool} $f */
 $preview = static function (array $f) use ($t): string {
     if ($f['manual']) {
         return '<p class="rw-field-hint">' . esc($t('fileManual', [$f['file']])) . '</p>';
     }
 
     if ($f['diff'] === '') {
-        return '<p class="rw-field-hint">' . esc($t('fileUnchanged', [$f['file']])) . '</p>';
+        return '<p class="rw-field-hint">' . esc($t($f['applied'] ? 'fileApplied' : 'fileUnchanged', [$f['file']])) . '</p>';
     }
 
     return '<span class="rw-label">' . esc($t('fileChange', [$f['file']])) . '</span><pre class="rw-setup-diff" tabindex="0">' . esc($f['diff']) . '</pre>';
@@ -43,7 +44,9 @@ $steps = ['code' => 1, 'requirements' => 1, 'filters' => 2, 'roles' => 3, 'colli
 $locale = service('language')->getLocale();
 // A saved answer that no longer holds (R12) cannot be applied again unchanged: only Back helps, unless answers are locked (R15)
 // and it is not the super admin, which stays open until its step is done (R20).
-$answerInvalid = $result !== null && ! in_array($result['failedStep'], RoleWarden\Install\Setup::STEPS, true) && (! $locked || ($reopen && $result['failedStep'] === 'superAdmin'));
+$answerInvalid = ($result['invalid'] ?? false) && (! $locked || ($reopen && $result['failedStep'] === 'superAdmin'));
+// After an interrupted apply the confirm page says so and continues, instead of "nothing written yet".
+$resume = $step === 'confirm' && $applied !== [];
 $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DIR__ . '/../../Assets/css/panel.css'));
 ?>
 <!doctype html>
@@ -75,7 +78,7 @@ $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DI
       <div>
         <?php if (! in_array($step, ['completed', 'scanFailed'], true)) : ?><div class="rw-header"><?= esc($t('overline', [$steps[$step], 7])) ?></div><?php endif ?>
         <h1><?= esc($t($step . 'Title')) ?></h1>
-        <p><?= esc($t($step . 'Intro')) ?></p>
+        <p><?= esc($t($resume ? 'confirmIntroResume' : $step . 'Intro')) ?></p>
       </div>
     </div>
 
@@ -96,7 +99,7 @@ $css = str_replace('../fonts/', 'assets/fonts/', (string) file_get_contents(__DI
           <div>
             <div class="rw-setup-actions">
               <?php if (! $answerInvalid) : ?>
-              <button class="rw-btn rw-btn--primary" type="submit"<?= $step === 'requirements' && ! RoleWarden\Install\Installer::requirementsMet($checks) ? ' disabled' : '' ?>><?= esc($t($step !== 'confirm' ? 'continue' : (($result['messages'] ?? []) === [] ? 'apply' : (count($result['messages']) > 1 ? 'manualContinue' : 'retry')))) ?></button>
+              <button class="rw-btn rw-btn--primary" type="submit"<?= $step === 'requirements' && ! RoleWarden\Install\Installer::requirementsMet($checks) ? ' disabled' : '' ?>><?= esc($t($step !== 'confirm' ? 'continue' : (($result['messages'] ?? []) === [] ? ($resume ? 'continueInstall' : 'apply') : (count($result['messages']) > 1 ? 'manualContinue' : 'retry')))) ?></button>
               <?php endif ?>
               <?php if (! in_array($step, ['code', 'requirements'], true) && (! $locked || ($step === 'confirm' && $reopen))) : ?>
                 <button class="rw-btn rw-btn--secondary" type="submit" name="back" value="1"><?= esc($t('back')) ?></button>

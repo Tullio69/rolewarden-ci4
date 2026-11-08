@@ -6,7 +6,8 @@
  * hand; posting again resumes.
  *
  * @var array<int, array{id: int, username: string, email: string}> $users active users by id
- * @var list<array{file: string, diff: string, manual: bool}>       $files
+ * @var list<array{file: string, diff: string, manual: bool, applied: bool}> $files
+ * @var list<string>                                                $applied apply steps already done
  * @var array{users: int, permissions: int}                          $direct Shield permissions given to single users
  */
 $mode = $choices['mode'] ?? '';
@@ -40,6 +41,19 @@ $rows[$t('visibilityTitle')] = $t(($choices['visibility'] ?? '') === 'all' ? 'vi
       <?php foreach (array_slice($result['messages'], 1) as $text) : ?>
         <pre class="rw-setup-diff" tabindex="0"><?= esc($text) ?></pre>
       <?php endforeach ?>
+    </div>
+  </div>
+<?php endif ?>
+<?php if ($applied !== []) : ?>
+  <div class="rw-auth-row rw-install-block">
+    <span class="rw-m-num"><?= $num() ?></span>
+    <div class="rw-field">
+      <span class="rw-label"><?= esc($t('appliedTitle')) ?></span>
+      <ul class="rw-install-checks">
+        <?php foreach ($applied as $done) : ?>
+          <li><span><?= esc($t('step.' . $done)) ?></span><b><?= esc($t('appliedDone')) ?></b></li>
+        <?php endforeach ?>
+      </ul>
     </div>
   </div>
 <?php endif ?>

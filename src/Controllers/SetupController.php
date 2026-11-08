@@ -302,7 +302,7 @@ class SetupController extends Controller
     /**
      * @param array<string, string> $errors
      * @param array<string, mixed>  $posted what the failed POST sent, shown back
-     * @param array{ok: bool, failedStep: ?string, messages: list<string>}|null $result a failed Setup::apply
+     * @param array{ok: bool, failedStep: ?string, invalid: bool, messages: list<string>}|null $result a failed Setup::apply
      */
     private function show(string $step, SetupState $state, array $errors = [], array $posted = [], ?array $result = null): string
     {
@@ -348,6 +348,7 @@ class SetupController extends Controller
                 $data['files']  = Setup::filePlan($choices, $this->configDir());
                 $data['locked'] = Setup::started($state);
                 $data['reopen'] = in_array('superAdmin', $this->open($state), true) && $data['locked'];
+                $data['applied'] = array_values(array_filter(Setup::STEPS, $state->done(...)));
                 $data['direct'] = HostScan::directPermissions();
                 break;
         }
@@ -475,6 +476,6 @@ class SetupController extends Controller
     /** @param array<string, mixed> $data */
     private function page(string $step, array $data = []): string
     {
-        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null, 'result' => null, 'locked' => false, 'reopen' => false]);
+        return view('RoleWarden\Views\setup\index', ['step' => $step, 'languages' => UserLanguage::available()] + $data + ['choices' => [], 'errors' => [], 'posted' => [], 'error' => null, 'result' => null, 'locked' => false, 'reopen' => false, 'applied' => []]);
     }
 }

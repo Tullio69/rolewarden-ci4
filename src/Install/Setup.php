@@ -31,11 +31,12 @@ final class Setup
     private const SLUG   = '/^[a-z][a-z0-9-]*$/';
 
     /**
-     * failedStep is the apply step that stopped (one of STEPS), or the wizard question whose saved
-     * answer no longer holds (roles, collisions, newUsers, superAdmin, visibility). messages[0] says
-     * what happened; each further entry is a file name and the text to paste into it by hand.
+     * failedStep is the apply step that stopped (one of STEPS), or, with invalid true, the wizard
+     * question whose saved answer no longer holds (roles, collisions, newUsers, superAdmin,
+     * visibility: superAdmin names both). messages[0] says what happened; each further entry is a
+     * file name and the text to paste into it by hand.
      *
-     * @return array{ok: bool, failedStep: ?string, messages: list<string>}
+     * @return array{ok: bool, failedStep: ?string, invalid: bool, messages: list<string>}
      */
     public static function apply(SetupState $state, object $authGroups, string $appConfigPath): array
     {
@@ -52,7 +53,7 @@ final class Setup
                 default => 'invalidLocked',
             };
 
-            return self::fail($invalid, lang('RoleWarden.setup.' . $key, [lang('RoleWarden.setup.' . $invalid . 'Title')]));
+            return ['invalid' => true] + self::fail($invalid, lang('RoleWarden.setup.' . $key, [lang('RoleWarden.setup.' . $invalid . 'Title')]));
         }
 
         foreach (self::STEPS as $step) {
@@ -94,7 +95,7 @@ final class Setup
         $state->save();
         @unlink(Installer::codeFile()); // as Installer::finish()
 
-        return ['ok' => true, 'failedStep' => null, 'messages' => []];
+        return ['ok' => true, 'failedStep' => null, 'invalid' => false, 'messages' => []];
     }
 
     /** Whether any apply step is done: from then on the wizard's answers are locked (R15). */
@@ -109,7 +110,7 @@ final class Setup
      *
      * @param array<string, mixed> $choices
      *
-     * @return list<array{file: string, diff: string, manual: bool}>
+     * @return list<array{file: string, diff: string, manual: bool, applied: bool}>
      */
     public static function filePlan(array $choices, string $appConfigPath): array
     {
@@ -119,7 +120,10 @@ final class Setup
         foreach (self::transforms($choices) as $file => $transforms) {
             $before = @file_get_contents($dir . $file);
             [$after, $missing] = $before === false ? ['', [true]] : self::chain($before, $transforms);
-            $out[] = ['file' => 'app/Config/' . $file, 'diff' => ConfigEditor::preview((string) $before, $after), 'manual' => $missing !== []];
+            $diff = ConfigEditor::preview((string) $before, $after);
+            // Applied: every change is already there (not merely nothing to except, for a Filters.php without a global filter).
+            $applied = $diff === '' && $missing === [] && ! ($file === 'Filters.php' && ConfigEditor::globalFilterExcepts((string) $before) === null);
+            $out[] = ['file' => 'app/Config/' . $file, 'diff' => $diff, 'manual' => $missing !== [], 'applied' => $applied];
         }
 
         return $out;
@@ -386,10 +390,10 @@ final class Setup
     /**
      * @param list<string> $manual
      *
-     * @return array{ok: false, failedStep: string, messages: list<string>}
+     * @return array{ok: false, failedStep: string, invalid: bool, messages: list<string>}
      */
     private static function fail(string $step, string $message, array $manual = []): array
     {
-        return ['ok' => false, 'failedStep' => $step, 'messages' => [$message, ...$manual]];
+        return ['ok' => false, 'failedStep' => $step, 'invalid' => false, 'messages' => [$message, ...$manual]];
     }
 }

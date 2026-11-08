@@ -85,7 +85,7 @@ final class SetupApplyTest extends DatabaseTestCase
 
         $result = Setup::apply($state, $this->helpdesk(), $this->dir);
 
-        $this->assertSame(['ok' => true, 'failedStep' => null, 'messages' => []], $result);
+        $this->assertSame(['ok' => true, 'failedStep' => null, 'invalid' => false, 'messages' => []], $result);
         Readiness::forget();
         $this->assertTrue(Readiness::tablesExist());
         $this->assertNotNull($this->roleId('operatore'));

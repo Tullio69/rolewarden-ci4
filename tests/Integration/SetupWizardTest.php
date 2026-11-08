@@ -367,6 +367,65 @@ final class SetupWizardTest extends DatabaseTestCase
         $this->assertSeeHtml($this->send(['step' => 'superAdmin', 'kind' => 'new', 'username' => 'other', 'email' => 'other@host.test', 'password' => 'Wizard-Str0ng-Pass!', 'password_confirm' => 'Wizard-Str0ng-Pass!']), 'name="step" value="visibility"');
     }
 
+    /** Collaudo W2 D2: after an interrupted apply the confirm page says what is already applied and continues. */
+    public function testConfirmAfterInterruptedApplyListsDoneSteps(): void
+    {
+        $state = $this->fullState($this->makeUser('first@example.test'));
+        $state->markDone('migrations');
+        $state->markDone('roles');
+        $state->save();
+        $routes = $this->configDir . 'Routes.php';
+        file_put_contents($routes, (string) \RoleWarden\Install\ConfigEditor::withRouteRegistrar((string) file_get_contents($routes)));
+
+        $page = $this->send(['step' => 'code', 'code' => Installer::code()]);
+
+        $this->assertSeeHtml($page, 'name="step" value="confirm"');
+        $this->assertDontSeeHtml($page, esc(lang('RoleWarden.setup.confirmIntro')));
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.confirmIntroResume')));
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.appliedTitle')));
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.step.migrations')));
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.step.roles')));
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.continueInstall')));
+        $this->assertDontSeeHtml($page, '>' . esc(lang('RoleWarden.setup.apply')) . '</button>');
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.fileApplied', ['app/Config/Routes.php'])));
+        $this->assertDontSeeHtml($page, esc(lang('RoleWarden.setup.fileUnchanged', ['app/Config/Routes.php'])));
+    }
+
+    /** An answer that no longer holds (R12) shows Back only, never "Apply again", also for the super admin. */
+    public function testInvalidAnswerHidesApply(): void
+    {
+        $inactive = $this->makeUser('gone@example.test');
+        $this->db->table('users')->where('id', $inactive)->update(['active' => 0]);
+
+        // Not started: invalidSaved.
+        $this->fullState($inactive)->save();
+        $page = $this->send(['step' => 'code', 'code' => Installer::code()]);
+        $page = $this->send(['step' => 'confirm']);
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.invalidSaved', [lang('RoleWarden.setup.superAdminTitle')])));
+        $this->assertDontSeeHtml($page, esc(lang('RoleWarden.setup.retry')));
+        $this->assertSeeHtml($page, 'name="back"');
+
+        // Started, super admin still open (R20): invalidReopen.
+        $state = $this->fullState($inactive);
+        $state->markDone('migrations');
+        $state->save();
+        $page = $this->send(['step' => 'confirm']);
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.invalidReopen', [lang('RoleWarden.setup.superAdminTitle')])));
+        $this->assertDontSeeHtml($page, esc(lang('RoleWarden.setup.retry')));
+        $this->assertSeeHtml($page, 'name="back"');
+    }
+
+    private function fullState(int $superAdmin): SetupState
+    {
+        $state = new SetupState();
+
+        foreach (['locale' => 'en', 'mode' => 'import', 'panelRole' => '', 'collisions' => ['admin' => ['action' => 'skip']], 'defaultRole' => 'cliente', 'superAdmin' => ['kind' => 'existing', 'id' => $superAdmin], 'visibility' => 'admins'] as $key => $value) {
+            $state->setChoice($key, $value);
+        }
+
+        return $state;
+    }
+
     /** R20: an existing super admin is checked against the database, not against the first 200 users listed. */
     public function testSuperAdminBeyondTheListAccepted(): void
     {

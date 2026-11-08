@@ -165,10 +165,13 @@ final class SetupWizardTest extends DatabaseTestCase
 
     public function testCollisionsStepOnlyForImportWithCollisions(): void
     {
+        // The test database already holds RoleWarden's system admin: adapt needs groups without that name.
+        Factories::injectMock('config', 'AuthGroups', $this->helpdesk(['operatore' => [], 'cliente' => []]));
         $this->verified();
-        $this->assertSeeHtml($this->send(['step' => 'roles', 'mode' => 'adapt', 'panelRole' => 'admin']), 'name="step" value="newUsers"');
+        $this->assertSeeHtml($this->send(['step' => 'roles', 'mode' => 'adapt', 'panelRole' => 'operatore']), 'name="step" value="newUsers"');
 
         $this->send(['step' => 'newUsers', 'back' => '1']);
+        Factories::injectMock('config', 'AuthGroups', $this->helpdesk());
         $this->assertSeeHtml($this->send(['step' => 'roles', 'mode' => 'import']), 'name="step" value="collisions"');
         // Every colliding group needs a choice: RoleSetup::apply refuses one without.
         $this->assertSeeHtml($this->send(['step' => 'collisions']), 'name="step" value="collisions"');
@@ -184,6 +187,7 @@ final class SetupWizardTest extends DatabaseTestCase
         $active   = $this->makeUser('active@example.test');
         $inactive = $this->makeUser('inactive@example.test');
         $this->db->table('users')->where('id', $inactive)->update(['active' => 0]);
+        Factories::injectMock('config', 'AuthGroups', $this->helpdesk(['operatore' => [], 'cliente' => []]));
 
         $this->verified();
         $this->send(['step' => 'roles', 'mode' => 'adapt', 'panelRole' => '']);
@@ -196,6 +200,31 @@ final class SetupWizardTest extends DatabaseTestCase
 
         $this->assertSeeHtml($this->send(['step' => 'superAdmin', 'kind' => 'existing', 'id' => (string) $active]), 'name="step" value="visibility"');
         $this->assertSame(['kind' => 'existing', 'id' => $active], SetupState::load()->choices()['superAdmin']);
+    }
+
+    /**
+     * RoleWarden's system roles already in the database (an earlier `spark migrate`): adapt on a
+     * group of the same name would only fail after the migrations, so the question refuses it.
+     */
+    public function testAdaptRefusedOnGroupNamedLikeExistingSystemRole(): void
+    {
+        $this->assertSame(1, $this->db->table(config('RoleWarden')->table('roles'))->where(['slug' => 'admin', 'is_system' => 1])->countAllResults());
+        $settings = $this->db->table('settings')->countAllResults();
+        $roles    = $this->db->table(config('RoleWarden')->table('roles'))->countAllResults();
+        $files    = array_map('md5_file', glob($this->configDir . '*') ?: []);
+        $this->verified();
+
+        $page = $this->send(['step' => 'roles', 'mode' => 'adapt', 'panelRole' => 'admin']);
+
+        $this->assertSeeHtml($page, 'name="step" value="roles"');
+        $this->assertSeeHtml($page, esc(lang('RoleWarden.setup.adaptBlocked', ['admin'])));
+        $this->assertArrayNotHasKey('mode', SetupState::load()->choices());
+        $this->assertSame($settings, $this->db->table('settings')->countAllResults());
+        $this->assertSame($roles, $this->db->table(config('RoleWarden')->table('roles'))->countAllResults());
+        $this->assertSame($files, array_map('md5_file', glob($this->configDir . '*') ?: []));
+
+        // Import resolves the same group in the collisions step.
+        $this->assertSeeHtml($this->send(['step' => 'roles', 'mode' => 'import']), 'name="collisions[admin][action]"');
     }
 
     /** Confirm applies; a failed run shows what to paste and resumes; the summary lists the files; then 403. */

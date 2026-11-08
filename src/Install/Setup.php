@@ -154,7 +154,7 @@ final class Setup
         $mode   = $c['mode'] ?? null;
 
         if (! in_array($mode, ['adapt', 'import'], true)
-            || ($mode === 'adapt' && (in_array('super-admin', $groups, true) || ! in_array($c['panelRole'] ?? '', ['', ...$groups], true)))) {
+            || ($mode === 'adapt' && (HostScan::adaptBlocked($groups) !== [] || ! in_array($c['panelRole'] ?? '', ['', ...$groups], true)))) {
             return 'roles';
         }
 

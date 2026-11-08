@@ -153,7 +153,7 @@ return [
         'modeImport' => 'Importa i ruoli di RoleWarden',
         'modeImportHint' => 'Aggiunge super-admin, admin e user accanto ai tuoi gruppi. Un gruppo con lo stesso nome di uno di questi si risolve nel passo successivo.',
         'modeRequired' => 'Scegli una delle due opzioni.',
-        'adaptBlocked' => 'Uno dei tuoi gruppi si chiama super-admin, il nome del ruolo di RoleWarden. Scegli di importare i ruoli di RoleWarden: il passo successivo ti fa decidere cosa succede a quel gruppo.',
+        'adaptBlocked' => 'Questi tuoi gruppi hanno il nome di un ruolo di RoleWarden (super-admin, o un ruolo di sistema già presente nel database): {0}. Scegli di importare i ruoli di RoleWarden: il passo successivo ti fa decidere cosa succede a ciascuno di quei gruppi.',
         'panelRole' => 'Chi gestirà il pannello',
         'panelRoleNone' => 'nessuno (solo super admin)',
         'panelRoleHint' => 'Questo ruolo riceve i permessi del pannello RoleWarden.',

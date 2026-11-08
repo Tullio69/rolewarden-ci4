@@ -139,12 +139,13 @@ class SetupController extends Controller
                 return Installer::requirementsMet(Installer::requirements()) ? [] : ['step' => lang('RoleWarden.setup.requirementsMissing')];
 
             case 'roles':
-                $mode   = $value('mode');
-                $slugs  = array_column($this->groups(), 'slug');
-                $errors = match (true) {
+                $mode    = $value('mode');
+                $slugs   = array_column($this->groups(), 'slug');
+                $blocked = $mode === 'adapt' ? HostScan::adaptBlocked($slugs) : [];
+                $errors  = match (true) {
                     ! in_array($mode, ['adapt', 'import'], true) => ['mode' => lang('RoleWarden.setup.modeRequired')],
-                    // RoleSetup refuses "adapt" on a group named like the one system role it creates.
-                    $mode === 'adapt' && in_array('super-admin', $slugs, true) => ['mode' => lang('RoleWarden.setup.adaptBlocked')],
+                    // RoleSetup refuses "adapt" on a group named like a system role: only import resolves it.
+                    $blocked !== [] => ['mode' => lang('RoleWarden.setup.adaptBlocked', [implode(', ', $blocked)])],
                     $mode === 'adapt' && $value('panelRole') !== '' && ! in_array($value('panelRole'), $slugs, true) => ['panelRole' => $invalid],
                     default => [],
                 };

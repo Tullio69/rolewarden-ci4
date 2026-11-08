@@ -88,6 +88,37 @@ final class HostScan
     }
 
     /**
+     * Slugs of RoleWarden's system roles already in the database (an earlier `spark migrate`
+     * seeds them); empty while its tables do not exist.
+     *
+     * @return list<string>
+     */
+    public static function systemRoles(): array
+    {
+        $db    = db_connect();
+        $table = config('RoleWarden')->table('roles');
+
+        if (! $db->tableExists($table, false)) {
+            return [];
+        }
+
+        return array_map('strval', array_column($db->table($table)->select('slug')->where('is_system', 1)->get()->getResultArray(), 'slug'));
+    }
+
+    /**
+     * Host group slugs that "adapt" cannot turn into roles: super-admin, which it always
+     * creates, and any system role already in the database. Only "import" resolves them.
+     *
+     * @param list<string> $slugs host group slugs
+     *
+     * @return list<string>
+     */
+    public static function adaptBlocked(array $slugs): array
+    {
+        return array_values(array_intersect($slugs, ['super-admin', ...self::systemRoles()]));
+    }
+
+    /**
      * Users who can sign in: active, not banned, not soft-deleted.
      *
      * @return list<array{id: int, username: string, email: string}>

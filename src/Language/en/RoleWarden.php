@@ -153,7 +153,7 @@ return [
         'modeImport' => 'Import RoleWarden\'s roles',
         'modeImportHint' => 'Adds super-admin, admin and user next to your groups. A group with the same name as one of these is resolved in the next step.',
         'modeRequired' => 'Choose one of the two options.',
-        'adaptBlocked' => 'One of your groups is called super-admin, the name of RoleWarden\'s own role. Choose to import RoleWarden\'s roles: the next step lets you decide what happens to that group.',
+        'adaptBlocked' => 'These groups of yours have the name of a RoleWarden role (super-admin, or a system role already in the database): {0}. Choose to import RoleWarden\'s roles: the next step lets you decide what happens to each of those groups.',
         'panelRole' => 'Who will manage the panel',
         'panelRoleNone' => 'nobody (super admin only)',
         'panelRoleHint' => 'This role receives the permissions of the RoleWarden panel.',

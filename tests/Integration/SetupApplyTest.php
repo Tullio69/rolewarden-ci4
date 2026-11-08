@@ -265,6 +265,21 @@ final class SetupApplyTest extends DatabaseTestCase
         $this->assertSame('superAdmin', Setup::apply($this->state(['superAdmin' => ['kind' => 'existing', 'id' => $this->boss]]), $this->helpdesk(), $this->dir)['failedStep']);
     }
 
+    /** R12: with RoleWarden's system admin already in the database, adapt on the host's admin group stops before anything is written. */
+    public function testAdaptOnExistingSystemRoleStopsBeforeWriting(): void
+    {
+        service('migrations', null, null, false)->setNamespace('RoleWarden')->latest('tests');
+        $this->assertSame(1, $this->db->table(config('RoleWarden')->table('roles'))->where(['slug' => 'admin', 'is_system' => 1])->countAllResults());
+        $files = array_map('md5_file', glob($this->dir . '*') ?: []);
+
+        $result = Setup::apply($this->state(['superAdmin' => ['kind' => 'existing', 'id' => $this->boss]]), $this->helpdesk(), $this->dir);
+
+        $this->assertSame('roles', $result['failedStep']);
+        $this->assertFileDoesNotExist(SetupState::file());
+        $this->assertSame($files, array_map('md5_file', glob($this->dir . '*') ?: []));
+        $this->assertNull(setting(GroupImport::DEFERRED));
+    }
+
     /** @param array<string, mixed> $extra */
     private function state(array $extra): SetupState
     {

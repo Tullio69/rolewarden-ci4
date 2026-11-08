@@ -545,6 +545,22 @@
   .rw-install-env { font-family: var(--font-mono); font-size: var(--text-xs); line-height: var(--leading-xs); }
   .rw-auth-corner2 { position: absolute; right: var(--gutter); bottom: var(--space-8); }
 
+  /* ---------- Install wizard (/rolewarden/setup): the installer's sheet, wider for file previews ---------- */
+
+  .rw-auth-sheet.rw-setup-sheet { width: 640px; max-width: calc(100vw - var(--space-8)); padding: var(--space-16) 0; }
+  .rw-setup-lang { position: absolute; top: var(--space-6); right: var(--gutter); display: flex; align-items: center; gap: var(--space-2); }
+  .rw-setup-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+  .rw-setup-option { display: grid; grid-template-columns: auto 1fr; gap: var(--space-1) var(--space-2); align-items: baseline; cursor: pointer; }
+  .rw-setup-option .rw-field-hint { display: block; margin: var(--space-0-5) 0 0; }
+  .rw-setup-option b { font-weight: var(--weight-medium); color: var(--ink); }
+  .rw-setup-sub { margin-left: var(--space-6); display: flex; flex-direction: column; gap: var(--space-1-5); }
+  .rw-setup-diff { margin: 0; padding: var(--space-3); max-height: 320px; overflow: auto; white-space: pre; border: var(--rule-width) solid var(--rule); border-radius: var(--radius-md); background: var(--surface-sunk); color: var(--ink); font: var(--text-xs)/var(--leading-xs) var(--font-mono); }
+  .rw-setup-summary { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: var(--space-1-5) var(--space-4); }
+  .rw-setup-summary dt { color: var(--ink-muted); }
+  .rw-setup-summary dd { margin: 0; }
+  .rw-setup-actions { display: flex; flex-direction: row-reverse; gap: var(--space-2); }
+  .rw-auth-submit .rw-setup-actions .rw-btn { width: auto; flex: 1; }
+
   [x-cloak] { display: none !important; }
 
   /* ---------- Settings screen (docs/design-system/components/Settings) ---------- */

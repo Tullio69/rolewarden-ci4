@@ -23,3 +23,6 @@
 /promo-video-9x16    export-ignore
 /promo-video-v2       export-ignore
 /promo-video-v2-9x16  export-ignore
+
+# Host config fixtures are compared byte for byte: never convert their line endings
+/tests/_support/fixtures/** -text

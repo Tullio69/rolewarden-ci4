@@ -12,7 +12,7 @@ use PhpCsFixer\Finder;
 
 $finder = Finder::create()
     ->in([__DIR__ . '/src', __DIR__ . '/tests'])
-    ->exclude(['Views', 'Language'])
+    ->exclude(['Views', 'Language', '_support/fixtures'])
     ->append([__FILE__]);
 
 return (new Config())

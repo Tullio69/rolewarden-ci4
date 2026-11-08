@@ -13,4 +13,5 @@ parameters:
             - src/Views/*
             - src/Language/*
             - tests/Integration/*
+            - tests/_support/fixtures/*
     treatPhpDocTypesAsCertain: false

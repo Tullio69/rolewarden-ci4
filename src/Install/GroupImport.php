@@ -12,6 +12,38 @@ final class GroupImport
     /** When true the migration imports nothing: the installer wizard does it. */
     public const DEFERRED = 'RoleWarden.importDeferred';
 
+    /** A permission slug fits "area.action"; anything else is skipped on import. */
+    public const SLUG = '/^[a-z][a-z0-9_-]*\.[a-z][a-z0-9_-]*$/';
+
+    /**
+     * Expands a group's matrix entries ("area.*" wildcards allowed) against the known permission slugs.
+     *
+     * @param list<string> $patterns matrix entries for one group
+     * @param list<string> $knownSlugs permission slugs that exist
+     *
+     * @return list<string> matching slugs, each once, in the order they are found
+     */
+    public static function expand(array $patterns, array $knownSlugs): array
+    {
+        $out = [];
+
+        foreach ($patterns as $entry) {
+            if (str_ends_with($entry, '.*')) {
+                $area = substr($entry, 0, -2) . '.';
+
+                foreach ($knownSlugs as $slug) {
+                    if (str_starts_with($slug, $area)) {
+                        $out[] = $slug;
+                    }
+                }
+            } elseif (in_array($entry, $knownSlugs, true)) {
+                $out[] = $entry;
+            }
+        }
+
+        return array_values(array_unique($out));
+    }
+
     /**
      * @param list<string> $groups group slugs
      * @param array<string, int> $matrixCounts permissions granted to each group

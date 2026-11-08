@@ -40,8 +40,6 @@ use RoleWarden\Install\GroupImport;
  */
 class ImportAuthGroups extends Migration
 {
-    private const SLUG = '/^[a-z][a-z0-9_-]*\.[a-z][a-z0-9_-]*$/';
-
     public function up(): void
     {
         config('Database')->seeder()->setSilent(true)->call(RoleWardenSeeder::class);
@@ -57,7 +55,7 @@ class ImportAuthGroups extends Migration
         $permissionIds = [];
 
         foreach ($auth->permissions as $slug => $description) {
-            if (preg_match(self::SLUG, $slug) !== 1) {
+            if (preg_match(GroupImport::SLUG, $slug) !== 1) {
                 continue;
             }
 
@@ -204,26 +202,9 @@ class ImportAuthGroups extends Migration
      */
     private function expand(array $permissions, array $permissionIds): array
     {
-        $ids = [];
-
-        foreach ($permissions as $entry) {
-            if (str_ends_with($entry, '.*')) {
-                $area = substr($entry, 0, -2);
-
-                foreach ($permissionIds as $slug => $id) {
-                    if (str_starts_with($slug, $area . '.')) {
-                        $ids[] = $id;
-                    }
-                }
-
-                continue;
-            }
-
-            if (isset($permissionIds[$entry])) {
-                $ids[] = $permissionIds[$entry];
-            }
-        }
-
-        return array_values(array_unique($ids));
+        return array_map(
+            static fn (string $slug): int => $permissionIds[$slug],
+            GroupImport::expand($permissions, array_map('strval', array_keys($permissionIds))),
+        );
     }
 }

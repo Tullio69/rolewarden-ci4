@@ -50,23 +50,8 @@ class ImportAuthGroups extends Migration
 
         $cfg = config('RoleWarden');
         $auth = config('AuthGroups');
-        $now = date('Y-m-d H:i:s');
 
-        $permissionIds = [];
-
-        foreach ($auth->permissions as $slug => $description) {
-            if (preg_match(GroupImport::SLUG, $slug) !== 1) {
-                continue;
-            }
-
-            $permissionIds[$slug] = $this->insertMissing($cfg->table('permissions'), $slug, [
-                'area' => substr($slug, 0, strpos($slug, '.')),
-                'description' => $description,
-                'is_system' => 0,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
-        }
+        $permissionIds = GroupImport::importPermissions($this->db, $auth);
 
         $memberCounts = [];
 
@@ -74,7 +59,8 @@ class ImportAuthGroups extends Migration
             $memberCounts[$row['group']] = (int) $row['n'];
         }
 
-        $matrixCounts = array_map(fn (array $p): int => count($this->expand($p, $permissionIds)), $auth->matrix);
+        $known = array_map('strval', array_keys($permissionIds));
+        $matrixCounts = array_map(static fn (array $p): int => count(GroupImport::expand($p, $known)), $auth->matrix);
         $existing = array_column($this->db->table($cfg->table('roles'))->select('slug')->get()->getResultArray(), 'slug');
         $plan = GroupImport::plan(array_keys($auth->groups), $matrixCounts, $memberCounts, $existing);
 
@@ -84,46 +70,15 @@ class ImportAuthGroups extends Migration
             }
         }
 
-        $roleIds = [];
-
         foreach ($plan['import'] as $slug) {
-            $info = $auth->groups[$slug];
-            $roleIds[$slug] = $this->insertNew($cfg->table('roles'), $slug, [
-                'name' => $info['title'] ?? $slug,
-                'description' => $info['description'] ?? null,
-                'is_system' => 0,
-                'is_super_admin' => 0,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
-        }
+            $roleId = GroupImport::createRole($this->db, $slug, $auth->groups[$slug]);
 
-        foreach ($auth->matrix as $group => $permissions) {
-            if (! isset($roleIds[$group])) {
+            if ($roleId === null) {
                 continue;
             }
 
-            foreach ($this->expand($permissions, $permissionIds) as $permissionId) {
-                $pair = ['role_id' => $roleIds[$group], 'permission_id' => $permissionId];
-
-                if ($this->db->table($cfg->table('role_permissions'))->where($pair)->countAllResults() === 0) {
-                    $this->db->table($cfg->table('role_permissions'))->insert($pair);
-                }
-            }
-        }
-
-        $assignments = $this->db->table('auth_groups_users')->select('user_id, `group`')->get()->getResultArray();
-
-        foreach ($assignments as $row) {
-            if (! isset($roleIds[$row['group']])) {
-                continue;
-            }
-
-            $pair = ['user_id' => (int) $row['user_id'], 'role_id' => $roleIds[$row['group']]];
-
-            if ($this->db->table($cfg->table('user_roles'))->where($pair)->countAllResults() === 0) {
-                $this->db->table($cfg->table('user_roles'))->insert($pair);
-            }
+            GroupImport::grant($this->db, $roleId, $auth->matrix[$slug] ?? [], $permissionIds);
+            GroupImport::addMembers($this->db, $roleId, $slug);
         }
     }
 
@@ -146,39 +101,6 @@ class ImportAuthGroups extends Migration
     }
 
     /**
-     * @param array<string, mixed> $data
-     */
-    private function insertMissing(string $table, string $slug, array $data): int
-    {
-        $existing = $this->db->table($table)->select('id')->where('slug', $slug)->get()->getRowArray();
-
-        if ($existing !== null) {
-            return (int) $existing['id'];
-        }
-
-        return (int) $this->insertNew($table, $slug, $data);
-    }
-
-    /**
-     * Inserts a new row and returns its id, or null when the slug is
-     * already taken: the caller decides what that means (reuse, for a
-     * shared vocabulary like permissions; skip, for a role we do not own).
-     *
-     * @param array<string, mixed> $data
-     */
-    private function insertNew(string $table, string $slug, array $data): ?int
-    {
-        if ($this->db->table($table)->where('slug', $slug)->countAllResults() > 0) {
-            return null;
-        }
-
-        $this->db->table($table)->insert(['slug' => $slug] + $data);
-        $inserted = $this->db->table($table)->select('id')->where('slug', $slug)->get()->getRowArray();
-
-        return (int) $inserted['id'];
-    }
-
-    /**
      * @param list<string> $slugs
      *
      * @return list<int>
@@ -192,19 +114,5 @@ class ImportAuthGroups extends Migration
         $rows = $this->db->table($table)->select('id')->whereIn('slug', $slugs)->get()->getResultArray();
 
         return array_map(static fn (array $row): int => (int) $row['id'], $rows);
-    }
-
-    /**
-     * @param list<string> $permissions matrix entries for one group, wildcards allowed
-     * @param array<string, int> $permissionIds slug => id, already imported
-     *
-     * @return list<int>
-     */
-    private function expand(array $permissions, array $permissionIds): array
-    {
-        return array_map(
-            static fn (string $slug): int => $permissionIds[$slug],
-            GroupImport::expand($permissions, array_map('strval', array_keys($permissionIds))),
-        );
     }
 }

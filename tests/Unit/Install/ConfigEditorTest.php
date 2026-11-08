@@ -6,6 +6,7 @@ namespace RoleWarden\Tests\Unit\Install;
 
 use PHPUnit\Framework\TestCase;
 use RoleWarden\Install\ConfigEditor;
+use RoleWarden\Install\RestoreFailedException;
 use RoleWarden\Install\SetupState;
 
 /**
@@ -123,13 +124,50 @@ final class ConfigEditorTest extends TestCase
         $this->assertNull(ConfigEditor::withFilterExcept($php, self::PATHS));
     }
 
+    private static function assertNoLoneLf(string $php): void
+    {
+        self::assertSame(0, preg_match('/(?<!\r)\n/', $php), 'lone LF in CRLF file');
+    }
+
     public function testPreservesCrlf(): void
     {
-        $before = str_replace("\n", "\r\n", self::fixture('Filters'));
-        $after  = (string) ConfigEditor::withFilterExcept($before, self::PATHS);
+        $crlf = static fn (string $s) => str_replace("\n", "\r\n", $s);
 
-        $this->assertSame(substr_count($before, "\r\n"), substr_count($after, "\r\n"));
-        $this->assertSame(substr_count($before, "\n"), substr_count($after, "\n"));
+        $filters = (string) ConfigEditor::withFilterExcept($crlf(self::fixture('Filters')), self::PATHS);
+        self::assertNoLoneLf($filters);
+        $this->assertStringContainsString("'logout', 'rolewarden/assets/*'", $filters);
+
+        $multi = $crlf("<?php\nclass Filters {\n    public array \$globals = ['before' => [\n        'session' => ['except' => [\n            'login*',\n        ]],\n    ]];\n}\n");
+        $after = (string) ConfigEditor::withFilterExcept($multi, ['a*', 'b']);
+        $this->assertSame(str_replace("'login*',\r\n", "'login*',\r\n            'a*',\r\n            'b',\r\n", $multi), $after);
+
+        $routes = (string) ConfigEditor::withRouteRegistrar($crlf(self::fixture('Routes')));
+        self::assertNoLoneLf($routes);
+        $this->assertStringContainsString("routes(\$routes);\r\n\RoleWarden\Config\RouteRegistrar::register(\$routes);\r\n", $routes);
+
+        $end = (string) ConfigEditor::withRouteRegistrar("<?php\r\n\r\n\$routes->get('/', 'Home::index');");
+        $this->assertSame("<?php\r\n\r\n\$routes->get('/', 'Home::index');\r\n\r\n\RoleWarden\Config\RouteRegistrar::register(\$routes);\r\n", $end);
+    }
+
+    public function testHasChecksBeforeAndAfter(): void
+    {
+        $filters = self::fixture('Filters');
+        $this->assertFalse(ConfigEditor::hasFilterExcept($filters, self::PATHS));
+        $this->assertTrue(ConfigEditor::hasFilterExcept($filters, ['login*', 'logout']));
+        $this->assertTrue(ConfigEditor::hasFilterExcept((string) ConfigEditor::withFilterExcept($filters, self::PATHS), self::PATHS));
+        $this->assertFalse(ConfigEditor::hasFilterExcept(self::fixture('Filters-no-session'), self::PATHS));
+        $this->assertNull(ConfigEditor::globalFilterExcepts(self::fixture('Filters-no-session')), 'no global filter: nothing needed');
+
+        $auth = self::fixture('Auth');
+        foreach (['UserProvider', 'LoginView', 'LoginRedirect'] as $what) {
+            $this->assertFalse(ConfigEditor::{'has' . $what}($auth), $what);
+            $this->assertTrue(ConfigEditor::{'has' . $what}((string) ConfigEditor::{'with' . $what}($auth)), $what);
+        }
+        $this->assertFalse(ConfigEditor::hasLoginView("<?php\nclass Auth {}\n"), 'unrecognised is not applied');
+
+        $routes = self::fixture('Routes');
+        $this->assertFalse(ConfigEditor::hasRouteRegistrar($routes));
+        $this->assertTrue(ConfigEditor::hasRouteRegistrar((string) ConfigEditor::withRouteRegistrar($routes)));
     }
 
     public function testUserProviderOnRealAuth(): void
@@ -252,6 +290,66 @@ final class ConfigEditorTest extends TestCase
             $this->assertSame($before, file_get_contents($path));
             $this->assertSame([], $state->edits());
         } finally {
+            @unlink($path);
+            @unlink($path . '.rolewarden-bak');
+        }
+    }
+
+    public function testApplyKeepsPristineBackup(): void
+    {
+        $path = tempnam(sys_get_temp_dir(), 'rw-cfg');
+        file_put_contents($path, "<?php\n// v0\n");
+        $state = new SetupState();
+
+        try {
+            $this->assertTrue(ConfigEditor::apply($path, "<?php\n// v1\n", $state));
+            $this->assertTrue(ConfigEditor::apply($path, "<?php\n// v2\n", $state));
+            $this->assertSame("<?php\n// v0\n", file_get_contents($path . '.rolewarden-bak'));
+            $this->assertSame("<?php\n// v1\n", $state->edits()[1]['before']);
+        } finally {
+            @unlink($path);
+            @unlink($path . '.rolewarden-bak');
+        }
+    }
+
+    public function testApplyUncheckedWhenLintCannotRun(): void
+    {
+        $path = tempnam(sys_get_temp_dir(), 'rw-cfg');
+        file_put_contents($path, "<?php\n");
+        $state = new SetupState();
+        ConfigEditor::useLinter(static fn (string $p): ?bool => null);
+
+        try {
+            $this->assertTrue(ConfigEditor::apply($path, "<?php\n// x\n", $state));
+            $this->assertFalse($state->edits()[0]['checked']);
+        } finally {
+            ConfigEditor::useLinter(null);
+            @unlink($path);
+            @unlink($path . '.rolewarden-bak');
+        }
+    }
+
+    public function testApplyThrowsWhenRestoreFails(): void
+    {
+        $path = tempnam(sys_get_temp_dir(), 'rw-cfg');
+        file_put_contents($path, "<?php\n");
+        // The check fails and leaves a directory where the file was: the restore cannot write.
+        ConfigEditor::useLinter(static function (string $p): bool {
+            unlink($p);
+            mkdir($p);
+
+            return false;
+        });
+
+        try {
+            ConfigEditor::apply($path, '<?php broken(', new SetupState());
+            $this->fail('expected RestoreFailedException');
+        } catch (RestoreFailedException $e) {
+            $this->assertSame([$path, $path . '.rolewarden-bak'], [$e->path, $e->backup]);
+            $this->assertSame("<?php\n", file_get_contents($path . '.rolewarden-bak'));
+        } finally {
+            ConfigEditor::useLinter(null);
+            @rmdir($path);
             @unlink($path);
             @unlink($path . '.rolewarden-bak');
         }

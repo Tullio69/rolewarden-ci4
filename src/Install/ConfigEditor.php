@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RoleWarden\Install;
 
+use Closure;
 use PhpToken;
 
 /**
@@ -20,8 +21,11 @@ final class ConfigEditor
     private const GLOBAL_FILTERS = ['session', 'group', 'permission'];
     private const USER_PROVIDER  = 'RoleWarden\Models\UserModel';
     private const LOGIN_VIEW     = '\RoleWarden\Views\auth\login';
+    private const LOGIN_REDIRECT = 'rolewarden';
     private const REGISTRAR      = '\RoleWarden\Config\RouteRegistrar::register($routes);';
     private const MODIFIERS      = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR, T_STATIC, T_READONLY, T_STRING, T_ARRAY, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED];
+
+    private static ?Closure $linter = null;
 
     /**
      * The global "before" filter among session, group and permission, and its exceptions.
@@ -96,14 +100,7 @@ final class ConfigEditor
         $t = PhpToken::tokenize($authPhp);
         $v = self::property($t, 'userProvider');
 
-        if ($v === null) {
-            return null;
-        }
-
-        $start = $t[$v[0]]->pos;
-        $expr  = substr($authPhp, $start, self::end($t[$v[1]]) - $start);
-
-        if (self::resolveClass($authPhp, $expr) === self::USER_PROVIDER) {
+        if ($v === null || self::providerIsOurs($authPhp, $t, $v)) {
             return null;
         }
 
@@ -117,12 +114,48 @@ final class ConfigEditor
 
     public static function withLoginRedirect(string $authPhp): ?string
     {
-        return self::withEntry($authPhp, 'redirects', 'login', 'rolewarden');
+        return self::withEntry($authPhp, 'redirects', 'login', self::LOGIN_REDIRECT);
+    }
+
+    /**
+     * The has* checks tell "already applied" (true) from "missing or not
+     * recognised" (false), which the with* methods both report as null.
+     *
+     * @param list<string> $paths
+     */
+    public static function hasFilterExcept(string $filtersPhp, array $paths): bool
+    {
+        $f = self::globalFilterExcepts($filtersPhp);
+
+        return $f !== null && array_diff($paths, $f['except']) === [];
+    }
+
+    public static function hasUserProvider(string $authPhp): bool
+    {
+        $t = PhpToken::tokenize($authPhp);
+        $v = self::property($t, 'userProvider');
+
+        return $v !== null && self::providerIsOurs($authPhp, $t, $v);
+    }
+
+    public static function hasLoginView(string $authPhp): bool
+    {
+        return self::entryIs($authPhp, 'views', 'login', self::LOGIN_VIEW) === true;
+    }
+
+    public static function hasLoginRedirect(string $authPhp): bool
+    {
+        return self::entryIs($authPhp, 'redirects', 'login', self::LOGIN_REDIRECT) === true;
+    }
+
+    public static function hasRouteRegistrar(string $routesPhp): bool
+    {
+        return str_contains($routesPhp, 'RouteRegistrar::register(');
     }
 
     public static function withRouteRegistrar(string $routesPhp): ?string
     {
-        if (str_contains($routesPhp, 'RouteRegistrar::register(')) {
+        if (self::hasRouteRegistrar($routesPhp)) {
             return null;
         }
 
@@ -226,23 +259,27 @@ final class ConfigEditor
     }
 
     /**
-     * Backup to <path>.rolewarden-bak, write, syntax check; on a failed check the
-     * backup is restored and false returned. The edit is logged only on success,
-     * with checked false when the check could not run.
+     * Backup to <path>.rolewarden-bak (only once: it keeps the pristine original,
+     * the log keeps every later `before`), write, syntax check. On a failed check
+     * the original content is written back and false returned; if even that fails,
+     * RestoreFailedException. The edit is logged only on success, with checked
+     * false when the check could not run.
      */
     public static function apply(string $path, string $after, SetupState $state): bool
     {
         $before = @file_get_contents($path);
         $backup = $path . '.rolewarden-bak';
 
-        if ($before === false || ! @copy($path, $backup)) {
+        if ($before === false || (! is_file($backup) && ! @copy($path, $backup))) {
             return false;
         }
 
-        $ok = @file_put_contents($path, $after) === false ? false : self::lint($path);
+        $ok = @file_put_contents($path, $after) === false ? false : (self::$linter ?? self::lint(...))($path);
 
         if ($ok === false) {
-            @copy($backup, $path);
+            if (@file_put_contents($path, $before) !== strlen($before)) {
+                throw new RestoreFailedException($path, $backup);
+            }
 
             return false;
         }
@@ -250,6 +287,17 @@ final class ConfigEditor
         $state->recordEdit($path, $before, $after, $ok === true);
 
         return true;
+    }
+
+    /**
+     * Tests only: replace the `php -l` check (the closure gets the path and
+     * returns true, false, or null for "could not run"). Null restores it.
+     *
+     * @internal
+     */
+    public static function useLinter(?Closure $linter): void
+    {
+        self::$linter = $linter;
     }
 
     /** True/false from `php -l`, null when it cannot run. */
@@ -279,6 +327,31 @@ final class ConfigEditor
     private static function withEntry(string $php, string $prop, string $key, string $value): ?string
     {
         $t = PhpToken::tokenize($php);
+        $e = self::arrayEntry($t, $prop, $key);
+
+        if ($e === null || self::entryIs($php, $prop, $key, $value) !== false) {
+            return null;
+        }
+
+        return self::splice($php, $t, $e['s'], $e['e'], self::quote($value));
+    }
+
+    /** Whether $prop[$key] is the string $value; null when the entry is not found. */
+    private static function entryIs(string $php, string $prop, string $key, string $value): ?bool
+    {
+        $t = PhpToken::tokenize($php);
+        $e = self::arrayEntry($t, $prop, $key);
+
+        return $e === null ? null : $e['s'] === $e['e'] && self::literal($t[$e['s']]) === $value;
+    }
+
+    /**
+     * @param list<PhpToken> $t
+     *
+     * @return array{key: ?string, keyed: bool, s: int, e: int, comma: ?int}|null
+     */
+    private static function arrayEntry(array $t, string $prop, string $key): ?array
+    {
         $v = self::property($t, $prop);
 
         if ($v === null || $t[$v[0]]->text !== '[') {
@@ -286,13 +359,19 @@ final class ConfigEditor
         }
 
         $arr = self::parseArray($t, $v[0]);
-        $e   = $arr === null ? null : self::entry($arr['entries'], $key);
 
-        if ($e === null || ($e['s'] === $e['e'] && self::literal($t[$e['s']]) === $value)) {
-            return null;
-        }
+        return $arr === null ? null : self::entry($arr['entries'], $key);
+    }
 
-        return self::splice($php, $t, $e['s'], $e['e'], self::quote($value));
+    /**
+     * @param list<PhpToken> $t
+     * @param array{int, int} $v
+     */
+    private static function providerIsOurs(string $php, array $t, array $v): bool
+    {
+        $start = $t[$v[0]]->pos;
+
+        return self::resolveClass($php, substr($php, $start, self::end($t[$v[1]]) - $start)) === self::USER_PROVIDER;
     }
 
     /**

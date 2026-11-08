@@ -346,6 +346,27 @@ final class SetupWizardTest extends DatabaseTestCase
         $this->assertSame('admins', $choices['visibility']);
     }
 
+    /** Collaudo W2 D1: a new super admin needs a free username and email, as Shield's registration rules say. */
+    public function testNewSuperAdminWithTakenUsernameOrEmailRefused(): void
+    {
+        $alice = $this->makeUser('alice@host.test');
+        $this->db->table('users')->where('id', $alice)->update(['username' => 'alice']);
+
+        $this->verified();
+        $this->send(['step' => 'roles', 'mode' => 'import']);
+        $this->send(['step' => 'collisions', 'collisions' => ['admin' => ['action' => 'skip']]]);
+        $this->send(['step' => 'newUsers', 'defaultRole' => 'cliente']);
+
+        foreach ([['alice', 'other@host.test', 'username'], ['other', 'alice@host.test', 'email']] as [$username, $email, $field]) {
+            $page = $this->send(['step' => 'superAdmin', 'kind' => 'new', 'username' => $username, 'email' => $email, 'password' => 'Wizard-Str0ng-Pass!', 'password_confirm' => 'Wizard-Str0ng-Pass!']);
+            $this->assertSeeHtml($page, 'name="step" value="superAdmin"');
+            $this->assertSeeHtml($page, 'id="rw-setup-' . $field . '-error"');
+            $this->assertArrayNotHasKey('superAdmin', SetupState::load()->choices());
+        }
+
+        $this->assertSeeHtml($this->send(['step' => 'superAdmin', 'kind' => 'new', 'username' => 'other', 'email' => 'other@host.test', 'password' => 'Wizard-Str0ng-Pass!', 'password_confirm' => 'Wizard-Str0ng-Pass!']), 'name="step" value="visibility"');
+    }
+
     /** R20: an existing super admin is checked against the database, not against the first 200 users listed. */
     public function testSuperAdminBeyondTheListAccepted(): void
     {

@@ -264,9 +264,14 @@ class SetupController extends Controller
         }
 
         $auth  = config('Auth');
-        $rules = [
-            'username' => $auth->usernameValidationRules,
-            'email' => $auth->emailValidationRules,
+        // Free username and email, as Shield's own registration rules (ValidationRules::getRegistrationRules).
+        $username            = $auth->usernameValidationRules;
+        $username['rules'][] = 'is_unique[' . $auth->tables['users'] . '.username]';
+        $email               = $auth->emailValidationRules;
+        $email['rules'][]    = 'is_unique[' . $auth->tables['identities'] . '.secret]';
+        $rules               = [
+            'username' => $username,
+            'email' => $email,
             'password' => ['label' => 'Auth.password', 'rules' => ['required', Passwords::getMaxLengthRule()]],
             'password_confirm' => ['label' => 'Auth.passwordConfirm', 'rules' => 'required|matches[password]'],
         ];

@@ -197,4 +197,57 @@ final class RoleSetupTest extends DatabaseTestCase
         $this->assertNull($this->roleId('operatore'));
         $this->assertSame($default, setting(DefaultRole::KEY));
     }
+
+    public function testImportCollisionWithoutChoiceFails(): void
+    {
+        $before = $this->counts();
+
+        try {
+            RoleSetup::apply($this->choices('import'), $this->helpdesk());
+            $this->fail('expected InvalidArgumentException');
+        } catch (InvalidArgumentException $e) {
+            $this->assertStringContainsString('"admin"', $e->getMessage());
+        }
+
+        $this->assertSame($before, $this->counts());
+    }
+
+    public function testAdaptGroupNamedLikeSystemRoleFails(): void
+    {
+        $choices = $this->choices('adapt', ['panelRole' => 'admin']);
+        $this->migrate($choices);
+        $auth                        = $this->helpdesk();
+        $auth->groups['super-admin'] = ['title' => 'Host super admin'];
+        $before                      = $this->counts();
+
+        try {
+            RoleSetup::apply($choices, $auth);
+            $this->fail('expected InvalidArgumentException');
+        } catch (InvalidArgumentException $e) {
+            $this->assertStringContainsString('"super-admin"', $e->getMessage());
+        }
+
+        $this->assertSame($before, $this->counts());
+    }
+
+    public function testNonDatabaseFailureRollsBackAndReleasesTheConnection(): void
+    {
+        $auth                   = $this->helpdesk();
+        $auth->groups['broken'] = 'not an array'; // after admin/operatore/cliente were written
+        $choices                = $this->choices('import', ['collisions' => ['admin' => ['action' => 'skip']]]);
+        $before                 = $this->counts();
+        $default                = setting(DefaultRole::KEY);
+
+        try {
+            RoleSetup::apply($choices, $auth);
+            $this->fail('expected TypeError');
+        } catch (\TypeError) {
+        }
+
+        $this->assertSame($before, $this->counts());
+        $this->assertNull($this->roleId('operatore'));
+        $this->assertSame($default, setting(DefaultRole::KEY));
+        $this->assertSame(0, $this->db->transDepth);
+        $this->assertFalse($this->getPrivateProperty($this->db, 'transException'));
+    }
 }

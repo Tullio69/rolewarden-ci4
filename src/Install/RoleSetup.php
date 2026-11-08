@@ -6,6 +6,7 @@ namespace RoleWarden\Install;
 
 use CodeIgniter\Database\BaseConnection;
 use InvalidArgumentException;
+use Throwable;
 use RoleWarden\Database\Seeds\RoleWardenSeeder;
 use RoleWarden\Settings\DefaultRole;
 use RoleWarden\Settings\PanelRole;
@@ -34,7 +35,8 @@ final class RoleSetup
      *
      * @param array<string, mixed> $choices as saved by SetupState
      *
-     * @throws InvalidArgumentException on a merge without a role to merge into, or a rename to a slug that is invalid or taken
+     * @throws InvalidArgumentException on a group named like a system role without an explicit choice, a merge
+     *                                  without a role to merge into, or a rename to a slug that is invalid or taken
      */
     public static function apply(array $choices, object $authGroups): void
     {
@@ -43,50 +45,61 @@ final class RoleSetup
         $groups     = $authGroups->groups ?? [];
         $db         = db_connect();
 
-        self::assertCollisions($db, $collisions, array_map('strval', array_keys($groups)));
+        self::assertCollisions($db, $import, $collisions, array_map('strval', array_keys($groups)));
 
-        $db->transException(true)->transStart();
+        // transException() only rolls back on a failed query: anything else thrown inside
+        // must roll back here, and the shared connection must not keep throwing afterwards.
+        $touched = [];
 
-        $permissionIds = GroupImport::importPermissions($db, $authGroups);
-        $touched       = [];
+        try {
+            $db->transException(true)->transStart();
 
-        foreach ($groups as $group => $info) {
-            $group  = (string) $group;
-            $roleId = match ($collisions[$group]['action'] ?? null) {
-                'skip' => null,
-                'merge' => self::roleId($db, $group),
-                'rename' => self::ensureRole($db, $collisions[$group]['newSlug'], $info),
-                default => self::ensureRole($db, $group, $info),
-            };
+            $permissionIds = GroupImport::importPermissions($db, $authGroups);
 
-            if ($roleId === null) {
-                continue;
+            foreach ($groups as $group => $info) {
+                $group  = (string) $group;
+                $roleId = match ($collisions[$group]['action'] ?? null) {
+                    'skip' => null,
+                    'merge' => self::roleId($db, $group),
+                    'rename' => self::ensureRole($db, $collisions[$group]['newSlug'], $info),
+                    default => self::ensureRole($db, $group, $info),
+                };
+
+                if ($roleId === null) {
+                    continue;
+                }
+
+                GroupImport::grant($db, $roleId, $authGroups->matrix[$group] ?? [], $permissionIds);
+                GroupImport::addMembers($db, $roleId, $group);
+                $touched[] = $roleId;
             }
 
-            GroupImport::grant($db, $roleId, $authGroups->matrix[$group] ?? [], $permissionIds);
-            GroupImport::addMembers($db, $roleId, $group);
-            $touched[] = $roleId;
-        }
+            helper('setting');
 
-        helper('setting');
+            if (! $import) {
+                setting(PanelRole::KEY, (string) ($choices['panelRole'] ?? ''));
+                $panelId = PanelRole::roleId();
 
-        if (! $import) {
-            setting(PanelRole::KEY, (string) ($choices['panelRole'] ?? ''));
-            $panelId = PanelRole::roleId();
-
-            if ($panelId !== null) {
-                $slugs  = RoleWardenSeeder::slugs();
-                $rows   = $db->table(config('RoleWarden')->table('permissions'))->select('id, slug')->whereIn('slug', $slugs)->get()->getResultArray();
-                GroupImport::grant($db, $panelId, $slugs, array_map('intval', array_column($rows, 'id', 'slug')));
-                $touched[] = $panelId;
+                if ($panelId !== null) {
+                    $slugs  = RoleWardenSeeder::slugs();
+                    $rows   = $db->table(config('RoleWarden')->table('permissions'))->select('id, slug')->whereIn('slug', $slugs)->get()->getResultArray();
+                    GroupImport::grant($db, $panelId, $slugs, array_map('intval', array_column($rows, 'id', 'slug')));
+                    $touched[] = $panelId;
+                }
             }
+
+            setting(DefaultRole::KEY, (string) ($choices['defaultRole'] ?? ''));
+            setting(Visibility::KEY, Visibility::normalize($choices['visibility'] ?? null));
+            setting(GroupImport::DEFERRED, false);
+
+            $db->transComplete();
+        } catch (Throwable $e) {
+            $db->transRollback();
+
+            throw $e;
+        } finally {
+            $db->transException(false);
         }
-
-        setting(DefaultRole::KEY, (string) ($choices['defaultRole'] ?? ''));
-        setting(Visibility::KEY, Visibility::normalize($choices['visibility'] ?? null));
-        setting(GroupImport::DEFERRED, false);
-
-        $db->transComplete();
 
         foreach (array_unique($touched) as $roleId) {
             service('rolewarden')->forgetRole($roleId);
@@ -99,8 +112,18 @@ final class RoleSetup
      * @param array<string, array{action?: string, newSlug?: string}> $collisions
      * @param list<string> $groups host group slugs
      */
-    private static function assertCollisions(BaseConnection $db, array $collisions, array $groups): void
+    private static function assertCollisions(BaseConnection $db, bool $import, array $collisions, array $groups): void
     {
+        // A group named like a system role needs an explicit choice (only import mode offers
+        // one): left alone, its members would silently lose what the group gave them.
+        foreach ($groups as $group) {
+            $action = $collisions[$group]['action'] ?? null;
+
+            if (self::isSystem($db, $group) && (! $import || ! in_array($action, ['merge', 'rename', 'skip'], true))) {
+                throw new InvalidArgumentException("Group \"{$group}\" names a system role and needs a merge, rename or skip choice.");
+            }
+        }
+
         $targets = [];
 
         foreach ($collisions as $group => $collision) {

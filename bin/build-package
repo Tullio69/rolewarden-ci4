@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Builds the three release zips (SPEC, V7 and V8 decisions) into build/:
+# Builds the three release zips (SPEC, V7 and V8 decisions) into build/<version>/,
+# leaving the other versions in build/ alone:
 #
 #   rolewarden-module-<version>.zip  the module alone, for an application that adds it
 #                                    with Composer (what `git archive` exports: no tests,
@@ -21,7 +22,7 @@ set -euo pipefail
 
 VERSION="${1:?usage: bin/build-package <version>}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT="$ROOT/build"
+OUT="$ROOT/build/$VERSION"
 APP="$OUT/rolewarden-app-$VERSION"
 
 zipdir() { # zipdir <dir> <zip>: the folder itself as the zip's single top-level entry

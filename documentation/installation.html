@@ -31,7 +31,7 @@
       <thead><tr><th>Zip</th><th>For</th></tr></thead>
       <tbody>
         <tr><td><code>rolewarden-app-x.y.z.zip</code></td><td>Starting from nothing, or without Composer: CodeIgniter 4, Shield, CodeIgniter's translations and RoleWarden, with <code>vendor/</code> included and everything wired.</td></tr>
-        <tr><td><code>rolewarden-module-x.y.z.zip</code></td><td>An existing CodeIgniter 4 application that uses Composer.</td></tr>
+        <tr><td><code>rolewarden-module-x.y.z.zip</code></td><td>An existing CodeIgniter 4 application with Shield, with or without Composer. The <a href="#module">setup wizard</a> adds RoleWarden to it from the browser.</td></tr>
         <tr><td><code>rolewarden-demo-x.y.z.zip</code></td><td>The demo app on its own (the complete application already contains it).</td></tr>
       </tbody>
     </table></div>
@@ -74,34 +74,110 @@ email.SMTPCrypto = 'tls'</code></pre>
 <pre><code>php spark migrate -n RoleWarden</code></pre>
 
     <h2 id="module">The module in an existing application</h2>
-    <p>Unzip the module zip into your application, for example as <code>modules/rolewarden</code>, and let Composer install it from there with a path repository in your <code>composer.json</code>:</p>
+    <p>For a CodeIgniter 4 application that already has Shield, its users and its own groups. There are two ways to add RoleWarden to it:</p>
+    <ul>
+      <li><strong>The setup wizard</strong>, <code>/rolewarden/setup</code> (recommended). A page in the browser asks a few questions, shows every change before making it, then runs the migrations, turns your groups into roles, makes a super admin and edits your configuration files, with a backup of each one. Steps 1 to 5 below.</li>
+      <li><strong>By hand</strong>, if you prefer to edit the files yourself: see <a href="#by-hand">Without the wizard</a>.</li>
+    </ul>
+
+    <h3 id="before-wizard">Before you start</h3>
+    <ul>
+      <li>Shield is installed and set up (<code>php spark shield:setup</code>), and signing in works.</li>
+      <li>PHP 8.3 or later. The wizard checks the rest of the requirements itself.</li>
+      <li><code>writable/</code> is writable by the web server. The wizard keeps its setup code and its answers in <code>writable/rolewarden/</code>.</li>
+      <li>For the wizard to edit your configuration, <code>app/Config/Filters.php</code>, <code>app/Config/Routes.php</code> and <code>app/Config/Auth.php</code> must be writable by the web server. If they are not, the wizard shows the exact text to paste by hand, so this is a convenience, not a requirement.</li>
+      <li>A backup of the database. The wizard runs migrations on it, and an application already in use deserves a copy first.</li>
+    </ul>
+
+    <h3 id="load-module">Step 1: load the module</h3>
+    <p>Choose one of the two ways. Both are run from the <strong>root folder of your application</strong>, the one that contains <code>spark</code>, not from inside the module.</p>
+    <p><strong>Without Composer.</strong> Unzip <code>rolewarden-module-x.y.z.zip</code> into a <code>modules</code> folder at the root of your application. The zip already contains a <code>rolewarden</code> folder, so you get <code>modules/rolewarden/src/…</code>. Check that <code>modules/rolewarden/src/Config/Routes.php</code> exists: some unzip tools, such as Windows' "Extract all", add one more folder level. Then add one line to <code>$psr4</code> in <code>app/Config/Autoload.php</code>:</p>
+<pre><code>public $psr4 = [
+    APP_NAMESPACE =&gt; APPPATH,
+    'RoleWarden'  =&gt; ROOTPATH . 'modules/rolewarden/src',
+];</code></pre>
+    <p><strong>With Composer.</strong> Unzip the module in the same place, add a path repository to your application's <code>composer.json</code> (not the module's), and require it:</p>
 <pre><code>"repositories": [
     { "type": "path", "url": "modules/rolewarden", "options": { "symlink": false } }
 ],</code></pre>
-<pre><code>composer require rolewarden/codeigniter4-rolewarden:^1.0
-composer require codeigniter4/translations   # optional: CodeIgniter's own messages in Italian and other languages</code></pre>
-    <p>Shield must already be installed and set up (<code>php spark shield:setup</code>).</p>
+<pre><code>composer require rolewarden/codeigniter4-rolewarden</code></pre>
+    <p>On Windows, leave out a version constraint such as <code>:^1.2</code>, or put it in double quotes: the command prompt removes the <code>^</code>.</p>
+    <p>Optionally, for CodeIgniter's own messages (validation errors, dates) in Italian and other languages:</p>
+<pre><code>composer require codeigniter4/translations</code></pre>
+    <p>Nothing else is needed before the wizard: its route is in the module's own <code>src/Config/Routes.php</code>, which CodeIgniter's route discovery finds by itself as long as <code>app/Config/Modules.php</code> keeps discovery on, the default. To check, the wizard's route must be listed:</p>
+<pre><code>php spark routes | grep rolewarden/setup</code></pre>
 
-    <h3 id="wiring">Wiring</h3>
-    <p>In <code>app/Config/Auth.php</code>, let Shield ask RoleWarden for permissions:</p>
-<pre><code>public string $userProvider = \RoleWarden\Models\UserModel::class;</code></pre>
-    <p>In the same file, use RoleWarden's sign-in screen (the <code>$views</code> array) and land people on the panel after signing in (the <code>$redirects</code> array). <code>/rolewarden</code> is the dashboard; whoever holds none of its <code>dashboard.*</code> permissions goes on to the first screen they can see:</p>
-<pre><code>'login' =&gt; '\RoleWarden\Views\auth\login',</code></pre>
-<pre><code>'login' =&gt; 'rolewarden',</code></pre>
-    <p>In <code>app/Config/Routes.php</code>, next to the line Shield already needs:</p>
-<pre><code>service('auth')-&gt;routes($routes);
-\RoleWarden\Config\RouteRegistrar::register($routes);</code></pre>
-    <p>That registers the panel, the installer, and a route serving the panel's CSS and JavaScript from the module: nothing is copied under <code>public/</code>. The module's events (session tracking, security emails, the registration hook) load by themselves as long as <code>app/Config/Modules.php</code> keeps module discovery on for <code>events</code>, the default.</p>
-    <p>Enable CSRF protection for every form in <code>app/Config/Filters.php</code> (the panel's own routes have it in any case):</p>
-<pre><code>public array $globals = [
-    'before' =&gt; [
-        'csrf',
-    ],
-    // ...
-];</code></pre>
+    <h3 id="open-wizard">Step 2: open the wizard</h3>
+    <p>Open <code>/rolewarden/setup</code> in the browser, for example <code>https://example.com/rolewarden/setup</code>. On the first visit the wizard saves a one-time <strong>setup code</strong> in <code>writable/rolewarden/install-code.txt</code>: open that file on the server and type the code. Only someone who can read the server's files can go on, even when someone is already signed in.</p>
+    <div class="docs-note"><p><strong>If you land on your sign-in page.</strong> Many applications apply Shield's <code>session</code> filter to every page in <code>app/Config/Filters.php</code>. Until the wizard has added its own exception, such an application sends a visitor of <code>/rolewarden/setup</code> to its sign-in page. Sign in with any account, open <code>/rolewarden/setup</code> again and type the code.</p></div>
+    <p>Every step before the last only asks and shows previews: nothing is written to the database, to your files or to the settings. The answers are kept in <code>writable/rolewarden/install-manifest.json</code>, so a closed browser or an expired session resumes at the first unanswered question, after the setup code again. The wizard speaks English and Italian: the language menu is at the top of every step.</p>
 
-    <h3 id="migrations">Tables, with the installer or by hand</h3>
-    <p>Open <code>/rolewarden/install</code> and follow it (the database step is skipped when your application is already connected), or run the migrations yourself. Run them in separate steps, so that RoleWarden gets a batch of its own and can be rolled back without Shield:</p>
+    <h3 id="wizard-steps">Step 3: answer the questions</h3>
+    <div class="docs-scroll"><table>
+      <thead><tr><th>Step</th><th>What it asks or shows</th><th>What to choose</th></tr></thead>
+      <tbody>
+        <tr><td>Setup code</td><td>The code from <code>writable/rolewarden/install-code.txt</code>.</td><td>Copy it without spaces.</td></tr>
+        <tr><td>Server requirements</td><td>PHP version, extensions, writable folders. A missing one blocks the wizard until it is fixed.</td><td>Nothing: fix what is red and reload.</td></tr>
+        <tr><td>Filters of your application</td><td>Whether a global <code>session</code>, <code>group</code> or <code>permission</code> filter covers every page, its current exceptions and the change: <code>rolewarden/assets/*</code>, <code>rolewarden/theme.css</code> and <code>rolewarden/setup*</code> are added to them.</td><td>Nothing to choose. The panel still requires signing in: the exceptions only let its stylesheets and the wizard through.</td></tr>
+        <tr><td>Roles</td><td>Your groups from <code>AuthGroups</code>, with their users and permissions, and two options.</td><td><strong>Adapt the roles already here</strong> or <strong>Import RoleWarden's roles</strong>: see below. With Adapt, also <strong>who will manage the panel</strong>: the role that receives the panel's permissions, usually your administrators' group.</td></tr>
+        <tr><td>Roles with the same name</td><td>Only with Import, and only when one of your groups is called <code>super-admin</code>, <code>admin</code> or <code>user</code>.</td><td>For each group: <strong>Merge</strong> it into RoleWarden's role, <strong>Import with another name</strong>, or <strong>Skip</strong> it. The step says which users and permissions a skip loses.</td></tr>
+        <tr><td>Role for new sign-ups</td><td>The role every user who registers from now on receives. Filled in from <code>AuthGroups::$defaultGroup</code>.</td><td>Usually keep it.</td></tr>
+        <tr><td>Super admin</td><td>The account that can do everything in RoleWarden, whatever its roles.</td><td>An existing active user, or a new user, checked with your application's username, email and password rules. A new password is never saved in clear: only Shield's hash is kept until the account exists.</td></tr>
+        <tr><td>Who sees RoleWarden</td><td>Whether RoleWarden's sign-in screen, profile and sessions pages are for everyone.</td><td><strong>Only administrators</strong> for an application already in use: your sign-in screen stays as it is, and profile and sessions open only for users with a permission of the panel. <strong>All users</strong> gives everyone RoleWarden's sign-in screen, profile and sessions.</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Adapt or Import?</strong> <em>Adapt</em> keeps your groups as RoleWarden roles, with their users and permissions, and adds only <code>super-admin</code>: your code that calls <code>$user-&gt;can()</code> or <code>inGroup()</code> keeps working as before. <em>Import</em> adds RoleWarden's <code>super-admin</code>, <code>admin</code> and <code>user</code> next to your groups. The wizard suggests Import when <code>AuthGroups</code> has no groups or only Shield's stock ones (<code>superadmin</code>, <code>admin</code>, <code>developer</code>, <code>user</code>, <code>beta</code>), and Adapt otherwise. Adapt is refused for a group called <code>super-admin</code>, or called like a system role already in the database (an earlier <code>php spark migrate</code> creates <code>admin</code> and <code>user</code>): choose Import for it.</p>
+    <p>Permissions given to single users in Shield (the <code>auth_permissions_users</code> table) are not imported. The Roles step and the summary count them: give those users a role, or a user override from the panel, after the wizard.</p>
+
+    <h3 id="wizard-apply">Step 4: confirm and apply</h3>
+    <p><strong>Confirm and apply</strong> shows every answer and the exact change to each file. Only this step writes, in this order:</p>
+    <ol>
+      <li><strong>Tables:</strong> the migrations of CodeIgniter's Settings library, Shield and RoleWarden.</li>
+      <li><strong>Roles:</strong> your groups adapted or imported, with their users and permissions.</li>
+      <li><strong>Super admin:</strong> the chosen user receives the role, or the new account is created.</li>
+      <li><strong>Filter exception</strong> in <code>app/Config/Filters.php</code>.</li>
+      <li><strong>Wiring:</strong> <code>app/Config/Routes.php</code> gets <code>\RoleWarden\Config\RouteRegistrar::register($routes);</code>, and only once that line is there <code>app/Config/Auth.php</code> gets RoleWarden's user provider (plus the sign-in view and redirect with <em>All users</em>).</li>
+    </ol>
+    <p>Nothing is written into a configuration file that could break your application before the tables exist. Only Shield's own <code>UserModel</code> is replaced as user provider: if <code>$userProvider</code> names a model of your application, the wizard leaves it and asks you to make that model extend <code>\RoleWarden\Models\UserModel</code>.</p>
+    <p>Every file the wizard changes is protected:</p>
+    <ul>
+      <li>the new content is parsed before writing, and content that does not parse is never written;</li>
+      <li>the original is saved next to it as <code>&lt;file&gt;.rolewarden-bak</code>, at the first write and never overwritten;</li>
+      <li>the file is written through a temporary file renamed over the original, so it is never half written;</li>
+      <li>where the server can run it, <code>php -l</code> checks the result, and a file it rejects is put back;</li>
+      <li><code>install-manifest.json</code> records the path, the content before and after, and the date.</li>
+    </ul>
+    <p>Once applying has started the answers are locked: the wizard can only continue or retry. The super admin alone can still be chosen again until its own step is done.</p>
+
+    <h3 id="wizard-manual">If a file cannot be changed</h3>
+    <p>When a file is not writable, is missing, or is written in a shape the wizard does not recognise, the step stops at that file and shows the exact text to paste and where. Make the change in your editor, then choose <strong>I edited the files, continue</strong>: the wizard checks the file again and goes on. Steps already done are not repeated.</p>
+
+    <h3 id="wizard-stuck">If the wizard stops</h3>
+    <p>When a step fails for any other reason, the screen names the step and the details go to <code>writable/logs/</code>, never to the page. Fix the cause and apply again: the wizard resumes from the step that stopped.</p>
+    <ul>
+      <li><strong>Before any step has been applied</strong>, deleting <code>writable/rolewarden/install-manifest.json</code> starts the questions over.</li>
+      <li><strong>Once a step is done, do not delete it.</strong> It records what was applied and which files were changed; without it the wizard would ask everything again and could apply different answers on top of what is done. To finish by hand instead, follow <a href="#by-hand">Without the wizard</a> and compare each changed file with its <code>.rolewarden-bak</code>.</li>
+    </ul>
+
+    <h3 id="wizard-after">Step 5: after the wizard</h3>
+    <p>The last page lists the files that were changed. The setup code is deleted and <code>/rolewarden/setup</code> answers 403 from now on.</p>
+    <ol>
+      <li><strong>Sign out and in again</strong>, so that your session uses RoleWarden's user provider.</li>
+      <li>Open <code>/rolewarden</code> with the super admin, and add a link to it in your application's menu.</li>
+      <li>Give the application a sender for its security emails in <code>.env</code> (see <a href="#installer">the browser installer</a> for the settings). Without it the emails are skipped and a line goes to the log.</li>
+      <li>Check one user of each role in your application: the permissions now come from RoleWarden's tables, and <code>$user-&gt;can()</code> answers from there.</li>
+    </ol>
+    <p><strong>Version control.</strong> Commit <code>modules/rolewarden</code> (without Composer), the line in <code>Autoload.php</code> and the three changed configuration files. Keep the backups and the wizard's record out of the repository, but do not delete the record from the server:</p>
+<pre><code># .gitignore
+*.rolewarden-bak
+/writable/rolewarden/</code></pre>
+    <p><strong>Changing your answers later.</strong> The wizard runs once. The role for new sign-ups and who opens the profile and sessions pages are both in <code>/rolewarden/settings</code>; roles, permissions and the super admin's assignments are in the panel. To move to RoleWarden's sign-in screen later, add the view and redirect to <code>app/Config/Auth.php</code> as in <a href="#wiring">Wiring by hand</a>.</p>
+
+    <h3 id="by-hand">Without the wizard</h3>
+    <p>Load the module as in <a href="#load-module">Step 1</a>, then make the wiring and run the migrations yourself, in this order: tables first, wiring last. Wired before its tables exist, RoleWarden would stop every sign-in with a database error.</p>
+
+    <h3 id="migrations">Tables by hand</h3>
+    <p>Run the migrations in separate steps, so that RoleWarden gets a batch of its own and can be rolled back without Shield:</p>
 <pre><code>php spark migrate -n 'CodeIgniter\Settings'
 php spark migrate -n 'CodeIgniter\Shield'
 php spark migrate -n RoleWarden
@@ -116,13 +192,38 @@ JOIN acl_roles r ON r.slug = 'super-admin'
 WHERE i.type = 'email_password' AND i.secret = 'you@example.com';</code></pre>
     <p>Replace <code>acl_</code> if you changed the table prefix (see <a href="configuration.html">Configuration</a>).</p>
 
+    <h3 id="wiring">Wiring by hand</h3>
+    <p>In <code>app/Config/Auth.php</code>, let Shield ask RoleWarden for permissions:</p>
+<pre><code>public string $userProvider = \RoleWarden\Models\UserModel::class;</code></pre>
+    <p>In the same file, to use RoleWarden's sign-in screen (the <code>$views</code> array) and land people on the panel after signing in (the <code>$redirects</code> array). <code>/rolewarden</code> is the dashboard; whoever holds none of its <code>dashboard.*</code> permissions goes on to the first screen they can see:</p>
+<pre><code>'login' =&gt; '\RoleWarden\Views\auth\login',</code></pre>
+<pre><code>'login' =&gt; 'rolewarden',</code></pre>
+    <p>In <code>app/Config/Routes.php</code>, next to the line Shield already needs:</p>
+<pre><code>service('auth')-&gt;routes($routes);
+\RoleWarden\Config\RouteRegistrar::register($routes);</code></pre>
+    <p>That registers the panel, the installer, and a route serving the panel's CSS and JavaScript from the module: nothing is copied under <code>public/</code>. The module's events (session tracking, security emails, the registration hook) load by themselves as long as <code>app/Config/Modules.php</code> keeps module discovery on for <code>events</code>, the default.</p>
+    <p>If <code>app/Config/Filters.php</code> applies <code>session</code> (or <code>group</code>, <code>permission</code>) to every page, add RoleWarden's stylesheets to its exceptions, or the sign-in screen and the panel show without style:</p>
+<pre><code>'session' =&gt; ['except' =&gt; ['login*', 'register', 'auth/a/*', 'logout', 'rolewarden/assets/*', 'rolewarden/theme.css']],</code></pre>
+    <p>Enable CSRF protection for every form in the same file (the panel's own routes have it in any case):</p>
+<pre><code>public array $globals = [
+    'before' =&gt; [
+        'csrf',
+    ],
+    // ...
+];</code></pre>
+
     <h3>Updating the module</h3>
     <p>Replace the module's folder (or run <code>composer update rolewarden/codeigniter4-rolewarden</code>), then <code>php spark migrate -n RoleWarden</code>. A new version brings its changes to existing data as migrations: for example, a new screen comes with a migration that gives the <code>admin</code> role its new permissions.</p>
 
-    <h3>Removing the module</h3>
-    <p><code>migrate:rollback</code> undoes whole batches, whatever the namespace. Look up RoleWarden's batch in the <code>migrations</code> table and roll back to the batch before it:</p>
+    <h3 id="removing">Removing the module</h3>
+    <p>Roles and permissions live in RoleWarden's tables, so removing them takes them away. Users who registered or changed role after the installation have no group in Shield's <code>auth_groups_users</code> table: give them one before removing, or they sign in with no permissions.</p>
+    <ol>
+      <li><strong>Unwire first</strong>, so that the application does not look for tables that are about to go: put back each file the wizard changed from its <code>.rolewarden-bak</code> (or remove the lines from <a href="#wiring">Wiring by hand</a>).</li>
+      <li><strong>Roll back the tables.</strong> <code>migrate:rollback</code> undoes whole batches, whatever the namespace. Look up RoleWarden's batch in the <code>migrations</code> table and roll back to the batch before it:
 <pre><code>php spark migrate:rollback -b &lt;previous batch&gt;</code></pre>
-    <p><code>-b 0</code> rolls back everything, Shield included. Then remove the wiring lines and the module.</p>
+        <code>-b 0</code> rolls back everything, Shield included. The wizard runs each namespace in a batch of its own, so RoleWarden's is the last one it added.</li>
+      <li><strong>Remove the module.</strong> With Composer, <code>composer remove rolewarden/codeigniter4-rolewarden</code> (deleting the folder by hand leaves Composer's link to it behind); without Composer, remove the line from <code>app/Config/Autoload.php</code>. Then delete <code>modules/rolewarden</code> and <code>writable/rolewarden/</code>.</li>
+    </ol>
 
     <h2 id="subfolder-proxy">In a subfolder or behind a proxy</h2>
     <h3 id="subfolder">In a subfolder</h3>

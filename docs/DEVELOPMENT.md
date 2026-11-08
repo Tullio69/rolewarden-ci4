@@ -75,7 +75,7 @@ Credentials here are deliberately trivial: this stack is local only and never ex
 
 ## Building the release zips
 
-`bin/build-package 1.0.0` builds both into `build/` from the committed `HEAD`, never from
+`bin/build-package 1.0.0` builds them into `build/1.0.0/` (other versions untouched) from the committed `HEAD`, never from
 uncommitted files: the module with `git archive` (without tests, docs and tooling, see
 `.gitattributes`), and the application from CodeIgniter's app starter with
 `composer create-project`, Shield's own `shield:setup`, the module copied into

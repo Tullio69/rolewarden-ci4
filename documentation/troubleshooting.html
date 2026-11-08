@@ -33,12 +33,20 @@
     <p>It found <code>writable/rolewarden/installed.lock</code>, or an active super admin in the database. That is on purpose: once installed, it never runs again. Sign in instead. Starting over on a test server means an empty database and deleting the lock file.</p>
     <h3>The setup code is refused</h3>
     <p>Copy it again from <code>writable/rolewarden/install-code.txt</code>, without spaces. The file is created on the first visit to the installer and deleted when the installation finishes.</p>
+    <h3><code>/rolewarden/setup</code> sends me to the sign-in page</h3>
+    <p>Your application applies Shield's <code>session</code> filter to every page, and the wizard has not added its exception yet. Sign in with any account and open <code>/rolewarden/setup</code> again: the setup code is still asked. See <a href="installation.html#open-wizard">Open the wizard</a>.</p>
+    <h3><code>/rolewarden/setup</code> answers 404</h3>
+    <p>The module is not loaded. Check that <code>modules/rolewarden/src/Config/Routes.php</code> exists (no extra folder level from unzipping), that the <code>RoleWarden</code> line is in <code>$psr4</code> of <code>app/Config/Autoload.php</code> or the package is installed with Composer, and that <code>php spark routes</code> lists <code>rolewarden/setup</code>. See <a href="installation.html#load-module">Load the module</a>.</p>
+    <h3><code>/rolewarden/setup</code> answers 403</h3>
+    <p>The wizard has finished: it runs once. Your answers can be changed in <code>/rolewarden/settings</code> and in the panel. See <a href="installation.html#wizard-after">After the wizard</a>.</p>
+    <h3>The wizard stopped at a file</h3>
+    <p>The file is not writable by the web server, or is written in a shape the wizard does not recognise. Paste the text the screen shows where it says, then choose "I edited the files, continue". See <a href="installation.html#wizard-manual">If a file cannot be changed</a>.</p>
     <h3>"Could not connect to the database"</h3>
     <p>Check server, port, database name, user and password; the database must already exist. The exact reason from the database is in <code>writable/logs/</code>. On many hosts the server is <code>localhost</code>, on Docker it is the service name.</p>
     <h3>The installer shows a text to save as <code>.env</code></h3>
     <p>The web server cannot write in the application's root folder. Save the text as <code>.env</code> there yourself (over FTP, for example) and continue, or make the folder writable and submit the database step again.</p>
     <h3>In development every page answers 500 before the tables exist</h3>
-    <p>In an existing application with <code>CI_ENVIRONMENT = development</code>, Shield's debug toolbar reads its own tables on every page, the installer's included. Run the migrations first (see <a href="installation.html#migrations">Tables, with the installer or by hand</a>), or open the installer in <code>production</code> and switch back afterwards.</p>
+    <p>In an existing application with <code>CI_ENVIRONMENT = development</code>, Shield's debug toolbar reads its own tables on every page, the installer's included. Run the migrations first (see <a href="installation.html#migrations">Tables by hand</a>), or open the installer in <code>production</code> and switch back afterwards.</p>
     <h3>Pages other than the home page answer 404</h3>
     <p>The document root must be the <code>public/</code> folder, and the web server must send every request to <code>public/index.php</code>: CodeIgniter's <code>public/.htaccess</code> does it on Apache with <code>mod_rewrite</code>. Without rewriting, add <code>index.php/</code> to the addresses, or set <code>app.indexPage</code> accordingly.</p>
 

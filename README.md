@@ -177,6 +177,12 @@ details are in `writable/logs/`) and apply again, or finish by hand with
 At the end the setup code is deleted and the wizard answers 403. Add a link to `/rolewarden`
 in your application's menu. If the user provider changed, sign out and in again.
 
+In version control, commit the module (when not installed with Composer), the `Autoload.php`
+line and the changed configuration files; keep `*.rolewarden-bak` and `/writable/rolewarden/`
+out of the repository, but do not delete the manifest from the server. The full walkthrough,
+with what to choose at each step and how to remove the module, is in
+`documentation/installation.html`.
+
 **A host with a global `session` filter.** Until the wizard has added its exception, such an
 application sends a visitor of `/rolewarden/setup` to its own login page. Sign in with any
 existing account and open `/rolewarden/setup` again: the setup code is still required, and

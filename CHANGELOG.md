@@ -7,6 +7,8 @@ version may require changes on your side, listed under "Upgrading". After any up
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-08
+
 ### Added
 - **Install wizard for an existing application**, `/rolewarden/setup`. For a CodeIgniter 4
   app that already has Shield, users and groups: load the module (Composer, or

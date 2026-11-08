@@ -1890,3 +1890,10 @@ Formato di ogni voce:
 - Stato: completato
 - Note per il prossimo: restano per Fabio le 5 ambiguità di specifica del report W2 (conteggio del Salta non netto, riga RouteRegistrar commentata trattata come assente, requisiti senza controllo versioni CI4/Shield e scrittura `app/Config`/`modules/`, numerazione "step 1 of 7" doppia, membri cancellati/disattivati/bannati importati nei ruoli) e la decisione se importare i permessi diretti di Shield (`auth_permissions_users`) come override utente: oggi il wizard li segnala soltanto. Minori rimandati: la cartella `app/Config/` che deve essere scrivibile per la scrittura atomica, il confronto del provider sensibile alle maiuscole, i nomi delle tabelle Shield fissi in HostScan.
 
+
+### [2026-11-08 21:00] - Claude (sessione locale, helpdesk)
+- Tipo: release
+- Scope: `composer.json`, `CHANGELOG.md`, `_AI-LOG.md`; tag `v1.2.0`; `build/1.2.0/`
+- Cosa ho fatto: rilascio 1.2.0 (wizard `/rolewarden/setup` per app esistenti). Prima: collaudo reale del wizard su helpdesk dal pacchetto dev `6594c71` (tutto ok), documentazione HTML passo per passo del wizard (`1a5197d`), `bin/build-package` che scrive in `build/<versione>/`. Verifiche: PHPStan pulito, PHPUnit 230 test OK. Bump a 1.2.0, CHANGELOG datato 2026-11-08, tag annotato `v1.2.0` (non pushato), zip con `bin/build-package 1.2.0`.
+- Stato: completato
+- Note per il prossimo: destinazione Codester (non CodeCanyon): la scheda in `docs/codecanyon/` resta alla 1.1.0. `composer test` va in timeout (300 s di Composer, la suite dura ~270 s): usare `vendor/bin/phpunit`. Push di `main` e del tag da decidere con Fabio.

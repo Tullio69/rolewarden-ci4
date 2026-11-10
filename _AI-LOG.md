@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** nessuno
-**Agente:** -
-**Dalle:** -
-**Scope:** -
+**In lavorazione:** Claude Code
+**Agente:** Claude Opus 5.5
+**Dalle:** 2026-11-10 07:10
+**Scope:** README.md, THIRD-PARTY-LICENSES.md (licenza Codester), Codester_assets/codester-listing.md, build/1.2.0/
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1897,3 +1897,19 @@ Formato di ogni voce:
 - Cosa ho fatto: rilascio 1.2.0 (wizard `/rolewarden/setup` per app esistenti). Prima: collaudo reale del wizard su helpdesk dal pacchetto dev `6594c71` (tutto ok), documentazione HTML passo per passo del wizard (`1a5197d`), `bin/build-package` che scrive in `build/<versione>/`. Verifiche: PHPStan pulito, PHPUnit 230 test OK. Bump a 1.2.0, CHANGELOG datato 2026-11-08, tag annotato `v1.2.0` (non pushato), zip con `bin/build-package 1.2.0`.
 - Stato: completato
 - Note per il prossimo: destinazione Codester (non CodeCanyon): la scheda in `docs/codecanyon/` resta alla 1.1.0. `composer test` va in timeout (300 s di Composer, la suite dura ~270 s): usare `vendor/bin/phpunit`. Push di `main` e del tag da decidere con Fabio.
+
+### [2026-11-09 18:05] - Claude
+- Tipo: docs
+- Scope: `brag-output/` (nuovo, non committato); nessun file del modulo
+- Cosa ho fatto: video brag di 21,5 s con voce Kokoro (af_heart), musica e SFX: gancio sulla regola 2 ("Even a super admin can be told no"), schermata Check a permission ricostruita in HTML, chiusura `can()` contro `hasRole()`. Render 1920x1080, poster nel frame 0, audio a -15,6 LUFS.
+- Stato: completato
+- Note per il prossimo: decidere se committare `brag-output/` o metterlo in `.gitignore`. Il venv con kokoro-onnx sta nella scratchpad di sessione, non nel repo.
+- Aggiunta (18:15): versione verticale 9:16 in `brag-output/brag-9x16.mp4` (progetto `brag-output/composition-9x16/`), stessi audio e tempi, impaginazione rifatta per 1080x1920.
+- Aggiunta (18:30): entrambe le versioni allungate a 24,0 s con pause tra le frasi della voce (voce divisa in 5 clip), DECIDES ora a 16,38 s e logo a 21,28 s.
+
+### [2026-11-09 18:20] - Claude
+- Tipo: promo
+- Scope: `promo-video-v2/`, `promo-video-v2-9x16/` (fuori da git), `renders/rolewarden-promo-v2-voce-16x9-codester.mp4` e `-9x16-codester.mp4`
+- Cosa ho fatto: video v2 con voce spostato da CodeCanyon a Codester. Chiusura "Available on Codester" (`compositions/closing.html`); battuta `vo-09` rigenerata con la stessa voce Brian, `eleven_multilingual_v2`: "Available now on Codester." (1,67 s, alzata di 1,3 dB come le altre), `data-duration` aggiornato in `index.html` dei due formati. Check pulito, render ripetuto, audio normalizzato a -14 LUFS (picco -0,8 dBFS) come gli originali.
+- Stato: completato
+- Note per il prossimo: i render originali con CodeCanyon restano in `renders/`. La variabile `codecanyonUrl` in closing.html mantiene il nome vecchio (non visibile). La chiave ElevenLabs non ha i permessi `speech_to_text`: il copione delle battute non è salvato da nessuna parte.

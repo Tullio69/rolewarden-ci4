@@ -18,7 +18,7 @@ address given.
 
 | Package | Version in the complete application | Licence | Copyright |
 | --- | --- | --- | --- |
-| [codeigniter4/framework](https://github.com/codeigniter4/framework) | 4.7.5 | MIT | © 2014-2019 British Columbia Institute of Technology; © 2019-present CodeIgniter Foundation |
+| [codeigniter4/framework](https://github.com/codeigniter4/framework) | 4.7.6 | MIT | © 2014-2019 British Columbia Institute of Technology; © 2019-present CodeIgniter Foundation |
 | [codeigniter4/shield](https://github.com/codeigniter4/shield) | 1.4.1 | MIT | © 2020-2022 Lonnie Ezell; © 2022-present CodeIgniter Foundation |
 | [codeigniter4/settings](https://github.com/codeigniter4/settings) | 2.4.0 | MIT | © 2021 Lonnie Ezell; © 2021-present CodeIgniter Foundation |
 | [codeigniter4/translations](https://github.com/codeigniter4/translations) | 4.7.4 | MIT | © 2014-2019 British Columbia Institute of Technology; © 2019-present CodeIgniter Foundation |

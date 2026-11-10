@@ -505,4 +505,13 @@ the language of the person receiving it, not of whoever triggered it.
 
 ## License
 
-Proprietary. Sold on CodeCanyon.
+Copyright © Fabio Gulotta. All rights reserved.
+
+RoleWarden is proprietary software sold on Codester. Your use of it is governed by the
+Codester licence you purchased (Regular or Extended) and by Codester's terms:
+<https://www.codester.com/info/licenses/>. In short, the Regular licence covers one
+project, for you or for a client; the Extended licence covers unlimited projects. Neither
+allows reselling or redistributing RoleWarden on its own.
+
+Third-party code shipped with or required by RoleWarden keeps its own licence and
+copyright notices: see `THIRD-PARTY-LICENSES.md`.

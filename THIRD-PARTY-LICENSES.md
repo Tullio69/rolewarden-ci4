@@ -1,6 +1,7 @@
 # Third-party licences
 
-RoleWarden itself is proprietary, licensed through CodeCanyon. It ships or depends on the
+RoleWarden itself is proprietary, licensed under the Codester licence you purchased
+(<https://www.codester.com/info/licenses/>). It ships or depends on the
 open-source works below, each under its own licence. The full text of every licence is in
 the work's own folder (`LICENSE` under `vendor/` in the complete application) or at the
 address given.

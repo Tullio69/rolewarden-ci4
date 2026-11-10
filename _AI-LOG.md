@@ -7,10 +7,10 @@
 
 ## Stato corrente (lock)
 
-**In lavorazione:** Claude Code
-**Agente:** Claude Opus 5.5
-**Dalle:** 2026-11-10 07:10
-**Scope:** README.md, THIRD-PARTY-LICENSES.md (licenza Codester), Codester_assets/codester-listing.md, build/1.2.0/
+**In lavorazione:** nessuno
+**Agente:** -
+**Dalle:** -
+**Scope:** -
 
 Regola: se trovi "In lavorazione" diverso da "nessuno" e il tuo scope si sovrappone a quello indicato, fermati e segnala all'utente invece di procedere. Se non si sovrappone, puoi lavorare in parallelo ma aggiorna comunque questa sezione aggiungendo il tuo intervento.
 
@@ -1913,3 +1913,9 @@ Formato di ogni voce:
 - Cosa ho fatto: video v2 con voce spostato da CodeCanyon a Codester. Chiusura "Available on Codester" (`compositions/closing.html`); battuta `vo-09` rigenerata con la stessa voce Brian, `eleven_multilingual_v2`: "Available now on Codester." (1,67 s, alzata di 1,3 dB come le altre), `data-duration` aggiornato in `index.html` dei due formati. Check pulito, render ripetuto, audio normalizzato a -14 LUFS (picco -0,8 dBFS) come gli originali.
 - Stato: completato
 - Note per il prossimo: i render originali con CodeCanyon restano in `renders/`. La variabile `codecanyonUrl` in closing.html mantiene il nome vecchio (non visibile). La chiave ElevenLabs non ha i permessi `speech_to_text`: il copione delle battute non è salvato da nessuna parte.
+
+### 2026-11-10 - Claude Code (Opus 5.5) - Licenza Codester nel pacchetto 1.2.0
+- Scope: `README.md`, `THIRD-PARTY-LICENSES.md`, `Codester_assets/codester-listing.md` (fuori da git), `build/1.2.0/`
+- Motivo: Codester ha restituito l'articolo ("sostituire i riferimenti a CodeCanyon nel testo della licenza destinato all'acquirente con i termini di acquisto di Codester; mantenere copyright e diritti di terzi").
+- Fatto: sezione License del README riscritta (copyright, licenza Codester Regular/Extended, link https://www.codester.com/info/licenses/, rimando alle licenze di terzi); stessa correzione in THIRD-PARTY-LICENSES; versione di CodeIgniter corretta a 4.7.6, quella che l'app completa conteneva gia' l'8/11 (la tabella diceva 4.7.5). Scheda Codester: la sezione Licence descriveva Regular/Extended alla Envato, ora segue Codester (un progetto / progetti illimitati). Pacchetti ricostruiti con `bin/build-package 1.2.0`, bundle di upload ricomposto (documentation/assets con panel.css aggiornato), SHA256SUMS rigenerato; nessun "codecanyon/envato" in nessun file del bundle ne' degli zip annidati (vendor escluso).
+- Note per il prossimo: il titolare del copyright e' scritto "Fabio Gulotta": da confermare. Reinviare `build/1.2.0/rolewarden-1.2.0.zip` a Codester.

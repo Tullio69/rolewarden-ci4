@@ -1919,3 +1919,10 @@ Formato di ogni voce:
 - Motivo: Codester ha restituito l'articolo ("sostituire i riferimenti a CodeCanyon nel testo della licenza destinato all'acquirente con i termini di acquisto di Codester; mantenere copyright e diritti di terzi").
 - Fatto: sezione License del README riscritta (copyright, licenza Codester Regular/Extended, link https://www.codester.com/info/licenses/, rimando alle licenze di terzi); stessa correzione in THIRD-PARTY-LICENSES; versione di CodeIgniter corretta a 4.7.6, quella che l'app completa conteneva gia' l'8/11 (la tabella diceva 4.7.5). Scheda Codester: la sezione Licence descriveva Regular/Extended alla Envato, ora segue Codester (un progetto / progetti illimitati). Pacchetti ricostruiti con `bin/build-package 1.2.0`, bundle di upload ricomposto (documentation/assets con panel.css aggiornato), SHA256SUMS rigenerato; nessun "codecanyon/envato" in nessun file del bundle ne' degli zip annidati (vendor escluso).
 - Note per il prossimo: il titolare del copyright e' scritto "Fabio Gulotta": da confermare. Reinviare `build/1.2.0/rolewarden-1.2.0.zip` a Codester.
+
+### [2026-11-15] - Claude (Agent Regia)
+- Tipo: setup
+- Scope: `.regista.json` (rimosso), file di primo livello ripristinati nel working tree
+- Cosa ho fatto: il progetto entra in Regia (progetto 2). I 14 file di primo livello mancanti dal working tree (spostamento della cartella il 14/11) sono stati ripristinati da HEAD; `.regista.json`, registrazione del vecchio Regista Progetti su Notion, e' stato rimosso dal repository.
+- Stato: completato
+- Note per il prossimo: `CLAUDE.md` e `docs/codecanyon/scheda-prodotto.md` parlano ancora di CodeCanyon. Push di `main` e del tag `v1.2.0` da decidere con Fabio.

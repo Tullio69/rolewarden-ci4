@@ -1,7 +1,7 @@
 # RoleWarden - istruzioni per Claude Code
 
 Modulo CodeIgniter 4 per ruoli e permessi in database, con pannello di amministrazione,
-costruito come estensione di Shield. Destinazione: vendita su CodeCanyon.
+costruito come estensione di Shield. Destinazione: vendita su Codester.
 
 La specifica completa sta in `docs/SPEC.md`, l'ordine di lavoro dell'MVP (chiuso) in
 `docs/BRIEF-MVP.md`, quello della v1.0 (in corso) in `docs/BRIEF-v1.0.md`. Sono la fonte di verita' e vanno letti prima di iniziare: questo
